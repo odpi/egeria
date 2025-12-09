@@ -143,22 +143,25 @@ public class AnnotationClient extends ConnectorContextClientBase
      * @param annotationGUID       unique identifier of the annotation (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateAnnotation(String               annotationGUID,
-                                 UpdateOptions        updateOptions,
-                                 AnnotationProperties properties) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public boolean updateAnnotation(String               annotationGUID,
+                                    UpdateOptions        updateOptions,
+                                    AnnotationProperties properties) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
-        annotationHandler.updateAnnotation(connectorUserId, annotationGUID, updateOptions, properties);
+        boolean updateOccurred = annotationHandler.updateAnnotation(connectorUserId, annotationGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(annotationGUID);
         }
+
+        return updateOccurred;
     }
 
 

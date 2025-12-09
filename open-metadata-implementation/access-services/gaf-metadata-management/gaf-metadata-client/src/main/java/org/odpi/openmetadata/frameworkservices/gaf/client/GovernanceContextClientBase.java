@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -10,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceCompletionInterface;
-import org.odpi.openmetadata.frameworks.opengovernance.client.WatchDogEventInterface;
+import org.odpi.openmetadata.frameworks.opengovernance.client.WatchdogEventInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
@@ -30,14 +31,8 @@ import java.util.Map;
  * listener for the watchdog governance services.
  */
 public class GovernanceContextClientBase extends OpenGovernanceClientBase implements GovernanceCompletionInterface,
-                                                                                     WatchDogEventInterface
+                                                                                     WatchdogEventInterface
 {
-    /**
-     * Supports REST calls
-     */
-    private   final GAFRESTClient           restClient;               /* Initialized in constructor */
-
-
     /**
      * Manages registered listeners
      */
@@ -48,77 +43,26 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize           pre-initialized parameter limit
+     * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public GovernanceContextClientBase(String serviceURLMarker,
-                                       String serverName,
-                                       String serverPlatformURLRoot,
-                                       int    maxPageSize) throws InvalidParameterException
+    public GovernanceContextClientBase(String   serverName,
+                                       String   serverPlatformURLRoot,
+                                       String   localServerSecretsStoreProvider,
+                                       String   localServerSecretsStoreLocation,
+                                       String   localServerSecretsStoreCollection,
+                                       int      maxPageSize,
+                                       AuditLog auditLog) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
-
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's password embedded in all HTTP requests
-     * @param maxPageSize           pre-initialized parameter limit
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public GovernanceContextClientBase(String serviceURLMarker,
-                                       String serverName,
-                                       String serverPlatformURLRoot,
-                                       String serverUserId,
-                                       String serverPassword,
-                                       int    maxPageSize) throws InvalidParameterException
-    {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
-
-        final String methodName = "Client Constructor (with security)";
-
-        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param restClient            pre-initialized REST client
-     * @param maxPageSize           pre-initialized parameter limit
-     *
-     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
-     */
-    public GovernanceContextClientBase(String        serviceURLMarker,
-                                       String        serverName,
-                                       String        serverPlatformURLRoot,
-                                       GAFRESTClient restClient,
-                                       int           maxPageSize) throws InvalidParameterException
-    {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, maxPageSize, auditLog);
     }
 
 
@@ -198,7 +142,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
         final String methodName = "updateEngineActionStatus";
         final String guidParameterName = "engineActionGUID";
         final String statusParameterName = "activityStatus";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-context-service/users/{2}/engine-actions/{3}/status/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/{2}/status/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
@@ -212,7 +156,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                         urlTemplate,
                                         requestBody,
                                         serverName,
-                                        serviceURLMarker,
                                         userId,
                                         engineActionGUID);
     }
@@ -236,7 +179,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     {
         final String methodName = "claimEngineAction";
         final String guidParameterName = "engineActionGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-context-service/users/{2}/engine-actions/{3}/claim";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/{2}/claim";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
@@ -245,7 +188,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
-                                        serviceURLMarker,
                                         userId,
                                         engineActionGUID);
     }
@@ -275,7 +217,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     {
         final String methodName = "getActiveClaimedEngineActions";
         final String guidParameterName = "governanceEngineGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-context-service/users/{2}/governance-engines/{3}/active-engine-actions?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/governance-engines/{2}/active-engine-actions?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
@@ -283,7 +225,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
         EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           serverName,
-                                                                                          serviceURLMarker,
                                                                                           userId,
                                                                                           governanceEngineGUID,
                                                                                           Integer.toString(startFrom),
@@ -323,7 +264,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     {
         final String methodName = "updateActionTargetStatus";
         final String guidParameterName = "actionTargetGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-context-service/users/{2}/engine-actions/action-targets/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/engine-actions/action-targets/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTargetGUID, guidParameterName, methodName);
@@ -340,7 +281,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                         urlTemplate,
                                         requestBody,
                                         serverName,
-                                        serviceURLMarker,
                                         userId);
     }
 
@@ -390,7 +330,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                         urlTemplate,
                                         requestBody,
                                         serverName,
-                                        serviceURLMarker,
                                         userId,
                                         engineActionGUID);
     }

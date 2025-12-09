@@ -167,12 +167,12 @@ public class ConnectionMakerRESTServices extends TokenController
      * @param connectionGUID unique identifier of the connection (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateConnection(String                   serverName,
+    public BooleanResponse updateConnection(String                   serverName,
                                          String                   urlMarker,
                                          String                   connectionGUID,
                                          UpdateElementRequestBody requestBody)
@@ -181,7 +181,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -198,10 +198,10 @@ public class ConnectionMakerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof ConnectionProperties connectionProperties)
                 {
-                    handler.updateConnection(userId,
-                                             connectionGUID,
-                                             requestBody,
-                                             connectionProperties);
+                    response.setFlag(handler.updateConnection(userId,
+                                                              connectionGUID,
+                                                              requestBody,
+                                                              connectionProperties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
@@ -1210,12 +1210,12 @@ public class ConnectionMakerRESTServices extends TokenController
      * @param connectorTypeGUID unique identifier of the connectorType (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateConnectorType(String                   serverName,
+    public BooleanResponse updateConnectorType(String                   serverName,
                                             String                   urlMarker,
                                             String                   connectorTypeGUID,
                                             UpdateElementRequestBody requestBody)
@@ -1224,8 +1224,8 @@ public class ConnectionMakerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -1241,11 +1241,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof ConnectorTypeProperties connectorTypeProperties)
                 {
-                    handler.updateConnectorType(userId, connectorTypeGUID, requestBody, connectorTypeProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateConnectorType(userId, connectorTypeGUID, requestBody, null);
+                    response.setFlag(handler.updateConnectorType(userId, connectorTypeGUID, requestBody, connectorTypeProperties));
                 }
                 else
                 {

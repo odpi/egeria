@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.platformservices.properties.PublicProperties;
 import org.odpi.openmetadata.platformservices.properties.BuildProperties;
 
 import java.util.*;
@@ -25,12 +26,15 @@ public class OMAGServerPlatformProperties
     private String                      platformName                 = null;
     private String                      platformURLRoot              = null;
     private String                      platformOrigin               = null;
+    private String                      platformOrganization         = null;
     private BuildProperties             platformBuildProperties      = null;
+    private PublicProperties            platformPublicProperties     = null;
     private Date                        platformStartTime            = null;
     private OMAGConnectorProperties     configurationStoreConnection = null;
     private OMAGConnectorProperties     platformSecurityConnection   = null;
     private List<RegisteredOMAGService> registeredOMAGServices       = null;
     private List<OMAGServerProperties>  omagServers                  = null;
+
 
     public OMAGServerPlatformProperties()
     {
@@ -67,6 +71,16 @@ public class OMAGServerPlatformProperties
         this.platformOrigin = platformOrigin;
     }
 
+    public String getPlatformOrganization()
+    {
+        return platformOrganization;
+    }
+
+    public void setPlatformOrganization(String platformOrganization)
+    {
+        this.platformOrganization = platformOrganization;
+    }
+
     public BuildProperties getPlatformBuildProperties()
     {
         return platformBuildProperties;
@@ -75,6 +89,16 @@ public class OMAGServerPlatformProperties
     public void setPlatformBuildProperties(BuildProperties platformBuildProperties)
     {
         this.platformBuildProperties = platformBuildProperties;
+    }
+
+    public PublicProperties getPlatformPublicProperties()
+    {
+        return platformPublicProperties;
+    }
+
+    public void setPlatformPublicProperties(PublicProperties platformPublicProperties)
+    {
+        this.platformPublicProperties = platformPublicProperties;
     }
 
     public Date getPlatformStartTime()
@@ -140,14 +164,16 @@ public class OMAGServerPlatformProperties
                 "platformName='" + platformName + '\'' +
                 ", platformURLRoot='" + platformURLRoot + '\'' +
                 ", platformOrigin='" + platformOrigin + '\'' +
-                ", platformStartTime='" + platformStartTime + '\'' +
+                ", platformOrganization='" + platformOrganization + '\'' +
+                ", platformBuildProperties=" + platformBuildProperties +
+                ", platformPublicProperties=" + platformPublicProperties +
+                ", platformStartTime=" + platformStartTime +
                 ", configurationStoreConnection=" + configurationStoreConnection +
                 ", platformSecurityConnection=" + platformSecurityConnection +
                 ", registeredOMAGServices=" + registeredOMAGServices +
                 ", omagServers=" + omagServers +
                 '}';
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -161,9 +187,8 @@ public class OMAGServerPlatformProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         OMAGServerPlatformProperties that = (OMAGServerPlatformProperties) objectToCompare;
-        return Objects.equals(platformName, that.platformName) && Objects.equals(platformURLRoot, that.platformURLRoot) && Objects.equals(platformOrigin, that.platformOrigin) && Objects.equals(platformStartTime, that.platformStartTime) && Objects.equals(configurationStoreConnection, that.configurationStoreConnection) && Objects.equals(platformSecurityConnection, that.platformSecurityConnection) && Objects.equals(registeredOMAGServices, that.registeredOMAGServices) && Objects.equals(omagServers, that.omagServers);
+        return Objects.equals(platformName, that.platformName) && Objects.equals(platformURLRoot, that.platformURLRoot) && Objects.equals(platformOrigin, that.platformOrigin) && Objects.equals(platformOrganization, that.platformOrganization) && Objects.equals(platformBuildProperties, that.platformBuildProperties) && Objects.equals(platformPublicProperties, that.platformPublicProperties) && Objects.equals(platformStartTime, that.platformStartTime) && Objects.equals(configurationStoreConnection, that.configurationStoreConnection) && Objects.equals(platformSecurityConnection, that.platformSecurityConnection) && Objects.equals(registeredOMAGServices, that.registeredOMAGServices) && Objects.equals(omagServers, that.omagServers);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -173,6 +198,6 @@ public class OMAGServerPlatformProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(platformName, platformURLRoot, platformOrigin, platformStartTime, configurationStoreConnection, platformSecurityConnection, registeredOMAGServices, omagServers);
+        return Objects.hash(platformName, platformURLRoot, platformOrigin, platformOrganization, platformBuildProperties, platformPublicProperties, platformStartTime, configurationStoreConnection, platformSecurityConnection, registeredOMAGServices, omagServers);
     }
 }

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Governance Officer OMVS", description="The Governance Officer OMVS provides APIs for supporting the creation and editing of a new governance domain.",
+@Tag(name="API: Governance Officer", description="Governance Officer provides APIs for supporting the creation and editing of a new governance domain.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/governance-officer/overview/"))
 
@@ -112,7 +112,7 @@ public class GovernanceOfficerResource
      * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -125,13 +125,11 @@ public class GovernanceOfficerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-definition"))
 
-    public VoidResponse updateGovernanceDefinition(@PathVariable
-                                                   String                                  serverName,
-                                                   @PathVariable String             urlMarker,
-                                                   @PathVariable
-                                                   String                                  governanceDefinitionGUID,
-                                                   @RequestBody (required = false)
-                                                   UpdateElementRequestBody requestBody)
+    public BooleanResponse updateGovernanceDefinition(@PathVariable String                                  serverName,
+                                                      @PathVariable String             urlMarker,
+                                                      @PathVariable String                                  governanceDefinitionGUID,
+                                                      @RequestBody (required = false)
+                                                          UpdateElementRequestBody requestBody)
     {
         return restAPI.updateGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }

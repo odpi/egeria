@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
-import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;

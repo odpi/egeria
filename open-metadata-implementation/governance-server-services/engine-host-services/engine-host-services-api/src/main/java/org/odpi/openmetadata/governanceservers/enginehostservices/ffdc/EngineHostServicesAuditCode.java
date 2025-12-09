@@ -442,6 +442,15 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
 
 
     /**
+     * ENGINE-HOST-SERVICES-0037 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}
+     */
+    UNEXPECTED_EXCEPTION("ENGINE-HOST-SERVICES-0037",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The {0} governance engine handler for {1} has received an unexpected {2} exception during method {3}; the error message was: {4}",
+                         "The service is unable to process the current request.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
      * ENGINE-HOST-SERVICES-0150 - {0} in server {1} is not configured with the platform URL root for the {2}
      */
     NO_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0150",

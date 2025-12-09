@@ -42,20 +42,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TypeDefResponse.class, name = "TypeDefResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
         })
-public abstract class OMRSAPIResponse implements Serializable
+public abstract class OMRSAPIResponse
 {
-    protected int                 relatedHTTPCode                 = 200;
-    protected String              actionDescription               = null;
-    protected String              exceptionClassName              = null;
-    protected String              exceptionCausedBy               = null;
-    protected String              exceptionErrorMessage           = null;
-    protected String              exceptionErrorMessageId         = null;
-    protected String[]            exceptionErrorMessageParameters = null;
-    protected String              exceptionSystemAction           = null;
-    protected String              exceptionUserAction             = null;
-    protected Map<String, Object> exceptionProperties             = null;
+    private int                 relatedHTTPCode                 = 200;
+    private String              exceptionClassName              = null;
+    private String              exceptionSubclassName           = null;
+    private String              exceptionCausedBy               = null;
+    private String              actionDescription               = null;
+    private String              exceptionErrorMessage           = null;
+    private String              exceptionErrorMessageId         = null;
+    private String[]            exceptionErrorMessageParameters = null;
+    private String              exceptionSystemAction           = null;
+    private String              exceptionUserAction             = null;
+    private Map<String, Object> exceptionProperties             = null;
 
-    private static final long       serialVersionUID = 1L;
+
 
     /**
      * Default constructor
@@ -76,6 +77,7 @@ public abstract class OMRSAPIResponse implements Serializable
         {
             this.relatedHTTPCode = template.getRelatedHTTPCode();
             this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionSubclassName = template.getExceptionSubclassName();
             this.exceptionCausedBy = template.getExceptionCausedBy();
             this.actionDescription = template.getActionDescription();
             this.exceptionErrorMessage = template.getExceptionErrorMessage();
@@ -107,6 +109,28 @@ public abstract class OMRSAPIResponse implements Serializable
     public void setExceptionClassName(String exceptionClassName)
     {
         this.exceptionClassName = exceptionClassName;
+    }
+
+
+    /**
+     * Return the detailed class name create by the originator.
+     *
+     * @return class name
+     */
+    public String getExceptionSubclassName()
+    {
+        return exceptionSubclassName;
+    }
+
+
+    /**
+     * Set up the detailed class name create by the originator.
+     *
+     * @param exceptionSubclassName name of class
+     */
+    public void setExceptionSubclassName(String exceptionSubclassName)
+    {
+        this.exceptionSubclassName = exceptionSubclassName;
     }
 
 
@@ -227,7 +251,7 @@ public abstract class OMRSAPIResponse implements Serializable
      * These are provided both for automated processing and to enable the error message to be reformatted
      * in a different language.
      *
-     * @return list of strings
+     * @return array of strings
      */
     public String[] getExceptionErrorMessageParameters()
     {
@@ -336,15 +360,16 @@ public abstract class OMRSAPIResponse implements Serializable
     {
         return "OMRSAPIResponse{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionSubclassName='" + exceptionSubclassName + '\'' +
                 ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
                 ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
 
@@ -362,18 +387,20 @@ public abstract class OMRSAPIResponse implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof OMRSAPIResponse))
+        if (!(objectToCompare instanceof OMRSAPIResponse that))
         {
             return false;
         }
-        OMRSAPIResponse
-                that = (OMRSAPIResponse) objectToCompare;
-        return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
-                Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
-                Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&
-                Objects.equals(getExceptionSystemAction(), that.getExceptionSystemAction()) &&
-                Objects.equals(getExceptionUserAction(), that.getExceptionUserAction()) &&
-                Objects.equals(getExceptionProperties(), that.getExceptionProperties());
+        return relatedHTTPCode == that.relatedHTTPCode &&
+                Objects.equals(exceptionClassName, that.exceptionClassName) &&
+                Objects.equals(exceptionSubclassName, that.exceptionSubclassName) &&
+                Objects.equals(actionDescription, that.actionDescription) &&
+                Objects.equals(exceptionErrorMessage, that.exceptionErrorMessage) &&
+                Objects.equals(exceptionErrorMessageId, that.exceptionErrorMessageId) &&
+                Arrays.equals(exceptionErrorMessageParameters, that.exceptionErrorMessageParameters) &&
+                Objects.equals(exceptionSystemAction, that.exceptionSystemAction) &&
+                Objects.equals(exceptionUserAction, that.exceptionUserAction) &&
+                Objects.equals(exceptionProperties, that.exceptionProperties);
     }
 
 
@@ -385,11 +412,8 @@ public abstract class OMRSAPIResponse implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getRelatedHTTPCode(),
-                            getExceptionClassName(),
-                            getExceptionErrorMessage(),
-                            getExceptionSystemAction(),
-                            getExceptionUserAction(),
-                            getExceptionProperties());
+        int result = Objects.hash(relatedHTTPCode, exceptionClassName, exceptionSubclassName, exceptionCausedBy, actionDescription, exceptionErrorMessage, exceptionErrorMessageId, exceptionSystemAction, exceptionUserAction, exceptionProperties);
+        result = 31 * result + Arrays.hashCode(exceptionErrorMessageParameters);
+        return result;
     }
 }

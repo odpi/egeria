@@ -6,6 +6,7 @@
 
 dependencies {
     implementation 'org.springframework:spring-web'
+    implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:repository-services:repository-services-implementation')
     implementation 'io.swagger.core.v3:swagger-annotations'

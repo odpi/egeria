@@ -636,21 +636,21 @@ public class ProjectManagerRESTServices extends TokenController
      * @param projectGUID unique identifier of the project (returned from create)
      * @param requestBody     properties for the project.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateProject(String                   serverName,
-                                        String                   projectGUID,
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse updateProject(String                   serverName,
+                                         String                   projectGUID,
+                                         UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateProject";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -666,11 +666,7 @@ public class ProjectManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof  ProjectProperties projectProperties)
                 {
-                    handler.updateProject(userId, projectGUID, requestBody, projectProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateProject(userId, projectGUID, requestBody, null);
+                    response.setFlag(handler.updateProject(userId, projectGUID, requestBody, projectProperties));
                 }
                 else
                 {

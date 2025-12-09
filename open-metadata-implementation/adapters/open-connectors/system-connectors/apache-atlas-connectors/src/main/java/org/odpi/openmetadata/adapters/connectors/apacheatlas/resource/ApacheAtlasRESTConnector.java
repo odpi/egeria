@@ -150,8 +150,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
              */
             RESTClientFactory  factory = new RESTClientFactory(atlasServerName,
                                                                targetRootURL,
-                                                               connectionBean.getUserId(),
-                                                               connectionBean.getClearPassword(),
                                                                secretsStoreConnectorMap,
                                                                auditLog);
 

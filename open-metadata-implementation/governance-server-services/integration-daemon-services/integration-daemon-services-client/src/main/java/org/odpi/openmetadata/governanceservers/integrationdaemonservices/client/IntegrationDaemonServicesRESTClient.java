@@ -6,6 +6,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.client
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -13,16 +14,21 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.In
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummariesResponse;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummaryResponse;
 
+import java.util.Map;
+
 /**
  * IntegrationDaemonServicesRESTClient is responsible for issuing the REST API calls
  */
 class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
 {
     /**
-     * Constructor for no authentication with audit log.
+     * Constructor for bearer token authentication with audit log.
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -30,64 +36,32 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
      */
     IntegrationDaemonServicesRESTClient(String   serverName,
                                         String   serverPlatformURLRoot,
+                                        String   localServerSecretsStoreProvider,
+                                        String   localServerSecretsStoreLocation,
+                                        String   localServerSecretsStoreCollection,
                                         AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
     }
 
 
     /**
-     * Constructor for no authentication.
+     * Constructor for bearer token authentication with audit log.
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    IntegrationDaemonServicesRESTClient(String serverName,
-                                        String serverPlatformURLRoot) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication with audit log.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
+     * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    IntegrationDaemonServicesRESTClient(String   serverName,
-                                        String   serverPlatformURLRoot,
-                                        String   userId,
-                                        String   password,
-                                        AuditLog auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication.
      *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    IntegrationDaemonServicesRESTClient(String serverName,
-                                        String serverPlatformURLRoot,
-                                        String userId,
-                                        String password) throws InvalidParameterException
+    IntegrationDaemonServicesRESTClient(String                             serverName,
+                                        String                             serverPlatformURLRoot,
+                                        Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                        AuditLog                           auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, auditLog);
     }
 
 

@@ -3,6 +3,10 @@
 package org.odpi.openmetadata.frameworkservices.gaf.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -23,7 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
  * GovernanceContextResource supports the REST APIs for running Governance Services.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/{serviceURLMarker}/governance-context-service/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-context-service/users/{userId}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Metadata Access Services: Governance Context Service",
      description="Provides support for services used to control the status of an Engine Action during the execution of a governance service in an Engine Host.",
@@ -39,7 +50,6 @@ public class GovernanceContextResource
      * Update the status of the engine action - providing the caller is permitted.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param requestBody new status ordinal
@@ -50,14 +60,14 @@ public class GovernanceContextResource
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     @PostMapping(path = "/engine-actions/{engineActionGUID}/status/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateEngineActionStatus(@PathVariable String                        serverName,
-                                                 @PathVariable String                        serviceURLMarker,
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        engineActionGUID,
                                                  @RequestBody  EngineActionStatusRequestBody requestBody)
     {
-        return restAPI.updateEngineActionStatus(serverName, serviceURLMarker, userId, engineActionGUID, requestBody);
+        return restAPI.updateEngineActionStatus(serverName, userId, engineActionGUID, requestBody);
     }
 
 
@@ -66,7 +76,6 @@ public class GovernanceContextResource
      * This call is used when the caller restarts.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId userId of caller
      * @param governanceEngineGUID unique identifier of governance engine
      * @param startFrom starting from element
@@ -78,24 +87,22 @@ public class GovernanceContextResource
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     @GetMapping(path = "/governance-engines/{governanceEngineGUID}/active-engine-actions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EngineActionElementsResponse getActiveClaimedEngineActions(@PathVariable String serverName,
-                                                                      @PathVariable String serviceURLMarker,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String governanceEngineGUID,
                                                                       @RequestParam int    startFrom,
                                                                       @RequestParam int    pageSize)
     {
-        return restAPI.getActiveClaimedEngineActions(serverName, serviceURLMarker, userId, governanceEngineGUID, startFrom, pageSize);
+        return restAPI.getActiveClaimedEngineActions(serverName, userId, governanceEngineGUID, startFrom, pageSize);
     }
-
 
 
     /**
      * Request that execution of an engine action is allocated to the caller.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request.
      * @param requestBody null request body
@@ -106,14 +113,14 @@ public class GovernanceContextResource
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     @PostMapping(path = "/engine-actions/{engineActionGUID}/claim")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse claimEngineAction(@PathVariable                  String          serverName,
-                                          @PathVariable                  String          serviceURLMarker,
                                           @PathVariable                  String          userId,
                                           @PathVariable                  String          engineActionGUID,
                                           @RequestBody(required = false) NullRequestBody requestBody)
     {
-        return restAPI.claimEngineAction(serverName, serviceURLMarker, userId, engineActionGUID, requestBody);
+        return restAPI.claimEngineAction(serverName, userId, engineActionGUID, requestBody);
     }
 
 
@@ -124,7 +131,6 @@ public class GovernanceContextResource
      * governance action service.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param requestBody relationship properties
      *
@@ -134,13 +140,13 @@ public class GovernanceContextResource
      *  PropertyServerException there is a problem connecting to the metadata store
      */
     @PostMapping(path = "/engine-actions/action-targets/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateActionTargetStatus(@PathVariable String                        serverName,
-                                                 @PathVariable String                        serviceURLMarker,
                                                  @PathVariable String                        userId,
                                                  @RequestBody  ActionTargetStatusRequestBody requestBody)
     {
-        return restAPI.updateActionTargetStatus(serverName, serviceURLMarker, userId, requestBody);
+        return restAPI.updateActionTargetStatus(serverName, userId, requestBody);
     }
 
 
@@ -148,7 +154,6 @@ public class GovernanceContextResource
      * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param governanceActionGUID unique identifier of the governance action to update
      * @param requestBody completion status enum value, optional guard strings for triggering subsequent action(s) plus
@@ -160,13 +165,13 @@ public class GovernanceContextResource
      *  PropertyServerException there is a problem connecting to the metadata store
      */
     @PostMapping(path = "/engine-actions/{governanceActionGUID}/completion-status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse recordCompletionStatus(@PathVariable String                      serverName,
-                                               @PathVariable String                      serviceURLMarker,
                                                @PathVariable String                      userId,
                                                @PathVariable String                      governanceActionGUID,
                                                @RequestBody  CompletionStatusRequestBody requestBody)
     {
-        return restAPI.recordCompletionStatus(serverName, serviceURLMarker, userId, governanceActionGUID, requestBody);
+        return restAPI.recordCompletionStatus(serverName, userId, governanceActionGUID, requestBody);
     }
 }

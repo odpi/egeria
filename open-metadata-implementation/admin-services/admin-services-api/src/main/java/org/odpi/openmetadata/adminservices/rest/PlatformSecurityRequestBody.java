@@ -61,16 +61,26 @@ public class PlatformSecurityRequestBody extends URLRequestBody
     }
 
 
+    /**
+     * JSON-style toString
+     *
+     * @return description of the object values
+     */
     @Override
     public String toString()
     {
         return "PlatformSecurityRequestBody{" +
                 "platformSecurityConnection=" + platformSecurityConnection +
-                ", urlRoot='" + getUrlRoot() + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 
+    /**
+     * Compare objects
+     *
+     * @param objectToCompare object
+     * @return boolean
+     */
     @Override
     public boolean equals(Object objectToCompare)
     {
@@ -91,6 +101,11 @@ public class PlatformSecurityRequestBody extends URLRequestBody
     }
 
 
+    /**
+     * Simple hash for the object
+     *
+     * @return int
+     */
     @Override
     public int hashCode()
     {

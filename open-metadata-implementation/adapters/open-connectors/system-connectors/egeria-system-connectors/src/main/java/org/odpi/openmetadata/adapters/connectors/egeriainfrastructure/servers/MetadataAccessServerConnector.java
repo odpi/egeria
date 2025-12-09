@@ -58,13 +58,13 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
      *
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      *
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to perform the operation requested
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean connectToCohort(String cohortName) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                             RepositoryErrorException,
-                                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
+    public boolean connectToCohort(String cohortName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
     {
         return extractor.connectToCohort(cohortName);
     }
@@ -75,13 +75,13 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
      *
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException one of the supplied parameters caused a problem
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws RepositoryErrorException there is a problem communicating with the remote server.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to perform the operation requested
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean disconnectFromCohort(String cohortName) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                  RepositoryErrorException,
-                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
+    public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         return extractor.disconnectFromCohort(cohortName);
     }
@@ -92,13 +92,13 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
      *
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException one of the supplied parameters caused a problem
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws RepositoryErrorException there is a problem communicating with the remote server.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to perform the operation requested
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean unregisterFromCohort(String cohortName) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                  RepositoryErrorException,
-                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
+    public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         return extractor.unregisterFromCohort(cohortName);
     }

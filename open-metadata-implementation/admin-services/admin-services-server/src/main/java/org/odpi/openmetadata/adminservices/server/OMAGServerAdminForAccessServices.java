@@ -9,13 +9,11 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServerType
 import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.AccessServiceConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
@@ -24,6 +22,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -32,18 +31,17 @@ import java.util.*;
  * OMAGServerAdminForAccessServices provides the server-side support for the services that add access services
  * configuration to an OMAG Server.
  */
-public class OMAGServerAdminForAccessServices
+public class OMAGServerAdminForAccessServices extends TokenController
 {
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForAccessServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
-    private static final String defaultInTopicName           = "InTopic";
+    private static final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
     private static final String defaultOutTopicName          = "OutTopic";
-    private static final String defaultOpenMetadataTopicName = "openmetadata.outTopic";
 
     private final OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
     private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
-    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -57,17 +55,15 @@ public class OMAGServerAdminForAccessServices
     /**
      * Return the list of access services that are configured for this server.
      *
-     * @param userId calling user
      * @param serverName name of server
      *
      * @return list of access service descriptions
      */
-    public RegisteredOMAGServicesResponse getConfiguredAccessServices(String              userId,
-                                                                      String              serverName)
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(String serverName)
     {
         final String methodName = "getConfiguredAccessServices";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
@@ -77,7 +73,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
@@ -114,17 +113,9 @@ public class OMAGServerAdminForAccessServices
                 }
             }
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -136,17 +127,15 @@ public class OMAGServerAdminForAccessServices
     /**
      * Return the list of access services that are configured for this server.
      *
-     * @param userId calling user
      * @param serverName name of server
      *
      * @return list of access service configurations
      */
-    public AccessServicesResponse getAccessServicesConfiguration(String userId,
-                                                                 String serverName)
+    public AccessServicesResponse getAccessServicesConfiguration(String serverName)
     {
         final String methodName = "getAccessServicesConfiguration";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         AccessServicesResponse response = new AccessServicesResponse();
 
@@ -156,7 +145,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
@@ -165,17 +157,9 @@ public class OMAGServerAdminForAccessServices
              */
             response.setServices(serverConfig.getAccessServicesConfig());
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -189,24 +173,22 @@ public class OMAGServerAdminForAccessServices
      * If openMetadataOutTopic is null, a default connection for this topic is created.  It can be removed using
      * clearOpenMetadataOutTopic.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param serviceURLMarker access service name used in URL
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      *
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureAccessService(String              userId,
-                                               String              serverName,
+    public VoidResponse configureAccessService(String              serverName,
                                                String              serviceURLMarker,
                                                Map<String, Object> accessServiceOptions)
     {
         final String methodName = "configureAccessService";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -216,7 +198,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -249,25 +234,13 @@ public class OMAGServerAdminForAccessServices
                                                                                                serverConfig.getLocalServerId());
             }
 
-            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
 
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGConfigurationErrorException error)
-        {
-            exceptionHandler.captureConfigurationErrorException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -280,21 +253,19 @@ public class OMAGServerAdminForAccessServices
      * Enable all access services that are registered with this server platform.   The configuration properties
      * for each access service can be changed from their default using setAccessServicesConfig operation.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureAllAccessServices(String              userId,
-                                                   String              serverName,
+    public VoidResponse configureAllAccessServices(String              serverName,
                                                    Map<String, Object> accessServiceOptions)
     {
         final String methodName = "configureAllAccessServices";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -304,7 +275,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -350,24 +324,12 @@ public class OMAGServerAdminForAccessServices
                 accessServiceConfigList = null;
             }
 
-            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGConfigurationErrorException error)
-        {
-            exceptionHandler.captureConfigurationErrorException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -381,24 +343,22 @@ public class OMAGServerAdminForAccessServices
      * Enable a single access service.
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param serviceURLMarker access service name used in URL
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      *
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureAccessServiceNoTopics(String              userId,
-                                                       String              serverName,
+    public VoidResponse configureAccessServiceNoTopics(String              serverName,
                                                        String              serviceURLMarker,
                                                        Map<String, Object> accessServiceOptions)
     {
         final String methodName = "configureAccessServiceNoTopics";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -408,7 +368,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -440,25 +403,13 @@ public class OMAGServerAdminForAccessServices
                                                                                                serverConfig.getLocalServerId());
             }
 
-            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
 
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGConfigurationErrorException error)
-        {
-            exceptionHandler.captureConfigurationErrorException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -472,21 +423,19 @@ public class OMAGServerAdminForAccessServices
      * for each access service can be changed from their default using setAccessServicesConfig operation.
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureAllAccessServicesNoTopics(String              userId,
-                                                           String              serverName,
+    public VoidResponse configureAllAccessServicesNoTopics(String              serverName,
                                                            Map<String, Object> accessServiceOptions)
     {
         final String methodName = "configureAllAccessServicesNoTopics";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -496,7 +445,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -541,20 +493,12 @@ public class OMAGServerAdminForAccessServices
                 accessServiceConfigList = null;
             }
 
-            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -648,18 +592,16 @@ public class OMAGServerAdminForAccessServices
      * Disable the access services.  This removes all configuration for the access services
      * and disables the enterprise repository services.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAllAccessServices(String          userId,
-                                               String          serverName)
+    public VoidResponse clearAllAccessServices(String serverName)
     {
         final String methodName = "clearAllAccessServices";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -669,22 +611,17 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
 
-            this.setAccessServicesConfig(userId, serverName, null);
-            this.setEnterpriseAccessConfig(userId, serverName, null);
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            this.setAccessServicesConfig(serverName, null);
+            this.setEnterpriseAccessConfig(serverName, null);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -696,20 +633,18 @@ public class OMAGServerAdminForAccessServices
     /**
      * Retrieve the config for an access service.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param serviceURLMarker access service name used in URL
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName  parameter.
      */
-    public AccessServiceConfigResponse getAccessServiceConfig(String userId,
-                                                              String serverName,
+    public AccessServiceConfigResponse getAccessServiceConfig(String serverName,
                                                               String serviceURLMarker)
     {
         final String methodName = "getAccessServiceConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         AccessServiceConfigResponse response = new AccessServiceConfigResponse();
 
@@ -719,7 +654,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
@@ -739,17 +677,9 @@ public class OMAGServerAdminForAccessServices
                 }
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -761,20 +691,18 @@ public class OMAGServerAdminForAccessServices
     /**
      * Remove an access service.  This removes all configuration for the access service.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param serviceURLMarker access service name used in URL
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAccessService(String userId,
-                                           String serverName,
+    public VoidResponse clearAccessService(String serverName,
                                            String serviceURLMarker)
     {
         final String methodName = "clearAccessService";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -784,7 +712,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -808,17 +739,9 @@ public class OMAGServerAdminForAccessServices
                 configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -830,22 +753,20 @@ public class OMAGServerAdminForAccessServices
     /**
      * Retrieve the topic names for this access service
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param serviceURLMarker string indicating which access service it requested
      *
      * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    public StringMapResponse  getAccessServiceTopicNames(String userId,
-                                                         String serverName,
+    public StringMapResponse  getAccessServiceTopicNames(String serverName,
                                                          String serviceURLMarker)
     {
         final String methodName   = "getAccessServiceTopicNames";
         final String propertyName = "serviceURLMarker";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         StringMapResponse response = new StringMapResponse();
 
@@ -855,7 +776,11 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             errorHandler.validatePropertyNotNull(serviceURLMarker, propertyName, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
@@ -887,17 +812,9 @@ public class OMAGServerAdminForAccessServices
                 }
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -909,19 +826,17 @@ public class OMAGServerAdminForAccessServices
     /**
      * Retrieve the topic names for all configured access services
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      *
      * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    public StringMapResponse  getAllAccessServiceTopicNames(String userId,
-                                                            String serverName)
+    public StringMapResponse  getAllAccessServiceTopicNames(String serverName)
     {
         final String methodName   = "getAccessServiceTopicNames";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         StringMapResponse response = new StringMapResponse();
 
@@ -931,7 +846,10 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
@@ -956,17 +874,9 @@ public class OMAGServerAdminForAccessServices
                 response.setStringMap(topicNames);
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -978,17 +888,15 @@ public class OMAGServerAdminForAccessServices
     /**
      * Update the out topic name for a specific access service.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param serviceURLMarker string indicating which access service it requested
      * @param topicName string for new topic name
      *
      * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    public VoidResponse  overrideAccessServiceOutTopicName(String userId,
-                                                           String serverName,
+    public VoidResponse  overrideAccessServiceOutTopicName(String serverName,
                                                            String serviceURLMarker,
                                                            String topicName)
     {
@@ -996,7 +904,7 @@ public class OMAGServerAdminForAccessServices
         final String serviceURLMarkerPropertyName = "serviceURLMarker";
         final String topicPropertyName = "topicName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1006,9 +914,12 @@ public class OMAGServerAdminForAccessServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(topicName, topicPropertyName, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerPropertyName, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
@@ -1035,7 +946,7 @@ public class OMAGServerAdminForAccessServices
                                     endpoint.setNetworkAddress(topicName);
                                     connection.setEndpoint(endpoint);
                                     accessServiceConfig.setAccessServiceOutTopic(connection);
-                                    setAccessServicesConfig(userId, serverName, configuredAccessServices);
+                                    setAccessServicesConfig(serverName, configuredAccessServices);
                                 }
                             }
                         }
@@ -1043,17 +954,9 @@ public class OMAGServerAdminForAccessServices
                 }
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1067,27 +970,28 @@ public class OMAGServerAdminForAccessServices
      * Set up the configuration for all the open metadata access services (OMASs).  This overrides
      * the current values.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param accessServicesConfig  list of configuration properties for each access service.
      * @return void response or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    public VoidResponse setAccessServicesConfig(String                    userId,
-                                                String                    serverName,
+    public VoidResponse setAccessServicesConfig(String                    serverName,
                                                 List<AccessServiceConfig> accessServicesConfig)
     {
         final String methodName = "setAccessServicesConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -1100,11 +1004,11 @@ public class OMAGServerAdminForAccessServices
 
             if (accessServicesConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for access services.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for access services.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for access services.");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for access services.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -1113,17 +1017,9 @@ public class OMAGServerAdminForAccessServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1154,27 +1050,28 @@ public class OMAGServerAdminForAccessServices
     /**
      * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param configurationProperties additional properties for the cohort
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse addRemoteEnterpriseTopic(String               userId,
-                                                 String               serverName,
+    public VoidResponse addRemoteEnterpriseTopic(String               serverName,
                                                  Map<String, Object>  configurationProperties)
     {
         final String methodName = "addRemoteEnterpriseTopic";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -1200,19 +1097,11 @@ public class OMAGServerAdminForAccessServices
                                                                                                                                                       eventBusConfig.getTopicURLRoot(),
                                                                                                                                                       serverConfig.getLocalServerId(),
                                                                                                                                                       eventBusConfig.getConfigurationProperties()));
-            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1227,27 +1116,28 @@ public class OMAGServerAdminForAccessServices
      * notifications that cover metadata from the local repository plus any repositories connected via
      * open metadata repository cohorts.
      *
-     * @param userId  user that is issuing the request
      * @param serverName  local server name
      * @param enterpriseAccessConfig  enterprise repository services configuration properties.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or enterpriseAccessConfig parameter.
+     * UserNotAuthorizedException the supplied user is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or enterpriseAccessConfig parameter.
      */
-    public VoidResponse setEnterpriseAccessConfig(String                 userId,
-                                                  String                 serverName,
+    public VoidResponse setEnterpriseAccessConfig(String                 serverName,
                                                   EnterpriseAccessConfig enterpriseAccessConfig)
     {
         final String methodName = "setEnterpriseAccessConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -1287,17 +1177,9 @@ public class OMAGServerAdminForAccessServices
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

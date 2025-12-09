@@ -50,17 +50,6 @@ public class VoidResponse extends OMRSAPIResponse
     @Override
     public String toString()
     {
-        return "VoidResponse{" +
-                "relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
-                '}';
+        return "VoidResponse{} " + super.toString();
     }
 }

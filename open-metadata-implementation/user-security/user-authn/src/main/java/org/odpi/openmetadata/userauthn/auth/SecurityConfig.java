@@ -119,11 +119,10 @@ public class SecurityConfig
         httpSecurity.authorizeHttpRequests( auth -> auth
                         .requestMatchers("/api/about").permitAll()
                         .requestMatchers("/api/token").permitAll()
-                        .requestMatchers("/api/servers/*/token").permitAll()
+                        .requestMatchers("/servers/*/api/token").permitAll()
+                        .requestMatchers("/open-metadata/platform-services/server-platform/origin").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/open-metadata/**").permitAll() // platform level services
-                        .requestMatchers("/servers/*/open-metadata/**").permitAll() // OMAG Server services
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

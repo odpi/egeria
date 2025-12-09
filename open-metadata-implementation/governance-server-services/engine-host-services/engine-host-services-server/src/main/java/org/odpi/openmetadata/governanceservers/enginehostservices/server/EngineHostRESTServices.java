@@ -9,16 +9,14 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummariesResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummaryResponse;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * AssetAnalysisRESTServices provides the external service implementation for a governance engine.
- * Each method contains the governance server name and the governance engine identifier (guid).
- * The AssetAnalysisRESTServices locates the correct governance engine instance within the correct
- * governance server instance and delegates the request.
+ * EngineHostRESTServices provides the external service implementation for aan engine host.
  */
-public class EngineHostRESTServices
+public class EngineHostRESTServices extends TokenController
 {
     private static final EngineHostInstanceHandler instanceHandler = new EngineHostInstanceHandler();
 
@@ -35,7 +33,6 @@ public class EngineHostRESTServices
      *
      * @param serverName name of the governance server.
      * @param governanceEngineName unique name of the governance engine.
-     * @param userId identifier of calling user
      *
      * @return void or
      *  InvalidParameterException one of the parameters is null or invalid or
@@ -43,18 +40,21 @@ public class EngineHostRESTServices
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     public  VoidResponse refreshConfig(String serverName,
-                                       String userId,
                                        String governanceEngineName)
     {
         final String        methodName = "refreshConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             instanceHandler.refreshConfig(userId, serverName, governanceEngineName, methodName);
@@ -70,7 +70,6 @@ public class EngineHostRESTServices
     }
 
 
-
     /**
      * Request that all governance engines refresh their configuration by calling the metadata server.
      * This request is useful if the metadata server has an outage, particularly while the
@@ -78,25 +77,27 @@ public class EngineHostRESTServices
      * is in use.
      *
      * @param serverName name of the governance server.
-     * @param userId identifier of calling user
      *
      * @return void or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
-    public  VoidResponse refreshConfig(String serverName,
-                                       String userId)
+    public  VoidResponse refreshConfig(String serverName)
     {
         final String        methodName = "refreshConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             instanceHandler.refreshConfig(userId, serverName, null, methodName);
@@ -116,7 +117,6 @@ public class EngineHostRESTServices
     /**
      * Return a summary of the requested engine's status.
      *
-     * @param userId calling user
      * @param serverName name of the server tied to the request
      * @param governanceEngineName qualifiedName of the requested governance engine
      *
@@ -126,18 +126,21 @@ public class EngineHostRESTServices
      *  PropertyServerException the service name is not known - indicating a logic error
      */
     public GovernanceEngineSummaryResponse getGovernanceEngineSummary(String serverName,
-                                                                      String userId,
                                                                       String governanceEngineName)
     {
         final String methodName = "getGovernanceEngineSummary";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GovernanceEngineSummaryResponse response = new GovernanceEngineSummaryResponse();
         AuditLog                          auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGovernanceEngineSummary(instanceHandler.getGovernanceEngineSummary(userId, serverName, governanceEngineName, methodName));
@@ -154,64 +157,28 @@ public class EngineHostRESTServices
 
 
     /**
-     * Retrieve the description and status of each governance engine assigned to a specific Open Metadata Engine Service (OMES).
-     *
-     * @param serverName governance server name
-     * @param userId calling user
-     * @param serviceURLMarker URL marker of the engine service
-     * @return list of statuses - on for each assigned governance engines or
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     */
-    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(String serverName,
-                                                                          String userId,
-                                                                          String serviceURLMarker)
-    {
-        final String methodName = "getGovernanceEngineSummaries";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GovernanceEngineSummariesResponse response = new GovernanceEngineSummariesResponse();
-        AuditLog                          auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            response.setGovernanceEngineSummaries(instanceHandler.getGovernanceEngineSummaries(userId, serverName, serviceURLMarker, methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
      * Return a summary of each of the governance engines' status for all running engine services.
      *
      * @param serverName engine host server name
-     * @param userId calling user
      * @return list of statuses - on for each assigned governance engines or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
-    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(String   serverName,
-                                                                          String   userId)
+    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(String   serverName)
     {
         final String methodName = "getGovernanceEngineSummaries";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GovernanceEngineSummariesResponse response = new GovernanceEngineSummariesResponse();
         AuditLog                          auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGovernanceEngineSummaries(instanceHandler.getGovernanceEngineSummaries(userId, serverName, methodName));

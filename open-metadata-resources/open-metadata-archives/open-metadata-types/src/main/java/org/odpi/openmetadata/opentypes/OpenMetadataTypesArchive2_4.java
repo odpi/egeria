@@ -50,7 +50,7 @@ public class OpenMetadataTypesArchive2_4
      * Specific values for initializing TypeDefs
      */
     private static final long   versionNumber = 1L;
-    private static final String versionName   = "1.0";
+    private static final String versionName   = "6.0-SNAPSHOT";
 
 
     private final OMRSArchiveBuilder archiveBuilder;
@@ -269,7 +269,7 @@ public class OpenMetadataTypesArchive2_4
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACHMENT_GUID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACHMENT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         classificationDef.setPropertiesDefinition(properties);

@@ -4,18 +4,14 @@ package org.odpi.openmetadata.platformservices.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.server.OMAGServerErrorHandler;
-import org.odpi.openmetadata.adminservices.server.OMAGServerExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalInstanceHandler;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -23,7 +19,7 @@ import java.util.List;
 /**
  * OMAGServerPlatformOperationalServices will provide support to start, manage and stop services in the OMAG Server.
  */
-public class OMAGServerPlatformOperationalServices
+public class OMAGServerPlatformOperationalServices extends TokenController
 {
     /**
      * The instance handler is looking up the server operations instance and so it needs to be initialized with
@@ -33,10 +29,8 @@ public class OMAGServerPlatformOperationalServices
             new OMAGServerOperationalInstanceHandler(CommonServicesDescription.SERVER_OPERATIONS.getServiceName());
     private final OMAGServerOperationalServices serverOperationalServices        = new OMAGServerOperationalServices();
 
-    private final OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
-
-    private final OMAGServerErrorHandler        errorHandler     = new OMAGServerErrorHandler();
-    private final OMAGServerExceptionHandler    exceptionHandler = new OMAGServerExceptionHandler();
+    private final        OMAGServerPlatformInstanceMap platformInstanceMap  = new OMAGServerPlatformInstanceMap();
+    private static final RESTExceptionHandler          restExceptionHandler = new RESTExceptionHandler();
 
     private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerPlatformOperationalServices.class),
                                                                             CommonServicesDescription.PLATFORM_SERVICES.getServiceName());
@@ -50,23 +44,24 @@ public class OMAGServerPlatformOperationalServices
     /**
      * Temporarily deactivate any open metadata and governance services for all running servers.
      *
-     * @param userId  user that is issuing the request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownAllServers(String  userId)
+    public VoidResponse shutdownAllServers()
     {
         final String methodName = "shutdownAllServer";
         final String serverName = "<null>";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            errorHandler.validateUserId(userId, serverName, methodName);
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             List<String> activeServers = platformInstanceMap.getActiveServerList(userId);
 
@@ -82,21 +77,9 @@ public class OMAGServerPlatformOperationalServices
                 }
             }
         }
-        catch (InvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -109,23 +92,24 @@ public class OMAGServerPlatformOperationalServices
      * Terminate any running open metadata and governance services, remove the server from any open metadata cohorts
      * and delete the server's configuration.
      *
-     * @param userId  user that is issuing the request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownAndUnregisterAllServers(String  userId)
+    public VoidResponse shutdownAndUnregisterAllServers()
     {
         final String methodName = "shutdownAndUnregisterAllServers";
         final String serverName = "<null>";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            errorHandler.validateUserId(userId, serverName, methodName);
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             List<String> activeServers = platformInstanceMap.getActiveServerList(userId);
 
@@ -141,25 +125,9 @@ public class OMAGServerPlatformOperationalServices
                 }
             }
         }
-        catch (InvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            exceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (Exception error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -170,38 +138,33 @@ public class OMAGServerPlatformOperationalServices
     /**
      * Terminate this platform.
      *
-     * @param userId  user that is issuing the request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownPlatform(String  userId)
+    public VoidResponse shutdownPlatform()
     {
         final String methodName = "shutdownPlatform";
         final String serverName = "<null>";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            errorHandler.validateUserId(userId, serverName, methodName);
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             Runtime.getRuntime().exit(1);
         }
-        catch (OMAGNotAuthorizedException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
 }

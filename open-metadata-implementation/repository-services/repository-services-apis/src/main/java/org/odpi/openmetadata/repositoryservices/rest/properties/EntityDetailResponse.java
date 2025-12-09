@@ -92,17 +92,7 @@ public class EntityDetailResponse extends OMRSAPIResponse
     {
         return "EntityDetailResponse{" +
                 "entity=" + entity +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
-                '}';
+                "} " + super.toString();
     }
 
 

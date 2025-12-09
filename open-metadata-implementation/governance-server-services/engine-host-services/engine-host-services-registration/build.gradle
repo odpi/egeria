@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.slf4j:slf4j-api'
 }
 
 description = 'Engine Host Services Registration'

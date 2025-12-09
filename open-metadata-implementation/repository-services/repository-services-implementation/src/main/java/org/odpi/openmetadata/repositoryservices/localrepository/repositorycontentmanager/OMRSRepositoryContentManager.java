@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -27,7 +30,7 @@ import java.util.*;
  * components for constructing metadata instances with valid types.   It ensures that the TypeDefs used in other
  * members of the open metadata repository cohorts that the local server is also a member of are consistent with the
  * local repository.
- *
+ * <br><br>
  * OMRSRepositoryContentManager plays a central role in ensuring the integrity of the metadata in the local repository.
  * It is called from multiple components at different points in the processing.  It presents a different interface
  * to each of these components that is specialized to their needs.
@@ -480,7 +483,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 /*
                  * If no property names have been extracted then remove the array.
                  */
-                if (propertyNames.size() == 0)
+                if (propertyNames.isEmpty())
                 {
                     propertyNames = null;
                 }
@@ -1566,7 +1569,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     /**
      * Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
      * all known typedefs.
-     *
+     * <p>
      * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
      * If a new TypeDef is present, it is added to the enterprise list.
      *
@@ -2574,13 +2577,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originatorServerName originator's server name
      * @param additionalInformation information about the object being processed
      */
-    private void logTypeProcessingException(OMRSCheckedExceptionBase   error,
-                                            String                     typeName,
-                                            String                     actionDescription,
-                                            String                     sourceName,
-                                            String                     originatorMetadataCollectionId,
-                                            String                     originatorServerName,
-                                            String                     additionalInformation)
+    private void logTypeProcessingException(OMFCheckedExceptionBase error,
+                                            String                  typeName,
+                                            String                  actionDescription,
+                                            String                  sourceName,
+                                            String                  originatorMetadataCollectionId,
+                                            String                  originatorServerName,
+                                            String                  additionalInformation)
     {
         auditLog.logMessage(actionDescription,
                             OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_TYPE_PROCESSING.getMessageDefinition(error.getClass().getName(),

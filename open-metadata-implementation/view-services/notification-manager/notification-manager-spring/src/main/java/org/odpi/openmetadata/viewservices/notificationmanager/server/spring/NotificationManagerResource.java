@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/notification-manager")
 
-@Tag(name="API: Notification Manager OMVS", description="The Notification Manager OMVS provides APIs for supporting a personalized notification service.  This includes the definition of the trigger for the notification, the style of notification and the recipient.",
+@Tag(name="API: Notification Manager", description="Supports a personalized notification service.  This includes the definition of the trigger for the notification, the style of notification and the recipient.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/notification-manager/overview/"))
 

@@ -31,49 +31,30 @@ public class WatchdogActionClient implements WatchdogActionAPI
      *
      * @param serverPlatformRootURL the root url of the platform where the watchdog action engine is running.
      * @param serverName the name of the engine host server where the watchdog action engine is running
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param watchdogActionEngineName the unique name of the watchdog action engine.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public WatchdogActionClient(String serverPlatformRootURL,
-                              String serverName,
-                              String watchdogActionEngineName) throws InvalidParameterException
+                                String serverName,
+                                String localServerSecretsStoreProvider,
+                                String localServerSecretsStoreLocation,
+                                String localServerSecretsStoreCollection,
+                                String watchdogActionEngineName) throws InvalidParameterException
     {
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.serverName            = serverName;
+        this.serverPlatformRootURL      = serverPlatformRootURL;
+        this.serverName                 = serverName;
         this.watchdogActionEngineName   = watchdogActionEngineName;
 
-        this.restClient = new WatchdogActionRESTClient(serverName, serverPlatformRootURL);
-    }
-
-
-    /**
-     * Create a client-side object for calling a watchdog action engine.
-     *
-     * @param serverPlatformRootURL the root url of the platform where the watchdog action engine is running.
-     * @param serverName the name of the engine host server where the watchdog action engine is running
-     * @param watchdogActionEngineName the unique name of the watchdog action engine.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     */
-    public WatchdogActionClient(String serverPlatformRootURL,
-                              String serverName,
-                              String watchdogActionEngineName,
-                              String userId,
-                              String password) throws InvalidParameterException
-    {
-        this.serverPlatformRootURL  = serverPlatformRootURL;
-        this.serverName             = serverName;
-        this.watchdogActionEngineName = watchdogActionEngineName;
-
-        this.restClient = new WatchdogActionRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new WatchdogActionRESTClient(serverName, serverPlatformRootURL, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, null);
     }
 
 
     /**
      * Validate the connector and return its connector type.
      *
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector report for this connector
@@ -83,22 +64,19 @@ public class WatchdogActionClient implements WatchdogActionAPI
      * @throws PropertyServerException there was a problem detected by the integration service
      */
     @Override
-    public ConnectorReport validateConnector(String userId,
-                                             String connectorProviderClassName) throws InvalidParameterException,
+    public ConnectorReport validateConnector(String connectorProviderClassName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/watchdog-action/users/{1}/validate-connector";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/watchdog-action/validate-connector";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
         ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
                                                                                           serverPlatformRootURL + urlTemplate,
                                                                                           serverName,
-                                                                                          userId,
                                                                                           connectorProviderClassName);
 
         return restResult.getConnectorReport();

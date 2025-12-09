@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -163,10 +165,6 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
 
             historyAccumulator.addRelationships(results, metadataCollectionId);
         }
-        catch (InvalidParameterException error)
-        {
-            historyAccumulator.captureException(metadataCollectionId, error);
-        }
         catch (FunctionNotSupportedException error)
         {
             historyAccumulator.captureException(metadataCollectionId, error);
@@ -180,6 +178,10 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
             historyAccumulator.captureException(metadataCollectionId, error);
         }
         catch (RelationshipNotKnownException error)
+        {
+            historyAccumulator.captureException(metadataCollectionId, error);
+        }
+        catch (InvalidParameterException error)
         {
             historyAccumulator.captureException(metadataCollectionId, error);
         }

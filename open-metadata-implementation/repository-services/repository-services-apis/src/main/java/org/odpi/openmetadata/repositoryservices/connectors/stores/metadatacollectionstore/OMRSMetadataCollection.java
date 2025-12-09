@@ -38,7 +38,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeEntityException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeRelationshipException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidEntityException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -56,7 +56,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownExcep
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

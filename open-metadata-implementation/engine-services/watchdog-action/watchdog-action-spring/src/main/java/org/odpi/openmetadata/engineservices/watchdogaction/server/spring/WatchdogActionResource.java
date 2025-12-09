@@ -4,6 +4,10 @@ package org.odpi.openmetadata.engineservices.watchdogaction.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.engineservices.watchdogaction.server.WatchdogActionRESTServices;
@@ -14,7 +18,14 @@ import org.springframework.web.bind.annotation.*;
  * WatchdogActionResource provides the server-side catcher for REST calls using Spring that validated Discovery Service implementations
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/engine-services/watchdog-action/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/engine-services/watchdog-action")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Engine Host: Watchdog Action OMES", description="The Watchdog Action OMES provide the core subsystem for driving the monitoring of situations/events for notification types.",
      externalDocs=@ExternalDocumentation(description="Further Information",
@@ -31,7 +42,6 @@ public class WatchdogActionResource
      * engine host.
      *
      * @param serverName engine host server name
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
@@ -40,6 +50,7 @@ public class WatchdogActionResource
      *  PropertyServerException there was a problem detected by the integration service
      */
     @GetMapping(path = "/validate-connector/{connectorProviderClassName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="validateConnector",
                description="Validate the connector and return its connector type.  The engine service does not need to" +
@@ -49,9 +60,8 @@ public class WatchdogActionResource
                                                    url="https://egeria-project.org/concepts/watchdog-action-service"))
 
     public ConnectorReportResponse validateConnector(@PathVariable String serverName,
-                                                     @PathVariable String userId,
                                                      @PathVariable String connectorProviderClassName)
     {
-        return restAPI.validateConnector(serverName, userId, connectorProviderClassName);
+        return restAPI.validateConnector(serverName, connectorProviderClassName);
     }
 }

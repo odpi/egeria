@@ -238,6 +238,6 @@ public class OCFConnectionResponseTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("OCFConnectionResponse"));
+        assertTrue(getTestObject().toString().contains("ConnectionResponse"));
     }
 }

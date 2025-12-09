@@ -534,6 +534,9 @@ public class OpenMetadataElementBuilder
                         if (properties instanceof ProcessProperties processProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.EXPECTED_BEHAVIOUR.name,
+                                                                                 processProperties.getExpectedBehaviour());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.FORMULA.name,
                                                                                  processProperties.getFormula());
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -591,8 +594,12 @@ public class OpenMetadataElementBuilder
                                                                                           integrationConnectorProperties.getUsesBlockingCalls());
                                 }
                             }
-                            else if (properties instanceof ActionProperties)
+                            else if (properties instanceof ActionProperties actionProperties)
                             {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.SITUATION.name,
+                                                                                     actionProperties.getSituation());
+
                                 if (properties instanceof MeetingProperties meetingProperties)
                                 {
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -655,15 +662,6 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.COMPLETION_MESSAGE.name,
                                                                                          engineActionProperties.getCompletionMessage());
-                                }
-                                else if (properties instanceof NotificationProperties notificationProperties)
-                                {
-                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                         OpenMetadataProperty.SYSTEM_ACTION.name,
-                                                                                         notificationProperties.getSystemAction());
-                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                         OpenMetadataProperty.USER_RESPONSE.name,
-                                                                                         notificationProperties.getUserResponse());
                                 }
                                 else if (properties instanceof ReviewProperties reviewProperties)
                                 {

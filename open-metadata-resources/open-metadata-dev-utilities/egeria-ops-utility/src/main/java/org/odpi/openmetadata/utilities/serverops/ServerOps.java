@@ -26,20 +26,28 @@ import java.util.Set;
 public class ServerOps
 {
     private final String platformURLRoot;
-    private final String clientUserId;
+    private final String secretsStoreProvider;
+    private final String secretsStoreLocation;
+    private final String secretsStoreCollection;
 
 
     /**
      * Set up the parameters for the sample.
      *
      * @param platformURLRoot location of server
-     * @param clientUserId userId to access the server
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      */
     private ServerOps(String platformURLRoot,
-                      String clientUserId)
+                      String secretsStoreProvider,
+                      String secretsStoreLocation,
+                      String secretsStoreCollection)
     {
         this.platformURLRoot = platformURLRoot;
-        this.clientUserId    = clientUserId;
+        this.secretsStoreProvider   = secretsStoreProvider;
+        this.secretsStoreLocation   = secretsStoreLocation;
+        this.secretsStoreCollection = secretsStoreCollection;
     }
 
 
@@ -57,14 +65,14 @@ public class ServerOps
             /*
              * This client is from the platform services module and queries the runtime state of the platform and the servers that are running on it.
              */
-            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot);
+            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             /*
              * This is the first call to the platform and determines the version of the software.
              * If the platform is not running, or the remote service is not an OMAG Server Platform,
              * the utility fails at this point.
              */
-            return platformServicesClient.getPlatformOrigin(clientUserId);
+            return platformServicesClient.getPlatformOrigin();
         }
         catch (Exception error)
         {
@@ -88,10 +96,10 @@ public class ServerOps
     {
         try
         {
-            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot);
+            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             System.out.println("Starting " + serverName + " ...");
-            System.out.println(client.activateWithStoredConfig(clientUserId, serverName));
+            System.out.println(client.activateWithStoredConfig(serverName));
         }
         catch (Exception error)
         {
@@ -130,11 +138,11 @@ public class ServerOps
     {
         try
         {
-            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot);
+            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             System.out.println("Stopping " + serverName + " ...");
 
-            client.shutdownServer(clientUserId, serverName);
+            client.shutdownServer(serverName);
 
             System.out.println(serverName + " stopped.");
         }
@@ -174,9 +182,9 @@ public class ServerOps
     {
         try
         {
-            IntegrationDaemon client = new IntegrationDaemon(clientUserId, platformURLRoot);
+            IntegrationDaemon client = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
-            List<IntegrationGroupSummary> serviceSummaries = client.getIntegrationGroupSummaries(clientUserId);
+            List<IntegrationGroupSummary> serviceSummaries = client.getIntegrationGroupSummaries();
 
             if (serviceSummaries != null)
             {
@@ -230,11 +238,11 @@ public class ServerOps
     {
         try
         {
-            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot);
+            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             System.out.println("Status of " + serverName + " ...");
 
-            ServerServicesStatus serverStatus = client.getActiveServerStatus(clientUserId, serverName);
+            ServerServicesStatus serverStatus = client.getActiveServerStatus(serverName);
 
             if (serverStatus != null)
             {
@@ -321,9 +329,11 @@ public class ServerOps
         final String interactiveMode = "interactive";
         final String endInteractiveMode = "exit";
 
-        String       platformURLRoot = "https://localhost:9443";
-        String       clientUserId = "garygeeke";
-        String       mode = interactiveMode;
+        String platformURLRoot = "https://localhost:9443";
+        String secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
+        String secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
+        String secretsStoreCollection = "garygeeke";
+        String mode = interactiveMode;
 
         if (args.length > 0)
         {
@@ -332,12 +342,17 @@ public class ServerOps
 
         if (args.length > 1)
         {
-            clientUserId = args[1];
+            secretsStoreCollection = args[1];
         }
 
         if (args.length > 2)
         {
-            mode = args[2];
+            secretsStoreLocation = args[2];
+        }
+
+        if (args.length > 3)
+        {
+            secretsStoreProvider = args[3];
         }
 
         System.out.println("===============================");
@@ -345,7 +360,7 @@ public class ServerOps
         System.out.println("===============================");
         System.out.print("Running against platform: " + platformURLRoot);
 
-        ServerOps utility = new ServerOps(platformURLRoot, clientUserId);
+        ServerOps utility = new ServerOps(platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection);
 
         HttpHelper.noStrictSSL();
 
@@ -361,13 +376,13 @@ public class ServerOps
             System.exit(-1);
         }
 
-        System.out.println("Using userId: " + clientUserId);
+        System.out.println("Using secrets collection: " + secretsStoreCollection);
         System.out.println();
 
 
         try
         {
-            ConfigurationManagementClient configurationManagementClient = new ConfigurationManagementClient(clientUserId, platformURLRoot);
+            ConfigurationManagementClient configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             if (interactiveMode.equals(mode))
             {

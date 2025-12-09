@@ -1171,26 +1171,67 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties new properties for the metadata element
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateMetadataElementInStore(String            metadataElementGUID,
-                                             UpdateOptions     updateOptions,
-                                             ElementProperties properties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public boolean updateMetadataElementInStore(String            metadataElementGUID,
+                                                UpdateOptions     updateOptions,
+                                                ElementProperties properties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        openMetadataClient.updateMetadataElementInStore(connectorUserId,
-                                                        metadataElementGUID,
-                                                        updateOptions,
-                                                        properties);
+        boolean updateOccurred = openMetadataClient.updateMetadataElementInStore(connectorUserId,
+                                                                                 metadataElementGUID,
+                                                                                 updateOptions,
+                                                                                 properties);
 
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
         }
+
+        return updateOccurred;
+    }
+
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+     *
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public  void publishMetadataElement(String                metadataElementGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        openMetadataClient.publishMetadataElement(connectorUserId, metadataElementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void withdrawMetadataElement(String                metadataElementGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        openMetadataClient.withdrawMetadataElement(connectorUserId, metadataElementGUID, metadataSourceOptions);
     }
 
 

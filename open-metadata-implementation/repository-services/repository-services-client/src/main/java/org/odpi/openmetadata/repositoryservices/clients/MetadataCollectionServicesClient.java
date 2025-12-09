@@ -8,6 +8,10 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -27,7 +31,6 @@ import java.util.Map;
  * The MetadataCollectionServicesClient represents a remote metadata repository that supports the OMRS Repository REST API.
  * Requests to this metadata collection are translated one-for-one to requests to the remote repository since
  * the OMRS REST API has a one-to-one correspondence with the metadata collection.
- * 
  * The URLs for the REST APIs are of this form:
  * 
  * <ul>
@@ -43,8 +46,6 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{0}";
 
-    private final String              localServerUserId   = null;
-    private final String              localServerPassword = null;
 
     protected       String              restURLRoot;                /* Initialized in constructor */
     private   final String              serviceURLMarker;           /* Initialized in constructor */
@@ -56,48 +57,6 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     protected AuditLog auditLog = null;
 
 
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param repositoryName name of the repository to connect to - used for error messages
-     * @param restURLRoot the network address of the server running the repository services.  This is of the form
-     *                    serverURLroot + "/servers/" + serverName.
-     * @param serviceURLMarker string indicating which repository service it is calling.
-     *
-     * @throws InvalidParameterException bad input parameters
-     */
-    MetadataCollectionServicesClient(String repositoryName,
-                                     String restURLRoot,
-                                     String serviceURLMarker) throws InvalidParameterException
-    {
-        final String methodName = "Constructor (no security)";
-
-        try
-        {
-            invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, repositoryName, methodName);
-        }
-        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedHTTPCode(),
-                                                error.getReportingClassName(),
-                                                error.getReportingActionDescription(),
-                                                error.getReportedErrorMessage(),
-                                                error.getReportedErrorMessageId(),
-                                                error.getReportedErrorMessageParameters(),
-                                                error.getReportedSystemAction(),
-                                                error.getReportedUserAction(),
-                                                error.getClass().getName(),
-                                                error.getParameterName(),
-                                                error.getRelatedProperties());
-        }
-
-        this.repositoryName = repositoryName;
-        this.restURLRoot = restURLRoot;
-        this.serviceURLMarker = serviceURLMarker;
-        this.restClient = this.getRESTClientConnector(repositoryName, restURLRoot, null, null);
-        this.repositoryName = repositoryName;
-    }
-
 
     /**
      * Create a new client that passes userId and password in each HTTP request.  This is the
@@ -107,16 +66,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
      * @param serviceURLMarker string indicating which repository service it is calling.
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
+     * @param secretsStoreConnectorMap map from authentication type to supplied secrets store
      *
      * @throws InvalidParameterException bad input parameters
      */
-    MetadataCollectionServicesClient(String     repositoryName,
-                                     String     restURLRoot,
-                                     String     serviceURLMarker,
-                                     String     userId,
-                                     String     password) throws InvalidParameterException
+    MetadataCollectionServicesClient(String                             repositoryName,
+                                     String                             restURLRoot,
+                                     String                             serviceURLMarker,
+                                     Map<String, SecretsStoreConnector> secretsStoreConnectorMap) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -142,7 +99,57 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.repositoryName = repositoryName;
         this.restURLRoot = restURLRoot;
         this.serviceURLMarker = serviceURLMarker;
-        this.restClient = this.getRESTClientConnector(repositoryName, restURLRoot, userId, password);
+        this.restClient = this.getRESTClientConnector(repositoryName, restURLRoot, secretsStoreConnectorMap);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param repositoryName name of the repository to connect to - used for error messages
+     * @param restURLRoot the network address of the server running the repository services.  This is of the form
+     *                    serverURLroot + "/servers/" + serverName.
+     * @param serviceURLMarker string indicating which repository service it is calling.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
+     *
+     * @throws InvalidParameterException bad input parameters
+     */
+    MetadataCollectionServicesClient(String   repositoryName,
+                                     String   restURLRoot,
+                                     String   serviceURLMarker,
+                                     String   localServerSecretsStoreProvider,
+                                     String   localServerSecretsStoreLocation,
+                                     String   localServerSecretsStoreCollection,
+                                     AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        try
+        {
+            invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, repositoryName, methodName);
+        }
+        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error.getReportedHTTPCode(),
+                                                error.getReportingClassName(),
+                                                error.getReportingActionDescription(),
+                                                error.getReportedErrorMessage(),
+                                                error.getReportedErrorMessageId(),
+                                                error.getReportedErrorMessageParameters(),
+                                                error.getReportedSystemAction(),
+                                                error.getReportedUserAction(),
+                                                error.getClass().getName(),
+                                                error.getParameterName(),
+                                                error.getRelatedProperties());
+        }
+
+        this.repositoryName = repositoryName;
+        this.restURLRoot = restURLRoot;
+        this.serviceURLMarker = serviceURLMarker;
+        this.restClient = this.getRESTClientConnector(repositoryName, restURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
     }
 
 
@@ -188,7 +195,6 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @return String metadata collection id.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
-    @Deprecated
     public String getMetadataCollectionId() throws RepositoryErrorException
     {
         final String methodName  = "getMetadataCollectionId";
@@ -525,8 +531,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                  userId,
                                                                  guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -560,8 +566,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                    userId,
                                                                                    guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -595,8 +601,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                  userId,
                                                                  name);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -630,8 +636,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                    userId,
                                                                                    name);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -672,12 +678,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             newTypes,
                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowTypeDefKnownException(methodName, restResult);
         this.detectAndThrowTypeDefConflictException(methodName, restResult);
         this.detectAndThrowInvalidTypeDefException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -716,12 +722,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             newTypeDef,
                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
         this.detectAndThrowTypeDefKnownException(methodName, restResult);
         this.detectAndThrowTypeDefConflictException(methodName, restResult);
         this.detectAndThrowInvalidTypeDefException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -760,12 +766,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             newAttributeTypeDef,
                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
         this.detectAndThrowTypeDefKnownException(methodName, restResult);
         this.detectAndThrowTypeDefConflictException(methodName, restResult);
         this.detectAndThrowInvalidTypeDefException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -801,10 +807,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                   typeDef,
                                                                   userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
         this.detectAndThrowTypeDefConflictException(methodName, restResult);
         this.detectAndThrowInvalidTypeDefException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -842,10 +848,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                   attributeTypeDef,
                                                                   userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
         this.detectAndThrowTypeDefConflictException(methodName, restResult);
         this.detectAndThrowInvalidTypeDefException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -885,10 +891,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                   typeDefPatch,
                                                                   userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
         this.detectAndThrowPatchErrorException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -934,10 +940,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId,
                                                             obsoleteTypeDefGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
         this.detectAndThrowTypeDefInUseException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -981,10 +987,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId,
                                                             obsoleteTypeDefGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
         this.detectAndThrowTypeDefInUseException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -1033,9 +1039,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                   userId,
                                                                   originalTypeDefGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1086,9 +1092,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                     userId,
                                                                                     originalAttributeTypeDefGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1160,8 +1166,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                              userId,
                                                                              guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1197,9 +1203,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                            userId,
                                                                            guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityProxyOnlyException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1243,10 +1249,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityProxyOnlyException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1305,10 +1311,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                         userId,
                                                                         guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityProxyOnlyException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1368,10 +1374,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                         guid,
                                                                                         classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityProxyOnlyException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1468,12 +1474,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                entityGUID);
         }
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1580,10 +1586,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1691,10 +1697,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1804,11 +1810,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1913,10 +1919,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -1983,8 +1989,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                            userId,
                                                                            guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2028,8 +2034,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             guid);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2086,9 +2092,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                     userId,
                                                                                     guid);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2194,10 +2200,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2303,10 +2309,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2404,10 +2410,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2481,9 +2487,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2575,10 +2581,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2682,11 +2688,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowPagingErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -2750,13 +2756,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             requestBody,
                                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowStatusNotSupportedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -2826,13 +2832,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             requestBody,
                                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowStatusNotSupportedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -2905,11 +2911,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             entityGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowStatusNotSupportedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -2953,11 +2959,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             entityGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -2993,8 +2999,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                            entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -3043,9 +3049,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             obsoleteEntityGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -3091,11 +3097,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId,
                                                             deletedEntityGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityNotDeletedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
 
@@ -3131,9 +3137,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                            deletedEntityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityNotDeletedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -3184,12 +3190,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             entityGUID,
                                                                             classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -3242,12 +3248,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                 userId,
                                                                                 classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getClassification();
@@ -3309,12 +3315,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             entityGUID,
                                                                             classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -3380,12 +3386,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                 userId,
                                                                                 classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getClassification();
@@ -3428,11 +3434,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             entityGUID,
                                                                             classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -3472,11 +3478,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                 userId,
                                                                                 classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getClassification();
@@ -3525,12 +3531,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             entityGUID,
                                                                             classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
@@ -3579,12 +3585,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             classificationName);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getClassification();
@@ -3643,13 +3649,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             request,
                                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowStatusNotSupportedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationship();
@@ -3719,13 +3725,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             request,
                                                                             userId);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowStatusNotSupportedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationship();
@@ -3765,12 +3771,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             relationshipGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowStatusNotSupportedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
 
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationship();
@@ -3814,11 +3820,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             relationshipGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationship();
@@ -3855,8 +3861,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                            relationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -3904,9 +3910,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             userId,
                                                                             obsoleteRelationshipGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -3952,11 +3958,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId,
                                                             deletedRelationshipGUID);
 
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowRelationshipNotDeletedException(methodName, restResult);
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
 
@@ -3993,9 +3999,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                            deletedRelationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowRelationshipNotDeletedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4051,8 +4057,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             newEntityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4107,11 +4113,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowClassificationErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4184,8 +4190,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4237,8 +4243,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             newRelationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4292,10 +4298,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                             relationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4369,8 +4375,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4424,12 +4430,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowHomeEntityException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4465,8 +4471,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                        entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4509,8 +4515,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                         entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
@@ -4560,12 +4566,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowHomeEntityException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4617,12 +4623,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowHomeEntityException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4673,9 +4679,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowHomeEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4725,9 +4731,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowHomeEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4779,11 +4785,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4836,11 +4842,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4891,11 +4897,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4946,11 +4952,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
         this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -4999,13 +5005,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowHomeRelationshipException(methodName, restResult);
         this.detectAndThrowRelationshipConflictException(methodName, restResult);
         this.detectAndThrowInvalidRelationshipException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -5056,13 +5062,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowHomeRelationshipException(methodName, restResult);
         this.detectAndThrowRelationshipConflictException(methodName, restResult);
         this.detectAndThrowInvalidRelationshipException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -5116,13 +5122,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
         this.detectAndThrowHomeRelationshipException(methodName, restResult);
         this.detectAndThrowRelationshipConflictException(methodName, restResult);
         this.detectAndThrowInvalidRelationshipException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -5173,9 +5179,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowHomeRelationshipException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -5226,9 +5232,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
         this.detectAndThrowHomeRelationshipException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -5287,7 +5293,6 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                             userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
-        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
         this.detectAndThrowEntityConflictException(methodName, restResult);
@@ -5295,6 +5300,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRelationshipConflictException(methodName, restResult);
         this.detectAndThrowInvalidRelationshipException(methodName, restResult);
         this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
@@ -5312,38 +5318,24 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param serverName name of the remote server.
      * @param serverPlatformURLRoot name of the URL root for the server.
-     * @param userId userId of this server.
-     * @param password password for this server.
+     * @param secretsStoreConnectorMap map from authentication type to supplied secrets store
      * @return REST Client connector
      * @throws InvalidParameterException an unexpected exception - internal logic error as the parameters should have
      * all been checked before this call.
      */
-    private RESTClientConnector getRESTClientConnector(String       serverName,
-                                                       String       serverPlatformURLRoot,
-                                                       String       userId,
-                                                       String       password) throws InvalidParameterException
+    private RESTClientConnector getRESTClientConnector(String                             serverName,
+                                                       String                             serverPlatformURLRoot,
+                                                       Map<String, SecretsStoreConnector> secretsStoreConnectorMap) throws InvalidParameterException
     {
         final String methodName = "getRESTClientConnector";
 
-        RESTClientFactory clientFactory;
-
-        if ((localServerUserId != null) && (localServerPassword != null))
-        {
-            clientFactory = new RESTClientFactory(serverName,
-                                                  serverPlatformURLRoot,
-                                                  userId,
-                                                  password,
-                                                  null,
-                                                  auditLog);
-        }
-        else
-        {
-            clientFactory = new RESTClientFactory(serverName,
-                                                  serverPlatformURLRoot);
-        }
-
         try
         {
+            RESTClientFactory clientFactory = new RESTClientFactory(serverName,
+                                                                    serverPlatformURLRoot,
+                                                                    secretsStoreConnectorMap,
+                                                                    auditLog);
+
             return clientFactory.getClientConnector();
         }
         catch (Exception error)
@@ -5353,6 +5345,51 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                methodName,
                                                error,
                                                "client");
+        }
+    }
+
+
+    /**
+     * Create a REST client to call the remote connector.
+     *
+     * @param serverName name of the remote server.
+     * @param serverPlatformURLRoot name of the URL root for the server.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
+     * @param auditLog audit log
+     * @return REST Client connector
+     * @throws InvalidParameterException an unexpected exception - internal logic error as the parameters should have
+     * all been checked before this call.
+     */
+    private RESTClientConnector getRESTClientConnector(String   serverName,
+                                                       String   serverPlatformURLRoot,
+                                                       String   localServerSecretsStoreProvider,
+                                                       String   localServerSecretsStoreLocation,
+                                                       String   localServerSecretsStoreCollection,
+                                                       AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "getRESTClientConnector";
+
+        try
+        {
+            RESTClientFactory clientFactory = new RESTClientFactory(serverName,
+                                                                    serverPlatformURLRoot,
+                                                                    localServerSecretsStoreProvider,
+                                                                    localServerSecretsStoreLocation,
+                                                                    localServerSecretsStoreCollection,
+                                                                    SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                                                    auditLog);
+
+            return clientFactory.getClientConnector();
+        }
+        catch (Exception error)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "client");
         }
     }
 

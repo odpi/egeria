@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -163,10 +165,6 @@ public class GetEntityDetailHistoryExecutor extends PageableEntityRepositoryExec
 
             accumulator.addEntities(results, metadataCollectionId);
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(metadataCollectionId, error);
-        }
         catch (FunctionNotSupportedException error)
         {
             accumulator.captureException(metadataCollectionId, error);
@@ -184,6 +182,10 @@ public class GetEntityDetailHistoryExecutor extends PageableEntityRepositoryExec
             accumulator.captureException(metadataCollectionId, error);
         }
         catch (EntityProxyOnlyException error)
+        {
+            accumulator.captureException(metadataCollectionId, error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(metadataCollectionId, error);
         }

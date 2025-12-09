@@ -4,9 +4,11 @@ package org.odpi.openmetadata.frameworkservices.omf.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.SpecificationPropertyConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -14,6 +16,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
@@ -42,53 +48,34 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
     protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
+    protected final OpenMetadataElementBuilder      elementBuilder      = new OpenMetadataElementBuilder();
     protected final OpenMetadataRelationshipBuilder relationshipBuilder = new OpenMetadataRelationshipBuilder();
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param maxPageSize maximum value allowed for page size
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public OpenMetadataClientBase(String serverName,
-                                  String serverPlatformURLRoot,
-                                  int    maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot);
-
-        final String methodName = "Constructor (no security)";
-
-        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        this.restClient = new OMFRESTClient(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * Create a new client that passes a bearer token in each HTTP request.  This is based on the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public OpenMetadataClientBase(String serverName,
-                                  String serverPlatformURLRoot,
-                                  String serverUserId,
-                                  String serverPassword,
-                                  int    maxPageSize) throws InvalidParameterException
+    public OpenMetadataClientBase(String   serverName,
+                                  String   serverPlatformURLRoot,
+                                  String   secretsStoreProvider,
+                                  String   secretsStoreLocation,
+                                  String   secretsStoreCollection,
+                                  int      maxPageSize,
+                                  AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
 
@@ -97,7 +84,37 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.restClient = new OMFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
+        this.restClient = new OMFRESTClient(serverName, serverPlatformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
+    }
+
+
+    /**
+     * Create a new client that passes a bearer token in each HTTP request.  This is based on the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
+     */
+    public OpenMetadataClientBase(String                             serverName,
+                                  String                             serverPlatformURLRoot,
+                                  Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                  int                                maxPageSize,
+                                  AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot);
+
+        final String methodName = "Constructor (with security)";
+
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.restClient = new OMFRESTClient(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, auditLog);
     }
 
 
@@ -1444,17 +1461,18 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             new properties for the metadata element
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException    there is a problem with the metadata store
      */
     @Override
-    public void updateMetadataElementInStore(String            userId,
-                                             String            metadataElementGUID,
-                                             UpdateOptions     updateOptions,
-                                             ElementProperties properties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public boolean updateMetadataElementInStore(String            userId,
+                                                String            metadataElementGUID,
+                                                UpdateOptions     updateOptions,
+                                                ElementProperties properties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName        = "updateMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
@@ -1467,12 +1485,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         requestBody.setProperties(properties);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        metadataElementGUID);
+        BooleanResponse response = restClient.callBooleanPostRESTCall(methodName,
+                                                                      urlTemplate,
+                                                                      requestBody,
+                                                                      serverName,
+                                                                      userId,
+                                                                      metadataElementGUID);
+
+        return response.getFlag();
     }
 
 
@@ -1512,6 +1532,74 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
+                                        serverName,
+                                        userId,
+                                        metadataElementGUID);
+    }
+
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    @Override
+    public void publishMetadataElement(String                userId,
+                                       String                metadataElementGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName        = "publishMetadataElement";
+        final String guidParameterName = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/{2}/publish";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new MetadataSourceRequestBody(metadataSourceOptions),
+                                        serverName,
+                                        userId,
+                                        metadataElementGUID);
+    }
+
+
+    /**
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    @Override
+    public void withdrawMetadataElement(String                userId,
+                                        String                metadataElementGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName        = "withdrawMetadataElement";
+        final String guidParameterName = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/{2}/withdraw";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new MetadataSourceRequestBody(metadataSourceOptions),
                                         serverName,
                                         userId,
                                         metadataElementGUID);
@@ -2167,13 +2255,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * This incident report will be processed by other governance activities.
      *
      * @param userId caller's userId
-     * @param qualifiedName unique identifier to give this new incident report
-     * @param domainIdentifier governance domain associated with this action (0=ALL)
-     * @param background description of the situation
+     * @param properties unique identifier to give this new incident report and description of the situation
      * @param impactedResources details of the resources impacted by this situation
      * @param previousIncidents links to previous incident reports covering this situation
-     * @param incidentClassifiers initial classifiers for the incident report
-     * @param additionalProperties additional arbitrary properties for the incident reports
      * @param originatorGUID the unique identifier of the person or process that created the incident
      *
      * @return unique identifier of the resulting incident report
@@ -2182,43 +2266,92 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public  String createIncidentReport(String                        userId,
-                                        String                        qualifiedName,
-                                        int                           domainIdentifier,
-                                        String                        background,
-                                        List<IncidentImpactedElement> impactedResources,
-                                        List<IncidentDependency>      previousIncidents,
-                                        Map<String, Integer>          incidentClassifiers,
-                                        Map<String, String>           additionalProperties,
-                                        String                        originatorGUID) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public  String createIncidentReport(String                                  userId,
+                                        IncidentReportProperties                properties,
+                                        Map<String, ImpactedResourceProperties> impactedResources,
+                                        Map<String, ReportDependencyProperties> previousIncidents,
+                                        String                                  originatorGUID) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName = "createIncidentReport";
+        final String propertiesParameterName = "properties";
+        final String originatorParameterName = "originatorGUID";
         final String qualifiedNameParameterName = "qualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/incident-reports";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(originatorGUID, originatorParameterName, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        IncidentReportRequestBody requestBody = new IncidentReportRequestBody();
+        /*
+         * Set up the API options
+         */
+        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+        metadataSourceOptions.setEffectiveTime(new Date());
+        metadataSourceOptions.setForLineage(true);
 
-        requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDomainIdentifier(domainIdentifier);
-        requestBody.setBackground(background);
-        requestBody.setImpactedResources(impactedResources);
-        requestBody.setPreviousIncidents(previousIncidents);
-        requestBody.setIncidentClassifiers(incidentClassifiers);
-        requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setOriginatorGUID(originatorGUID);
 
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
+        /*
+         * Create the incident report entity
+         */
+        ElementProperties elementProperties = elementBuilder.getElementProperties(properties);
 
-        return restResult.getGUID();
+        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+
+        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(originatorGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORT_ORIGINATOR.typeName);
+
+        String incidentReportGUID = this.createMetadataElementInStore(userId,
+                                                                      OpenMetadataType.INCIDENT_REPORT.typeName,
+                                                                      newElementOptions,
+                                                                      null,
+                                                                      new NewElementProperties(elementProperties),
+                                                                      null);
+
+        if (incidentReportGUID != null)
+        {
+            if (impactedResources != null)
+            {
+                for (String resourceGUID : impactedResources.keySet())
+                {
+                    if (resourceGUID != null)
+                    {
+                        ImpactedResourceProperties relationshipProperties = impactedResources.get(resourceGUID);
+
+                        this.createRelatedElementsInStore(userId,
+                                                          OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName,
+                                                          resourceGUID,
+                                                          incidentReportGUID,
+                                                          metadataSourceOptions,
+                                                          new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
+                    }
+                }
+            }
+
+            if (previousIncidents != null)
+            {
+                for (String previousIncidentGUID : previousIncidents.keySet())
+                {
+                    if (previousIncidentGUID != null)
+                    {
+                        ReportDependencyProperties relationshipProperties = previousIncidents.get(previousIncidentGUID);
+
+                        this.createRelatedElementsInStore(userId,
+                                                          OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                          previousIncidentGUID,
+                                                          incidentReportGUID,
+                                                          metadataSourceOptions,
+                                                          new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
+                    }
+                }
+            }
+        }
+
+        return incidentReportGUID;
     }
 
 
@@ -2438,13 +2571,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Create a "To Do" request for someone to work on.
      *
      * @param userId caller's userId
-     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
-     * @param title short meaningful phrase for the person receiving the request
-     * @param instructions further details on what to do
-     * @param category a category of to dos (for example, "data error", "access request")
-     * @param priority priority value (based on organization's scale)
-     * @param dueDate date/time this needs to be completed
-     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param properties unique name for the to do plus additional  properties
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param originatorGUID unique identifier of the source of the to do
@@ -2458,13 +2585,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      */
     @Override
     public String openToDo(String                userId,
-                           String                qualifiedName,
-                           String                title,
-                           String                instructions,
-                           String                category,
-                           int                   priority,
-                           Date                  dueDate,
-                           Map<String, String>   additionalProperties,
+                           ToDoProperties        properties,
                            String                assignToGUID,
                            String                sponsorGUID,
                            String                originatorGUID,
@@ -2472,12 +2593,18 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        final String methodName = "openToDo";
-        final String toDoQualifiedNameParameterName = "qualifiedName";
-        final String assignToParameterName          = "assignToGUID";
+        final String methodName                 = "openToDo";
+        final String assignToParameterName      = "assignToGUID";
+        final String propertiesParameterName    = "properties";
+        final String originatorParameterName    = "originatorGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
 
-        propertyHelper.validateMandatoryName(qualifiedName, toDoQualifiedNameParameterName, methodName);
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(originatorGUID, originatorParameterName, methodName);
         propertyHelper.validateMandatoryName(assignToGUID, assignToParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+        propertyHelper.validateMandatoryName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
 
         /*
          * Set up the API options
@@ -2490,20 +2617,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         /*
          * Create the to do entity
          */
-        ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        qualifiedName);
-
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, title);
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, instructions);
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.CATEGORY.name, category);
-        properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.DUE_TIME.name, dueDate);
-        properties = propertyHelper.addIntProperty(properties, OpenMetadataProperty.PRIORITY.name, priority);
-        properties = propertyHelper.addEnumProperty(properties,
-                                                    OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                                    ActivityStatus.getOpenTypeName(),
-                                                    ActivityStatus.REQUESTED.getName());
-
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
@@ -2516,7 +2629,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                             OpenMetadataType.TO_DO.typeName,
                                                             newElementOptions,
                                                             null,
-                                                            new NewElementProperties(properties),
+                                                            new NewElementProperties(elementBuilder.getElementProperties(properties)),
                                                             null);
 
         if (toDoGUID != null)

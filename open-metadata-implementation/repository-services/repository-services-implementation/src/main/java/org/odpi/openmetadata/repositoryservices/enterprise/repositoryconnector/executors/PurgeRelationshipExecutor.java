@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -75,10 +77,6 @@ public class PurgeRelationshipExecutor extends RepositoryExecutorBase
             metadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, relationshipGUID);
             relationshipDeleted = true;
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(error);
-        }
         catch (RelationshipNotKnownException error)
         {
             accumulator.captureException(error);
@@ -96,6 +94,10 @@ public class PurgeRelationshipExecutor extends RepositoryExecutorBase
             accumulator.captureException(error);
         }
         catch (UserNotAuthorizedException error)
+        {
+            accumulator.captureException(error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(error);
         }

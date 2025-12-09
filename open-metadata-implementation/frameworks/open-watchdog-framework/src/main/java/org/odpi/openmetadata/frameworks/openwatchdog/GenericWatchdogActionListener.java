@@ -29,8 +29,8 @@ public class GenericWatchdogActionListener extends WatchdogGovernanceListener
     /**
      * This method is called each time a requested event is received from the open metadata repositories.
      * It is called for events received after this listener is registered until the watchdog governance
-     * service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED, or it is stopped by an administrator shutting down
-     * the hosting server or this service explicitly.
+     * service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED, or it is stopped by
+     * an administrator shutting down the hosting server or this service explicitly.
      *
      * @param event event containing details of a change to an open metadata element.
      *

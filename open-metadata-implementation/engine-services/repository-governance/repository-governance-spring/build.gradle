@@ -5,6 +5,7 @@
 
 
 dependencies {
+    compileOnly project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-server')
     implementation 'org.springframework:spring-web'

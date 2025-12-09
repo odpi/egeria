@@ -46,9 +46,6 @@ public class OMFServicesInstance extends AccessServerServiceInstance
     {
         super(myDescription.getServiceName(),
               repositoryConnector,
-              null,
-              null,
-              null,
               auditLog,
               localServerUserId,
               maxPageSize,
@@ -68,9 +65,6 @@ public class OMFServicesInstance extends AccessServerServiceInstance
                                                                        repositoryHelper,
                                                                        localServerUserId,
                                                                        securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
                                                                        auditLog);
         }
         else

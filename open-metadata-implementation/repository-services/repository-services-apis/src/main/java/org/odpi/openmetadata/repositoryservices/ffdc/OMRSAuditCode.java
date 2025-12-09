@@ -854,7 +854,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * It has a metadata collection id of {2}, a metadata collection name of {3}, the server type is {4} and its owning organization is {5}
      */
     NEW_REMOTE_MEMBER("OMRS-AUDIT-0127",
-                      AuditLogRecordSeverityLevel.INFO,
+                      AuditLogRecordSeverityLevel.COHORT,
                       "A new remote member from server {0} for cohort {1} is being configured into the enterprise connector manager.  It has" +
                               " a metadata collection id of {2}, a metadata collection name of {3}, the server type is {4} and its owning " +
                               "organization is {5}",
@@ -870,7 +870,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * metadata collection id of {2}, a metadata collection name of {3}, the server type is {4} and its owning organization is {5}
      */
     REMOTE_MEMBER_REFRESHED("OMRS-AUDIT-0128",
-                            AuditLogRecordSeverityLevel.INFO,
+                            AuditLogRecordSeverityLevel.COHORT,
                             "Configuration received for an existing remote member from server {0} for cohort {1} has not changed.  It has a " +
                               "metadata collection id of {2}, a metadata collection name of {3}, " +
                                     "the server type is {4} and its owning organization is {5}",
@@ -897,7 +897,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * OMRS-AUDIT-0130 - The enterprise repository services are managing federated queries to the following list of servers: {0}
      */
     FEDERATION_LIST("OMRS-AUDIT-0130",
-                    AuditLogRecordSeverityLevel.INFO,
+                    AuditLogRecordSeverityLevel.COHORT,
                     "The enterprise repository services are managing federated queries to the following list of servers: {0}",
                     "The enterprise connector manager is recording the current list of servers that the enterprise repository services are " +
                             "calling on behalf of the access services.",
@@ -907,7 +907,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * OMRS-AUDIT-0131 - A remote member from cohort {0} with metadata collection id {1} is being removed by the enterprise connector manager
      */
     REMOVE_REMOTE_MEMBER("OMRS-AUDIT-0131",
-                         AuditLogRecordSeverityLevel.INFO,
+                         AuditLogRecordSeverityLevel.COHORT,
                          "A remote member from cohort {0} with metadata collection id {1} is being removed by the enterprise connector manager",
                          "The enterprise connector manager is removing the connection for a remote member of the cohort from the list " +
                                  "of servers that are called during a metadata request from the access services.",
@@ -918,7 +918,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * OMRS-AUDIT-0132 - A new remote connector from server {0} with metadata collection id {1} has been deployed to enterprise connector for {2}
      */
     NEW_REMOTE_MEMBER_DEPLOYED("OMRS-AUDIT-0132",
-                               AuditLogRecordSeverityLevel.INFO,
+                               AuditLogRecordSeverityLevel.COHORT,
                                "A new remote connector from server {0} with metadata collection id {1} has been deployed to enterprise connector " +
                                        "for {2}",
                                "The enterprise connector for the named service has had a new connector to a remote partner added to its federation list. " +
@@ -929,7 +929,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * OMRS-AUDIT-0133 - Information about remote connector from server {0} with metadata collection id {1} has been refreshed in enterprise connector for {2}
      */
     REMOTE_MEMBER_DEPLOY_REFRESH("OMRS-AUDIT-0133",
-                                 AuditLogRecordSeverityLevel.INFO,
+                                 AuditLogRecordSeverityLevel.COHORT,
                                  "Information about remote connector from server {0} with metadata collection id {1} has been refreshed in " +
                                          "enterprise connector for {2}",
                                  "The enterprise connector for the named service has had a new information about a remote partner " +
@@ -942,7 +942,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * OMRS-AUDIT-0134 - The remote connector for metadata collection id {0} is no longer being called by {1}
      */
     REMOTE_MEMBER_UNDEPLOYED("OMRS-AUDIT-0134",
-                             AuditLogRecordSeverityLevel.INFO,
+                             AuditLogRecordSeverityLevel.COHORT,
                              "The remote connector for metadata collection id {0} is no longer being called by {1}",
                              "The connector has been removed from this access service's federation list " +
                                        "of servers that are called during a metadata request.",
@@ -954,7 +954,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      * and its owning organization is {5}
      */
     REMOTE_MEMBER_UPDATED("OMRS-AUDIT-0135",
-                          AuditLogRecordSeverityLevel.INFO,
+                          AuditLogRecordSeverityLevel.COHORT,
                           "Configuration for an existing remote member from server {0} for cohort {1} has changed and is being updated in" +
                                   " the enterprise connector manager.  It has a metadata collection id of {2}, a metadata collection name of {3}, " +
                                   "the server type is {4} and its owning organization is {5}",

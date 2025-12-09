@@ -6,9 +6,13 @@ package org.odpi.openmetadata.platformservices.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectorTypeResponse;
@@ -31,7 +35,14 @@ import java.util.Date;
 
 
 @RestController
-@RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
+@RequestMapping("/open-metadata/platform-services/server-platform")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
                                                    "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
@@ -47,10 +58,11 @@ public class OMAGServerPlatformActiveResource
     /**
      * Return the start time for this instance of the platform.
      *
-     * @param userId calling user
      * @return start date/time
      */
     @GetMapping(path = "/start-time")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getPlatformStartTime",
                 description="Return the date/time that this platform started up",
                 responses = {
@@ -62,9 +74,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
                 })
-    public Date getPlatformStartTime(@Parameter(description="calling user") @PathVariable String userId)
+    public Date getPlatformStartTime()
     {
-        return platformAPI.getPlatformStartTime(userId);
+        return platformAPI.getPlatformStartTime();
     }
 
 
@@ -72,10 +84,11 @@ public class OMAGServerPlatformActiveResource
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
      * and can be configured for a metadata server.
      *
-     * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/access-services")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getRegisteredAccessServices",
             description="Retrieve a list of access services registered on this platform",
             responses = {
@@ -87,19 +100,20 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredAccessServices(@Parameter(description="calling user") @PathVariable String userId)
+    public RegisteredOMAGServicesResponse getRegisteredAccessServices()
     {
-        return platformAPI.getRegisteredAccessServices(userId);
+        return platformAPI.getRegisteredAccessServices();
     }
 
     /**
      * Return the list of engine services that are implemented in this OMAG Server Platform
      * and can be configured for an engine host server.
      *
-     * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/engine-services")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getRegisteredEngineServices",
             description="Retrieve a list of engine services implemented in this platform",
             responses = {
@@ -111,9 +125,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredEngineServices(@Parameter(description="calling user") @PathVariable String userId)
+    public RegisteredOMAGServicesResponse getRegisteredEngineServices()
     {
-        return platformAPI.getRegisteredEngineServices(userId);
+        return platformAPI.getRegisteredEngineServices();
     }
 
 
@@ -121,10 +135,10 @@ public class OMAGServerPlatformActiveResource
      * Return the list of view services that are registered (supported) in this OMAG Server Platform
      * and can be configured for a view server.
      *
-     * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/view-services")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation( summary = "getRegisteredViewServices",
             description="Retrieve a list of view services registered on this platform",
@@ -137,9 +151,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredViewServices(@Parameter(description="calling user") @PathVariable String userId)
+    public RegisteredOMAGServicesResponse getRegisteredViewServices()
     {
-        return platformAPI.getRegisteredViewServices(userId);
+        return platformAPI.getRegisteredViewServices();
     }
 
 
@@ -147,10 +161,11 @@ public class OMAGServerPlatformActiveResource
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of a governance server.
      *
-     * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/governance-services")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getGovernanceServices",
             description="Retrieve a list of governance services registered on this platform",
             responses = {
@@ -162,9 +177,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices(@Parameter(description="calling user") @PathVariable String userId)
+    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices()
     {
-        return platformAPI.getRegisteredGovernanceServices(userId);
+        return platformAPI.getRegisteredGovernanceServices();
     }
 
 
@@ -172,10 +187,11 @@ public class OMAGServerPlatformActiveResource
      * Return the list of common services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of any server.
      *
-     * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/common-services")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getCommonServices",
             description="Retrieve a list of common services registered on this platform",
             responses = {
@@ -187,19 +203,20 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredCommonServices(@Parameter(description="calling user") @PathVariable String userId)
+    public RegisteredOMAGServicesResponse getRegisteredCommonServices()
     {
-        return platformAPI.getRegisteredCommonServices(userId);
+        return platformAPI.getRegisteredCommonServices();
     }
 
 
     /**
      * Return the list of all services that are supported in this OMAG Server Platform.
      *
-     * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getAllServices",
             description="Retrieve a list of all services available on this platform",
             responses = {
@@ -211,9 +228,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getAllRegisteredServices(@Parameter(description="calling user") @PathVariable String userId)
+    public RegisteredOMAGServicesResponse getAllRegisteredServices()
     {
-        return platformAPI.getAllRegisteredServices(userId);
+        return platformAPI.getAllRegisteredServices();
     }
 
 
@@ -222,11 +239,12 @@ public class OMAGServerPlatformActiveResource
      * connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring
      * connectors into an Egeria server.  It does not validate that the connector will load and initialize.
      *
-     * @param userId calling user
      * @param connectorProviderClassName name of the connector provider class
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      */
     @GetMapping(path = "/connector-types/{connectorProviderClassName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getConnectorType",
                 description="Return the connector type for the requested connector provider after validating that the" +
                                     " connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring" +
@@ -240,21 +258,21 @@ public class OMAGServerPlatformActiveResource
 
                         )
                 })
-    public OCFConnectorTypeResponse getConnectorType(@Parameter(description="calling user")                         @PathVariable String userId,
-                                                     @Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
+    public OCFConnectorTypeResponse getConnectorType(@Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
     {
-        return platformAPI.getConnectorType(userId, connectorProviderClassName);
+        return platformAPI.getConnectorType(connectorProviderClassName);
     }
 
 
     /**
      * Return a flag to indicate if this server has ever run on this OMAG Server Platform instance.
      *
-     * @param userId calling user
      * @param serverName server of interest
      * @return flag
      */
     @GetMapping(path = "/servers/{serverName}/is-known")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "isServerKnown",
             description="Return a boolean indication if this server has ever run on this platform instance",
             responses = {
@@ -266,20 +284,20 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public BooleanResponse isServerKnown(@Parameter(description="calling user") @PathVariable String    userId,
-                                         @Parameter(description="server name") @PathVariable String    serverName)
+    public BooleanResponse isServerKnown(@Parameter(description="server name") @PathVariable String    serverName)
     {
-        return platformAPI.isServerKnown(userId, serverName);
+        return platformAPI.isServerKnown(serverName);
     }
 
 
     /**
      * Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.
      *
-     * @param userId calling user
      * @return list of OMAG server names
      */
     @GetMapping(path = "/servers")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getKnownServerList",
             description="Return the list of servers that have run or are running on this platform",
             responses = {
@@ -291,19 +309,20 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerListResponse getKnownServerList(@Parameter(description="calling user") @PathVariable String userId)
+    public ServerListResponse getKnownServerList()
     {
-        return platformAPI.getKnownServerList(userId);
+        return platformAPI.getKnownServerList();
     }
 
 
     /**
      * Return the list of OMAG Servers that are active on this OMAG Server Platform.
      *
-     * @param userId name of the user making the request
      * @return list of server names
      */
     @GetMapping(path = "/servers/active")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getActiveServerList",
             description="Return the list of servers that are active on this platform",
             responses = {
@@ -315,20 +334,20 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerListResponse getActiveServerList(@Parameter(description="calling user") @PathVariable String    userId)
+    public ServerListResponse getActiveServerList()
     {
-        return platformAPI.getActiveServerList(userId);
+        return platformAPI.getActiveServerList();
     }
 
 
     /**
      * Return information about when the server has been active.
      *
-     * @param userId name of the user making the request
      * @param serverName name of the server of interest
      * @return details of the server status
      */
     @GetMapping(path = "/servers/{serverName}/status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation( summary = "getServerStatus",
             description="Return information about when the server has been active",
@@ -340,21 +359,21 @@ public class OMAGServerPlatformActiveResource
                             )
                     )
             })
-    public ServerStatusResponse getServerStatus(@Parameter(description="calling user") @PathVariable String    userId,
-                                                @Parameter(description="server name")  @PathVariable String    serverName)
+    public ServerStatusResponse getServerStatus(@Parameter(description="server name")  @PathVariable String    serverName)
     {
-        return platformAPI.getServerStatus(userId, serverName);
+        return platformAPI.getServerStatus(serverName);
     }
 
 
     /**
      * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
      *
-     * @param userId name of the user making the request
      * @param serverName name of the server of interest
      * @return server name and list od services running within
      */
     @GetMapping(path = "/servers/{serverName}/services")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation( summary = "getActiveServicesForServer",
             description="Return the list of services that are active on the server on this platform",
             responses = {
@@ -366,9 +385,8 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerServicesListResponse getActiveServicesForServer(@Parameter(description="calling user") @PathVariable String    userId,
-                                                                 @Parameter(description="server name")  @PathVariable String    serverName)
+    public ServerServicesListResponse getActiveServicesForServer(@Parameter(description="server name")  @PathVariable String    serverName)
     {
-        return platformAPI.getActiveServicesForServer(userId, serverName);
+        return platformAPI.getActiveServicesForServer(serverName);
     }
 }

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Location Arena OMVS", description="Locations can be used to define physical locations using different scales and standards.  They can be linked together to show their relative positions and also linked to descriptions of your organization's people and resources to show their relative positions.  This can be useful in organizing and managing events and supporting sovereignty requirements.",
+@Tag(name="API: Location Arena", description="Locations can be used to define physical locations using different scales and standards.  They can be linked together to show their relative positions and also linked to descriptions of your organization's people and resources to show their relative positions.  This can be useful in organizing and managing events and supporting sovereignty requirements.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/location-arena/overview/"))
 
@@ -105,7 +105,7 @@ public class LocationArenaResource
      * @param locationGUID unique identifier of the location (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -118,12 +118,12 @@ public class LocationArenaResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/location"))
 
-    public VoidResponse updateLocation(@PathVariable
-                                       String                                  serverName,
-                                       @PathVariable
-                                       String                                  locationGUID,
-                                       @RequestBody (required = false)
-                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateLocation(@PathVariable
+                                          String                                  serverName,
+                                          @PathVariable
+                                          String                                  locationGUID,
+                                          @RequestBody (required = false)
+                                          UpdateElementRequestBody requestBody)
     {
         return restAPI.updateLocation(serverName, locationGUID, requestBody);
     }

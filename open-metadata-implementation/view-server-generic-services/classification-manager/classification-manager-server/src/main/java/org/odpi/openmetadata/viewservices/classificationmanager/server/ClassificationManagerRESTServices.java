@@ -2051,4 +2051,486 @@ public class ClassificationManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+
+    /**
+     * Classify/reclassify the element with the KnownDuplicate classification
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setKnownDuplicateClassification(String                    serverName,
+                                                        String                   urlMarker,
+                                                        String                    elementGUID,
+                                                        NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setKnownDuplicateClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof KnownDuplicateProperties properties)
+                {
+                    handler.setKnownDuplicateClassification(userId, elementGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setKnownDuplicateClassification(userId, elementGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(KnownDuplicateProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the KnownDuplicate classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearKnownDuplicateClassification(String                          serverName,
+                                                          String                   urlMarker,
+                                                          String                          elementGUID,
+                                                          DeleteClassificationRequestBody requestBody)
+    {
+        final String   methodName = "clearKnownDuplicateClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearKnownDuplicateClassification(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Create a relationship between two elements that show they represent the same "thing". If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param peerDuplicateGUID identifier of the duplicate to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkElementsAsPeerDuplicates(String                     serverName,
+                                                     String                     urlMarker,
+                                                     String                     elementGUID,
+                                                     String                     peerDuplicateGUID,
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkElementsAsPeerDuplicates";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof PeerDuplicateLinkProperties peerDuplicateLinkProperties)
+                {
+                    handler.linkElementsAsPeerDuplicates(userId,
+                                                         elementGUID,
+                                                         peerDuplicateGUID,
+                                                         peerDuplicateLinkProperties,
+                                                         requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkElementsAsPeerDuplicates(userId,
+                                                         elementGUID,
+                                                         peerDuplicateGUID,
+                                                         null,
+                                                         requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(PeerDuplicateLinkProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkElementsAsPeerDuplicates(userId,
+                                                     elementGUID,
+                                                     peerDuplicateGUID,
+                                                     null,
+                                                     null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the PeerDuplicateLink relationship between an element and its duplicate.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param peerDuplicateGUID identifier of the duplicate to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse unlinkElementsAsPeerDuplicates(String                        serverName,
+                                                       String                        urlMarker,
+                                                       String                        elementGUID,
+                                                       String                        peerDuplicateGUID,
+                                                       DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "unlinkElementsAsPeerDuplicates";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.unlinkElementsAsPeerDuplicates(userId, elementGUID, peerDuplicateGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Classify/reclassify the element with the ConsolidatedDuplicate classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setConsolidatedDuplicateClassification(String                    serverName,
+                                                               String                   urlMarker,
+                                                               String                    elementGUID,
+                                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setConsolidatedDuplicateClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof ConsolidatedDuplicateProperties properties)
+                {
+                    handler.setConsolidatedDuplicateClassification(userId, elementGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setConsolidatedDuplicateClassification(userId, elementGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ConsolidatedDuplicateProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the ConsolidatedDuplicate classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearConsolidatedDuplicateClassification(String                          serverName,
+                                                                 String                   urlMarker,
+                                                                 String                          elementGUID,
+                                                                 DeleteClassificationRequestBody requestBody)
+    {
+        final String   methodName = "clearConsolidatedDuplicateClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearConsolidatedDuplicateClassification(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Create a ConsolidatedDuplicateLink relationship between an element and one of the source elements of its properties.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
+     * @param sourceElementGUID unique identifier of one of the source elements
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkConsolidatedDuplicateToSourceElement(String                  serverName,
+                                                                 String                   urlMarker,
+                                                                 String                  elementGUID,
+                                                                 String                  sourceElementGUID,
+                                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkConsolidatedDuplicateToSourceElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ConsolidatedDuplicateLinkProperties consolidatedDuplicateLinkProperties)
+                {
+                    handler.linkConsolidatedDuplicateToSourceElement(userId,
+                                                                     elementGUID,
+                                                                     sourceElementGUID,
+                                                                     consolidatedDuplicateLinkProperties,
+                                                                     requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkConsolidatedDuplicateToSourceElement(userId,
+                                                                     elementGUID,
+                                                                     sourceElementGUID,
+                                                                     null,
+                                                                     requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ConsolidatedDuplicateLinkProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkConsolidatedDuplicateToSourceElement(userId,
+                                                                 elementGUID,
+                                                                 sourceElementGUID,
+                                                                 null,
+                                                                 null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a ConsolidatedDuplicateLink relationship between an element and one of its source elements.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
+     * @param sourceElementGUID unique identifier of one of the source elements
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse unlinkConsolidatedDuplicateFromSourceElement(String                        serverName,
+                                                                     String                   urlMarker,
+                                                                     String                        elementGUID,
+                                                                     String                        sourceElementGUID,
+                                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "unlinkConsolidatedDuplicateFromSourceElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.unlinkConsolidatedDuplicateFromSourceElement(userId, elementGUID, sourceElementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 }

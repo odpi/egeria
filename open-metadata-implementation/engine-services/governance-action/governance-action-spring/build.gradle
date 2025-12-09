@@ -5,6 +5,7 @@
 
 
 dependencies {
+    compileOnly project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-api')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-server')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')

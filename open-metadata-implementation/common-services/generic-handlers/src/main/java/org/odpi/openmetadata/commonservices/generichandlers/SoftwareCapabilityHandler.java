@@ -13,7 +13,6 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,9 +32,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public SoftwareCapabilityHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -47,9 +43,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                      OMRSRepositoryHelper               repositoryHelper,
                                      String                             localServerUserId,
                                      OpenMetadataServerSecurityVerifier securityVerifier,
-                                     List<String>                       supportedZones,
-                                     List<String>                       defaultZones,
-                                     List<String>                       publishZones,
                                      AuditLog                           auditLog)
     {
         super(converter,
@@ -61,9 +54,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
               repositoryHelper,
               localServerUserId,
               securityVerifier,
-              supportedZones,
-              defaultZones,
-              publishZones,
               auditLog);
     }
 
@@ -130,8 +120,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                           patchLevel,
                                                                           source,
                                                                           additionalProperties,
-                                                                          OpenMetadataType.DATA_MANAGER.typeGUID,
-                                                                          OpenMetadataType.DATA_MANAGER.typeName,
+                                                                          OpenMetadataType.FILE_SYSTEM.typeGUID,
+                                                                          OpenMetadataType.FILE_SYSTEM.typeName,
                                                                           null,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -139,13 +129,13 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        builder.setFileSystemClassification(userId, format, encryption, methodName);
+        builder.setFileSystemProperties(format, encryption);
 
         String fileSystemGUID = this.createBeanInRepository(userId,
                                                             externalSourceGUID,
                                                             externalSourceName,
-                                                            OpenMetadataType.DATA_MANAGER.typeGUID,
-                                                            OpenMetadataType.DATA_MANAGER.typeName,
+                                                            OpenMetadataType.FILE_SYSTEM.typeGUID,
+                                                            OpenMetadataType.FILE_SYSTEM.typeName,
                                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                             null,
                                                             builder,

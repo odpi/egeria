@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -138,10 +140,6 @@ public class AddEntityExecutor extends RepositoryExecutorBase
                 result = true;
             }
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(error);
-        }
         catch (ClassificationErrorException error)
         {
             accumulator.captureException(error);
@@ -167,6 +165,10 @@ public class AddEntityExecutor extends RepositoryExecutorBase
             accumulator.captureException(error);
         }
         catch (FunctionNotSupportedException error)
+        {
+            accumulator.captureException(error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(error);
         }

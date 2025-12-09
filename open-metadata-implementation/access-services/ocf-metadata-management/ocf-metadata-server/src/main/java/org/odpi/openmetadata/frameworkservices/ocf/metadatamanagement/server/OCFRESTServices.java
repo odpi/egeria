@@ -42,7 +42,6 @@ public class OCFRESTServices
      * Returns the connection object corresponding to the supplied connection GUID.
      *
      * @param serverName name of the server instances for this request
-     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId userId of user making request.
      * @param guid  the unique id for the connection within the property server.
      *
@@ -53,7 +52,6 @@ public class OCFRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OCFConnectionResponse getConnectionByGUID(String     serverName,
-                                                     String     serviceURLName,
                                                      String     userId,
                                                      String     guid)
     {
@@ -76,10 +74,6 @@ public class OCFRESTServices
                                                                            OpenMetadataType.CONNECTION.typeName,
                                                                            false,
                                                                            false,
-                                                                           instanceHandler.getSupportedZones(userId,
-                                                                                                             serverName,
-                                                                                                             serviceURLName,
-                                                                                                             methodName),
                                                                            new Date(),
                                                                            methodName));
         }
@@ -98,7 +92,6 @@ public class OCFRESTServices
      * Returns the connection object corresponding to the supplied connection name.
      *
      * @param serverName name of the server instances for this request
-     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId userId of user making request.
      * @param name   this may be the qualifiedName or displayName of the connection.
      *
@@ -110,7 +103,6 @@ public class OCFRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OCFConnectionResponse getConnectionByName(String   serverName,
-                                                     String   serviceURLName,
                                                      String   userId,
                                                      String   name)
     {
@@ -139,10 +131,6 @@ public class OCFRESTServices
                                                                          null,
                                                                          false,
                                                                          false,
-                                                                         instanceHandler.getSupportedZones(userId,
-                                                                                                           serverName,
-                                                                                                           serviceURLName,
-                                                                                                           methodName),
                                                                          null,
                                                                          methodName));
         }
@@ -160,7 +148,6 @@ public class OCFRESTServices
      * Returns the connection corresponding to the supplied asset GUID.
      *
      * @param serverName  name of the server instances for this request
-     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId      userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
@@ -171,7 +158,6 @@ public class OCFRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OCFConnectionResponse getConnectionForAsset(String   serverName,
-                                                       String   serviceURLName,
                                                        String   userId,
                                                        String   assetGUID)
     {
@@ -191,10 +177,6 @@ public class OCFRESTServices
             response.setConnection(handler.getConnectionForAsset(userId,
                                                                  assetGUID,
                                                                  assetGUIDParameterName,
-                                                                 instanceHandler.getSupportedZones(userId,
-                                                                                                   serverName,
-                                                                                                   serviceURLName,
-                                                                                                   methodName),
                                                                  false,
                                                                  false,
                                                                  new Date(),
@@ -215,7 +197,6 @@ public class OCFRESTServices
      * Save the connection optionally linked to the supplied asset GUID.
      *
      * @param serverName  name of the server instances for this request
-     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId      userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository. This optional.
      *                    However, if specified then the new connection is attached to the asset
@@ -228,7 +209,6 @@ public class OCFRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse saveConnectionForAsset(String     serverName,
-                                               String     serviceURLName,
                                                String     userId,
                                                String     assetGUID,
                                                Connection connection)
@@ -260,10 +240,6 @@ public class OCFRESTServices
                                                                   connection,
                                                                   false,
                                                                   false,
-                                                                  instanceHandler.getSupportedZones(userId,
-                                                                                                    serverName,
-                                                                                                    serviceURLName,
-                                                                                                    methodName),
                                                                   new Date(),
                                                                   methodName));
             }
@@ -277,10 +253,6 @@ public class OCFRESTServices
                                                                                null,
                                                                                false,
                                                                                false,
-                                                                               instanceHandler.getSupportedZones(userId,
-                                                                                                                 serverName,
-                                                                                                                 serviceURLName,
-                                                                                                                 methodName),
                                                                                new Date(),
                                                                                methodName);
 
@@ -298,10 +270,6 @@ public class OCFRESTServices
                                                                   connection,
                                                                   false,
                                                                   false,
-                                                                  instanceHandler.getSupportedZones(userId,
-                                                                                                    serverName,
-                                                                                                    serviceURLName,
-                                                                                                    methodName),
                                                                   new Date(),
                                                                   methodName));
             }

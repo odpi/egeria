@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PrimitiveTypePropertyValue;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -3231,7 +3232,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     public void validateTypeDefPatch(String       sourceName,
                                      TypeDefPatch typeDefPatch,
                                      String       methodName) throws InvalidParameterException,
-                                                                        PatchErrorException
+                                                                     PatchErrorException
     {
         final String  thisMethodName = "validateTypeDefPatch";
         final String  parameterName = "typeDefPatch";

@@ -225,11 +225,11 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @return bean populated with properties from the instances supplied in the constructor
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    private Connection getNewVirtualConnection(Class<B> beanClass,
-                                               EntityDetail primaryEntity,
+    private Connection getNewVirtualConnection(Class<B>           beanClass,
+                                               EntityDetail       primaryEntity,
                                                List<EntityDetail> supplementaryEntities,
                                                List<Relationship> relationships,
-                                               String methodName) throws PropertyServerException
+                                               String             methodName) throws PropertyServerException
     {
         try
         {

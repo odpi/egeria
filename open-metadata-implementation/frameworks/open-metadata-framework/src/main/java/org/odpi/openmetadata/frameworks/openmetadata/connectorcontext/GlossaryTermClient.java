@@ -161,22 +161,25 @@ public class GlossaryTermClient extends ConnectorContextClientBase
      * @param glossaryTermGUID       unique identifier of the glossary term (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateGlossaryTerm(String               glossaryTermGUID,
-                                   UpdateOptions        updateOptions,
-                                   GlossaryTermProperties properties) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public boolean updateGlossaryTerm(String                 glossaryTermGUID,
+                                      UpdateOptions          updateOptions,
+                                      GlossaryTermProperties properties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        glossaryTermHandler.updateGlossaryTerm(connectorUserId, glossaryTermGUID, updateOptions, properties);
+        boolean updateOccurred = glossaryTermHandler.updateGlossaryTerm(connectorUserId, glossaryTermGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(glossaryTermGUID);
         }
+
+        return updateOccurred;
     }
 
 

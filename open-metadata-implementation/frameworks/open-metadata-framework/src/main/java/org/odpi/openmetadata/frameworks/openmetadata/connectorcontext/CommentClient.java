@@ -77,7 +77,14 @@ public class CommentClient extends ConnectorContextClientBase
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        return commentHandler.addCommentToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
+        String commentGUID = commentHandler.addCommentToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementCreation(commentGUID);
+        }
+
+        return commentGUID;
     }
 
 
@@ -88,17 +95,25 @@ public class CommentClient extends ConnectorContextClientBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties   properties of the comment
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateComment(String            commentGUID,
-                                UpdateOptions     updateOptions,
-                                CommentProperties properties) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public boolean updateComment(String            commentGUID,
+                                 UpdateOptions     updateOptions,
+                                 CommentProperties properties) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
-        commentHandler.updateComment(connectorUserId, commentGUID, updateOptions, properties);
+        boolean updateOccurred = commentHandler.updateComment(connectorUserId, commentGUID, updateOptions, properties);
+
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        {
+            parentContext.getIntegrationReportWriter().reportElementUpdate(commentGUID);
+        }
+
+        return updateOccurred;
     }
 
 
@@ -163,6 +178,11 @@ public class CommentClient extends ConnectorContextClientBase
                                                                   UserNotAuthorizedException
     {
         commentHandler.deleteComment(connectorUserId, commentGUID, deleteOptions);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementDelete(commentGUID);
+        }
     }
 
 

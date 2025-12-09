@@ -2,18 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.solutionarchitect.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 
 /**
@@ -26,7 +22,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.SOLUTION_ARCHITECT;
 
     private final InformationSupplyChainHandler informationSupplyChainHandler;
-    private final SolutionBlueprintHandler      solutionBlueprintHandler;
+    private final CollectionHandler             solutionBlueprintHandler;
     private final SolutionComponentHandler      solutionComponentHandler;
     private final ActorRoleHandler         actorRoleHandler;
 
@@ -36,56 +32,51 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param localServerUserId userId used for server initiated actions
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException problem with server name or platform URL
      */
-    public SolutionArchitectInstance(String       serverName,
-                                     AuditLog     auditLog,
-                                     String       localServerUserId,
-                                     String       localServerUserPassword,
-                                     int          maxPageSize,
-                                     String       remoteServerName,
-                                     String       remoteServerURL) throws InvalidParameterException
+    public SolutionArchitectInstance(String   serverName,
+                                     AuditLog auditLog,
+                                     String   localServerUserId,
+                                     String   localServerSecretsStoreProvider,
+                                     String   localServerSecretsStoreLocation,
+                                     String   localServerSecretsStoreCollection,
+                                     int      maxPageSize,
+                                     String   remoteServerName,
+                                     String   remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        OpenMetadataClient openMetadataClient;
-        if (localServerUserPassword == null)
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    maxPageSize);
-
-        }
-        else
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    localServerUserId,
-                                                                    localServerUserPassword,
-                                                                    maxPageSize);
-        }
+        OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                                                  remoteServerURL,
+                                                                                  localServerSecretsStoreProvider,
+                                                                                  localServerSecretsStoreLocation,
+                                                                                  localServerSecretsStoreCollection,
+                                                                                  maxPageSize,
+                                                                                  auditLog);
 
         solutionComponentHandler = new SolutionComponentHandler(serverName,
                                                                 auditLog,
                                                                 myDescription.getViewServiceFullName(),
                                                                 openMetadataClient);
 
-        solutionBlueprintHandler = new SolutionBlueprintHandler(serverName,
-                                                                auditLog,
-                                                                myDescription.getViewServiceFullName(),
-                                                                openMetadataClient);
+        solutionBlueprintHandler = new CollectionHandler(serverName,
+                                                         auditLog,
+                                                         myDescription.getViewServiceFullName(),
+                                                         openMetadataClient,
+                                                         OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
 
         informationSupplyChainHandler = new InformationSupplyChainHandler(serverName,
                                                                 auditLog,
@@ -118,7 +109,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public SolutionBlueprintHandler getSolutionBlueprintHandler()
+    public CollectionHandler getSolutionBlueprintHandler()
     {
         return solutionBlueprintHandler;
     }

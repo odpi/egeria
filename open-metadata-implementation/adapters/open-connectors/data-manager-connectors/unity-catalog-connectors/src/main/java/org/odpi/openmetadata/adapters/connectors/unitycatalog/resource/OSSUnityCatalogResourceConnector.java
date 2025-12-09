@@ -119,8 +119,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
              */
             RESTClientFactory factory = new RESTClientFactory(ucInstanceName,
                                                               targetRootURL,
-                                                              connectionBean.getUserId(),
-                                                              connectionBean.getClearPassword(),
                                                               secretsStoreConnectorMap,
                                                               auditLog);
 

@@ -159,7 +159,7 @@ Content-Type: application/json
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "projectProperties": {
+  "properties": {
     "class" : "ProjectProperties",
     "qualifiedName": "Must provide a unique name here",
     "identifier" : "Add business identifier",
@@ -191,7 +191,7 @@ Content-Type: application/json
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "projectProperties": {
+  "properties": {
     "class" : "ProjectProperties",
     "qualifiedName": "Must provide a unique name here",
     "identifier" : "Add business identifier",
@@ -219,7 +219,7 @@ Content-Type: application/json
   "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
   "parentRelationshipTypeName" : "open metadata type name",
   "parentAtEnd1": true,
-  "projectProperties": {
+  "properties": {
     "class" : "ProjectProperties",
     "qualifiedName": "Must provide a unique name here",
     "identifier" : "Add business identifier",

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/time-keeper")
 
-@Tag(name="API: Time Keeper OMVS", description="The Time Keeper OMVS provides APIs for managing context events.",
+@Tag(name="API: Time Keeper", description="Manages and queries context events.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/time-keeper/overview/"))
 

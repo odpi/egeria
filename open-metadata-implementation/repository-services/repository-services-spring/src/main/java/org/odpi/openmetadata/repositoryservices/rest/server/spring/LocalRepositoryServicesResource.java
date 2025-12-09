@@ -3,6 +3,10 @@
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -20,6 +24,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Repository Services - Local Repository",
         description="The Local Repository Services are part of the Open Metadata Repository Services (OMRS). They provide the " +
@@ -56,6 +67,7 @@ public class LocalRepositoryServicesResource
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
     @GetMapping(path = "/metadata-collection-id")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName,
                                                                 @PathVariable String   userId)
@@ -83,6 +95,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/all")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
                                               @PathVariable String   userId)
@@ -106,6 +119,7 @@ public class LocalRepositoryServicesResource
      * InvalidParameterException the name of the TypeDef is null.
      */
     @GetMapping(path = "/types/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefGalleryResponse findTypesByName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
@@ -128,6 +142,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedefs/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefListResponse findTypeDefsByCategory(@PathVariable String           serverName,
                                                       @PathVariable String           userId,
@@ -150,6 +165,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/attribute-typedefs/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                   serverName,
                                                                         @PathVariable String                   userId,
@@ -172,6 +188,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedefs/by-property")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefListResponse findTypeDefsByProperty(@PathVariable String            serverName,
                                                       @PathVariable String            userId,
@@ -196,6 +213,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedefs/by-external-id")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefListResponse findTypesByExternalID(@PathVariable                   String    serverName,
                                                      @PathVariable                   String    userId,
@@ -220,6 +238,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedefs/by-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefListResponse searchForTypeDefs(@PathVariable String serverName,
                                                  @PathVariable String userId,
@@ -244,6 +263,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedef/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
                                             @PathVariable String    userId,
@@ -268,6 +288,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/attribute-typedef/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    serverName,
                                                               @PathVariable String    userId,
@@ -293,6 +314,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedef/name/{name}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
                                             @PathVariable String    userId,
@@ -317,6 +339,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/attribute-typedef/name/{name}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    serverName,
                                                                @PathVariable String    userId,
@@ -345,6 +368,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse addTypeDefGallery(@PathVariable String         serverName,
                                            @PathVariable String         userId,
@@ -373,6 +397,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedef")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse addTypeDef(@PathVariable String    serverName,
                                    @PathVariable String    userId,
@@ -401,6 +426,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/attribute-typedef")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse addAttributeTypeDef(@PathVariable String             serverName,
                                              @PathVariable String             userId,
@@ -427,6 +453,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedef/compatibility")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public BooleanResponse verifyTypeDef(@PathVariable String    serverName,
                                          @PathVariable String    userId,
@@ -453,6 +480,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/attribute-typedef/compatibility")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  BooleanResponse verifyAttributeTypeDef(@PathVariable String            serverName,
                                                    @PathVariable String            userId,
@@ -481,6 +509,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedef/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TypeDefResponse updateTypeDef(@PathVariable String       serverName,
                                          @PathVariable String       userId,
@@ -511,6 +540,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedef/{guid}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteTypeDef(@PathVariable String    serverName,
                                       @PathVariable String    userId,
@@ -542,6 +572,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/attribute-typedef/{guid}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteAttributeTypeDef(@PathVariable String    serverName,
                                                @PathVariable String    userId,
@@ -573,6 +604,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedef/{originalTypeDefGUID}/identifier")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  TypeDefResponse reIdentifyTypeDef(@PathVariable String                   serverName,
                                               @PathVariable String                   userId,
@@ -606,6 +638,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/attribute-typedef/{originalAttributeTypeDefGUID}/identifier")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(@PathVariable String                    serverName,
                                                                 @PathVariable String                    userId,
@@ -637,6 +670,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/entity/{guid}/existence")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse isEntityKnown(@PathVariable String     serverName,
                                               @PathVariable String     userId,
@@ -661,6 +695,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/entity/{guid}/summary")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntitySummaryResponse getEntitySummary(@PathVariable String     serverName,
                                                   @PathVariable String     userId,
@@ -686,6 +721,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/entity/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse getEntityDetail(@PathVariable String    serverName,
                                                 @PathVariable String    userId,
@@ -714,6 +750,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{guid}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityDetailResponse getEntityDetail(@PathVariable String         serverName,
                                                  @PathVariable String         userId,
@@ -743,6 +780,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{guid}/history/all")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  EntityListResponse getEntityDetailHistory(@PathVariable String              serverName,
                                                       @PathVariable String              userId,
                                                       @PathVariable String              guid,
@@ -772,6 +811,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{guid}/classification/{classificationName}/history/all")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  ClassificationListResponse getClassificationHistory(@PathVariable String              serverName,
                                                       @PathVariable String              userId,
                                                       @PathVariable String              guid,
@@ -802,6 +843,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/relationships")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipListResponse getRelationshipsForEntity(@PathVariable String                     serverName,
                                                               @PathVariable String                     userId,
@@ -834,6 +876,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/relationships/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipListResponse getRelationshipsForEntityHistory(@PathVariable String                            serverName,
                                                                      @PathVariable String                            userId,
@@ -866,6 +909,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  EntityListResponse findEntities(@PathVariable String            serverName,
                                             @PathVariable String            userId,
                                             @RequestBody  EntityFindRequest findRequestParameters)
@@ -894,6 +939,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/history")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  EntityListResponse findEntitiesByHistory(@PathVariable String                      serverName,
                                                      @PathVariable String                      userId,
                                                      @RequestBody  EntityHistoricalFindRequest findRequestParameters)
@@ -923,6 +970,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/by-property")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse findEntitiesByProperty(@PathVariable String                    serverName,
                                                       @PathVariable String                    userId,
@@ -953,6 +1001,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/by-property/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse findEntitiesByPropertyHistory(@PathVariable String                              serverName,
                                                              @PathVariable String                              userId,
@@ -984,6 +1033,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/by-classification/{classificationName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse findEntitiesByClassification(@PathVariable String                   serverName,
                                                             @PathVariable String                   userId,
@@ -1016,6 +1066,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/by-classification/{classificationName}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse findEntitiesByClassificationHistory(@PathVariable String                             serverName,
                                                                    @PathVariable String                             userId,
@@ -1048,6 +1099,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/by-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse findEntitiesByPropertyValue(@PathVariable String                    serverName,
                                                            @PathVariable String                    userId,
@@ -1080,6 +1132,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/by-property-value/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse findEntitiesByPropertyValueHistory(@PathVariable String                              serverName,
                                                                   @PathVariable String                              userId,
@@ -1104,6 +1157,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/relationship/{guid}/existence")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse  isRelationshipKnown(@PathVariable String     serverName,
                                                      @PathVariable String     userId,
@@ -1129,6 +1183,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/relationship/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse getRelationship(@PathVariable String     serverName,
                                                 @PathVariable String     userId,
@@ -1156,6 +1211,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{guid}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  RelationshipResponse getRelationship(@PathVariable String         serverName,
                                                  @PathVariable String         userId,
@@ -1184,6 +1240,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{guid}/history/all")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  RelationshipListResponse getRelationshipHistory(@PathVariable String              serverName,
                                                             @PathVariable String              userId,
                                                             @PathVariable String              guid,
@@ -1213,6 +1271,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  RelationshipListResponse findRelationships(@PathVariable String              serverName,
                                                        @PathVariable String              userId,
                                                        @RequestBody  InstanceFindRequest findRequestParameters)
@@ -1240,6 +1300,8 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/history")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     public  RelationshipListResponse findRelationshipsByHistory(@PathVariable String                        serverName,
                                                                 @PathVariable String                        userId,
                                                                 @RequestBody  InstanceHistoricalFindRequest findRequestParameters)
@@ -1268,6 +1330,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/by-property")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  RelationshipListResponse findRelationshipsByProperty(@PathVariable String                   serverName,
                                                                  @PathVariable String                   userId,
@@ -1297,6 +1360,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/by-property/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  RelationshipListResponse findRelationshipsByPropertyHistory(@PathVariable String                             serverName,
                                                                         @PathVariable String                             userId,
@@ -1325,6 +1389,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/by-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String                    serverName,
                                                                       @PathVariable String                    userId,
@@ -1354,6 +1419,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/by-property-value/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  RelationshipListResponse findRelationshipsByPropertyValueHistory(@PathVariable String                              serverName,
                                                                              @PathVariable String                              userId,
@@ -1384,6 +1450,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-linkage")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  InstanceGraphResponse getLinkingEntities(@PathVariable String             serverName,
                                                      @PathVariable String             userId,
@@ -1415,6 +1482,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-linkage/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  InstanceGraphResponse getLinkingEntitiesHistory(@PathVariable String                        serverName,
                                                             @PathVariable String                        userId,
@@ -1448,6 +1516,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/from-entity/{entityGUID}/by-neighborhood")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  InstanceGraphResponse getEntityNeighborhood(@PathVariable String                        serverName,
                                                         @PathVariable String                        userId,
@@ -1481,6 +1550,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/from-entity/{entityGUID}/by-neighborhood/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  InstanceGraphResponse getEntityNeighborhoodHistory(@PathVariable String                                  serverName,
                                                                @PathVariable String                                  userId,
@@ -1517,6 +1587,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-relationship")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse getRelatedEntities(@PathVariable String                      serverName,
                                                   @PathVariable String                      userId,
@@ -1552,6 +1623,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/from-entity/{startEntityGUID}/by-relationship/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  EntityListResponse getRelatedEntitiesHistory(@PathVariable String                                serverName,
                                                          @PathVariable String                                userId,
@@ -1588,6 +1660,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse addEntity(@PathVariable String               serverName,
                                           @PathVariable String               userId,
@@ -1625,6 +1698,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/external")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse addExternalEntity(@PathVariable String               serverName,
                                                   @PathVariable String               userId,
@@ -1658,6 +1732,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity-proxy")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse addEntityProxy(@PathVariable String      serverName,
                                        @PathVariable String      userId,
@@ -1685,6 +1760,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse updateEntityStatus(@PathVariable String           serverName,
                                                    @PathVariable String           userId,
@@ -1713,6 +1789,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse updateEntityProperties(@PathVariable String                      serverName,
                                                        @PathVariable String                      userId,
@@ -1739,6 +1816,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/entity/{entityGUID}/previous")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse undoEntityUpdate(@PathVariable String  serverName,
                                                  @PathVariable String  userId,
@@ -1769,6 +1847,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{obsoleteEntityGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse  deleteEntity(@PathVariable String                        serverName,
                                               @PathVariable String                        userId,
@@ -1796,6 +1875,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{deletedEntityGUID}/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse purgeEntity(@PathVariable String                        serverName,
                                     @PathVariable String                        userId,
@@ -1823,6 +1903,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/entity/{deletedEntityGUID}/restore")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse restoreEntity(@PathVariable String    serverName,
                                               @PathVariable String    userId,
@@ -1853,6 +1934,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse classifyEntity(@PathVariable String                      serverName,
                                                @PathVariable String                      userId,
@@ -1862,8 +1944,6 @@ public class LocalRepositoryServicesResource
     {
         return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, propertiesRequestBody);
     }
-
-
 
 
     /**
@@ -1886,6 +1966,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/classification/{classificationName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public ClassificationResponse classifyEntity(@PathVariable String                      serverName,
                                                  @PathVariable String                      userId,
@@ -1918,6 +1999,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/detailed")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse  classifyEntity(@PathVariable String                serverName,
                                                 @PathVariable String                userId,
@@ -1950,6 +2032,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/classification/{classificationName}/detailed")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public ClassificationResponse  classifyEntity(@PathVariable String                     serverName,
                                                   @PathVariable String                     userId,
@@ -1978,6 +2061,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @SuppressWarnings(value = "unused")
     public EntityDetailResponse declassifyEntity(@PathVariable                  String          serverName,
@@ -1988,7 +2072,6 @@ public class LocalRepositoryServicesResource
     {
         return restAPI.declassifyEntity(serverName, userId, entityGUID, classificationName);
     }
-
 
 
     /**
@@ -2008,6 +2091,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/classification/{classificationName}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public ClassificationResponse declassifyEntity(@PathVariable String       serverName,
                                                    @PathVariable String       userId,
@@ -2038,6 +2122,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse updateEntityClassification(@PathVariable String                      serverName,
                                                            @PathVariable String                      userId,
@@ -2068,6 +2153,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/classification/{classificationName}/properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public ClassificationResponse updateEntityClassification(@PathVariable String                      serverName,
                                                              @PathVariable String                      userId,
@@ -2099,6 +2185,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse addRelationship(@PathVariable String                    serverName,
                                                 @PathVariable String                    userId,
@@ -2133,6 +2220,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/external")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse addExternalRelationship(@PathVariable String                    serverName,
                                                         @PathVariable String                    userId,
@@ -2160,6 +2248,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{relationshipGUID}/status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse updateRelationshipStatus(@PathVariable String           serverName,
                                                          @PathVariable String           userId,
@@ -2188,6 +2277,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{relationshipGUID}/properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse updateRelationshipProperties(@PathVariable String                      serverName,
                                                              @PathVariable String                      userId,
@@ -2214,6 +2304,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/relationship/{relationshipGUID}/previous")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse undoRelationshipUpdate(@PathVariable String  serverName,
                                                        @PathVariable String  userId,
@@ -2243,6 +2334,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{obsoleteRelationshipGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse deleteRelationship(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
@@ -2270,6 +2362,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{deletedRelationshipGUID}/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse purgeRelationship(@PathVariable String                        serverName,
                                           @PathVariable String                        userId,
@@ -2298,6 +2391,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/instances/relationship/{deletedRelationshipGUID}/restore")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse restoreRelationship(@PathVariable String    serverName,
                                                     @PathVariable String    userId,
@@ -2332,6 +2426,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/identity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse reIdentifyEntity(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
@@ -2366,6 +2461,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse reTypeEntity(@PathVariable String                serverName,
                                              @PathVariable String                userId,
@@ -2398,6 +2494,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/home/{homeMetadataCollectionId}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public EntityDetailResponse reHomeEntity(@PathVariable String                        serverName,
                                              @PathVariable String                        userId,
@@ -2438,6 +2535,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{relationshipGUID}/identity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse reIdentifyRelationship(@PathVariable String                        serverName,
                                                        @PathVariable String                        userId,
@@ -2472,6 +2570,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{relationshipGUID}/type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse reTypeRelationship(@PathVariable String                serverName,
                                                    @PathVariable String                userId,
@@ -2505,6 +2604,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationship/{relationshipGUID}/home/{homeMetadataCollectionId}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelationshipResponse reHomeRelationship(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
@@ -2554,6 +2654,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/reference-copy")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse saveEntityReferenceCopy(@PathVariable String       serverName,
                                                 @PathVariable String       userId,
@@ -2579,6 +2680,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException this method is not supported
      */
     @GetMapping(path = "/instances/entity/{entityGUID}/home-classifications")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public ClassificationListResponse getHomeClassifications(@PathVariable String serverName,
                                                              @PathVariable String userId,
@@ -2605,6 +2707,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException this method is not supported
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/home-classifications/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public ClassificationListResponse getHomeClassifications(@PathVariable String         serverName,
                                                              @PathVariable String         userId,
@@ -2635,6 +2738,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/reference-copy/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteEntityReferenceCopy(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
@@ -2669,6 +2773,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/reference-copy/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
@@ -2700,6 +2805,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/reference-copy/{entityGUID}/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
@@ -2732,6 +2838,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/entities/reference-copy/{entityGUID}/refresh")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse refreshEntityReferenceCopy(@PathVariable String                        serverName,
                                                    @PathVariable String                        userId,
@@ -2770,6 +2877,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "instances/entities/classifications/reference-copy")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse saveClassificationReferenceCopy(@PathVariable String                          serverName,
                                                         @PathVariable String                          userId,
@@ -2802,6 +2910,7 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     @PostMapping(path = "instances/entities/classifications/reference-copy/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse purgeClassificationReferenceCopy(@PathVariable String                          serverName,
                                                           @PathVariable String                          userId,
@@ -2837,6 +2946,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/reference-copy")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse saveRelationshipReferenceCopy(@PathVariable String         serverName,
                                                       @PathVariable String         userId,
@@ -2874,6 +2984,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/reference-copy/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                         @PathVariable String                        userId,
@@ -2910,6 +3021,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/reference-copy/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                        @PathVariable String                        userId,
@@ -2941,6 +3053,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/reference-copy/{relationshipGUID}/purge")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                        @PathVariable String                        userId,
@@ -2977,6 +3090,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances/relationships/reference-copy/{relationshipGUID}/refresh")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse refreshRelationshipReferenceCopy(@PathVariable String                        serverName,
                                                          @PathVariable String                        userId,
@@ -3017,6 +3131,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/instances")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse  saveInstanceReferenceCopies(@PathVariable String                 serverName,
                                                      @PathVariable String                 userId,

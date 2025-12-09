@@ -6,6 +6,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
@@ -26,13 +30,9 @@ public interface StewardshipRequestInterface
      * This incident report will be processed by other governance activities.
      *
      * @param userId caller's userId
-     * @param qualifiedName unique identifier to give this new incident report
-     * @param domainIdentifier governance domain associated with this action (0=ALL)
-     * @param background description of the situation
+     * @param properties unique identifier to give this new incident report and description of the situation
      * @param impactedResources details of the resources impacted by this situation
      * @param previousIncidents links to previous incident reports covering this situation
-     * @param incidentClassifiers initial classifiers for the incident report
-     * @param additionalProperties additional arbitrary properties for the incident reports
      * @param originatorGUID the unique identifier of the person or process that created the incident
      *
      * @return unique identifier of the resulting incident report
@@ -40,30 +40,20 @@ public interface StewardshipRequestInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String createIncidentReport(String                        userId,
-                                String                        qualifiedName,
-                                int                           domainIdentifier,
-                                String                        background,
-                                List<IncidentImpactedElement> impactedResources,
-                                List<IncidentDependency>      previousIncidents,
-                                Map<String, Integer>          incidentClassifiers,
-                                Map<String, String>           additionalProperties,
-                                String                        originatorGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    String createIncidentReport(String                                  userId,
+                                IncidentReportProperties                properties,
+                                Map<String, ImpactedResourceProperties> impactedResources,
+                                Map<String, ReportDependencyProperties> previousIncidents,
+                                String                                  originatorGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 
 
     /**
      * Create a "To Do" request for someone to work on.
      *
      * @param userId caller's userId
-     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
-     * @param title short meaningful phrase for the person receiving the request
-     * @param instructions further details on what to do
-     * @param category a category of to dos (for example, "data error", "access request")
-     * @param priority priority value (based on organization's scale)
-     * @param dueDate date/time this needs to be completed
-     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param properties unique name for the to do plus additional  properties
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param originatorGUID unique identifier of the source of the to do
@@ -76,13 +66,7 @@ public interface StewardshipRequestInterface
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
     String openToDo(String                userId,
-                    String                qualifiedName,
-                    String                title,
-                    String                instructions,
-                    String                category,
-                    int                   priority,
-                    Date                  dueDate,
-                    Map<String, String>   additionalProperties,
+                    ToDoProperties        properties,
                     String                assignToGUID,
                     String                sponsorGUID,
                     String                originatorGUID,

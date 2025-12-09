@@ -22,18 +22,18 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 public enum ProductManagerAuditCode implements AuditLogMessageSet
 {
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * JACQUARD-HARVESTER-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
-    UNEXPECTED_EXCEPTION("HARVEST-DIGITAL-PRODUCTS-0001",
+    UNEXPECTED_EXCEPTION("JACQUARD-HARVESTER-0001",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to catalog one or more metadata elements in the metadata repository.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0002 - Integration connector {0} is unable to determine if tabular data source {1} has changed since it has no last update time column
+     * JACQUARD-HARVESTER-0002 - Integration connector {0} is unable to determine if tabular data source {1} has changed since it has no last update time column
      */
-    NO_LAST_UPDATE_DATE( "HARVEST-DIGITAL-PRODUCTS-0002",
+    NO_LAST_UPDATE_DATE( "JACQUARD-HARVESTER-0002",
                         OMRSAuditLogRecordSeverity.ERROR,
                         "Integration connector {0} is unable to determine if tabular data source {1} has changed since it has no last update time column",
                         "The integration connector skips this data source.",
@@ -41,18 +41,18 @@ public enum ProductManagerAuditCode implements AuditLogMessageSet
 
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0003 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}
+     * JACQUARD-HARVESTER-0003 - Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}
      */
-    DATA_SET_UPDATE_DETECTED( "HARVEST-DIGITAL-PRODUCTS-0003",
+    DATA_SET_UPDATE_DETECTED( "JACQUARD-HARVESTER-0003",
                          OMRSAuditLogRecordSeverity.INFO,
                          "Integration connector {0} detected that row {1} of dataset {2} has been updated on {3}; row values {4}",
                          "The integration connector updates the last update data in the Governance Classification for this data source.",
                          "Validate that this assertion is reasonable."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}
+     * JACQUARD-HARVESTER-0005 - The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}
      */
-    BAD_CONFIGURATION("HARVEST-DIGITAL-PRODUCTS-0005",
+    BAD_CONFIGURATION("JACQUARD-HARVESTER-0005",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The {0} integration connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}",
                           "The exception is passed back to the integration daemon that is hosting " +
@@ -64,81 +64,81 @@ public enum ProductManagerAuditCode implements AuditLogMessageSet
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down
+     * JACQUARD-HARVESTER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down
      */
-    CONNECTOR_STOPPING("HARVEST-DIGITAL-PRODUCTS-0009",
+    CONNECTOR_STOPPING("JACQUARD-HARVESTER-0009",
                        OMRSAuditLogRecordSeverity.INFO,
                        "The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0010 - The {0} integration connector has created a new {1} supporting definition with GUID {2}
+     * JACQUARD-HARVESTER-0010 - The {0} integration connector has created a new {1} supporting definition with GUID {2}
      */
-    CREATED_SUPPORTING_DEFINITION("HARVEST-DIGITAL-PRODUCTS-0010",
+    CREATED_SUPPORTING_DEFINITION("JACQUARD-HARVESTER-0010",
                                   OMRSAuditLogRecordSeverity.INFO,
                                   "The {0} integration connector has created a new {1} supporting definition called {2} with GUID {3}",
                                   "The connector is creating the metadata elements that supports the definition of the open metadata product catalog.",
                                   "No action is required.  This message is used to show the progress of the setup."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0011 - The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products
+     * JACQUARD-HARVESTER-0011 - The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products
      */
-    STARTING_CONNECTOR("HARVEST-DIGITAL-PRODUCTS-0011",
+    STARTING_CONNECTOR("JACQUARD-HARVESTER-0011",
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products",
                             "The connector is initializing the definitions for the open metadata product catalog.",
                             "Monitor the set up of the catalog and the switch over to monitoring."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0012 - The {0} integration connector has created a new digital product {1} called {2}
+     * JACQUARD-HARVESTER-0012 - The {0} integration connector has created a new digital product {1} called {2}
      */
-    NEW_OPEN_METADATA_PRODUCT("HARVEST-DIGITAL-PRODUCTS-0012",
+    NEW_OPEN_METADATA_PRODUCT("JACQUARD-HARVESTER-0012",
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector has created a new digital product {1} called {2}",
                             "The connector is setting up the fixed open metadata digital products.",
                             "No action is required.  This message is for monitoring the set up of the fixed digital products."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0013 - The {0} integration connector has dynamically created a new digital product {1} for valid value set {2}
+     * JACQUARD-HARVESTER-0013 - The {0} integration connector has dynamically created a new digital product {1} for valid value set {2}
      */
-    NEW_VALID_VALUE_PRODUCT("HARVEST-DIGITAL-PRODUCTS-0013",
+    NEW_VALID_VALUE_PRODUCT("JACQUARD-HARVESTER-0013",
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector has dynamically created a new digital product {1} for valid value set {2}",
                             "The connector is harvesting valid value sets.  Each one becomes a new digital product.",
                             "No action is required.  This message is for monitoring the set up of the valid value set products."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0014 - The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}
+     * JACQUARD-HARVESTER-0014 - The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}
      */
-    LINKING_ELEMENTS("HARVEST-DIGITAL-PRODUCTS-0014",
+    LINKING_ELEMENTS("JACQUARD-HARVESTER-0014",
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}",
                             "The connector is linking product catalog elements together.",
                             "No action is required.  This message is for monitoring the set up of the open metadata product catalog."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0015 - The {0} integration connector has retrieved a new {1} supporting definition with GUID {2}
+     * JACQUARD-HARVESTER-0015 - The {0} integration connector has retrieved a new {1} supporting definition with GUID {2}
      */
-    RETRIEVING_SUPPORTING_DEFINITION("HARVEST-DIGITAL-PRODUCTS-0015",
+    RETRIEVING_SUPPORTING_DEFINITION("JACQUARD-HARVESTER-0015",
                                   OMRSAuditLogRecordSeverity.INFO,
                                   "The {0} integration connector has retrieved a new {1} supporting definition called {2} with GUID {3}",
                                   "The connector is retrieving the metadata elements that supports the definition of the open metadata product catalog.",
                                   "No action is required.  This message is used to show progress during the setup."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0016 - The {0} integration connector has retrieved an existing digital product {1} called {2}
+     * JACQUARD-HARVESTER-0016 - The {0} integration connector has retrieved an existing digital product {1} called {2}
      */
-    RETRIEVING_OPEN_METADATA_PRODUCT("HARVEST-DIGITAL-PRODUCTS-0016",
+    RETRIEVING_OPEN_METADATA_PRODUCT("JACQUARD-HARVESTER-0016",
                               OMRSAuditLogRecordSeverity.INFO,
                               "The {0} integration connector has retrieved an existing digital product {1} called {2}",
                               "The connector is retrieving the fixed open metadata digital products.",
                               "No action is required.  This message is for monitoring the retrieval of the fixed digital products."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0017 - The {0} integration connector has retrieved existing digital product {1} for valid value set {2}
+     * JACQUARD-HARVESTER-0017 - The {0} integration connector has retrieved existing digital product {1} for valid value set {2}
      */
-    RETRIEVED_VALID_VALUE_PRODUCT("HARVEST-DIGITAL-PRODUCTS-0017",
+    RETRIEVED_VALID_VALUE_PRODUCT("JACQUARD-HARVESTER-0017",
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector has retrieved existing digital product {1} for valid value set {2}",
                             "The connector is retrieving valid value set digital products.",
@@ -146,9 +146,9 @@ public enum ProductManagerAuditCode implements AuditLogMessageSet
 
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
+     * JACQUARD-HARVESTER-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
      */
-    UNABLE_TO_REGISTER_LISTENER("HARVEST-DIGITAL-PRODUCTS-0032",
+    UNABLE_TO_REGISTER_LISTENER("JACQUARD-HARVESTER-0032",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
                                   "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Apache Atlas during a refresh scan.",

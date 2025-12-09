@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Asset Maker OMVS", description="Create and maintain descriptions of your digital resources, from your infrastructure and systems through to the APIs, data sets and processes that are in use by your organization.  The description of a digital resource is called an asset - hence the name of this service.  Egeria is able to automatically catalog your existing digital resources.  Asset Maker OMVS can be used to augment the description of the resulting assets, or allow you to proactively create catalog entries for digital resources that are in development, or are about to be deployed.",
+@Tag(name="API: Asset Maker", description="Create and maintain descriptions of your digital resources, from your infrastructure and systems through to the APIs, data sets and processes that are in use by your organization.  The description of a digital resource is called an asset - hence the name of this service.  Egeria is able to automatically catalog your existing digital resources.  Asset Maker OMVS can be used to augment the description of the resulting assets, or allow you to proactively create catalog entries for digital resources that are in development, or are about to be deployed.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/asset-maker/overview/"))
 
@@ -123,7 +123,7 @@ public class AssetMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/asset"))
 
-    public VoidResponse updateAsset(@PathVariable
+    public BooleanResponse updateAsset(@PathVariable
                                          String                                  serverName,
                                          @PathVariable String             urlMarker,
                                          @PathVariable
@@ -258,7 +258,213 @@ public class AssetMakerResource
 
 
     /* =====================================================================================================================
-     * A catalog target links an element (typically an asset, to an integration connector for processing.
+     * Working with infrastructure
+     */
+
+    /**
+     * Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID       unique identifier of the asset
+     * @param destinationGUID           unique identifier of the destination asset
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/assets/{assetGUID}/deployed-on/{destinationGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deployITAsset",
+            description="Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse deployITAsset(@PathVariable String                  serverName,
+                                      @PathVariable String                  urlMarker,
+                                      @PathVariable String assetGUID,
+                                      @PathVariable String destinationGUID,
+                                      @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.deployITAsset(serverName, urlMarker, assetGUID, destinationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a DeployedOn relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID       unique identifier of the asset
+     * @param destinationGUID           unique identifier of the destination asset
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/assets/{assetGUID}/deployed-on/{destinationGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="unDeployITAsset",
+            description="Remove a DeployedOn relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse unDeployITAsset(@PathVariable String                        serverName,
+                                        @PathVariable String                        urlMarker,
+                                        @PathVariable String assetGUID,
+                                        @PathVariable String destinationGUID,
+                                        @RequestBody  (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.unDeployITAsset(serverName, urlMarker, assetGUID, destinationGUID, requestBody);
+    }
+
+
+    /**
+     * Create a relationship that links a software capability to an infrastructure asset like a software server.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID          unique identifier of the data set
+     * @param capabilityGUID          unique identifier of the data asset supplying the data
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/assets/{assetGUID}/supported-software-capabilities/{capabilityGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSoftwareCapability",
+            description="Create a relationship that links a software capability to an infrastructure asset like a software server.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkSoftwareCapability(@PathVariable String                  serverName,
+                                               @PathVariable String                  urlMarker,
+                                               @PathVariable String assetGUID,
+                                               @PathVariable String capabilityGUID,
+                                               @RequestBody (required = false)
+                                               NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSoftwareCapability(serverName, urlMarker, assetGUID, capabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a relationship that links a software capability to an infrastructure asset like a software server.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID          unique identifier of the data set
+     * @param capabilityGUID          unique identifier of the data asset supplying the data
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/assets/{assetGUID}/supported-software-capabilities/{capabilityGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSoftwareCapability",
+            description="Remove a relationship that links a software capability to an infrastructure asset like a software server.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachSoftwareCapability(@PathVariable String                        serverName,
+                                             @PathVariable String                        urlMarker,
+                                             @PathVariable String assetGUID,
+                                             @PathVariable String capabilityGUID,
+                                             @RequestBody  (required = false)
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSoftwareCapability(serverName, urlMarker, assetGUID, capabilityGUID, requestBody);
+    }
+
+
+    /* =====================================================================================================================
+     * Working with data assets
+     */
+
+    /**
+     * Attach a data set to another asset (typically a data store) that is supplying the data.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/data-sets/{dataSetGUID}/data-set-content/{dataContentAssetGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkDataSetContent",
+            description="Attach a data set to another asset (typically a data store) that is supplying the data.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkDataSetContent(@PathVariable String                  serverName,
+                                            @PathVariable String                  urlMarker,
+                                            @PathVariable String dataSetGUID,
+                                            @PathVariable String dataContentAssetGUID,
+                                            @RequestBody (required = false)
+                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkDataSetContent(serverName, urlMarker, dataSetGUID, dataContentAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data set from another asset that was supplying the data and is no more.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/data-sets/{dataSetGUID}/data-set-content/{dataContentAssetGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDataSetContent",
+            description="Detach a data set from another asset that was supplying the data and is no more.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachDataSetContent(@PathVariable String                        serverName,
+                                            @PathVariable String                        urlMarker,
+                                            @PathVariable String dataSetGUID,
+                                            @PathVariable String dataContentAssetGUID,
+                                            @RequestBody  (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDataSetContent(serverName, urlMarker, dataSetGUID, dataContentAssetGUID, requestBody);
+    }
+
+
+    /* =====================================================================================================================
+     * A catalog target links an element (typically an asset) to an integration connector for processing.
      */
 
     /**
@@ -412,6 +618,39 @@ public class AssetMakerResource
                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeCatalogTarget(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Unregister a catalog target from the integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param requestBody  request body.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="removeCatalogTarget",
+            description="Unregister a catalog target from the integration connector.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public VoidResponse removeCatalogTarget(@PathVariable String           serverName,
+                                            @PathVariable String             urlMarker,
+                                            @PathVariable String                  integrationConnectorGUID,
+                                            @PathVariable String                  metadataElementGUID,
+                                            @RequestBody(required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.removeCatalogTarget(serverName, urlMarker, integrationConnectorGUID, metadataElementGUID, requestBody);
     }
 
 

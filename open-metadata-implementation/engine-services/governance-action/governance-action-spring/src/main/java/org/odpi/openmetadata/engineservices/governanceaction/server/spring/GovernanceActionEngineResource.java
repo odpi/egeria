@@ -4,6 +4,10 @@ package org.odpi.openmetadata.engineservices.governanceaction.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionRESTServices;
@@ -16,7 +20,14 @@ import org.springframework.web.bind.annotation.*;
  * The engine host server routes these requests to the named governance action engine.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/engine-services/governance-action/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/engine-services/governance-action")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Engine Host: Governance Action OMES",
      description="The Governance Action OMES provide the core subsystem for driving requests for automated governance action services.",
@@ -33,7 +44,6 @@ public class GovernanceActionEngineResource
      * integration daemon.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
@@ -42,6 +52,7 @@ public class GovernanceActionEngineResource
      *  PropertyServerException there was a problem detected by the integration service
      */
     @GetMapping(path = "/validate-connector/{connectorProviderClassName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="validateConnector",
                description="Validate the connector and return its connector type.  The engine service does not need to" +
@@ -51,9 +62,8 @@ public class GovernanceActionEngineResource
                                                    url="https://egeria-project.org/concepts/governance-action-service"))
 
     public ConnectorReportResponse validateConnector(@PathVariable String serverName,
-                                                     @PathVariable String userId,
                                                      @PathVariable String connectorProviderClassName)
     {
-        return restAPI.validateConnector(serverName, userId, connectorProviderClassName);
+        return restAPI.validateConnector(serverName, connectorProviderClassName);
     }
 }

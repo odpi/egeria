@@ -173,21 +173,21 @@ public class GovernanceOfficerRESTServices extends TokenController
      * @param governanceDefinitionGUID unique identifier of the governance definition (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateGovernanceDefinition(String                   serverName,
-                                                   String                   urlMarker,
-                                                   String                   governanceDefinitionGUID,
-                                                   UpdateElementRequestBody requestBody)
+    public BooleanResponse updateGovernanceDefinition(String                   serverName,
+                                                      String                   urlMarker,
+                                                      String                   governanceDefinitionGUID,
+                                                      UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateGovernanceDefinition";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -204,17 +204,10 @@ public class GovernanceOfficerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof GovernanceDefinitionProperties governanceDefinitionProperties)
                 {
-                    handler.updateGovernanceDefinition(userId,
-                                                       governanceDefinitionGUID,
-                                                       requestBody,
-                                                       governanceDefinitionProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateGovernanceDefinition(userId,
-                                                       governanceDefinitionGUID,
-                                                       requestBody,
-                                                       null);
+                    response.setFlag(handler.updateGovernanceDefinition(userId,
+                                                                        governanceDefinitionGUID,
+                                                                        requestBody,
+                                                                        governanceDefinitionProperties));
                 }
                 else
                 {

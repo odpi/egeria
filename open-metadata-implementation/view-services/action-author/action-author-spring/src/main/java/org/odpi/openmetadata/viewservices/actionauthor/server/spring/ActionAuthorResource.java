@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Action Author OMVS",
+@Tag(name="API: Action Author",
         description="Set up and maintain the definition of the governance actions needed by your organization.  Governance actions can be a single operation, such as automatically classifying newly catalogued data.  These single operations are called governance action types.  Alternatively, a governance action may be a choreographed sequence of actions, where the result of one action determines which action(s) run next.  The choreographed sequence of actions is called a governance action process.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/action-author/overview/"))

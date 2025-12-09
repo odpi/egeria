@@ -5,12 +5,11 @@ package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
-import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
@@ -28,9 +27,6 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
      * @param engineConfig        information about the governance engine.
      * @param localServerName     the name of the engine host server where the survey action engine is running
      * @param localServerUserId   user id for the engine host server to use
-     * @param localServerPassword optional password for the engine host server to use
-     * @param partnerServerName   name of partner server
-     * @param partnerURLRoot      partner platform
      * @param configurationClient client to retrieve the configuration
      * @param serverClient        client used by the engine host services to control the execution of engine action requests
      * @param auditLog            logging destination
@@ -41,9 +37,6 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
     public GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                  engineConfig,
                                                                  String                        localServerName,
                                                                  String                        localServerUserId,
-                                                                 String                        localServerPassword,
-                                                                 String                        partnerServerName,
-                                                                 String                        partnerURLRoot,
                                                                  GovernanceConfigurationClient configurationClient,
                                                                  GovernanceContextClient       serverClient,
                                                                  AuditLog                      auditLog,
@@ -51,66 +44,32 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
     {
         if (engineConfig != null)
         {
-            GovernanceContextClient       governanceContextClient;
-            OpenGovernanceClient          openGovernanceClient;
-            EgeriaOpenMetadataStoreClient openMetadataStoreClient;
-            EgeriaConnectedAssetClient    connectedAssetClient;
-            GAFRESTClient                 restClient;
+            ConnectedAssetClient connectedAssetClient = new EgeriaConnectedAssetClient(engineConfig.getOMAGServerName(),
+                                                                                       engineConfig.getOMAGServerPlatformRootURL(),
+                                                                                       engineConfig.getSecretsStoreProvider(),
+                                                                                       engineConfig.getSecretsStoreLocation(),
+                                                                                       engineConfig.getSecretsStoreCollection(),
+                                                                                       maxPageSize,
+                                                                                       auditLog);
 
-            if ((localServerName != null) && (localServerPassword != null))
-            {
-                openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
-                                                                            partnerURLRoot,
-                                                                            maxPageSize);
-                connectedAssetClient = new EgeriaConnectedAssetClient(partnerServerName,
-                                                                      partnerURLRoot,
-                                                                      maxPageSize,
-                                                                      auditLog);
-                openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
-                                                                      partnerURLRoot,
-                                                                      maxPageSize);
-                restClient = new GAFRESTClient(partnerServerName,
-                                               partnerURLRoot,
-                                               localServerUserId,
-                                               localServerPassword);
-            }
-            else
-            {
-                openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
-                                                                            partnerURLRoot,
-                                                                            localServerUserId,
-                                                                            localServerPassword,
-                                                                            maxPageSize);
-                connectedAssetClient = new EgeriaConnectedAssetClient(partnerServerName,
-                                                                      partnerURLRoot,
-                                                                      localServerUserId,
-                                                                      localServerPassword,
-                                                                      maxPageSize,
-                                                                      auditLog);
-                openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
-                                                                            partnerURLRoot,
-                                                                            localServerUserId,
-                                                                            localServerPassword,
-                                                                            maxPageSize);
-                openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
-                                                                      partnerURLRoot,
-                                                                      localServerUserId,
-                                                                      localServerPassword,
-                                                                      maxPageSize);
-                restClient = new GAFRESTClient(partnerServerName, partnerURLRoot);
-            }
+            OpenMetadataClient openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(engineConfig.getOMAGServerName(),
+                                                                                           engineConfig.getOMAGServerPlatformRootURL(),
+                                                                                           engineConfig.getSecretsStoreProvider(),
+                                                                                           engineConfig.getSecretsStoreLocation(),
+                                                                                           engineConfig.getSecretsStoreCollection(),
+                                                                                           maxPageSize,
+                                                                                           auditLog);
 
-            governanceContextClient = new GovernanceContextClient(partnerServerName,
-                                                                  partnerURLRoot,
-                                                                  restClient,
-                                                                  maxPageSize);
-
-
+            GovernanceContextClient governanceContextClient = new GovernanceContextClient(engineConfig.getOMAGServerName(),
+                                                                                          engineConfig.getOMAGServerPlatformRootURL(),
+                                                                                          engineConfig.getSecretsStoreProvider(),
+                                                                                          engineConfig.getSecretsStoreLocation(),
+                                                                                          engineConfig.getSecretsStoreCollection(),
+                                                                                          maxPageSize,
+                                                                                          auditLog);
 
             return new GovernanceActionEngineHandler(engineConfig,
                                                      localServerName,
-                                                     partnerServerName,
-                                                     partnerURLRoot,
                                                      localServerUserId,
                                                      openMetadataStoreClient,
                                                      connectedAssetClient,

@@ -163,20 +163,20 @@ public class DataDiscoveryRESTServices extends TokenController
      * @param annotationGUID unique identifier of the annotation (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateAnnotation(String                   serverName,
-                                         String                   annotationGUID,
-                                         UpdateElementRequestBody requestBody)
+    public BooleanResponse updateAnnotation(String                   serverName,
+                                            String                   annotationGUID,
+                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -193,10 +193,10 @@ public class DataDiscoveryRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof AnnotationProperties annotationProperties)
                 {
-                    handler.updateAnnotation(userId,
-                                             annotationGUID,
-                                             requestBody,
-                                             annotationProperties);
+                    response.setFlag(handler.updateAnnotation(userId,
+                                                              annotationGUID,
+                                                              requestBody,
+                                                              annotationProperties));
                 }
                 else
                 {

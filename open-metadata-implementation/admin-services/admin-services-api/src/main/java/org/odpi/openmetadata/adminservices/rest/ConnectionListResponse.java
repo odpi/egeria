@@ -97,17 +97,7 @@ public class ConnectionListResponse extends FFDCResponseBase
     {
         return "ConnectionListResponse{" +
                 "connections=" + connections +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -124,7 +114,7 @@ public class ConnectionListResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ConnectionListResponse))
+        if (!(objectToCompare instanceof ConnectionListResponse that))
         {
             return false;
         }
@@ -132,7 +122,6 @@ public class ConnectionListResponse extends FFDCResponseBase
         {
             return false;
         }
-        ConnectionListResponse that = (ConnectionListResponse) objectToCompare;
         return Objects.equals(connections, that.connections);
     }
 

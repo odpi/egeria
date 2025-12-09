@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Glossary Manager OMVS",
+@Tag(name="API: Glossary Manager",
      description="Create and maintain glossary terms and organize them into glossaries.  This work may be part of a controlled workflow process allowing for review and approval cycles.",
      externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
@@ -288,7 +288,7 @@ public class GlossaryManagerResource
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param requestBody new properties for the glossary term
      *
-     * @return  void or
+     * @return  boolean or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -296,9 +296,9 @@ public class GlossaryManagerResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    public VoidResponse updateGlossaryTerm(@PathVariable String                   serverName,
-                                           @PathVariable String                   glossaryTermGUID,
-                                           @RequestBody  UpdateElementRequestBody requestBody)
+    public BooleanResponse updateGlossaryTerm(@PathVariable String                   serverName,
+                                              @PathVariable String                   glossaryTermGUID,
+                                              @RequestBody  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateGlossaryTerm(serverName, glossaryTermGUID, requestBody);
     }

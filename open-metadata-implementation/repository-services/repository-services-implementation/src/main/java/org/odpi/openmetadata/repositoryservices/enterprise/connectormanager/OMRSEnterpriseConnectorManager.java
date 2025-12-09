@@ -5,9 +5,12 @@ package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
@@ -19,10 +22,7 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * OMRSEnterpriseConnectorManager provides the connectors for all the repositories in the connected metadata
@@ -80,10 +80,11 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     private final List<RegisteredConnectorConsumer> registeredConnectorConsumers = new ArrayList<>();
     private final AuditLog                          auditLog;
     private final String                            localServerUserId;
-    private final String                            localServerPassword;
-
-    private String                            localMetadataCollectionId    = null;
-    private LocalOMRSRepositoryConnector      localRepositoryConnector     = null;
+    private final String                            localServerSecretStoreProvider;   /* Initialized in constructor */
+    private final String                            localServerSecretStoreLocation;   /* Initialized in constructor */
+    private final String                            localServerSecretStoreCollection; /* Initialized in constructor */
+    private String                                  localMetadataCollectionId    = null;
+    private LocalOMRSRepositoryConnector            localRepositoryConnector     = null;
 
     /**
      * Constructor for the enterprise connector manager.
@@ -96,21 +97,27 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param repositoryContentManager repository content manager used by the connectors.
      * @param auditLog audit log to act as a factory for connector audit logs.
      * @param localServerUserId userId for the local server
-     * @param localServerPassword password for the local server
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      */
     public OMRSEnterpriseConnectorManager(boolean                      enterpriseAccessEnabled,
                                           int                          maxPageSize,
                                           OMRSRepositoryContentManager repositoryContentManager,
                                           AuditLog                     auditLog,
                                           String                       localServerUserId,
-                                          String                       localServerPassword)
+                                          String                       localServerSecretsStoreProvider,
+                                          String                       localServerSecretsStoreLocation,
+                                          String                       localServerSecretsStoreCollection)
     {
         this.enterpriseAccessEnabled = enterpriseAccessEnabled;
         this.maxPageSize = maxPageSize;
         this.repositoryContentManager = repositoryContentManager;
         this.auditLog = auditLog;
         this.localServerUserId = localServerUserId;
-        this.localServerPassword = localServerPassword;
+        this.localServerSecretStoreProvider   = localServerSecretsStoreProvider;
+        this.localServerSecretStoreLocation   = localServerSecretsStoreLocation;
+        this.localServerSecretStoreCollection = localServerSecretsStoreCollection;
     }
 
 
@@ -133,7 +140,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * The disconnect processing involves disconnecting the local connector then unregistering all remote repositories with
      * each of the connector consumers. Each connector consumer will pass the disconnect() request to each of their repository
      * connector instances.
-     *
+     * <p>
      * If there is an error during disconnect of the local connector, it is logged here and re-thrown to generate an audit log entry.
      *
      * @throws ConnectorCheckedException exception from the connector
@@ -630,7 +637,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                String     metadataCollectionName) throws ConnectionCheckedException,
                                                                                                          ConnectorCheckedException
     {
-        String     methodName = "getOMRSRepositoryConnector";
+        String methodName =  "getOMRSRepositoryConnector";
 
         try
         {
@@ -641,17 +648,36 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
              */
             if (connection != null)
             {
-                if (connection.getUserId() == null)
-                {
-                    connection.setUserId(localServerUserId);
-                }
-
-                if (connection.getClearPassword() == null)
-                {
-                    connection.setClearPassword(localServerPassword);
-                }
-
                 repositoryName = connection.getDisplayName();
+                
+                if (localServerSecretStoreProvider != null)
+                {
+                    EmbeddedConnection embeddedConnection = Connection.getSecretStoreConnection("Secrets Store for " + repositoryName,
+                                                                                                localServerSecretStoreProvider,
+                                                                                                localServerSecretStoreLocation,
+                                                                                                localServerSecretStoreCollection,
+                                                                                                SecretsStorePurpose.REST_BEARER_TOKEN.getName());
+
+                    List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+
+                    if (connection instanceof VirtualConnection virtualConnection)
+                    {
+                        if (virtualConnection.getEmbeddedConnections() != null)
+                        {
+                            embeddedConnections = virtualConnection.getEmbeddedConnections();
+                        }
+
+                        embeddedConnections.add(embeddedConnection);
+                        virtualConnection.setEmbeddedConnections(embeddedConnections);
+                    }
+                    else
+                    {
+                        VirtualConnection virtualConnection = new VirtualConnection(connection);
+
+                        virtualConnection.setEmbeddedConnections(embeddedConnections);
+                        connection = virtualConnection;
+                    }
+                }
             }
 
             /*
@@ -706,6 +732,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                 error);
         }
     }
+
 
 
     /**

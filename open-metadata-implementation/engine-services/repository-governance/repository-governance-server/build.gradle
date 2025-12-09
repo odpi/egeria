@@ -5,6 +5,7 @@
 
 
 dependencies {
+    implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')

@@ -1494,17 +1494,17 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 {
                     GlossaryTermProperties glossaryTermProperties = this.getEgeriaGlossaryTermProperties(atlasGlossaryTerm);
 
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                              atlasEntity.getTypeName(),
-                                                                                                              atlasEntity.getGuid(),
-                                                                                                              egeriaGlossaryTermTypeName,
-                                                                                                              egeriaGlossaryTermGUID));
-
-
-                    glossaryTermClient.updateGlossaryTerm(egeriaGlossaryTermGUID,
-                                                          glossaryClient.getUpdateOptions(true),
-                                                          glossaryTermProperties);
+                    if (glossaryTermClient.updateGlossaryTerm(egeriaGlossaryTermGUID,
+                                                              glossaryClient.getUpdateOptions(true),
+                                                              glossaryTermProperties))
+                    {
+                        auditLog.logMessage(methodName,
+                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                                  atlasEntity.getTypeName(),
+                                                                                                                  atlasEntity.getGuid(),
+                                                                                                                  egeriaGlossaryTermTypeName,
+                                                                                                                  egeriaGlossaryTermGUID));
+                    }
 
 
                     // todo this.setUpTermCategoriesInEgeria(egeriaGlossaryTermGUID, atlasGlossaryTerm);

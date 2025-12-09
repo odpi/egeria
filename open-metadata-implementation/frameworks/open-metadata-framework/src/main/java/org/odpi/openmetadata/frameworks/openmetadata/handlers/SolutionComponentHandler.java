@@ -122,26 +122,27 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @param solutionComponentGUID      unique identifier of the solution component (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateSolutionComponent(String                      userId,
-                                        String                      solutionComponentGUID,
-                                        UpdateOptions               updateOptions,
-                                        SolutionComponentProperties properties) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+    public boolean updateSolutionComponent(String                      userId,
+                                           String                      solutionComponentGUID,
+                                           UpdateOptions               updateOptions,
+                                           SolutionComponentProperties properties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName = "updateSolutionComponent";
         final String guidParameterName = "solutionComponentGUID";
 
-        super.updateElement(userId,
-                            solutionComponentGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   solutionComponentGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

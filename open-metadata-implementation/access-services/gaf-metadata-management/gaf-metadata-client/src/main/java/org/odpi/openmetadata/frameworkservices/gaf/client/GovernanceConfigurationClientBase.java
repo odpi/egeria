@@ -37,86 +37,30 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param maxPageSize           pre-initialized parameter limit
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
+     * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public GovernanceConfigurationClientBase(String serverName,
-                                             String serverPlatformURLRoot,
-                                             String serviceURLMarker,
-                                             int    maxPageSize) throws InvalidParameterException
+    public GovernanceConfigurationClientBase(String   serverName,
+                                             String   serverPlatformURLRoot,
+                                             String   localServerSecretsStoreProvider,
+                                             String   localServerSecretsStoreLocation,
+                                             String   localServerSecretsStoreCollection,
+                                             int      maxPageSize,
+                                             AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker);
+        super(serverName, serverPlatformURLRoot);
         
         final String methodName = "Constructor (no security)";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
         
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @param maxPageSize           pre-initialized parameter limit
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public GovernanceConfigurationClientBase(String serverName,
-                                             String serverPlatformURLRoot,
-                                             String serviceURLMarker,
-                                             String userId,
-                                             String password,
-                                             int    maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker);
-
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, userId, password);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param restClient pre-initialized REST client
-     * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
-     */
-    public GovernanceConfigurationClientBase(String         serverName,
-                                             String         serverPlatformURLRoot,
-                                             String         serviceURLMarker,
-                                             GAFRESTClient  restClient,
-                                             int            maxPageSize,
-                                             AuditLog       auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker);
-
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        
-        this.restClient = restClient;
-        this.auditLog = auditLog;
+        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
     }
 
 
@@ -150,7 +94,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
     {
         final String   methodName = "getGovernanceEngineByName";
         final String   nameParameterName = "name";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/governance-engines/by-name";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/governance-engines/by-name";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -163,7 +107,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
                                                                                                 urlTemplate,
                                                                                                 requestBody,
                                                                                                 serverName,
-                                                                                                serviceURLMarker,
                                                                                                 userId);
         return restResult.getElement();
     }
@@ -192,7 +135,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         final String methodName = "getRegisteredGovernanceService";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
         final String governanceServiceGUIDParameter = "governanceServiceGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/governance-engines/{3}/governance-services/{4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/governance-engines/{2}/governance-services/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
@@ -201,7 +144,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         RegisteredGovernanceServiceResponse restResult = restClient.callRegisteredGovernanceServiceGetRESTCall(methodName,
                                                                                                                urlTemplate,
                                                                                                                serverName,
-                                                                                                               serviceURLMarker,
                                                                                                                userId,
                                                                                                                governanceEngineGUID,
                                                                                                                governanceServiceGUID);
@@ -234,7 +176,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
     {
         final String methodName = "getRegisteredGovernanceServices";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/governance-engines/{3}/governance-services?startingFrom={4}&maximumResults={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/governance-engines/{2}/governance-services?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, governanceEngineGUIDParameter, methodName);
@@ -243,7 +185,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         RegisteredGovernanceServicesResponse restResult = restClient.callRegisteredGovernanceServicesGetRESTCall(methodName,
                                                                                                                  urlTemplate,
                                                                                                                  serverName,
-                                                                                                                 serviceURLMarker,
                                                                                                                  userId,
                                                                                                                  governanceEngineGUID,
                                                                                                                  startingFrom,
@@ -272,7 +213,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
     {
         final String   methodName = "getIntegrationGroupByName";
         final String   nameParameterName = "name";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/integration-groups/by-name/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/integration-groups/by-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -280,7 +221,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         IntegrationGroupElementResponse restResult = restClient.callIntegrationGroupGetRESTCall(methodName,
                                                                                                 urlTemplate,
                                                                                                 serverName,
-                                                                                                serviceURLMarker,
                                                                                                 userId,
                                                                                                 name);
         return restResult.getElement();
@@ -308,7 +248,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
     {
         final String methodName = "getIntegrationConnectorRegistrations";
         final String guidParameter = "integrationConnectorGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/integration-connectors/{3}/registrations";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/integration-connectors/{2}/registrations";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integrationConnectorGUID, guidParameter, methodName);
@@ -316,7 +256,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
                                                                          urlTemplate,
                                                                          serverName,
-                                                                         serviceURLMarker,
                                                                          userId,
                                                                          integrationConnectorGUID);
 
@@ -347,7 +286,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         final String methodName = "getRegisteredIntegrationConnector";
         final String integrationGroupGUIDParameter = "integrationGroupGUID";
         final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/integration-groups/{3}/integration-connectors/{4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/integration-groups/{2}/integration-connectors/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integrationGroupGUID, integrationGroupGUIDParameter, methodName);
@@ -356,7 +295,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         RegisteredIntegrationConnectorResponse restResult = restClient.callRegisteredIntegrationConnectorGetRESTCall(methodName,
                                                                                                                      urlTemplate,
                                                                                                                      serverName,
-                                                                                                                     serviceURLMarker,
                                                                                                                      userId,
                                                                                                                      integrationGroupGUID,
                                                                                                                      integrationConnectorGUID);
@@ -389,7 +327,7 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
     {
         final String methodName = "getRegisteredIntegrationConnectors";
         final String integrationGroupGUIDParameter = "integrationGroupGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/governance-configuration-service/users/{2}/integration-groups/{3}/integration-connectors?startingFrom={4}&maximumResults={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-configuration-service/users/{1}/integration-groups/{2}/integration-connectors?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(integrationGroupGUID, integrationGroupGUIDParameter, methodName);
@@ -398,7 +336,6 @@ public class GovernanceConfigurationClientBase extends GovernanceConfiguration
         RegisteredIntegrationConnectorsResponse restResult = restClient.callRegisteredIntegrationConnectorsGetRESTCall(methodName,
                                                                                                                        urlTemplate,
                                                                                                                        serverName,
-                                                                                                                       serviceURLMarker,
                                                                                                                        userId,
                                                                                                                        integrationGroupGUID,
                                                                                                                        startingFrom,

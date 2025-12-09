@@ -4,6 +4,10 @@ package org.odpi.openmetadata.frameworkservices.omf.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
@@ -21,6 +25,13 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/open-metadata-store/users/{userId}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Metadata Access Services: Open Metadata Store Services",
      description="Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
@@ -46,6 +57,7 @@ public class OpenMetadataStoreResource
      * PropertyServerException problem retrieving the discovery engine definition.
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
                                                        @PathVariable String userId,
@@ -69,6 +81,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllTypes",
             description="Return the list of types loaded into this server.",
@@ -94,6 +107,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/entity-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getEntityDefs",
             description="Returns all the entity type definitions.",
@@ -119,6 +133,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/relationship-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipDefs",
             description="Returns all the relationship type definitions.",
@@ -144,6 +159,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/classification-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getClassificationDefs",
             description="Returns all the classification type definitions.",
@@ -172,6 +188,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/external-id")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findTypesByExternalId",
             description="Return the types that are linked to the elements from the specified standard.",
@@ -202,6 +219,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/sub-types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSubTypes",
             description="Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the type has no subtypes.",
@@ -231,6 +249,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/guid/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getTypeDefByGUID",
             description="Return the TypeDef identified by the GUID.",
@@ -260,6 +279,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-attribute-types/guid/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAttributeTypeDefByGUID",
             description="Return the AttributeTypeDef identified by the GUID.",
@@ -289,6 +309,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/name/{name}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getTypeDefByName",
             description="Return the TypeDef identified by the unique name.",
@@ -318,6 +339,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-attribute-types/name/{name}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAttributeTypeDefByName",
             description="Return the AttributeTypeDef identified by the unique name.",
@@ -348,6 +370,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @GetMapping(path = "/metadata-elements/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
@@ -392,6 +415,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
@@ -421,6 +445,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByUniqueName",
             description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
@@ -448,6 +473,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/guid-by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementGUIDByUniqueName",
             description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
@@ -475,6 +501,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementHistory",
             description="Retrieve all the versions of an element.",
@@ -505,6 +532,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/classifications/{classificationName}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getClassificationHistory",
             description="Retrieve all the versions of an element's classification.",
@@ -535,6 +563,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findMetadataElementsWithString",
             description="Retrieve the metadata elements that contain the requested string.",
@@ -565,6 +594,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/for-anchor/{anchorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsForAnchor",
             description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied anchorGUID.",
@@ -596,6 +626,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-domain/{anchorDomainName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorDomain",
             description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied domain name.",
@@ -628,6 +659,7 @@ public class OpenMetadataStoreResource
      */
 
     @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-scope/{anchorScopeGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorScope",
             description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied scope guid.",
@@ -658,6 +690,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/any-type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element.",
@@ -697,6 +730,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/type/{relationshipTypeName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element via a specific relationship type.",
@@ -737,6 +771,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements.",
@@ -768,7 +803,6 @@ public class OpenMetadataStoreResource
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
-
      *
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
@@ -776,6 +810,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements via a specific type of relationship.",
@@ -812,6 +847,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-conditions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findMetadataElements",
             description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
@@ -841,6 +877,7 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
                                                               @PathVariable String          userId,
@@ -865,6 +902,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-search-conditions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findRelationshipsBetweenMetadataElements",
             description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",
@@ -895,6 +933,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @GetMapping(path = "/relationships/by-guid/{relationshipGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipByGUID",
             description="Retrieve the relationship using its unique identifier.",
@@ -941,6 +980,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-guid/{relationshipGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipByGUID",
             description="Retrieve the relationship using its unique identifier.",
@@ -970,6 +1010,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/relationships/{relationshipGUID}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipHistory",
             description="Retrieve all the versions of a relationship.",
@@ -1002,6 +1043,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createMetadataElementInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        userId,
@@ -1025,6 +1067,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createMetadataElementFromTemplate(@PathVariable String                          serverName,
                                                           @PathVariable String                          userId,
@@ -1044,17 +1087,18 @@ public class OpenMetadataStoreResource
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param requestBody new properties
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
-    public VoidResponse updateMetadataElementInStore(@PathVariable String                      serverName,
-                                                     @PathVariable String                      userId,
-                                                     @PathVariable String                      metadataElementGUID,
-                                                     @RequestBody  UpdatePropertiesRequestBody requestBody)
+    public BooleanResponse updateMetadataElementInStore(@PathVariable String                      serverName,
+                                                        @PathVariable String                      userId,
+                                                        @PathVariable String                      metadataElementGUID,
+                                                        @RequestBody  UpdatePropertiesRequestBody requestBody)
     {
         return restAPI.updateMetadataElementInStore(serverName, userId, metadataElementGUID, requestBody);
     }
@@ -1075,6 +1119,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateMetadataElementStatusInStore(@PathVariable String                  serverName,
                                                            @PathVariable String                  userId,
@@ -1084,6 +1129,57 @@ public class OpenMetadataStoreResource
         return restAPI.updateMetadataElementStatusInStore(serverName, userId, metadataElementGUID, requestBody);
     }
 
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/publish")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse publishMetadataElement(@PathVariable String                    serverName,
+                                               @PathVariable String                    userId,
+                                               @PathVariable String                    metadataElementGUID,
+                                               @RequestBody (required = false)
+                                                   MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.publishMetadataElement(serverName, userId, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Update the zone membership to decrease its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/withdraw")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse withdrawMetadataElement(@PathVariable String                    serverName,
+                                                @PathVariable String                    userId,
+                                                @PathVariable String                    metadataElementGUID,
+                                                @RequestBody (required = false)
+                                                    MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.withdrawMetadataElement(serverName, userId, metadataElementGUID, requestBody);
+    }
 
 
     /**
@@ -1100,6 +1196,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-effectivity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateMetadataElementEffectivityInStore(@PathVariable String                            serverName,
                                                                 @PathVariable String                            userId,
@@ -1124,6 +1221,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse deleteMetadataElementInStore(@PathVariable String            serverName,
                                                       @PathVariable String            userId,
@@ -1149,6 +1247,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/archive")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse archiveMetadataElementInStore(@PathVariable String            serverName,
                                                        @PathVariable String            userId,
@@ -1177,6 +1276,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse classifyMetadataElementInStore(@PathVariable String                       serverName,
                                                        @PathVariable String                       userId,
@@ -1204,6 +1304,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse reclassifyMetadataElementInStore(@PathVariable String                      serverName,
                                                          @PathVariable String                      userId,
@@ -1231,6 +1332,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-effectivity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateClassificationEffectivityInStore(@PathVariable String                            serverName,
                                                                @PathVariable String                            userId,
@@ -1257,6 +1359,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse declassifyMetadataElementInStore(@PathVariable String            serverName,
                                                          @PathVariable String            userId,
@@ -1283,6 +1386,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createRelatedElementsInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        userId,
@@ -1307,6 +1411,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateRelatedElementsInStore(@PathVariable String                      serverName,
                                                      @PathVariable String                      userId,
@@ -1332,6 +1437,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-effectivity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateRelatedElementsEffectivityInStore(@PathVariable String                            serverName,
                                                                 @PathVariable String                            userId,
@@ -1356,6 +1462,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteRelationshipInStore(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
@@ -1380,6 +1487,7 @@ public class OpenMetadataStoreResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/multi-language/set-translation/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse setTranslation(@PathVariable String            serverName,
                                        @PathVariable String            userId,
@@ -1406,6 +1514,7 @@ public class OpenMetadataStoreResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/multi-language/clear-translation/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse clearTranslation(@PathVariable String          serverName,
                                          @PathVariable String          userId,
@@ -1436,6 +1545,7 @@ public class OpenMetadataStoreResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/multi-language/get-translation/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TranslationDetailResponse getTranslation(@PathVariable String serverName,
                                                     @PathVariable String userId,
@@ -1464,6 +1574,7 @@ public class OpenMetadataStoreResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/multi-language/get-translations/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public TranslationListResponse getTranslations(@PathVariable String serverName,
                                                    @PathVariable String userId,
@@ -1473,8 +1584,6 @@ public class OpenMetadataStoreResource
     {
         return restAPI.getTranslations(serverName, userId, elementGUID, startFrom, pageSize);
     }
-
-
 
 
     /**
@@ -1491,6 +1600,7 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there was a problem that occurred within the property server.
      */
     @PostMapping(path = "/assets/{assetGUID}/log-records/{callingService}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse logAssetAuditMessage(@PathVariable String serverName,
                                              @PathVariable String userId,

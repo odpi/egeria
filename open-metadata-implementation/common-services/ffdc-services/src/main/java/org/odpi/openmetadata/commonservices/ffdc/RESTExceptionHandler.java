@@ -524,6 +524,7 @@ public class RESTExceptionHandler
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
+        response.setExceptionSubclassName(error.getClass().getName());
         if (error.getReportedCaughtException() != null)
         {
             response.setExceptionCausedBy(error.getReportedCaughtException().getClass().getName());
@@ -553,17 +554,17 @@ public class RESTExceptionHandler
     {
         log.error("Exception from " + methodName + " being packaged for return on REST call", error);
 
-        if (error instanceof PropertyServerException)
+        if (error instanceof PropertyServerException propertyServerException)
         {
-            capturePropertyServerException(response, (PropertyServerException)error);
+            capturePropertyServerException(response, propertyServerException);
         }
-        else if (error instanceof UserNotAuthorizedException)
+        else if (error instanceof UserNotAuthorizedException userNotAuthorizedException)
         {
-            captureUserNotAuthorizedException(response, (UserNotAuthorizedException)error);
+            captureUserNotAuthorizedException(response, userNotAuthorizedException);
         }
-        else if (error instanceof InvalidParameterException)
+        else if (error instanceof InvalidParameterException invalidParameterException)
         {
-            captureInvalidParameterException(response, (InvalidParameterException)error);
+            captureInvalidParameterException(response, invalidParameterException);
         }
         else
         {
@@ -580,6 +581,7 @@ public class RESTExceptionHandler
 
             response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
             response.setExceptionClassName(PropertyServerException.class.getName());
+            response.setExceptionSubclassName(PropertyServerException.class.getName());
             response.setExceptionCausedBy(error.getClass().getName());
             response.setActionDescription(methodName);
             response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
@@ -660,7 +662,7 @@ public class RESTExceptionHandler
 
         if (exceptionProperties != null)
         {
-            captureCheckedException(response, error, InvalidParameterException.class.getName(), exceptionProperties);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
         }
         else
         {

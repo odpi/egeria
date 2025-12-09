@@ -94,20 +94,8 @@ public class CohortMembershipListResponse extends OMRSAPIPagedResponse
     public String toString()
     {
         return "CohortMembershipListResponse{" +
-                "members=" + cohortMembers +
-                ", offset=" + offset +
-                ", pageSize=" + pageSize +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
-                '}';
+                "cohortMembers=" + cohortMembers +
+                "} " + super.toString();
     }
 
 

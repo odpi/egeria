@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Lineage Linker OMVS", description="The Lineage Linker OMVS provides APIs for supporting the creation and editing of schema types, schema attributes and user identities.",
+@Tag(name="API: Lineage Linker", description="The Lineage Linker OMVS provides APIs for supporting the creation and editing of schema types, schema attributes and user identities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/lineage-linker/overview/"))
 

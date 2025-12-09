@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
@@ -65,6 +66,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param displayName display name for the integration connector
      * @param description description about the integration connector
      * @param userId userId to use when calling external services
+     * @param secretsCollectionName            name of collection of secrets to use in the secrets store
+     * @param secretsStorePurpose              type of authentication information provided by the secrets store
+     * @param secretsStoreConnectorTypeGUID    optional connector type for secrets store
+     * @param secretsStoreFileName             location of the secrets store
      * @param additionalProperties any other properties
      *
      * @return id for the integration connector
@@ -76,6 +81,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                           String              description,
                                           String              userId,
                                           String              endpointAddress,
+                                          String              secretsCollectionName,
+                                          String              secretsStorePurpose,
+                                          String              secretsStoreConnectorTypeGUID,
+                                          String              secretsStoreFileName,
                                           Map<String, String> additionalProperties)
     {
         try
@@ -149,21 +158,84 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                  null);
             }
 
-            String connectionGUID = super.addConnection(qualifiedName + "_implementation",
-                                                        displayName + " Integration Connector Provider Implementation",
-                                                        "Connection for integration connector: " + qualifiedName,
-                                                        userId,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        configurationProperties,
-                                                        null,
-                                                        connectorTypeGUID,
-                                                        endpointGUID,
-                                                        connectorGUID,
-                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                                        OpenMetadataType.ASSET.typeName,
-                                                        null);
+            String connectionGUID;
+
+            if (secretsStoreConnectorTypeGUID == null)
+            {
+                connectionGUID = super.addConnection(OpenMetadataType.CONNECTION.typeName,
+                                                     qualifiedName + "_implementation",
+                                                     displayName + " Integration Connector Provider Implementation",
+                                                     "Connection for integration connector: " + qualifiedName,
+                                                     userId,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     configurationProperties,
+                                                     null,
+                                                     connectorTypeGUID,
+                                                     endpointGUID,
+                                                     connectorGUID,
+                                                     DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                     OpenMetadataType.ASSET.typeName,
+                                                     null);
+            }
+            else
+            {
+                connectionGUID = super.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
+                                                     qualifiedName + "_implementation",
+                                                     displayName + " Integration Connector Provider Implementation",
+                                                     "Connection for integration connector: " + qualifiedName,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     null,
+                                                     configurationProperties,
+                                                     null,
+                                                     connectorTypeGUID,
+                                                     endpointGUID,
+                                                     connectorGUID,
+                                                     DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                     OpenMetadataType.ASSET.typeName,
+                                                     null);
+
+                Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
+
+                secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsCollectionName);
+
+                String secretStoreEndpointGUID = this.addEndpoint(connectorGUID,
+                                                                  DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                                  OpenMetadataType.ASSET.typeName,
+                                                                  null,
+                                                                  qualifiedName + ":SecretStoreEndpoint",
+                                                                  displayName + " secret store endpoint",
+                                                                  null,
+                                                                  secretsStoreFileName,
+                                                                  null,
+                                                                  null);
+
+                String secretsStoreConnectionGUID = this.addConnection(OpenMetadataType.CONNECTION.typeName,
+                                                                       qualifiedName + ":SecretsStoreConnection",
+                                                                       displayName + " secrets store connection",
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       secretsStoreConfigurationProperties,
+                                                                       null,
+                                                                       secretsStoreConnectorTypeGUID,
+                                                                       secretStoreEndpointGUID,
+                                                                       connectorGUID,
+                                                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                                       OpenMetadataType.ASSET.typeName,
+                                                                       null);
+
+                this.addEmbeddedConnection(connectionGUID,
+                                           0,
+                                           secretsStorePurpose,
+                                           null,
+                                           secretsStoreConnectionGUID);
+            }
 
             if ((connectorGUID != null) && (connectionGUID != null))
             {

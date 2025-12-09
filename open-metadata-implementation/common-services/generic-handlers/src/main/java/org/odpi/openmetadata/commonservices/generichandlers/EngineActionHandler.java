@@ -41,9 +41,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param serviceSupportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public EngineActionHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -55,9 +52,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                OMRSRepositoryHelper               repositoryHelper,
                                String                             localServerUserId,
                                OpenMetadataServerSecurityVerifier securityVerifier,
-                               List<String>                       serviceSupportedZones,
-                               List<String>                       defaultZones,
-                               List<String>                       publishZones,
                                AuditLog                           auditLog)
     {
         super(converter,
@@ -69,9 +63,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
               repositoryHelper,
               localServerUserId,
               securityVerifier,
-              serviceSupportedZones,
-              defaultZones,
-              publishZones,
               auditLog);
 
     }
@@ -90,7 +81,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param startTime future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return unique identifier of the first engine action
@@ -107,7 +97,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                Date                  startTime,
                                                String                originatorServiceName,
                                                String                originatorEngineName,
-                                               List<String>          serviceSupportedZones,
                                                String                methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -135,7 +124,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         null,
                                                                         false,
                                                                         false,
-                                                                        serviceSupportedZones,
                                                                         effectiveTime,
                                                                         methodName);
 
@@ -151,7 +139,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                governanceActionTypeQualifiedName,
                                                originatorServiceName,
                                                originatorEngineName,
-                                               serviceSupportedZones,
                                                methodName);
         }
         else
@@ -347,7 +334,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      * @return unique identifier of the prepared engine action
      * @throws InvalidParameterException null qualified name
@@ -364,7 +350,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                String                requestSourceName,
                                                String                originatorServiceName,
                                                String                originatorEngineName,
-                                               List<String>          serviceSupportedZones,
                                                String                methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -536,7 +521,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      null,
                                                      null,
                                                      null,
-                                                     serviceSupportedZones,
                                                      methodName);
 
 
@@ -555,7 +539,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    executorsRequestParameters,
                                    governanceActionTypeName,
                                    requestSourceName,
-                                   serviceSupportedZones,
                                    methodName);
 
             return engineActionGUID;
@@ -577,7 +560,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requestedStartDate future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return unique identifier of the governance action process instance
@@ -594,7 +576,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   Date                  requestedStartDate,
                                                   String                originatorServiceName,
                                                   String                originatorEngineName,
-                                                  List<String>          serviceSupportedZones,
                                                   String                methodName) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -627,7 +608,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                            null,
                                                                            false,
                                                                            false,
-                                                                           serviceSupportedZones,
                                                                            effectiveTime,
                                                                            methodName);
 
@@ -827,7 +807,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              processQualifiedName,
                                                                              originatorServiceName,
                                                                              originatorEngineName,
-                                                                             serviceSupportedZones,
                                                                              methodName);
 
                 if (engineActionGUID != null)
@@ -885,7 +864,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      * @return unique identifier of the prepared governance action
      * @throws InvalidParameterException null qualified name
@@ -909,7 +887,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       String                requestSourceName,
                                                       String                originatorServiceName,
                                                       String                originatorEngineName,
-                                                      List<String>          serviceSupportedZones,
                                                       String                methodName) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
@@ -946,7 +923,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                       null,
                                                                                       false,
                                                                                       false,
-                                                                                      serviceSupportedZones,
                                                                                       null,
                                                                                       methodName);
 
@@ -1167,7 +1143,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 requestSourceName,
                                                                 originatorServiceName,
                                                                 originatorEngineName,
-                                                                serviceSupportedZones,
                                                                 methodName);
 
 
@@ -1213,7 +1188,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    requestParameters,
                                    governanceActionProcessStepName,
                                    requestSourceName,
-                                   serviceSupportedZones,
                                    methodName);
 
             return engineActionGUID;
@@ -1239,7 +1213,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceActionProcessStepName unique name of the governance action process step that initiated this engine action as part of
      *                                 a governance action process (or null if this is standalone engine action)
      * @param requestSourceName where did the request come from
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException null qualified name
@@ -1256,7 +1229,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         Map<String, String>   requestParameters,
                                         String                governanceActionProcessStepName,
                                         String                requestSourceName,
-                                        List<String>          serviceSupportedZones,
                                         String                methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -1322,7 +1294,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      requestParameters,
                                      governanceActionProcessStepName,
                                      requestSourceName,
-                                     serviceSupportedZones,
                                      methodName);
         }
     }
@@ -1345,7 +1316,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceActionProcessStepName unique name of the governance action process step that initiated this engine action as part of
      *                                 a governance action process (or null if this is standalone engine action)
      * @param requestSourceName where did the request come from
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException null qualified name
@@ -1363,7 +1333,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       Map<String, String>   requestParameters,
                                       String                governanceActionProcessStepName,
                                       String                requestSourceName,
-                                      List<String>          serviceSupportedZones,
                                       String                methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -1432,7 +1401,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         this.updateEngineActionStatus(userId,
                                       engineActionGUID,
                                       ActivityStatus.APPROVED.getOrdinal(),
-                                      serviceSupportedZones,
                                       null,
                                       methodName);
     }
@@ -1466,7 +1434,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param processStepName unique name of the governance action process step that initiated this engine action as part of
      *                                 a governance action process (or null if this is standalone governance action)
      * @param processName name of the process
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return unique identifier of the engine action
@@ -1495,7 +1462,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      String                processName,
                                      String                processStepGUID,
                                      String                processStepName,
-                                     List<String>          serviceSupportedZones,
                                      String                methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -1518,7 +1484,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         governanceEngineName,
                                                                         engineNameParameterName,
                                                                         requestType,
-                                                                        serviceSupportedZones,
                                                                         methodName);
 
         EngineActionBuilder builder = new EngineActionBuilder(qualifiedName,
@@ -1553,7 +1518,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     false,
                                     false,
                                     null,
-                                    serviceSupportedZones,
                                     builder,
                                     methodName);
 
@@ -1592,7 +1556,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataType.ENGINE_ACTION.typeName,
                                                   true,
                                                   true,
-                                                  serviceSupportedZones,
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeGUID,
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
                                                   null,
@@ -1627,7 +1590,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataType.ENGINE_ACTION.typeName,
                                                   true,
                                                   true,
-                                                  serviceSupportedZones,
                                                   OpenMetadataType.ACTIONS_RELATIONSHIP.typeGUID,
                                                   OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
                                                   null,
@@ -1647,7 +1609,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   engineActionGUIDParameterName,
                                   qualifiedName,
                                   actionTargets,
-                                  serviceSupportedZones,
                                   methodName);
 
         }
@@ -1686,7 +1647,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requestSourceName where did the request come from
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return unique identifier of the governance action
@@ -1717,7 +1677,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               String                requestSourceName,
                                                               String                originatorServiceName,
                                                               String                originatorEngineName,
-                                                              List<String>          serviceSupportedZones,
                                                               String                methodName) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
@@ -1757,7 +1716,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                null,
                                                                false,
                                                                false,
-                                                               serviceSupportedZones,
                                                                0,
                                                                0,
                                                                null,
@@ -1818,7 +1776,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   processName,
                                   governanceActionProcessStepGUID,
                                   governanceActionProcessStepName,
-                                  serviceSupportedZones,
                                   methodName);
     }
 
@@ -1831,7 +1788,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param engineActionGUIDParameterName parameter passing the engineActionGUID
      * @param engineActionName name of engine action - for logging
      * @param actionTargets map of action target names to GUIDs for the resulting governance service
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance  service is not authorized to create an engine action
@@ -1842,7 +1798,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   String                engineActionGUIDParameterName,
                                   String                engineActionName,
                                   List<NewActionTarget> actionTargets,
-                                  List<String>          serviceSupportedZones,
                                   String                methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -1877,7 +1832,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                   true,
                                                   true,
-                                                  serviceSupportedZones,
                                                   OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeGUID,
                                                   OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                   properties,
@@ -1905,7 +1859,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceEngineName name of the engine
      * @param governanceEngineNameParameterName parameter supplying engine name
      * @param requestType requested function
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      * @return unique identifier of the governance engine
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1916,7 +1869,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 String       governanceEngineName,
                                                 String       governanceEngineNameParameterName,
                                                 String       requestType,
-                                                List<String> serviceSupportedZones,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -1933,7 +1885,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    null,
                                                                    false,
                                                                    false,
-                                                                   serviceSupportedZones,
                                                                    new Date(),
                                                                    methodName);
 
@@ -1962,7 +1913,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    null,
                                                                    false,
                                                                    false,
-                                                                   serviceSupportedZones,
                                                                    0,
                                                                    0,
                                                                    new Date(),
@@ -2010,7 +1960,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param effectiveTime   the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return status enum
@@ -2021,7 +1970,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public B getEngineAction(String       userId,
                              String       engineActionGUID,
-                             List<String> serviceSupportedZones,
                              Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -2040,11 +1988,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   false,
                                                                   false,
-                                                                  serviceSupportedZones,
                                                                   effectiveTime,
                                                                   methodName);
 
-        return this.getEngineAction(userId, primaryEntity, serviceSupportedZones, effectiveTime, methodName);
+        return this.getEngineAction(userId, primaryEntity, effectiveTime, methodName);
     }
 
     /**
@@ -2053,7 +2000,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId identifier of calling user
      * @param primaryEntity entity of the engine action request
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return status enum
@@ -2063,7 +2009,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public B getEngineAction(String       userId,
                              EntityDetail primaryEntity,
-                             List<String> serviceSupportedZones,
                              Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -2118,7 +2063,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                null,
                                                                                true,
                                                                                true,
-                                                                               serviceSupportedZones,
                                                                                effectiveTime,
                                                                                methodName));
 
@@ -2137,7 +2081,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                null,
                                                                                true,
                                                                                true,
-                                                                               serviceSupportedZones,
                                                                                effectiveTime,
                                                                                methodName));
                     }
@@ -2209,7 +2152,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -2218,7 +2160,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public void claimEngineAction(String       userId,
                                   String       engineActionGUID,
-                                  List<String> serviceSupportedZones,
                                   Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -2237,7 +2178,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            null,
                                                            false,
                                                            false,
-                                                           serviceSupportedZones,
                                                            effectiveTime,
                                                            methodName);
 
@@ -2263,16 +2203,19 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           serviceName,
                                                                           serverName);
 
+                    /*
+                     * The provenance from the engine acton is used on this request so that engine actions from
+                     * archives can be claimed.
+                     */
                     updateBeanInRepository(userId,
-                                           null,
-                                           null,
+                                           entity.getMetadataCollectionId(),
+                                           entity.getMetadataCollectionName(),
                                            engineActionGUID,
                                            guidParameterName,
                                            OpenMetadataType.ENGINE_ACTION.typeGUID,
                                            OpenMetadataType.ENGINE_ACTION.typeName,
                                            false,
                                            false,
-                                           serviceSupportedZones,
                                            builder.getClaimInstanceProperties(methodName),
                                            true,
                                            effectiveTime,
@@ -2320,7 +2263,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -2329,7 +2271,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public void cancelEngineAction(String       userId,
                                    String       engineActionGUID,
-                                   List<String> serviceSupportedZones,
                                    Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
@@ -2348,7 +2289,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            null,
                                                            false,
                                                            false,
-                                                           serviceSupportedZones,
                                                            effectiveTime,
                                                            methodName);
 
@@ -2367,16 +2307,19 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       serviceName,
                                                                       serverName);
 
+                /*
+                 * The provenance from the engine acton is used on this request so that engine actions from
+                 * archives can be claimed.
+                 */
                 updateBeanInRepository(userId,
-                                       null,
-                                       null,
+                                       entity.getMetadataCollectionId(),
+                                       entity.getMetadataCollectionName(),
                                        engineActionGUID,
                                        guidParameterName,
                                        OpenMetadataType.ENGINE_ACTION.typeGUID,
                                        OpenMetadataType.ENGINE_ACTION.typeName,
                                        false,
                                        false,
-                                       serviceSupportedZones,
                                        builder.getCancelInstanceProperties(methodName),
                                        true,
                                        effectiveTime,
@@ -2435,7 +2378,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param engineActionGUID identifier of the engine action request
      * @param engineActionStatus new status ordinal
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -2445,7 +2387,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void updateEngineActionStatus(String       userId,
                                          String       engineActionGUID,
                                          int          engineActionStatus,
-                                         List<String> serviceSupportedZones,
                                          Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -2464,7 +2405,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            null,
                                                            false,
                                                            false,
-                                                           serviceSupportedZones,
                                                            effectiveTime,
                                                            methodName);
 
@@ -2511,16 +2451,19 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 methodName);
                     }
 
+                    /*
+                     * The provenance from the engine acton is used on this request so that engine actions from
+                     * archives can be updated.
+                     */
                     updateBeanInRepository(userId,
-                                           null,
-                                           null,
+                                           entity.getMetadataCollectionId(),
+                                           entity.getMetadataCollectionName(),
                                            engineActionGUID,
                                            guidParameterName,
                                            OpenMetadataType.ENGINE_ACTION.typeGUID,
                                            OpenMetadataType.ENGINE_ACTION.typeName,
                                            false,
                                            false,
-                                           serviceSupportedZones,
                                            properties,
                                            true,
                                            effectiveTime,
@@ -2580,7 +2523,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *                         these are supplied by the governance service that ran the previous step
      * @param completionMessage message to describe completion results or reasons for failure
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @throws InvalidParameterException the completion status is null
@@ -2594,7 +2536,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        List<String>          outputGuards,
                                        List<NewActionTarget> newActionTargets,
                                        String                completionMessage,
-                                       List<String>          serviceSupportedZones,
                                        Date                  effectiveTime,
                                        String                methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
@@ -2613,7 +2554,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                        null,
                                                                        false,
                                                                        false,
-                                                                       serviceSupportedZones,
                                                                        effectiveTime,
                                                                        methodName);
 
@@ -2653,9 +2593,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               serviceName,
                                                                               serverName);
 
+                        /*
+                         * The provenance from the engine acton is used on this request so that engine actions from
+                         * archives can be updated.
+                         */
                         repositoryHandler.updateEntityProperties(userId,
-                                                                 null,
-                                                                 null,
+                                                                 engineActionEntity.getMetadataCollectionId(),
+                                                                 engineActionEntity.getMetadataCollectionName(),
                                                                  engineActionGUID,
                                                                  engineActionEntity,
                                                                  OpenMetadataType.ENGINE_ACTION.typeGUID,
@@ -2670,7 +2614,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         this.markActionTargetsAsComplete(userId,
                                                          engineActionGUID,
-                                                         serviceSupportedZones,
                                                          effectiveTime,
                                                          status);
 
@@ -2705,7 +2648,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        outputGuards,
                                                        newActionTargets,
                                                        callerRequestParameters,
-                                                       serviceSupportedZones,
                                                        effectiveTime,
                                                        methodName);
                     }
@@ -2749,7 +2691,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param engineActionGUID completed governance action
      * @param status completion status
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException problem with guid
@@ -2758,7 +2699,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     private void markActionTargetsAsComplete(String       userId,
                                              String       engineActionGUID,
-                                             List<String> serviceSupportedZones,
                                              Date         effectiveTime,
                                              int          status) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -2775,7 +2715,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             false,
                                             true,
                                             false,
-                                            serviceSupportedZones,
                                             effectiveTime,
                                             methodName);
 
@@ -2828,9 +2767,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                new Date(),
                                                                                                methodName);
 
+                        /*
+                         * The provenance from the action target is used on this request so that action targets from
+                         * archives can be updated.
+                         */
                         repositoryHandler.updateRelationshipProperties(userId,
-                                                                       null,
-                                                                       null,
+                                                                       actionTarget.getMetadataCollectionId(),
+                                                                       actionTarget.getMetadataCollectionName(),
                                                                        actionTarget,
                                                                        newActionTargetProperties,
                                                                        methodName);
@@ -2856,7 +2799,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param outputGuards guards set up by the previous action(s)
      * @param newActionTargets unique identifiers of the elements for future governance actions to work on
      * @param callerRequestParameters set of request parameters gathered so far in the process
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2873,7 +2815,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            List<String>          outputGuards,
                                            List<NewActionTarget> newActionTargets,
                                            Map<String, String>   callerRequestParameters,
-                                           List<String>          serviceSupportedZones,
                                            Date                  effectiveTime,
                                            String                methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
@@ -2965,7 +2906,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     null,
                                                                     null,
                                                                     null,
-                                                                    serviceSupportedZones,
                                                                     methodName);
                         }
                     }
@@ -2997,7 +2937,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               null,
                                                                               false,
                                                                               false,
-                                                                              serviceSupportedZones,
                                                                               0,
                                                                               0,
                                                                               effectiveTime,
@@ -3031,7 +2970,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         final String anchorGUIDParameterName = "anchorGUID";
                         /*
-                         * The anchorGUID should be the guid of the process.
+                         * The anchorGUID should be the guid of the process instance.
                          */
                         this.updateBeanInRepository(userId,
                                                     null,
@@ -3042,7 +2981,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
                                                     false,
                                                     false,
-                                                    serviceSupportedZones,
                                                     repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                                null,
                                                                                                OpenMetadataProperty.COMPLETION_TIME.name,
@@ -3141,7 +3079,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId userId of caller
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of engine action elements
@@ -3153,7 +3090,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public List<B> getEngineActions(String       userId,
                                     int          startFrom,
                                     int          pageSize,
-                                    List<String> serviceSupportedZones,
                                     Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
@@ -3171,7 +3107,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       null,
                                                                       false,
                                                                       false,
-                                                                      serviceSupportedZones,
                                                                       startFrom,
                                                                       queryPageSize,
                                                                       effectiveTime,
@@ -3183,7 +3118,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail nextEngineAction : retrievedEntities)
             {
-                B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
+                B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -3204,7 +3139,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId userId of caller
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of engine action elements
@@ -3216,7 +3150,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public List<B> getActiveEngineActions(String       userId,
                                           int          startFrom,
                                           int          pageSize,
-                                          List<String> serviceSupportedZones,
                                           Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -3234,7 +3167,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       null,
                                                                       false,
                                                                       false,
-                                                                      serviceSupportedZones,
                                                                       startFrom,
                                                                       queryPageSize,
                                                                       effectiveTime,
@@ -3254,7 +3186,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 if ((status == ActivityStatus.REQUESTED.getOrdinal()) || (status == ActivityStatus.APPROVED.getOrdinal()) ||
                         (status == ActivityStatus.WAITING.getOrdinal()) || (status == ActivityStatus.IN_PROGRESS.getOrdinal()))
                 {
-                    B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
+                    B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
                     if (bean != null)
                     {
@@ -3278,7 +3210,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceEngineGUID unique identifier of governance engine
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of engine action elements
@@ -3291,7 +3222,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                  String       governanceEngineGUID,
                                                  int          startFrom,
                                                  int          pageSize,
-                                                 List<String> serviceSupportedZones,
                                                  Date         effectiveTime,
                                                  String       methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
@@ -3342,7 +3272,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 if ((governanceEngineGUID.equals(engineActionGovernanceEngineGUID) &&
                         ((status == ActivityStatus.WAITING.getOrdinal()) || (status == ActivityStatus.IN_PROGRESS.getOrdinal()))))
                 {
-                    B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
+                    B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
                     if (bean != null)
                     {
@@ -3369,7 +3299,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      *
@@ -3386,7 +3315,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      int          pageSize,
                                      boolean      forLineage,
                                      boolean      forDuplicateProcessing,
-                                     List<String> serviceSupportedZones,
                                      Date         effectiveTime,
                                      String       methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
@@ -3419,7 +3347,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail entityDetail : entities)
             {
-                B bean = this.getEngineAction(userId, entityDetail, serviceSupportedZones, effectiveTime, methodName);
+                B bean = this.getEngineAction(userId, entityDetail, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -3446,7 +3374,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param nameParameterName name of parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3461,7 +3388,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           String       nameParameterName,
                                           int          startFrom,
                                           int          pageSize,
-                                          List<String> serviceSupportedZones,
                                           Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -3491,7 +3417,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                null,
                                                                false,
                                                                false,
-                                                               serviceSupportedZones,
                                                                startFrom,
                                                                pageSize,
                                                                effectiveTime,
@@ -3503,7 +3428,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail entityDetail : entities)
             {
-                B bean = this.getEngineAction(userId, entityDetail, serviceSupportedZones, effectiveTime, methodName);
+                B bean = this.getEngineAction(userId, entityDetail, effectiveTime, methodName);
 
                 if (bean != null)
                 {

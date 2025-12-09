@@ -5,6 +5,21 @@
 @adminUserId=garygeeke
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
 # ---------------------------------------------
 # Metadata Access Store: active-metadata-store
 #
@@ -12,7 +27,8 @@
 ###
 # @name Enable the In Memory Repository
 # Set up the local repository to use the In Memory Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/in-memory-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/local-repository/mode/in-memory-repository
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 

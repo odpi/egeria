@@ -169,21 +169,21 @@ public class DataDesignerRESTServices extends TokenController
      * @param dataStructureGUID unique identifier of the data structure (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateDataStructure(String                   serverName,
-                                            String                   dataStructureGUID,
-                                            UpdateElementRequestBody requestBody)
+    public BooleanResponse updateDataStructure(String                   serverName,
+                                               String                   dataStructureGUID,
+                                               UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataStructure";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -199,17 +199,10 @@ public class DataDesignerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof DataStructureProperties dataStructureProperties)
                 {
-                    handler.updateDataStructure(userId,
-                                                dataStructureGUID,
-                                                requestBody,
-                                                dataStructureProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateDataStructure(userId,
-                                                dataStructureGUID,
-                                                requestBody,
-                                                null);
+                    response.setFlag(handler.updateDataStructure(userId,
+                                                                 dataStructureGUID,
+                                                                 requestBody,
+                                                                 dataStructureProperties));
                 }
                 else
                 {
@@ -680,21 +673,21 @@ public class DataDesignerRESTServices extends TokenController
      * @param dataFieldGUID unique identifier of the data field (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateDataField(String                   serverName,
-                                          String                   dataFieldGUID,
-                                          UpdateElementRequestBody requestBody)
+    public BooleanResponse updateDataField(String                   serverName,
+                                           String                   dataFieldGUID,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataField";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -710,17 +703,10 @@ public class DataDesignerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof DataFieldProperties dataFieldProperties)
                 {
-                    handler.updateDataField(userId,
-                                            dataFieldGUID,
-                                            requestBody,
-                                            dataFieldProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateDataField(userId,
-                                            dataFieldGUID,
-                                            requestBody,
-                                            null);
+                    response.setFlag(handler.updateDataField(userId,
+                                                             dataFieldGUID,
+                                                             requestBody,
+                                                             dataFieldProperties));
                 }
                 else
                 {
@@ -1190,20 +1176,20 @@ public class DataDesignerRESTServices extends TokenController
      * @param dataClassGUID unique identifier of the data class (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateDataClass(String                   serverName,
-                                          String                   dataClassGUID,
-                                          UpdateElementRequestBody requestBody)
+    public BooleanResponse updateDataClass(String                   serverName,
+                                           String                   dataClassGUID,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateDataClass";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1220,17 +1206,10 @@ public class DataDesignerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof DataClassProperties dataClassProperties)
                 {
-                    handler.updateDataClass(userId,
-                                            dataClassGUID,
-                                            requestBody,
-                                            dataClassProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateDataClass(userId,
-                                            dataClassGUID,
-                                            requestBody,
-                                            null);
+                    response.setFlag(handler.updateDataClass(userId,
+                                                             dataClassGUID,
+                                                             requestBody,
+                                                             dataClassProperties));
                 }
                 else
                 {

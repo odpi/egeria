@@ -17,6 +17,9 @@ public class SurveyActionRESTClient extends OCFRESTClient
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -24,63 +27,11 @@ public class SurveyActionRESTClient extends OCFRESTClient
      */
     public SurveyActionRESTClient(String   serverName,
                                   String   serverPlatformURLRoot,
+                                  String   secretsStoreProvider,
+                                  String   secretsStoreLocation,
+                                  String   secretsStoreCollection,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-    }
-
-
-    /**
-     * Constructor for no authentication.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public SurveyActionRESTClient(String serverName,
-                                  String serverPlatformURLRoot) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication with audit log.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public SurveyActionRESTClient(String   serverName,
-                                  String   serverPlatformURLRoot,
-                                  String   userId,
-                                  String   password,
-                                  AuditLog auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public SurveyActionRESTClient(String serverName,
-                                  String serverPlatformURLRoot,
-                                  String userId,
-                                  String password) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
 }

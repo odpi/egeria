@@ -27,8 +27,6 @@ public class GetOptions extends BasicOptions
     private List<String> skipRelationships             = null;
     private List<String> includeOnlyRelationships      = null;
     private int          relationshipsPageSize         = 0;
-    private List<String> skipClassifiedElements        = null;
-    private List<String> includeOnlyClassifiedElements = null;
     private int          graphQueryDepth               = 5;
 
     /**
@@ -57,8 +55,6 @@ public class GetOptions extends BasicOptions
             skipRelationships             = template.getSkipRelationships();
             includeOnlyRelationships      = template.getIncludeOnlyRelationships();
             relationshipsPageSize         = template.getRelationshipsPageSize();
-            skipClassifiedElements        = template.getSkipClassifiedElements();
-            includeOnlyClassifiedElements = template.getIncludeOnlyClassifiedElements();
             graphQueryDepth               = template.getGraphQueryDepth();
         }
     }
@@ -213,54 +209,6 @@ public class GetOptions extends BasicOptions
 
 
     /**
-     * Return the list of classification names that should not be found on any returned elements. The default
-     * is null which means that the classifications of an element do not add additional filters for the results.
-     *
-     * @return list of classification names or null.
-     */
-    public List<String> getSkipClassifiedElements()
-    {
-        return skipClassifiedElements;
-    }
-
-
-    /**
-     * Set up the list of classification names that should not be found on any returned elements. The default
-     * is null which means that the classifications of an element do not add additional filters for the results.
-     *
-     * @param skipClassifiedElements list of classification names or null.
-     */
-    public void setSkipClassifiedElements(List<String> skipClassifiedElements)
-    {
-        this.skipClassifiedElements = skipClassifiedElements;
-    }
-
-
-    /**
-     * Return the list of classification names that must be found on any returned elements. The default
-     * is null which means that the classifications of an element do not add additional filters for the results.
-     *
-     * @return list of classification names or null.
-     */
-    public List<String> getIncludeOnlyClassifiedElements()
-    {
-        return includeOnlyClassifiedElements;
-    }
-
-
-    /**
-     * Set up the list of classification names that must be found on any returned elements. The default
-     * is null which means that the classifications of an element do not add additional filters for the results.
-     *
-     * @param includeOnlyClassifiedElements list of classification names or null.
-     */
-    public void setIncludeOnlyClassifiedElements(List<String> includeOnlyClassifiedElements)
-    {
-        this.includeOnlyClassifiedElements = includeOnlyClassifiedElements;
-    }
-
-
-    /**
      * Return the maximum number of relationships away from the starting element that a graph query can traverse.
      *
      * @return int (default is 5)
@@ -297,8 +245,6 @@ public class GetOptions extends BasicOptions
                 ", skipRelationships=" + skipRelationships +
                 ", includeOnlyRelationships=" + includeOnlyRelationships +
                 ", relationshipsPageSize=" + relationshipsPageSize +
-                ", skipClassifiedElements=" + skipClassifiedElements +
-                ", includeOnlyClassifiedElements=" + includeOnlyClassifiedElements +
                 ", graphQueryDepth=" + graphQueryDepth +
                 "} " + super.toString();
     }
@@ -324,9 +270,7 @@ public class GetOptions extends BasicOptions
                 Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
                 Objects.equals(skipRelationships, that.skipRelationships) &&
                 Objects.equals(includeOnlyRelationships, that.includeOnlyRelationships) &&
-                Objects.equals(relationshipsPageSize, that.relationshipsPageSize) &&
-                Objects.equals(skipClassifiedElements, that.skipClassifiedElements) &&
-                Objects.equals(includeOnlyClassifiedElements, that.includeOnlyClassifiedElements);
+                Objects.equals(relationshipsPageSize, that.relationshipsPageSize);
     }
 
     /**
@@ -337,6 +281,6 @@ public class GetOptions extends BasicOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, metadataElementSubtypeNames, skipRelationships, includeOnlyRelationships, relationshipsPageSize, skipClassifiedElements, includeOnlyClassifiedElements, graphQueryDepth);
+        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, metadataElementSubtypeNames, skipRelationships, includeOnlyRelationships, relationshipsPageSize, graphQueryDepth);
     }
 }

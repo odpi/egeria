@@ -13,10 +13,8 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActi
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
-import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 
 /**
  * GAFServicesInstanceHandler retrieves information from the instance map for the
@@ -33,34 +31,6 @@ public class GAFServicesInstanceHandler extends AccessServerServiceInstanceHandl
         super(AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName());
 
         GAFServicesRegistration.registerAccessService();
-    }
-
-
-    /**
-     * Retrieve the specific handler for the access service.
-     *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return handler for use by the requested instance
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler(String userId,
-                                                                          String serverName,
-                                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              PropertyServerException
-    {
-        GAFServicesInstance instance = (GAFServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getMetadataElementHandler();
-        }
-
-        return null;
     }
 
 

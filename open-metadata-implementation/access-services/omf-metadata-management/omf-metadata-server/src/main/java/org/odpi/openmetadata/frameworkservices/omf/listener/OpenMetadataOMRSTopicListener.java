@@ -998,7 +998,6 @@ public class OpenMetadataOMRSTopicListener extends OMRSTopicListenerBase
                                                                       false,
                                                                       true,
                                                                       false,
-                                                                      null,
                                                                       effectiveTime,
                                                                       methodName);
             }

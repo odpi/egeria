@@ -42,7 +42,7 @@ Content-Type: application/json
 {
   "class" : "UniqueNameRequestBody",
   "name" : "active-metadata-store",
-  "namePropertyName" : "displayName"
+  "namePropertyName" : "resourceName"
 }
 
 > {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}

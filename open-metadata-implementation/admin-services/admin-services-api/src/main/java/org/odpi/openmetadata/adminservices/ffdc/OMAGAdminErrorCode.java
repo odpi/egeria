@@ -416,16 +416,6 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                          "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
                                          "Check that the OMAG Server configuration connector has been specified correctly."),
 
-    /**
-     * OMAG-ADMIN-400-045 - The {0} service of server {1} has been configured with a null service URL marker
-     */
-    NULL_SERVICE_URL_MARKER(400, "OMAG-ADMIN-400-045",
-                            "The {0} service of server {1} has been configured with a null service URL marker",
-                            "The system is unable to accept a null value for this property because the admin services " +
-                                    "is not able determine which service to configure.",
-                            "The service URL marker is passed as a parameter of the request.  The valid URL markers can be " +
-                                    "retrieved by the platform services getRegisteredServices call.  Once you have the correct " +
-                                    "value for your service, ensure it is passed on the configuration request."),
 
     /**
      * OMAG-ADMIN-400-046 - Unable to configure server {0} since engine service {1} is not registered in this OMAG Server Platform

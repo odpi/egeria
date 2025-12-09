@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: People Organizer OMVS", description="The People Organizer OMVS provides APIs to maintain information about an organization.  This includes the definitions of teams, roles and organization structures.",
+@Tag(name="API: People Organizer", description="Maintains information about an organization.  This includes the definitions of teams, roles and organization structures.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/people-organizer/overview/"))
 

@@ -6,6 +6,22 @@
 @adminUserId=garygeeke
 @auditLogTopic=logging
 
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
 # ---------------------------------------------
 # Metadata Access Store: simple-metadata-store
 #
@@ -14,15 +30,16 @@
 # @name Add PostgreSQL audit log destination
 # Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/audit-log-destinations/postgres
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/audit-log-destinations/postgres
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
-  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
+  "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{secretsStore}~",
-  "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
 ###
@@ -34,15 +51,16 @@ Content-Type: application/json
 # @name Add PostgreSQL audit log destination
 # Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/audit-log-destinations/postgres
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/audit-log-destinations/postgres
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
-  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
+  "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{secretsStore}~",
-  "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
 ###
@@ -53,15 +71,16 @@ Content-Type: application/json
 # @name Add PostgreSQL audit log destination
 # Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/audit-log-destinations/postgres
+POST {{baseURL}}/open-metadata/admin-services/servers/view-server/audit-log-destinations/postgres
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
-  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
+  "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{secretsStore}~",
-  "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
 
@@ -73,15 +92,16 @@ Content-Type: application/json
 # @name Add PostgreSQL audit log destination
 # Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/audit-log-destinations/postgres
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/audit-log-destinations/postgres
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
-  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
+  "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{secretsStore}~",
-  "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
 
@@ -93,14 +113,15 @@ Content-Type: application/json
 # @name Add PostgreSQL audit log destination
 # Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/audit-log-destinations/postgres
+POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/audit-log-destinations/postgres
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
   "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{secretsStore}~",
+  "secretsStore": "~{defaultServersSecretsStore}~",
   "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
 }
 

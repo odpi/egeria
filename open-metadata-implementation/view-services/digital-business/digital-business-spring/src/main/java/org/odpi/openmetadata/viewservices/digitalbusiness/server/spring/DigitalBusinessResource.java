@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/digital-business")
 
-@Tag(name="API: Digital Business OMVS", description="The Digital Business OMVS provides APIs for managing context events.",
+@Tag(name="API: Digital Business", description="Manages metadata from the business domain such as business capabilities and digital services.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/digital-business/overview/"))
 

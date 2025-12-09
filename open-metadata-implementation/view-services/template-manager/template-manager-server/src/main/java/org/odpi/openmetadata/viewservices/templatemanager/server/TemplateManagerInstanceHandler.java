@@ -41,11 +41,11 @@ public class TemplateManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public TemplateHandler getTemplateManagerClient(String userId,
-                                                    String serverName,
-                                                    String serviceOperationName) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public TemplateHandler getTemplateHandler(String userId,
+                                              String serverName,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         TemplateManagerInstance instance = (TemplateManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 

@@ -287,6 +287,7 @@ public class ConnectorContextClientBase
         this.asOfTimeDefault = asOfTimeDefault;
     }
 
+
     /* ============================================================
      * The Governance zones control the visibility of assets.
      */
@@ -368,7 +369,6 @@ public class ConnectorContextClientBase
         getOptions.setForDuplicateProcessing(forDuplicateProcessing);
         getOptions.setEffectiveTime(getEffectiveTime());
         getOptions.setAsOfTime(asOfTimeDefault);
-        getOptions.setGovernanceZoneFilter(governanceZonesFilterDefault);
 
         return getOptions;
     }
@@ -475,6 +475,7 @@ public class ConnectorContextClientBase
         queryOptions.setSequencingProperty(sequencingPropertyDefault);
         queryOptions.setStartFrom(0);
         queryOptions.setPageSize(maxPageSize);
+        queryOptions.setGovernanceZoneFilter(governanceZonesFilterDefault);
 
         return queryOptions;
     }

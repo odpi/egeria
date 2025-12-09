@@ -44,6 +44,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:organization-insights')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
@@ -54,7 +55,6 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
 
     implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
@@ -206,7 +206,6 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:governance-action-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors').jar }
@@ -258,10 +257,6 @@ distributions {
             }
             into('assembly/etc/reports') {
                 from { project(':open-metadata-resources:open-metadata-reports:component-id-report').shadowJar }
- //               from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
- //               from { project(':open-metadata-resources:open-metadata-reports:valid-values-report').shadowJar }
- //               from { project(':open-metadata-resources:open-metadata-reports:survey-report').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-reports:egeria-platform-report').shadowJar }
                 rename { String fileName ->
                     fileName.replace("-$rootProject.version-jar-with-dependencies", "")
                 }

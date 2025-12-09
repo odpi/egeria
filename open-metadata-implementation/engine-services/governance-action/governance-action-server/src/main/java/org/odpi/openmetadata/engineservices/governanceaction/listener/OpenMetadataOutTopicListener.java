@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
+import org.odpi.openmetadata.governanceservers.enginehostservices.api.WatchdogEventSupportingEngine;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
 
@@ -54,7 +55,7 @@ public class OpenMetadataOutTopicListener implements OpenMetadataEventListener
         {
             for (GovernanceEngineHandler governanceEngineHandler : governanceEngineHandlers.getGovernanceEngineHandlers())
             {
-                if (governanceEngineHandler instanceof GovernanceActionEngineHandler governanceActionEngineHandler)
+                if (governanceEngineHandler instanceof WatchdogEventSupportingEngine governanceActionEngineHandler)
                 {
                     try
                     {

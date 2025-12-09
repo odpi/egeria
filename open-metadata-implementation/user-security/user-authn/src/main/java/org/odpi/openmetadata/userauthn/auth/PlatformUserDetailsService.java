@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class PlatformUserDetailsService implements UserDetailsService
 {
     /**
-     * Used to validate the the user account is active.
+     * Used to validate the user account is active.
      */
     private final AccountStatusUserDetailsChecker detailsChecker = new AccountStatusUserDetailsChecker();
 

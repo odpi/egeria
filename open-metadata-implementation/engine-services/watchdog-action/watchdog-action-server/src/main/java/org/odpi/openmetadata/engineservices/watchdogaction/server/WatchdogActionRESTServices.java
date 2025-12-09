@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
 
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * The WatchdogActionRESTServices locates the correct watchdog action engine instance within the correct
  * engine host server instance and delegates the request.
  */
-public class WatchdogActionRESTServices
+public class WatchdogActionRESTServices extends TokenController
 {
     private static final WatchdogActionInstanceHandler instanceHandler = new WatchdogActionInstanceHandler();
 
@@ -32,7 +33,6 @@ public class WatchdogActionRESTServices
      * Validate the connector and return its connector type.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
@@ -41,18 +41,21 @@ public class WatchdogActionRESTServices
      *  PropertyServerException there was a problem detected by the integration service
      */
     public ConnectorReportResponse validateConnector(String serverName,
-                                                     String userId,
                                                      String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ConnectorReportResponse response = new ConnectorReportResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,

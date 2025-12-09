@@ -19,6 +19,11 @@ public enum OMAGServerPlatformPlaceholderProperty
     /**
      * The host IP address or domain name.
      */
+    PLATFORM_URL_ROOT("platformURLRoot", "The host IP address or domain name of the platform with the HTTP protocol prefix and port.", "string", "https://coconet.com:9443"),
+
+    /**
+     * The host IP address or domain name.
+     */
     HOST_URL ("platformHostURL", "The host IP address or domain name of the platform with the HTTP protocol prefix.", "string", "https://coconet.com"),
 
     /**
@@ -29,10 +34,10 @@ public enum OMAGServerPlatformPlaceholderProperty
     /**
      * The userId to store in the userId attribute of the connection.
      */
-    CONNECTION_USER_ID ("platformUserId",
-                      "The userId to store in the userId attribute of the connection. This is a platform user that is defined to the platform security connector and is used when making REST API calls to the platform.",
-                      "string",
-                      "garygeeke"),
+    PLATFORM_USER_ID("platformUserId",
+                     "The userId to store in the userId attribute of the connection. This is a platform user that is defined to the platform security connector and is used when making REST API calls to the platform.",
+                     "string",
+                     "garygeeke"),
 
 
     /**
@@ -150,14 +155,47 @@ public enum OMAGServerPlatformPlaceholderProperty
      *
      * @return list of placeholder property types
      */
-    public static List<PlaceholderPropertyType> getPlaceholderPropertyTypes()
+    public static List<PlaceholderPropertyType> getPlatformPlaceholderPropertyTypes()
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        for (OMAGServerPlatformPlaceholderProperty placeholderProperty : OMAGServerPlatformPlaceholderProperty.values())
-        {
-            placeholderPropertyTypes.add(placeholderProperty.getPlaceholderType());
-        }
+        placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholderType());
+        placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    public static List<PlaceholderPropertyType> getOMAGServerPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    public static List<PlaceholderPropertyType> getViewServerPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }

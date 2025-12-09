@@ -59,9 +59,6 @@ public class IntegrationGroupConfigurationHandler
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve B instances from.
-     * @param defaultZones list of zones that the access service should set in all new B instances.
-     * @param publishZones list of zones that the access service sets up in published B instances.
      * @param auditLog logging destination
      */
     public IntegrationGroupConfigurationHandler(String                             serviceName,
@@ -71,9 +68,6 @@ public class IntegrationGroupConfigurationHandler
                                                 OMRSRepositoryHelper               repositoryHelper,
                                                 String                             localServerUserId,
                                                 OpenMetadataServerSecurityVerifier securityVerifier,
-                                                List<String>                       supportedZones,
-                                                List<String>                       defaultZones,
-                                                List<String>                       publishZones,
                                                 AuditLog                           auditLog)
     {
         this.serviceName = serviceName;
@@ -92,9 +86,6 @@ public class IntegrationGroupConfigurationHandler
                                                                        repositoryHelper,
                                                                        localServerUserId,
                                                                        securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
                                                                        auditLog);
 
         this.integrationConnectorHandler = new AssetHandler<>(new IntegrationConnectorConverter<>(repositoryHelper, serviceName, serverName),
@@ -106,9 +97,6 @@ public class IntegrationGroupConfigurationHandler
                                                               repositoryHelper,
                                                               localServerUserId,
                                                               securityVerifier,
-                                                              supportedZones,
-                                                              defaultZones,
-                                                              publishZones,
                                                               auditLog);
 
         this.connectionHandler = new ConnectionHandler<>(new OCFConnectionConverter<>(repositoryHelper, serviceName, serverName),
@@ -120,9 +108,6 @@ public class IntegrationGroupConfigurationHandler
                                                          repositoryHelper,
                                                          localServerUserId,
                                                          securityVerifier,
-                                                         supportedZones,
-                                                         defaultZones,
-                                                         publishZones,
                                                          auditLog);
     }
 
@@ -139,7 +124,6 @@ public class IntegrationGroupConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param name qualified name or display name (if unique).
-     * @param serviceSupportedZones supported zones for calling service
      * @return properties from the integration group definition.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -147,8 +131,7 @@ public class IntegrationGroupConfigurationHandler
      * @throws PropertyServerException problem retrieving the integration group definition.
      */
     public IntegrationGroupElement getIntegrationGroupByName(String       userId,
-                                                             String       name,
-                                                             List<String> serviceSupportedZones) throws InvalidParameterException,
+                                                             String       name) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
@@ -170,7 +153,6 @@ public class IntegrationGroupConfigurationHandler
                                                       null,
                                                       false,
                                                       false,
-                                                      serviceSupportedZones,
                                                       null,
                                                       methodName);
     }
@@ -182,7 +164,6 @@ public class IntegrationGroupConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param guid unique identifier (guid) of the integration connector definition.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return properties of the integration connector.
      *
@@ -191,10 +172,9 @@ public class IntegrationGroupConfigurationHandler
      * @throws PropertyServerException problem retrieving the integration connector definition.
      */
     public  IntegrationConnectorElement getIntegrationConnectorByGUID(String       userId,
-                                                                      String       guid,
-                                                                      List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+                                                                      String       guid) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final  String   methodName = "getIntegrationConnectorByGUID";
         final  String   guidParameter = "guid";
@@ -205,7 +185,6 @@ public class IntegrationGroupConfigurationHandler
                                                                   OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                   false,
                                                                   false,
-                                                                  serviceSupportedZones,
                                                                   new Date(),
                                                                   methodName);
     }
@@ -216,7 +195,6 @@ public class IntegrationGroupConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param integrationConnectorGUID integration connector to search for.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return list of integration group unique identifiers (guids)
      *
@@ -225,10 +203,9 @@ public class IntegrationGroupConfigurationHandler
      * @throws PropertyServerException problem retrieving the integration connector and/or integration group definitions.
      */
     public List<String> getIntegrationConnectorRegistrations(String       userId,
-                                                             String       integrationConnectorGUID,
-                                                             List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                                             String       integrationConnectorGUID) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName = "getAllIntegrationConnectors";
         final String guidParameter = "integrationConnectorGUID";
@@ -249,7 +226,6 @@ public class IntegrationGroupConfigurationHandler
                                                   null,
                                                   false,
                                                   false,
-                                                  serviceSupportedZones,
                                                   effectiveTime,
                                                   methodName);
 
@@ -303,7 +279,6 @@ public class IntegrationGroupConfigurationHandler
      * @param userId identifier of calling user
      * @param integrationGroupGUID unique identifier of the integration group.
      * @param integrationConnectorGUID unique identifier of the registered integration connector.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return details of the integration connector and the asset types it is registered for.
      *
@@ -313,10 +288,9 @@ public class IntegrationGroupConfigurationHandler
      */
     public RegisteredIntegrationConnectorElement getRegisteredIntegrationConnector(String       userId,
                                                                                    String       integrationGroupGUID,
-                                                                                   String       integrationConnectorGUID,
-                                                                                   List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                                              UserNotAuthorizedException,
-                                                                                                                              PropertyServerException
+                                                                                   String       integrationConnectorGUID) throws InvalidParameterException,
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 PropertyServerException
     {
         final String methodName = "getRegisteredIntegrationConnector";
         final String integrationGroupGUIDParameter = "integrationGroupGUID";
@@ -347,9 +321,7 @@ public class IntegrationGroupConfigurationHandler
         {
             if (!relationships.isEmpty())
             {
-                return registeredIntegrationConnectorConverter.getBean(this.getIntegrationConnectorByGUID(userId,
-                                                                                                          integrationConnectorGUID,
-                                                                                                          serviceSupportedZones),
+                return registeredIntegrationConnectorConverter.getBean(this.getIntegrationConnectorByGUID(userId, integrationConnectorGUID),
                                                                        relationships.get(0));
             }
         }
@@ -365,7 +337,6 @@ public class IntegrationGroupConfigurationHandler
      * @param integrationGroupGUID unique identifier of the integration group.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return list of unique identifiers
      *
@@ -376,10 +347,9 @@ public class IntegrationGroupConfigurationHandler
     public List<RegisteredIntegrationConnectorElement> getRegisteredIntegrationConnectors(String       userId,
                                                                                           String       integrationGroupGUID,
                                                                                           int          startingFrom,
-                                                                                          int          maximumResults,
-                                                                                          List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                                                     UserNotAuthorizedException,
-                                                                                                                                     PropertyServerException
+                                                                                          int          maximumResults) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
     {
         final String methodName = "getRegisteredIntegrationConnectors";
         final String integrationGroupGUIDParameter = "integrationGroupGUID";
@@ -410,9 +380,7 @@ public class IntegrationGroupConfigurationHandler
 
             for (Relationship relationship : relationships)
             {
-                IntegrationConnectorElement connectorElement = this.getIntegrationConnectorByGUID(userId,
-                                                                                                  relationship.getEntityTwoProxy().getGUID(),
-                                                                                                  serviceSupportedZones);
+                IntegrationConnectorElement connectorElement = this.getIntegrationConnectorByGUID(userId, relationship.getEntityTwoProxy().getGUID());
 
                 results.add(registeredIntegrationConnectorConverter.getBean(connectorElement, relationship));
             }

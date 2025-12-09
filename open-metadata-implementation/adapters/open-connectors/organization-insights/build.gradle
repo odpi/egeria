@@ -1,0 +1,30 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-watchdog-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly 'org.slf4j:slf4j-api'
+    testImplementation 'org.testng:testng'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Organization Insight Connectors'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}

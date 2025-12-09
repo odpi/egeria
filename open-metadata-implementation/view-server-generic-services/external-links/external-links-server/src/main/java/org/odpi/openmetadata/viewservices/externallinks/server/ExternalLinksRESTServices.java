@@ -178,22 +178,22 @@ public class ExternalLinksRESTServices extends TokenController
      * @param externalReferenceGUID unique identifier of the external reference (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateExternalReference(String                   serverName,
-                                                String                   urlMarker,
-                                                String                   externalReferenceGUID,
-                                                UpdateElementRequestBody requestBody)
+    public BooleanResponse updateExternalReference(String                   serverName,
+                                                   String                   urlMarker,
+                                                   String                   externalReferenceGUID,
+                                                   UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateExternalReference";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -209,10 +209,10 @@ public class ExternalLinksRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof ExternalReferenceProperties externalReferenceProperties)
                 {
-                    handler.updateExternalReference(userId,
-                                                    externalReferenceGUID,
-                                                    requestBody,
-                                                    externalReferenceProperties);
+                    response.setFlag(handler.updateExternalReference(userId,
+                                                                     externalReferenceGUID,
+                                                                     requestBody,
+                                                                     externalReferenceProperties));
                 }
                 else
                 {
@@ -918,22 +918,22 @@ public class ExternalLinksRESTServices extends TokenController
      * @param externalIdGUID unique identifier (GUID) of the externalId in the open metadata ecosystem
      * @param requestBody unique identifier of this element in the external system plus additional mapping properties
      *
-     * @return void or
+     * @return boolean or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse updateExternalIdentifier(String                   serverName,
-                                                 String                   urlMarker,
-                                                 String                   externalIdGUID,
-                                                 UpdateElementRequestBody requestBody)
+    public BooleanResponse updateExternalIdentifier(String                   serverName,
+                                                    String                   urlMarker,
+                                                    String                   externalIdGUID,
+                                                    UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateExternalIdentifier";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -947,10 +947,10 @@ public class ExternalLinksRESTServices extends TokenController
             {
                 ExternalIdHandler handler = instanceHandler.getExternalIdHandler(userId, serverName, urlMarker, methodName);
 
-                handler.updateExternalId(userId,
-                                         externalIdGUID,
-                                         requestBody,
-                                         externalIdProperties);
+                response.setFlag(handler.updateExternalId(userId,
+                                                          externalIdGUID,
+                                                          requestBody,
+                                                          externalIdProperties));
             }
             else
             {

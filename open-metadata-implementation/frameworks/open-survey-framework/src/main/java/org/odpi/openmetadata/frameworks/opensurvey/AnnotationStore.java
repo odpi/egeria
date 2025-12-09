@@ -667,22 +667,23 @@ public class AnnotationStore
      * Replace the current properties of an annotation.
      *
      * @param annotationProperties new properties
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException    there was a problem updating the annotation in the annotation store.
      */
-    public void updateAnnotation(String annotationGUID,
-                                 AnnotationProperties annotationProperties) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public boolean updateAnnotation(String               annotationGUID,
+                                    AnnotationProperties annotationProperties) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         UpdateOptions updateOptions = new UpdateOptions(this.getMetadataSourceOptions());
         updateOptions.setMergeUpdate(true);
 
-        annotationHandler.updateAnnotation(userId,
-                                           annotationGUID,
-                                           updateOptions,
-                                           annotationProperties);
+        return annotationHandler.updateAnnotation(userId,
+                                                  annotationGUID,
+                                                  updateOptions,
+                                                  annotationProperties);
     }
 
 

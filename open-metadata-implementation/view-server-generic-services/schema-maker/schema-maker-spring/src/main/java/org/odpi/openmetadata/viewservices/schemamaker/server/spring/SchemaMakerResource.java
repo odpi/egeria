@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Schema Maker OMVS", description="Schemas describe the structure of data. The Schema Maker OMVS provides APIs for the creation and editing of schemas and the elements within them.",
+@Tag(name="API: Schema Maker", description="Schemas describe the structure of data. Schema Maker provides APIs for the creation and editing of schemas and the elements within them.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/schema-maker/overview/"))
 
@@ -111,7 +111,7 @@ public class SchemaMakerResource
      * @param schemaTypeGUID unique identifier of the schema type (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -124,13 +124,13 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-type"))
 
-    public VoidResponse updateSchemaType(@PathVariable
-                                         String                                  serverName,
-                                         @PathVariable String             urlMarker,
-                                         @PathVariable
-                                         String                                  schemaTypeGUID,
-                                         @RequestBody (required = false)
-                                         UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSchemaType(@PathVariable
+                                            String                                  serverName,
+                                            @PathVariable String             urlMarker,
+                                            @PathVariable
+                                            String                                  schemaTypeGUID,
+                                            @RequestBody (required = false)
+                                            UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }

@@ -969,28 +969,27 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                                   RelatedMetadataElement relatedMetadataElement,
                                   String                 methodName) throws PropertyServerException
     {
-        RelatedBy relatedBy = new RelatedBy();
-
-        relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName));
-
         if (relatedMetadataElement != null)
         {
-            ElementProperties instanceProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
+            RelatedBy relatedBy = new RelatedBy();
 
-            RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
+            relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName));
+
+            RelationshipBeanProperties relationshipProperties = getRelationshipProperties(relatedMetadataElement, relatedMetadataElement.getRelationshipProperties());
 
             relationshipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
             relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
-            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
             relatedBy.setRelationshipProperties(relationshipProperties);
+
+            return relatedBy;
         }
         else
         {
             handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
-        return relatedBy;
+        return null;
     }
 }
 

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public abstract class AuditableServerServiceInstance extends OMAGServerServiceInstance
 {
-    protected String   localServerUserId = null;
+    protected String   localServerUserId;
     protected AuditLog auditLog;
 
 

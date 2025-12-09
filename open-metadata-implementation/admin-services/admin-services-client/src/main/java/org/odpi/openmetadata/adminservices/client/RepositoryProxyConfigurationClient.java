@@ -4,10 +4,10 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.Map;
 
@@ -21,39 +21,23 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public RepositoryProxyConfigurationClient(String adminUserId,
-                                              String serverName,
-                                              String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public RepositoryProxyConfigurationClient(String   serverName,
+                                              String   serverPlatformRootURL,
+                                              String   secretStoreProvider,
+                                              String   secretStoreLocation,
+                                              String   secretStoreCollection,
+                                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(adminUserId, serverName, serverPlatformRootURL);
-    }
-
-
-    /**
-     * Create a new client that passes a connection userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is passed as the admin userId.
-     *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param connectionUserId      caller's system userId embedded in all HTTP requests
-     * @param connectionPassword    caller's system password embedded in all HTTP requests
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
-     *                                       REST API calls.
-     */
-    public RepositoryProxyConfigurationClient(String adminUserId,
-                                              String serverName,
-                                              String serverPlatformRootURL,
-                                              String connectionUserId,
-                                              String connectionPassword) throws OMAGInvalidParameterException
-    {
-        super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
 
 
@@ -68,31 +52,23 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      * the OMRS RepositoryConnector API to the third party metadata server API.
      *
      * @param connection  connection to the OMRS repository connector.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setRepositoryProxyConnection(Connection connection) throws OMAGNotAuthorizedException,
-                                                                           OMAGInvalidParameterException,
+    public void setRepositoryProxyConnection(Connection connection) throws UserNotAuthorizedException,
+                                                                           InvalidParameterException,
                                                                            OMAGConfigurationErrorException
     {
         final String methodName    = "setRepositoryConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/repository-proxy/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/mode/repository-proxy/connection";
 
-        try
-        {
-            invalidParameterHandler.validateConnection(connection, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -103,33 +79,25 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      *
      * @param connectorProvider    connector provider class name to the OMRS repository connector.
      * @param additionalProperties      additional parameters to pass to the repository connector
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void setRepositoryProxyConnection(String              connectorProvider,
-                                             Map<String, Object> additionalProperties) throws OMAGNotAuthorizedException,
-                                                                                              OMAGInvalidParameterException,
+                                             Map<String, Object> additionalProperties) throws UserNotAuthorizedException,
+                                                                                              InvalidParameterException,
                                                                                               OMAGConfigurationErrorException
     {
         final String methodName    = "setRepositoryConnection";
         final String parameterName = "connectorProvider";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/repository-proxy/details" +
-                "?connectorProvider={2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/mode/repository-proxy/details" +
+                "?connectorProvider={1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(connectorProvider, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(connectorProvider, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         additionalProperties,
-                                        adminUserId,
                                         serverName,
                                         connectorProvider);
     }
@@ -142,31 +110,23 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      * The event mapper detects changes to the third party repository and converts them to OMRS Events.
      *
      * @param connection  connection to the OMRS repository event mapper.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setEventMapperConnection(Connection  connection) throws OMAGNotAuthorizedException,
-                                                                        OMAGInvalidParameterException,
+    public void setEventMapperConnection(Connection  connection) throws UserNotAuthorizedException,
+                                                                        InvalidParameterException,
                                                                         OMAGConfigurationErrorException
     {
         final String methodName  = "setEventMapperConnection";
         final String parameterName = "connection";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/event-mapper-connection";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/event-mapper-connection";
 
-        try
-        {
-            invalidParameterHandler.validateConnection(connection, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -180,36 +140,28 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      * @param connectorProvider           Java class name of the connector provider for the OMRS repository event mapper.
      * @param eventSource                 topic name or URL to the native event source.
      * @param additionalProperties        additional properties for the event mapper connection
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void setEventMapperConnection(String               connectorProvider,
                                          String               eventSource,
-                                         Map<String, Object>  additionalProperties) throws OMAGNotAuthorizedException,
-                                                                                           OMAGInvalidParameterException,
+                                         Map<String, Object>  additionalProperties) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
                                                                                            OMAGConfigurationErrorException
     {
         final String methodName  = "setEventMapperConnection";
         final String connectorProviderParameterName = "connectorProvider";
         final String eventSourceParameterName = "eventSource";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/event-mapper-details" +
-                "?connectorProvider={2}&eventSource={3}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/event-mapper-details" +
+                "?connectorProvider={1}&eventSource={2}";
 
-        try
-        {
-            invalidParameterHandler.validateName(connectorProvider, connectorProviderParameterName, methodName);
-            invalidParameterHandler.validateName(eventSource, eventSourceParameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(connectorProvider, connectorProviderParameterName, methodName);
+        invalidParameterHandler.validateName(eventSource, eventSourceParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         additionalProperties,
-                                        adminUserId,
                                         serverName,
                                         connectorProvider,
                                         eventSource);

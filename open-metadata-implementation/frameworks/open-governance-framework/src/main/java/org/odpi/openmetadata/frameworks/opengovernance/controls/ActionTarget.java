@@ -65,7 +65,7 @@ public enum ActionTarget
      */
     NOTIFICATION_TYPE("notificationType",
                       "A Notification Type ready for monitoring.",
-                      OpenMetadataType.ASSET.typeName,
+                      OpenMetadataType.NOTIFICATION_TYPE.typeName,
                       null),
 
 

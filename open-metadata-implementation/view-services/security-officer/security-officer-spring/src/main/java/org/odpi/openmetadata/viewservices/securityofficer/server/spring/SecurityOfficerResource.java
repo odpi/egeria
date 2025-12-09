@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Security Officer OMVS", description="The Security Officer OMVS provides APIs for supporting a Security Officer as they lead the security governance program.  This builds on the capabilities of the Governance Officer OMVS.",
+@Tag(name="API: Security Officer", description="Supports a Security Officer as they lead the security governance program.  This builds on the capabilities of the Governance Officer OMVS.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/security-officer/overview/"))
 

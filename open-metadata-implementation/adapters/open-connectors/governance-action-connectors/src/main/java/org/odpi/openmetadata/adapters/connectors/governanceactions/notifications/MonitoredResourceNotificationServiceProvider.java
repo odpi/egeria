@@ -24,7 +24,7 @@ public class MonitoredResourceNotificationServiceProvider extends WatchdogAction
     private static final int    connectorComponentId       = 704;
     private static final String connectorTypeGUID          = "2d69894c-ebbf-4f9b-b57a-cc2ac05fdc29";
     private static final String connectorTypeQualifiedName = "Egeria:GovernanceService:Watchdog:MonitoredResourceNotificationService";
-    private static final String connectorTypeDisplayName   = "Open Metadata Watchdog Service";
+    private static final String connectorTypeDisplayName   = "Monitored Resource Notification Service";
     private static final String connectorTypeDescription   = "A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.";
     private static final String connectorWikiPage          = "https://egeria-project.org/connectors/watchdog/open-metadata-notification-service/";
 

@@ -49,7 +49,7 @@ public class TestOpenMetadataEventProtocolVersion
 
         OpenMetadataEventProtocolVersion  testValue;
 
-        testValue = OpenMetadataEventProtocolVersion.V1;
+        testValue = OpenMetadataEventProtocolVersion.V2;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
@@ -69,7 +69,7 @@ public class TestOpenMetadataEventProtocolVersion
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(OpenMetadataEventProtocolVersion.V1);
+            jsonString = objectMapper.writeValueAsString(OpenMetadataEventProtocolVersion.V2);
         }
         catch (Exception  exc)
         {
@@ -78,7 +78,7 @@ public class TestOpenMetadataEventProtocolVersion
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, OpenMetadataEventProtocolVersion.class) == OpenMetadataEventProtocolVersion.V1);
+            assertTrue(objectMapper.readValue(jsonString, OpenMetadataEventProtocolVersion.class) == OpenMetadataEventProtocolVersion.V2);
         }
         catch (Exception  exc)
         {
@@ -92,6 +92,6 @@ public class TestOpenMetadataEventProtocolVersion
      */
     @Test public void testToString()
     {
-        assertTrue(OpenMetadataEventProtocolVersion.V1.toString().contains("OpenMetadataEventProtocolVersion"));
+        assertTrue(OpenMetadataEventProtocolVersion.V2.toString().contains("OpenMetadataEventProtocolVersion"));
     }
 }

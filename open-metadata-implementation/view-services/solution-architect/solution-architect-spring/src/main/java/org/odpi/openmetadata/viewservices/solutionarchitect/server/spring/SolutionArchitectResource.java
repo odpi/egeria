@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Solution Architect OMVS", description="During the planning phase of a project, architects typically use drawing tools to sketch out the new components that are to be developed and how they relate to existing components.  Solution blueprints are the open metadata equivalent of the sketch and they show the solution components and actors involved and how they collaborate.  The advantage of creating a solution blueprint over a sketch diagram is that it is easy to visualize different levels of detail and, as the project rolls out, the implementation of the components can be linked into the blueprint, providing traceability from project intent to actual operation.  In a similar way, information supply chains allow the modelling of key data flows needed by your organization.   These can then be linked to metadata about the systems and pipelines that implement them, providing a means to summarize statistics from lineage about the operation of the data flows.  The Solution Architect OMVS supports the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.",
+@Tag(name="API: Solution Architect", description="During the planning phase of a project, architects typically use drawing tools to sketch out the new components that are to be developed and how they relate to existing components.  Solution blueprints are the open metadata equivalent of the sketch and they show the solution components and actors involved and how they collaborate.  The advantage of creating a solution blueprint over a sketch diagram is that it is easy to visualize different levels of detail and, as the project rolls out, the implementation of the components can be linked into the blueprint, providing traceability from project intent to actual operation.  In a similar way, information supply chains allow the modelling of key data flows needed by your organization.   These can then be linked to metadata about the systems and pipelines that implement them, providing a means to summarize statistics from lineage about the operation of the data flows.  The Solution Architect OMVS supports the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/solution-architect/overview/"))
 
@@ -108,7 +108,7 @@ public class SolutionArchitectResource
      * @param informationSupplyChainGUID unique identifier of the information supply chain (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -121,12 +121,10 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public VoidResponse updateInformationSupplyChain(@PathVariable
-                                                     String                                  serverName,
-                                                     @PathVariable
-                                                     String                                  informationSupplyChainGUID,
-                                                     @RequestBody (required = false)
-                                                     UpdateElementRequestBody requestBody)
+    public BooleanResponse updateInformationSupplyChain(@PathVariable String                                  serverName,
+                                                        @PathVariable String                                  informationSupplyChainGUID,
+                                                        @RequestBody (required = false)
+                                                            UpdateElementRequestBody requestBody)
     {
         return restAPI.updateInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
@@ -461,7 +459,7 @@ public class SolutionArchitectResource
      * @param solutionBlueprintGUID unique identifier of the solution blueprint (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -474,7 +472,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public VoidResponse updateSolutionBlueprint(@PathVariable
+    public BooleanResponse updateSolutionBlueprint(@PathVariable
                                                 String                                  serverName,
                                                 @PathVariable
                                                 String                                  solutionBlueprintGUID,
@@ -870,7 +868,7 @@ public class SolutionArchitectResource
      * @param solutionComponentGUID unique identifier of the solution component (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -883,12 +881,12 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public VoidResponse updateSolutionComponent(@PathVariable
-                                                String                   serverName,
-                                                @PathVariable
-                                                String                   solutionComponentGUID,
-                                                @RequestBody (required = false)
-                                                UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSolutionComponent(@PathVariable
+                                                   String                   serverName,
+                                                   @PathVariable
+                                                   String                   solutionComponentGUID,
+                                                   @RequestBody (required = false)
+                                                   UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSolutionComponent(serverName, solutionComponentGUID, requestBody);
     }

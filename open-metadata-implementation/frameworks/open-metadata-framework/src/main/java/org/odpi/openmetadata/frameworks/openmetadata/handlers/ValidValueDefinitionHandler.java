@@ -157,26 +157,27 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateValidValueDefinition(String                 userId,
-                                           String                 validValueDefinitionGUID,
-                                           UpdateOptions          updateOptions,
-                                           ValidValueDefinitionProperties properties) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public boolean updateValidValueDefinition(String                         userId,
+                                              String                         validValueDefinitionGUID,
+                                              UpdateOptions                  updateOptions,
+                                              ValidValueDefinitionProperties properties) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
         final String methodName        = "updateValidValueDefinition";
         final String guidParameterName = "validValueDefinitionGUID";
 
-        super.updateElement(userId,
-                            validValueDefinitionGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   validValueDefinitionGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

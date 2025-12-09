@@ -67,7 +67,7 @@ public enum PostgresPlaceholderProperty
     /**
      * The description of the table being catalogued.
      */
-    TABLE_DESCRIPTION ("schemaDescription", "The description of the database table being catalogued.", "string", null),
+    TABLE_DESCRIPTION ("tableDescription", "The description of the database table being catalogued.", "string", null),
 
     ;
 

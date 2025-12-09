@@ -523,14 +523,15 @@ public interface MetadataElementInterface
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties new properties for the metadata element
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateMetadataElementInStore(String            userId,
-                                      String            metadataElementGUID,
-                                      UpdateOptions     updateOptions,
-                                      ElementProperties properties) throws InvalidParameterException,
+    boolean updateMetadataElementInStore(String            userId,
+                                         String            metadataElementGUID,
+                                         UpdateOptions     updateOptions,
+                                         ElementProperties properties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
 
@@ -554,6 +555,41 @@ public interface MetadataElementInterface
                                             ElementStatus         newElementStatus) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+   void publishMetadataElement(String                userId,
+                               String                metadataElementGUID,
+                               MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
+
+
+    /**
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    void withdrawMetadataElement(String                userId,
+                                 String                metadataElementGUID,
+                                 MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**

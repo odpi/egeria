@@ -94,8 +94,8 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
      * The connection was provided by the {1} service running in OMAG Server {2} at {3}
      */
     NULL_CONNECTOR_RETURNED(500, "CONNECTED-ASSET-SERVICES-500-001",
-                            "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
-                                    " running in OMAG Server {2} at {3}",
+                            "The requested connector for connection named {0} has not been created.  The connection was provided by the OCF service" +
+                                    " running in OMAG Server {1} at {2}",
                             "The system is unable to create a connector which means some of its services will not work.",
                             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),

@@ -692,7 +692,6 @@ public class OpenMetadataStoreRESTServices
                                                                      requestBody.getMetadataElementTypeName(),
                                                                      requestBody.getForLineage(),
                                                                      requestBody.getForDuplicateProcessing(),
-                                                                     requestBody.getGovernanceZoneFilter(),
                                                                      requestBody.getAsOfTime(),
                                                                      requestBody.getEffectiveTime(),
                                                                      methodName));
@@ -704,7 +703,6 @@ public class OpenMetadataStoreRESTServices
                                                                      null,
                                                                      false,
                                                                      false,
-                                                                     null,
                                                                      null,
                                                                      new Date(),
                                                                      methodName));
@@ -762,7 +760,6 @@ public class OpenMetadataStoreRESTServices
                                                                            null,
                                                                            requestBody.getForLineage(),
                                                                            requestBody.getForDuplicateProcessing(),
-                                                                           requestBody.getGovernanceZoneFilter(),
                                                                            requestBody.getEffectiveTime(),
                                                                            methodName));
             }
@@ -823,7 +820,6 @@ public class OpenMetadataStoreRESTServices
                                                                             null,
                                                                             requestBody.getForLineage(),
                                                                             requestBody.getForDuplicateProcessing(),
-                                                                            requestBody.getGovernanceZoneFilter(),
                                                                             requestBody.getEffectiveTime(),
                                                                             methodName));
             }
@@ -895,7 +891,6 @@ public class OpenMetadataStoreRESTServices
                                                                sequencingOrder,
                                                                requestBody.getForLineage(),
                                                                requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getGovernanceZoneFilter(),
                                                                requestBody.getEffectiveTime(),
                                                                methodName));
             }
@@ -912,7 +907,6 @@ public class OpenMetadataStoreRESTServices
                                                                sequencingOrder,
                                                                false,
                                                                false,
-                                                               null,
                                                                new Date(),
                                                                methodName));
             }
@@ -982,7 +976,6 @@ public class OpenMetadataStoreRESTServices
                                                                              sequencingOrder,
                                                                              requestBody.getForLineage(),
                                                                              requestBody.getForDuplicateProcessing(),
-                                                                             requestBody.getGovernanceZoneFilter(),
                                                                              requestBody.getEffectiveTime(),
                                                                              methodName));
             }
@@ -1000,7 +993,6 @@ public class OpenMetadataStoreRESTServices
                                                                              sequencingOrder,
                                                                              false,
                                                                              false,
-                                                                             null,
                                                                              new Date(),
                                                                              methodName));
             }
@@ -1085,7 +1077,6 @@ public class OpenMetadataStoreRESTServices
                                                                                    requestBody.getSequencingOrder(),
                                                                                    requestBody.getForLineage(),
                                                                                    requestBody.getForDuplicateProcessing(),
-                                                                                   requestBody.getGovernanceZoneFilter(),
                                                                                    requestBody.getEffectiveTime(),
                                                                                    requestBody.getStartFrom(),
                                                                                    requestBody.getPageSize(),
@@ -1156,7 +1147,6 @@ public class OpenMetadataStoreRESTServices
                                                                    searchOptions.getForDuplicateProcessing(),
                                                                    searchOptions.getStartFrom(),
                                                                    searchOptions.getPageSize(),
-                                                                   searchOptions.getGovernanceZoneFilter(),
                                                                    searchOptions.getEffectiveTime(),
                                                                    methodName);
         if (anchoredEntities != null)
@@ -1237,7 +1227,6 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getStartFrom(),
                                                                            requestBody.getPageSize(),
-                                                                           requestBody.getGovernanceZoneFilter(),
                                                                            requestBody.getEffectiveTime(),
                                                                            methodName);
 
@@ -1315,7 +1304,6 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getStartFrom(),
                                                                            requestBody.getPageSize(),
-                                                                           requestBody.getGovernanceZoneFilter(),
                                                                            requestBody.getEffectiveTime(),
                                                                            methodName);
 
@@ -1393,7 +1381,6 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getStartFrom(),
                                                                            requestBody.getPageSize(),
-                                                                           requestBody.getGovernanceZoneFilter(),
                                                                            requestBody.getEffectiveTime(),
                                                                            methodName);
 
@@ -1742,7 +1729,6 @@ public class OpenMetadataStoreRESTServices
                                                                                      requestBody.getSequencingOrder(),
                                                                                      requestBody.getForLineage(),
                                                                                      requestBody.getForDuplicateProcessing(),
-                                                                                     requestBody.getGovernanceZoneFilter(),
                                                                                      requestBody.getEffectiveTime(),
                                                                                      requestBody.getStartFrom(),
                                                                                      requestBody.getPageSize(),
@@ -1772,7 +1758,6 @@ public class OpenMetadataStoreRESTServices
                                                                                      null,
                                                                                      false,
                                                                                      false,
-                                                                                     null,
                                                                                      new Date(),
                                                                                      0,
                                                                                      0,
@@ -1845,7 +1830,6 @@ public class OpenMetadataStoreRESTServices
                                                                                      requestBody.getSequencingOrder(),
                                                                                      requestBody.getForLineage(),
                                                                                      requestBody.getForDuplicateProcessing(),
-                                                                                     requestBody.getGovernanceZoneFilter(),
                                                                                      requestBody.getEffectiveTime(),
                                                                                      requestBody.getStartFrom(),
                                                                                      requestBody.getPageSize(),
@@ -1863,7 +1847,6 @@ public class OpenMetadataStoreRESTServices
                                                                                      null,
                                                                                      false,
                                                                                      false,
-                                                                                     null,
                                                                                      null,
                                                                                      0,
                                                                                      0,
@@ -1932,7 +1915,6 @@ public class OpenMetadataStoreRESTServices
                                                                          requestBody.getSequencingOrder(),
                                                                          requestBody.getForLineage(),
                                                                          requestBody.getForDuplicateProcessing(),
-                                                                         requestBody.getGovernanceZoneFilter(),
                                                                          requestBody.getEffectiveTime(),
                                                                          requestBody.getStartFrom(),
                                                                          requestBody.getPageSize(),
@@ -1948,7 +1930,6 @@ public class OpenMetadataStoreRESTServices
                                                                               requestBody.getAsOfTime(),
                                                                               requestBody.getSequencingProperty(),
                                                                               requestBody.getSequencingOrder(),
-                                                                              requestBody.getGovernanceZoneFilter(),
                                                                               requestBody.getEffectiveTime(),
                                                                               requestBody.getStartFrom(),
                                                                               requestBody.getPageSize(),
@@ -2033,7 +2014,6 @@ public class OpenMetadataStoreRESTServices
                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                               forLineage,
                                                               forDuplicateProcessing,
-                                                              governanceZoneFilter,
                                                               asOfTime,
                                                               effectiveTime,
                                                               methodName);
@@ -2046,7 +2026,6 @@ public class OpenMetadataStoreRESTServices
                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                               forLineage,
                                                               forDuplicateProcessing,
-                                                              governanceZoneFilter,
                                                               asOfTime,
                                                               effectiveTime,
                                                               methodName);
@@ -2120,7 +2099,6 @@ public class OpenMetadataStoreRESTServices
                                                                                forDuplicateProcessing,
                                                                                startFrom,
                                                                                pageSize,
-                                                                               governanceZoneFilter,
                                                                                effectiveTime,
                                                                                methodName);
 
@@ -2243,7 +2221,6 @@ public class OpenMetadataStoreRESTServices
                                                                                                      requestBody.getSequencingOrder(),
                                                                                                      requestBody.getForLineage(),
                                                                                                      requestBody.getForDuplicateProcessing(),
-                                                                                                     requestBody.getGovernanceZoneFilter(),
                                                                                                      requestBody.getEffectiveTime(),
                                                                                                      requestBody.getStartFrom(),
                                                                                                      requestBody.getPageSize(),
@@ -2259,7 +2236,6 @@ public class OpenMetadataStoreRESTServices
                                                                                    requestBody.getAsOfTime(),
                                                                                    requestBody.getSequencingProperty(),
                                                                                    requestBody.getSequencingOrder(),
-                                                                                   requestBody.getGovernanceZoneFilter(),
                                                                                    requestBody.getEffectiveTime(),
                                                                                    requestBody.getStartFrom(),
                                                                                    requestBody.getPageSize(),
@@ -2333,7 +2309,6 @@ public class OpenMetadataStoreRESTServices
                                                          requestBody.getAsOfTime(),
                                                          requestBody.getForLineage(),
                                                          requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getGovernanceZoneFilter(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
             }
@@ -2346,7 +2321,6 @@ public class OpenMetadataStoreRESTServices
                                                          null,
                                                          false,
                                                          false,
-                                                         null,
                                                          new Date(),
                                                          methodName);
             }
@@ -2423,7 +2397,6 @@ public class OpenMetadataStoreRESTServices
                                                                sequencingOrder,
                                                                requestBody.getForLineage(),
                                                                requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getGovernanceZoneFilter(),
                                                                requestBody.getEffectiveTime(),
                                                                methodName);
             }
@@ -2439,7 +2412,6 @@ public class OpenMetadataStoreRESTServices
                                                                sequencingOrder,
                                                                false,
                                                                false,
-                                                               null,
                                                                null,
                                                                methodName);
             }
@@ -2577,7 +2549,6 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getParentRelationshipTypeName(),
                                                                            requestBody.getParentRelationshipProperties(),
                                                                            requestBody.getParentAtEnd1(),
-                                                                           requestBody.getGovernanceZoneFilter(),
                                                                            requestBody.getForLineage(),
                                                                            requestBody.getForDuplicateProcessing(),
                                                                            requestBody.getEffectiveTime(),
@@ -2608,22 +2579,22 @@ public class OpenMetadataStoreRESTServices
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param requestBody new properties
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  UserNotAuthorizedException the user is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse updateMetadataElementInStore(String                      serverName,
-                                                     String                      userId,
-                                                     String                      metadataElementGUID,
-                                                     UpdatePropertiesRequestBody requestBody)
+    public BooleanResponse updateMetadataElementInStore(String                      serverName,
+                                                        String                      userId,
+                                                        String                      metadataElementGUID,
+                                                        UpdatePropertiesRequestBody requestBody)
     {
         final String methodName = "updateMetadataElementInStore";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AuditLog auditLog = null;
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
 
         try
         {
@@ -2633,17 +2604,16 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                handler.updateMetadataElementInStore(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     metadataElementGUID,
-                                                     requestBody.getMergeUpdate(),
-                                                     requestBody.getForLineage(),
-                                                     requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getProperties(),
-                                                     requestBody.getGovernanceZoneFilter(),
-                                                     requestBody.getEffectiveTime(),
-                                                     methodName);
+                response.setFlag(handler.updateMetadataElementInStore(userId,
+                                                                      requestBody.getExternalSourceGUID(),
+                                                                      requestBody.getExternalSourceName(),
+                                                                      metadataElementGUID,
+                                                                      requestBody.getMergeUpdate(),
+                                                                      requestBody.getForLineage(),
+                                                                      requestBody.getForDuplicateProcessing(),
+                                                                      requestBody.getProperties(),
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
             }
             else
             {
@@ -2671,7 +2641,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  UserNotAuthorizedException the user is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
     public VoidResponse updateMetadataElementStatusInStore(String                  serverName,
@@ -2701,13 +2671,139 @@ public class OpenMetadataStoreRESTServices
                                                            requestBody.getNewStatus(),
                                                            requestBody.getForLineage(),
                                                            requestBody.getForDuplicateProcessing(),
-                                                           requestBody.getGovernanceZoneFilter(),
                                                            requestBody.getEffectiveTime(),
                                                            methodName);
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse publishMetadataElement(String                    serverName,
+                                               String                    userId,
+                                               String                    metadataElementGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "publishMetadataElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+
+                handler.publishMetadataElement(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               metadataElementGUID,
+                                               requestBody.getForLineage(),
+                                               requestBody.getForDuplicateProcessing(),
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+            }
+            else
+            {
+                handler.publishMetadataElement(userId,
+                                               null,
+                                               null,
+                                               metadataElementGUID,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse withdrawMetadataElement(String                    serverName,
+                                                String                    userId,
+                                                String                    metadataElementGUID,
+                                                MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "withdrawMetadataElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                handler.withdrawMetadataElement(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                metadataElementGUID,
+                                                requestBody.getForLineage(),
+                                                requestBody.getForDuplicateProcessing(),
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+            }
+            else
+            {
+                handler.withdrawMetadataElement(userId,
+                                                null,
+                                                null,
+                                                metadataElementGUID,
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
             }
         }
         catch (Throwable error)
@@ -2730,7 +2826,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  UserNotAuthorizedException the user is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
     public VoidResponse updateMetadataElementEffectivityInStore(String                            serverName,
@@ -2761,7 +2857,6 @@ public class OpenMetadataStoreRESTServices
                                                                 requestBody.getForDuplicateProcessing(),
                                                                 requestBody.getEffectiveFrom(),
                                                                 requestBody.getEffectiveTo(),
-                                                                requestBody.getGovernanceZoneFilter(),
                                                                 requestBody.getEffectiveTime(),
                                                                 methodName);
             }
@@ -2820,7 +2915,6 @@ public class OpenMetadataStoreRESTServices
                                                      requestBody.getCascadedDelete(),
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getGovernanceZoneFilter(),
                                                      requestBody.getEffectiveTime(),
                                                      methodName);
             }
@@ -2833,7 +2927,6 @@ public class OpenMetadataStoreRESTServices
                                                      false,
                                                      false,
                                                      false,
-                                                     null,
                                                      new Date(),
                                                      methodName);
             }
@@ -2887,7 +2980,6 @@ public class OpenMetadataStoreRESTServices
                                                      requestBody,
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
-                                                     requestBody.getGovernanceZoneFilter(),
                                                      requestBody.getEffectiveTime(),
                                                      methodName);
             }
@@ -2900,7 +2992,6 @@ public class OpenMetadataStoreRESTServices
                                                       null,
                                                       false,
                                                       false,
-                                                      null,
                                                       new Date(),
                                                       methodName);
             }
@@ -2929,7 +3020,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  UserNotAuthorizedException the user is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
     public VoidResponse classifyMetadataElementInStore(String                       serverName,
@@ -2961,7 +3052,6 @@ public class OpenMetadataStoreRESTServices
                                                        requestBody.getForLineage(),
                                                        requestBody.getForDuplicateProcessing(),
                                                        requestBody.getProperties(),
-                                                       requestBody.getGovernanceZoneFilter(),
                                                        requestBody.getEffectiveTime(),
                                                        methodName);
             }
@@ -2992,7 +3082,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+     *  UserNotAuthorizedException the user is not authorized to update this element/classification
      *  PropertyServerException there is a problem with the metadata store
      */
     public VoidResponse reclassifyMetadataElementInStore(String                      serverName,
@@ -3025,7 +3115,6 @@ public class OpenMetadataStoreRESTServices
                                                          requestBody.getForLineage(),
                                                          requestBody.getForDuplicateProcessing(),
                                                          requestBody.getProperties(),
-                                                         requestBody.getGovernanceZoneFilter(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
             }
@@ -3056,7 +3145,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  UserNotAuthorizedException the user is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
     public VoidResponse updateClassificationEffectivityInStore(String                            serverName,
@@ -3089,7 +3178,6 @@ public class OpenMetadataStoreRESTServices
                                                           requestBody.getForDuplicateProcessing(),
                                                           requestBody.getEffectiveFrom(),
                                                           requestBody.getEffectiveTo(),
-                                                          requestBody.getGovernanceZoneFilter(),
                                                           requestBody.getEffectiveTime(),
                                                           methodName);
             }
@@ -3153,7 +3241,6 @@ public class OpenMetadataStoreRESTServices
                                                          classificationName,
                                                          requestBody.getForLineage(),
                                                          requestBody.getForDuplicateProcessing(),
-                                                         requestBody.getGovernanceZoneFilter(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
             }
@@ -3216,7 +3303,6 @@ public class OpenMetadataStoreRESTServices
                                                                       requestBody.getForLineage(),
                                                                       requestBody.getForDuplicateProcessing(),
                                                                       requestBody.getProperties(),
-                                                                      requestBody.getGovernanceZoneFilter(),
                                                                       requestBody.getEffectiveTime(),
                                                                       methodName));
             }
@@ -3277,7 +3363,6 @@ public class OpenMetadataStoreRESTServices
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
                                                      requestBody.getProperties(),
-                                                     requestBody.getGovernanceZoneFilter(),
                                                      requestBody.getEffectiveTime(),
                                                      methodName);
             }
@@ -3307,7 +3392,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  UserNotAuthorizedException the user is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
     public VoidResponse updateRelatedElementsEffectivityInStore(String                            serverName,
@@ -3338,7 +3423,6 @@ public class OpenMetadataStoreRESTServices
                                                            requestBody.getEffectiveTo(),
                                                            requestBody.getForLineage(),
                                                            requestBody.getForDuplicateProcessing(),
-                                                           requestBody.getGovernanceZoneFilter(),
                                                            requestBody.getEffectiveTime(),
                                                            methodName);
             }
@@ -3375,7 +3459,7 @@ public class OpenMetadataStoreRESTServices
                                                   String                        relationshipGUID,
                                                   OpenMetadataDeleteRequestBody requestBody)
     {
-        final String methodName = "deleteRelatedElementsInStore";
+        final String methodName = "deleteRelationshipInStore";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -3397,7 +3481,6 @@ public class OpenMetadataStoreRESTServices
                                                   relationshipGUID,
                                                   requestBody.getForLineage(),
                                                   requestBody.getForDuplicateProcessing(),
-                                                  requestBody.getGovernanceZoneFilter(),
                                                   requestBody.getEffectiveTime(),
                                                   methodName);
             }

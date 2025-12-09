@@ -41,6 +41,7 @@ public class FFDCResponseBase implements FFDCResponse
 {
     private int                 relatedHTTPCode                 = 200;
     private String              exceptionClassName              = null;
+    private String              exceptionSubclassName           = null;
     private String              exceptionCausedBy               = null;
     private String              actionDescription               = null;
     private String              exceptionErrorMessage           = null;
@@ -70,6 +71,7 @@ public class FFDCResponseBase implements FFDCResponse
         {
             this.relatedHTTPCode = template.getRelatedHTTPCode();
             this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionSubclassName = template.getExceptionSubclassName();
             this.exceptionCausedBy = template.getExceptionCausedBy();
             this.actionDescription = template.getActionDescription();
             this.exceptionErrorMessage = template.getExceptionErrorMessage();
@@ -103,6 +105,30 @@ public class FFDCResponseBase implements FFDCResponse
     public void setExceptionClassName(String exceptionClassName)
     {
         this.exceptionClassName = exceptionClassName;
+    }
+
+
+    /**
+     * Return the detailed class name create by the originator.
+     *
+     * @return class name
+     */
+    @Override
+    public String getExceptionSubclassName()
+    {
+        return exceptionSubclassName;
+    }
+
+
+    /**
+     * Set up the detailed class name create by the originator.
+     *
+     * @param exceptionSubclassName name of class
+     */
+    @Override
+    public void setExceptionSubclassName(String exceptionSubclassName)
+    {
+        this.exceptionSubclassName = exceptionSubclassName;
     }
 
 
@@ -352,6 +378,8 @@ public class FFDCResponseBase implements FFDCResponse
         return "FFDCResponseBase{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionSubclassName='" + exceptionSubclassName + '\'' +
+                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
                 ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
@@ -383,6 +411,7 @@ public class FFDCResponseBase implements FFDCResponse
         FFDCResponseBase that = (FFDCResponseBase) objectToCompare;
         return relatedHTTPCode == that.relatedHTTPCode &&
                 Objects.equals(exceptionClassName, that.exceptionClassName) &&
+                Objects.equals(exceptionSubclassName, that.exceptionSubclassName) &&
                 Objects.equals(actionDescription, that.actionDescription) &&
                 Objects.equals(exceptionErrorMessage, that.exceptionErrorMessage) &&
                 Objects.equals(exceptionErrorMessageId, that.exceptionErrorMessageId) &&
@@ -401,8 +430,7 @@ public class FFDCResponseBase implements FFDCResponse
     @Override
     public int hashCode()
     {
-        int result = Objects.hash(relatedHTTPCode, exceptionClassName, actionDescription, exceptionErrorMessage, exceptionErrorMessageId,
-                                  exceptionSystemAction, exceptionUserAction, exceptionProperties);
+        int result = Objects.hash(relatedHTTPCode, exceptionClassName, exceptionSubclassName, exceptionCausedBy, actionDescription, exceptionErrorMessage, exceptionErrorMessageId, exceptionSystemAction, exceptionUserAction, exceptionProperties);
         result = 31 * result + Arrays.hashCode(exceptionErrorMessageParameters);
         return result;
     }

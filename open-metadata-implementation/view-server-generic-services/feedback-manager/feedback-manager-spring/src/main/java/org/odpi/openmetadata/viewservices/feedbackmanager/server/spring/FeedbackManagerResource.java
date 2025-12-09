@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Feedback Manager OMVS",
+@Tag(name="API: Feedback Manager",
      description="Add comments, reviews, tags and notes to elements of interest.",
      externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/feedback-manager/overview/"))
 
@@ -785,7 +785,7 @@ public class FeedbackManagerResource
      * @param tagGUID      unique id for the tag
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
-     * @return void or
+     * @return boolean or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
@@ -798,10 +798,10 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public VoidResponse   updateTagDescription(@PathVariable String                       serverName,
-                                               @PathVariable String                        urlMarker,
-                                               @PathVariable String                       tagGUID,
-                                               @RequestBody  UpdateElementRequestBody requestBody)
+    public BooleanResponse updateTagDescription(@PathVariable String                   serverName,
+                                                @PathVariable String                   urlMarker,
+                                                @PathVariable String                   tagGUID,
+                                                @RequestBody  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateTagDescription(serverName, urlMarker, tagGUID, requestBody);
     }

@@ -146,26 +146,27 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param projectProperties new properties for the metadata element
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateProject(String            userId,
-                              String            projectGUID,
-                              UpdateOptions     updateOptions,
-                              ProjectProperties projectProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public boolean updateProject(String            userId,
+                                 String            projectGUID,
+                                 UpdateOptions     updateOptions,
+                                 ProjectProperties projectProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String methodName        = "updateProject";
         final String guidParameterName = "projectGUID";
 
-        super.updateElement(userId,
-                            projectGUID,
-                            guidParameterName,
-                            updateOptions,
-                            projectProperties,
-                            methodName);
+        return super.updateElement(userId,
+                                   projectGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   projectProperties,
+                                   methodName);
     }
 
 

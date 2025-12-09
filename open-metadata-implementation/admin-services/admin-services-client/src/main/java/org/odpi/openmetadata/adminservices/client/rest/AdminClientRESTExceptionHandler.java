@@ -5,10 +5,10 @@ package org.odpi.openmetadata.adminservices.client.rest;
 
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +26,16 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      *
      * @param restResult  response from the rest call.  This generated in the remote server.
      *
-     * @throws OMAGInvalidParameterException one of the parameters is invalid.
-     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException configuration error
      */
-    public void detectAndThrowAdminExceptions(FFDCResponseBase restResult) throws OMAGInvalidParameterException,
-                                                                                  OMAGNotAuthorizedException,
+    public void detectAndThrowAdminExceptions(FFDCResponseBase restResult) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
                                                                                   OMAGConfigurationErrorException
     {
-        final String   invalidParameterExceptionClassName = OMAGInvalidParameterException.class.getName();
-        final String   userNotAuthorizedExceptionClassName = OMAGNotAuthorizedException.class.getName();
+        final String   invalidParameterExceptionClassName = InvalidParameterException.class.getName();
+        final String   userNotAuthorizedExceptionClassName = UserNotAuthorizedException.class.getName();
 
         if (restResult != null)
         {
@@ -47,11 +47,11 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
 
                 if (exceptionClassName.equals(invalidParameterExceptionClassName))
                 {
-                    this.throwOMAGInvalidParameterException(restResult);
+                    this.throwInvalidParameterException(restResult);
                 }
                 else if (exceptionClassName.equals(userNotAuthorizedExceptionClassName))
                 {
-                    this.throwOMAGNotAuthorizedException(restResult);
+                    this.throwUserNotAuthorizedException(restResult);
                 }
                 else
                 {
@@ -67,15 +67,15 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
 
 
     /**
-     * Throw an OMAGInvalidParameterException if it is encoded in the REST response.
+     * Throw an InvalidParameterException if it is encoded in the REST response.
      *
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server.
      *
-     * @throws OMAGInvalidParameterException encoded exception from the server
+     * @throws InvalidParameterException encoded exception from the server
      */
-    private void throwOMAGInvalidParameterException(FFDCResponseBase restResult) throws OMAGInvalidParameterException
+    private void throwInvalidParameterException(FFDCResponseBase restResult) throws InvalidParameterException
     {
-        OMAGInvalidParameterException error = new OMAGInvalidParameterException(restResult.getRelatedHTTPCode(),
+        InvalidParameterException error = new InvalidParameterException(restResult.getRelatedHTTPCode(),
                                                                                 this.getClass().getName(),
                                                                                 restResult.getActionDescription(),
                                                                                 restResult.getExceptionErrorMessage(),
@@ -84,6 +84,7 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                                                                                 restResult.getExceptionSystemAction(),
                                                                                 restResult.getExceptionUserAction(),
                                                                                 restResult.getExceptionCausedBy(),
+                                                                                null,
                                                                                 restResult.getExceptionProperties());
 
         log.error("Invalid Parameter Exception", error);
@@ -96,11 +97,11 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      *
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server.
      *
-     * @throws OMAGNotAuthorizedException encoded exception from the server
+     * @throws UserNotAuthorizedException encoded exception from the server
      */
-    private void throwOMAGNotAuthorizedException(FFDCResponseBase restResult) throws OMAGNotAuthorizedException
+    private void throwUserNotAuthorizedException(FFDCResponseBase restResult) throws UserNotAuthorizedException
     {
-        OMAGNotAuthorizedException error = new OMAGNotAuthorizedException(restResult.getRelatedHTTPCode(),
+        UserNotAuthorizedException error = new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
                                                                           this.getClass().getName(),
                                                                           restResult.getActionDescription(),
                                                                           restResult.getExceptionErrorMessage(),
@@ -109,6 +110,7 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                                                                           restResult.getExceptionSystemAction(),
                                                                           restResult.getExceptionUserAction(),
                                                                           restResult.getExceptionCausedBy(),
+                                                                          null,
                                                                           restResult.getExceptionProperties());
 
         log.error("User Not Authorized Exception", error);

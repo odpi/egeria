@@ -9,6 +9,8 @@ import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RES
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.conformance.beans.*;
 import org.odpi.openmetadata.conformance.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OpenMetadataConformanceTestReport provides the client to call an open metadata conformance suite server to
@@ -41,18 +44,26 @@ public class OpenMetadataConformanceTestReport
      *
      * @param serverName name of server to test.
      * @param serverURLRoot location of server to test.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
+     * @param auditLog destination for log messages.
      * @param testClientUserId userId for test
      * @throws RESTConfigurationException unable to configure the REST client
      */
-    private OpenMetadataConformanceTestReport(String    serverName,
-                                              String    serverURLRoot,
-                                              String    testClientUserId) throws RESTConfigurationException
+    private OpenMetadataConformanceTestReport(String   serverName,
+                                              String   serverURLRoot,
+                                              String   secretsStoreProvider,
+                                              String   secretsStoreLocation,
+                                              String   secretsStoreCollection,
+                                              AuditLog auditLog,
+                                              String   testClientUserId) throws RESTConfigurationException
     {
         this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
         this.testClientUserId = testClientUserId;
 
-        this.restClient = new RESTClient(serverName, serverURLRoot);
+        this.restClient = new RESTClient(serverName, serverURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
 
 
@@ -61,20 +72,22 @@ public class OpenMetadataConformanceTestReport
      *
      * @param serverName name of server to test.
      * @param serverURLRoot location of server to test.
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages.
      * @param testClientUserId userId for test
-     * @param testClientPassword password for userId
      * @throws RESTConfigurationException unable to configure the REST client
      */
-    private OpenMetadataConformanceTestReport(String    serverName,
-                                              String    serverURLRoot,
-                                              String    testClientUserId,
-                                              String    testClientPassword) throws RESTConfigurationException
+    private OpenMetadataConformanceTestReport(String                             serverName,
+                                              String                             serverURLRoot,
+                                              Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                              AuditLog                           auditLog,
+                                              String                             testClientUserId) throws RESTConfigurationException
     {
         this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
         this.testClientUserId = testClientUserId;
 
-        this.restClient = new RESTClient(serverName, serverURLRoot, testClientUserId, testClientPassword);
+        this.restClient = new RESTClient(serverName, serverURLRoot, secretsStoreConnectorMap, auditLog);
     }
 
 
@@ -319,6 +332,7 @@ public class OpenMetadataConformanceTestReport
      */
     public static void main(String[] args)
     {
+
         final String  resultsSummaryFileName = "openmetadata_cts_summary.json";
         final String  profileDetailsDirectory = "profile-details";
         final String  testCaseDetailsDirectory = "test-case-details";
@@ -328,14 +342,16 @@ public class OpenMetadataConformanceTestReport
         {
             System.out.println("Please specify the conformance suite OMAG server's name in the first parameter and " +
                                        "its OMAG server platform's URL root in the second parameter");
-            System.out.println("Optionally, the userId and password can be specified in the third and fourth parameter.");
+            System.out.println("Optionally, the secrets collection, location and provider and password can be specified in the third fourth and fifth parameter respectively.");
             System.exit(-1);
         }
 
         String serverName = args[0];
         String serverURLRoot = args[1];
+        String secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
+        String secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
+        String secretsStoreCollection = "garygeeke";
         String userId = defaultUserId;
-        String password = null;
 
         if (args.length > 2)
         {
@@ -344,7 +360,17 @@ public class OpenMetadataConformanceTestReport
 
         if (args.length > 3)
         {
-            password = args[3];
+            secretsStoreCollection = args[3];
+        }
+
+        if (args.length > 4)
+        {
+            secretsStoreLocation = args[4];
+        }
+
+        if (args.length > 5)
+        {
+            secretsStoreProvider = args[5];
         }
 
         HttpHelper.noStrictSSL();
@@ -362,15 +388,7 @@ public class OpenMetadataConformanceTestReport
         OpenMetadataConformanceTestReport testLab = null;
         try
         {
-
-            if (password == null)
-            {
-                testLab = new OpenMetadataConformanceTestReport(serverName, serverURLRoot, userId);
-            }
-            else
-            {
-                testLab = new OpenMetadataConformanceTestReport(serverName, serverURLRoot, userId, password);
-            }
+            testLab = new OpenMetadataConformanceTestReport(serverName, serverURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null,  userId);
 
             testLabSummary = testLab.getConformanceSummary();
             profileNames = testLab.getProfileNames();

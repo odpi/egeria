@@ -4,19 +4,14 @@ package org.odpi.openmetadata.adminservices.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -25,15 +20,15 @@ import java.util.*;
  * OMAGServerAdminForIntegrationDaemonServices provides the server-side support for the services that
  * configure the specialized part of the integration daemon.
  */
-public class OMAGServerAdminForIntegrationDaemonServices
+public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 {
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForIntegrationDaemonServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
     
 
     private final OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
-    private final OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-    private final OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+    private final        OMAGServerErrorHandler errorHandler         = new OMAGServerErrorHandler();
+    private static final RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -48,17 +43,15 @@ public class OMAGServerAdminForIntegrationDaemonServices
     /**
      * Return the list of integration groups that are configured for this server.
      *
-     * @param userId calling user
      * @param serverName name of server
      *
      * @return list of access service configurations
      */
-    public IntegrationGroupsResponse getIntegrationGroupsConfiguration(String userId,
-                                                                       String serverName)
+    public IntegrationGroupsResponse getIntegrationGroupsConfiguration(String serverName)
     {
         final String methodName = "getIntegrationGroupsConfiguration";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         IntegrationGroupsResponse response = new IntegrationGroupsResponse();
 
@@ -68,7 +61,10 @@ public class OMAGServerAdminForIntegrationDaemonServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
@@ -77,17 +73,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
              */
             response.setGroups(serverConfig.getDynamicIntegrationGroupsConfig());
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -100,22 +88,20 @@ public class OMAGServerAdminForIntegrationDaemonServices
      * Enable a single registered integration group.  This builds the integration group configuration for the
      * server's config document.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param requestBody  minimum values to configure an integration group
      *
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureIntegrationGroup(String                 userId,
-                                                  String                 serverName,
+    public VoidResponse configureIntegrationGroup(String                 serverName,
                                                   IntegrationGroupConfig requestBody)
     {
         final String methodName = "configureIntegrationGroup";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -125,8 +111,11 @@ public class OMAGServerAdminForIntegrationDaemonServices
              * Validate the incoming parameters
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateIntegrationGroupConfig(serverName, requestBody, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             /*
              * Get the configuration information for this integration group.
@@ -141,17 +130,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
                                                          updateIntegrationGroupConfig(requestBody, integrationGroupsConfig),
                                                          methodName);
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -203,22 +184,33 @@ public class OMAGServerAdminForIntegrationDaemonServices
      * Set up the configuration for all the open metadata integration groups.  This overrides
      * the current values.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param integrationGroupsConfig  list of configuration properties for each integration group.
      * @return void response or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or integrationGroupsConfig parameter.
+     * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or integrationGroupsConfig parameter.
      */
-    public VoidResponse setIntegrationGroupsConfig(String                       userId,
-                                                   String                       serverName,
+    public VoidResponse setIntegrationGroupsConfig(String                       serverName,
                                                    List<IntegrationGroupConfig> integrationGroupsConfig)
     {
         final String methodName = "setIntegrationGroupsConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = storeIntegrationGroupsConfig(userId, serverName, null, integrationGroupsConfig, methodName);
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            response = storeIntegrationGroupsConfig(userId, serverName, null, integrationGroupsConfig, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
@@ -230,20 +222,31 @@ public class OMAGServerAdminForIntegrationDaemonServices
      * Disable the integration groups.  This removes all configuration for the integration groups
      * and disables the enterprise repository services.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAllIntegrationGroups(String userId,
-                                                  String serverName)
+    public VoidResponse clearAllIntegrationGroups(String serverName)
     {
         final String methodName = "clearAllIntegrationGroups";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = this.storeIntegrationGroupsConfig(userId, serverName, null, null, methodName);
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            response = this.storeIntegrationGroupsConfig(userId, serverName, null, null, methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
@@ -254,20 +257,18 @@ public class OMAGServerAdminForIntegrationDaemonServices
     /**
      * Remove an integration group.  This removes all configuration for the integration group.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param groupId integration group id
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearIntegrationGroup(String userId,
-                                              String serverName,
+    public VoidResponse clearIntegrationGroup(String serverName,
                                               String groupId)
     {
         final String methodName = "clearIntegrationGroup";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -277,7 +278,10 @@ public class OMAGServerAdminForIntegrationDaemonServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -300,17 +304,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
                 response = this.storeIntegrationGroupsConfig(userId, serverName, groupId, newList, methodName);
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -328,8 +324,8 @@ public class OMAGServerAdminForIntegrationDaemonServices
      * @param integrationGroupsConfig    list of configuration properties for each integration group.
      * @param methodName                 calling method
      * @return void response or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or integrationGroupsConfig parameter.
+     * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or integrationGroupsConfig parameter.
      */
     private VoidResponse storeIntegrationGroupsConfig(String                       userId,
                                                       String                       serverName,
@@ -379,17 +375,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         return response;
@@ -400,17 +388,15 @@ public class OMAGServerAdminForIntegrationDaemonServices
      * Return the integration daemon services configuration including the list of integration services and
      * integration services that are configured for this server.
      *
-     * @param userId calling user
      * @param serverName name of server
      *
      * @return integration daemon services configuration
      */
-    public IntegrationDaemonServicesResponse getIntegrationDaemonServicesConfiguration(String userId,
-                                                                                       String serverName)
+    public IntegrationDaemonServicesResponse getIntegrationDaemonServicesConfiguration(String serverName)
     {
         final String methodName = "getIntegrationDaemonServicesConfiguration";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         IntegrationDaemonServicesResponse response = new IntegrationDaemonServicesResponse();
 
@@ -420,7 +406,10 @@ public class OMAGServerAdminForIntegrationDaemonServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
@@ -433,17 +422,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
 
             response.setServices(integrationDaemonServicesConfig);
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -455,20 +436,19 @@ public class OMAGServerAdminForIntegrationDaemonServices
     /**
      * Set up the configuration for an Integration Daemon OMAG Server in a single call.  This overrides the current values.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param servicesConfig full configuration for the integration daemon server.
      * @return void response
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse setIntegrationDaemonServicesConfig(String userId, String serverName, IntegrationDaemonServicesConfig servicesConfig)
+    public VoidResponse setIntegrationDaemonServicesConfig(String serverName, IntegrationDaemonServicesConfig servicesConfig)
     {
         final String methodName                       = "setIntegrationDaemonServicesConfig";
         final String serviceConfigParameterName       = "servicesConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -478,7 +458,10 @@ public class OMAGServerAdminForIntegrationDaemonServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             /*
              * Just check the config is not null (use clear to remove config completely.)
@@ -496,17 +479,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
                 this.configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -518,18 +493,17 @@ public class OMAGServerAdminForIntegrationDaemonServices
     /**
      * Remove the configuration for an Integration Daemon OMAG Server in a single call.  This overrides the current values.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @return void response
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse clearIntegrationDaemonServicesConfig(String userId, String serverName)
+    public VoidResponse clearIntegrationDaemonServicesConfig(String serverName)
     {
         final String methodName = "clearIntegrationDaemonServicesConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -539,7 +513,10 @@ public class OMAGServerAdminForIntegrationDaemonServices
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+
+            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -550,17 +527,9 @@ public class OMAGServerAdminForIntegrationDaemonServices
                 this.configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
         }
-        catch (OMAGInvalidParameterException error)
+        catch (Throwable error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException error)
-        {
-            exceptionHandler.captureNotAuthorizedException(response, error);
-        }
-        catch (Exception  error)
-        {
-            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

@@ -17,7 +17,6 @@ public interface SurveyActionAPI
     /**
      * Validate the connector and return its connector type.
      *
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector report for this connector
@@ -26,8 +25,7 @@ public interface SurveyActionAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    ConnectorReport validateConnector(String userId,
-                                      String connectorProviderClassName) throws InvalidParameterException,
+    ConnectorReport validateConnector(String connectorProviderClassName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;
 }

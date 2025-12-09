@@ -10,8 +10,12 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.R
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.EvaluateAnnotationsGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
+import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.unitycatalog.UnityCatalogPackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -51,8 +55,13 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
               archiveDescription,
               creationDate,
               archiveFileName,
-              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
-                                         new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive() });
+              new OpenMetadataArchive[]{
+                      new CorePackArchiveWriter().getOpenMetadataArchive(),
+                      new EgeriaArchiveWriter().getOpenMetadataArchive(),
+                      new FilesArchiveWriter().getOpenMetadataArchive(),
+                      new PostgresPackArchiveWriter().getOpenMetadataArchive(),
+                      new UnityCatalogPackArchiveWriter().getOpenMetadataArchive(),
+                      new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive() });
     }
 
 

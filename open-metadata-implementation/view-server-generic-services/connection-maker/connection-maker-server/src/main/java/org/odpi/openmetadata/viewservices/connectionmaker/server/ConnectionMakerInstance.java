@@ -40,7 +40,6 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
-     * @param localServerUserPassword  password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -49,7 +48,6 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
     public ConnectionMakerInstance(String                  serverName,
                                    AuditLog                auditLog,
                                    String                  localServerUserId,
-                                   String                  localServerUserPassword,
                                    int                     maxPageSize,
                                    String                  remoteServerName,
                                    String                  remoteServerURL,
@@ -59,15 +57,12 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
         this.connectionHandlerMap = new ViewServiceClientMap<>(ConnectionHandler.class,
                                                                serverName,
-                                                               localServerUserId,
-                                                               localServerUserPassword,
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
@@ -76,8 +71,6 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
 
         this.connectorTypeHandlerMap = new ViewServiceClientMap<>(ConnectorTypeHandler.class,
                                                                   serverName,
-                                                                  localServerUserId,
-                                                                  localServerUserPassword,
                                                                   auditLog,
                                                                   activeViewServices,
                                                                   myDescription.getViewServiceFullName(),
@@ -86,8 +79,6 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
 
         this.endpointHandlerMap = new ViewServiceClientMap<>(EndpointHandler.class,
                                                              serverName,
-                                                             localServerUserId,
-                                                             localServerUserPassword,
                                                              auditLog,
                                                              activeViewServices,
                                                              myDescription.getViewServiceFullName(),

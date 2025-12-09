@@ -16,7 +16,7 @@ for the surveyor components (called open survey services) to:
 * Record the results of the analysis in the open metadata repository and attach it to the
   asset's metadata for later processing.
 
-More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/saf/overview/).
+More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/osf/overview/).
 
 
 ----

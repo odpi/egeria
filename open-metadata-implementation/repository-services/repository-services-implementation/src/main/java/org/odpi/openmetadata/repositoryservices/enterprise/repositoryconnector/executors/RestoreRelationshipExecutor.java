@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -71,10 +73,6 @@ public class RestoreRelationshipExecutor extends RepositoryExecutorBase
             restoredRelationship = metadataCollection.restoreRelationship(userId, relationshipGUID);
             result = true;
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(error);
-        }
         catch (FunctionNotSupportedException error)
         {
             accumulator.captureException(error);
@@ -92,6 +90,10 @@ public class RestoreRelationshipExecutor extends RepositoryExecutorBase
             accumulator.captureException(error);
         }
         catch (UserNotAuthorizedException error)
+        {
+            accumulator.captureException(error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(error);
         }

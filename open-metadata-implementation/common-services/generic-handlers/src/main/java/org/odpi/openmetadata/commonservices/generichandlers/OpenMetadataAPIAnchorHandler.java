@@ -42,9 +42,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public OpenMetadataAPIAnchorHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -56,12 +53,9 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                         OMRSRepositoryHelper               repositoryHelper,
                                         String                             localServerUserId,
                                         OpenMetadataServerSecurityVerifier securityVerifier,
-                                        List<String>                       supportedZones,
-                                        List<String>                       defaultZones,
-                                        List<String>                       publishZones,
                                         AuditLog                           auditLog)
     {
-        super(converter, beanClass, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+        super(converter, beanClass, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier, auditLog);
     }
 
 
@@ -308,6 +302,8 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                        anchors.anchorScopeGUID,
                                        methodName);
                 }
+
+                return anchorEntity;
             }
         }
 

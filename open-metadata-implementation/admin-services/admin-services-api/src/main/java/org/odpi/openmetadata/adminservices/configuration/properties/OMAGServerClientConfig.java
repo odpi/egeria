@@ -23,15 +23,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = EngineServiceConfig.class,             name = "EngineServiceConfig"),
-        @JsonSubTypes.Type(value = IntegrationGroupConfig.class,        name = "IntegrationGroupConfig"),
-        @JsonSubTypes.Type(value = ViewServiceConfig.class,               name = "ViewServiceConfig")
+        @JsonSubTypes.Type(value = EngineConfig.class, name = "EngineConfig"),
+        @JsonSubTypes.Type(value = IntegrationGroupConfig.class, name = "IntegrationGroupConfig"),
+        @JsonSubTypes.Type(value = ViewServiceConfig.class, name = "ViewServiceConfig")
 })
 public class OMAGServerClientConfig extends AdminServicesConfigHeader
 {
     /* Properties needed to call the OMAG Server REST APIs */
     private String omagServerPlatformRootURL = null;
     private String omagServerName            = null;
+    private String secretsStoreProvider      = null;
+    private String secretsStoreLocation      = null;
+    private String secretsStoreCollection    = null;
+
+
 
     /**
      * Default constructor
@@ -55,6 +60,9 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
         {
             omagServerPlatformRootURL = template.getOMAGServerPlatformRootURL();
             omagServerName            = template.getOMAGServerName();
+            secretsStoreProvider      = template.getSecretsStoreProvider();
+            secretsStoreLocation      = template.getSecretsStoreLocation();
+            secretsStoreCollection    = template.getSecretsStoreCollection();
         }
     }
 
@@ -104,6 +112,74 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the class name of the secrets store provider.
+     *
+     * @return string
+     */
+    public String getSecretsStoreProvider()
+    {
+        return secretsStoreProvider;
+    }
+
+
+    /**
+     * Set up the class name of the secrets store provider.
+     *
+     * @param secretsStoreProvider string
+     */
+    public void setSecretsStoreProvider(String secretsStoreProvider)
+    {
+        this.secretsStoreProvider = secretsStoreProvider;
+    }
+
+
+    /**
+     * Return the location information for the secrets store - this is stored in the endpoint network address for the
+     * secrets store connector.
+     *
+     * @return string
+     */
+    public String getSecretsStoreLocation()
+    {
+        return secretsStoreLocation;
+    }
+
+
+    /**
+     * Set up the location information for the secrets store - this is stored in the endpoint network address for the
+     * secrets store connector.
+     *
+     * @param secretsStoreLocation string
+     */
+    public void setSecretsStoreLocation(String secretsStoreLocation)
+    {
+        this.secretsStoreLocation = secretsStoreLocation;
+    }
+
+
+    /**
+     * Return the secrets collection to use for the connection to the remote server.
+     *
+     * @return string
+     */
+    public String getSecretsStoreCollection()
+    {
+        return secretsStoreCollection;
+    }
+
+
+    /**
+     * Set up the secrets collection to use for the connection to the remote server.
+     *
+     * @param secretsStoreCollection string
+     */
+    public void setSecretsStoreCollection(String secretsStoreCollection)
+    {
+        this.secretsStoreCollection = secretsStoreCollection;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -114,9 +190,11 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
         return "OMAGServerClientConfig{" +
                 "omagServerPlatformRootURL='" + omagServerPlatformRootURL + '\'' +
                 ", omagServerName='" + omagServerName + '\'' +
-                '}';
+                ", secretsStoreProvider='" + secretsStoreProvider + '\'' +
+                ", secretsStoreLocation='" + secretsStoreLocation + '\'' +
+                ", secretsStoreCollection='" + secretsStoreCollection + '\'' +
+                "} " + super.toString();
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -127,19 +205,15 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         OMAGServerClientConfig that = (OMAGServerClientConfig) objectToCompare;
-        return Objects.equals(getOMAGServerPlatformRootURL(), that.getOMAGServerPlatformRootURL()) &&
-                Objects.equals(getOMAGServerName(), that.getOMAGServerName());
+        return Objects.equals(omagServerPlatformRootURL, that.omagServerPlatformRootURL) &&
+                Objects.equals(omagServerName, that.omagServerName) &&
+                Objects.equals(secretsStoreProvider, that.secretsStoreProvider) &&
+                Objects.equals(secretsStoreLocation, that.secretsStoreLocation) &&
+                Objects.equals(secretsStoreCollection, that.secretsStoreCollection);
     }
-
 
     /**
      * Return a hash code based on the values of this object.
@@ -149,6 +223,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getOMAGServerPlatformRootURL(), getOMAGServerName());
+        return Objects.hash(omagServerPlatformRootURL, omagServerName, secretsStoreProvider,
+                            secretsStoreLocation, secretsStoreCollection);
     }
 }

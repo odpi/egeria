@@ -37,58 +37,26 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param maxPageSize maximum page size for this process
-     * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String   serverName,
                                     String   serverPlatformURLRoot,
-                                    String   serviceURLMarker,
+                                    String   localServerSecretsStoreProvider,
+                                    String   localServerSecretsStoreLocation,
+                                    String   localServerSecretsStoreCollection,
                                     int      maxPageSize,
                                     AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, maxPageSize, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
 
         final String methodName = "Client Constructor";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
-
-        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
-    }
-
-
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @param maxPageSize maximum page size for this process
-     * @param serviceURLMarker indicator of the OMAS that this client is supporting
-     * @param auditLog destination for log messages
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public ConnectedAssetClientBase(String   serverName,
-                                    String   serverPlatformURLRoot,
-                                    String   serviceURLMarker,
-                                    String   userId,
-                                    String   password,
-                                    int      maxPageSize,
-                                    AuditLog auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, maxPageSize, auditLog);
-
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
     }
 
 
@@ -96,7 +64,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * Use the Open Connector Framework (OCF) to create a connector using the supplied connection.
      * The connector is initialized by not started.
      *
-     * @param serviceName calling service
      * @param requestedConnection  connection describing the required connector
      * @param methodName  name of the calling method.
      *
@@ -106,8 +73,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws ConnectorCheckedException the connector had an operational issue accessing the asset.
      * @throws UserNotAuthorizedException connector disconnected
      */
-    protected Connector getConnectorForConnection(String          serviceName,
-                                                  Connection      requestedConnection,
+    protected Connector getConnectorForConnection(Connection      requestedConnection,
                                                   String          methodName) throws ConnectionCheckedException,
                                                                                      ConnectorCheckedException,
                                                                                      UserNotAuthorizedException
@@ -130,7 +96,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
              * Whatever the cause, the process can not proceed without a connector.
              */
             throw new ConnectorCheckedException(OCFServicesErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(requestedConnection.getQualifiedName(),
-                                                                                                                  serviceName,
                                                                                                                   serverName,
                                                                                                                   serverPlatformURLRoot),
                                                 this.getClass().getName(),
@@ -145,7 +110,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * Returns the connection corresponding to the supplied connection GUID.
      *
      * @param restClient client that calls REST APIs
-     * @param serviceName name of the calling service
      * @param userId userId of user making request.
      * @param guid   the unique id for the connection within the metadata repository.
      *
@@ -156,19 +120,17 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected Connection getConnectionByGUID(OCFRESTClient  restClient,
-                                             String         serviceName,
                                              String         userId,
                                              String         guid) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         final String   methodName  = "getConnectionByGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/{1}/connected-asset/users/{2}/connections/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/connections/{2}";
 
         OCFConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
                                                                                    serverPlatformURLRoot + urlTemplate,
                                                                                    serverName,
-                                                                                   serviceName,
                                                                                    userId,
                                                                                    guid);
 
@@ -180,7 +142,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * Returns the connection object corresponding to the supplied connection name.
      *
      * @param restClient client that calls REST APIs
-     * @param serviceName name of the calling service
      * @param userId  String - userId of user making request.
      * @param name  this is the qualifiedName of the connection.
      *
@@ -191,19 +152,17 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected Connection getConnectionByName(OCFRESTClient  restClient,
-                                             String         serviceName,
                                              String         userId,
                                              String         name) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         final String   methodName = "getConnectionByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/{1}/connected-asset/users/{2}/connections/by-name/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/connections/by-name/{2}";
 
         OCFConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
                                                                                    serverPlatformURLRoot + urlTemplate,
                                                                                    serverName,
-                                                                                   serviceName,
                                                                                    userId,
                                                                                    name);
 
@@ -215,7 +174,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * Returns the connection corresponding to the supplied asset GUID.
      *
      * @param restClient client that calls REST APIs
-     * @param serviceName name of the calling service
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
@@ -226,19 +184,17 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public Connection getConnectionForAsset(OCFRESTClient  restClient,
-                                            String         serviceName,
                                             String         userId,
                                             String         assetGUID) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
         final String   methodName = "getConnectionForAsset";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/connection";
 
         OCFConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
                                                                                    serverPlatformURLRoot + urlTemplate,
                                                                                    serverName,
-                                                                                   serviceName,
                                                                                    userId,
                                                                                    assetGUID);
 
@@ -278,7 +234,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
                                                                     serverPlatformURLRoot + urlTemplate,
                                                                     connection,
                                                                     serverName,
-                                                                    serviceURLMarker,
                                                                     userId);
 
         return restResult.getGUID();
@@ -321,7 +276,6 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
                                                                      serverPlatformURLRoot + urlTemplate,
                                                                      connection,
                                                                      serverName,
-                                                                     serviceURLMarker,
                                                                      userId,
                                                                      assetGUID);
 
@@ -365,11 +319,11 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
 
-        Connection connection = this.getConnectionByName(ocfRESTClient, serviceURLMarker, userId, connectionName);
+        Connection connection = this.getConnectionByName(ocfRESTClient, userId, connectionName);
 
         if (connection != null)
         {
-            return this.getConnectorForConnection(serviceURLMarker, connection, methodName);
+            return this.getConnectorForConnection(connection, methodName);
         }
 
         return null;
@@ -434,11 +388,11 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        Connection connection = this.getConnectionForAsset(ocfRESTClient, serviceURLMarker, userId, assetGUID);
+        Connection connection = this.getConnectionForAsset(ocfRESTClient, userId, assetGUID);
 
         if (connection != null)
         {
-            Connector connector = this.getConnectorForConnection(serviceURLMarker, connection, methodName);
+            Connector connector = this.getConnectorForConnection(connection, methodName);
 
             if ((auditLog != null) && (connector instanceof AuditLoggingComponent auditLoggingComponent))
             {
@@ -484,11 +438,11 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
-        Connection connection = this.getConnectionByGUID(ocfRESTClient, serviceURLMarker, userId, connectionGUID);
+        Connection connection = this.getConnectionByGUID(ocfRESTClient, userId, connectionGUID);
 
         if (connection != null)
         {
-            return this.getConnectorForConnection(serviceURLMarker, connection, methodName);
+            return this.getConnectorForConnection(connection, methodName);
         }
 
         return null;
@@ -520,7 +474,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        return this.getConnectorForConnection(serviceURLMarker, connection, methodName);
+        return this.getConnectorForConnection(connection, methodName);
     }
 
 

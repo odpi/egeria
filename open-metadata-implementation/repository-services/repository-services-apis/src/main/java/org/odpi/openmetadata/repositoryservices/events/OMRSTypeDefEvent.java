@@ -6,8 +6,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1TypeDefSection;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2TypeDefSection;
 
 /**
  * OMRSTypeDefEvent provides the wrapper for an event that relates to a type definition (TypeDef).
@@ -48,11 +48,11 @@ public class OMRSTypeDefEvent extends OMRSEvent
      *
      * @param inboundEvent incoming Event.
      */
-    public OMRSTypeDefEvent(OMRSEventV1 inboundEvent)
+    public OMRSTypeDefEvent(OMRSEventV2 inboundEvent)
     {
         super(inboundEvent);
 
-        OMRSEventV1TypeDefSection typeDefSection = inboundEvent.getTypeDefEventSection();
+        OMRSEventV2TypeDefSection typeDefSection = inboundEvent.getTypeDefEventSection();
 
         if (typeDefSection != null)
         {
@@ -401,11 +401,11 @@ public class OMRSTypeDefEvent extends OMRSEvent
      *
      * @return OMRSEvent (Version 1) object
      */
-    public OMRSEventV1  getOMRSEventV1()
+    public OMRSEventV2 getOMRSEventV1()
     {
-        OMRSEventV1     omrsEvent = super.getOMRSEventV1();
+        OMRSEventV2 omrsEvent = super.getOMRSEventV1();
 
-        OMRSEventV1TypeDefSection typeDefSection  = new OMRSEventV1TypeDefSection();
+        OMRSEventV2TypeDefSection typeDefSection = new OMRSEventV2TypeDefSection();
 
         typeDefSection.setTypeDefEventType(this.typeDefEventType);
         typeDefSection.setTypeDef(this.typeDef);

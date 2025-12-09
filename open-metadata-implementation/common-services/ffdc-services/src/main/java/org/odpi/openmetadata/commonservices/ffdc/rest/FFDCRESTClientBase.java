@@ -10,9 +10,13 @@ import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.springframework.core.ParameterizedTypeReference;
+
+import java.util.Map;
 
 
 /**
@@ -22,7 +26,7 @@ public class FFDCRESTClientBase
 {
     protected String               serverName;             /* Initialized in constructor */
     protected String               serverPlatformURLRoot;  /* Initialized in constructor */
-    protected AuditLog             auditLog = null;        /* Initialized in constructor */
+    protected AuditLog             auditLog;               /* Initialized in constructor */
 
     protected final RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
@@ -34,86 +38,37 @@ public class FFDCRESTClientBase
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    protected FFDCRESTClientBase(String    serverName,
-                                 String    serverPlatformURLRoot,
-                                 AuditLog  auditLog) throws InvalidParameterException
-    {
-        final String  methodName = "RESTClient(no authentication)";
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        RESTClientFactory factory = new RESTClientFactory(serverName, serverPlatformURLRoot);
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Exception     error)
-        {
-            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error,
-                                                "serverPlatformURLRoot or serverName");
-        }
-    }
-
-
-    /**
-     * Constructor for no authentication.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    protected FFDCRESTClientBase(String serverName,
-                                 String serverPlatformURLRoot) throws InvalidParameterException
-    {
-        this(serverName, serverPlatformURLRoot, null);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication with audit log.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     protected FFDCRESTClientBase(String   serverName,
                                  String   serverPlatformURLRoot,
-                                 String   userId,
-                                 String   password,
+                                 String   secretsStoreProvider,
+                                 String   secretsStoreLocation,
+                                 String   secretsStoreCollection,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        final String  methodName = "RESTClient(userId and password)";
+        final String  methodName = "RESTClient(explicit secrets store)";
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
 
-
-        RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           serverPlatformURLRoot,
-                                                           userId,
-                                                           password,
-                                                           null,
-                                                           auditLog);
-
         try
         {
+            RESTClientFactory factory = new RESTClientFactory(serverName,
+                                                              serverPlatformURLRoot,
+                                                              secretsStoreProvider,
+                                                              secretsStoreLocation,
+                                                              secretsStoreCollection,
+                                                              SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                                              auditLog);
+
             this.clientConnector = factory.getClientConnector();
         }
         catch (Exception     error)
@@ -128,23 +83,44 @@ public class FFDCRESTClientBase
 
 
     /**
-     * Constructor for simple userId and password authentication.
+     * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
+     *                                       REST API calls.
      */
-    protected FFDCRESTClientBase(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password) throws InvalidParameterException
+    public FFDCRESTClientBase(String                             serverName,
+                              String                             serverPlatformURLRoot,
+                              Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                              AuditLog                           auditLog) throws InvalidParameterException
     {
-        this(serverName, serverPlatformURLRoot, userId, password, null);
-    }
+        final String  methodName = "RESTClient(connector secrets store)";
 
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        try
+        {
+            RESTClientFactory factory = new RESTClientFactory(serverName,
+                                                              serverPlatformURLRoot,
+                                                              secretsStoreConnectorMap,
+                                                              auditLog);
+
+            this.clientConnector = factory.getClientConnector();
+        }
+        catch (Exception     error)
+        {
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "serverPlatformURLRoot or serverName");
+        }
+    }
 
     /**
      * Issue a GET REST call that returns a response object.

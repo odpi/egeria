@@ -19,9 +19,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum OpenMetadataEventProtocolVersion
 {
     /**
-     * Version 1
+     * OMRS Version 1
      */
-    V1 (1, "V1", "Version 1");
+    V1 (1, "OMRS V1.0", "OMRS Version 1 (Egeria 5.3 and before)"),
+
+    /**
+     * OMRS Version 2
+     */
+    V2 (2, "OMRS V2.0", "OMRS Version 2 (Egeria 6.0 and later)");
 
 
     private final int    ordinal;

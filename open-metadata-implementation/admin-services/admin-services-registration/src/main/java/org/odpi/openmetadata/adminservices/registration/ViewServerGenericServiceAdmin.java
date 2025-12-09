@@ -41,7 +41,6 @@ public abstract class ViewServerGenericServiceAdmin
      * @param viewServiceConfig                  specific configuration properties for this view service.
      * @param auditLog                           audit log component for logging messages.
      * @param serverUserName                     user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param serverUserPassword                 password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize                        maximum page size. 0 means unlimited
      * @param activeViewServices                 list of view services active in this server
      * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
@@ -50,7 +49,6 @@ public abstract class ViewServerGenericServiceAdmin
                                     ViewServiceConfig       viewServiceConfig,
                                     AuditLog                auditLog,
                                     String                  serverUserName,
-                                    String                  serverUserPassword,
                                     int                     maxPageSize,
                                     List<ViewServiceConfig> activeViewServices) throws OMAGConfigurationErrorException;
 

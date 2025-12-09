@@ -57,9 +57,6 @@ public class OCFServicesInstance extends AccessServerServiceInstance
                                                              repositoryHelper,
                                                              localServerUserId,
                                                              securityVerifier,
-                                                             supportedZones,
-                                                             defaultZones,
-                                                             publishZones,
                                                              auditLog);
         }
         else

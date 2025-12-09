@@ -55,6 +55,11 @@ public enum PlaceholderProperty
     SERVER_NAME ("serverName", "The name of the server being catalogued.", DataType.STRING.getName(), "myServer"),
 
     /**
+     * The name of the associated organization.
+     */
+    ORGANIZATION_NAME ("organizationName", "The name of the associated organization.", DataType.STRING.getName(), "Coco Pharmaceuticals"),
+
+    /**
      * The name of the server being catalogued.
      */
     SERVER_ID ("serverId", "The local identifier of the server being catalogued.", DataType.STRING.getName(), "myServer"),

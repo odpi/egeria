@@ -60,9 +60,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public ConnectionHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -74,9 +71,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                              OMRSRepositoryHelper               repositoryHelper,
                              String                             localServerUserId,
                              OpenMetadataServerSecurityVerifier securityVerifier,
-                             List<String>                       supportedZones,
-                             List<String>                       defaultZones,
-                             List<String>                       publishZones,
                              AuditLog                           auditLog)
 
     {
@@ -89,9 +83,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
               repositoryHelper,
               localServerUserId,
               securityVerifier,
-              supportedZones,
-              defaultZones,
-              publishZones,
               auditLog);
 
         this.endpointHandler = new EndpointHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
@@ -103,9 +94,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                      repositoryHelper,
                                                      localServerUserId,
                                                      securityVerifier,
-                                                     supportedZones,
-                                                     defaultZones,
-                                                     publishZones,
                                                      auditLog);
 
         this.connectorTypeHandler = new ConnectorTypeHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
@@ -117,9 +105,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                repositoryHelper,
                                                                localServerUserId,
                                                                securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
                                                                auditLog);
     }
 
@@ -181,7 +166,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                  null,
                                                  forLineage,
                                                  forDuplicateProcessing,
-                                                 supportedZones,
                                                  effectiveTime,
                                                  methodName) != null)
                 {
@@ -212,7 +196,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          null,
                                                          false,
                                                          false,
-                                                         supportedZones,
                                                          effectiveTime,
                                                          methodName);
         }
@@ -231,7 +214,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          null,
                                                          false,
                                                          false,
-                                                         supportedZones,
                                                          effectiveTime,
                                                          methodName);
         }
@@ -256,7 +238,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connection object to add
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -276,7 +257,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   Connection   connection,
                                   boolean      forLineage,
                                   boolean      forDuplicateProcessing,
-                                  List<String> serviceSupportedZones,
                                   Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
@@ -312,7 +292,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                  connection,
                                  forLineage,
                                  forDuplicateProcessing,
-                                 serviceSupportedZones,
                                  effectiveTime,
                                  methodName);
         }
@@ -326,7 +305,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     connection,
                                     forLineage,
                                     forDuplicateProcessing,
-                                    serviceSupportedZones,
                                     effectiveTime,
                                     methodName);
         }
@@ -347,7 +325,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param embeddedConnections list of embedded connections or null - only for Virtual Connections
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -366,7 +343,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   List<EmbeddedConnection> embeddedConnections,
                                                   boolean                  forLineage,
                                                   boolean                  forDuplicateProcessing,
-                                                  List<String>             serviceSupportedZones,
                                                   Date                     effectiveTime,
                                                   String                   methodName) throws InvalidParameterException,
                                                                                               PropertyServerException,
@@ -510,7 +486,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                OpenMetadataType.CONNECTION.typeName,
                                forLineage,
                                forDuplicateProcessing,
-                               serviceSupportedZones,
                                OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
                                OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
                                effectiveTime,
@@ -535,7 +510,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                     realConnection,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
-                                                                    serviceSupportedZones,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -580,7 +554,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connection object to add
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones list of supported zones for this service
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -600,7 +573,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   Connection   connection,
                                   boolean      forLineage,
                                   boolean      forDuplicateProcessing,
-                                  List<String> serviceSupportedZones,
                                   Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
@@ -664,8 +636,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
              */
             invalidParameterHandler.validateElementInSupportedZone(anchorEntity.getGUID(),
                                                                    anchorGUIDParameterName,
-                                                                   serviceSupportedZones,
-                                                                   securityVerifier.getVisibleZones(userId),
+                                                                   super.getEntityZones(anchorEntity),
+                                                                   securityVerifier.getSupportedZones(userId, anchorEntity.getType().getTypeDefName(), methodName),
                                                                    serviceName,
                                                                    methodName);
         }
@@ -695,7 +667,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   embeddedConnections,
                                                   forLineage,
                                                   forDuplicateProcessing,
-                                                  serviceSupportedZones,
                                                   effectiveTime,
                                                   methodName);
 
@@ -714,7 +685,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataType.CONNECTION.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
-                                          serviceSupportedZones,
                                           OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
                                           OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
                                           properties,
@@ -740,7 +710,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connection new connection values
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -758,7 +727,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     Connection   connection,
                                     boolean      forLineage,
                                     boolean      forDuplicateProcessing,
-                                    List<String> serviceSupportedZones,
                                     Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
@@ -814,7 +782,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                               embeddedConnections,
                                               forLineage,
                                               forDuplicateProcessing,
-                                              serviceSupportedZones,
                                               effectiveTime,
                                               methodName);
 
@@ -850,7 +817,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -875,7 +841,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                    Date                effectiveTo,
                                    boolean             forLineage,
                                    boolean             forDuplicateProcessing,
-                                   List<String>        serviceSupportedZones,
                                    Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
@@ -988,7 +953,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   effectiveTo,
                                   forLineage,
                                   forDuplicateProcessing,
-                                  serviceSupportedZones,
                                   effectiveTime,
                                   methodName);
         }
@@ -1023,7 +987,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTo                    ending time for this relationship (null for all time)
      * @param forLineage                     return elements marked with the Memento classification?
      * @param forDuplicateProcessing         do not merge elements marked as duplicates?
-     * @param serviceSupportedZones          supported zones for this service
      * @param effectiveTime                  the time that the retrieved elements must be effective for
      * @param methodName                     calling method
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -1054,7 +1017,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                  Date                effectiveTo,
                                  boolean             forLineage,
                                  boolean             forDuplicateProcessing,
-                                 List<String>        serviceSupportedZones,
                                  Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
@@ -1115,8 +1077,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             {
                 invalidParameterHandler.validateElementInSupportedZone(assetEntity.getGUID(),
                                                                        assetGUIDParameterName,
-                                                                       serviceSupportedZones,
-                                                                       securityVerifier.getVisibleZones(userId),
+                                                                       super.getEntityZones(assetEntity),
+                                                                       securityVerifier.getSupportedZones(userId, assetEntity.getType().getTypeDefName(), methodName),
                                                                        serviceName,
                                                                        methodName);
             }
@@ -1163,7 +1125,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataType.CONNECTOR_TYPE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
-                                          serviceSupportedZones,
                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                           null,
@@ -1186,7 +1147,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataType.ENDPOINT.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
-                                          serviceSupportedZones,
                                           OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeGUID,
                                           OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
                                           null,
@@ -1298,7 +1258,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     typeName,
                                     forLineage,
                                     forDuplicateProcessing,
-                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
                                     effectiveTime,
@@ -1313,7 +1272,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param assetGUID unique identifier of the asset object
      * @param assetGUIDParameterName parameter name supplying assetGUID
-     * @param serviceSupportedZones list of supported zones for the calling service
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1327,7 +1285,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     public B getConnectionForAsset(String       userId,
                                    String       assetGUID,
                                    String       assetGUIDParameterName,
-                                   List<String> serviceSupportedZones,
                                    boolean      forLineage,
                                    boolean      forDuplicateProcessing,
                                    Date         effectiveTime,
@@ -1346,7 +1303,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            null,
                                                            forLineage,
                                                            forDuplicateProcessing,
-                                                           serviceSupportedZones,
                                                            effectiveTime,
                                                            methodName);
 
@@ -1369,7 +1325,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
-                                                                         serviceSupportedZones,
                                                                          0,
                                                                          invalidParameterHandler.getMaxPagingSize(),
                                                                          effectiveTime,
@@ -1458,7 +1413,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                             null,
                                                                                             forLineage,
                                                                                             forDuplicateProcessing,
-                                                                                            supportedZones,
                                                                                             effectiveTime,
                                                                                             methodName);
                             if (supplementaryEntity != null)

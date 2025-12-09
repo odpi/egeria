@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A incident report describes an event of situation that has/had an impact on the operation of the organization.
+ * An incident report describes an event of situation that has/had an impact on the operation of the organization.
  */
 public class IncidentReportProperties extends ReportProperties
 {

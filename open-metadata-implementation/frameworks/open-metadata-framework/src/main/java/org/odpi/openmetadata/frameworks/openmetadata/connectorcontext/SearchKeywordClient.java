@@ -77,7 +77,14 @@ public class SearchKeywordClient extends ConnectorContextClientBase
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        return searchKeywordHandler.addSearchKeywordToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
+        String searchKeywordGUID = searchKeywordHandler.addSearchKeywordToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementCreation(searchKeywordGUID);
+        }
+
+        return searchKeywordGUID;
     }
 
 
@@ -88,17 +95,25 @@ public class SearchKeywordClient extends ConnectorContextClientBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties   properties of the comment
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateSearchKeyword(String                  searchKeywordGUID,
-                                      UpdateOptions           updateOptions,
-                                      SearchKeywordProperties properties) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public boolean updateSearchKeyword(String                  searchKeywordGUID,
+                                       UpdateOptions           updateOptions,
+                                       SearchKeywordProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        searchKeywordHandler.updateSearchKeyword(connectorUserId, searchKeywordGUID, updateOptions, properties);
+        boolean updateOccurred = searchKeywordHandler.updateSearchKeyword(connectorUserId, searchKeywordGUID, updateOptions, properties);
+
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        {
+            parentContext.getIntegrationReportWriter().reportElementUpdate(searchKeywordGUID);
+        }
+
+        return updateOccurred;
     }
 
 
@@ -118,6 +133,11 @@ public class SearchKeywordClient extends ConnectorContextClientBase
                                                                         UserNotAuthorizedException
     {
         searchKeywordHandler.deleteSearchKeyword(connectorUserId, searchKeywordGUID, deleteOptions);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementDelete(searchKeywordGUID);
+        }
     }
 
 

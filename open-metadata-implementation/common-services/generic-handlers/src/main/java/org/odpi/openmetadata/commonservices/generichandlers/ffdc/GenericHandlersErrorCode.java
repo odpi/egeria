@@ -160,6 +160,14 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                            "Then retry the request once the definition is added."),
 
     /**
+     * Method {0} is unable to set the zone membership on {1} entity {2} because it is anchored to {3} entity {4}
+     */
+    ZONES_ONLY_ON_ANCHOR(400, "OMAG-GENERIC-HANDLERS-400-014",
+                         "Method {0} is unable to set the zone membership on {1} entity {2} because it is anchored to {3} entity {4}",
+                         "The system is unable to update the zone membership on an entity because it is anchored to another element.  The zone membership should be maintained on the anchor entity itself.",
+                         "Update the caller to issue the command to set the zone membership on the anchor element."),
+
+    /**
      * OMAG-GENERIC-HANDLERS-403-001 - The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */

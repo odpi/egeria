@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adminservices.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class SuccessMessageResponseTest
     {
         SuccessMessageResponse testObject = new SuccessMessageResponse();
 
-        testObject.setExceptionClassName(OMAGInvalidParameterException.class.getName());
+        testObject.setExceptionClassName(InvalidParameterException.class.getName());
         testObject.setExceptionErrorMessage("TestErrorMessage");
         testObject.setExceptionSystemAction("TestSystemAction");
         testObject.setExceptionUserAction("TestUserAction");
@@ -57,7 +57,7 @@ public class SuccessMessageResponseTest
      */
     private void validateResultObject(SuccessMessageResponse  resultObject)
     {
-        assertTrue(resultObject.getExceptionClassName().equals(OMAGInvalidParameterException.class.getName()));
+        assertTrue(resultObject.getExceptionClassName().equals(InvalidParameterException.class.getName()));
         assertTrue(resultObject.getExceptionErrorMessage().equals("TestErrorMessage"));
         assertTrue(resultObject.getExceptionSystemAction().equals("TestSystemAction"));
         assertTrue(resultObject.getExceptionUserAction().equals("TestUserAction"));

@@ -168,6 +168,100 @@ public class OpenMetadataAPIGenericBuilder
 
 
     /**
+     * Return a proposed classification for this element
+     *
+     * @return  classification object ready for the repository
+     */
+    public Classification getClassification(String  classificationName)
+    {
+        return newClassifications.get(classificationName);
+    }
+
+
+    /**
+     * Retrieve the initial zones.
+     *
+     * @return list of null
+     */
+    public List<String> getInitialGovernanceZones()
+    {
+        final String methodName = "getInitialGovernanceZones";
+
+        Classification zoneMembershipClassification = newClassifications.get(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+        if (zoneMembershipClassification != null)
+        {
+            return repositoryHelper.getStringArrayProperty(serviceName, OpenMetadataProperty.ZONE_MEMBERSHIP.name, zoneMembershipClassification.getProperties(), methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Set up the ZoneMembership classification for this entity.
+     * This method overrides any previously defined ZoneMembership classification for this entity.
+     *
+     * @param userId calling user
+     * @param zoneMembership list of zone names for the zones this asset is a member of
+     * @param methodName calling method
+     * @throws InvalidParameterException AssetZones is not supported in the local repository, or any repository
+     *                                   connected by an open metadata repository cohort
+     */
+    protected void setGovernanceZones(String       userId,
+                                      List<String> zoneMembership,
+                                      String       methodName) throws InvalidParameterException
+    {
+        try
+        {
+            Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  InstanceProvenanceType.LOCAL_COHORT,
+                                                                                  userId,
+                                                                                  OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                  typeName,
+                                                                                  ClassificationOrigin.ASSIGNED,
+                                                                                  null,
+                                                                                  getZoneMembershipProperties(zoneMembership, methodName));
+            newClassifications.put(classification.getName(), classification);
+        }
+        catch (TypeErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+        }
+    }
+
+
+    /**
+     * Return the bean properties describing the asset's zone membership in an InstanceProperties object.
+     *
+     * @param zoneMembership list of zone names for the zones this asset is a member of
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getZoneMembershipProperties(List<String> zoneMembership,
+                                                   String       methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (zoneMembership != null)
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           null,
+                                                                           OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                           zoneMembership,
+                                                                           methodName);
+        }
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
+
+    /**
      * Return whether a particular classification has been set up by the caller.
      *
      * @param classificationName name of the classification to test for
@@ -763,7 +857,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                        extendedProperties,
                                                                        methodName);
             }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+            catch (InvalidParameterException error)
             {
                 final String  propertyName = "extendedProperties";
 

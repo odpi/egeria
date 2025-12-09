@@ -46,7 +46,7 @@ public class OpenMetadataTypesArchive1_2
      * Specific values for initializing TypeDefs
      */
     private static final long   versionNumber = 1L;
-    private static final String versionName   = "1.0";
+    private static final String versionName   = "6.0-SNAPSHOT";
 
 
     private final OMRSArchiveBuilder archiveBuilder;
@@ -524,6 +524,7 @@ public class OpenMetadataTypesArchive1_2
 
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_BEHAVIOUR));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRIORITY));
@@ -716,8 +717,19 @@ public class OpenMetadataTypesArchive1_2
      */
     private EntityDef addActionEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SITUATION));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
@@ -3344,20 +3356,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getNotificationEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTIFICATION,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SYSTEM_ACTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_RESPONSE));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTIFICATION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
     }
 
 

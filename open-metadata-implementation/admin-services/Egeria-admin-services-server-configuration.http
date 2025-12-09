@@ -1,22 +1,45 @@
 # Egeria-admin-services-server-configuration
 
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@server=active-metadata-store
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
 ###
 # group: Working with a server's complete configuration document
 # @name Get server configuration document
 # Retrieve the configuration document for the named server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/configuration
+Authorization: Bearer {{token}}
 
 ###
 # group: Working with a server's complete configuration document
 # @name Get server type classification
 # Retrieve the classification that describes, based on the configuration values in the configuration document, what type of OMAG Server this is.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-type-classification
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/server-type-classification
+Authorization: Bearer {{token}}
 
 ###
 # group: Working with a server's complete configuration document
 # @name Set server configuration document
 # Set the configuration document passed in the request body for the named server.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/configuration
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -38,13 +61,15 @@ Content-Type: application/json
 # group: Working with a server's complete configuration document
 # @name Delete server configuration document
 # Removes the configuration document for the named server.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/configuration
+Authorization: Bearer {{token}}
 
 ###
 # group: Working with a server's complete configuration document
 # @name Deploy server configuration document
 # Send the configuration document for the named server to the named OMAG Server Platform.  This is used to push the server configuraiton to the platform where it will run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration/deploy
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/configuration/deploy
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -54,85 +79,101 @@ Content-Type: application/json
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
-# @name Set local server type name
-# Set up a descriptive type name for your server.  This is used in messages and events - you can choose any value you like.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-type?
-    typeName=OMAG Server
-
-###
-# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Set organization name
 # Set up the name of the organization that owns this server.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/organization-name?
-    name={{organization_name}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/organization-name?name={{organization_name}}
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Set local server user Id
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-id?
-    id={{server-user}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/server-user-id?id={{server-user}}
+Authorization: Bearer {{token}}
 
-###
-# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
-# @name Set local server user password
-# Set up the password that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-password?
-    password={{server-password}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Set max page size
 # Set up the maximum number of results that can be returned on an open metadata request.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/max-page-size?
-    limit={{max_page_size}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/max-page-size?limit={{max_page_size}}
+Authorization: Bearer {{token}}
+
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Get Server Security Connection
 # Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/security/connection
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Set Server Security Connection
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.  This call is preconfigured to set up the sample server security connector.  This allows only the Coco Pharmaceuticals employees to issue calls to the server.
 # Once you have set up this security connector in your OMAG Server, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were "working" earlier to verify this).  To switch the user to one that the OMAG Server will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `erinoverview`.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/security/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class": "Connection",
-    "connectorType": {
-        "class": "ConnectorType",
-        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "networkAddress" : "~{userDirectorySecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
+      }
     }
+  }
+  ]
 }
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Delete Server Security Connection
 # Remove the currently configured Server Security Connection.  This means that no security checks will be performed by the OMAG Server when it is processing inbound REST API calls.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/security/connection
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Get configured audit log destinations
 # Retrieve the list of audit log destinations configured for a server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Set default audit log destination
 # Set up the server so that it is using the default audit log setting which is to output to the console only.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/default
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/default
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Add file audit log destination
 # Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/files
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/files
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 []
@@ -143,6 +184,7 @@ Content-Type: application/json
 # Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
 POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/atlas-exchange/audit-log-destinations/files
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ["Error", "Exception"]
@@ -152,7 +194,8 @@ Content-Type: application/json
 # @name Add topic audit log destination
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/event-topic
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/event-topic
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 []
@@ -163,7 +206,8 @@ Content-Type: application/json
 # @name Add PostgreSQL audit log destination
 # Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/postgres
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/postgres
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -180,7 +224,8 @@ Content-Type: application/json
 # @name Add SLF4J audit log destination
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/event-topic
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/event-topic
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 []
@@ -190,7 +235,8 @@ Content-Type: application/json
 # @name Add console audit log destination
 # Add the console audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/console
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/console
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 []
@@ -200,29 +246,32 @@ Content-Type: application/json
 # @name Add audit log destination connection
 # Add a connection for an audit log destination to the server's configuration document.  This connection typically creates an audit log destination connector written by a thrid party.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/connection
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Delete configured audit log destinations
 # Delete the list of audit log destinations configured for a server.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
-# @name Set up event bus to send/receive events to other technologies Copy
+# @name Set up event bus to send/receive events to other technologies
 # Set up the common properties needed to call your event bus.  The eventBusParams variable support the setting of the topic root and connector provider class name (if not using Kafka).  Additional properties are passed in the request body.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/event-bus
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
 "producer":
 {
-"bootstrap.servers":"{{kafkaep}}"
+"bootstrap.servers":"~{kafkaep}~"
 },
 "consumer":
 {
-"bootstrap.servers":"{{kafkaep}}"
+"bootstrap.servers":"~{kafkaep}~"
 }
 }
 
@@ -231,85 +280,56 @@ Content-Type: application/json
 # @name Get event bus defaults
 # Retrieve the common properties needed to call your event bus.
 # These defaults will be incorporated into any future configuration that includes an event bus topic.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus
-Content-Type: application/json
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/event-bus
+Authorization: Bearer {{token}}
 
-{
-    "producer": {
-        "bootstrap.servers": "{{kafkaep}}"
-    },
-    "consumer":{
-        "bootstrap.servers": "{{kafkaep}}"
-    }
-}
-
-###
-# group: Configuring OMAG Servers / Configuring defaults for the Event Bus
-# @name Set up event bus defaults
-# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
-# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus
-Content-Type: application/json
-
-{
-    "producer": {
-        "bootstrap.servers": "{{kafkaep}}"
-    },
-    "consumer":{
-        "bootstrap.servers": "{{kafkaep}}"
-    }
-}
 
 ###
 # group: Configuring OMAG Servers / Configuring defaults for the Event Bus
 # @name Delete event bus defaults
 # Remove the event bus details from the server's configuration document.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus
-Content-Type: application/json
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/event-bus
+Authorization: Bearer {{token}}
 
-{
-    "producer": {
-        "bootstrap.servers": "{{kafkaep}}"
-    },
-    "consumer":{
-        "bootstrap.servers": "{{kafkaep}}"
-    }
-}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuring defaults for the Cohort Members
 # @name Set local server URL root
 # Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.
 # This value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-url-root-for-caller
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/server-url-root-for-caller
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class": "URLRequestBody",
-    "urlRoot": "{{baseURL}}"
+    "urlRoot": "~{egeriaEndpoint}~"
 }
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the in-memory repository
 # Set up the local repository to use the in-memory implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/in-memory-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/mode/in-memory-repository
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the read-only repository
 # Set up the local repository to use the in-memory implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/read-only-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/mode/read-only-repository
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/postgres-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/mode/postgres-repository
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "databaseURL": "~{postgreSQLDatabaseURL}~",
+    "databaseURL": "~{repositoryDatabaseURL}~",
     "databaseSchema": "repository_{{server}}",
     "secretsStore": "~{secretsStore}~",
     "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
@@ -317,60 +337,24 @@ Content-Type: application/json
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
-# @name Enable the XTDB In-Memory Repository
-# Set up the local repository to use the XTDB in-memory implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/xtdb-in-memory-repository
-
-###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
-# @name Enable the XTDB KV Repository
-# Set up the local repository to use the XTDB KV implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/xtdb-local-kv-repository
-
-###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
-# @name Enable the graph repository
-# Set the local repository to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/local-graph-repository
-
-###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
-# @name Enable the graph repository with hbase and elastic search
-# Set the local repository to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/local-graph-repository
-Content-Type: application/json
-
-{
-    "storage.backend" : "hbase",
-    "storage.hostname" : "wolfsonnet.me",
-    "storage.port" : "2181",
-    "storage.hbase.table" : "DMPSERVER1",
-    "index.search.backend" : "elasticsearch",
-    "index.search.hostname" : "wolfsonnet.me",
-    "index.search.elasticsearch.client-only" : "true",
-    "cache.db-cache" : "true",
-    "cache.db-cache-clean-wait" : "20",
-    "cache.db-cache-time" : "180000",
-    "cache.db-cache-size" : "0.5"
-}
-
-###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Get local metadata collection id
 # Return the unique identifer for the collection of metadata that originates from this metadata server.  This identifier is automatically generated when the metadata server is first configured.  Its value should not change over the lifetime of the server event if the configuration is rebuilt.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/metadata-collection-id
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/metadata-collection-id
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Set local metadata collection name
 # Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/metadata-collection-name/{{mc_name}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/metadata-collection-name/{{mc_name}}
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Set local metadata collection id
 # Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/metadata-collection-id
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/metadata-collection-id
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 New metadata collection id
@@ -379,7 +363,8 @@ New metadata collection id
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Remove local repository
 # Remove all configuration for the local repository.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository
+Authorization: Bearer {{token}}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
@@ -389,7 +374,8 @@ DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{
 # - moving the server to a different platform
 #     
 # - correcting the URL when it has been incorrectly configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/configuration/remote-repository-connector-url
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/configuration/remote-repository-connector-url
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -398,659 +384,206 @@ Content-Type: application/json
 }
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Add open metadata archive to server start
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CoreContentPack.omarchive
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Remove open metadata archive start up list
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/open-metadata-archives
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get names of configured access services
 # This call is used return the list of Open Metadata Access Services that are configured for this server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get the configuration for all of the access services
 # Retrieve the configuration information for all of the Open Metadata Access Services (OMASs) configured for this server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/configuration
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/configuration
+Authorization: Bearer {{token}}
 
 ###
-@accessService=community-profile
+@accessService=open-metadata-store
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get the configuration for a specific access service
 # Retrieve the configuration information for a specific Open Metadata Access Services (OMASs) configured for this server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/{{accessService}}
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Enable all of the access services
 # Turn on all of the registered, undeprecated Open Metadata Access Services (OMASs)
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Enable all of the access services with no topics
 # Turn on all of the registered, undeprecated Open Metadata Access Services (OMASs)
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/no-topics
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/no-topics
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Set up the access services using the supplied configuration
 # Turn on all of the registered Open Metadata Access Services (OMAS)
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/configuration
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/configuration
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
-# @name Set access service In Topic name
-# Set up the name of the topic that the requested access service should use for listening to inbound events.
-# The topic name is specified in the request body.  Click on the request body tab to change it.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}/topic-names/in-topic
-Content-Type: text/plain
-
-cp.stewardshipaction.intopic
-
-###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Set access service Out Topic name
 # Set up the name of the topic that the requested access service should use for sending outbound events.
 # The topic name is specified in the request body.  Click on the request body tab to change it.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}/topic-names/out-topic
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/{{accessService}}/topic-names/out-topic
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
-cp.stewardshipaction.outtopic
+cp.new.outtopic
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get all configured access services topics
 # Return the list of configured access services for this server and for each entry, list the names of the topics configured for the specific access service (if any).
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/topic-names
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/topic-names
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get configured topics for a specific access service
 # Return the list of topics configured for an access service.  If there are no topics configured then no list is returned.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}/topic-names
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/{{accessService}}/topic-names
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Remove all of the access services
 # Remove all of the Open Metadata Access Services from this server's configuration.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Remove a specific access service
 # Remove the requested Open Metadata Access Service from this server's configuration.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/access-services/{{accessService}}
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Repository Proxies
 # @name Set repository proxy's local repository connection
 # Query Current Configuration
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/repository-proxy/details?
-    connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider             
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/mode/repository-proxy/details?
+    connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Repository Proxies
 # @name Set repository event mapper
 # Set the event mapper for the local repository.  This translates proprietary events onto OMRS calls.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/event-mapper-details?
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository/event-mapper-details?
     connectorProvider=org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider&
     eventSource=infosphereEvent
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Repository Proxies
 # @name Remove repository proxy's repository configuration
 # Remove all configuration for the proxy repository.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/local-repository
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Add cohort configuration
 # Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Add cohort configuration with topic structure
 # Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Get cohort configuration
 # Retrieve the configuration used to connect to an Open Metadata Repository Cohort.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Override single cohort topic name
 # Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name-override
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 cp.cohort.cocoCohort
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Override registration cohort topic name
 # Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/registration
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/registration
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 cp.cohort.{{cohort}}.registration
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Override types cohort topic name
 # Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/types
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/types
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 cp.cohort.{{cohort}}.types
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Override instances cohort topic name
 # Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances
-Content-Type: text/plain
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances
+CAuthorization: Bearer {{token}}
+ontent-Type: text/plain
 
 cp.cohort.{{cohort}}.instances
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Get single cohort topic name
 # Return the name of the topic used by the requested cohort.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/topic-name
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Get dedicated cohort topic names
 # Return the name of the topic used by the requested cohort.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Disable access to a cohort
 # Unregister server from an Open Metadata Repository Cohort.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}
+DELETE {{baseURL}}/open-metadata/admin-services/servers/{{server}}/cohorts/{{cohort}}
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Engine Host Servers
 # @name Get names of configured engine services
 # This call is used return the list of Open Metadata Engine Services that are configured for this server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/engine-services
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuration for Engine Host Servers
 # @name Get configuration of configured engine services
 # This call is used return the configuration values of the Open Metadata Engine Services configured for the server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/engine-services
+Authorization: Bearer {{token}}
+
 
 ###
-# group: Configuring OMAG Servers / Configuration for Engine Host Servers
-# @name Get configuration of specific configured engine service
-# This call is used return the configuration values of the specific Open Metadata Engine Service configured for the server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services/asset-analysis/configuration
-
-###
-# group: Configuring OMAG Servers / Configuration for Engine Host Servers
-# @name Configure engine host server with engine service
-# Add details of the metadata server to call and the engines to run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services/asset-analysis
-Content-Type: application/json
-
-{
-    "class": "EngineServiceRequestBody",
-    "omagserverPlatformRootURL": "{{baseURL}}",
-    "omagserverName" : "myMetadataServer",
-    "engines" : [ { "engineName " : "engine1", "engineUserId" : "engine1UserId"},
-                  { "engineName " : "engine2", "engineUserId" : "engine2UserId"}]
-}
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Get names of configured integration services
-# This call is used return the list of Open Metadata Integration Services that are configured for this server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Get configuration of configured integration services
-# This call is used return the configuration values of the Open Metadata Integration Services configured for the server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Get configuration of specific configured integration service
-# This call is used return the configuration values of the specific Open Metadata Integration Service configured for the server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services/asset-analysis/configuration
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Configure  the Topic integration service
-# Add details of the metadata server to call and the connectors to run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/topic-integrator
-Content-Type: application/json
-
-{
-    "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "{{baseURL}}",
-    "omagserverName" : "{{mdrServerName}}",
-    "integrationConnectorConfigs" : [ 
-        {
-             "class": "IntegrationConnectorConfig",
-             "connectorName" : "TopicMonitor",             
-             "connectorUserId" : "monitorDL01npa",         
-             "connection" : 
-             { 
-                 "class" : "Connection",
-                 "qualifiedName" : "TopicMonitorConnection",
-                 "connectorType" : 
-                 {
-                     "class" : "ConnectorType",
-                     "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider"
-                 },
-                 "endpoint" :
-                 {
-                     "class" : "Endpoint",
-                     "address" : "{{kafkaep}}"
-                 }
-             },               
-             "metadataSourceQualifiedName" : "cocoKafkaBroker",
-             "refreshTimeInterval" : "60", 
-             "usesBlockingCalls" : "false",
-             "permittedSynchronization" : "FROM_THIRD_PARTY"
-        } ] 
-}
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Configure  the API integration service
-# Add details of the metadata server to call and the connectors to run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/api-integrator
-Content-Type: application/json
-
-{
-    "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "{{baseURL}}",
-    "omagserverName" : "cocoMDSx",
-    "integrationConnectorConfigs" : [ 
-        {
-             "class": "IntegrationConnectorConfig",
-             "connectorName" : "APIMonitor",             
-             "connectorUserId" : "monitorDL01npa",         
-             "connection" : 
-             { 
-                 "class" : "Connection",
-                 "qualifiedName" : "APIMonitorConnection",
-                 "connectorType" : 
-                 {
-                     "class" : "ConnectorType",
-                     "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider"
-                 },
-                 "endpoint" :
-                 {
-                     "class" : "Endpoint",
-                     "address" : "{{baseURL}}"
-                 }
-             },               
-             "metadataSourceQualifiedName" : "cocoOMAGServerPlatform",
-             "refreshTimeInterval" : "60", 
-             "usesBlockingCalls" : "false",
-             "permittedSynchronization" : "FROM_THIRD_PARTY"
-        } ] 
-}
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Configure  the Files integration service
-# Add details of the metadata server to call and the connectors to run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/files-integrator
-Content-Type: application/json
-
-{
-    "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "{{baseURL}}",
-    "omagserverName" : "cocoMDSx",
-    "integrationConnectorConfigs" : [ 
-        {
-             "class": "IntegrationConnectorConfig",
-             "connectorName" : "FilesMonitor",             
-             "connectorUserId" : "erinoverview",         
-             "connection" : 
-             { 
-                 "class" : "Connection",
-                 "qualifiedName" : "FilesMonitorConnection",
-                 "connectorType" : 
-                 {
-                     "class" : "ConnectorType",
-                     "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider"
-                 },
-                 "endpoint" :
-                 {
-                     "class" : "Endpoint",
-                     "address" : "sample-data"
-                 }
-             },               
-             "metadataSourceQualifiedName" : "cocoDataLake",
-             "refreshTimeInterval" : "60", 
-             "usesBlockingCalls" : "false",
-             "permittedSynchronization" : "FROM_THIRD_PARTY"
-        } ] 
-}
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Configure the Database integration service
-# Add details of the metadata server to call and the connectors to run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/database-integrator
-Content-Type: application/json
-
-{
-    "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "{{baseURL}}",
-    "omagserverName" : "myMetadataServer",
-    "integrationConnectorConfigs" : [ 
-        {
-             "class": "IntegrationConnectorConfig",
-             "connectorName" : "dbIntegrator",             
-             "connectorUserId" : "dbIntegratornpa",         
-             "connection" : 
-             { 
-                 "class" : "Connection",
-                 "connectorType" : 
-                 {
-                     "class" : "ConnectorType",
-                     "connectorProviderClassName" : "connector provider class name"
-                 }
-             },               
-             "metadataSourceQualifiedName" : "myDBServer",
-             "refreshTimeInterval" : "60", 
-             "usesBlockingCalls" : "false",
-             "permittedSynchronization" : "FROM_THIRD_PARTY"
-        } ] 
-}
-
-###
-# group: Configuring OMAG Servers / Configuration for Integration Daemons
-# @name Configure the Catalog integration service
-# Add details of the metadata server to call and the connectors to run.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/catalog-integrator
-Content-Type: application/json
-
-{
-    "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "{{baseURL}}",
-    "omagserverName" : "{{mdrServerName}}",
-    "integrationConnectorConfigs" : [ 
-        {
-             "class": "IntegrationConnectorConfig",
-             "connectorName" : "AtlasIntegrator",             
-             "connectorUserId" : "atlasIntegratornpa",         
-             "connection" : 
-             { 
-                 "class" : "Connection",
-                 "connectorType" : 
-                 {
-                     "class" : "ConnectorType",
-                     "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider"
-                 },
-                 "endpoint" :
-                 {
-                     "class" : "Endpoint",
-                     "address" : "{{atlas_host}}:{{atlas_port}}"
-                 }
-             },               
-             "metadataSourceQualifiedName" : "ApacheAtlasDL01",
-             "refreshTimeInterval" : "5", 
-             "usesBlockingCalls" : "false",
-             "permittedSynchronization" : "BOTH_DIRECTIONS"
-        } ] 
-}
-
-###
-# group: Configuring OMAG Servers / Configuring View Servers
-# @name Configure the REX View Services
-# Requests information about the author of the server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simpleview/view-services/rex
-Content-Type: application/json
-
-{
-    "class":"IntegrationViewServiceConfig",
-    "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin",
-    "viewServiceFullName":"RepositoryExplorer",
-    "viewServiceOperationalStatus":"ENABLED",
-    "resourceEndpoints" : [
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "Platform9443",
-            "platformRootURL"    : "https://localhost:9443",
-            "description"        : "Platform for event, data and API catalogs"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "Platform9444",
-            "platformRootURL"    : "https://localhost:9444",
-            "description"        : "Platform for governance catalog and view server"
-        },       
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "eventcatalog",
-            "serverName"         : "eventcatalog",
-            "platformName"       : "Platform9443",
-            "description"        : "Simple Event Catalog"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "apicatalog",
-            "serverName"         : "apicatalog",
-            "platformName"       : "Platform9443",
-            "description"        : "Simple API Catalog"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "datacatalog",
-            "serverName"         : "datacatalog",
-            "platformName"       : "Platform9443",
-            "description"        : "Simple Data Catalog"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "governancecatalog",
-            "serverName"         : "governancecatalog",
-            "platformName"       : "Platform9444",
-            "description"        : "Simple Governance Catalog"
-        }
-    ]
-}
-
-###
-# group: Configuring OMAG Servers / Configuring View Servers
-# @name Configure the TEX View Services
-# Requests information about the author of the server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simpleview/view-services/tex
-Content-Type: application/json
-
-{
-    "class":"IntegrationViewServiceConfig",
-    "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.rex.admin.TexViewAdmin",
-    "viewServiceFullName":"TypeExplorer",
-    "viewServiceOperationalStatus":"ENABLED",
-    "resourceEndpoints" : [
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "Platform9443",
-            "platformRootURL"    : "https://localhost:9443",
-            "description"        : "Platform for event, data and API catalogs"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "Platform9444",
-            "platformRootURL"    : "https://localhost:9444",
-            "description"        : "Platform for governance catalog and view server"
-        },       
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "eventcatalog",
-            "serverName"         : "eventcatalog",
-            "platformName"       : "Platform9443",
-            "description"        : "Simple Event Catalog"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "apicatalog",
-            "serverName"         : "apicatalog",
-            "platformName"       : "Platform9443",
-            "description"        : "Simple API Catalog"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "datacatalog",
-            "serverName"         : "datacatalog",
-            "platformName"       : "Platform9443",
-            "description"        : "Simple Data Catalog"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "governancecatalog",
-            "serverName"         : "governancecatalog",
-            "platformName"       : "Platform9444",
-            "description"        : "Simple Governance Catalog"
-        }
-    ]
-}
-
-###
-# group: Configuring OMAG Servers / Configuring View Servers
-# @name Configure the Dino View Services
-# Requests information about the author of the server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services/dino
-Content-Type: application/json
-
-{
-    "class":"IntegrationViewServiceConfig",
-    "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin",
-    "viewServiceFullName":"Dino",
-    "viewServiceOperationalStatus":"ENABLED",
-    "resourceEndpoints" : [
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "myOMAGPlatform1",
-            "platformRootURL"    : "myPlatformRootURL1",
-            "description"        : "myOMAGPlatform1 description"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "myOMAGPlatform2",
-            "platformRootURL"    : "myPlatformRootURL2",
-            "description"        : "myOMAGPlatform2 description"
-        },       
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "myServerInstanceName1",
-            "serverName"         : "myServerName1",
-            "platformName"       : "myOMAGPlatform1",
-            "description"        : "myServerName1 description "
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "myServerInstanceName2",
-            "serverName"         : "myServerName2",
-            "platformName"       : "myOMAGPlatform1",
-            "description"        : "myServerName2 description "
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Server",
-            "serverInstanceName" : "myServerInstanceName3",
-            "serverName"         : "myServerName3",
-            "platformName"       : "myOMAGPlatform2",
-            "description"        : "myServerName3 description "
-        }
-    ]
-}
-
-###
-# group: Configuring OMAG Servers / Configuring View Servers
-# @name Configure the Server Author View Services
-# Requests information about the author of the server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services/server-author
-Content-Type: application/json
-
-{
-    "class":"IntegrationViewServiceConfig",
-    "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.serverauthor.admin.ServerAuthorViewAdmin",
-    "viewFullServiceName":"ServerAuthor",
-    "viewServiceOperationalStatus":"ENABLED",
-    "omagserverPlatformRootURL":"myPlatformRootURL1",
-    "resourceEndpoints" : [
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "myOMAGPlatform1",
-            "platformRootURL"    : "myPlatformRootURL1",
-            "description"        : "myOMAGPlatform1 description"
-        },
-        {
-            "class"              : "ResourceEndpointConfig",
-            "resourceCategory"   : "Platform",
-            "platformName"       : "myOMAGPlatform2",
-            "platformRootURL"    : "myPlatformRootURL2",
-            "description"        : "myOMAGPlatform2 description"
-        }
-    ]
-}
-
-###
-# group: Configuring OMAG Servers / Configuring View Servers
-# @name Configure the Glossary Author View services
-# Requests information about the author of the server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services/glossary-author
-Content-Type: application/json
-
-      { 
-         "class":"ViewServiceConfig",
-         "omagserverName":"myMetadataAccessPoint",
-         "omagserverPlatformRootURL":"myPlatformRootURL1"
-      }
-
-###
-# group: Configuring OMAG Servers / Configuring View Servers
 # @name Get registered view services
 # This call is used return a list of registered Open Metadata View Services for the platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/view-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services/view-services
+Authorization: Bearer {{token}}
 
 ###
-# group: Configuring OMAG Servers / Configuring View Servers
 # @name Get names of configured view services
 # This call is used return the list of Open Metadata View Services that are configured for this server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services
+GET {{baseURL}}/open-metadata/admin-services/servers/{{server}}/view-services
+Authorization: Bearer {{token}}

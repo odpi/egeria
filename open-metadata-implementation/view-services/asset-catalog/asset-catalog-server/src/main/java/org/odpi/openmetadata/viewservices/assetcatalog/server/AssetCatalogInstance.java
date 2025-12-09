@@ -41,7 +41,9 @@ public class AssetCatalogInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -52,7 +54,9 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     public AssetCatalogInstance(String       serverName,
                                 AuditLog     auditLog,
                                 String       localServerUserId,
-                                String       localServerUserPassword,
+                                String       localServerSecretsStoreProvider,
+                                String       localServerSecretsStoreLocation,
+                                String       localServerSecretsStoreCollection,
                                 int          maxPageSize,
                                 String       remoteServerName,
                                 String       remoteServerURL,
@@ -64,19 +68,11 @@ public class AssetCatalogInstance extends OMVSServiceInstance
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        if (localServerUserPassword == null)
-        {
-            this.openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
-        }
-        else
-        {
-            this.openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-        }
+        this.openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, maxPageSize, auditLog);
 
         this.assetHandler = new AssetHandler(serverName, auditLog, myDescription.getViewServiceFullName(), openMetadataClient);
 

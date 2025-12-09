@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
+import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -76,6 +77,9 @@ public class OMAGServerPlatform
     @Value("${authn.header.name.list:}") // Default value is zero length string
     List<String> headerNames;
 
+    @Value("${platform.organization.name:}") // Default value is zero length string
+    String organizationName;
+
     @Value("${platform.configstore.provider:}") // Default value is zero length string
     String configStoreProvider;
 
@@ -109,7 +113,7 @@ public class OMAGServerPlatform
     private       String                        startupMessage      = "";
     private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
     private final OMAGServerAdminStoreServices  configStoreServices = new OMAGServerAdminStoreServices();
-
+    private final OMAGServerPlatformInstanceMap serverInstanceMap   = new OMAGServerPlatformInstanceMap();
     private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
 
 
@@ -235,7 +239,7 @@ public class OMAGServerPlatform
 
             System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
 
-            operationalServices.deactivateTemporarilyServerList(sysUser, servers);
+            operationalServices.deactivateTemporarilyServerList(servers);
         }
     }
 
@@ -256,6 +260,9 @@ public class OMAGServerPlatform
         {
             try
             {
+                /*
+                 * The connectors that read the configuration store can be changed.
+                 */
                 if ((configStoreProvider != null) && (! configStoreProvider.isBlank()))
                 {
                     Connection    configStoreConnection = new Connection();
@@ -287,6 +294,9 @@ public class OMAGServerPlatform
                     configStoreServices.setPlaceholderVariables(sysUser, placeholderVariables);
                 }
 
+                /*
+                 * Set up the platform security connector if required.
+                 */
                 if ((platformSecurityProvider != null) && (! platformSecurityProvider.isBlank()))
                 {
                     Connection    securityConnection;
@@ -342,6 +352,21 @@ public class OMAGServerPlatform
             }
 
             autoStartConfig();
+
+            /*
+             * The server organization name is optional.
+             */
+            serverInstanceMap.setServerPlatformOrganizationName(organizationName);
+
+            if ((organizationName == null) || (organizationName.isBlank()))
+            {
+                System.out.println(new Date() + " OMAG server platform has no owning organization");
+            }
+            else
+            {
+                System.out.println(new Date() + " OMAG server platform is owned by " + organizationName);
+            }
+
             System.out.println(OMAGServerPlatform.this.startupMessage);
 
             if (triggeredRuntimeHalt)

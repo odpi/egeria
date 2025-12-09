@@ -42,9 +42,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public EndpointHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -56,9 +53,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                            OMRSRepositoryHelper               repositoryHelper,
                            String                             localServerUserId,
                            OpenMetadataServerSecurityVerifier securityVerifier,
-                           List<String>                       supportedZones,
-                           List<String>                       defaultZones,
-                           List<String>                       publishZones,
                            AuditLog                           auditLog)
 
     {
@@ -71,9 +65,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
               repositoryHelper,
               localServerUserId,
               securityVerifier,
-              supportedZones,
-              defaultZones,
-              publishZones,
               auditLog);
     }
 
@@ -119,7 +110,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                      null,
                                                      forLineage,
                                                      forDuplicateProcessing,
-                                                     supportedZones,
                                                      effectiveTime,
                                                      methodName) != null)
                     {
@@ -150,7 +140,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,
-                                                             supportedZones,
                                                              effectiveTime,
                                                              methodName);
             }
@@ -169,7 +158,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,
-                                                             supportedZones,
                                                              effectiveTime,
                                                              methodName);
             }
@@ -356,7 +344,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     false,
                                     false,
                                     effectiveTime,
-                                    supportedZones,
                                     builder,
                                     methodName);
 
@@ -441,7 +428,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                       null,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
-                                                                      supportedZones,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),
                                                                       effectiveTime,
@@ -577,7 +563,6 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     typeName,
                                     forLineage,
                                     forDuplicateProcessing,
-                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
                                     effectiveTime,

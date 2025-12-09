@@ -103,14 +103,15 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties   properties of the propertyFacet
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updatePropertyFacet(String                  userId,
-                                      String                  propertyFacetGUID,
-                                      UpdateOptions           updateOptions,
-                                      PropertyFacetProperties properties) throws InvalidParameterException,
+    public boolean updatePropertyFacet(String                  userId,
+                                       String                  propertyFacetGUID,
+                                       UpdateOptions           updateOptions,
+                                       PropertyFacetProperties properties) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
     {
@@ -119,7 +120,7 @@ public class PropertyFacetHandler extends OpenMetadataHandlerBase
 
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
-        openMetadataClient.updateMetadataElementInStore(userId, propertyFacetGUID, updateOptions, elementBuilder.getNewElementProperties(properties));
+        return openMetadataClient.updateMetadataElementInStore(userId, propertyFacetGUID, updateOptions, elementBuilder.getNewElementProperties(properties));
     }
 
 

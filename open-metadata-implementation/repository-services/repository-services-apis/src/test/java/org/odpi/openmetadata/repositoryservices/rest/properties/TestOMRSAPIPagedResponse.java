@@ -14,6 +14,6 @@ public class TestOMRSAPIPagedResponse
 {
     @Test public void TestToString()
     {
-        assertTrue(new MockAPIPagedResponse().toString().contains("OMRSRESTAPIPagedResponse"));
+        assertTrue(new MockAPIPagedResponse().toString().contains("OMRSAPIPagedResponse"));
     }
 }

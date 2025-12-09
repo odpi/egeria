@@ -1,0 +1,525 @@
+#
+# These commands rebuild the sample configuration documents for simple-metadata-server, active-metadata-server,
+# view-server, engine-host and integration-daemon.  They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@auditLogTopic=logging
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+
+# ---------------------------------------------
+# Metadata Access Store: simple-metadata-store
+#
+###
+# Set up the basic properties of the server.
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/server-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ServerPropertiesRequestBody",
+  "localServerDescription" : "A metadata store that supports Open Metadata Access Services (OMASs) without event notifications.",
+  "organizationName" : "~{organizationName}~",
+  "localServerURL" : "~{egeriaEndpoint}~",
+  "localServerUserId" : "simplenpa",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "maxPageSize" : 1000
+}
+
+###
+# Set up the local repository to use the in-memory implementation.
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/local-repository/mode/in-memory-repository
+Authorization: Bearer {{token}}
+
+
+###
+# Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with the topics disabled so Apache Kafka is not required.
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/access-services/no-topics
+Authorization: Bearer {{token}}
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/SimpleCatalog.omarchive
+
+###
+# ---------------------------------------------
+# Metadata Access Store: active-metadata-store
+#
+# Set up the basic properties of the server.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/server-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ServerPropertiesRequestBody",
+  "localServerDescription" : "A metadata store that supports Open Metadata Access Services (OMASs) with event notifications.  It provides metadata to view-server, engine-host and integration-daemon.",
+  "organizationName" : "~{organizationName}~",
+  "localServerURL" : "~{egeriaEndpoint}~",
+  "localServerUserId" : "activenpa",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "maxPageSize" : 1000
+}
+
+
+###
+# Set up the local repository to use the in-memory implementation.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/local-repository/mode/in-memory-repository
+Authorization: Bearer {{token}}
+
+
+###
+# Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/event-bus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"~{kafkaEndpoint}~"
+},
+"consumer":
+{
+"bootstrap.servers":"~{kafkaEndpoint}~"
+}
+}
+
+
+###
+# Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/access-services
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/CoreContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/OrganizationInsightContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/EgeriaContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/FilesContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/PostgresContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/OpenLineageContentPack.omarchive
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/JacquardHarvesterContentPack.omarchive
+
+###
+# -------------------------
+# View Server: view-server
+#
+# Set up the basic properties of the server.
+POST {{baseURL}}/open-metadata/admin-services/servers/view-server/server-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ServerPropertiesRequestBody",
+  "localServerDescription" : "A server that supplies REST API endpoints for User Interfaces and non-Java environments such as Python.",
+  "organizationName" : "~{organizationName}~",
+  "localServerURL" : "~{egeriaEndpoint}~",
+  "localServerUserId" : "viewnpa",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "maxPageSize" : 1000
+}
+
+
+###
+# Set up all of the registered, undeprecated Open Metadata View Services (OMVSs).  The request body lists the platforms
+# and servers that will appear on the appropriate UI dropdowns.
+POST {{baseURL}}/open-metadata/admin-services/servers/view-server/view-services
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "ViewServiceRequestBody",
+  "omagserverName": "active-metadata-store",
+  "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+}
+
+###
+# -------------------------
+# Engine Host: engine-host
+#
+# Set up the basic properties of the server.
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/server-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ServerPropertiesRequestBody",
+  "localServerDescription" : "A server that runs governance service requests, triggered by engine actions created in active-metadata-store.",
+  "organizationName" : "~{organizationName}~",
+  "localServerURL" : "~{egeriaEndpoint}~",
+  "localServerUserId" : "enginenpa",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "maxPageSize" : 1000
+}
+
+###
+# Set up the address of the active-metadata-store that will supply the engine host with metadata along with the
+# qualified names of the governance engines it will run.
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/governance-engines
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+[
+    {
+      "class": "EngineConfig",
+      "engineId": "6a86651a-c9c1-4aee-8a83-4c028d89f775",
+      "engineQualifiedName": "AssetOnboarding",
+      "engineUserId": "assetonboardingengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "947248ee-a6eb-4f99-8376-7ff488b6281e",
+      "engineQualifiedName": "Stewardship",
+      "engineUserId": "stewardshipengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "d91b91c2-e019-4eca-870d-d88f7caae696",
+      "engineQualifiedName": "FileSurvey",
+      "engineUserId": "filesurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "8be68bbe-54ac-4358-aeb9-90782d4e544c",
+      "engineQualifiedName": "FileGovernance",
+      "engineUserId": "filegovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "f71a3abb-6d61-4338-8caf-6124a07e35d2",
+      "engineQualifiedName": "UnityCatalogSurvey",
+      "engineUserId": "unitycatalogsurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "d4d86ff2-0654-4616-a5f2-3c15c07865b6",
+      "engineQualifiedName": "UnityCatalogGovernance",
+      "engineUserId": "unitycataloggovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "c0cf5da9-7725-4bdc-ae6e-6f69b4ce3ba2",
+      "engineQualifiedName": "PostgreSQLSurvey",
+      "engineUserId": "postgresqlsurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "4a8f28dc-5257-49e3-bfab-6605d83537dd",
+      "engineQualifiedName": "PostgreSQLGovernance",
+      "engineUserId": "postgresqlgovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "9b7a1da6-7882-41c7-b838-0e297787972f",
+      "engineQualifiedName": "ApacheAtlasSurvey",
+      "engineUserId": "apacheatlassurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "f5c3b142-0e10-44ae-a160-a1e4d2f32e13",
+      "engineQualifiedName": "ApacheAtlasGovernance",
+      "engineUserId": "apacheatlassurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "6e04ff1b-1ba3-4eaf-a821-0d52951cc3c4",
+      "engineQualifiedName": "EgeriaSurvey",
+      "engineUserId": "egeriasurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "d1d36d25-1176-4cd7-a46c-4dcc62990047",
+      "engineQualifiedName": "EgeriaGovernance",
+      "engineUserId": "egeriagovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "5f30c642-ceb4-4374-901f-1990572aa109",
+      "engineQualifiedName": "ApacheKafkaSurvey",
+      "engineUserId": "apachekafkasurveyengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "e107c6ea-7fbe-407b-b51f-e35a488ef49d",
+      "engineQualifiedName": "ApacheKafkaGovernance",
+      "engineUserId": "apachekafkagovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "c49e4fbf-a6e2-48c8-985c-b4949616b2c4",
+      "engineQualifiedName": "EgeriaWatchdog",
+      "engineUserId": "watchdoggovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "67676a0a-cf44-48b9-bedd-09b0870071b9",
+      "engineQualifiedName": "MetadataObservability",
+      "engineUserId": "observabilitygovernanceengine",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName": "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+    }
+  ]
+
+
+###
+# ---------------------------------------
+# Integration Daemon: integration-daemon
+#
+# Set up the basic properties of the server.
+POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/server-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ServerPropertiesRequestBody",
+  "localServerDescription" : "A server that runs integration connectors that synchronize and exchange metadata with different types of technologies and tools.",
+  "organizationName" : "~{organizationName}~",
+  "localServerURL" : "~{egeriaEndpoint}~",
+  "localServerUserId" : "daemonnpa",
+  "secretsStoreProvider" : "~{secretsStoreProvider}~",
+  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "maxPageSize" : 1000
+}
+
+###
+# Set up the qualified name of the integration group that this server supports and the location of the
+# metadata access store active-metadata-store
+POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/integration-groups/configuration/all
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+[
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Default"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheAtlas"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheKafka"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenAPIs"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:PostgreSQL"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "secretsStoreProvider" : "~{secretsStoreProvider}~",
+        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
+        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataDigitalProducts"
+    }
+]
+
+###

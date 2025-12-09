@@ -4,7 +4,7 @@ package org.odpi.openmetadata.repositoryservices.events.beans;
 
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
 
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = OMRSEventV1.class, name = "OMRSEventV1")
+        @JsonSubTypes.Type(value = OMRSEventV2.class, name = "OMRSEventV1")
 })
 public abstract class OMRSEventBean implements Serializable
 {

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Project Manager OMVS",
+@Tag(name="API: Project Manager",
      description="Maintain and explore the contents of nested projects. These projects can be used organize activity aiming to achieve a specific goal.",
      externalDocs=@ExternalDocumentation(description="Further Information",
              url="https://egeria-project.org/services/omvs/project-manager/overview/"))
@@ -381,9 +381,9 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public VoidResponse updateProject(@PathVariable String            serverName,
-                                      @PathVariable String            projectGUID,
-                                      @RequestBody(required = false)
+    public BooleanResponse updateProject(@PathVariable String            serverName,
+                                         @PathVariable String            projectGUID,
+                                         @RequestBody(required = false)
                                                     UpdateElementRequestBody requestBody)
     {
         return restAPI.updateProject(serverName, projectGUID, requestBody);

@@ -88,20 +88,11 @@ public class ConnectionResponse extends AdminServicesAPIResponse
     @Override
     public String toString()
     {
-        return "OCFConnectionResponse{" +
+        return "ConnectionResponse{" +
                 "connection=" + connection +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -116,7 +107,7 @@ public class ConnectionResponse extends AdminServicesAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof ConnectionResponse))
+        if (!(objectToCompare instanceof ConnectionResponse that))
         {
             return false;
         }
@@ -124,7 +115,6 @@ public class ConnectionResponse extends AdminServicesAPIResponse
         {
             return false;
         }
-        ConnectionResponse that = (ConnectionResponse) objectToCompare;
         return Objects.equals(getConnection(), that.getConnection());
     }
 

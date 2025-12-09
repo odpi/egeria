@@ -131,22 +131,25 @@ public class NoteLogClient extends ConnectorContextClientBase
      * @param noteLogGUID       unique identifier of the note log (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateNoteLog(String            noteLogGUID,
-                              UpdateOptions     updateOptions,
-                              NoteLogProperties properties) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public boolean updateNoteLog(String            noteLogGUID,
+                                 UpdateOptions     updateOptions,
+                                 NoteLogProperties properties) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
-        noteLogHandler.updateNoteLog(connectorUserId, noteLogGUID, updateOptions, properties);
+        boolean updateOccurred = noteLogHandler.updateNoteLog(connectorUserId, noteLogGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(noteLogGUID);
         }
+
+        return updateOccurred;
     }
 
 

@@ -133,21 +133,22 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @param properties  description of the tag.  Setting a description, particularly in a public tag
      *                        makes the tag more valuable to other users and can act as an embryonic glossary term.
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateTagDescription(String                userId,
+    public boolean updateTagDescription(String                userId,
                                        String                tagGUID,
                                        UpdateOptions         updateOptions,
                                        InformalTagProperties properties) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        openMetadataClient.updateMetadataElementInStore(userId,
-                                                        tagGUID,
-                                                        updateOptions,
-                                                        elementBuilder.getNewElementProperties(properties));
+        return openMetadataClient.updateMetadataElementInStore(userId,
+                                                               tagGUID,
+                                                               updateOptions,
+                                                               elementBuilder.getNewElementProperties(properties));
     }
 
 

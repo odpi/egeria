@@ -30,7 +30,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the Asset Owner API.
+     * This method returns the object for the tenant to use to work with the OMF API.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

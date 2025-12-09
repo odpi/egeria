@@ -25,6 +25,8 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     private String deployedImplementationType;
     private String version;
     private String patchLevel;
+    private String format = null;
+    private String encryption;
     private String source;
 
 
@@ -171,54 +173,14 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
-     * @param userId calling user
      * @param format format used by the file system
      * @param encryption type of encryption
-     * @param methodName name of the calling method
-     * @throws InvalidParameterException classification not supported
      */
-    void setFileSystemClassification(String userId,
-                                     String format,
-                                     String encryption,
-                                     String methodName) throws InvalidParameterException
+    void setFileSystemProperties(String format,
+                                 String encryption)
     {
-        InstanceProperties properties;
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  null,
-                                                                  OpenMetadataProperty.FORMAT.name,
-                                                                  format,
-                                                                  methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataProperty.ENCRYPTION.name,
-                                                                  encryption,
-                                                                  methodName);
-
-
-        /*
-         * The classification is set up with the same effectivity dates as the entity so can search on classifications.
-         */
-        super.setEffectivityDates(properties);
-
-        try
-        {
-            Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  InstanceProvenanceType.LOCAL_COHORT,
-                                                                                  userId,
-                                                                                  OpenMetadataType.FILE_SYSTEM.typeName,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  properties);
-            newClassifications.put(classification.getName(), classification);
-        }
-        catch (TypeErrorException error)
-        {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FILE_SYSTEM.typeName);
-        }
+        this.format = format;
+        this.encryption = encryption;
     }
 
 
@@ -268,6 +230,18 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
                                                                   properties,
                                                                   OpenMetadataProperty.SOURCE.name,
                                                                   source,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.FORMAT.name,
+                                                                  format,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ENCRYPTION.name,
+                                                                  encryption,
                                                                   methodName);
 
         return properties;

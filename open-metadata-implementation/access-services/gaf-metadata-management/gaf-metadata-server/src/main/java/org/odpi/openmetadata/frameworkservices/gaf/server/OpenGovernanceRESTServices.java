@@ -7,7 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
@@ -20,16 +23,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.converters.OpenMetadataElementStubConverter;
-import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
@@ -74,7 +73,6 @@ public class OpenGovernanceRESTServices
      *
      * @param userId calling user
      * @param handler generic handler
-     * @param supportedZones supported zones
      * @param element retrieved element.
      * @return elements plus specifications
      * @throws InvalidParameterException invalid parameter
@@ -83,7 +81,6 @@ public class OpenGovernanceRESTServices
      */
     private GovernanceActionProcessElement completeGovernanceActionProcessElement(String                                                        userId,
                                                                                   OpenMetadataAPIGenericHandler<GovernanceActionProcessElement> handler,
-                                                                                  List<String>                                                  supportedZones,
                                                                                   GovernanceActionProcessElement                                element) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
         final String methodName = "completeGovernanceActionProcessElement";
@@ -115,7 +112,6 @@ public class OpenGovernanceRESTServices
                                                                               null,
                                                                               true,
                                                                               false,
-                                                                              supportedZones,
                                                                               0,
                                                                               0,
                                                                               new Date(),
@@ -162,7 +158,6 @@ public class OpenGovernanceRESTServices
                                                                             null,
                                                                             false,
                                                                             false,
-                                                                            supportedZones,
                                                                             new Date(),
                                                                             methodName);
                 if (relationship != null)
@@ -185,7 +180,6 @@ public class OpenGovernanceRESTServices
      * along with the flow definition describing its implementation.
      *
      * @param serverName name of the service to route the request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      *
@@ -195,7 +189,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String             serverName,
-                                                                                String             serviceURLMarker,
                                                                                 String             userId,
                                                                                 String             processGUID,
                                                                                 ResultsRequestBody requestBody)
@@ -215,35 +208,31 @@ public class OpenGovernanceRESTServices
             EngineActionHandler<EngineActionElement> engineActionHandler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
             GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId, serverName, methodName);
 
-            List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
-
             GovernanceActionProcessGraph governanceActionProcessGraph = new GovernanceActionProcessGraph();
 
             if (requestBody != null)
             {
                 governanceActionProcessGraph.setGovernanceActionProcess(
-                        completeGovernanceActionProcessElement(userId, processHandler, supportedZones, processHandler.getBeanFromRepository(userId,
-                                                                                                                                            processGUID,
-                                                                                                                                            processGUIDParameterName,
-                                                                                                                                            OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                                                                            requestBody.getForLineage(),
-                                                                                                                                            requestBody.getForDuplicateProcessing(),
-                                                                                                                                            supportedZones,
-                                                                                                                                            requestBody.getEffectiveTime(),
-                                                                                                                                            methodName)));
+                        completeGovernanceActionProcessElement(userId, processHandler, processHandler.getBeanFromRepository(userId,
+                                                                                                                            processGUID,
+                                                                                                                            processGUIDParameterName,
+                                                                                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                                                            requestBody.getForLineage(),
+                                                                                                                            requestBody.getForDuplicateProcessing(),
+                                                                                                                            requestBody.getEffectiveTime(),
+                                                                                                                            methodName)));
             }
             else
             {
                 governanceActionProcessGraph.setGovernanceActionProcess(
-                        completeGovernanceActionProcessElement(userId, processHandler, supportedZones, processHandler.getBeanFromRepository(userId,
-                                                                                                                                            processGUID,
-                                                                                                                                            processGUIDParameterName,
-                                                                                                                                            OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                                                                            false,
-                                                                                                                                            false,
-                                                                                                                                            supportedZones,
-                                                                                                                                            new Date(),
-                                                                                                                                            methodName)));
+                        completeGovernanceActionProcessElement(userId, processHandler, processHandler.getBeanFromRepository(userId,
+                                                                                                                            processGUID,
+                                                                                                                            processGUIDParameterName,
+                                                                                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                                                            false,
+                                                                                                                            false,
+                                                                                                                            new Date(),
+                                                                                                                            methodName)));
             }
 
 
@@ -252,7 +241,6 @@ public class OpenGovernanceRESTServices
             if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName.equals(processTypeName))
             {
                 governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,
-                                                                                                 serviceURLMarker,
                                                                                                  userId,
                                                                                                  processGUID,
                                                                                                  methodName));
@@ -260,7 +248,6 @@ public class OpenGovernanceRESTServices
             else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
             {
                 governanceActionProcessGraph.setFirstProcessStep(this.getFirstEngineStepElement(serverName,
-                                                                                                serviceURLMarker,
                                                                                                 userId,
                                                                                                 processGUID,
                                                                                                 methodName));
@@ -281,7 +268,6 @@ public class OpenGovernanceRESTServices
                                         firstProcessStepGUID,
                                         governanceActionProcessGraph,
                                         processedGUIDs,
-                                        supportedZones,
                                         invalidParameterHandler.getMaxPagingSize());
                 }
                 else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
@@ -291,7 +277,6 @@ public class OpenGovernanceRESTServices
                                         firstProcessStepGUID,
                                         governanceActionProcessGraph,
                                         processedGUIDs,
-                                        supportedZones,
                                         invalidParameterHandler.getMaxPagingSize());
                 }
             }
@@ -320,7 +305,6 @@ public class OpenGovernanceRESTServices
      * @param processStepGUID current step
      * @param governanceActionProcessGraph current state of the graph
      * @param processedGUIDs the guids we have processed
-     * @param supportedZones zones for this service
      * @param pageSize max page size
      * @throws InvalidParameterException bad property
      * @throws PropertyServerException repository in error
@@ -331,7 +315,6 @@ public class OpenGovernanceRESTServices
                                      String                                                                 processStepGUID,
                                      GovernanceActionProcessGraph                                           governanceActionProcessGraph,
                                      List<String>                                                           processedGUIDs,
-                                     List<String>                                                           supportedZones,
                                      int                                                                    pageSize) throws InvalidParameterException,
                                                                                                                              PropertyServerException,
                                                                                                                              UserNotAuthorizedException
@@ -366,8 +349,7 @@ public class OpenGovernanceRESTServices
                                     handler,
                                     relationship.getEntityOneProxy().getGUID(),
                                     governanceActionProcessGraph,
-                                    processedGUIDs,
-                                    supportedZones);
+                                    processedGUIDs);
 
                 NextGovernanceActionProcessStepLink processStepLink = new NextGovernanceActionProcessStepLink();
 
@@ -399,15 +381,13 @@ public class OpenGovernanceRESTServices
                                         handler,
                                         relationship.getEntityTwoProxy().getGUID(),
                                         governanceActionProcessGraph,
-                                        processedGUIDs,
-                                        supportedZones);
+                                        processedGUIDs);
 
                     getNextProcessSteps(userId,
                                         handler,
                                         relationship.getEntityTwoProxy().getGUID(),
                                         governanceActionProcessGraph,
                                         processedGUIDs,
-                                        supportedZones,
                                         pageSize);
                 }
             }
@@ -442,7 +422,6 @@ public class OpenGovernanceRESTServices
      * @param processStepGUID current step
      * @param governanceActionProcessGraph current state of the graph
      * @param processedGUIDs the guids we have processed
-     * @param supportedZones zones for this service
      * @param pageSize max page size
      * @throws InvalidParameterException bad property
      * @throws PropertyServerException repository in error
@@ -453,7 +432,6 @@ public class OpenGovernanceRESTServices
                                      String                                   processStepGUID,
                                      GovernanceActionProcessGraph             governanceActionProcessGraph,
                                      List<String>                             processedGUIDs,
-                                     List<String>                             supportedZones,
                                      int                                      pageSize) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -488,8 +466,7 @@ public class OpenGovernanceRESTServices
                                    handler,
                                    relationship.getEntityOneProxy().getGUID(),
                                    governanceActionProcessGraph,
-                                   processedGUIDs,
-                                   supportedZones);
+                                   processedGUIDs);
 
                 NextGovernanceActionProcessStepLink processStepLink = new NextGovernanceActionProcessStepLink();
 
@@ -521,15 +498,13 @@ public class OpenGovernanceRESTServices
                                        handler,
                                        relationship.getEntityTwoProxy().getGUID(),
                                        governanceActionProcessGraph,
-                                       processedGUIDs,
-                                       supportedZones);
+                                       processedGUIDs);
 
                     getNextEngineSteps(userId,
                                        handler,
                                        relationship.getEntityTwoProxy().getGUID(),
                                        governanceActionProcessGraph,
                                        processedGUIDs,
-                                       supportedZones,
                                        pageSize);
                 }
             }
@@ -563,7 +538,6 @@ public class OpenGovernanceRESTServices
      * @param processStepGUID current step
      * @param governanceActionProcessGraph current state of the graph
      * @param processedGUIDs the guids we have processed
-     * @param supportedZones zones for this service
      * @throws InvalidParameterException bad property
      * @throws PropertyServerException repository in error
      * @throws UserNotAuthorizedException user authorization exception
@@ -572,8 +546,7 @@ public class OpenGovernanceRESTServices
                                 GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler,
                                 String                                                                 processStepGUID,
                                 GovernanceActionProcessGraph                                           governanceActionProcessGraph,
-                                List<String>                                                           processedGUIDs,
-                                List<String>                                                           supportedZones) throws InvalidParameterException,
+                                List<String>                                                           processedGUIDs) throws InvalidParameterException,
                                                                                                                               PropertyServerException,
                                                                                                                               UserNotAuthorizedException
     {
@@ -582,7 +555,6 @@ public class OpenGovernanceRESTServices
         {
             GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
                                                                                                                  processStepGUID,
-                                                                                                                 supportedZones,
                                                                                                                  null,
                                                                                                                  methodName);
 
@@ -610,19 +582,17 @@ public class OpenGovernanceRESTServices
      * @param processStepGUID current step
      * @param governanceActionProcessGraph current state of the graph
      * @param processedGUIDs the guids we have processed
-     * @param supportedZones zones for this service
      * @throws InvalidParameterException bad property
      * @throws PropertyServerException repository in error
      * @throws UserNotAuthorizedException user authorization exception
      */
     private void addEngineStep(String                                   userId,
                                EngineActionHandler<EngineActionElement> handler,
-                               String                                  processStepGUID,
-                               GovernanceActionProcessGraph            governanceActionProcessGraph,
-                               List<String>                            processedGUIDs,
-                               List<String>                            supportedZones) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                               String                                   processStepGUID,
+                               GovernanceActionProcessGraph             governanceActionProcessGraph,
+                               List<String>                             processedGUIDs) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String methodName = "addEngineStep";
 
@@ -630,7 +600,6 @@ public class OpenGovernanceRESTServices
         {
             EngineActionElement engineActionElement = handler.getEngineAction(userId,
                                                                               processStepGUID,
-                                                                              supportedZones,
                                                                               null,
                                                                               methodName);
 
@@ -654,7 +623,6 @@ public class OpenGovernanceRESTServices
      * Return the first process step element of a governance action process.
      *
      * @param serverName name of the service to route the request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
      * @param methodName calling method
@@ -664,7 +632,6 @@ public class OpenGovernanceRESTServices
      * @throws UserNotAuthorizedException there is a problem reported in the open metadata server(s)
      */
     private FirstGovernanceActionProcessStepElement getFirstProcessStepElement(String serverName,
-                                                                               String serviceURLMarker,
                                                                                String userId,
                                                                                String processGUID,
                                                                                String methodName) throws InvalidParameterException,
@@ -690,7 +657,6 @@ public class OpenGovernanceRESTServices
                                                                                   null,
                                                                                   false,
                                                                                   false,
-                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                                   null,
                                                                                   methodName);
 
@@ -699,14 +665,13 @@ public class OpenGovernanceRESTServices
             FirstGovernanceActionProcessStepElement firstProcessStep = new FirstGovernanceActionProcessStepElement();
 
             firstProcessStep.setLinkGUID(firstActionProcessStepLink.getGUID());
-            firstProcessStep.setGuard(handler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(serviceURLMarker),
+            firstProcessStep.setGuard(handler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(),
                                                                                       OpenMetadataProperty.GUARD.name,
                                                                                       firstActionProcessStepLink.getProperties(),
                                                                                       methodName));
 
             GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
                                                                                                                  firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
-                                                                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                                                                  null,
                                                                                                                  methodName);
             firstProcessStep.setElement(new GovernanceActionProcessStepExecutionElement(processStepElement));
@@ -722,7 +687,6 @@ public class OpenGovernanceRESTServices
      * Return the first process step element of a governance action process.
      *
      * @param serverName name of the service to route the request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param processInstanceGUID unique identifier of the governance action process
      * @param methodName calling method
@@ -732,7 +696,6 @@ public class OpenGovernanceRESTServices
      * @throws UserNotAuthorizedException there is a problem reported in the open metadata server(s)
      */
     private FirstGovernanceActionProcessStepElement getFirstEngineStepElement(String serverName,
-                                                                              String serviceURLMarker,
                                                                               String userId,
                                                                               String processInstanceGUID,
                                                                               String methodName) throws InvalidParameterException,
@@ -758,7 +721,6 @@ public class OpenGovernanceRESTServices
                                                                                   null,
                                                                                   false,
                                                                                   false,
-                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                                   null,
                                                                                   methodName);
 
@@ -770,7 +732,6 @@ public class OpenGovernanceRESTServices
 
             EngineActionElement engineActionElement = handler.getEngineAction(userId,
                                                                               firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
-                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                               null,
                                                                               methodName);
 
@@ -793,7 +754,6 @@ public class OpenGovernanceRESTServices
      * Request the status and properties of an executing engine action request.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request.
      *
@@ -803,7 +763,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public EngineActionElementResponse getEngineAction(String serverName,
-                                                       String serviceURLMarker,
                                                        String userId,
                                                        String engineActionGUID)
     {
@@ -822,59 +781,8 @@ public class OpenGovernanceRESTServices
 
             response.setElement(handler.getEngineAction(userId,
                                                         engineActionGUID,
-                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                         new Date(),
                                                         methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the engine actions that are known to the server.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId userId of caller
-     * @param startFrom starting from element
-     * @param pageSize maximum elements to return
-     *
-     * @return list of engine action elements or
-     *  InvalidParameterException one of the parameters is null or invalid.
-     *  UserNotAuthorizedException user not authorized to issue this request.
-     *  PropertyServerException there was a problem detected by the metadata store.
-     */
-    public EngineActionElementsResponse getEngineActions(String serverName,
-                                                         String serviceURLMarker,
-                                                         String userId,
-                                                         int    startFrom,
-                                                         int    pageSize)
-    {
-        final String methodName = "getEngineActions";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        AuditLog auditLog = null;
-        EngineActionElementsResponse response = new EngineActionElementsResponse();
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
-
-            response.setElements(handler.getEngineActions(userId,
-                                                          startFrom,
-                                                          pageSize,
-                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                          new Date(),
-                                                          methodName));
         }
         catch (Throwable error)
         {
@@ -890,7 +798,6 @@ public class OpenGovernanceRESTServices
      * Retrieve the engine actions that are still in process.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId userId of caller
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
@@ -901,7 +808,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public EngineActionElementsResponse getActiveEngineActions(String serverName,
-                                                               String serviceURLMarker,
                                                                String userId,
                                                                int    startFrom,
                                                                int    pageSize)
@@ -922,7 +828,6 @@ public class OpenGovernanceRESTServices
             response.setElements(handler.getActiveEngineActions(userId,
                                                                 startFrom,
                                                                 pageSize,
-                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                 new Date(),
                                                                 methodName));
         }
@@ -941,7 +846,6 @@ public class OpenGovernanceRESTServices
      * This call is used when the caller restarts.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId userId of caller
      * @param governanceEngineGUID unique identifier of governance engine
      * @param startFrom starting from element
@@ -953,7 +857,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public EngineActionElementsResponse getActiveClaimedEngineActions(String serverName,
-                                                                      String serviceURLMarker,
                                                                       String userId,
                                                                       String governanceEngineGUID,
                                                                       int    startFrom,
@@ -976,151 +879,8 @@ public class OpenGovernanceRESTServices
                                                                        governanceEngineGUID,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                        new Date(),
                                                                        methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of engine action metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param serverName name of the service to route the request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public EngineActionElementsResponse findEngineActions(String                  serverName,
-                                                          String                  serviceURLMarker,
-                                                          String                  userId,
-                                                          int                     startFrom,
-                                                          int                     pageSize,
-                                                          SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findEngineActions";
-
-        String searchStringParameterName = "searchString";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        EngineActionElementsResponse response = new EngineActionElementsResponse();
-        AuditLog                         auditLog = null;
-
-        try
-        {
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId,
-                                                                                                          serverName,
-                                                                                                          methodName);
-
-                if (requestBody.getSearchStringParameterName() != null)
-                {
-                    searchStringParameterName = requestBody.getSearchStringParameterName();
-                }
-
-                response.setElements(handler.findEngineActions(userId,
-                                                               requestBody.getSearchString(),
-                                                               searchStringParameterName,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                               new Date(),
-                                                               methodName));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of engine action  metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody name to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public EngineActionElementsResponse getEngineActionsByName(String          serverName,
-                                                               String          serviceURLMarker,
-                                                               String          userId,
-                                                               int             startFrom,
-                                                               int             pageSize,
-                                                               NameRequestBody requestBody)
-    {
-        final String methodName = "getEngineActionsByName";
-
-        String nameParameterName = "name";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        EngineActionElementsResponse response = new EngineActionElementsResponse();
-        AuditLog                             auditLog = null;
-
-        try
-        {
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId,
-                                                                                                          serverName,
-                                                                                                          methodName);
-
-                if (requestBody.getNameParameterName() != null)
-                {
-                    nameParameterName = requestBody.getNameParameterName();
-                }
-
-                response.setElements(handler.getEngineActionsByName(userId,
-                                                                    requestBody.getName(),
-                                                                    nameParameterName,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                    null,
-                                                                    methodName));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
         }
         catch (Throwable error)
         {
@@ -1136,7 +896,6 @@ public class OpenGovernanceRESTServices
      * Request that execution of an engine action is allocated to the caller.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param requestBody null request body
@@ -1148,7 +907,6 @@ public class OpenGovernanceRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse claimEngineAction(String          serverName,
-                                          String          serviceURLMarker,
                                           String          userId,
                                           String          engineActionGUID,
                                           NullRequestBody requestBody)
@@ -1168,7 +926,6 @@ public class OpenGovernanceRESTServices
 
             handler.claimEngineAction(userId,
                                       engineActionGUID,
-                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                       new Date(),
                                       methodName);
         }
@@ -1186,7 +943,6 @@ public class OpenGovernanceRESTServices
      * Request that execution of an engine action is stopped.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param requestBody null request body
@@ -1198,7 +954,6 @@ public class OpenGovernanceRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse cancelEngineAction(String          serverName,
-                                           String          serviceURLMarker,
                                            String          userId,
                                            String          engineActionGUID,
                                            NullRequestBody requestBody)
@@ -1218,7 +973,6 @@ public class OpenGovernanceRESTServices
 
             handler.cancelEngineAction(userId,
                                        engineActionGUID,
-                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                        new Date(),
                                        methodName);
         }
@@ -1237,7 +991,6 @@ public class OpenGovernanceRESTServices
      * Update the status of the engine action - providing the caller is permitted.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
      * @param requestBody new status ordinal
@@ -1248,7 +1001,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public VoidResponse updateEngineActionStatus(String                        serverName,
-                                                 String                        serviceURLMarker,
                                                  String                        userId,
                                                  String                        engineActionGUID,
                                                  EngineActionStatusRequestBody requestBody)
@@ -1278,7 +1030,6 @@ public class OpenGovernanceRESTServices
                 handler.updateEngineActionStatus(userId,
                                                  engineActionGUID,
                                                  statusOrdinal,
-                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                  new Date(),
                                                  methodName);
             }
@@ -1297,148 +1048,6 @@ public class OpenGovernanceRESTServices
     }
 
 
-
-    /*
-     * Duplicates processing
-     */
-
-    /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements.
-     * If the relationship already exists, the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse linkElementsAsDuplicates(String                    serverName,
-                                                 String                    serviceURLMarker,
-                                                 String                    userId,
-                                                 PeerDuplicatesRequestBody requestBody)
-    {
-        final String methodName = "linkElementsAsDuplicates";
-
-        final String element1GUIDParameterName = "element1GUID";
-        final String element2GUIDParameterName = "element2GUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.linkElementsAsPeerDuplicates(userId,
-                                                     requestBody.getMetadataElement1GUID(),
-                                                     element1GUIDParameterName,
-                                                     requestBody.getMetadataElement2GUID(),
-                                                     element2GUIDParameterName,
-                                                     requestBody.getSetKnownDuplicate(),
-                                                     requestBody.getStatusIdentifier(),
-                                                     requestBody.getSteward(),
-                                                     requestBody.getStewardTypeName(),
-                                                     requestBody.getStewardPropertyName(),
-                                                     requestBody.getSource(),
-                                                     requestBody.getNotes(),
-                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                     methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Identify an element that acts as a consolidated version for a set of duplicate elements.
-     * (The consolidated element is created using createMetadataElement.)
-     * Creates a simple relationship between the elements. If the ConsolidatedDuplicate
-     * classification already exists, the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse linkConsolidatedDuplicate(String                            serverName,
-                                                  String                            serviceURLMarker,
-                                                  String                            userId,
-                                                  ConsolidatedDuplicatesRequestBody requestBody)
-    {
-        final String methodName = "linkConsolidatedDuplicate";
-
-        final String elementGUIDParameterName = "consolidatedElementGUID";
-        final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.linkConsolidatedDuplicate(userId,
-                                                  requestBody.getConsolidatedElementGUID(),
-                                                  elementGUIDParameterName,
-                                                  requestBody.getStatusIdentifier(),
-                                                  requestBody.getSteward(),
-                                                  requestBody.getStewardTypeName(),
-                                                  requestBody.getStewardPropertyName(),
-                                                  requestBody.getSource(),
-                                                  requestBody.getNotes(),
-                                                  requestBody.getSourceElementGUIDs(),
-                                                  sourceElementGUIDsParameterName,
-                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                  methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
     /**
      * Update the status of a specific action target. By default, these values are derived from
      * the values for the governance action service.  However, if the governance action service has to process name
@@ -1446,7 +1055,6 @@ public class OpenGovernanceRESTServices
      * governance action service.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param requestBody relationship properties
      *
@@ -1457,7 +1065,6 @@ public class OpenGovernanceRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse updateActionTargetStatus(String                        serverName,
-                                                 String                        serviceURLMarker,
                                                  String                        userId,
                                                  ActionTargetStatusRequestBody requestBody)
     {
@@ -1510,7 +1117,6 @@ public class OpenGovernanceRESTServices
      * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param governanceActionGUID unique identifier of the governance action to update
      * @param requestBody completion status enum value, optional guard strings for triggering subsequent action(s) plus
@@ -1522,7 +1128,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there is a problem connecting to the metadata store
      */
     public VoidResponse recordCompletionStatus(String                      serverName,
-                                               String                      serviceURLMarker,
                                                String                      userId,
                                                String                      governanceActionGUID,
                                                CompletionStatusRequestBody requestBody)
@@ -1556,7 +1161,6 @@ public class OpenGovernanceRESTServices
                                                requestBody.getOutputGuards(),
                                                requestBody.getNewActionTargets(),
                                                requestBody.getCompletionMessage(),
-                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                new Date(),
                                                methodName);
             }
@@ -1581,7 +1185,6 @@ public class OpenGovernanceRESTServices
      * of the actions taken for auditing.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestBody properties for the governance action and to pass to the governance action service
@@ -1592,7 +1195,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateEngineAction(String                          serverName,
-                                             String                          serviceURLMarker,
                                              String                          userId,
                                              String                          governanceEngineName,
                                              InitiateEngineActionRequestBody requestBody)
@@ -1640,7 +1242,6 @@ public class OpenGovernanceRESTServices
                                                                      requestBody.getProcessName(),
                                                                      null,
                                                                      null,
-                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                      methodName);
 
                 if (engineActionGUID != null)
@@ -1660,7 +1261,6 @@ public class OpenGovernanceRESTServices
                                                 requestBody.getRequestParameters(),
                                                 null,
                                                 requestBody.getProcessName(),
-                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                 methodName);
 
                     response.setGUID(engineActionGUID);
@@ -1685,7 +1285,6 @@ public class OpenGovernanceRESTServices
      * Using the named governance action type as a template, initiate an engine action.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param requestBody properties to initiate the new instance of the engine action
      *
@@ -1695,7 +1294,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionType(String                                  serverName,
-                                                     String                                  serviceURLMarker,
                                                      String                                  userId,
                                                      InitiateGovernanceActionTypeRequestBody requestBody)
     {
@@ -1723,7 +1321,6 @@ public class OpenGovernanceRESTServices
                                                                       requestBody.getStartDate(),
                                                                       requestBody.getOriginatorServiceName(),
                                                                       requestBody.getOriginatorEngineName(),
-                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                       methodName));
             }
             else
@@ -1745,7 +1342,6 @@ public class OpenGovernanceRESTServices
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
      * @param requestBody properties to initiate the new instance of the process
      *
@@ -1755,7 +1351,6 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
-                                                        String                             serviceURLMarker,
                                                         String                             userId,
                                                         InitiateGovernanceActionProcessRequestBody requestBody)
     {
@@ -1783,7 +1378,6 @@ public class OpenGovernanceRESTServices
                                                                          requestBody.getStartDate(),
                                                                          requestBody.getOriginatorServiceName(),
                                                                          requestBody.getOriginatorEngineName(),
-                                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                          methodName));
             }
             else

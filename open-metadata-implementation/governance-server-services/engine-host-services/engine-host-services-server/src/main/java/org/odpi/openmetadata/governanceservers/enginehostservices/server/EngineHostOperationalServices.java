@@ -2,17 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
-import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
@@ -36,11 +33,12 @@ import java.util.Map;
  */
 public class EngineHostOperationalServices
 {
-    private final String                         localServerName;               /* Initialized in constructor */
-    private final String                         localServerId;                 /* Initialized in constructor */
-    private final String                         localServerUserId;             /* Initialized in constructor */
-    private final String                         localServerPassword;           /* Initialized in constructor */
-    private final int                            maxPageSize;                   /* Initialized in constructor */
+    private final String localServerName;                 /* Initialized in constructor */
+    private final String localServerUserId;                /* Initialized in constructor */
+    private final String localServerSecretStoreProvider;   /* Initialized in constructor */
+    private final String localServerSecretStoreLocation;   /* Initialized in constructor */
+    private final String localServerSecretStoreCollection; /* Initialized in constructor */
+    private final int    maxPageSize;                      /* Initialized in constructor */
 
     private AuditLog                              auditLog           = null;
     private EngineHostInstance                    engineHostInstance = null;
@@ -54,22 +52,25 @@ public class EngineHostOperationalServices
      * Constructor used at server startup.
      *
      * @param localServerName name of the local server
-     * @param localServerId unique identifier for this server
-     * @param localServerUserId user id for this server to use on REST calls if processing inbound messages.
-     * @param localServerPassword user password for this server to use on REST calls if processing inbound messages.
+     * @param localServerUserId user id for this server to use on metadata requests.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
     public EngineHostOperationalServices(String localServerName,
-                                         String localServerId,
                                          String localServerUserId,
-                                         String localServerPassword,
+                                         String localServerSecretsStoreProvider,
+                                         String localServerSecretsStoreLocation,
+                                         String localServerSecretsStoreCollection,
                                          int    maxPageSize)
     {
-        this.localServerName       = localServerName;
-        this.localServerId         = localServerId;
-        this.localServerUserId     = localServerUserId;
-        this.localServerPassword   = localServerPassword;
-        this.maxPageSize           = maxPageSize;
+        this.localServerName                  = localServerName;
+        this.localServerUserId                = localServerUserId;
+        this.localServerSecretStoreProvider   = localServerSecretsStoreProvider;
+        this.localServerSecretStoreLocation   = localServerSecretsStoreLocation;
+        this.localServerSecretStoreCollection = localServerSecretsStoreCollection;
+        this.maxPageSize                      = maxPageSize;
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
@@ -83,8 +84,8 @@ public class EngineHostOperationalServices
      * @return activated services list
      * @throws OMAGConfigurationErrorException error in configuration preventing startup
      */
-    public List<String> initialize(EngineHostServicesConfig configuration,
-                                   AuditLog                 auditLog) throws OMAGConfigurationErrorException
+    public List<String> initialize(List<EngineConfig> configuration,
+                                   AuditLog           auditLog) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine host services";
         final String methodName = "initialize";
@@ -106,8 +107,7 @@ public class EngineHostOperationalServices
                                                           this.getClass().getName(),
                                                           methodName);
             }
-            else if (((configuration.getEngineList() == null) || (configuration.getEngineList().isEmpty())) &&
-                     ((configuration.getEngineServiceConfigs() == null) || (configuration.getEngineServiceConfigs().isEmpty())))
+            else if (configuration.isEmpty())
             {
                 throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_ENGINE_SERVICES_CONFIGURED.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
@@ -115,121 +115,63 @@ public class EngineHostOperationalServices
             }
 
             /*
-             * The configuration for the governance engines is located in an open metadata server. It is accessed through the Governance Engine
-             * OMAS.  If the values needed to call the Governance Engine OMAS are not present in the configuration then there is no point in
-             * continuing and an exception is thrown.
+             * All engine services need to be started. The simply provide support for the REST API.
              */
-            String accessServiceRootURL    = this.getAccessServiceRootURL(configuration);
-            String accessServiceServerName = this.getAccessServiceServerName(configuration);
+            Map<String, EngineServiceDefinition> engineServiceConfigMap = this.getDefaultEngineServiceConfigs();
+
+            List<String> activatedServiceList = initializeEngineServices(new ArrayList<>(engineServiceConfigMap.values()));
 
             /*
-             * Create a REST client to issue REST calls to the Governance Engine OMAS.  This client is then wrapped in the specific API
-             * clients.
+             * Create the synchronized map that manages the active engines.
              */
-            GAFRESTClient        restClient;
-            if (localServerPassword == null)
-            {
-                restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, auditLog);
-            }
-            else
-            {
-                restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, auditLog);
-            }
-
-            /*
-             * The event client issues a REST call to the Governance Engine OMAS to retrieve the client-side connection to is OutTopic
-             * creates the topic connector, listens for incoming and then passes them to any registered listeners.  There are two listeners
-             * expected - one used by the engine host services to receive updates to the governance engine configuration and new GovernanceActions
-             * - the other used by the Governance Action OMES to receive new Watchdog events for registered Open Watchdog Governance Action Services.
-             */
-            OpenMetadataEventClient eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
-                                                                                    accessServiceRootURL,
-                                                                                    localServerUserId,
-                                                                                    localServerPassword,
-                                                                                    maxPageSize,
-                                                                                    auditLog,
-                                                                                    localServerId + localServerName);
-
-            /*
-             * This is the client used to retrieve configuration and the client used to manage governance action entities
-             */
-            GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(accessServiceServerName,
-                                                                                                  accessServiceRootURL,
-                                                                                                  restClient,
-                                                                                                  maxPageSize,
-                                                                                                  auditLog);
-
-            GovernanceContextClient engineActionClient = new GovernanceContextClient(accessServiceServerName,
-                                                                                     accessServiceRootURL,
-                                                                                     restClient,
-                                                                                     maxPageSize);
-
-
-
-            /*
-             * Initialize each of the integration services and accumulate the integration connector handlers for the
-             * integration daemon handler.
-             */
-            Map<String, List<String>> serviceEngineLists       = new HashMap<>();
-            GovernanceEngineMap       governanceEngineHandlers = new GovernanceEngineMap(localServerName,
-                                                                                         localServerUserId,
-                                                                                         localServerPassword,
-                                                                                         configurationClient,
-                                                                                         engineActionClient,
-                                                                                         auditLog,
-                                                                                         maxPageSize);
+            GovernanceEngineMap governanceEngineHandlers = new GovernanceEngineMap(localServerName,
+                                                                                   localServerUserId,
+                                                                                   auditLog,
+                                                                                   maxPageSize);
 
             /*
              * Add details of the governance engines that have been configured in the engine list.
              */
-            if ((configuration.getEngineList() != null) && (! configuration.getEngineList().isEmpty()))
+            for (EngineConfig governanceEngine : configuration)
             {
-                governanceEngineHandlers.setGovernanceEngineProperties(configuration.getEngineList(),
-                                                                       accessServiceServerName,
-                                                                       accessServiceRootURL);
+                /*
+                 * The event client issues a REST call to the Open Metadata Services to retrieve the client-side connection to is OutTopic
+                 * creates the topic connector, listens for incoming and then passes them to any registered listeners.  There are two listeners
+                 * expected - one used by the engine host services to receive updates to the governance engine configuration and new GovernanceActions
+                 * - the other used by the Governance Action OMES to receive new Watchdog events for registered Open Watchdog Governance Action Services.
+                 */
+                OpenMetadataEventClient eventClient = new EgeriaOpenMetadataEventClient(governanceEngine.getOMAGServerName(),
+                                                                                        governanceEngine.getOMAGServerPlatformRootURL(),
+                                                                                        governanceEngine.getEngineUserId(),
+                                                                                        governanceEngine.getSecretsStoreProvider(),
+                                                                                        governanceEngine.getSecretsStoreLocation(),
+                                                                                        governanceEngine.getSecretsStoreCollection(),
+                                                                                        maxPageSize,
+                                                                                        auditLog,
+                                                                                        governanceEngine.getEngineId());
 
+                /*
+                 * This thread is responsible for managing the retrieval of the engine definitions and registering the listener for events.
+                 */
+                EngineConfigurationRefreshThread configurationRefreshThread = new EngineConfigurationRefreshThread(governanceEngine,
+                                                                                                                   governanceEngineHandlers,
+                                                                                                                   eventClient,
+                                                                                                                   auditLog,
+                                                                                                                   localServerName);
+
+                /*
+                 * Create an entry in the governance engine map for the configured engine.
+                 */
+                governanceEngineHandlers.setGovernanceEngineProperties(governanceEngine,
+                                                                       eventClient,
+                                                                       configurationRefreshThread);
+
+                /*
+                 * This engine is ready to go - start its management thread
+                 */
+                Thread thread = new Thread(configurationRefreshThread, configurationRefreshThread.getClass().getName());
+                thread.start();
             }
-
-            /*
-             * All engine services need to be started.  Some may be configured explicitly.  Start with a default list of
-             * all engine services using the details of the partner metadata server provided for the engine configuration
-             * then overlay the explicitly configured engines.
-             */
-            Map<String, EngineServiceConfig> engineServiceConfigMap = this.getDefaultEngineServiceConfigs(accessServiceRootURL,
-                                                                                                          accessServiceServerName);
-
-            if (configuration.getEngineServiceConfigs() != null)
-            {
-                for (EngineServiceConfig engineServiceConfig : configuration.getEngineServiceConfigs())
-                {
-                    if (engineServiceConfig != null)
-                    {
-                        engineServiceConfigMap.put(engineServiceConfig.getEngineServiceURLMarker(), engineServiceConfig);
-                    }
-                }
-            }
-
-
-            List<String> activatedServiceList = initializeEngineServices(new ArrayList<>(engineServiceConfigMap.values()),
-                                                                         configurationClient,
-                                                                         serviceEngineLists,
-                                                                         governanceEngineHandlers);
-
-            /*
-             * Register a listener for the Governance Engine OMAS out topic.  This call will fail if
-             * the metadata server is not running so a separate thread is created to retry the registration request at
-             * intervals to wait for the metadata server to restart.  It will also try to retrieve the configuration
-             * for the governance engines.
-             */
-            EngineConfigurationRefreshThread configurationRefreshThread = new EngineConfigurationRefreshThread(governanceEngineHandlers,
-                                                                                                               eventClient,
-                                                                                                               auditLog,
-                                                                                                               localServerUserId,
-                                                                                                               localServerName,
-                                                                                                               accessServiceServerName,
-                                                                                                               accessServiceRootURL);
-            Thread thread = new Thread(configurationRefreshThread, configurationRefreshThread.getClass().getName());
-            thread.start();
 
             /*
              * Create the engine host instance (it auto-registers in the server map).
@@ -239,22 +181,19 @@ public class EngineHostOperationalServices
                                                         auditLog,
                                                         localServerUserId,
                                                         maxPageSize,
-                                                        configurationRefreshThread,
                                                         governanceEngineHandlers);
-
-
 
             auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
             return activatedServiceList;
         }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGConfigurationErrorException(error.getReportedErrorMessage(), error);
-        }
         catch (OMAGConfigurationErrorException error)
         {
             throw error;
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGConfigurationErrorException(error.getReportedErrorMessage(), error);
         }
         catch (Exception error)
         {
@@ -313,14 +252,11 @@ public class EngineHostOperationalServices
     /**
      * Use the partner access service information to create a default definition for each engine service.
      *
-     * @param partnerURLRoot platform URL root for the partner access service set up for the engine host
-     * @param partnerServerName name of the server where the access service is located
      * @return map of default engine service configurations
      */
-    private Map<String, EngineServiceConfig> getDefaultEngineServiceConfigs(String partnerURLRoot,
-                                                                            String partnerServerName)
+    private Map<String, EngineServiceDefinition> getDefaultEngineServiceConfigs()
     {
-        Map<String, EngineServiceConfig> engineServiceConfigList = new HashMap<>();
+        Map<String, EngineServiceDefinition> engineServiceConfigList = new HashMap<>();
 
         for (EngineServiceDescription engineServiceDescription : EngineServiceDescription.values())
         {
@@ -328,12 +264,9 @@ public class EngineHostOperationalServices
 
             if (engineServiceRegistrationEntry != null)
             {
-                EngineServiceConfig engineServiceConfig = new EngineServiceConfig(engineServiceRegistrationEntry);
+                EngineServiceDefinition engineServiceDefinition = new EngineServiceDefinition(engineServiceRegistrationEntry);
 
-                engineServiceConfig.setOMAGServerPlatformRootURL(partnerURLRoot);
-                engineServiceConfig.setOMAGServerName(partnerServerName);
-
-                engineServiceConfigList.put(engineServiceRegistrationEntry.getEngineServiceURLMarker(), engineServiceConfig);
+                engineServiceConfigList.put(engineServiceRegistrationEntry.getEngineServiceURLMarker(), engineServiceDefinition);
             }
         }
 
@@ -344,15 +277,11 @@ public class EngineHostOperationalServices
     /**
      * Start up the engine services.
      *
-     * @param engineServiceConfigList       configured engine services
-     * @param configurationClient           client needed to retrieve governance engine definitions
+     * @param engineServiceDefinitionList       configured engine services
      * @return activatedServiceList          list of engine services running in the server
      * @throws OMAGConfigurationErrorException problem with the configuration
      */
-    private List<String> initializeEngineServices(List<EngineServiceConfig>            engineServiceConfigList,
-                                                  GovernanceConfigurationClient configurationClient,
-                                                  Map<String, List<String>>            serviceEngineLists,
-                                                  GovernanceEngineMap                  governanceEngineHandlers) throws OMAGConfigurationErrorException
+    private List<String> initializeEngineServices(List<EngineServiceDefinition> engineServiceDefinitionList) throws OMAGConfigurationErrorException
     {
         final String methodName = "initializeEngineServices";
         final String actionDescription = "Initialize Engine Services";
@@ -362,7 +291,7 @@ public class EngineHostOperationalServices
         /*
          * Process the list explicitly configured engine services.
          */
-        if (engineServiceConfigList != null)
+        if (engineServiceDefinitionList != null)
         {
             auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.STARTING_ENGINE_SERVICES.getMessageDefinition(localServerName));
 
@@ -372,66 +301,59 @@ public class EngineHostOperationalServices
             int configuredEngineServiceCount = 0;
             int enabledEngineServiceCount = 0;
 
-            for (EngineServiceConfig engineServiceConfig : engineServiceConfigList)
+            for (EngineServiceDefinition engineServiceDefinition : engineServiceDefinitionList)
             {
                 configuredEngineServiceCount++;
 
-                if (ServiceOperationalStatus.ENABLED.equals(engineServiceConfig.getEngineServiceOperationalStatus()))
+                if (ServiceOperationalStatus.ENABLED.equals(engineServiceDefinition.getEngineServiceOperationalStatus()))
                 {
                     enabledEngineServiceCount++;
-                    this.setServerServiceActiveStatus(engineServiceConfig.getEngineServiceFullName(), ServerActiveStatus.STARTING);
-
-                    serviceEngineLists.put(engineServiceConfig.getEngineServiceURLMarker(),
-                                           governanceEngineHandlers.getGovernanceEngineNames(engineServiceConfig.getEngineServiceURLMarker()));
+                    this.setServerServiceActiveStatus(engineServiceDefinition.getEngineServiceFullName(), ServerActiveStatus.STARTING);
 
                     try
                     {
-                        EngineServiceAdmin engineServiceAdmin = this.getEngineServiceAdminClass(engineServiceConfig);
+                        EngineServiceAdmin engineServiceAdmin = this.getEngineServiceAdminClass(engineServiceDefinition);
 
                         /*
                          * Each engine service has its own audit log instance.
                          */
                         AuditLog engineServicesAuditLog
-                                = auditLog.createNewAuditLog(engineServiceConfig.getEngineServiceId(),
-                                                             engineServiceConfig.getEngineServiceDevelopmentStatus(),
-                                                             engineServiceConfig.getEngineServiceFullName(),
-                                                             engineServiceConfig.getEngineServiceDescription(),
-                                                             engineServiceConfig.getEngineServiceWiki());
+                                = auditLog.createNewAuditLog(engineServiceDefinition.getEngineServiceId(),
+                                                             engineServiceDefinition.getEngineServiceDevelopmentStatus(),
+                                                             engineServiceDefinition.getEngineServiceFullName(),
+                                                             engineServiceDefinition.getEngineServiceDescription(),
+                                                             engineServiceDefinition.getEngineServiceWiki());
 
-                         engineServiceAdmin.initialize(localServerId,
-                                                       localServerName,
+                         engineServiceAdmin.initialize(localServerName,
                                                        engineServicesAuditLog,
                                                        localServerUserId,
-                                                       localServerPassword,
                                                        maxPageSize,
-                                                       configurationClient,
-                                                       engineServiceConfig,
-                                                       governanceEngineHandlers);
+                                                       engineServiceDefinition);
 
                         engineServiceAdminList.add(engineServiceAdmin);
-                        this.setServerServiceActiveStatus(engineServiceConfig.getEngineServiceFullName(), ServerActiveStatus.RUNNING);
+                        this.setServerServiceActiveStatus(engineServiceDefinition.getEngineServiceFullName(), ServerActiveStatus.RUNNING);
                     }
                     catch (OMAGConfigurationErrorException error)
                     {
                         auditLog.logException(methodName,
-                                              EngineHostServicesAuditCode.ENGINE_SERVICE_INSTANCE_FAILURE.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
+                                              EngineHostServicesAuditCode.ENGINE_SERVICE_INSTANCE_FAILURE.getMessageDefinition(engineServiceDefinition.getEngineServiceName(),
                                                                                                                                error.getClass().getName(),
                                                                                                                                error.getMessage()),
-                                              engineServiceConfig.toString(),
+                                              engineServiceDefinition.toString(),
                                               error);
                         throw error;
                     }
                     catch (Exception error)
                     {
                         auditLog.logException(methodName,
-                                              EngineHostServicesAuditCode.ENGINE_SERVICE_INSTANCE_FAILURE.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
+                                              EngineHostServicesAuditCode.ENGINE_SERVICE_INSTANCE_FAILURE.getMessageDefinition(engineServiceDefinition.getEngineServiceName(),
                                                                                                                                error.getClass().getName(),
                                                                                                                                error.getMessage()),
-                                              engineServiceConfig.toString(),
+                                              engineServiceDefinition.toString(),
                                               error);
 
                         throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(localServerName,
-                                                                                                                                                       engineServiceConfig.getEngineServiceName(),
+                                                                                                                                                       engineServiceDefinition.getEngineServiceName(),
                                                                                                                                                        error.getClass().getName(),
                                                                                                                                                        error.getMessage()),
                                                                   this.getClass().getName(),
@@ -442,7 +364,7 @@ public class EngineHostOperationalServices
                 else
                 {
                     auditLog.logMessage(actionDescription,
-                                        EngineHostServicesAuditCode.SKIPPING_ENGINE_SERVICE.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
+                                        EngineHostServicesAuditCode.SKIPPING_ENGINE_SERVICE.getMessageDefinition(engineServiceDefinition.getEngineServiceFullName(),
                                                                                                                  localServerName));
                 }
 
@@ -495,19 +417,18 @@ public class EngineHostOperationalServices
     }
 
 
-
     /**
      * Create an instance of the engine service's admin class from the class name in the configuration.
      *
-     * @param engineServiceConfig configuration for the engine service
+     * @param engineServiceDefinition configuration for the engine service
      * @return Admin class for the engine service
      * @throws OMAGConfigurationErrorException if the class is invalid
      */
-    private EngineServiceAdmin getEngineServiceAdminClass(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
+    private EngineServiceAdmin getEngineServiceAdminClass(EngineServiceDefinition engineServiceDefinition) throws OMAGConfigurationErrorException
     {
         final String methodName = "getEngineServiceAdminClass";
 
-        String    engineServiceAdminClassName = engineServiceConfig.getEngineServiceAdminClass();
+        String    engineServiceAdminClassName = engineServiceDefinition.getEngineServiceAdminClass();
 
         if (engineServiceAdminClassName != null)
         {
@@ -518,15 +439,15 @@ public class EngineHostOperationalServices
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException| NoSuchMethodException | InvocationTargetException error)
             {
                 auditLog.logException(methodName,
-                                      EngineHostServicesAuditCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
+                                      EngineHostServicesAuditCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(engineServiceDefinition.getEngineServiceName(),
                                                                                                                       engineServiceAdminClassName,
                                                                                                                       error.getMessage()),
-                                      engineServiceConfig.toString(),
+                                      engineServiceDefinition.toString(),
                                       error);
 
                 throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(localServerName,
                                                                                                                                           engineServiceAdminClassName,
-                                                                                                                                          engineServiceConfig.getEngineServiceName()),
+                                                                                                                                          engineServiceDefinition.getEngineServiceName()),
                                                           this.getClass().getName(),
                                                           methodName,
                                                           error);
@@ -534,10 +455,10 @@ public class EngineHostOperationalServices
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      EngineHostServicesAuditCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
+                                      EngineHostServicesAuditCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(engineServiceDefinition.getEngineServiceName(),
                                                                                                                       engineServiceAdminClassName,
                                                                                                                       error.getMessage()),
-                                      engineServiceConfig.toString(),
+                                      engineServiceDefinition.toString(),
                                       error);
 
                 throw error;
@@ -547,11 +468,11 @@ public class EngineHostOperationalServices
         {
             auditLog.logMessage(methodName,
                                 EngineHostServicesAuditCode.NULL_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(localServerName,
-                                                                                                                 engineServiceConfig.getEngineServiceFullName()),
-                                engineServiceConfig.toString());
+                                                                                                                 engineServiceDefinition.getEngineServiceFullName()),
+                                engineServiceDefinition.toString());
 
             throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NULL_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(localServerName,
-                                                                                                                                       engineServiceConfig.getEngineServiceName()),
+                                                                                                                                       engineServiceDefinition.getEngineServiceName()),
                                                       this.getClass().getName(),
                                                       methodName);
         }
@@ -559,62 +480,4 @@ public class EngineHostOperationalServices
 
 
 
-    /**
-     * Return the open metadata server's root URL from the configuration.
-     *
-     * @param config configuration
-     * @return root URL
-     * @throws OMAGConfigurationErrorException No root URL present in the config
-     */
-    private String getAccessServiceRootURL(EngineHostServicesConfig config) throws OMAGConfigurationErrorException
-    {
-        String accessServiceRootURL = config.getOMAGServerPlatformRootURL();
-
-        if (accessServiceRootURL == null)
-        {
-            final String actionDescription = "Validate engine services configuration.";
-            final String methodName        = "getPartnerServiceRootURL";
-
-            auditLog.logMessage(actionDescription,
-                                EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
-                                                                                                    AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()));
-
-            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
-                                                                                                                          AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-
-        return accessServiceRootURL;
-    }
-
-
-    /**
-     * Return the open metadata server's name from the configuration.
-     *
-     * @param config configuration
-     * @return server name
-     * @throws OMAGConfigurationErrorException No server name present in the config
-     */
-    private String getAccessServiceServerName(EngineHostServicesConfig config) throws OMAGConfigurationErrorException
-    {
-        String accessServiceServerName = config.getOMAGServerName();
-
-        if (accessServiceServerName == null)
-        {
-            final String actionDescription = "Validate engine service configuration.";
-            final String methodName        = "getPartnerServiceServerName";
-
-            auditLog.logMessage(actionDescription,
-                                EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,
-                                                                                                            AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()));
-
-            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,
-                                                                                                                                  AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName()),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-
-        return accessServiceServerName;
-    }
 }

@@ -40,7 +40,9 @@ public abstract class AccessServiceAdmin
      * @param auditLog  audit log component for logging messages.
      * @param localServerName name of this server
      * @param localServerUserId  user id to use on OMRS calls where there is no end user.
-     * @param localServerPassword  password to use on OMRS calls where there is no end user.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize max number of results to return on single request.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
@@ -50,9 +52,10 @@ public abstract class AccessServiceAdmin
                                     AuditLog                auditLog,
                                     String                  localServerName,
                                     String                  localServerUserId,
-                                    String                  localServerPassword,
+                                    String                  localServerSecretsStoreProvider,
+                                    String                  localServerSecretsStoreLocation,
+                                    String                  localServerSecretsStoreCollection,
                                     int                     maxPageSize) throws OMAGConfigurationErrorException;
-
 
 
     /**

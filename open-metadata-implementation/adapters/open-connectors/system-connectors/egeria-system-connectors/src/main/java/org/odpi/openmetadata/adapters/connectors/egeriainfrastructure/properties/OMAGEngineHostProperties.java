@@ -21,16 +21,30 @@ public class OMAGEngineHostProperties extends OMAGServerProperties
 {
     private List<GovernanceEngineSummary> governanceEngineSummaries = null;
 
+
+    /**
+     * Constructor
+     */
     public OMAGEngineHostProperties()
     {
     }
 
-
+    /**
+     * Return the list of governance engines.
+     *
+     * @return governance engines
+     */
     public List<GovernanceEngineSummary> getGovernanceEngineSummaries()
     {
         return governanceEngineSummaries;
     }
 
+
+    /**
+     * Set up the list of governance engines.
+     *
+     * @param governanceEngineSummaries governance engines
+     */
     public void setGovernanceEngineSummaries(List<GovernanceEngineSummary> governanceEngineSummaries)
     {
         this.governanceEngineSummaries = governanceEngineSummaries;
@@ -46,7 +60,7 @@ public class OMAGEngineHostProperties extends OMAGServerProperties
     public String toString()
     {
         return "OMAGEngineHostProperties{" +
-                "governanceEngineSummaries=" + governanceEngineSummaries +
+                ", governanceEngineSummaries=" + governanceEngineSummaries +
                 "} " + super.toString();
     }
 
@@ -62,10 +76,10 @@ public class OMAGEngineHostProperties extends OMAGServerProperties
     {
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         OMAGEngineHostProperties that = (OMAGEngineHostProperties) objectToCompare;
-        return Objects.equals(governanceEngineSummaries, that.governanceEngineSummaries);
+        return  Objects.equals(governanceEngineSummaries, that.governanceEngineSummaries);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -75,6 +89,6 @@ public class OMAGEngineHostProperties extends OMAGServerProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceEngineSummaries);
+        return Objects.hash(super.hashCode(), governanceEngineSummaries);
     }
 }

@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Automated Curation OMVS",
+@Tag(name="API: Automated Curation",
         description="Query the available automation services and governance actions that are available and set up and run the ones you are interested in.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/automated-curation/overview/"))

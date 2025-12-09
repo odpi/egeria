@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -12,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  * PurgeEntityExecutor provides the executor for the purgeEntity method.
  * This is a tricky request because the entity has been deleted, so it is
  * not retrievable until restored.
- *
+ * <p>
  * The only possible approach is to step through the repositories hoping that one
  * will respond positively.
  */
@@ -75,10 +77,6 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
             metadataCollection.purgeEntity(userId, typeDefGUID, typeDefName, entityGUID);
             entityDeleted = true;
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(error);
-        }
         catch (EntityNotKnownException error)
         {
             accumulator.captureException(error);
@@ -96,6 +94,10 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
             accumulator.captureException(error);
         }
         catch (UserNotAuthorizedException error)
+        {
+            accumulator.captureException(error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(error);
         }

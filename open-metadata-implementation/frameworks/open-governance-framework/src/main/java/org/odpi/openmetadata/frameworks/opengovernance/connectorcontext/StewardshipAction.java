@@ -13,6 +13,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
@@ -78,17 +82,14 @@ public  class StewardshipAction extends ConnectorContextClientBase
         this.originatorGUID         = connectorGUID;
     }
 
+
     /**
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *
-     * @param qualifiedName unique identifier to give this new incident report
-     * @param domainIdentifier governance domain associated with this action (0=ALL)
-     * @param background description of the situation
+     * @param properties unique identifier to give this new incident report and description of the situation
      * @param impactedResources details of the resources impacted by this situation
      * @param previousIncidents links to previous incident reports covering this situation
-     * @param incidentClassifiers initial classifiers for the incident report
-     * @param additionalProperties additional arbitrary properties for the incident reports
      * @param originatorGUID the unique identifier of the person or process that created the incident
      *
      * @return unique identifier of the resulting incident report
@@ -96,25 +97,17 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createIncidentReport(String                        qualifiedName,
-                                       int                           domainIdentifier,
-                                       String                        background,
-                                       List<IncidentImpactedElement> impactedResources,
-                                       List<IncidentDependency>      previousIncidents,
-                                       Map<String, Integer>          incidentClassifiers,
-                                       Map<String, String>           additionalProperties,
-                                       String                        originatorGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public String createIncidentReport(IncidentReportProperties                properties,
+                                       Map<String, ImpactedResourceProperties> impactedResources,
+                                       Map<String, ReportDependencyProperties> previousIncidents,
+                                       String                                  originatorGUID) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         return openMetadataClient.createIncidentReport(userId,
-                                                       qualifiedName,
-                                                       domainIdentifier,
-                                                       background,
+                                                       properties,
                                                        impactedResources,
                                                        previousIncidents,
-                                                       incidentClassifiers,
-                                                       additionalProperties,
                                                        originatorGUID);
     }
 
@@ -122,13 +115,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
     /**
      * Create a "To Do" request for someone to work on.
      *
-     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
-     * @param title short meaningful phrase for the person receiving the request
-     * @param instructions further details on what to do
-     * @param category a category of to dos (for example, "data error", "access request")
-     * @param priority priority value (based on organization's scale)
-     * @param dueDate date/time this needs to be completed
-     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param properties unique name for the to do plus additional properties
      * @param assignToGUID unique identifier the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param actionTargets the list of elements that should be acted upon
@@ -139,20 +126,14 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
-    public String openToDo(String                qualifiedName,
-                           String                title,
-                           String                instructions,
-                           String                category,
-                           int                   priority,
-                           Date                  dueDate,
-                           Map<String, String>   additionalProperties,
+    public String openToDo(ToDoProperties        properties,
                            String                assignToGUID,
                            String                sponsorGUID,
                            List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return openMetadataClient.openToDo(userId, qualifiedName, title, instructions, category, priority, dueDate, additionalProperties, assignToGUID, sponsorGUID, originatorGUID, actionTargets);
+        return openMetadataClient.openToDo(userId, properties, assignToGUID, sponsorGUID, originatorGUID, actionTargets);
     }
 
 

@@ -37,7 +37,9 @@ public class OIFContextManager extends IntegrationContextManager
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
@@ -46,11 +48,13 @@ public class OIFContextManager extends IntegrationContextManager
                                          String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
-                                         String              password,
+                                         String              secretsStoreProvider,
+                                         String              secretsStoreLocation,
+                                         String              secretsStoreCollection,
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
-        super.initializeContextManager(localServerName, localServiceName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+        super.initializeContextManager(localServerName, localServiceName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -67,36 +71,45 @@ public class OIFContextManager extends IntegrationContextManager
     @Override
     public void createClients() throws InvalidParameterException
     {
-        super.openMetadataClient      = new EgeriaOpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
-        super.openGovernanceClient    = new EgeriaOpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
-        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.openMetadataClient      = new EgeriaOpenMetadataStoreClient(partnerOMASServerName,
+                                                                          partnerOMASPlatformRootURL,
+                                                                          secretsStoreProvider,
+                                                                          secretsStoreLocation,
+                                                                          secretsStoreCollection,
+                                                                          maxPageSize,
+                                                                          auditLog);
 
-        if (localServerPassword == null)
-        {
-            connectedAssetClient = new EgeriaConnectedAssetClient(partnerOMASServerName,
-                                                                  partnerOMASPlatformRootURL,
-                                                                  maxPageSize,
-                                                                  auditLog);
+        super.openGovernanceClient    = new EgeriaOpenGovernanceClient(partnerOMASServerName,
+                                                                       partnerOMASPlatformRootURL,
+                                                                       secretsStoreProvider,
+                                                                       secretsStoreLocation,
+                                                                       secretsStoreCollection,
+                                                                       maxPageSize,
+                                                                       auditLog);
 
-            openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerOMASServerName,
-                                                                   partnerOMASPlatformRootURL,
-                                                                   maxPageSize);
-        }
-        else
-        {
-            connectedAssetClient = new EgeriaConnectedAssetClient(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            localServerUserId,
-                                                            localServerPassword,
-                                                            maxPageSize,
-                                                            auditLog);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName,
+                                                                          partnerOMASPlatformRootURL,
+                                                                          secretsStoreProvider,
+                                                                          secretsStoreLocation,
+                                                                          secretsStoreCollection,
+                                                                          maxPageSize,
+                                                                          auditLog);
 
-            openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerOMASServerName,
-                                                                   partnerOMASPlatformRootURL,
-                                                                   localServerUserId,
-                                                                   localServerPassword,
-                                                                   maxPageSize);
-        }
+        super.connectedAssetClient = new EgeriaConnectedAssetClient(partnerOMASServerName,
+                                                                    partnerOMASPlatformRootURL,
+                                                                    secretsStoreProvider,
+                                                                    secretsStoreLocation,
+                                                                    secretsStoreCollection,
+                                                                    maxPageSize,
+                                                                    auditLog);
+
+        super.openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerOMASServerName,
+                                                                     partnerOMASPlatformRootURL,
+                                                                     secretsStoreProvider,
+                                                                     secretsStoreLocation,
+                                                                     secretsStoreCollection,
+                                                                     maxPageSize,
+                                                                     auditLog);
 
         super.assetHandler = new AssetHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
@@ -114,7 +127,9 @@ public class OIFContextManager extends IntegrationContextManager
         return new EgeriaOpenMetadataEventClient(partnerOMASServerName,
                                                  partnerOMASPlatformRootURL,
                                                  localServerUserId,
-                                                 localServerPassword,
+                                                 secretsStoreProvider,
+                                                 secretsStoreLocation,
+                                                 secretsStoreCollection,
                                                  maxPageSize,
                                                  auditLog,
                                                  connectorId);

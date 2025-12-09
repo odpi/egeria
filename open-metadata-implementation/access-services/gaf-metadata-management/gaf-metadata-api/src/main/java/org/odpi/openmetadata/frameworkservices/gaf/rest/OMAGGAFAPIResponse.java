@@ -5,8 +5,6 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
-import java.util.Arrays;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -46,17 +44,6 @@ public abstract class OMAGGAFAPIResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "OMAGGAFAPIResponse{" +
-                "exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+        return "OMAGGAFAPIResponse{} " + super.toString();
     }
 }

@@ -17,7 +17,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMer
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
@@ -315,25 +314,27 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Update the properties of an actor profile.
+     * Update the properties of an element.
      *
      * @param userId            userId of user making request.
      * @param elementGUID       unique identifier of the element (returned from create)
      * @param guidParameterName name of unique identifier
      * @param updateOptions     provides a structure for the additional options when updating an element.
-     * @param properties        properties for the element.
+     * @param properties        properties for the element
+     *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected void updateElement(String                     userId,
-                                 String                     elementGUID,
-                                 String                     guidParameterName,
-                                 UpdateOptions              updateOptions,
-                                 OpenMetadataRootProperties properties,
-                                 String                     methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    protected boolean updateElement(String                     userId,
+                                    String                     elementGUID,
+                                    String                     guidParameterName,
+                                    UpdateOptions              updateOptions,
+                                    OpenMetadataRootProperties properties,
+                                    String                     methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         final String propertiesName             = "properties";
         final String qualifiedNameParameterName = "properties.qualifiedName";
@@ -350,10 +351,10 @@ public class OpenMetadataHandlerBase
             }
         }
 
-        openMetadataClient.updateMetadataElementInStore(userId,
-                                                        elementGUID,
-                                                        updateOptions,
-                                                        elementBuilder.getElementProperties(properties));
+        return openMetadataClient.updateMetadataElementInStore(userId,
+                                                               elementGUID,
+                                                               updateOptions,
+                                                               elementBuilder.getElementProperties(properties));
     }
 
 
@@ -684,7 +685,7 @@ public class OpenMetadataHandlerBase
         QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
 
         if (filterBySubtypes(openMetadataElement, queryOptions) &&
-                filterByClassifications(openMetadataElement.getClassifications(), queryOptions))
+                filterByClassifications(userId, openMetadataElement, queryOptions))
         {
             try
             {
@@ -758,52 +759,161 @@ public class OpenMetadataHandlerBase
      * The aim is to push down the filtering requirements to the repository as much as possible.  This
      * function is a last check to make sure the classification requirements have been fulfilled.
      *
-     * @param retrievedClassifications list of classification for an element
+     * @param retrievedElement element to test
      * @param queryOptions requested options
      * @return boolean; true if element is to be returned
      */
-    private boolean filterByClassifications(List<AttachedClassification> retrievedClassifications,
-                                            QueryOptions                 queryOptions)
+    private boolean filterByClassifications(String              userId,
+                                            OpenMetadataElement retrievedElement,
+                                            QueryOptions        queryOptions)
     {
-        if (queryOptions != null)
+        final String methodName = "filterByClassifications";
+
+        if ((queryOptions != null) && (retrievedElement != null))
         {
+            if (queryOptions.getSkipClassifiedElements() != null)
+            {
+                /*
+                 * Ignore elements that have the forbidden classifications
+                 */
+                for (String forbiddenClassificationName : queryOptions.getSkipClassifiedElements())
+                {
+                    if (forbiddenClassificationName != null)
+                    {
+                        AttachedClassification classification = propertyHelper.getClassification(retrievedElement, forbiddenClassificationName);
+
+                        if (classification != null)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             if (queryOptions.getIncludeOnlyClassifiedElements() != null)
             {
-                if (retrievedClassifications != null)
+                /*
+                 * Ignore elements that have are missing a required classification.
+                 */
+                for (String requiredClassificationName : queryOptions.getIncludeOnlyClassifiedElements())
                 {
-                    for (String requiredClassificationName : queryOptions.getIncludeOnlyClassifiedElements())
+                    if (requiredClassificationName != null)
                     {
-                        if (requiredClassificationName != null)
+                        AttachedClassification classification = propertyHelper.getClassification(retrievedElement, requiredClassificationName);
+
+                        if (classification == null)
                         {
-                            for (AttachedClassification retrievedClassification : retrievedClassifications)
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            /*
+             * The final check is on the zone membership.
+             */
+            if (queryOptions.getGovernanceZoneFilter() != null)
+            {
+                /*
+                 * Need to check that the zone membership is set
+                 */
+                AttachedClassification classification = propertyHelper.getClassification(retrievedElement, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+                if (classification != null)
+                {
+                    return this.checkElementZoneMembership(classification, queryOptions.getGovernanceZoneFilter());
+                }
+                else
+                {
+                    /*
+                     * The zone membership classification is not set.  Is this element
+                     * an anchor - in which case it is in all zones.
+                     */
+                    AttachedClassification anchorClassification = propertyHelper.getClassification(retrievedElement, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+
+                    if (anchorClassification == null)
+                    {
+                        /*
+                         * This element is unanchored.
+                         */
+                        return true;
+                    }
+                    else
+                    {
+                        String anchorGUID = propertyHelper.getStringProperty(localServiceName,
+                                                                             OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                             anchorClassification.getClassificationProperties(),
+                                                                             methodName);
+
+                        if ((anchorGUID == null) || anchorGUID.equals(retrievedElement.getElementGUID()))
+                        {
+                            /*
+                             * This element is an anchor.
+                             */
+                            return true;
+                        }
+                        else
+                        {
+                            /*
+                             * Need to retrieve the anchor entity to get the zone classification.
+                             */
+                            try
                             {
-                                if ((retrievedClassification != null) && (retrievedClassification.getClassificationName().equals(requiredClassificationName)))
-                                {
-                                    return true;
-                                }
+                                OpenMetadataElement anchorElement = openMetadataClient.getMetadataElementByGUID(userId, anchorGUID, null);
+
+                                AttachedClassification anchorZoneClassification = propertyHelper.getClassification(anchorElement, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+                                return this.checkElementZoneMembership(anchorZoneClassification, queryOptions.getGovernanceZoneFilter());
+                            }
+                            catch (Exception error)
+                            {
+                                /*
+                                 * Unable to retrieve the anchor - so just log the message and skip the element.
+                                 */
+                                auditLog.logException(methodName,
+                                                      OMFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(localServiceName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                                      error);
+                                return false;
                             }
                         }
                     }
                 }
-
-                return false;
             }
+        }
 
-            if (queryOptions.getSkipClassifiedElements() != null)
+        return true;
+    }
+
+
+
+
+    private boolean checkElementZoneMembership(AttachedClassification classification,
+                                               List<String>           requiredZones)
+    {
+        final String methodName = "checkElementZoneMembership";
+
+        if (classification != null)
+        {
+            List<String> elementZones = propertyHelper.getStringArrayProperty(localServiceName,
+                                                                              OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                              classification.getClassificationProperties(),
+                                                                              methodName);
+            if ((elementZones == null) || (elementZones.isEmpty()))
             {
-                if (retrievedClassifications != null)
+                return true;
+            }
+            else
+            {
+                for (String requiredZone : requiredZones)
                 {
-                    for (String forbiddenClassificationName : queryOptions.getSkipClassifiedElements())
+                    if (requiredZone != null)
                     {
-                        if (forbiddenClassificationName != null)
+                        if (!elementZones.contains(requiredZone))
                         {
-                            for (AttachedClassification retrievedClassification : retrievedClassifications)
-                            {
-                                if ((retrievedClassification != null) && (retrievedClassification.getClassificationName().equals(forbiddenClassificationName)))
-                                {
-                                    return false;
-                                }
-                            }
+                            return false;
                         }
                     }
                 }
@@ -829,7 +939,7 @@ public class OpenMetadataHandlerBase
                                                          QueryOptions           queryOptions,
                                                          String                 methodName) throws PropertyServerException
     {
-        if (filterByClassifications(relatedMetadataElement.getElement().getClassifications(), queryOptions))
+        if (filterByClassifications(userId, relatedMetadataElement.getElement(), queryOptions))
         {
             try
             {
@@ -1023,7 +1133,7 @@ public class OpenMetadataHandlerBase
             if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.ASSET.typeName))
             {
                 rootElement.setConnections(this.getElementHierarchies(userId,
-                                                                      rootElement.getCollectionMembers(),
+                                                                      rootElement.getConnections(),
                                                                       1,
                                                                       OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
                                                                       List.of(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,

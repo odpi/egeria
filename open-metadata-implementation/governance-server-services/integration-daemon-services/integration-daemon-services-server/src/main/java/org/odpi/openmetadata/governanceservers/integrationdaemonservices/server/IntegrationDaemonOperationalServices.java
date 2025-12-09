@@ -31,11 +31,10 @@ import java.util.Map;
  */
 public class IntegrationDaemonOperationalServices
 {
-    private final String                         localServerName;               /* Initialized in constructor */
-    private final String                         localServerId;                 /* Initialized in constructor */
-    private final String                         localServerUserId;             /* Initialized in constructor */
-    private final String                         localServerPassword;           /* Initialized in constructor */
-    private final int                            maxPageSize;                   /* Initialized in constructor */
+    private final String localServerName;                  /* Initialized in constructor */
+    private final String localServerId;                    /* Initialized in constructor */
+    private final String localServerUserId;                /* Initialized in constructor */
+    private final int    maxPageSize;                      /* Initialized in constructor */
 
 
     private AuditLog                        auditLog                  = null;
@@ -50,20 +49,17 @@ public class IntegrationDaemonOperationalServices
      * @param localServerName name of the local server
      * @param localServerId unique identifier for this server
      * @param localServerUserId user id for this server to use on REST calls if processing inbound messages.
-     * @param localServerPassword user password for this server to use on REST calls if processing inbound messages.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
     public IntegrationDaemonOperationalServices(String localServerName,
                                                 String localServerId,
                                                 String localServerUserId,
-                                                String localServerPassword,
                                                 int    maxPageSize)
     {
-        this.localServerName       = localServerName;
-        this.localServerId         = localServerId;
-        this.localServerUserId     = localServerUserId;
-        this.localServerPassword   = localServerPassword;
-        this.maxPageSize           = maxPageSize;
+        this.localServerName                  = localServerName;
+        this.localServerId                    = localServerId;
+        this.localServerUserId                = localServerUserId;
+        this.maxPageSize                      = maxPageSize;
     }
 
 
@@ -112,26 +108,21 @@ public class IntegrationDaemonOperationalServices
                     EgeriaOpenMetadataEventClient eventClient = new EgeriaOpenMetadataEventClient(partnerOMASServerName,
                                                                                                   partnerOMASRootURL,
                                                                                                   localServerUserId,
-                                                                                                  localServerPassword,
+                                                                                                  integrationGroupConfig.getSecretsStoreProvider(),
+                                                                                                  integrationGroupConfig.getSecretsStoreLocation(),
+                                                                                                  integrationGroupConfig.getSecretsStoreCollection(),
                                                                                                   maxPageSize,
                                                                                                   auditLog,
                                                                                                   localServerId+groupName);
-                    GovernanceConfigurationClient configurationClient;
 
-                    if (localServerPassword == null)
-                    {
-                        configurationClient = new GovernanceConfigurationClient(partnerOMASServerName,
-                                                                                partnerOMASRootURL,
-                                                                                maxPageSize);
-                    }
-                    else
-                    {
-                        configurationClient = new GovernanceConfigurationClient(partnerOMASServerName,
-                                                                                partnerOMASRootURL,
-                                                                                localServerUserId,
-                                                                                localServerPassword,
-                                                                                maxPageSize);
-                    }
+                    GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(partnerOMASServerName,
+                                                                                                          partnerOMASRootURL,
+                                                                                                          integrationGroupConfig.getSecretsStoreProvider(),
+                                                                                                          integrationGroupConfig.getSecretsStoreLocation(),
+                                                                                                          integrationGroupConfig.getSecretsStoreCollection(),
+                                                                                                          maxPageSize,
+                                                                                                          auditLog);
+
 
                     IntegrationContextManager integrationContextManager = new OIFContextManager();
 
@@ -140,7 +131,9 @@ public class IntegrationDaemonOperationalServices
                                                                        partnerOMASServerName,
                                                                        partnerOMASRootURL,
                                                                        localServerUserId,
-                                                                       localServerPassword,
+                                                                       integrationGroupConfig.getSecretsStoreProvider(),
+                                                                       integrationGroupConfig.getSecretsStoreLocation(),
+                                                                       integrationGroupConfig.getSecretsStoreCollection(),
                                                                        maxPageSize,
                                                                        auditLog);
 
@@ -163,7 +156,7 @@ public class IntegrationDaemonOperationalServices
                      * intervals to wait for the metadata server to restart.  It will also try to retrieve the configuration
                      * for the governance engines.
                      */
-                    GroupConfigurationRefreshThread configurationRefreshThread = new GroupConfigurationRefreshThread(groupName,
+                    GroupConfigurationRefreshThread configurationRefreshThread = new GroupConfigurationRefreshThread(integrationGroupConfig,
                                                                                                                      groupHandler,
                                                                                                                      eventClient,
                                                                                                                      auditLog,
@@ -197,10 +190,6 @@ public class IntegrationDaemonOperationalServices
         catch (InvalidParameterException error)
         {
             throw new OMAGConfigurationErrorException(error.getReportedErrorMessage(), error);
-        }
-        catch (OMAGConfigurationErrorException error)
-        {
-            throw error;
         }
         catch (Exception error)
         {

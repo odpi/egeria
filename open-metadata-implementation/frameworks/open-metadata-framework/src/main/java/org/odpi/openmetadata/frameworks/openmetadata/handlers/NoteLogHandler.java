@@ -170,21 +170,22 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param noteLogProperties new properties for the metadata element
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateNoteLog(String            userId,
-                              String            noteLogGUID,
-                              UpdateOptions     updateOptions,
-                              NoteLogProperties noteLogProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public boolean updateNoteLog(String            userId,
+                                 String            noteLogGUID,
+                                 UpdateOptions     updateOptions,
+                                 NoteLogProperties noteLogProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        openMetadataClient.updateMetadataElementInStore(userId,
-                                                        noteLogGUID,
-                                                        updateOptions,
-                                                        elementBuilder.getElementProperties(noteLogProperties));
+        return openMetadataClient.updateMetadataElementInStore(userId,
+                                                               noteLogGUID,
+                                                               updateOptions,
+                                                               elementBuilder.getElementProperties(noteLogProperties));
     }
 
 

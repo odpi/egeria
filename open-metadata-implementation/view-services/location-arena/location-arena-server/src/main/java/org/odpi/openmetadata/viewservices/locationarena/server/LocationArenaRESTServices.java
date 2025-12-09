@@ -166,21 +166,21 @@ public class LocationArenaRESTServices extends TokenController
      * @param locationGUID unique identifier of the location (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateLocation(String                   serverName,
-                                       String                   locationGUID,
-                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateLocation(String                   serverName,
+                                          String                   locationGUID,
+                                          UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateLocation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -196,10 +196,7 @@ public class LocationArenaRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof LocationProperties locationProperties)
                 {
-                    handler.updateLocation(userId,
-                                           locationGUID,
-                                           requestBody,
-                                           locationProperties);
+                    response.setFlag(handler.updateLocation(userId, locationGUID, requestBody, locationProperties));
                 }
                 else
                 {

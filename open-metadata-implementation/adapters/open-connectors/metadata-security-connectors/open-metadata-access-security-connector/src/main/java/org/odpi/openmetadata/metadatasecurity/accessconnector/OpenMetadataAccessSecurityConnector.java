@@ -5,6 +5,8 @@ package org.odpi.openmetadata.metadatasecurity.accessconnector;
 
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.AccessOperation;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
@@ -916,28 +918,26 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
 
     /**
-     * Determine the appropriate setting for the supported zones depending on the user and the
-     * default supported zones set up for the service.  This is called whenever an asset is accessed.
+     * Determine the appropriate setting for the governance zones.
      *
-     * @param supportedZones default setting of the supported zones for the service
-     * @param serviceName name of the called service
-     * @param user name of the user
+     * @param defaultZoneSetting default setting of the supported zones
+     * @param accessOperation operation to perform
+     * @param userId name of the user
      *
      * @return list of supported zones for the user
      * @throws UserNotAuthorizedException unknown user
      */
-    @Override
-    public List<String> setSupportedZonesForUser(List<String>  supportedZones,
-                                                 String        serviceName,
-                                                 String        user) throws UserNotAuthorizedException
+    private List<String> getZonesForUser(List<String>    defaultZoneSetting,
+                                         AccessOperation accessOperation,
+                                         String          userId) throws UserNotAuthorizedException
     {
-        OpenMetadataUserAccount userAccount = this.getUserAccount(user);
+        OpenMetadataUserAccount userAccount = this.getUserAccount(userId);
 
         HashSet<String> returnZones = new HashSet<>();
 
-        if (supportedZones != null)
+        if (defaultZoneSetting != null)
         {
-            returnZones.addAll(supportedZones);
+            returnZones.addAll(defaultZoneSetting);
         }
 
         if ((userAccount != null) && (userAccount.getZoneAccess() != null))
@@ -946,19 +946,123 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
             {
                 List<AccessOperation> allowedAccess = userAccount.getZoneAccess().get(zoneName);
 
-                if ((allowedAccess != null) && (allowedAccess.contains(AccessOperation.READ)))
+                if ((allowedAccess != null) && (allowedAccess.contains(accessOperation)))
                 {
                     returnZones.add(zoneName);
                 }
             }
         }
 
-        if ((supportedZones == null) && (returnZones.isEmpty()))
+        if ((defaultZoneSetting == null) && (returnZones.isEmpty()))
         {
             return null;
         }
 
         return new ArrayList<>(returnZones);
+    }
+
+
+    /**
+     * Determine the appropriate setting for the supported zones depending on the user and the
+     * default supported zones set up for the service.  This is called whenever an element is accessed.
+     *
+     * @param supportedZones default setting of the supported zones
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of supported zones for the user
+     * @throws UserNotAuthorizedException unknown user
+     */
+    @Override
+    public List<String> getSupportedZonesForUser(List<String>  supportedZones,
+                                                 String        typeName,
+                                                 String        serviceName,
+                                                 String        userId) throws UserNotAuthorizedException
+    {
+        return this.getZonesForUser(supportedZones, AccessOperation.READ, userId);
+    }
+
+
+    /**
+     * Determine the appropriate setting for the default zones depending on the user and the
+     * default zones set up for the service.  This is called whenever an element is created.
+     *
+     * @param initialZones default setting of the default zones
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of default zones for the user
+     * @throws UserNotAuthorizedException unknown user
+     */
+    @Override
+    public List<String> getDefaultZonesForUser(List<String> initialZones,
+                                               String       typeName,
+                                               String       serviceName,
+                                               String       userId) throws UserNotAuthorizedException
+    {
+        return this.getZonesForUser(initialZones, AccessOperation.CREATE, userId);
+    }
+
+
+    /**
+     * Determine the appropriate setting for the default zones depending on the user and the
+     * default publish zones set up for the service.  This is called whenever an element is published.
+     *
+     * @param currentZones default setting of the published zones
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of published zones for the user
+     * @throws UserNotAuthorizedException unknown user
+     */
+    @Override
+    public List<String> getPublishZonesForUser(List<String> currentZones,
+                                               String       typeName,
+                                               String       serviceName,
+                                               String       userId) throws UserNotAuthorizedException
+    {
+        return this.getZonesForUser(currentZones, AccessOperation.PUBLISH, userId);
+    }
+
+
+    /**
+     * Determine the appropriate setting for the zones depending on the user and the
+     * current zones set up for the element.  This is called whenever an element is withdrawn.
+     *
+     * @param currentZones default setting of the default zones
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of published zones for the user
+     * @throws UserNotAuthorizedException unknown user
+     */
+    @Override
+    public List<String> getWithdrawZonesForUser(List<String>  currentZones,
+                                                String        typeName,
+                                                String        serviceName,
+                                                String        userId) throws UserNotAuthorizedException
+    {
+        List<String> publishZones = this.getZonesForUser(null, AccessOperation.PUBLISH, userId);
+        HashSet<String> withdrawZones = new HashSet<>();
+
+        if (currentZones != null)
+        {
+            withdrawZones.addAll(currentZones);
+        }
+
+        /*
+         * Only remove the publishZones in order to preserve any additional zones added by the original publishing user.
+         */
+        if (publishZones != null)
+        {
+            publishZones.forEach(withdrawZones::remove);
+        }
+
+        return new ArrayList<>(withdrawZones);
     }
 
 

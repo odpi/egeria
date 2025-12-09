@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -23,17 +24,18 @@ import org.slf4j.LoggerFactory;
  */
 public class GroupConfigurationRefreshThread implements Runnable
 {
-    private final String                      groupName;
+    private final IntegrationGroupConfig        group;
+    private final String                        groupName;
     private final IntegrationGroupHandler       groupHandler;
     private final EgeriaOpenMetadataEventClient eventClient;
     private final AuditLog                      auditLog;
-    private final String                      localServerUserId;
-    private final String                      localServerName;
-    private final String                      accessServiceServerName;
-    private final String                      accessServiceRootURL;
-    private final int                         maxPageSize;
+    private final String                        localServerUserId;
+    private final String                        localServerName;
+    private final String                        accessServiceServerName;
+    private final String                        accessServiceRootURL;
+    private final GovernanceConfigurationClient configurationClient;
 
-    private volatile boolean                  keepTrying = true;
+    private volatile boolean keepTrying = true;
 
     private static final Logger log = LoggerFactory.getLogger(GroupConfigurationRefreshThread.class);
 
@@ -42,7 +44,7 @@ public class GroupConfigurationRefreshThread implements Runnable
      * The constructor takes details of the integration group handlers needed by the listener and the information
      * needed to log errors if the metadata server is not available.
      *
-     * @param groupName name of the group to manage the configuration for
+     * @param group configuration for the group
      * @param groupHandler integration group handler
      * @param eventClient client for accessing the Governance Group OMAS OutTopic
      * @param auditLog logging destination
@@ -52,17 +54,18 @@ public class GroupConfigurationRefreshThread implements Runnable
      * @param accessServiceRootURL platform location for metadata server
      * @param maxPageSize max results
      */
-    public GroupConfigurationRefreshThread(String                  groupName,
-                                           IntegrationGroupHandler groupHandler,
+    public GroupConfigurationRefreshThread(IntegrationGroupConfig        group,
+                                           IntegrationGroupHandler       groupHandler,
                                            EgeriaOpenMetadataEventClient eventClient,
-                                           AuditLog                auditLog,
-                                           String                  localServerUserId,
-                                           String                  localServerName,
-                                           String                  accessServiceServerName,
-                                           String                  accessServiceRootURL,
-                                           int                     maxPageSize)
+                                           AuditLog                      auditLog,
+                                           String                        localServerUserId,
+                                           String                        localServerName,
+                                           String                        accessServiceServerName,
+                                           String                        accessServiceRootURL,
+                                           int                           maxPageSize) throws InvalidParameterException
     {
-        this.groupName               = groupName;
+        this.group                   = group;
+        this.groupName               = group.getIntegrationGroupQualifiedName();
         this.groupHandler            = groupHandler;
         this.eventClient             = eventClient;
         this.auditLog                = auditLog;
@@ -70,7 +73,14 @@ public class GroupConfigurationRefreshThread implements Runnable
         this.localServerName         = localServerName;
         this.accessServiceServerName = accessServiceServerName;
         this.accessServiceRootURL    = accessServiceRootURL;
-        this.maxPageSize             = maxPageSize;
+
+        this.configurationClient = new GovernanceConfigurationClient(group.getOMAGServerName(),
+                                                                     group.getOMAGServerPlatformRootURL(),
+                                                                     group.getSecretsStoreProvider(),
+                                                                     group.getSecretsStoreLocation(),
+                                                                     group.getSecretsStoreCollection(),
+                                                                     maxPageSize,
+                                                                     auditLog);
     }
 
 
@@ -84,6 +94,7 @@ public class GroupConfigurationRefreshThread implements Runnable
 
         boolean  listenerRegistered = false;
 
+
         while (keepTrying)
         {
             /*
@@ -93,9 +104,6 @@ public class GroupConfigurationRefreshThread implements Runnable
             {
                 try
                 {
-                    GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(accessServiceServerName,
-                                                                                                          accessServiceRootURL,
-                                                                                                          maxPageSize);
                     eventClient.registerListener(localServerUserId,
                                                  new OpenMetadataOutTopicListener(groupName,
                                                                                   groupHandler,

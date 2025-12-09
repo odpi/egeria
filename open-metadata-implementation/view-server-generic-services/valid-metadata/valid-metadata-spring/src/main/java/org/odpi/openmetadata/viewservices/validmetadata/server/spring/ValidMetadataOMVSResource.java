@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Valid Metadata OMVS", description="The Valid Metadata OMVS provides APIs for retrieving and updating lists of valid metadata values.",
+@Tag(name="API: Valid Metadata", description="Retrieves and maintains lists of valid metadata values and specification properties.  Retrieves open metadata type definitions.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/valid-metadata/overview/"))
 

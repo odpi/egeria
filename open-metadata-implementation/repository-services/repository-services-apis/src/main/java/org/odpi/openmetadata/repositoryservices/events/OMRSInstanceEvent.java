@@ -4,8 +4,8 @@ package org.odpi.openmetadata.repositoryservices.events;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1InstanceSection;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2InstanceSection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,11 +63,11 @@ public class OMRSInstanceEvent extends OMRSEvent
      *
      * @param inboundEvent incoming event to parse.
      */
-    public OMRSInstanceEvent(OMRSEventV1 inboundEvent)
+    public OMRSInstanceEvent(OMRSEventV2 inboundEvent)
     {
         super(inboundEvent);
 
-        OMRSEventV1InstanceSection instanceSection = inboundEvent.getInstanceEventSection();
+        OMRSEventV2InstanceSection instanceSection = inboundEvent.getInstanceEventSection();
 
         if (instanceSection != null)
         {
@@ -625,11 +625,11 @@ public class OMRSInstanceEvent extends OMRSEvent
      *
      * @return OMRSEvent (Version 1) object
      */
-    public OMRSEventV1  getOMRSEventV1()
+    public OMRSEventV2 getOMRSEventV1()
     {
-        OMRSEventV1     omrsEvent = super.getOMRSEventV1();
+        OMRSEventV2 omrsEvent = super.getOMRSEventV1();
 
-        OMRSEventV1InstanceSection instanceSection  = new OMRSEventV1InstanceSection();
+        OMRSEventV2InstanceSection instanceSection = new OMRSEventV2InstanceSection();
 
         instanceSection.setEventType(this.instanceEventType);
 

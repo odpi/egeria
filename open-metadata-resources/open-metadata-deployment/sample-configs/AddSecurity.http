@@ -5,12 +5,45 @@
 @baseURL=https://localhost:9443
 @adminUserId=garygeeke
 
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
 # ---------------------------------------------
 # Metadata Access Store: simple-metadata-store
 #
 ###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/security/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/security/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -27,16 +60,16 @@ Content-Type: application/json
       "connectorType" :
       {
         "class" : "ConnectorType",
-        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+        "connectorProviderClassName" : "~{secretsStoreProvider}~"
       },
       "endpoint" :
       {
         "class" : "Endpoint",
-        "address" : "~{metadataAccessSecretsStore}~"
+        "networkAddress" : "~{userDirectorySecretsStore}~"
       },
       "configurationProperties" :
       {
-        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
       }
     }
   }
@@ -50,47 +83,8 @@ Content-Type: application/json
 #
 ###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/security/connection
-Content-Type: application/json
-
-{
-    "class": "VirtualConnection",
-    "connectorType": {
-        "class": "ConnectorType",
-        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
-    },
-    "embeddedConnections" : [{
-         "class": "EmbeddedConnection",
-         "embeddedConnection" :
-         {
-            "class" : "Connection",
-            "connectorType" :
-            {
-                "class" : "ConnectorType",
-                "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
-            },
-            "endpoint" :
-            {
-                "class" : "Endpoint",
-                "address" : "~{metadataAccessSecretsStore}~"
-            },
-            "configurationProperties" :
-            {
-                "secretsCollectionName" : "~{metadataAccessCollectionName}~"
-            }
-        }
-    }
-    ]
-}
-
-
-###
-# -------------------------
-# View Server: view-server
-#
-###
-# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/security/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/security/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -107,16 +101,57 @@ Content-Type: application/json
       "connectorType" :
       {
         "class" : "ConnectorType",
-        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+        "connectorProviderClassName" : "~{secretsStoreProvider}~"
       },
       "endpoint" :
       {
         "class" : "Endpoint",
-        "address" : "~{metadataAccessSecretsStore}~"
+        "networkAddress" : "~{userDirectorySecretsStore}~"
       },
       "configurationProperties" :
       {
-        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
+      }
+    }
+  }
+  ]
+}
+
+
+###
+# -------------------------
+# View Server: view-server
+#
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/servers/view-server/security/connection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "~{secretsStoreProvider}~"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "networkAddress" : "~{userDirectorySecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
       }
     }
   }
@@ -130,7 +165,8 @@ Content-Type: application/json
 #
 ###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/security/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/security/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -147,16 +183,16 @@ Content-Type: application/json
       "connectorType" :
       {
         "class" : "ConnectorType",
-        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+        "connectorProviderClassName" : "~{secretsStoreProvider}~"
       },
       "endpoint" :
       {
         "class" : "Endpoint",
-        "address" : "~{metadataAccessSecretsStore}~"
+        "networkAddress" : "~{userDirectorySecretsStore}~"
       },
       "configurationProperties" :
       {
-        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
       }
     }
   }
@@ -170,7 +206,8 @@ Content-Type: application/json
 #
 ###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/security/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/security/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -187,16 +224,16 @@ Content-Type: application/json
       "connectorType" :
       {
         "class" : "ConnectorType",
-        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+        "connectorProviderClassName" : "~{secretsStoreProvider}~"
       },
       "endpoint" :
       {
         "class" : "Endpoint",
-        "address" : "~{metadataAccessSecretsStore}~"
+        "networkAddress" : "~{userDirectorySecretsStore}~"
       },
       "configurationProperties" :
       {
-        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+        "secretsCollectionName" : "~{userDirectorySecretsCollectionName}~"
       }
     }
   }

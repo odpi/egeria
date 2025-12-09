@@ -5,6 +5,21 @@
 @adminUserId=garygeeke
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
 # ---------------------------------------------
 # Metadata Access Store: active-metadata-store
 #
@@ -12,14 +27,15 @@
 ###
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/postgres-repository
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/local-repository/mode/postgres-repository
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=repository_active_metadata_store",
+    "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=repository_active_metadata_store",
     "databaseSchema": "repository_active_metadata_store",
-    "secretsStore": "~{secretsStore}~",
-    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+    "secretsStore": "~{defaultServersSecretsStore}~",
+    "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
 ###

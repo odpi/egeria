@@ -5,7 +5,9 @@ package org.odpi.openmetadata.viewservices.productcatalog.server;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
  * ProductCatalogInstance caches references to the objects it needs for a specific server.
@@ -23,30 +25,40 @@ public class ProductCatalogInstance extends OMVSServiceInstance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param localServerUserId userId used for server initiated actions
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException problem with server name or platform URL
      */
-    public ProductCatalogInstance(String       serverName,
-                              AuditLog     auditLog,
-                              String       localServerUserId,
-                              String       localServerUserPassword,
-                              int          maxPageSize,
-                              String       remoteServerName,
-                              String       remoteServerURL) throws InvalidParameterException
+    public ProductCatalogInstance(String   serverName,
+                                  AuditLog auditLog,
+                                  String   localServerUserId,
+                                  String   localServerSecretsStoreProvider,
+                                  String   localServerSecretsStoreLocation,
+                                  String   localServerSecretsStoreCollection,
+                                  int      maxPageSize,
+                                  String   remoteServerName,
+                                  String   remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                                                  remoteServerURL,
+                                                                                  localServerSecretsStoreProvider,
+                                                                                  localServerSecretsStoreLocation,
+                                                                                  localServerSecretsStoreCollection,
+                                                                                  maxPageSize,
+                                                                                  auditLog);
 
     }
 

@@ -1,22 +1,19 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
 # Watchdog Action Framework (OWF)
   
-The Watchdog Action Framework (OWF) enables
-[metadata survey tools](https://egeria-project.org/features/discovery-and-stewardship/overview)
-to integrate with open metadata repositories by defining the interfaces
-for the surveyor components (called open survey services) to:
+The Watchdog Action Framework (OWF) enables notification services for specialist governance services
+called **Watchdog Action Services**.  A watchdog action services registers a listener with a description of the type
+of events it is interested in processing.  When a matching event occurs, it is passed to the watchdog action service,
+which is able to process it, by for example initiating a process or attaching a notification to an actor.
 
-* Access the required configuration for the survey.
-* Search for assets in the metadata repository.
-* Extract all of the metadata known about a specific asset.
-* Record the results of the analysis in the open metadata repository and attach it to the
-  asset's metadata for later processing.
+Watchdog action services can be passed request parameters and action targets, just like other governance services.
+If one of the 
 
-More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/saf/overview/).
+
+More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/owf/overview/).
 
 
 ----

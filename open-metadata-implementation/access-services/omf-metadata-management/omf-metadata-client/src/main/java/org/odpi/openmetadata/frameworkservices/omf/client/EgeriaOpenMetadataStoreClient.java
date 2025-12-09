@@ -2,7 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.omf.client;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+
+import java.util.Map;
 
 /**
  * EgeriaOpenMetadataStoreClient provides an interface to the open metadata store.  This is part of the Open Metadata Framework (OMF)
@@ -17,38 +21,45 @@ public class EgeriaOpenMetadataStoreClient extends OpenMetadataClientBase
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public EgeriaOpenMetadataStoreClient(String serverName,
-                                         String serverPlatformURLRoot,
-                                         int    maxPageSize) throws InvalidParameterException
+    public EgeriaOpenMetadataStoreClient(String   serverName,
+                                         String   serverPlatformURLRoot,
+                                         String   secretsStoreProvider,
+                                         String   secretsStoreLocation,
+                                         String   secretsStoreCollection,
+                                         int      maxPageSize,
+                                         AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, maxPageSize);
+        super(serverName, serverPlatformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, maxPageSize, auditLog);
     }
 
 
     /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param secretsStoreConnectorMap connectors to secrets stores
      * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public EgeriaOpenMetadataStoreClient(String serverName,
-                                         String serverPlatformURLRoot,
-                                         String serverUserId,
-                                         String serverPassword,
-                                         int    maxPageSize) throws InvalidParameterException
+    public EgeriaOpenMetadataStoreClient(String                             serverName,
+                                         String                             serverPlatformURLRoot,
+                                         Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                         int                                maxPageSize,
+                                         AuditLog                           auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serverUserId, serverPassword, maxPageSize);
+        super(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, maxPageSize, auditLog);
     }
 }

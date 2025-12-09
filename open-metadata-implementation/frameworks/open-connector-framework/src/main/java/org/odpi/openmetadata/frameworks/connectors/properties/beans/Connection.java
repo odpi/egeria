@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Map;
-import java.util.Objects;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -121,6 +123,93 @@ public class Connection extends Referenceable
         return elementType;
     }
 
+
+    /**
+     *
+     * @param displayName display name for the connection
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
+     * @param secretsStoreCollectionPurpose what is the type of secret expected from the collection
+     *
+     * @return configured secrets store connection
+     */
+    public static EmbeddedConnection getSecretStoreConnection(String displayName,
+                                                              String secretsStoreProvider,
+                                                              String secretsStoreLocation,
+                                                              String secretsStoreCollection,
+                                                              String secretsStoreCollectionPurpose) throws ClassNotFoundException,
+                                                                                                           InvocationTargetException,
+                                                                                                           NoSuchMethodException,
+                                                                                                           InstantiationException,
+                                                                                                           IllegalAccessException
+    {
+        if (secretsStoreProvider != null)
+        {
+            Connection secretsStoreConnection = new Connection();
+            secretsStoreConnection.setDisplayName(displayName);
+            Endpoint endpoint = new Endpoint();
+            endpoint.setNetworkAddress(secretsStoreLocation);
+            secretsStoreConnection.setEndpoint(endpoint);
+            secretsStoreConnection.setConnectorType(getConnectorType(secretsStoreProvider));
+            Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
+            secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsStoreCollection);
+            secretsStoreConnection.setConfigurationProperties(secretsStoreConfigurationProperties);
+            EmbeddedConnection embeddedConnection = new EmbeddedConnection();
+
+            embeddedConnection.setEmbeddedConnection(secretsStoreConnection);
+            embeddedConnection.setDisplayName(secretsStoreCollectionPurpose);
+
+            return embeddedConnection;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the connector type for the requested connector provider.  This is best used for connector providers that
+     * can return their own connector type.  Otherwise, it makes one up.
+     *
+     * @param connectorProviderClassName name of the connector provider class
+     * @return ConnectorType bean
+     * @throws NoSuchMethodException Unable to work with the connector provider class
+     * @throws ClassNotFoundException  Connector provider class not in path
+     * @throws InvocationTargetException  Unable to work with the connector provider class
+     * @throws InstantiationException  Unable to work with the connector provider class
+     * @throws IllegalAccessException  Unable to work with the connector provider class
+     */
+    public static ConnectorType getConnectorType(String   connectorProviderClassName) throws NoSuchMethodException,
+                                                                                             ClassNotFoundException,
+                                                                                             InvocationTargetException,
+                                                                                             InstantiationException,
+                                                                                             IllegalAccessException
+    {
+        ConnectorType  connectorType = null;
+
+        if (connectorProviderClassName != null)
+        {
+            Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
+            Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
+
+            ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;
+
+            connectorType = connectorProvider.getConnectorType();
+
+            if (connectorType == null)
+            {
+                connectorType = new ConnectorType();
+
+                connectorType.setGUID(UUID.randomUUID().toString());
+                connectorType.setQualifiedName(connectorProviderClassName);
+                connectorType.setDisplayName(connectorProviderClass.getSimpleName());
+                connectorType.setDescription("ConnectorType for " + connectorType.getDisplayName());
+                connectorType.setConnectorProviderClassName(connectorProviderClassName);
+            }
+        }
+
+        return connectorType;
+    }
 
     /**
      * Default constructor sets the Connection properties to null.

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/devops-pipeline")
 
-@Tag(name="API: Devops Pipeline OMVS", description="The Devops Pipeline OMVS provides APIs for supporting a devops engineer to maintain the metadata about the changing digital resources being deployed through devops pipelines.",
+@Tag(name="API: Devops Pipeline", description="Supports a devops engineer to maintain the metadata about the changing digital resources being deployed through devops pipelines.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/devops-pipeline/overview/"))
 

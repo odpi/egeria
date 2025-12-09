@@ -5,12 +5,9 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationConnectorProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -41,7 +38,6 @@ public class GovernanceConfigRESTServices
      * Return the properties from a governance engine definition.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param requestBody qualified name or display name (if unique).
      *
@@ -51,7 +47,6 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the governance engine definition.
      */
     public  GovernanceEngineElementResponse getGovernanceEngineByName(String          serverName,
-                                                                      String          serviceURLMarker,
                                                                       String          userId,
                                                                       NameRequestBody requestBody)
     {
@@ -69,12 +64,7 @@ public class GovernanceConfigRESTServices
                 GovernanceEngineConfigurationHandler handler = instanceHandler.getGovernanceEngineConfigurationHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setElement(handler.getGovernanceEngineByName(userId,
-                                                                      requestBody.getName(),
-                                                                      instanceHandler.getSupportedZones(userId,
-                                                                                                        serverName,
-                                                                                                        serviceURLMarker,
-                                                                                                        methodName)));
+                response.setElement(handler.getGovernanceEngineByName(userId, requestBody.getName()));
             }
             else
             {
@@ -97,7 +87,6 @@ public class GovernanceConfigRESTServices
      * Retrieve a specific governance service registered with a governance engine.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the governance service.
@@ -108,12 +97,11 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the governance engine definition.
      */
     public RegisteredGovernanceServiceResponse getRegisteredGovernanceService(String serverName,
-                                                                              String serviceURLMarker,
                                                                               String userId,
                                                                               String governanceEngineGUID,
                                                                               String governanceServiceGUID)
     {
-        final String        methodName = "getRegisteredGovernanceService";
+        final String methodName = "getRegisteredGovernanceService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -127,11 +115,7 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setRegisteredGovernanceService(handler.getRegisteredGovernanceService(userId,
                                                                                            governanceEngineGUID,
-                                                                                           governanceServiceGUID,
-                                                                                           instanceHandler.getSupportedZones(userId,
-                                                                                                                             serverName,
-                                                                                                                             serviceURLMarker,
-                                                                                                                             methodName)));
+                                                                                           governanceServiceGUID));
         }
         catch (Throwable error)
         {
@@ -148,7 +132,6 @@ public class GovernanceConfigRESTServices
      * Retrieve the identifiers of the governance services registered with a governance engine.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param startingFrom initial position in the stored list.
@@ -160,7 +143,6 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the governance engine definition.
      */
     public RegisteredGovernanceServicesResponse  getRegisteredGovernanceServices(String  serverName,
-                                                                                 String  serviceURLMarker,
                                                                                  String  userId,
                                                                                  String  governanceEngineGUID,
                                                                                  int     startingFrom,
@@ -181,11 +163,7 @@ public class GovernanceConfigRESTServices
             response.setElements(handler.getRegisteredGovernanceServices(userId,
                                                                          governanceEngineGUID,
                                                                          startingFrom,
-                                                                         maximumResults,
-                                                                         instanceHandler.getSupportedZones(userId,
-                                                                                                           serverName,
-                                                                                                           serviceURLMarker,
-                                                                                                           methodName)));
+                                                                         maximumResults));
         }
         catch (Throwable error)
         {
@@ -202,13 +180,10 @@ public class GovernanceConfigRESTServices
      * Integration connectors
      */
 
-
-
     /**
      * Return the properties from an integration group definition.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param name qualified name or display name (if unique).
      *
@@ -218,7 +193,6 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the integration group definition.
      */
     public  IntegrationGroupElementResponse getIntegrationGroupByName(String    serverName,
-                                                                      String    serviceURLMarker,
                                                                       String    userId,
                                                                       String    name)
     {
@@ -234,12 +208,7 @@ public class GovernanceConfigRESTServices
             IntegrationGroupConfigurationHandler handler = instanceHandler.getIntegrationGroupConfigurationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getIntegrationGroupByName(userId,
-                                                                  name,
-                                                                  instanceHandler.getSupportedZones(userId,
-                                                                                                    serverName,
-                                                                                                    serviceURLMarker,
-                                                                                                    methodName)));
+            response.setElement(handler.getIntegrationGroupByName(userId, name));
         }
         catch (Throwable error)
         {
@@ -258,7 +227,6 @@ public class GovernanceConfigRESTServices
      * Return the list of integration groups that a specific integration connector is registered with.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param integrationConnectorGUID integration connector to search for.
      *
@@ -268,7 +236,6 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the integration group definition.
      */
     public GUIDListResponse getIntegrationConnectorRegistrations(String   serverName,
-                                                                 String   serviceURLMarker,
                                                                  String   userId,
                                                                  String   integrationConnectorGUID)
     {
@@ -284,12 +251,7 @@ public class GovernanceConfigRESTServices
             IntegrationGroupConfigurationHandler handler = instanceHandler.getIntegrationGroupConfigurationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getIntegrationConnectorRegistrations(userId,
-                                                                           integrationConnectorGUID,
-                                                                           instanceHandler.getSupportedZones(userId,
-                                                                                                             serverName,
-                                                                                                             serviceURLMarker,
-                                                                                                             methodName)));
+            response.setGUIDs(handler.getIntegrationConnectorRegistrations(userId, integrationConnectorGUID));
         }
         catch (Throwable error)
         {
@@ -306,7 +268,6 @@ public class GovernanceConfigRESTServices
      * Retrieve a specific integration connector registered with an integration group.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param integrationGroupGUID unique identifier of the integration group.
      * @param integrationConnectorGUID unique identifier of the integration connector.
@@ -317,7 +278,6 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the integration group definition.
      */
     public RegisteredIntegrationConnectorResponse getRegisteredIntegrationConnector(String serverName,
-                                                                                    String serviceURLMarker,
                                                                                     String userId,
                                                                                     String integrationGroupGUID,
                                                                                     String integrationConnectorGUID)
@@ -336,11 +296,7 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setRegisteredIntegrationConnector(handler.getRegisteredIntegrationConnector(userId,
                                                                                                  integrationGroupGUID,
-                                                                                                 integrationConnectorGUID,
-                                                                                                 instanceHandler.getSupportedZones(userId,
-                                                                                                                                   serverName,
-                                                                                                                                   serviceURLMarker,
-                                                                                                                                   methodName)));
+                                                                                                 integrationConnectorGUID));
         }
         catch (Throwable error)
         {
@@ -357,7 +313,6 @@ public class GovernanceConfigRESTServices
      * Retrieve the identifiers of the integration connectors registered with an integration group.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param integrationGroupGUID unique identifier of the integration group.
      * @param startingFrom initial position in the stored list.
@@ -369,7 +324,6 @@ public class GovernanceConfigRESTServices
      * PropertyServerException problem storing the integration group definition.
      */
     public RegisteredIntegrationConnectorsResponse  getRegisteredIntegrationConnectors(String  serverName,
-                                                                                       String  serviceURLMarker,
                                                                                        String  userId,
                                                                                        String  integrationGroupGUID,
                                                                                        int     startingFrom,
@@ -390,11 +344,7 @@ public class GovernanceConfigRESTServices
             response.setElements(handler.getRegisteredIntegrationConnectors(userId,
                                                                             integrationGroupGUID,
                                                                             startingFrom,
-                                                                            maximumResults,
-                                                                            instanceHandler.getSupportedZones(userId,
-                                                                                                              serverName,
-                                                                                                              serviceURLMarker,
-                                                                                                              methodName)));
+                                                                            maximumResults));
         }
         catch (Throwable error)
         {

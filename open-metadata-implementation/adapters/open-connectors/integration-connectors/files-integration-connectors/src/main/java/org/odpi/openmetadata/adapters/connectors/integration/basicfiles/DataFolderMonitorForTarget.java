@@ -105,18 +105,19 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
 
                                 properties.setStoreUpdateTime(modifiedTime);
 
-                                dataFolderClient.updateAsset(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(),
-                                                             dataFolderClient.getUpdateOptions(true),
-                                                             properties);
-
-                                if (auditLog != null)
+                                if (dataFolderClient.updateAsset(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(),
+                                                                 dataFolderClient.getUpdateOptions(true),
+                                                                 properties))
                                 {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
-                                                                sourceName,
-                                                                directoryToMonitor.directoryFile.getCanonicalPath(),
-                                                                modifiedTime.toString(),
-                                                                fileChanged.getCanonicalPath()));
+                                    if (auditLog != null)
+                                    {
+                                        auditLog.logMessage(methodName,
+                                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
+                                                                    sourceName,
+                                                                    directoryToMonitor.directoryFile.getCanonicalPath(),
+                                                                    modifiedTime.toString(),
+                                                                    fileChanged.getCanonicalPath()));
+                                    }
                                 }
                             }
                         }

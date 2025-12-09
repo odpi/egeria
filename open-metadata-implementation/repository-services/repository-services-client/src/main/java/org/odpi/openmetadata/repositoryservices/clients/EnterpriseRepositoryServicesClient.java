@@ -3,18 +3,22 @@
 package org.odpi.openmetadata.repositoryservices.clients;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicRepositoryEventListener;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.ConnectionResponse;
+
+import java.util.Map;
 
 /**
  * EnterpriseRepositoryServicesClient provides a client interface for calling the enterprise repository
@@ -23,44 +27,7 @@ import org.odpi.openmetadata.repositoryservices.rest.properties.ConnectionRespon
 public class EnterpriseRepositoryServicesClient extends MetadataCollectionServicesClient
 {
     private OMRSTopicConnector remoteEnterpriseTopicConnector = null;
-    private String             callerId = null;
-
-
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverName name of the server to connect to
-     * @param restURLRoot the network address of the server running the repository services.  This is of the form
-     *                    serverURLroot + "/servers/" + serverName.
-     *
-     * @throws InvalidParameterException bad input parameters
-     */
-    public EnterpriseRepositoryServicesClient(String serverName,
-                                              String restURLRoot) throws InvalidParameterException
-    {
-        super(serverName,restURLRoot, "/enterprise/");
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param repositoryName name of the server to connect to
-     * @param restURLRoot the network address of the server running the repository services.  This is of the form
-     *                    serverURLroot + "/servers/" + serverName.
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     *
-     * @throws InvalidParameterException bad input parameters
-     */
-    public EnterpriseRepositoryServicesClient(String repositoryName,
-                                              String restURLRoot,
-                                              String userId,
-                                              String password) throws InvalidParameterException
-    {
-        super(repositoryName, restURLRoot, "/enterprise/", userId, password);
-    }
+    private String             callerId;
 
 
     /**
@@ -69,17 +36,19 @@ public class EnterpriseRepositoryServicesClient extends MetadataCollectionServic
      * @param repositoryName name of the server to connect to
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
+     * @param secretsStoreConnectorMap map from authentication type to supplied secrets store
      * @param maxPageSize pre-initialized parameter limit
      * @param callerId unique identifier of the caller
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public EnterpriseRepositoryServicesClient(String repositoryName,
-                                              String restURLRoot,
-                                              int    maxPageSize,
-                                              String callerId) throws InvalidParameterException
+    public EnterpriseRepositoryServicesClient(String                             repositoryName,
+                                              String                             restURLRoot,
+                                              Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                              int                                maxPageSize,
+                                              String                             callerId) throws InvalidParameterException
     {
-        super(repositoryName, restURLRoot, "/enterprise/");
+        super(repositoryName, restURLRoot, "/enterprise/", secretsStoreConnectorMap);
 
         this.callerId = callerId;
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
@@ -87,27 +56,30 @@ public class EnterpriseRepositoryServicesClient extends MetadataCollectionServic
 
 
     /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param repositoryName name of the server to connect to
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
+     * @param auditLog audit log
      * @param maxPageSize pre-initialized parameter limit
      * @param callerId unique identifier of the caller
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public EnterpriseRepositoryServicesClient(String repositoryName,
-                                              String restURLRoot,
-                                              String userId,
-                                              String password,
-                                              int    maxPageSize,
-                                              String callerId) throws InvalidParameterException
+    public EnterpriseRepositoryServicesClient(String   repositoryName,
+                                              String   restURLRoot,
+                                              String   localServerSecretsStoreProvider,
+                                              String   localServerSecretsStoreLocation,
+                                              String   localServerSecretsStoreCollection,
+                                              AuditLog auditLog,
+                                              int      maxPageSize,
+                                              String   callerId) throws InvalidParameterException
     {
-        super(repositoryName, restURLRoot, "/enterprise/", userId, password);
+        super(repositoryName, restURLRoot, "/enterprise/", localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
 
         this.callerId = callerId;
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);

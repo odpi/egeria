@@ -73,17 +73,7 @@ public class AccessServiceConfigResponse extends AdminServicesAPIResponse
     {
         return "AccessServiceConfigResponse{" +
                 "config=" + config +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -100,7 +90,7 @@ public class AccessServiceConfigResponse extends AdminServicesAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof AccessServiceConfigResponse))
+        if (!(objectToCompare instanceof AccessServiceConfigResponse that))
         {
             return false;
         }
@@ -108,7 +98,6 @@ public class AccessServiceConfigResponse extends AdminServicesAPIResponse
         {
             return false;
         }
-        AccessServiceConfigResponse that = (AccessServiceConfigResponse) objectToCompare;
         return Objects.equals(config, that.config);
     }
 

@@ -4,6 +4,10 @@ package org.odpi.openmetadata.engineservices.assetanalysis.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummariesResponse;
@@ -20,7 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
  * The OMAG ServerPlatform routes these requests to the engine host services active in the server.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/engine-host/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/engine-host")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Engine Host Services",
      description="The Engine Host Services provide the core subsystem for the Engine Host OMAG Server.",
@@ -35,13 +46,13 @@ public class EngineHostServicesResource
      * Retrieve the description and status of the requested governance engine.
      *
      * @param serverName engine host server name
-     * @param userId calling user
      * @param governanceEngineName name of governance engine of interest
      * @return list of statuses - on for each assigned governance engines or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
     @GetMapping(path = "/governance-engines/{governanceEngineName}/summary")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getGovernanceEngineSummary",
             description="Retrieve the description and status of the requested governance engine.",
@@ -49,10 +60,9 @@ public class EngineHostServicesResource
                     url="https://egeria-project.org/concepts/governance-engine/"))
 
     public GovernanceEngineSummaryResponse getGovernanceEngineSummary(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
                                                                       @PathVariable String governanceEngineName)
     {
-        return restAPI.getGovernanceEngineSummary(serverName, userId, governanceEngineName);
+        return restAPI.getGovernanceEngineSummary(serverName, governanceEngineName);
     }
 
 
@@ -61,47 +71,21 @@ public class EngineHostServicesResource
      * Return a summary of each of the governance engines running in the Engine Host.
      *
      * @param serverName engine host server name
-     * @param userId calling user
      * @return list of statuses - on for each assigned governance engines or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
     @GetMapping(path = "/governance-engines/summary")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getGovernanceEngineSummaries",
             description="Return a summary of each of the governance engines running in the Engine Host.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-engine/"))
 
-    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName,
-                                                                          @PathVariable String userId)
+    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName)
     {
-        return restAPI.getGovernanceEngineSummaries(serverName, userId);
-    }
-
-
-    /**
-     * Retrieve the description and status of each governance engine assigned to a specific Open Metadata Engine Service (OMES).
-     *
-     * @param serverName engine host server name
-     * @param userId calling user
-     * @param serviceURLMarker url name for the engine service
-     * @return list of statuses - on for each assigned governance engines or
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     */
-    @GetMapping(path = "/engine-service/{serviceURLMarker}/governance-engines/summary")
-
-    @Operation(summary="getGovernanceServiceSummary",
-            description="Retrieve the description and status of each governance engine assigned to a specific Open Metadata Engine Service (OMES).",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-engine/"))
-
-    public GovernanceEngineSummariesResponse getGovernanceServiceSummary(@PathVariable String serverName,
-                                                                         @PathVariable String userId,
-                                                                         @PathVariable String serviceURLMarker)
-    {
-        return restAPI.getGovernanceEngineSummaries(serverName, userId, serviceURLMarker);
+        return restAPI.getGovernanceEngineSummaries(serverName);
     }
 
 
@@ -112,7 +96,6 @@ public class EngineHostServicesResource
      * is in use.
      *
      * @param serverName name of the governance server
-     * @param userId identifier of calling user
      * @param governanceEngineName unique name of the governance engine
      *
      * @return void or
@@ -121,6 +104,7 @@ public class EngineHostServicesResource
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     @GetMapping(path = "/governance-engines/{governanceEngineName}/refresh-config")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshConfig",
             description="Request that the governance engine refresh its configuration by calling the metadata server. " +
@@ -130,11 +114,10 @@ public class EngineHostServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-engine-definition/"))
 
-    public  VoidResponse refreshConfig(@PathVariable String                       serverName,
-                                       @PathVariable String                       userId,
-                                       @PathVariable String                       governanceEngineName)
+    public  VoidResponse refreshConfig(@PathVariable String serverName,
+                                       @PathVariable String governanceEngineName)
     {
-        return restAPI.refreshConfig(serverName, userId, governanceEngineName);
+        return restAPI.refreshConfig(serverName, governanceEngineName);
     }
 
 
@@ -145,7 +128,6 @@ public class EngineHostServicesResource
      * is in use.
      *
      * @param serverName name of the governance server.
-     * @param userId identifier of calling user
      *
      * @return void or
      *  InvalidParameterException one of the parameters is null or invalid or
@@ -153,6 +135,7 @@ public class EngineHostServicesResource
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     @GetMapping(path = "/governance-engines/refresh-config")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshConfig",
             description="Request that all governance engines refresh their configuration by calling the metadata server. " +
@@ -162,9 +145,8 @@ public class EngineHostServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-engine-definition/"))
 
-    public  VoidResponse refreshConfig(@PathVariable String serverName,
-                                       @PathVariable String userId)
+    public  VoidResponse refreshConfig(@PathVariable String serverName)
     {
-        return restAPI.refreshConfig(serverName, userId);
+        return restAPI.refreshConfig(serverName);
     }
 }

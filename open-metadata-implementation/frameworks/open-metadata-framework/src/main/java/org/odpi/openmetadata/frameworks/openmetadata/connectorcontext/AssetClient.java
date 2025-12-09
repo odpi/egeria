@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -180,22 +181,25 @@ public class AssetClient extends ConnectorContextClientBase
      * @param assetGUID       unique identifier of the asset (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateAsset(String          assetGUID,
-                            UpdateOptions   updateOptions,
-                            AssetProperties properties) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public boolean updateAsset(String          assetGUID,
+                               UpdateOptions   updateOptions,
+                               AssetProperties properties) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
-        assetHandler.updateAsset(connectorUserId, assetGUID, updateOptions, properties);
+        boolean updateOccurred = assetHandler.updateAsset(connectorUserId, assetGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(assetGUID);
         }
+
+        return updateOccurred;
     }
 
 
@@ -263,6 +267,48 @@ public class AssetClient extends ConnectorContextClientBase
                                                                     UserNotAuthorizedException
     {
         assetHandler.unDeployITAsset(connectorUserId, assetGUID, destinationGUID, deleteOptions);
+    }
+
+
+    /**
+     * Create a relationship that links a software capability to an infrastructure asset like a software server.
+     *
+     * @param assetGUID       unique identifier of the asset
+     * @param capabilityGUID           unique identifier of the destination asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSoftwareCapability(String                                assetGUID,
+                                       String                                capabilityGUID,
+                                       MetadataSourceOptions                 metadataSourceOptions,
+                                       SupportedSoftwareCapabilityProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        assetHandler.linkSoftwareCapability(connectorUserId, assetGUID, capabilityGUID, metadataSourceOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a relationship that links a software capability to an infrastructure asset like a software server.
+     *
+     * @param assetGUID       unique identifier of the asset
+     * @param capabilityGUID           unique identifier of the destination asset
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSoftwareCapability(String        assetGUID,
+                                         String        capabilityGUID,
+                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        assetHandler.detachSoftwareCapability(connectorUserId, assetGUID, capabilityGUID, deleteOptions);
     }
 
 

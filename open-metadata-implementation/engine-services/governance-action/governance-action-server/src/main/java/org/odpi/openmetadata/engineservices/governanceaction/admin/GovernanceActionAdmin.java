@@ -2,20 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
-import org.odpi.openmetadata.engineservices.governanceaction.listener.OpenMetadataOutTopicListener;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
-import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
-import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
 
 /**
@@ -24,33 +18,23 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.Gove
 public class GovernanceActionAdmin extends EngineServiceAdmin
 {
     private GovernanceActionInstance governanceActionInstance = null;
-    private OpenMetadataEventClient  eventClient              = null;
 
     /**
      * Initialize engine service.
      *
-     * @param localServerId unique identifier of this server
      * @param localServerName name of this server
      * @param auditLog link to the repository responsible for servicing the REST calls.
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
-     * @param localServerPassword password for this server to use if sending REST requests.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
-     * @param engineServiceConfig details of the options and the engines to run.
-     * @param governanceEngineMap map of configured engines
+     * @param engineServiceDefinition details of the options and the engines to run.
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
-    @SuppressWarnings(value = "deprecation")
     @Override
-    public void initialize(String                              localServerId,
-                           String                              localServerName,
+    public void initialize(String                              localServerName,
                            AuditLog                            auditLog,
                            String                              localServerUserId,
-                           String                              localServerPassword,
                            int                                 maxPageSize,
-                           GovernanceConfigurationClient       configurationClient,
-                           EngineServiceConfig                 engineServiceConfig,
-                           GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
+                           EngineServiceDefinition             engineServiceDefinition) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
         final String methodName        = "initialize";
@@ -60,25 +44,13 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
 
         try
         {
-            this.validateConfigDocument(engineServiceConfig);
+            this.validateEngineDefinition(engineServiceDefinition);
 
             /*
              * The governance action services need access to an open metadata server to retrieve information about the elements they are governing.
              * Open metadata is accessed through the Governance Action Engine OMAS.
              */
-            String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
-            String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
-
-            auditLog.logMessage(actionDescription, GovernanceActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName,
-                                                                                                                              accessServiceServerName,
-                                                                                                                              accessServiceRootURL));
-
-            /*
-             * Create an entry in the governance engine map for each configured engine.
-             */
-            governanceEngineMap.setGovernanceEngineProperties(engineServiceConfig.getEngines(),
-                                                              accessServiceServerName,
-                                                              accessServiceRootURL);
+            auditLog.logMessage(actionDescription, GovernanceActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName));
 
             /*
              * Set up the REST APIs.
@@ -87,19 +59,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                     EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName(),
                                                                     auditLog,
                                                                     localServerUserId,
-                                                                    maxPageSize,
-                                                                    engineServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                    engineServiceConfig.getOMAGServerName());
-
-            eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
-                                                            accessServiceRootURL,
-                                                            localServerUserId,
-                                                            localServerPassword,
-                                                            maxPageSize,
-                                                            auditLog,
-                                                            localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
-
-            eventClient.registerListener(localServerUserId, new OpenMetadataOutTopicListener(governanceEngineMap, auditLog));
+                                                                    maxPageSize);
         }
         catch (Exception error)
         {
@@ -127,7 +87,6 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
         auditLog.logMessage(actionDescription, GovernanceActionAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
         governanceActionInstance.shutdown();
-        eventClient.disconnect();
 
         auditLog.logMessage(actionDescription, GovernanceActionAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
     }

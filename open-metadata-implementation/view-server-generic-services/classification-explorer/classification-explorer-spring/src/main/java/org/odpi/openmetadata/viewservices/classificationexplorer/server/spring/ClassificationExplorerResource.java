@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Classification Explorer OMVS",
+@Tag(name="API: Classification Explorer",
         description="Retrieve open metadata elements by type, or by the classifications/relationships attached to them.",
         externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/classification-explorer/overview/"))
 

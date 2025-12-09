@@ -118,22 +118,23 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties   properties of the comment
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateComment(String            userId,
-                                String            commentGUID,
-                                UpdateOptions     updateOptions,
-                                CommentProperties properties) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public boolean updateComment(String            userId,
+                                 String            commentGUID,
+                                 UpdateOptions     updateOptions,
+                                 CommentProperties properties) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         final String methodName = "updateComment";
 
         NewElementProperties elementProperties = this.getElementPropertiesForComment(properties, methodName);
 
-        openMetadataClient.updateMetadataElementInStore(userId, commentGUID, updateOptions, elementProperties);
+        return openMetadataClient.updateMetadataElementInStore(userId, commentGUID, updateOptions, elementProperties);
     }
 
 

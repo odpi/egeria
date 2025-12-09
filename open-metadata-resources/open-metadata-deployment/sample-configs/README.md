@@ -3,7 +3,7 @@
 
 # Default server configurations
 
-This directory contains the server configurations for five [OMAG Servers](https://egeria-project.org/concepts/omag-server/):
+This directory contains the server configurations for the five [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that make up the default configuration:
 
 * **simple-metadata-store** is a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store/)
   that provides REST APIs for retrieving and maintaining open metadata.
@@ -18,24 +18,32 @@ The Apache Kafka broker should be listening at `localhost:9092`.
 
 * **active-metadata-store** is a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store/)
   that supports both REST APIs for retrieving and maintaining open metadata along with
-  event notifications each time there is change in the metadata.  It is storing its
-  metadata in an XTDB key-value repository stored on the local file system
-  under the `platform/data/servers/active-metadata-store` directory.  This means that any
-  metadata that you create will still be in the repository when you restart this server.
-  (The repository can be cleared by deleting the `platform/data/servers/active-metadata-store/repository` directory.)
-  This server automatically loads the [Core ]
+  event notifications each time there is change in the metadata.  It is also storing its
+  metadata in memory.
+  
+  This server automatically loads the
+  [Core Content Pack](https://egeria-project.org/content-packs/core-content-pack/overview/),
+  [Egeria Content Pack](https://egeria-project.org/content-packs/egeria-content-pack/overview/),
+  [Files Content Pack](https://egeria-project.org/content-packs/files-content-pack/overview/),
+  [Open Lineage Content Pack](https://egeria-project.org/content-packs/open-lineage-content-pack/overview/),
+  [PostgreSQL Content Pack](https://egeria-project.org/content-packs/postgres-content-pack/overview/),
+  [Jacquard Harvester Content Pack](https://egeria-project.org/content-packs/jacquard-harvester-content-pack/overview/) and
+  [Jacquard Harvester Content Pack](https://egeria-project.org/content-packs/organization-insight-content-pack/overview/).
 
-* **integration-daemon** is an [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/)
-  that catalogs files stored on the filesystem.  It is set up to catalog any file located in `sample-data/data-files`
+* **integration-daemon** is an [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/) that
+  runs [Integration Connectors](https://egeria-project.org/concepts/integration-connectors/).
+  These integration connectors are responsible for cataloguing metadata from external (third party) systems.
+  The configuration of these integration connectors is found in the qs-metadata-store.
+  For example, it has an integration connector that catalogs files stored on the filesystem.
+  It is set up to catalog any file located in `sample-data/data-files`
   under the `platform` directory. It is also looking for additional configuration added to active-metadata-store
   under the **Egeria:IntegrationGroup:DefaultIntegrationGroup** 
   [integration group](https://egeria-project.org/concepts/integration-group/).
 
-* **engine-host** is an [Engine Host](https://egeria-project.org/concepts/engine-host/) that is running the 
-  **AssetSurvey** and **AssetGovernance** [governance engines](https://egeria-project.org/concepts/governance-engine/)
+* **engine-host** is an [Engine Host](https://egeria-project.org/concepts/engine-host/) that is running the [governance engines](https://egeria-project.org/concepts/governance-engine/)
   used to create and manage metadata.  The configuration of these governance engines is found in the active-metadata-store.
 
-The final server provides the services for Egeria's UIs.
+The final server provides the services for Egeria's python capabilities built around pyegeria.
 
 * **view-server** is a [View Server](https://egeria-project.org/concepts/view-server/) that calls the 
   active-metadata-store to send and retrieve metadata from its repository.  Its services are designed to
@@ -46,17 +54,9 @@ These server configurations can be (re)created using the `BuildSampleconfigs.htt
 
 ## Starting the servers
 
-Ensure the OMAG Server Platform is running at `https://localhost:9443`.
+Ensure the OMAG Server Platform is running at `https://localhost:9443`.  The servers will automatically start when the platform starts.
 
-You can start the servers one at a time using the following curl command,
-replacing `{{server}}` with the name of the server to start.  Messages appear from the platform's stdout to indicate the
-status of the server.
-
-```bash
-curl --location --request POST 'https://localhost:9443/open-metadata/platform-services/users/garygeeke/server-platform/servers/{{server}}/instance' \
---data ''
-```
-Alternatively you can edit the `application.properties` file in the `platform` directory and change the `startup.server.list` property to list the servers that should be automatically started when the platform is started:
+You can edit the `application.properties` file in the `platform` directory and change the `startup.server.list` property to list the servers that should be automatically started when the platform is started:
 ```properties
 # Comma separated names of servers to be started.  The server names should be unquoted.
 startup.server.list=active-metadata-store,engine-host,integration-daemon,view-server
@@ -83,10 +83,10 @@ activating the `ClinicalTrials@CocoPharmaceuticals` engine to the `engine-host` 
 
 ## Connecting the metadata stores via a cohort
 
-Running the `ConnectCohort.http` script connects `simple-metadata-store` and `active-metadata-store` together in a 
-cohort.  This enables you to query the metadata in `simple-metadata-store` when you use the services of `view-server`.
+Running the `ConnectCohort.http` script connects `simple-metadata-store`, `active-metadata-store` and a new [Metadata Access Point](https://egeria-project.org/concepts/metadata-access-point/) server called `metadata-access-point` together in a 
+cohort.  It rewires `view-server` to call `metadata-access-point` to show that it is possible to have a cohort member without a repository, since `view-server` can query the metadata in both `active-metadata-store` and  `simple-metadata-store` when you use the services of `view-server`.
 
-(`view-server` is connected to `active-metadata-store`.  The cohort turns requests to `active-metadata-store` into
+(`view-server` is connected to `metadata-access-point`.  The cohort turns requests to `active-metadata-store` into
 a federated query across both `active-metadata-store` and `simple-metadata-store`.
 
 ----

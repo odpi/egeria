@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
 import java.io.Serial;
 import java.util.Map;
@@ -11,7 +14,7 @@ import java.util.Map;
  * The TypeErrorException is thrown by an OMRS Connector when the requested type for an instance is not represented by
  * a known TypeDef.
  */
-public class TypeErrorException extends OMRSCheckedExceptionBase
+public class TypeErrorException extends InvalidParameterException
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -27,7 +30,7 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
                               String                     className,
                               String                     actionDescription)
     {
-        super(messageDefinition, className, actionDescription);
+        super(messageDefinition, className, actionDescription, TypeDef.class.getName());
     }
 
 
@@ -45,7 +48,7 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
                               String                     actionDescription,
                               Map<String, Object> relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, relatedProperties);
+        super(messageDefinition, className, actionDescription, TypeDef.class.getName(), relatedProperties);
     }
 
 
@@ -63,7 +66,7 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
                               String                     actionDescription,
                               Exception                  caughtError)
     {
-        super(messageDefinition, className, actionDescription, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError, TypeDef.class.getName());
     }
 
 
@@ -83,7 +86,7 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
                               Exception                  caughtError,
                               Map<String, Object>        relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+        super(messageDefinition, className, actionDescription, caughtError, TypeDef.class.getName(), relatedProperties);
     }
 
 
@@ -124,6 +127,7 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
               systemAction,
               userAction,
               caughtErrorClassName,
+              TypeDef.class.getName(),
               relatedProperties);
     }
 
@@ -133,43 +137,8 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
      *
      * @param caughtException exception to wrap
      */
-    public TypeErrorException(OMRSCheckedExceptionBase caughtException)
+    public TypeErrorException(OMFCheckedExceptionBase caughtException)
     {
-        super(caughtException.getReportedErrorMessage(), caughtException);
-    }
-
-
-    /**
-     * This is the typical constructor used for creating a TypeErrorException.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     */
-    @Deprecated
-    public TypeErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This is the constructor used for creating a TypeErrorException that resulted from a previous error.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError  the error that resulted in this exception.
-     */
-    @Deprecated
-    public TypeErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+        super(caughtException, TypeDef.class.getName());
     }
 }

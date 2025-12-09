@@ -22,10 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NotificationProperties extends ActionProperties
 {
-    private String systemAction = null;
-    private String userResponse = null;
-
-
     /**
      * Default constructor
      */
@@ -41,60 +37,11 @@ public class NotificationProperties extends ActionProperties
      *
      * @param template object to copy
      */
-    public NotificationProperties(NotificationProperties template)
+    public NotificationProperties(ActionProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            systemAction = template.getSystemAction();
-            userResponse = template.getUserResponse();
-        }
     }
 
-
-    /**
-     * Return the action taken by the producer of this notification.
-     *
-     * @return string
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Set up the action taken by the producer of this notification.
-     *
-     * @param systemAction string
-     */
-    public void setSystemAction(String systemAction)
-    {
-        this.systemAction = systemAction;
-    }
-
-
-    /**
-     * Return the suggested action that the receiver of this notification should take.
-     *
-     * @return string
-     */
-    public String getUserResponse()
-    {
-        return userResponse;
-    }
-
-
-    /**
-     * Set up the suggested action that the receiver of this notification should take.
-     *
-     * @param userResponse string
-     */
-    public void setUserResponse(String userResponse)
-    {
-        this.userResponse = userResponse;
-    }
 
     /**
      * JSON-style toString
@@ -105,37 +52,6 @@ public class NotificationProperties extends ActionProperties
     public String toString()
     {
         return "NotificationProperties{" +
-                "systemAction='" + systemAction + '\'' +
-                ", userResponse='" + userResponse + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare) return true;
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
-        if (!super.equals(objectToCompare)) return false;
-        NotificationProperties that = (NotificationProperties) objectToCompare;
-        return Objects.equals(systemAction, that.systemAction) && Objects.equals(userResponse, that.userResponse);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), systemAction, userResponse);
     }
 }

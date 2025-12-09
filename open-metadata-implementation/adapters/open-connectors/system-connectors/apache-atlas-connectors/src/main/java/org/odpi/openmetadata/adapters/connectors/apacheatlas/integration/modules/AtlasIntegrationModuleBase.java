@@ -1243,16 +1243,17 @@ public abstract class AtlasIntegrationModuleBase
                 {
                     DataAssetProperties dataAssetProperties = this.getEgeriaDataSetProperties(atlasEntity, egeriaTypeName);
 
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                              atlasEntity.getTypeName(),
-                                                                                                              atlasEntity.getGuid(),
-                                                                                                              atlasTypeName,
-                                                                                                              egeriaDataSetGUID));
-
-                    dataAssetClient.updateAsset(egeriaDataSetGUID,
-                                                dataAssetClient.getUpdateOptions(true),
-                                                dataAssetProperties);
+                    if (dataAssetClient.updateAsset(egeriaDataSetGUID,
+                                                    dataAssetClient.getUpdateOptions(true),
+                                                    dataAssetProperties))
+                    {
+                        auditLog.logMessage(methodName,
+                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                                  atlasEntity.getTypeName(),
+                                                                                                                  atlasEntity.getGuid(),
+                                                                                                                  atlasTypeName,
+                                                                                                                  egeriaDataSetGUID));
+                    }
                 }
             }
         }

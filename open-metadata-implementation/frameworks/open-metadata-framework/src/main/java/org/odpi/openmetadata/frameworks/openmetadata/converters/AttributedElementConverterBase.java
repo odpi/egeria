@@ -85,9 +85,9 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setTemplateCreatedElements(super.getRelatedElements(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setTemplatesForCataloguing(super.getRelatedElements(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setSupportedImplementationTypes(super.getRelatedElements(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
+            attributedMetadataElement.setTemplatesForCataloguing(super.getRelatedElements(OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setTemplateUses(super.getRelatedElements(OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setSearchKeywords(super.getRelatedElements(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setKeywordElements(super.getRelatedElements(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
@@ -421,6 +421,24 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setGovernanceActionExecutor(super.getRelatedElement(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setSupportsGovernanceActions(super.getRelatedElements(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setSupportedIntegrationConnectors(super.getRelatedElements(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setIncludedInIntegrationGroups(super.getRelatedElements(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName);
+            attributedMetadataElement.setCatalogTargets(super.getRelatedElements(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setRefreshedByConnectors(super.getRelatedElements(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setPeerDuplicatePartner(super.getRelatedElements(OpenMetadataType.PEER_DUPLICATE_LINK.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setPeerDuplicateOrigin(super.getRelatedElements(OpenMetadataType.PEER_DUPLICATE_LINK.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.PEER_DUPLICATE_LINK.typeName);
+            attributedMetadataElement.setConsolidatedDuplicateResult(super.getRelatedElements(OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setConsolidatedDuplicateOrigin(super.getRelatedElements(OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName);
+
+            attributedMetadataElement.setIncidentReports(super.getRelatedElements(OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setImpactedResources(super.getRelatedElements(OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setLicenses(super.getRelatedElements(OpenMetadataType.LICENSE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setLicensedElements(super.getRelatedElements(OpenMetadataType.LICENSE_RELATIONSHIP.typeName, relatedMetadataElements, true));

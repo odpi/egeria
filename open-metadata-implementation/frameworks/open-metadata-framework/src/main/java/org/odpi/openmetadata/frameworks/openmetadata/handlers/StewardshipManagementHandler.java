@@ -40,8 +40,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     final protected RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> relatedMetadataElementSummaryConverter;
     final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary>     metadataRelationshipSummaryConverter;
 
-    private final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
-    private final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
+    protected final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
+    protected final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
 
     /**
      * Create a new handler.
@@ -454,8 +454,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     public List<MetadataElementSummary> getElementsByOrigin(String                          userId,
                                                             DigitalResourceOriginProperties properties,
                                                             QueryOptions                    queryOptions) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
 
     {
         final String methodName = "getElementsByOrigin";
@@ -604,7 +604,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param steward       Optional relationship property  to match
      * @param source       Optional relationship property  to match
      * @param queryOptions multiple options to control the query
-      *
+     *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1989,7 +1989,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     {
         final String methodName            = "clearSemanticAssignment";
         final String end1GUIDParameterName = "elementGUID";
-        final String end2GUIDParameterName = "nestedDataFieldGUID";
+        final String end2GUIDParameterName = "glossaryTermGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
@@ -2204,26 +2204,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     }
 
 
-    /**
-     * Add a specification - typically to a template or process. This defines the properties needed to call it.
-     *
-     * @param userId        calling user
-     * @param elementGUID   unique identifier of the element to classify as a template
-     * @param specification values required to use the template
-     * @throws InvalidParameterException  element not known, null userId or guid
-     * @throws PropertyServerException    problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void addSpecification(String                                 userId,
-                                 String                                 elementGUID,
-                                 Map<String, List<Map<String, String>>> specification,
-                                 MetadataSourceOptions                  metadataSourceOptions) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        // todo
-    }
-
 
     /**
      * Retrieve the metadata element using its unique name (typically the qualified name).
@@ -2276,8 +2256,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                    String              propertyValue,
                                                                    List<String>        propertyNames,
                                                                    QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName = "getElementsByPropertyValue";
         final String propertyValueProperty = "propertyValue";
@@ -2403,8 +2383,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                       String              propertyValue,
                                                                                       List<String>        propertyNames,
                                                                                       QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                           UserNotAuthorizedException,
-                                                                                                                           PropertyServerException
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException
     {
         final String methodName = "findElementsByClassificationWithPropertyValue";
 
@@ -2436,7 +2416,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param propertyValue value to search for
      * @param propertyNames which properties to look in
      * @param queryOptions multiple options to control the query
-      *
+     *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2562,8 +2542,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                   String              propertyValue,
                                                                                   List<String>        propertyNames,
                                                                                   QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                       UserNotAuthorizedException,
-                                                                                                                       PropertyServerException
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException
     {
         final String methodName = "findRelatedElementsWithPropertyValue";
         final String propertyValueProperty = "propertyValue";
@@ -2939,5 +2919,239 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         }
 
         return null;
+    }
+
+
+    /**
+     * Classify the element with the ConsolidatedDuplicate classification
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setConsolidatedDuplicateClassification(String                          userId,
+                                                       String                          elementGUID,
+                                                       ConsolidatedDuplicateProperties properties,
+                                                       MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the ConsolidatedDuplicate classification from the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConsolidatedDuplicateClassification(String                userId,
+                                                         String                elementGUID,
+                                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+
+    /**
+     * Create a ConsolidatedDuplicateLink relationship between an element and one of the source elements of its properties.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
+     * @param sourceElementGUID unique identifier of one of the source elements
+     * @param properties properties for the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void linkConsolidatedDuplicateToSourceElement(String                       userId,
+                                                         String                       elementGUID,
+                                                         String                       sourceElementGUID,
+                                                         ConsolidatedDuplicateLinkProperties properties,
+                                                         MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
+    {
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName,
+                                                        elementGUID,
+                                                        sourceElementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove a ConsolidatedDuplicateLink relationship between an element and one of its source elements.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
+     * @param sourceElementGUID unique identifier of one of the source elements
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void unlinkConsolidatedDuplicateFromSourceElement(String        userId,
+                                                             String        elementGUID,
+                                                             String        sourceElementGUID,
+                                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName            = "unlinkConsolidatedDuplicateFromSourceElement";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "sourceElementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(sourceElementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName,
+                                                        elementGUID,
+                                                        sourceElementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Classify the element to indicate that there are other elements representing the same concept.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setKnownDuplicateClassification(String                   userId,
+                                                String                   elementGUID,
+                                                KnownDuplicateProperties properties,
+                                                MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the KnownDuplicate classification from the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearKnownDuplicateClassification(String                userId,
+                                                  String                elementGUID,
+                                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+
+    /**
+     * Link two elements that represent the same concept.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param peerDuplicateGUID unique identifier of the peer duplicate
+     * @param properties properties for the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void linkElementsAsPeerDuplicates(String                       userId,
+                                             String                       elementGUID,
+                                             String                       peerDuplicateGUID,
+                                             PeerDuplicateLinkProperties properties,
+                                             MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PEER_DUPLICATE_LINK.typeName,
+                                                        elementGUID,
+                                                        peerDuplicateGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove a PeerDuplicateLink relationship between two elements.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param peerDuplicateGUID unique identifier of the peer duplicate
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void unlinkElementsAsPeerDuplicates(String        userId,
+                                               String        elementGUID,
+                                               String        peerDuplicateGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName            = "clearSemanticAssignment";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "peerDuplicateGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(peerDuplicateGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PEER_DUPLICATE_LINK.typeName,
+                                                        elementGUID,
+                                                        peerDuplicateGUID,
+                                                        deleteOptions);
     }
 }

@@ -4,21 +4,29 @@ package org.odpi.openmetadata.frameworkservices.gaf.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationConnectorProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.server.GovernanceConfigRESTServices;
-
 import org.springframework.web.bind.annotation.*;
 
 /**
  * EngineConfigurationResource provides the Spring wrapper for the Governance Engine Configuration Services
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/{serviceURLMarker}/governance-configuration-service/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-configuration-service/users/{userId}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Metadata Access Services: Governance Configuration Service", description="The Governance Configuration Service provides support for maintaining the metadata elements that control the operation of the governance servers.",
      externalDocs=@ExternalDocumentation(description="Further Information",
@@ -33,7 +41,6 @@ public class GovernanceConfigurationResource
      * Return the properties from the named governance engine definition.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param name qualified name or display name (if unique).
      *
@@ -43,6 +50,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the governance engine definition.
      */
     @PostMapping(path = "/governance-engines/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getGovernanceEngineByName",
                description="Return the properties from the named governance engine definition.  " +
@@ -51,11 +59,10 @@ public class GovernanceConfigurationResource
                                                    url="https://egeria-project.org/concepts/governance-engine/"))
 
     public  GovernanceEngineElementResponse getGovernanceEngineByName(@PathVariable String          serverName,
-                                                                      @PathVariable String          serviceURLMarker,
                                                                       @PathVariable String          userId,
                                                                       @RequestBody  NameRequestBody name)
     {
-        return restAPI.getGovernanceEngineByName(serverName, serviceURLMarker, userId, name);
+        return restAPI.getGovernanceEngineByName(serverName, userId, name);
     }
 
 
@@ -63,7 +70,6 @@ public class GovernanceConfigurationResource
      * Retrieve a specific governance service registered with a governance engine.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the governance service.
@@ -74,6 +80,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the governance engine definition.
      */
     @GetMapping(path = "/governance-engines/{governanceEngineGUID}/governance-services/{governanceServiceGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRegisteredGovernanceService",
                description="Retrieve a specific governance service registered with a governance engine.",
@@ -81,12 +88,11 @@ public class GovernanceConfigurationResource
                                                    url="https://egeria-project.org/concepts/governance-engine/"))
 
     public RegisteredGovernanceServiceResponse getRegisteredGovernanceService(@PathVariable String serverName,
-                                                                              @PathVariable String serviceURLMarker,
                                                                               @PathVariable String userId,
                                                                               @PathVariable String governanceEngineGUID,
                                                                               @PathVariable String governanceServiceGUID)
     {
-        return restAPI.getRegisteredGovernanceService(serverName, serviceURLMarker, userId, governanceEngineGUID, governanceServiceGUID);
+        return restAPI.getRegisteredGovernanceService(serverName, userId, governanceEngineGUID, governanceServiceGUID);
     }
 
 
@@ -94,7 +100,6 @@ public class GovernanceConfigurationResource
      * Retrieve the identifiers of the governance services registered with a governance engine.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param startingFrom initial position in the stored list.
@@ -106,6 +111,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the governance engine definition.
      */
     @GetMapping(path = "/governance-engines/{governanceEngineGUID}/governance-services")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRegisteredGovernanceServices",
                description="Retrieve the identifiers of the governance services registered with a governance engine.",
@@ -113,13 +119,12 @@ public class GovernanceConfigurationResource
                                                    url="https://egeria-project.org/concepts/governance-engine/"))
 
     public RegisteredGovernanceServicesResponse getRegisteredGovernanceServices(@PathVariable String serverName,
-                                                                                @PathVariable String serviceURLMarker,
                                                                                 @PathVariable String userId,
                                                                                 @PathVariable String governanceEngineGUID,
                                                                                 @RequestParam int    startingFrom,
                                                                                 @RequestParam int    maximumResults)
     {
-        return restAPI.getRegisteredGovernanceServices(serverName, serviceURLMarker, userId, governanceEngineGUID, startingFrom, maximumResults);
+        return restAPI.getRegisteredGovernanceServices(serverName, userId, governanceEngineGUID, startingFrom, maximumResults);
     }
 
 
@@ -132,7 +137,6 @@ public class GovernanceConfigurationResource
      * Return the properties from an integration group definition.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param name qualified name or display name (if unique).
      *
@@ -142,6 +146,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-groups/by-name/{name}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getIntegrationGroupByName",
             description="Return the properties from an integration group definition.",
@@ -149,11 +154,10 @@ public class GovernanceConfigurationResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public IntegrationGroupElementResponse getIntegrationGroupByName(@PathVariable String serverName,
-                                                                     @PathVariable String serviceURLMarker,
                                                                      @PathVariable String userId,
                                                                      @PathVariable String name)
     {
-        return restAPI.getIntegrationGroupByName(serverName, serviceURLMarker, userId, name);
+        return restAPI.getIntegrationGroupByName(serverName, userId, name);
     }
 
 
@@ -161,7 +165,6 @@ public class GovernanceConfigurationResource
      * Return the list of integration groups that a specific integration connector is registered with.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param guid integration connector to search for.
      *
@@ -171,6 +174,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-connectors/{guid}/registrations")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getIntegrationConnectorRegistrations",
             description="Return the list of integration groups that a specific integration connector is registered with.",
@@ -178,11 +182,10 @@ public class GovernanceConfigurationResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public GUIDListResponse getIntegrationConnectorRegistrations(@PathVariable String serverName,
-                                                                 @PathVariable String serviceURLMarker,
                                                                  @PathVariable String userId,
                                                                  @PathVariable String guid)
     {
-        return restAPI.getIntegrationConnectorRegistrations(serverName, serviceURLMarker, userId, guid);
+        return restAPI.getIntegrationConnectorRegistrations(serverName, userId, guid);
     }
 
 
@@ -190,7 +193,6 @@ public class GovernanceConfigurationResource
      * Retrieve a specific integration connector registered with an integration group.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param integrationGroupGUID unique identifier of the integration group.
      * @param integrationConnectorGUID unique identifier of the integration connector.
@@ -201,6 +203,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRegisteredIntegrationConnector",
             description="Retrieve a specific integration connector registered with an integration group.",
@@ -208,12 +211,11 @@ public class GovernanceConfigurationResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public RegisteredIntegrationConnectorResponse getRegisteredIntegrationConnector(@PathVariable String serverName,
-                                                                                    @PathVariable String serviceURLMarker,
                                                                                     @PathVariable String userId,
                                                                                     @PathVariable String integrationGroupGUID,
                                                                                     @PathVariable String integrationConnectorGUID)
     {
-        return restAPI.getRegisteredIntegrationConnector(serverName, serviceURLMarker, userId, integrationGroupGUID, integrationConnectorGUID);
+        return restAPI.getRegisteredIntegrationConnector(serverName, userId, integrationGroupGUID, integrationConnectorGUID);
     }
 
 
@@ -221,7 +223,6 @@ public class GovernanceConfigurationResource
      * Retrieve the details of the integration connectors registered with an integration group.
      *
      * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param integrationGroupGUID unique identifier of the integration group.
      * @param startingFrom initial position in the stored list.
@@ -233,6 +234,7 @@ public class GovernanceConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRegisteredIntegrationConnectors",
             description="Retrieve the details of the integration connectors registered with an integration group.",
@@ -240,12 +242,11 @@ public class GovernanceConfigurationResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public RegisteredIntegrationConnectorsResponse getRegisteredIntegrationConnectors(@PathVariable String serverName,
-                                                                                      @PathVariable String serviceURLMarker,
                                                                                       @PathVariable String userId,
                                                                                       @PathVariable String integrationGroupGUID,
                                                                                       @RequestParam int    startingFrom,
                                                                                       @RequestParam int    maximumResults)
     {
-        return restAPI.getRegisteredIntegrationConnectors(serverName, serviceURLMarker, userId, integrationGroupGUID, startingFrom, maximumResults);
+        return restAPI.getRegisteredIntegrationConnectors(serverName, userId, integrationGroupGUID, startingFrom, maximumResults);
     }
 }

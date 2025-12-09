@@ -34,14 +34,13 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Default Local OMAG Server Platform"
+  "filter" : "Local OMAG Server Platform"
 }
 
 
 ###
 # @name getPlatformsByDeployedImplementationType
 # Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
-# If it is null, or no request body is supplied, all platforms are returned.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type
 Authorization: Bearer {{token}}
@@ -56,23 +55,22 @@ Content-Type: application/json
 ###
 # @name getPlatformTemplatesByDeployedImplementationType
 # Returns the list of templates for platforms with a particular deployed implementation type.  The value is specified in the filter.
-# If it is null, or no request body is supplied, all platform templates are returned.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "filter" : "Add name here",
+  "includeOnlyClassifiedElements": ["Template"]
 }
 
 
 ###
 # @name getPlatformsByDeployedImplementationType (OMAG Server Platform)
 # Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
-# If it is null, or no request body is supplied, all platforms are returned.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -117,7 +115,7 @@ Content-Type: application/json
   "startFrom" : 0,
   "pageSize": 100,
   "skipRelationships": ["DeployedOn", "SourcedFrom"],
-  "relationshipsPageSize": 100
+  "relationshipsPageSize": 1000
 }
 
 ###
@@ -158,7 +156,7 @@ Content-Type: application/json
 # @name getServersByName
 # Returns the list of servers with a particular name.  The name is specified in the filter.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -172,7 +170,7 @@ Content-Type: application/json
 # Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
 # If it is null, or no request body is supplied, all servers are returned.
 
- POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type?startFrom=0&pageSize=10
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -191,7 +189,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : ""
+  "filter" : "",
+  "includeOnlyClassifiedElements": ["Template"]
 }
 
 

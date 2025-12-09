@@ -10,8 +10,6 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGC
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties.OMAGServerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
@@ -32,7 +30,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
 {
     private AuditLog auditLog      = null;
     private String   connectorName;
-    private String   clientUserId = null;
+    private String   platformName = "OMAG Server Platform";
     private String   targetRootURL = null;
 
     protected EgeriaExtractor extractor = null;
@@ -80,13 +78,13 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
 
 
     /**
-     * Set up new calling user.
+     * Set up a new platform name (must be called before start()).
      *
-     * @param clientUserId caller's userId
+     * @param platformName new platform name
      */
-    public void setClientUserId(String clientUserId)
+    public void setPlatformName(String platformName)
     {
-        this.clientUserId = clientUserId;
+        this.platformName = platformName;
     }
 
 
@@ -146,20 +144,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
          */
         try
         {
-            if (clientUserId != null)
-            {
-                extractor = new EgeriaExtractor(targetRootURL,
-                                                null,
-                                                serverName,
-                                                clientUserId);
-            }
-            else
-            {
-                extractor = new EgeriaExtractor(targetRootURL,
-                                                null,
-                                                serverName,
-                                                connectionBean.getUserId());
-            }
+            extractor = new EgeriaExtractor(targetRootURL, platformName, serverName, secretsStoreConnectorMap, auditLog);
         }
         catch (Exception error)
         {
@@ -207,15 +192,31 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * Return the complete set of configuration properties in use by the server.
      *
      * @return OMAGServerConfig properties
-     * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException   invalid serverName parameter.
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    public OMAGServerConfig getOMAGServerConfig() throws OMAGNotAuthorizedException,
-                                                         OMAGInvalidParameterException,
-                                                         OMAGConfigurationErrorException
+    public OMAGServerConfig getStoredOMAGServerConfig() throws UserNotAuthorizedException,
+                                                               InvalidParameterException,
+                                                               OMAGConfigurationErrorException
     {
-        return extractor.getOMAGServerConfig();
+        return extractor.getStoredOMAGServerConfig();
+    }
+
+
+    /**
+     * Return the complete set of configuration properties in use by the server.
+     *
+     * @return OMAGServerConfig properties
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    public OMAGServerConfig getResolvedOMAGServerConfig() throws UserNotAuthorizedException,
+                                                                 InvalidParameterException,
+                                                                 OMAGConfigurationErrorException
+    {
+        return extractor.getResolvedOMAGServerConfig();
     }
 
 
@@ -348,7 +349,6 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * event has been sent.
      * If the server has already registered in the past, it sends a reregistration request.
      *
-     * @param userId calling user
      * @param cohortName name of cohort
      *
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
@@ -357,12 +357,11 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
      * @throws PropertyServerException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean connectToCohort(String userId,
-                                   String cohortName) throws InvalidParameterException,
+    public boolean connectToCohort(String cohortName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
-        return extractor.connectToCohort(userId, cohortName);
+        return extractor.connectToCohort(cohortName);
     }
 
 
@@ -370,37 +369,33 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
     /**
      * Disconnect communications from a specific cohort.
      *
-     * @param userId calling user
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws PropertyServerException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean disconnectFromCohort(String userId,
-                                        String cohortName) throws InvalidParameterException,
+    public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        return extractor.disconnectFromCohort(userId, cohortName);
+        return extractor.disconnectFromCohort(cohortName);
     }
 
 
     /**
      * Unregister from a specific cohort and disconnect from cohort communications.
      *
-     * @param userId calling user
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws PropertyServerException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean unregisterFromCohort(String userId,
-                                        String cohortName) throws InvalidParameterException,
+    public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        return extractor.unregisterFromCohort(userId, cohortName);
+        return extractor.unregisterFromCohort(cohortName);
     }
 }

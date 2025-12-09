@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
+import io.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -212,6 +213,24 @@ public class IntegrationDaemonConnector extends OMAGServerConnectorBase
      * @throws PropertyServerException there is a problem processing the request
      */
     public void publishOpenLineageEvent(String event) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        extractor.publishOpenLineageEvent(event);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(OpenLineage.RunEvent event) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {

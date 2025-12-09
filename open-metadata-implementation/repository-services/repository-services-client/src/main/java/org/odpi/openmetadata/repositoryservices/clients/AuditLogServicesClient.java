@@ -8,12 +8,14 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse;
 
@@ -34,10 +36,7 @@ import java.util.Map;
 public class AuditLogServicesClient implements AuditLoggingComponent
 {
     static final private String rootServiceNameInURL  = "/servers/{0}/open-metadata/repository-services";
-    static final private String userIdInURL           = "/users/{1}";
 
-    private final String              localServerUserId   = null;
-    private final String              localServerPassword = null;
 
     private final String              restURLRoot;                /* Initialized in constructor */
 
@@ -58,78 +57,51 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public AuditLogServicesClient(String serverName, String restURLRoot) throws InvalidParameterException
+    public AuditLogServicesClient(String   serverName,
+                                  String   restURLRoot,
+                                  String   secretsStoreProvider,
+                                  String   secretsStoreLocation,
+                                  String   secretsStoreCollection,
+                                  AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        try
-        {
-            invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
-        }
-        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedHTTPCode(),
-                                                error.getReportingClassName(),
-                                                error.getReportingActionDescription(),
-                                                error.getReportedErrorMessage(),
-                                                error.getReportedErrorMessageId(),
-                                                error.getReportedErrorMessageParameters(),
-                                                error.getReportedSystemAction(),
-                                                error.getReportedUserAction(),
-                                                error.getClass().getName(),
-                                                error.getParameterName(),
-                                                error.getRelatedProperties());
-        }
+        invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
 
         this.serverName = serverName;
         this.restURLRoot = restURLRoot;
-        this.restClient = this.getRESTClientConnector(serverName, restURLRoot, null, null);
+        this.restClient = this.getRESTClientConnector(serverName, restURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
 
     }
 
 
+
     /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName the name of the remote server
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public AuditLogServicesClient(String     serverName,
-                                  String     restURLRoot,
-                                  String     userId,
-                                  String     password) throws InvalidParameterException
+    public AuditLogServicesClient(String                             serverName,
+                                  String                             restURLRoot,
+                                  Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                  AuditLog                           auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
+        final String methodName = "Constructor (no security)";
 
-        try
-        {
-            invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
-        }
-        catch (org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedHTTPCode(),
-                                                error.getReportingClassName(),
-                                                error.getReportingActionDescription(),
-                                                error.getReportedErrorMessage(),
-                                                error.getReportedErrorMessageId(),
-                                                error.getReportedErrorMessageParameters(),
-                                                error.getReportedSystemAction(),
-                                                error.getReportedUserAction(),
-                                                error.getClass().getName(),
-                                                error.getParameterName(),
-                                                error.getRelatedProperties());
-        }
+        invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
 
         this.serverName = serverName;
         this.restURLRoot = restURLRoot;
-        this.restClient = this.getRESTClientConnector(serverName, restURLRoot, userId, password);
+        this.restClient = this.getRESTClientConnector(serverName, restURLRoot, secretsStoreConnectorMap, auditLog);
+
     }
+
 
 
     /**
@@ -184,7 +156,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
         {
             restResult = restClient.callGetRESTCall(methodName,
                                                     AuditLogReportResponse.class,
-                                                    restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    restURLRoot + rootServiceNameInURL + operationSpecificURL,
                                                     serverName,
                                                     userId);
         }
@@ -223,47 +195,80 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      *
      * @param serverName name of the remote server.
      * @param serverPlatformURLRoot name of the URL root for the server.
-     * @param userId userId of this server.
-     * @param password password for this server.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
+     * @param auditLog destination for log messages.
      * @return REST Client connector
      * @throws InvalidParameterException an unexpected exception - internal logic error as the parameters should have
      * all been checked before this call.
      */
-    private RESTClientConnector getRESTClientConnector(String       serverName,
-                                                       String       serverPlatformURLRoot,
-                                                       String       userId,
-                                                       String       password) throws InvalidParameterException
+    private RESTClientConnector getRESTClientConnector(String   serverName,
+                                                       String   serverPlatformURLRoot,
+                                                       String   secretsStoreProvider,
+                                                       String   secretsStoreLocation,
+                                                       String   secretsStoreCollection,
+                                                       AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "getRESTClientConnector";
 
-        RESTClientFactory clientFactory;
-
-        if ((localServerUserId != null) && (localServerPassword != null))
-        {
-            clientFactory = new RESTClientFactory(serverName,
-                                                  serverPlatformURLRoot,
-                                                  userId,
-                                                  password,
-                                                  null,
-                                                  auditLog);
-        }
-        else
-        {
-            clientFactory = new RESTClientFactory(serverName,
-                                                  serverPlatformURLRoot);
-        }
-
         try
         {
+            RESTClientFactory clientFactory = new RESTClientFactory(serverName,
+                                                                    serverPlatformURLRoot,
+                                                                    secretsStoreProvider,
+                                                                    secretsStoreLocation,
+                                                                    secretsStoreCollection,
+                                                                    SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                                                    auditLog);
+
             return clientFactory.getClientConnector();
         }
         catch (Exception error)
         {
-           throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error,
-                                               "client");
+            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "client");
+        }
+    }
+
+
+    /**
+     * Create a REST client to call the remote connector.
+     *
+     * @param serverName name of the remote server.
+     * @param serverPlatformURLRoot name of the URL root for the server.
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages.
+     * @return REST Client connector
+     * @throws InvalidParameterException an unexpected exception - internal logic error as the parameters should have
+     * all been checked before this call.
+     */
+    private RESTClientConnector getRESTClientConnector(String                             serverName,
+                                                       String                             serverPlatformURLRoot,
+                                                       Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                       AuditLog                           auditLog) throws InvalidParameterException
+    {
+        final String methodName = "getRESTClientConnector";
+
+        try
+        {
+            RESTClientFactory clientFactory = new RESTClientFactory(serverName,
+                                                                    serverPlatformURLRoot,
+                                                                    secretsStoreConnectorMap,
+                                                                    auditLog);
+
+            return clientFactory.getClientConnector();
+        }
+        catch (Exception error)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "client");
         }
     }
 
