@@ -101,30 +101,13 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">SurveyActionRESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Constructor for no authentication.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">SurveyActionRESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">SurveyActionRESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Constructor for simple userId and password authentication.</div>
-</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">SurveyActionRESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructor for simple userId and password authentication with audit log.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">SurveyActionRESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last odd-row-color">
 <div class="block">Constructor for no authentication with audit log.</div>
 </div>
 </div>
@@ -158,10 +141,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>SurveyActionRESTClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionRESTClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Constructor for no authentication with audit log.</div>
@@ -169,68 +155,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the OMAG Server to call</dd>
 <dd><code>serverPlatformURLRoot</code> - URL root of the server platform where the OMAG Server is running.</dd>
+<dd><code>secretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>secretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>secretsStoreCollection</code> - secrets store collection for bearer token</dd>
 <dd><code>auditLog</code> - destination for log messages.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String)">
-<h3>SurveyActionRESTClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionRESTClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot)</span>
-                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Constructor for no authentication.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the OMAG Server to call</dd>
-<dd><code>serverPlatformURLRoot</code> - URL root of the server platform where the OMAG Server is running.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
-<h3>SurveyActionRESTClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionRESTClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
-                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Constructor for simple userId and password authentication with audit log.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the OMAG Server to call</dd>
-<dd><code>serverPlatformURLRoot</code> - URL root of the server platform where the OMAG Server is running.</dd>
-<dd><code>userId</code> - user id for the HTTP request</dd>
-<dd><code>password</code> - password for the HTTP request</dd>
-<dd><code>auditLog</code> - destination for log messages.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<h3>SurveyActionRESTClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionRESTClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
-                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Constructor for simple userId and password authentication.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the OMAG Server to call</dd>
-<dd><code>serverPlatformURLRoot</code> - URL root of the server platform where the OMAG Server is running.</dd>
-<dd><code>userId</code> - user id for the HTTP request</dd>
-<dd><code>password</code> - password for the HTTP request</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>

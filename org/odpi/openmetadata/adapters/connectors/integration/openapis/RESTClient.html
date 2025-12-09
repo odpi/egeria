@@ -113,20 +113,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected </code></div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">RESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">RESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection,
+ <a href="../../../../frameworks/connectors/controls/SecretsStorePurpose.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.controls">SecretsStorePurpose</a>&nbsp;secretsStorePurpose,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructor for simple userId and password authentication with audit log.</div>
+<div class="block">Constructor for no authentication with audit log.</div>
 </div>
 <div class="col-first odd-row-color"><code>protected </code></div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">RESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">RESTClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a>&gt;&nbsp;secretsStoreConnectorMap,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Constructor for no authentication with audit log.</div>
+<div class="block">Constructor for simple userId and password authentication with audit log.</div>
 </div>
 </div>
 </section>
@@ -269,10 +272,14 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>RESTClient</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">RESTClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection,
+ <a href="../../../../frameworks/connectors/controls/SecretsStorePurpose.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.controls">SecretsStorePurpose</a>&nbsp;secretsStorePurpose,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
               throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Constructor for no authentication with audit log.</div>
@@ -280,6 +287,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the OMAG Server to call</dd>
 <dd><code>url</code> - URL root of the server platform where the OMAG Server is running.</dd>
+<dd><code>secretsStoreProvider</code> - secrets store connector</dd>
+<dd><code>secretsStoreLocation</code> - secrets store location</dd>
+<dd><code>secretsStoreCollection</code> - secrets store collection</dd>
+<dd><code>secretsStorePurpose</code> - the purpose to select</dd>
 <dd><code>auditLog</code> - destination for log messages.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
@@ -288,12 +299,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>RESTClient</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">RESTClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a>&gt;&nbsp;secretsStoreConnectorMap,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
               throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Constructor for simple userId and password authentication with audit log.</div>
@@ -301,8 +311,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the OMAG Server to call</dd>
 <dd><code>url</code> - URL root of the server platform where the OMAG Server is running.</dd>
-<dd><code>userId</code> - user id for the HTTP request</dd>
-<dd><code>password</code> - password for the HTTP request</dd>
+<dd><code>secretsStoreConnectorMap</code> - connectors to secrets stores</dd>
 <dd><code>auditLog</code> - destination for log messages.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any

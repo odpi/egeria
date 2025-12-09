@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ConfigResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">OMAGServerConfigResource returns the current configuration document for the server.  If the
@@ -110,29 +110,30 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearOMAGServerConfig(java.lang.String,java.lang.String)" class="member-name-link">clearOMAGServerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearOMAGServerConfig(java.lang.String)" class="member-name-link">clearOMAGServerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the configuration properties for an OMAG Server in a single command.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deployOMAGServerConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)" class="member-name-link">deployOMAGServerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deployOMAGServerConfig(java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)" class="member-name-link">deployOMAGServerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/URLRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">URLRequestBody</a>&nbsp;destinationPlatform)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Push the configuration for the server to another OMAG Server Platform.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStoredConfiguration(java.lang.String,java.lang.String)" class="member-name-link">getStoredConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResolvedConfiguration(java.lang.String)" class="member-name-link">getResolvedConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the stored configuration document for the server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOMAGServerConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)" class="member-name-link">setOMAGServerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;omagServerConfig)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStoredConfiguration(java.lang.String)" class="member-name-link">getStoredConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the stored configuration document for the server.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOMAGServerConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)" class="member-name-link">setOMAGServerConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;omagServerConfig)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration properties for an OMAG Server in a single command.</div>
 </div>
 </div>
@@ -167,89 +168,94 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getStoredConfiguration(java.lang.String,java.lang.String)">
+<section class="detail" id="getStoredConfiguration(java.lang.String)">
 <h3>getStoredConfiguration</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></span>&nbsp;<span class="element-name">getStoredConfiguration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the stored configuration document for the server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>OMAGServerConfig properties or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setOMAGServerConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">
+<section class="detail" id="getResolvedConfiguration(java.lang.String)">
+<h3>getResolvedConfiguration</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/configuration/resolved")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></span>&nbsp;<span class="element-name">getResolvedConfiguration</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Return the stored configuration document for the server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name</dd>
+<dt>Returns:</dt>
+<dd>OMAGServerConfig properties or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setOMAGServerConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">
 <h3>setOMAGServerConfig</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setOMAGServerConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;omagServerConfig)</span></div>
 <div class="block">Set up the configuration properties for an OMAG Server in a single command.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dd><code>omagServerConfig</code> - configuration for the server</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or OMAGServerConfig parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearOMAGServerConfig(java.lang.String,java.lang.String)">
+<section class="detail" id="clearOMAGServerConfig(java.lang.String)">
 <h3>clearOMAGServerConfig</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearOMAGServerConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Clear the configuration properties for an OMAG Server in a single command.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or OMAGServerConfig parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="deployOMAGServerConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)">
+<section class="detail" id="deployOMAGServerConfig(java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)">
 <h3>deployOMAGServerConfig</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/configuration/deploy")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deployOMAGServerConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../rest/URLRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">URLRequestBody</a>&nbsp;destinationPlatform)</span></div>
 <div class="block">Push the configuration for the server to another OMAG Server Platform.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dd><code>destinationPlatform</code> - location of the platform where the config is to be deployed to</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException there is a problem using the supplied configuration or
- OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.</dd>
+ InvalidParameterException invalid serverName or destinationPlatform parameter.</dd>
 </dl>
 </section>
 </li>

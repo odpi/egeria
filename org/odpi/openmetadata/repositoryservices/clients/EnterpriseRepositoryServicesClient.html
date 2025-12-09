@@ -106,33 +106,24 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">EnterpriseRepositoryServicesClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,java.lang.String)" class="member-name-link">EnterpriseRepositoryServicesClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
+ <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ int&nbsp;maxPageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int,java.lang.String)" class="member-name-link">EnterpriseRepositoryServicesClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Map,int,java.lang.String)" class="member-name-link">EnterpriseRepositoryServicesClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a>&gt;&nbsp;secretsStoreConnectorMap,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EnterpriseRepositoryServicesClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String)" class="member-name-link">EnterpriseRepositoryServicesClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
- int&nbsp;maxPageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </div>
 </div>
 </section>
@@ -181,88 +172,54 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String)">
-<h3>EnterpriseRepositoryServicesClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnterpriseRepositoryServicesClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot)</span>
-                                   throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
-                    serverURLroot + "/servers/" + serverName.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.util.Map,int,java.lang.String)">
 <h3>EnterpriseRepositoryServicesClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnterpriseRepositoryServicesClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
-                                   throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
- userId/password of the calling server.  The end user's userId is sent on each request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>repositoryName</code> - name of the server to connect to</dd>
-<dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
-                    serverURLroot + "/servers/" + serverName.</dd>
-<dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,int,java.lang.String)">
-<h3>EnterpriseRepositoryServicesClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnterpriseRepositoryServicesClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a>&gt;&nbsp;secretsStoreConnectorMap,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</span>
-                                   throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>repositoryName</code> - name of the server to connect to</dd>
 <dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
                     serverURLroot + "/servers/" + serverName.</dd>
+<dd><code>secretsStoreConnectorMap</code> - map from authentication type to supplied secrets store</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>callerId</code> - unique identifier of the caller</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,java.lang.String)">
 <h3>EnterpriseRepositoryServicesClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnterpriseRepositoryServicesClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;repositoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;restURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
+ <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</span>
-                                   throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
- userId/password of the calling server.  The end user's userId is sent on each request.</div>
+                                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>repositoryName</code> - name of the server to connect to</dd>
 <dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
                     serverURLroot + "/servers/" + serverName.</dd>
-<dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
+<dd><code>localServerSecretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>localServerSecretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>localServerSecretsStoreCollection</code> - secrets store collection for bearer token</dd>
+<dd><code>auditLog</code> - audit log</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>callerId</code> - unique identifier of the caller</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - bad input parameters</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </section>
 </li>
@@ -279,11 +236,11 @@ loadScripts(document, 'script');</script>
 <h3>registerListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../connectors/omrstopic/OMRSTopicRepositoryEventListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicRepositoryEventListener</a>&nbsp;listener)</span>
-                      throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
-<a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></span></div>
+<a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Register a listener object that will be passed each of the events published by
  the Asset Manager OMAS.</div>
 <dl class="notes">
@@ -291,12 +248,12 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>listener</code> - listener object</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
 <dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code><a href="../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

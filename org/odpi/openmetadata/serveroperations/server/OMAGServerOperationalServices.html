@@ -72,12 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class OMAGServerOperationalServices" class="title">Class OMAGServerOperationalServices</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">org.odpi.openmetadata.tokencontroller.TokenController</a>
 <div class="inheritance">org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerOperationalServices</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></span></div>
 <div class="block">OMAGServerOperationalServices will provide support to start, manage and stop services in the OMAG Server.</div>
 </section>
 <section class="summary">
@@ -113,36 +115,45 @@ loadScripts(document, 'script');</script>
 <div class="block">Activate the list of open metadata and governance servers using the stored configuration information.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithStoredConfig(java.lang.String,java.lang.String)" class="member-name-link">activateWithStoredConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithStoredConfig(java.lang.String)" class="member-name-link">activateWithStoredConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Activate the open metadata and governance services using the stored configuration information.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithSuppliedConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)" class="member-name-link">activateWithSuppliedConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithStoredConfig(java.lang.String,java.lang.String)" class="member-name-link">activateWithStoredConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Activate the open metadata and governance services using the stored configuration information.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithSuppliedConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)" class="member-name-link">activateWithSuppliedConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;configuration)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Activate the open metadata and governance services using the supplied configuration
+ document.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithSuppliedConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)" class="member-name-link">activateWithSuppliedConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;configuration)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Activate the open metadata and governance services using the supplied configuration
  document.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new open metadata archive to running repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new open metadata archive to running repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchiveFile(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addOpenMetadataArchiveFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchiveFile(java.lang.String,java.lang.String)" class="member-name-link">addOpenMetadataArchiveFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new open metadata archive to running repository.</div>
@@ -157,44 +168,41 @@ loadScripts(document, 'script');</script>
 <div class="block">Shutdown any running services for a specific server instance.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deactivateTemporarilyServerList(java.lang.String,java.util.List)" class="member-name-link">deactivateTemporarilyServerList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serverNames)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deactivateTemporarilyServerList(java.util.List)" class="member-name-link">deactivateTemporarilyServerList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serverNames)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Temporarily deactivate the open metadata and governance servers in th supplied list.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../adminservices/rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveConfiguration(java.lang.String,java.lang.String)" class="member-name-link">getActiveConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveConfiguration(java.lang.String)" class="member-name-link">getActiveConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the complete set of configuration properties in use by the server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/OMAGServerStatusResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">OMAGServerStatusResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveServerStatus(java.lang.String,java.lang.String)" class="member-name-link">getActiveServerStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveServerStatus(java.lang.String)" class="member-name-link">getActiveServerStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the status of the server along with it services within.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ServerServicesListResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerServicesListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveServices(java.lang.String,java.lang.String)" class="member-name-link">getActiveServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveServices(java.lang.String)" class="member-name-link">getActiveServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownAndUnregisterServer(java.lang.String,java.lang.String)" class="member-name-link">shutdownAndUnregisterServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownAndUnregisterServer(java.lang.String)" class="member-name-link">shutdownAndUnregisterServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Terminate any running open metadata and governance services, remove the server from any open metadata cohorts.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownServer(java.lang.String,java.lang.String)" class="member-name-link">shutdownServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownServer(java.lang.String)" class="member-name-link">shutdownServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Temporarily deactivate any open metadata and governance services for the requested server.</div>
 </div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.tokencontroller.TokenController">Methods inherited from class&nbsp;org.odpi.openmetadata.tokencontroller.<a href="../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></h3>
+<code><a href="../../tokencontroller/TokenController.html#getUser(java.lang.String,java.lang.String)">getUser</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -234,7 +242,6 @@ loadScripts(document, 'script');</script>
  start-up messages.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverNames</code> - list of server names</dd>
 <dt>Returns:</dt>
 <dd>success message or
@@ -253,6 +260,44 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request</dd>
+<dd><code>serverName</code> - local server name</dd>
+<dt>Returns:</dt>
+<dd>success message response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException the server name is invalid or
+ OMAGConfigurationErrorException there is a problem using the supplied configuration.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="activateWithStoredConfig(java.lang.String)">
+<h3>activateWithStoredConfig</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></span>&nbsp;<span class="element-name">activateWithStoredConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Activate the open metadata and governance services using the stored configuration information.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name</dd>
+<dt>Returns:</dt>
+<dd>success message response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException the server name is invalid or
+ OMAGConfigurationErrorException there is a problem using the supplied configuration.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="activateWithSuppliedConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">
+<h3>activateWithSuppliedConfig</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></span>&nbsp;<span class="element-name">activateWithSuppliedConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;configuration)</span></div>
+<div class="block">Activate the open metadata and governance services using the supplied configuration
+ document.  Inside the configuration document are sections that each relate
+ to an open metadata and governance subsystem.  This method reads the configuration
+ document, starting up each requested subsystem.  If any subsystem throws an exception,
+ the whole start up process is halted and the exception is returned to the caller.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>configuration</code> - properties used to initialize the services</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>success message response or
@@ -311,27 +356,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deactivateTemporarilyServerList(java.lang.String,java.util.List)">
+<section class="detail" id="deactivateTemporarilyServerList(java.util.List)">
 <h3>deactivateTemporarilyServerList</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deactivateTemporarilyServerList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serverNames)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deactivateTemporarilyServerList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serverNames)</span></div>
 <div class="block">Temporarily deactivate the open metadata and governance servers in th supplied list.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverNames</code> - list of server names</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="shutdownServer(java.lang.String,java.lang.String)">
+<section class="detail" id="shutdownServer(java.lang.String)">
 <h3>shutdownServer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">shutdownServer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">shutdownServer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Temporarily deactivate any open metadata and governance services for the requested server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>void response or
@@ -341,14 +382,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="shutdownAndUnregisterServer(java.lang.String,java.lang.String)">
+<section class="detail" id="shutdownAndUnregisterServer(java.lang.String)">
 <h3>shutdownAndUnregisterServer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">shutdownAndUnregisterServer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">shutdownAndUnregisterServer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Terminate any running open metadata and governance services, remove the server from any open metadata cohorts.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>void response or
@@ -358,14 +397,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActiveConfiguration(java.lang.String,java.lang.String)">
+<section class="detail" id="getActiveConfiguration(java.lang.String)">
 <h3>getActiveConfiguration</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../adminservices/rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></span>&nbsp;<span class="element-name">getActiveConfiguration</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../adminservices/rest/OMAGServerConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerConfigResponse</a></span>&nbsp;<span class="element-name">getActiveConfiguration</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the complete set of configuration properties in use by the server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>OMAGServerConfig properties or
@@ -375,14 +412,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActiveServerStatus(java.lang.String,java.lang.String)">
+<section class="detail" id="getActiveServerStatus(java.lang.String)">
 <h3>getActiveServerStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/OMAGServerStatusResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">OMAGServerStatusResponse</a></span>&nbsp;<span class="element-name">getActiveServerStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/OMAGServerStatusResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">OMAGServerStatusResponse</a></span>&nbsp;<span class="element-name">getActiveServerStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the status of the server along with it services within.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dt>Returns:</dt>
 <dd>OMAGServerConfig properties or
@@ -392,14 +427,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActiveServices(java.lang.String,java.lang.String)">
+<section class="detail" id="getActiveServices(java.lang.String)">
 <h3>getActiveServices</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ServerServicesListResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerServicesListResponse</a></span>&nbsp;<span class="element-name">getActiveServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ServerServicesListResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerServicesListResponse</a></span>&nbsp;<span class="element-name">getActiveServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - name of the user making the request</dd>
 <dd><code>serverName</code> - name of the server of interest</dd>
 <dt>Returns:</dt>
 <dd>List of service names</dd>
@@ -407,15 +440,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addOpenMetadataArchiveFile(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="addOpenMetadataArchiveFile(java.lang.String,java.lang.String)">
 <h3>addOpenMetadataArchiveFile</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchiveFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchiveFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</span></div>
 <div class="block">Add a new open metadata archive to running repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>fileName</code> - name of the open metadata archive file.</dd>
 <dt>Returns:</dt>
@@ -426,15 +457,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addOpenMetadataArchive(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>addOpenMetadataArchive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
 <div class="block">Add a new open metadata archive to running repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connection</code> - connection to access the open metadata archive file.</dd>
 <dt>Returns:</dt>
@@ -445,15 +474,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addOpenMetadataArchive(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)">
+<section class="detail" id="addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)">
 <h3>addOpenMetadataArchive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive)</span></div>
 <div class="block">Add a new open metadata archive to running repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>openMetadataArchive</code> - contents of the open metadata archive file.</dd>
 <dt>Returns:</dt>

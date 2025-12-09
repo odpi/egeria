@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/{serviceURLMarker}/governance-configuration-service/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-configuration-service/users/{userId}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">GovernanceConfigurationResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">EngineConfigurationResource provides the Spring wrapper for the Governance Engine Configuration Services</div>
@@ -109,32 +109,28 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceEngineElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceEngineElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineByName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getGovernanceEngineByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineByName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getGovernanceEngineByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties from the named governance engine definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorRegistrations(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getIntegrationConnectorRegistrations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorRegistrations(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getIntegrationConnectorRegistrations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of integration groups that a specific integration connector is registered with.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/IntegrationGroupElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">IntegrationGroupElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getIntegrationGroupByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupByName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getIntegrationGroupByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties from an integration group definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredGovernanceServiceResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredGovernanceServiceResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getRegisteredGovernanceService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getRegisteredGovernanceService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceServiceGUID)</code></div>
@@ -142,8 +138,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve a specific governance service registered with a governance engine.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredGovernanceServicesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredGovernanceServicesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredGovernanceServices(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getRegisteredGovernanceServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredGovernanceServices(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getRegisteredGovernanceServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
  int&nbsp;startingFrom,
@@ -152,8 +147,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the identifiers of the governance services registered with a governance engine.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredIntegrationConnectorResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredIntegrationConnectorResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getRegisteredIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getRegisteredIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationGroupGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID)</code></div>
@@ -161,8 +155,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve a specific integration connector registered with an integration group.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredIntegrationConnectorsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredIntegrationConnectorsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredIntegrationConnectors(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getRegisteredIntegrationConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredIntegrationConnectors(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getRegisteredIntegrationConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationGroupGUID,
  int&nbsp;startingFrom,
@@ -202,13 +195,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getGovernanceEngineByName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getGovernanceEngineByName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <h3>getGovernanceEngineByName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/governance-engines/by-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/GovernanceEngineElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceEngineElementResponse</a></span>&nbsp;<span class="element-name">getGovernanceEngineByName</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
@@ -217,7 +208,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>name</code> - qualified name or display name (if unique).</dd>
 <dt>Returns:</dt>
@@ -229,13 +219,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRegisteredGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getRegisteredGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getRegisteredGovernanceService</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/governance-engines/{governanceEngineGUID}/governance-services/{governanceServiceGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/RegisteredGovernanceServiceResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredGovernanceServiceResponse</a></span>&nbsp;<span class="element-name">getRegisteredGovernanceService</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -246,7 +234,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
 <dd><code>governanceServiceGUID</code> - unique identifier of the governance service.</dd>
@@ -259,13 +246,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRegisteredGovernanceServices(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getRegisteredGovernanceServices(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <h3>getRegisteredGovernanceServices</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/governance-engines/{governanceEngineGUID}/governance-services")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/RegisteredGovernanceServicesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredGovernanceServicesResponse</a></span>&nbsp;<span class="element-name">getRegisteredGovernanceServices</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -278,7 +263,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>
@@ -292,13 +276,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getIntegrationGroupByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getIntegrationGroupByName(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getIntegrationGroupByName</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/integration-groups/by-name/{name}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/IntegrationGroupElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">IntegrationGroupElementResponse</a></span>&nbsp;<span class="element-name">getIntegrationGroupByName</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -307,7 +289,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>name</code> - qualified name or display name (if unique).</dd>
 <dt>Returns:</dt>
@@ -319,13 +300,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getIntegrationConnectorRegistrations(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getIntegrationConnectorRegistrations(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getIntegrationConnectorRegistrations</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/integration-connectors/{guid}/registrations")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></span>&nbsp;<span class="element-name">getIntegrationConnectorRegistrations</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -334,7 +313,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>guid</code> - integration connector to search for.</dd>
 <dt>Returns:</dt>
@@ -346,13 +324,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRegisteredIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getRegisteredIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getRegisteredIntegrationConnector</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/RegisteredIntegrationConnectorResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredIntegrationConnectorResponse</a></span>&nbsp;<span class="element-name">getRegisteredIntegrationConnector</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -363,7 +339,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>integrationGroupGUID</code> - unique identifier of the integration group.</dd>
 <dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector.</dd>
@@ -376,13 +351,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRegisteredIntegrationConnectors(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getRegisteredIntegrationConnectors(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <h3>getRegisteredIntegrationConnectors</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/integration-groups/{integrationGroupGUID}/integration-connectors")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/RegisteredIntegrationConnectorsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RegisteredIntegrationConnectorsResponse</a></span>&nbsp;<span class="element-name">getRegisteredIntegrationConnectors</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -395,7 +368,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user.</dd>
 <dd><code>integrationGroupGUID</code> - unique identifier of the integration group.</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>

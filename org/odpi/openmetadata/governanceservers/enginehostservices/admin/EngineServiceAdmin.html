@@ -133,26 +133,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPartnerServiceRootURL(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)" class="member-name-link">getPartnerServiceRootURL</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServicesConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open metadata server's root URL from the configuration.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPartnerServiceServerName(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)" class="member-name-link">getPartnerServiceServerName</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open metadata server's name from the configuration.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig,org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
  int&nbsp;maxPageSize,
- <a href="../../../frameworkservices/gaf/client/GovernanceConfigurationClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceConfigurationClient</a>&nbsp;configurationClient,
- <a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig,
- <a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;governanceEngineMap)</code></div>
+ <a href="../registration/EngineServiceDefinition.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">EngineServiceDefinition</a>&nbsp;engineServiceDefinition)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Initialize engine service.</div>
 </div>
@@ -162,7 +148,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Shutdown the engine service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConfigDocument(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)" class="member-name-link">validateConfigDocument</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateEngineDefinition(org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition)" class="member-name-link">validateEngineDefinition</a><wbr>(<a href="../registration/EngineServiceDefinition.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">EngineServiceDefinition</a>&nbsp;engineServiceDefinition)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate the content of the configuration.</div>
 </div>
@@ -224,30 +210,22 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="initialize(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig,org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap)">
+<section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition)">
 <h3>initialize</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
  int&nbsp;maxPageSize,
- <a href="../../../frameworkservices/gaf/client/GovernanceConfigurationClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceConfigurationClient</a>&nbsp;configurationClient,
- <a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig,
- <a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;governanceEngineMap)</span>
+ <a href="../registration/EngineServiceDefinition.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">EngineServiceDefinition</a>&nbsp;engineServiceDefinition)</span>
                          throws <span class="exceptions"><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Initialize engine service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>localServerId</code> - unique identifier of this server</dd>
 <dd><code>localServerName</code> - name of this server</dd>
 <dd><code>auditLog</code> - link to the repository responsible for servicing the REST calls</dd>
 <dd><code>localServerUserId</code> - user id for this server to use if sending REST requests and processing inbound messages</dd>
-<dd><code>localServerPassword</code> - password for this server to use if sending REST requests</dd>
 <dd><code>maxPageSize</code> - maximum number of records that can be requested on the pageSize parameter</dd>
-<dd><code>configurationClient</code> - client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions</dd>
-<dd><code>engineServiceConfig</code> - details of the options and the engines to run</dd>
-<dd><code>governanceEngineMap</code> - map of configured engines</dd>
+<dd><code>engineServiceDefinition</code> - details of the options and the engines to run</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - an issue in the configuration prevented initialization</dd>
 </dl>
@@ -261,48 +239,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getPartnerServiceRootURL(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)">
-<h3>getPartnerServiceRootURL</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPartnerServiceRootURL</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServicesConfig)</span>
-                                   throws <span class="exceptions"><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Return the open metadata server's root URL from the configuration.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>engineServicesConfig</code> - configuration</dd>
-<dt>Returns:</dt>
-<dd>root URL</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - No root URL present in the config</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateConfigDocument(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)">
-<h3>validateConfigDocument</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateConfigDocument</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig)</span>
-                               throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
+<section class="detail" id="validateEngineDefinition(org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition)">
+<h3>validateEngineDefinition</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateEngineDefinition</span><wbr><span class="parameters">(<a href="../registration/EngineServiceDefinition.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">EngineServiceDefinition</a>&nbsp;engineServiceDefinition)</span>
+                                 throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Validate the content of the configuration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>engineServiceConfig</code> - configuration</dd>
+<dd><code>engineServiceDefinition</code> - configuration</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - Missing content from the config</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getPartnerServiceServerName(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)">
-<h3>getPartnerServiceServerName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPartnerServiceServerName</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig)</span>
-                                      throws <span class="exceptions"><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Return the open metadata server's name from the configuration.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>engineServiceConfig</code> - configuration</dd>
-<dt>Returns:</dt>
-<dd>server name</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - No server name present in the config</dd>
 </dl>
 </section>
 </li>

@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ConfigIntegrationDaemonServicesResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">ConfigIntegrationServicesResource provides the configuration for setting up the dynamic integration groups.</div>
@@ -109,53 +109,45 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAllIntegrationGroups(java.lang.String,java.lang.String)" class="member-name-link">clearAllIntegrationGroups</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAllIntegrationGroups(java.lang.String)" class="member-name-link">clearAllIntegrationGroups</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Disable the integration groups.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearIntegrationDaemonServicesConfig(java.lang.String,java.lang.String)" class="member-name-link">clearIntegrationDaemonServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearIntegrationDaemonServicesConfig(java.lang.String)" class="member-name-link">clearIntegrationDaemonServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the configuration of the specialist services for an Integration Daemon OMAG Server in a single call.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearIntegrationGroup(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">clearIntegrationGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearIntegrationGroup(java.lang.String,java.lang.String)" class="member-name-link">clearIntegrationGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupQualifiedName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove an integration group.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureIntegrationGroup(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig)" class="member-name-link">configureIntegrationGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureIntegrationGroup(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig)" class="member-name-link">configureIntegrationGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&nbsp;groupConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add configuration for a single integration group to the server's config document.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/IntegrationDaemonServicesResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">IntegrationDaemonServicesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationDaemonServicesConfiguration(java.lang.String,java.lang.String)" class="member-name-link">getIntegrationDaemonServicesConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationDaemonServicesConfiguration(java.lang.String)" class="member-name-link">getIntegrationDaemonServicesConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configuration of the specialist services for an Integration Daemon OMAG Server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/IntegrationGroupsResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">IntegrationGroupsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupsConfiguration(java.lang.String,java.lang.String)" class="member-name-link">getIntegrationGroupsConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupsConfiguration(java.lang.String)" class="member-name-link">getIntegrationGroupsConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the integration groups configuration for this server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationDaemonServicesConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationDaemonServicesConfig)" class="member-name-link">setIntegrationDaemonServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationDaemonServicesConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationDaemonServicesConfig)" class="member-name-link">setIntegrationDaemonServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/IntegrationDaemonServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationDaemonServicesConfig</a>&nbsp;servicesConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration of the specialist services for an Integration Daemon OMAG Server in a single call.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationGroupsConfig(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setIntegrationGroupsConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationGroupsConfig(java.lang.String,java.util.List)" class="member-name-link">setIntegrationGroupsConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&gt;&nbsp;integrationGroupsConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration for all the open metadata integration groups.</div>
@@ -192,17 +184,14 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getIntegrationGroupsConfiguration(java.lang.String,java.lang.String)">
+<section class="detail" id="getIntegrationGroupsConfiguration(java.lang.String)">
 <h3>getIntegrationGroupsConfiguration</h3>
 <div class="member-signature"><span class="annotations">@GetMapping("/integration-groups/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/IntegrationGroupsResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">IntegrationGroupsResponse</a></span>&nbsp;<span class="element-name">getIntegrationGroupsConfiguration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the integration groups configuration for this server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
 <dd><code>serverName</code> - name of server</dd>
 <dt>Returns:</dt>
 <dd>response containing the integration groups configuration</dd>
@@ -210,108 +199,93 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="configureIntegrationGroup(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig)">
+<section class="detail" id="configureIntegrationGroup(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig)">
 <h3>configureIntegrationGroup</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/integration-groups/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">configureIntegrationGroup</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../configuration/properties/IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&nbsp;groupConfig)</span></div>
 <div class="block">Add configuration for a single integration group to the server's config document.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>groupConfig</code> - all values to configure an integration group</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException the event bus has not been configured or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setIntegrationGroupsConfig(java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="setIntegrationGroupsConfig(java.lang.String,java.util.List)">
 <h3>setIntegrationGroupsConfig</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/integration-groups/configuration/all")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setIntegrationGroupsConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&gt;&nbsp;integrationGroupsConfig)</span></div>
 <div class="block">Set up the configuration for all the open metadata integration groups.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>integrationGroupsConfig</code> - list of configuration properties for each integration group.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or integrationGroupsConfig parameter.</dd>
+ UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or integrationGroupsConfig parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearAllIntegrationGroups(java.lang.String,java.lang.String)">
+<section class="detail" id="clearAllIntegrationGroups(java.lang.String)">
 <h3>clearAllIntegrationGroups</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/integration-groups")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearAllIntegrationGroups</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Disable the integration groups.  This removes all configuration for the integration groups from the integration daemon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter or
  OMAGConfigurationErrorException unusual state in the admin server.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearIntegrationGroup(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="clearIntegrationGroup(java.lang.String,java.lang.String)">
 <h3>clearIntegrationGroup</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/integration-groups/{groupQualifiedName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearIntegrationGroup</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupQualifiedName)</span></div>
 <div class="block">Remove an integration group.  This removes all configuration for the integration group.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>groupQualifiedName</code> - integration group name used in URL</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName  parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName  parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getIntegrationDaemonServicesConfiguration(java.lang.String,java.lang.String)">
+<section class="detail" id="getIntegrationDaemonServicesConfiguration(java.lang.String)">
 <h3>getIntegrationDaemonServicesConfiguration</h3>
 <div class="member-signature"><span class="annotations">@GetMapping("/integration-daemon-services")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/IntegrationDaemonServicesResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">IntegrationDaemonServicesResponse</a></span>&nbsp;<span class="element-name">getIntegrationDaemonServicesConfiguration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the configuration of the specialist services for an Integration Daemon OMAG Server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
 <dd><code>serverName</code> - name of server</dd>
 <dt>Returns:</dt>
 <dd>response containing the integration daemon services configuration</dd>
@@ -319,47 +293,41 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setIntegrationDaemonServicesConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationDaemonServicesConfig)">
+<section class="detail" id="setIntegrationDaemonServicesConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationDaemonServicesConfig)">
 <h3>setIntegrationDaemonServicesConfig</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/integration-daemon-services")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setIntegrationDaemonServicesConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../configuration/properties/IntegrationDaemonServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationDaemonServicesConfig</a>&nbsp;servicesConfig)</span></div>
 <div class="block">Set up the configuration of the specialist services for an Integration Daemon OMAG Server in a single call.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>servicesConfig</code> - full configuration for the integration daemon server.</dd>
 <dt>Returns:</dt>
 <dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearIntegrationDaemonServicesConfig(java.lang.String,java.lang.String)">
+<section class="detail" id="clearIntegrationDaemonServicesConfig(java.lang.String)">
 <h3>clearIntegrationDaemonServicesConfig</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/integration-daemon-services")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearIntegrationDaemonServicesConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Remove the configuration of the specialist services for an Integration Daemon OMAG Server in a single call.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>

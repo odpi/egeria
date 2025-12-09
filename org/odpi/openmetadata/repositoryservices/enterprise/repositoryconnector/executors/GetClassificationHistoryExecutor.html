@@ -254,12 +254,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getHistoryResults(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection)">
 <h3>getHistoryResults</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;</span>&nbsp;<span class="element-name">getHistoryResults</span><wbr><span class="parameters">(<a href="../../../connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a>&nbsp;metadataCollection)</span>
-                                       throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
 <a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a>,
 <a href="../../../ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
-<a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></span></div>
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return the results or exception.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -268,11 +268,11 @@ loadScripts(document, 'script');</script>
 <dd>a list of entities matching the supplied criteria; null means no matching entities in the metadata
  collection.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - a parameter is invalid or null.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support the asOfTime parameter.</dd>
-<dd><code><a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 <dd><code><a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection at the time requested.</dd>
 <dd><code><a href="../../../ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a></code> - the requested entity instance is only a proxy in the metadata collection.</dd>
 </dl>

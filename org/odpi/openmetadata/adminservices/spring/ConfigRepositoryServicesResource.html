@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ConfigRepositoryServicesResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">ConfigRepositoryServicesResource provides the configuration services for setting
@@ -110,23 +110,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAuditLogDestination(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">addAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAuditLogDestination(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">addAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an audit log destination that is defined by the supplied connection object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCohortRegistration(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addCohortRegistration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCohortRegistration(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addCohortRegistration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCohortRegistration(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure,java.util.Map)" class="member-name-link">addCohortRegistration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCohortRegistration(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure,java.util.Map)" class="member-name-link">addCohortRegistration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="../configuration/properties/CohortTopicStructure.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a>&nbsp;cohortTopicStructure,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</code></div>
@@ -134,280 +131,240 @@ loadScripts(document, 'script');</script>
 <div class="block">Enable registration of server to an open metadata repository cohort using the topic pattern specified by cohortTopicStructure.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addConsoleAuditLogDestination(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addConsoleAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addConsoleAuditLogDestination(java.lang.String,java.util.List)" class="member-name-link">addConsoleAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the console audit log for the server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addEventTopicAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addEventTopicAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an audit log destination that sends each log record as an event on the supplied event topic.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addFileAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addFileAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addFileAuditLogDestination(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addFileAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;directoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an audit log destination that creates log records as JSON files in a shared directory.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addPostgreSQLDatabaseAuditLogDestination(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addPostgreSQLDatabaseAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addPostgreSQLDatabaseAuditLogDestination(java.lang.String,java.util.Map)" class="member-name-link">addPostgreSQLDatabaseAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;storageProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an audit log destination that creates log records as rows in a PostgreSQL Database Schema.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSLF4JAuditLogDestination(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addSLF4JAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSLF4JAuditLogDestination(java.lang.String,java.util.List)" class="member-name-link">addSLF4JAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an audit log destination that creates slf4j records.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStartUpOpenMetadataArchiveFile(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addStartUpOpenMetadataArchiveFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addStartUpOpenMetadataArchiveFile(java.lang.String,java.lang.String)" class="member-name-link">addStartUpOpenMetadataArchiveFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new open metadata archive to load at startup.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAuditLogDestination(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">clearAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAuditLogDestination(java.lang.String,java.lang.String)" class="member-name-link">clearAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete an audit log destination that is identified with the supplied connection's name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAuditLogDestinations(java.lang.String,java.lang.String)" class="member-name-link">clearAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAuditLogDestinations(java.lang.String)" class="member-name-link">clearAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clears all audit log destinations for this server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearCohortConfig(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">clearCohortConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearCohortConfig(java.lang.String,java.lang.String)" class="member-name-link">clearCohortConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Unregister this server from an open metadata repository cohort.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearLocalRepositoryConfig(java.lang.String,java.lang.String)" class="member-name-link">clearLocalRepositoryConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearLocalRepositoryConfig(java.lang.String)" class="member-name-link">clearLocalRepositoryConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove all configuration for a local repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearOpenMetadataArchives(java.lang.String,java.lang.String)" class="member-name-link">clearOpenMetadataArchives</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearOpenMetadataArchives(java.lang.String)" class="member-name-link">clearOpenMetadataArchives</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the list of open metadata archives.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ConnectionListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuditLogDestinations(java.lang.String,java.lang.String)" class="member-name-link">getAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuditLogDestinations(java.lang.String)" class="member-name-link">getAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of audit log destinations.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CohortConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">CohortConfigResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCohortConfig(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getCohortConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCohortConfig(java.lang.String,java.lang.String)" class="member-name-link">getCohortConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the registration of server to an open metadata repository cohort.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/StringResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCohortTopicName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCohortTopicName(java.lang.String,java.lang.String)" class="member-name-link">getCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the current topic name for the cohort.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DedicatedTopicListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">DedicatedTopicListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDedicatedCohortTopicNames(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getDedicatedCohortTopicNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDedicatedCohortTopicNames(java.lang.String,java.lang.String)" class="member-name-link">getDedicatedCohortTopicNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the current topic name for the cohort.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalMetadataCollectionId(java.lang.String,java.lang.String)" class="member-name-link">getLocalMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalMetadataCollectionId(java.lang.String)" class="member-name-link">getLocalMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the local metadata collection id.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/StringResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalMetadataCollectionName(java.lang.String,java.lang.String)" class="member-name-link">getLocalMetadataCollectionName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalMetadataCollectionName(java.lang.String)" class="member-name-link">getLocalMetadataCollectionName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the local metadata collection name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LocalRepositoryConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">LocalRepositoryConfigResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalRepositoryConfig(java.lang.String,java.lang.String)" class="member-name-link">getLocalRepositoryConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalRepositoryConfig(java.lang.String)" class="member-name-link">getLocalRepositoryConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configuration for the local repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ConnectionListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataArchives(java.lang.String,java.lang.String)" class="member-name-link">getOpenMetadataArchives</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataArchives(java.lang.String)" class="member-name-link">getOpenMetadataArchives</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of open metadata archives.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideCohortTopicName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Override the current name for the single topic for the cohort.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideInstancesCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideInstancesCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideInstancesCohortTopicName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideInstancesCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Override the current name for the "instances" topic for the cohort.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideRegistrationCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideRegistrationCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideRegistrationCohortTopicName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideRegistrationCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Override the current name for the registration topic for the cohort.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideTypesCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideTypesCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideTypesCohortTopicName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">overrideTypesCohortTopicName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Override the current name for the "types" topic for the cohort.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetRemoteCohortURL(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)" class="member-name-link">resetRemoteCohortURL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetRemoteCohortURL(java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)" class="member-name-link">resetRemoteCohortURL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/URLRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">URLRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the URL broadcast across the cohort to allow other members to issue queries to this repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLogDestinations(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLogDestinations(java.lang.String,java.util.List)" class="member-name-link">setAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&gt;&nbsp;auditLogDestinations)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of audit log destinations.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCohortConfig(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig)" class="member-name-link">setCohortConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCohortConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig)" class="member-name-link">setCohortConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="../configuration/properties/CohortConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">CohortConfig</a>&nbsp;cohortConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration properties for a cohort.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultAuditLog(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">setDefaultAuditLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultAuditLog(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">setDefaultAuditLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the default audit log for the server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInMemLocalRepository(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">setInMemLocalRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInMemLocalRepository(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">setInMemLocalRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up an in memory local repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalMetadataCollectionId(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setLocalMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalMetadataCollectionId(java.lang.String,java.lang.String)" class="member-name-link">setLocalMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the local metadata collection id.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalMetadataCollectionName(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setLocalMetadataCollectionName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalMetadataCollectionName(java.lang.String,java.lang.String)" class="member-name-link">setLocalMetadataCollectionName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the local metadata collection name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalRepositoryConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig)" class="member-name-link">setLocalRepositoryConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalRepositoryConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig)" class="member-name-link">setLocalRepositoryConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a>&nbsp;localRepositoryConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration for the local repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNoRepositoryMode(java.lang.String,java.lang.String)" class="member-name-link">setNoRepositoryMode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNoRepositoryMode(java.lang.String)" class="member-name-link">setNoRepositoryMode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove all configuration for a local repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpenMetadataArchives(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setOpenMetadataArchives</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpenMetadataArchives(java.lang.String,java.util.List)" class="member-name-link">setOpenMetadataArchives</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&gt;&nbsp;openMetadataArchives)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of open metadata archives.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPluginRepositoryConnection(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setPluginRepositoryConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPluginRepositoryConnection(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setPluginRepositoryConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProvider,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to plugin repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPluginRepositoryConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setPluginRepositoryConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPluginRepositoryConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setPluginRepositoryConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to plugin repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPostgresLocalRepository(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setPostgresLocalRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPostgresLocalRepository(java.lang.String,java.util.Map)" class="member-name-link">setPostgresLocalRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;storageProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a PostgreSQL database schema as the local repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReadOnlyLocalRepository(java.lang.String,java.lang.String)" class="member-name-link">setReadOnlyLocalRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReadOnlyLocalRepository(java.lang.String)" class="member-name-link">setReadOnlyLocalRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a read only local repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyConnection(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setRepositoryProxyConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyConnection(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setRepositoryProxyConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProvider,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to repository proxy.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setRepositoryProxyConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setRepositoryProxyConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to repository proxy.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyEventMapper(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setRepositoryProxyEventMapper</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyEventMapper(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">setRepositoryProxyEventMapper</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProvider,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;eventSource,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</code></div>
@@ -415,15 +372,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Provide the connection to a repository proxy's event mapper.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyEventMapper(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setRepositoryProxyEventMapper</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryProxyEventMapper(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setRepositoryProxyEventMapper</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide the connection to a repository proxy's event mapper.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">updateAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAuditLogDestination(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">updateAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionName,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -462,81 +417,70 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setDefaultAuditLog(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<section class="detail" id="setDefaultAuditLog(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
 <h3>setDefaultAuditLog</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/default")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setDefaultAuditLog</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody(required=false)
  <a href="../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Set up the default audit log for the server.  This adds the console audit log destination.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addConsoleAuditLogDestination(java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="addConsoleAuditLogDestination(java.lang.String,java.util.List)">
 <h3>addConsoleAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/console")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addConsoleAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</span></div>
 <div class="block">Set up the console audit log for the server.  This writes selected parts of the audit log record to stdout.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>supportedSeverities</code> - list of severities that should be logged to this destination (empty list means all)</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addSLF4JAuditLogDestination(java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="addSLF4JAuditLogDestination(java.lang.String,java.util.List)">
 <h3>addSLF4JAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/slf4j")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addSLF4JAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</span></div>
 <div class="block">Add an audit log destination that creates slf4j records.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>supportedSeverities</code> - list of severities that should be logged to this destination (empty list means all)</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addFileAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="addFileAuditLogDestination(java.lang.String,java.lang.String,java.util.List)">
 <h3>addFileAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/files")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addFileAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;directoryName,
@@ -545,47 +489,41 @@ loadScripts(document, 'script');</script>
 <div class="block">Add an audit log destination that creates log records as JSON files in a shared directory.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>directoryName</code> - name of directory</dd>
 <dd><code>supportedSeverities</code> - list of severities that should be logged to this destination (empty list means all)</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addPostgreSQLDatabaseAuditLogDestination(java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="addPostgreSQLDatabaseAuditLogDestination(java.lang.String,java.util.Map)">
 <h3>addPostgreSQLDatabaseAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/postgres")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addPostgreSQLDatabaseAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;storageProperties)</span></div>
 <div class="block">Add an audit log destination that creates log records as rows in a PostgreSQL Database Schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>storageProperties</code> - properties used to configure access to the database</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.util.List)">
 <h3>addEventTopicAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/event-topic")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addEventTopicAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName,
@@ -594,47 +532,41 @@ loadScripts(document, 'script');</script>
 <div class="block">Add an audit log destination that sends each log record as an event on the supplied event topic.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>topicName</code> - name of topic</dd>
 <dd><code>supportedSeverities</code> - list of severities that should be logged to this destination (empty list means all)</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addAuditLogDestination(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="addAuditLogDestination(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>addAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/connection")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
 <div class="block">Add an audit log destination that is defined by the supplied connection object.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connection</code> - connection object that defines the audit log destination</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="updateAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="updateAuditLogDestination(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>updateAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations/connection/{connectionName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionName,
@@ -644,91 +576,79 @@ loadScripts(document, 'script');</script>
  the supplied connection object.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connectionName</code> - name of the audit log destination connection to be updated</dd>
 <dd><code>connection</code> - connection object that defines the audit log destination</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearAuditLogDestination(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="clearAuditLogDestination(java.lang.String,java.lang.String)">
 <h3>clearAuditLogDestination</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/audit-log-destinations/connection/{connectionName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearAuditLogDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionName)</span></div>
 <div class="block">Delete an audit log destination that is identified with the supplied connection's name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connectionName</code> - qualified name of the audit log destination connection to be deleted.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addStartUpOpenMetadataArchiveFile(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="addStartUpOpenMetadataArchiveFile(java.lang.String,java.lang.String)">
 <h3>addStartUpOpenMetadataArchiveFile</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/open-metadata-archives/file")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addStartUpOpenMetadataArchiveFile</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</span></div>
 <div class="block">Add a new open metadata archive to load at startup.  This open metadata archive is a JSON file.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>fileName</code> - name of the open metadata archive file.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or fileName parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or fileName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setNoRepositoryMode(java.lang.String,java.lang.String)">
+<section class="detail" id="setNoRepositoryMode(java.lang.String)">
 <h3>setNoRepositoryMode</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/local-repository")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setNoRepositoryMode</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Remove all configuration for a local repository.  The default is no local repository.  This call
  can be used to remove subsequent local repository configuration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setInMemLocalRepository(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<section class="detail" id="setInMemLocalRepository(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
 <h3>setInMemLocalRepository</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/in-memory-repository")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setInMemLocalRepository</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody(required=false)
  <a href="../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
@@ -736,92 +656,80 @@ loadScripts(document, 'script');</script>
  for demos, testing and POCs.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setPostgresLocalRepository(java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="setPostgresLocalRepository(java.lang.String,java.util.Map)">
 <h3>setPostgresLocalRepository</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/postgres-repository")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setPostgresLocalRepository</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
+ @RequestBody(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;storageProperties)</span></div>
 <div class="block">Set up a PostgreSQL database schema as the local repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>storageProperties</code> - properties used to configure access to postgres</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException the event bus has not been configured or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setReadOnlyLocalRepository(java.lang.String,java.lang.String)">
+<section class="detail" id="setReadOnlyLocalRepository(java.lang.String)">
 <h3>setReadOnlyLocalRepository</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/read-only-repository")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setReadOnlyLocalRepository</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Set up a read only local repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException the event bus has not been configured or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setPluginRepositoryConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="setPluginRepositoryConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>setPluginRepositoryConnection</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/plugin-repository/connection")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setPluginRepositoryConnection</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to plugin repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connection</code> - connection to the OMRS repository connector.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or repositoryProxyConnection parameter or
  OMAGConfigurationErrorException the local repository mode has not been set</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setPluginRepositoryConnection(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="setPluginRepositoryConnection(java.lang.String,java.lang.String,java.util.Map)">
 <h3>setPluginRepositoryConnection</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/plugin-repository/details")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setPluginRepositoryConnection</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProvider,
@@ -830,49 +738,43 @@ loadScripts(document, 'script');</script>
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to plugin repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connectorProvider</code> - connector provider class name to the OMRS repository connector.</dd>
 <dd><code>additionalProperties</code> - additional parameters to pass to the repository connector</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+ UserNotAuthorizedException     the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or repositoryProxyConnection parameter or
  OMAGConfigurationErrorException the local repository mode has not been set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setRepositoryProxyConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="setRepositoryProxyConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>setRepositoryProxyConnection</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/repository-proxy/connection")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setRepositoryProxyConnection</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to repository proxy.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connection</code> - connection to the OMRS repository connector.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or repositoryProxyConnection parameter or
  OMAGConfigurationErrorException the local repository mode has not been set</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setRepositoryProxyConnection(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="setRepositoryProxyConnection(java.lang.String,java.lang.String,java.util.Map)">
 <h3>setRepositoryProxyConnection</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/mode/repository-proxy/details")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setRepositoryProxyConnection</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProvider,
@@ -881,25 +783,22 @@ loadScripts(document, 'script');</script>
 <div class="block">Provide the connection to the local repository - used when the local repository mode is set to repository proxy.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connectorProvider</code> - connector provider class name to the OMRS repository connector.</dd>
 <dd><code>additionalProperties</code> - additional parameters to pass to the repository connector</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+ UserNotAuthorizedException     the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or repositoryProxyConnection parameter or
  OMAGConfigurationErrorException the local repository mode has not been set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setRepositoryProxyEventMapper(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="setRepositoryProxyEventMapper(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>setRepositoryProxyEventMapper</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/event-mapper-connection")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setRepositoryProxyEventMapper</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
@@ -908,24 +807,21 @@ loadScripts(document, 'script');</script>
  the metadata in the repository without going through the open metadata and governance services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connection</code> - connection to the OMRS repository event mapper.</dd>
 <dt>Returns:</dt>
 <dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
  OMAGConfigurationErrorException the local repository mode, or the event mapper has not been set</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setRepositoryProxyEventMapper(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="setRepositoryProxyEventMapper(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
 <h3>setRepositoryProxyEventMapper</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/event-mapper-details")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setRepositoryProxyEventMapper</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProvider,
@@ -938,116 +834,101 @@ loadScripts(document, 'script');</script>
  the metadata in the repository without going through the open metadata and governance services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>connectorProvider</code> - Java class name of the connector provider for the OMRS repository event mapper.</dd>
 <dd><code>eventSource</code> - topic name or URL to the native event source.</dd>
 <dd><code>additionalProperties</code> - additional properties for the event mapper connection</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException    the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
+ UserNotAuthorizedException    the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
  OMAGConfigurationErrorException the local repository mode has not been set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getLocalMetadataCollectionName(java.lang.String,java.lang.String)">
+<section class="detail" id="getLocalMetadataCollectionName(java.lang.String)">
 <h3>getLocalMetadataCollectionName</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/local-repository/metadata-collection-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/StringResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringResponse</a></span>&nbsp;<span class="element-name">getLocalMetadataCollectionName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the local metadata collection name.  If the local repository is not configured then the invalid parameter exception is returned.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>guid response or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or name parameter or
+ UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or name parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setLocalMetadataCollectionName(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="setLocalMetadataCollectionName(java.lang.String,java.lang.String)">
 <h3>setLocalMetadataCollectionName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/metadata-collection-name/{name}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setLocalMetadataCollectionName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 <div class="block">Set up the local metadata collection name.  If this is not set then the default value is the local server name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>name</code> - metadata collection name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or name parameter or
+ UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or name parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getLocalMetadataCollectionId(java.lang.String,java.lang.String)">
+<section class="detail" id="getLocalMetadataCollectionId(java.lang.String)">
 <h3>getLocalMetadataCollectionId</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/local-repository/metadata-collection-id")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">getLocalMetadataCollectionId</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the local metadata collection id.  If the local repository is not configured then the invalid parameter exception is returned.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>guid response or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or name parameter or
+ UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or name parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setLocalMetadataCollectionId(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="setLocalMetadataCollectionId(java.lang.String,java.lang.String)">
 <h3>setLocalMetadataCollectionId</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/metadata-collection-id")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setLocalMetadataCollectionId</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId)</span></div>
 <div class="block">Set up the local metadata collection id.  If the local repository is not configured then the invalid parameter exception is returned.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>metadataCollectionId</code> - new identifier for the local repository's metadata collection</dd>
 <dt>Returns:</dt>
 <dd>void or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or name parameter or
+ UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or name parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addCohortRegistration(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="addCohortRegistration(java.lang.String,java.lang.String,java.util.Map)">
 <h3>addCohortRegistration</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addCohortRegistration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1061,25 +942,22 @@ loadScripts(document, 'script');</script>
  They are also able to query each other's metadata directly through REST calls.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dd><code>additionalProperties</code> - additional properties for the event bus connection</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName, cohortName or serviceMode parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="addCohortRegistration(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure,java.util.Map)">
+<section class="detail" id="addCohortRegistration(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure,java.util.Map)">
 <h3>addCohortRegistration</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}/topic-structure/{cohortTopicStructure}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addCohortRegistration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1095,26 +973,23 @@ loadScripts(document, 'script');</script>
  They are also able to query each other's metadata directly through REST calls.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dd><code>cohortTopicStructure</code> - the style of cohort topic set up to use</dd>
 <dd><code>additionalProperties</code> - additional properties for the event bus connection</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName, cohortName or serviceMode parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getCohortConfig(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getCohortConfig(java.lang.String,java.lang.String)">
 <h3>getCohortConfig</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/cohorts/{cohortName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CohortConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">CohortConfigResponse</a></span>&nbsp;<span class="element-name">getCohortConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</span></div>
@@ -1125,24 +1000,21 @@ loadScripts(document, 'script');</script>
  They are also able to query each other's metadata directly through REST calls.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dt>Returns:</dt>
 <dd>cohort config response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName, cohortName or serviceMode parameter or
  OMAGConfigurationErrorException the event bus is not set.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getCohortTopicName(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getCohortTopicName(java.lang.String,java.lang.String)">
 <h3>getCohortTopicName</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/cohorts/{cohortName}/topic-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/StringResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringResponse</a></span>&nbsp;<span class="element-name">getCohortTopicName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</span></div>
@@ -1150,24 +1022,21 @@ loadScripts(document, 'script');</script>
  is set up with enableCohortRegistration().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dt>Returns:</dt>
 <dd>string name or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or cohortName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or cohortName parameter or
  OMAGConfigurationErrorException the cohort is not set up.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getDedicatedCohortTopicNames(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getDedicatedCohortTopicNames(java.lang.String,java.lang.String)">
 <h3>getDedicatedCohortTopicNames</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/cohorts/{cohortName}/dedicated-topic-names")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/DedicatedTopicListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">DedicatedTopicListResponse</a></span>&nbsp;<span class="element-name">getDedicatedCohortTopicNames</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</span></div>
@@ -1175,24 +1044,21 @@ loadScripts(document, 'script');</script>
  is set up with enableCohortRegistration().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dt>Returns:</dt>
 <dd>List of topic names - registration first, then types and then instances or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or cohortName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or cohortName parameter or
  OMAGConfigurationErrorException the cohort is not set up.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="overrideCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="overrideCohortTopicName(java.lang.String,java.lang.String,java.lang.String)">
 <h3>overrideCohortTopicName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}/topic-name-override")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">overrideCohortTopicName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1202,25 +1068,22 @@ loadScripts(document, 'script');</script>
  is set up with enableCohortRegistration().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dd><code>topicName</code> - new name for the topic.</dd>
 <dt>Returns:</dt>
 <dd>void or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or cohortName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or cohortName parameter or
  OMAGConfigurationErrorException the cohort is not set up.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="overrideRegistrationCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="overrideRegistrationCohortTopicName(java.lang.String,java.lang.String,java.lang.String)">
 <h3>overrideRegistrationCohortTopicName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}/topic-name-override/registration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">overrideRegistrationCohortTopicName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1230,25 +1093,22 @@ loadScripts(document, 'script');</script>
  is set up with enableCohortRegistration().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dd><code>topicName</code> - new name for the topic.</dd>
 <dt>Returns:</dt>
 <dd>void or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or cohortName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or cohortName parameter or
  OMAGConfigurationErrorException the cohort is not set up.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="overrideTypesCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="overrideTypesCohortTopicName(java.lang.String,java.lang.String,java.lang.String)">
 <h3>overrideTypesCohortTopicName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}/topic-name-override/types")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">overrideTypesCohortTopicName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1258,25 +1118,22 @@ loadScripts(document, 'script');</script>
  is set up with enableCohortRegistration().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dd><code>topicName</code> - new name for the topic.</dd>
 <dt>Returns:</dt>
 <dd>void or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or cohortName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or cohortName parameter or
  OMAGConfigurationErrorException the cohort is not set up.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="overrideInstancesCohortTopicName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="overrideInstancesCohortTopicName(java.lang.String,java.lang.String,java.lang.String)">
 <h3>overrideInstancesCohortTopicName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}/topic-name-override/instances")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">overrideInstancesCohortTopicName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1286,48 +1143,42 @@ loadScripts(document, 'script');</script>
  is set up with enableCohortRegistration().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dd><code>topicName</code> - new name for the topic.</dd>
 <dt>Returns:</dt>
 <dd>void or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or cohortName parameter or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or cohortName parameter or
  OMAGConfigurationErrorException the cohort is not set up.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearCohortConfig(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="clearCohortConfig(java.lang.String,java.lang.String)">
 <h3>clearCohortConfig</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/cohorts/{cohortName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearCohortConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName)</span></div>
 <div class="block">Unregister this server from an open metadata repository cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>cohortName</code> - name of the cohort.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName, cohortName or serviceMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setAuditLogDestinations(java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="setAuditLogDestinations(java.lang.String,java.util.List)">
 <h3>setAuditLogDestinations</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/audit-log-destinations")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setAuditLogDestinations</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&gt;&nbsp;auditLogDestinations)</span></div>
@@ -1335,64 +1186,55 @@ loadScripts(document, 'script');</script>
  to the connectors that will handle the audit log records.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>auditLogDestinations</code> - list of connection objects</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getAuditLogDestinations(java.lang.String,java.lang.String)">
+<section class="detail" id="getAuditLogDestinations(java.lang.String)">
 <h3>getAuditLogDestinations</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/audit-log-destinations")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ConnectionListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionListResponse</a></span>&nbsp;<span class="element-name">getAuditLogDestinations</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Set up the list of audit log destinations.  These destinations are expressed as Connection objects
  to the connectors that will handle the audit log records.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>connection list response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearAuditLogDestinations(java.lang.String,java.lang.String)">
+<section class="detail" id="clearAuditLogDestinations(java.lang.String)">
 <h3>clearAuditLogDestinations</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/audit-log-destinations")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearAuditLogDestinations</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Clears all audit log destinations for this server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setOpenMetadataArchives(java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="setOpenMetadataArchives(java.lang.String,java.util.List)">
 <h3>setOpenMetadataArchives</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/open-metadata-archives")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setOpenMetadataArchives</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&gt;&nbsp;openMetadataArchives)</span></div>
@@ -1400,129 +1242,111 @@ loadScripts(document, 'script');</script>
  repository start up.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>openMetadataArchives</code> - list of connection objects</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getOpenMetadataArchives(java.lang.String,java.lang.String)">
+<section class="detail" id="getOpenMetadataArchives(java.lang.String)">
 <h3>getOpenMetadataArchives</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-archives")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ConnectionListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionListResponse</a></span>&nbsp;<span class="element-name">getOpenMetadataArchives</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the list of open metadata archives.  These are open metadata types and instances that are loaded at
  repository start up.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>connection list response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearOpenMetadataArchives(java.lang.String,java.lang.String)">
+<section class="detail" id="clearOpenMetadataArchives(java.lang.String)">
 <h3>clearOpenMetadataArchives</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/open-metadata-archives")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearOpenMetadataArchives</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Clear the list of open metadata archives.  These are the open metadata types and instances that are loaded at
  repository start up.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setLocalRepositoryConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig)">
+<section class="detail" id="setLocalRepositoryConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig)">
 <h3>setLocalRepositoryConfig</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setLocalRepositoryConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a>&nbsp;localRepositoryConfig)</span></div>
 <div class="block">Set up the configuration for the local repository.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>localRepositoryConfig</code> - configuration properties for the local repository.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryConfig parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryConfig parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getLocalRepositoryConfig(java.lang.String,java.lang.String)">
+<section class="detail" id="getLocalRepositoryConfig(java.lang.String)">
 <h3>getLocalRepositoryConfig</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/local-repository/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/LocalRepositoryConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">LocalRepositoryConfigResponse</a></span>&nbsp;<span class="element-name">getLocalRepositoryConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the configuration for the local repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>local repository response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryConfig parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryConfig parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearLocalRepositoryConfig(java.lang.String,java.lang.String)">
+<section class="detail" id="clearLocalRepositoryConfig(java.lang.String)">
 <h3>clearLocalRepositoryConfig</h3>
 <div class="member-signature"><span class="annotations">@DeleteMapping(path="/local-repository/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearLocalRepositoryConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Remove all configuration for a local repository.  The default is no local repository.  This call
  can be used to remove subsequent local repository configuration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or localRepositoryMode parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="resetRemoteCohortURL(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)">
+<section class="detail" id="resetRemoteCohortURL(java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)">
 <h3>resetRemoteCohortURL</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/local-repository/configuration/remote-repository-connector-url")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">resetRemoteCohortURL</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../rest/URLRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">URLRequestBody</a>&nbsp;requestBody)</span></div>
@@ -1531,23 +1355,20 @@ loadScripts(document, 'script');</script>
  URL is updated, and the server restarted, it will broadcast its new URL to the rest of the cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>requestBody</code> - String url.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName or serverURLRoot parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setCohortConfig(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig)">
+<section class="detail" id="setCohortConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig)">
 <h3>setCohortConfig</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/cohorts/{cohortName}/configuration")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setCohortConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
@@ -1557,14 +1378,13 @@ loadScripts(document, 'script');</script>
  cohort.  Use setCohortMode to delete a cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request</dd>
 <dd><code>serverName</code> - local server name</dd>
 <dd><code>cohortName</code> - name of the cohort</dd>
 <dd><code>cohortConfig</code> - configuration for the cohort</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName, cohortName or cohortConfig parameter.</dd>
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName, cohortName or cohortConfig parameter.</dd>
 </dl>
 </section>
 </li>

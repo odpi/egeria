@@ -91,10 +91,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.Class,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String,int)" class="member-name-link">ViewServiceClientMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="ViewServiceClientMap.html" title="type parameter in ViewServiceClientMap">B</a>&gt;&nbsp;handlerClass,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.Class,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String,int)" class="member-name-link">ViewServiceClientMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="ViewServiceClientMap.html" title="type parameter in ViewServiceClientMap">B</a>&gt;&nbsp;handlerClass,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../adminservices/configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;activeViewServices,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
@@ -148,12 +146,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.Class,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.Class,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.lang.String,java.lang.String,int)">
 <h3>ViewServiceClientMap</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ViewServiceClientMap</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="ViewServiceClientMap.html" title="type parameter in ViewServiceClientMap">B</a>&gt;&nbsp;handlerClass,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../adminservices/configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;activeViewServices,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
@@ -165,8 +161,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>handlerClass</code> - name of the class to create</dd>
 <dd><code>localServerName</code> - name of this server (view server)</dd>
-<dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
 <dd><code>activeViewServices</code> - which view services are running</dd>
 <dd><code>serviceName</code> - local service name</dd>

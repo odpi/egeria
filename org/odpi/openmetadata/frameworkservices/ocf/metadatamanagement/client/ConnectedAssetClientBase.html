@@ -108,7 +108,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.client.<a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></h3>
-<code><a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#auditLog">auditLog</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#maxPageSize">maxPageSize</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#propertyHelper">propertyHelper</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#serverName">serverName</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#serviceURLMarker">serviceURLMarker</a></code></div>
+<code><a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#auditLog">auditLog</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#maxPageSize">maxPageSize</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#propertyHelper">propertyHelper</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#serverName">serverName</a>, <a href="../../../../frameworks/connectors/client/ConnectedAssetClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -119,22 +119,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ConnectedAssetClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ConnectedAssetClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
  int&nbsp;maxPageSize,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ConnectedAssetClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
- int&nbsp;maxPageSize,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last odd-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
 </div>
@@ -152,24 +144,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionByGUID(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getConnectionByGUID</a><wbr>(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionByGUID(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String)" class="member-name-link">getConnectionByGUID</a><wbr>(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the connection corresponding to the supplied connection GUID.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionByName(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getConnectionByName</a><wbr>(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionByName(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String)" class="member-name-link">getConnectionByName</a><wbr>(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the connection object corresponding to the supplied connection name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionForAsset(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getConnectionForAsset</a><wbr>(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionForAsset(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String)" class="member-name-link">getConnectionForAsset</a><wbr>(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -207,8 +196,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the connector corresponding to the supplied asset GUID.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorForConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)" class="member-name-link">getConnectorForConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;requestedConnection,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorForConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)" class="member-name-link">getConnectorForConnection</a><wbr>(<a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;requestedConnection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Use the Open Connector Framework (OCF) to create a connector using the supplied connection.</div>
@@ -258,36 +246,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
-<h3>ConnectedAssetClientBase</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ConnectedAssetClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- int&nbsp;maxPageSize,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
-                         throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OCF REST services</dd>
-<dd><code>maxPageSize</code> - maximum page size for this process</dd>
-<dd><code>serviceURLMarker</code> - indicator of the OMAS that this client is supporting</dd>
-<dd><code>auditLog</code> - destination for log messages</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>ConnectedAssetClientBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ConnectedAssetClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
  int&nbsp;maxPageSize,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
@@ -296,10 +261,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OCF REST services</dd>
-<dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>maxPageSize</code> - maximum page size for this process</dd>
-<dd><code>serviceURLMarker</code> - indicator of the OMAS that this client is supporting</dd>
 <dd><code>auditLog</code> - destination for log messages</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
@@ -316,10 +278,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getConnectorForConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">
+<section class="detail" id="getConnectorForConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">
 <h3>getConnectorForConnection</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorForConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;requestedConnection,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorForConnection</span><wbr><span class="parameters">(<a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;requestedConnection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
@@ -328,7 +289,6 @@ loadScripts(document, 'script');</script>
  The connector is initialized by not started.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serviceName</code> - calling service</dd>
 <dd><code>requestedConnection</code> - connection describing the required connector</dd>
 <dd><code>methodName</code> - name of the calling method.</dd>
 <dt>Returns:</dt>
@@ -341,10 +301,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnectionByGUID(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getConnectionByGUID(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String)">
 <h3>getConnectionByGUID</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getConnectionByGUID</span><wbr><span class="parameters">(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
                                   throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -354,7 +313,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>restClient</code> - client that calls REST APIs</dd>
-<dd><code>serviceName</code> - name of the calling service</dd>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>guid</code> - the unique id for the connection within the metadata repository.</dd>
 <dt>Returns:</dt>
@@ -367,10 +325,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnectionByName(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getConnectionByName(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String)">
 <h3>getConnectionByName</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getConnectionByName</span><wbr><span class="parameters">(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span>
                                   throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -380,7 +337,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>restClient</code> - client that calls REST APIs</dd>
-<dd><code>serviceName</code> - name of the calling service</dd>
 <dd><code>userId</code> - String - userId of user making request.</dd>
 <dd><code>name</code> - this is the qualifiedName of the connection.</dd>
 <dt>Returns:</dt>
@@ -393,10 +349,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnectionForAsset(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getConnectionForAsset(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String)">
 <h3>getConnectionForAsset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getConnectionForAsset</span><wbr><span class="parameters">(<a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</span>
                                  throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -406,7 +361,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>restClient</code> - client that calls REST APIs</dd>
-<dd><code>serviceName</code> - name of the calling service</dd>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - the unique id for the asset within the metadata repository.</dd>
 <dt>Returns:</dt>

@@ -287,7 +287,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <section class="detail" id="storeLogRecord(org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord)">
 <h3>storeLogRecord</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">storeLogRecord</span><wbr><span class="parameters">(<a href="OMRSAuditLogRecord.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore">OMRSAuditLogRecord</a>&nbsp;logRecord)</span>
-                               throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                               throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Store the audit log record in the audit log store.</div>
 <dl class="notes">
@@ -298,7 +298,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>unique identifier assigned to the log record</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the logRecord parameter is invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the logRecord parameter is invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>
 </section>
@@ -307,7 +307,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <section class="detail" id="storeLogRecord(org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord)">
 <h3>storeLogRecord</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">storeLogRecord</span><wbr><span class="parameters">(<a href="../../../../frameworks/auditlog/AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a>&nbsp;logRecord)</span>
-                      throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Store the audit log record in the audit log store.</div>
 <dl class="notes">
@@ -316,7 +316,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>unique identifier assigned to the log record</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the logRecord parameter is invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the logRecord parameter is invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>
 </section>
@@ -325,7 +325,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <section class="detail" id="getAuditLogRecord(java.lang.String)">
 <h3>getAuditLogRecord</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OMRSAuditLogRecord.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore">OMRSAuditLogRecord</a></span>&nbsp;<span class="element-name">getAuditLogRecord</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logRecordId)</span>
-                                     throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                     throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Retrieve a specific audit log record.</div>
@@ -337,7 +337,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>requested audit log record</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the logRecordId parameter is invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the logRecordId parameter is invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - indicates that the audit log store does not support queries.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>
@@ -350,7 +350,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;endDate,
  int&nbsp;offset,
  int&nbsp;maximumRecords)</span>
-                                                       throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
@@ -367,7 +367,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>list of log records from the specified time period</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the start and/or end date parameters are invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the start and/or end date parameters are invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - indicates that the offset or the maximumRecords parameters are invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - indicates that the audit log store does not support queries.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
@@ -382,7 +382,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;endDate,
  int&nbsp;offset,
  int&nbsp;maximumRecords)</span>
-                                                      throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
@@ -400,7 +400,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>list of log records from the specified time period</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the severity, start and/or end date parameters are invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the severity, start and/or end date parameters are invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - indicates that the offset or the maximumRecords parameters are invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - indicates that the audit log store does not support queries.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
@@ -415,7 +415,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;endDate,
  int&nbsp;offset,
  int&nbsp;maximumRecords)</span>
-                                                       throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
@@ -433,7 +433,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>list of log records from the specified time period</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the component, start and/or end date parameters are invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the component, start and/or end date parameters are invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - indicates that the offset or the maximumRecords parameters are invalid.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - indicates that the audit log store does not support queries.</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
@@ -445,14 +445,14 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <h3>validateLogRecord</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateLogRecord</span><wbr><span class="parameters">(<a href="OMRSAuditLogRecord.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore">OMRSAuditLogRecord</a>&nbsp;logRecord,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                          throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
+                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Validate that the log record supplied by the OMRS is properly filled out.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>logRecord</code> - supplied by the OMRS</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the log record is not valid</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the log record is not valid</dd>
 </dl>
 </section>
 </li>
@@ -474,7 +474,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <h3>getJSONLogRecord</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getJSONLogRecord</span><wbr><span class="parameters">(<a href="../../../../frameworks/auditlog/AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a>&nbsp;logRecord,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                           throws <span class="exceptions"><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
+                           throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create JSON version of the log record.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -483,7 +483,7 @@ implements <a href="OMRSAuditLogStore.html" title="interface in org.odpi.openmet
 <dt>Returns:</dt>
 <dd>JSON string</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - unable to convert the log record.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - unable to convert the log record.</dd>
 </dl>
 </section>
 </li>

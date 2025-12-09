@@ -210,7 +210,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the SecurityGroupMembership classification for the user identity.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateUserIdentity(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties)" class="member-name-link">updateUserIdentity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userIdentityGUID,
  <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../properties/actors/UserIdentityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">UserIdentityProperties</a>&nbsp;properties)</code></div>
@@ -356,10 +356,10 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="updateUserIdentity(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties)">
 <h3>updateUserIdentity</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateUserIdentity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userIdentityGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">updateUserIdentity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userIdentityGUID,
  <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../properties/actors/UserIdentityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">UserIdentityProperties</a>&nbsp;properties)</span>
-                        throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Update the properties of a user identity.</div>
@@ -368,6 +368,8 @@ loadScripts(document, 'script');</script>
 <dd><code>userIdentityGUID</code> - unique identifier of the user identity (returned from create)</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - properties for the element.</dd>
+<dt>Returns:</dt>
+<dd>boolean - true if an update occurred</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>

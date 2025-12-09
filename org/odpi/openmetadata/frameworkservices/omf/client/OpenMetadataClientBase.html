@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="EgeriaOpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">EgeriaOpenMetadataStoreClient</a></code>, <code><a href="handlers/EgeriaOpenMetadataStoreHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client.handlers">EgeriaOpenMetadataStoreHandler</a></code></dd>
+<dd><code><a href="EgeriaOpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">EgeriaOpenMetadataStoreClient</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenMetadataClientBase</span>
@@ -104,12 +104,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></code></div>
-<div class="col-second even-row-color"><code><a href="#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../frameworks/openmetadata/builders/OpenMetadataElementBuilder.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.builders">OpenMetadataElementBuilder</a></code></div>
+<div class="col-second even-row-color"><code><a href="#elementBuilder" class="member-name-link">elementBuilder</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../frameworks/openmetadata/builders/OpenMetadataRelationshipBuilder.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.builders">OpenMetadataRelationshipBuilder</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#relationshipBuilder" class="member-name-link">relationshipBuilder</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../frameworks/openmetadata/builders/OpenMetadataRelationshipBuilder.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.builders">OpenMetadataRelationshipBuilder</a></code></div>
+<div class="col-second even-row-color"><code><a href="#relationshipBuilder" class="member-name-link">relationshipBuilder</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.client.<a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></h3>
@@ -124,19 +127,23 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int)" class="member-name-link">OpenMetadataClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">OpenMetadataClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- int&nbsp;maxPageSize)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
+<div class="block">Create a new client that passes a bearer token in each HTTP request.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">OpenMetadataClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Map,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">OpenMetadataClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword,
- int&nbsp;maxPageSize)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a>&gt;&nbsp;secretsStoreConnectorMap,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
+<div class="block">Create a new client that passes a bearer token in each HTTP request.</div>
 </div>
 </div>
 </section>
@@ -188,14 +195,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create an action request for someone to work on.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)" class="member-name-link">createIncidentReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
- int&nbsp;domainIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;background,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;incidentClassifiers,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIncidentReport(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map,java.lang.String)" class="member-name-link">createIncidentReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/openmetadata/properties/assets/reports/IncidentReportProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">IncidentReportProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/assets/reports/ImpactedResourceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ImpactedResourceProperties</a>&gt;&nbsp;impactedResources,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/assets/reports/ReportDependencyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ReportDependencyProperties</a>&gt;&nbsp;previousIncidents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an incident report to capture the situation detected by the caller.</div>
@@ -503,14 +506,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the TypeDef identified by the unique name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">openToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;instructions,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- int&nbsp;priority,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;dueDate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openToDo(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">openToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/actions/ToDoProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ToDoProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID,
@@ -519,16 +516,23 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a "To Do" request for someone to work on.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)" class="member-name-link">publishMetadataElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the zone membership to increase its visibility.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  <a href="../../../frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerContextEvent(java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)" class="member-name-link">registerContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerContextEvent(java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)" class="member-name-link">registerContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;parentContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;childContextEvents,
@@ -537,82 +541,89 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;effectedDataResourceGUIDs,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs,
  <a href="../../../frameworks/openmetadata/properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new context event</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxPageSize(int)" class="member-name-link">setMaxPageSize</a><wbr>(int&nbsp;maxPageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxPageSize(int)" class="member-name-link">setMaxPageSize</a><wbr>(int&nbsp;maxPageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set the max page size.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)" class="member-name-link">setTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)" class="member-name-link">setTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../../frameworks/openmetadata/properties/translations/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.translations">TranslationDetailProperties</a>&nbsp;translationDetail)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create or update the translation for a particular language/locale for a metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,java.util.Date,java.util.Date)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,java.util.Date,java.util.Date)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of specific metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">updateMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">updateMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../../frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of a specific metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
  <a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;newElementStatus)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of specific metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
  <a href="../../../frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update all relationships of a particular type between two metadata elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,java.util.Date,java.util.Date)" class="member-name-link">updateRelationshipEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,java.util.Date,java.util.Date)" class="member-name-link">updateRelationshipEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">updateRelationshipInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">updateRelationshipInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="../../../frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties associated with a relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withdrawMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)" class="member-name-link">withdrawMetadataElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the zone membership to reduce its visibility.</div>
 </div>
 </div>
 </div>
@@ -641,6 +652,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="elementBuilder">
+<h3>elementBuilder</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/builders/OpenMetadataElementBuilder.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.builders">OpenMetadataElementBuilder</a></span>&nbsp;<span class="element-name">elementBuilder</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="relationshipBuilder">
 <h3>relationshipBuilder</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/builders/OpenMetadataRelationshipBuilder.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.builders">OpenMetadataRelationshipBuilder</a></span>&nbsp;<span class="element-name">relationshipBuilder</span></div>
@@ -655,18 +672,27 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>OpenMetadataClientBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- int&nbsp;maxPageSize)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                        throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
+<div class="block">Create a new client that passes a bearer token in each HTTP request.  This is based on the
+ userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>secretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>secretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>secretsStoreCollection</code> - secrets store collection for bearer token</dd>
 <dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
+<dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
@@ -674,23 +700,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.util.Map,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>OpenMetadataClientBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword,
- int&nbsp;maxPageSize)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a>&gt;&nbsp;secretsStoreConnectorMap,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                        throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
+<div class="block">Create a new client that passes a bearer token in each HTTP request.  This is based on the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
-<dd><code>serverUserId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>serverPassword</code> - caller's password embedded in all HTTP requests</dd>
+<dd><code>secretsStoreConnectorMap</code> - connectors to secrets stores</dd>
 <dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
+<dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
@@ -1569,11 +1595,11 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="updateMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)">
 <h3>updateMetadataElementInStore</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">updateMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../../frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../../../frameworks/openmetadata/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ElementProperties</a>&nbsp;properties)</span>
-                                  throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                                     throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update the properties of a specific metadata element.  The properties must match the type definition associated with the
@@ -1589,6 +1615,8 @@ loadScripts(document, 'script');</script>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>updateOptions</code> - provides a structure for the additional options when updating an element.</dd>
 <dd><code>properties</code> - new properties for the metadata element</dd>
+<dt>Returns:</dt>
+<dd>boolean - true if an update occurred</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the properties are invalid in some way</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
@@ -1619,6 +1647,58 @@ loadScripts(document, 'script');</script>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dd><code>newElementStatus</code> - new status value - or null to leave as is</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">
+<h3>publishMetadataElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishMetadataElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions)</span>
+                            throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/api/MetadataElementInterface.html#publishMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">publishMetadataElement</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#publishMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">publishMetadataElement</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="withdrawMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">
+<h3>withdrawMetadataElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">withdrawMetadataElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../frameworks/openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions)</span>
+                             throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/api/MetadataElementInterface.html#withdrawMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">withdrawMetadataElement</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html#withdrawMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">withdrawMetadataElement</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
@@ -2060,16 +2140,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">
+<section class="detail" id="createIncidentReport(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map,java.lang.String)">
 <h3>createIncidentReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createIncidentReport</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
- int&nbsp;domainIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;background,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;incidentClassifiers,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/reports/IncidentReportProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">IncidentReportProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/assets/reports/ImpactedResourceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ImpactedResourceProperties</a>&gt;&nbsp;impactedResources,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../frameworks/openmetadata/properties/assets/reports/ReportDependencyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ReportDependencyProperties</a>&gt;&nbsp;previousIncidents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID)</span>
                             throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
@@ -2079,13 +2155,9 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
-<dd><code>qualifiedName</code> - unique identifier to give this new incident report</dd>
-<dd><code>domainIdentifier</code> - governance domain associated with this action (0=ALL)</dd>
-<dd><code>background</code> - description of the situation</dd>
+<dd><code>properties</code> - unique identifier to give this new incident report and description of the situation</dd>
 <dd><code>impactedResources</code> - details of the resources impacted by this situation</dd>
 <dd><code>previousIncidents</code> - links to previous incident reports covering this situation</dd>
-<dd><code>incidentClassifiers</code> - initial classifiers for the incident report</dd>
-<dd><code>additionalProperties</code> - additional arbitrary properties for the incident reports</dd>
 <dd><code>originatorGUID</code> - the unique identifier of the person or process that created the incident</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the resulting incident report</dd>
@@ -2161,16 +2233,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="openToDo(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.lang.String,java.util.List)">
 <h3>openToDo</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">openToDo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;instructions,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;category,
- int&nbsp;priority,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;dueDate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/actions/ToDoProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ToDoProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID,
@@ -2182,13 +2248,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
-<dd><code>qualifiedName</code> - unique name for the to do.  (Could be the engine name and a guid?)</dd>
-<dd><code>title</code> - short meaningful phrase for the person receiving the request</dd>
-<dd><code>instructions</code> - further details on what to do</dd>
-<dd><code>category</code> - a category of to dos (for example, "data error", "access request")</dd>
-<dd><code>priority</code> - priority value (based on organization's scale)</dd>
-<dd><code>dueDate</code> - date/time this needs to be completed</dd>
-<dd><code>additionalProperties</code> - additional arbitrary properties for the incident reports</dd>
+<dd><code>properties</code> - unique name for the to do plus additional  properties</dd>
 <dd><code>assignToGUID</code> - unique identifier of the Actor element for the recipient</dd>
 <dd><code>sponsorGUID</code> - unique identifier of the element that describes the rule, project that this is on behalf of</dd>
 <dd><code>originatorGUID</code> - unique identifier of the source of the to do</dd>

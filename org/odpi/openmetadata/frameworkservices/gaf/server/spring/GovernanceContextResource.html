@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/{serviceURLMarker}/governance-context-service/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-context-service/users/{userId}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">GovernanceContextResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">GovernanceContextResource supports the REST APIs for running Governance Services.</div>
@@ -109,8 +109,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#claimEngineAction(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">claimEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#claimEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">claimEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
  <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
@@ -118,8 +117,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Request that execution of an engine action is allocated to the caller.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveClaimedEngineActions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveClaimedEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveClaimedEngineActions(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveClaimedEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
  int&nbsp;startFrom,
@@ -128,8 +126,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody)" class="member-name-link">recordCompletionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody)" class="member-name-link">recordCompletionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionGUID,
  <a href="../../rest/CompletionStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">CompletionStatusRequestBody</a>&nbsp;requestBody)</code></div>
@@ -137,16 +134,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../omf/rest/ActionTargetStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">ActionTargetStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of a specific action target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEngineActionStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody)" class="member-name-link">updateEngineActionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEngineActionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody)" class="member-name-link">updateEngineActionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
  <a href="../../rest/EngineActionStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionStatusRequestBody</a>&nbsp;requestBody)</code></div>
@@ -185,13 +180,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="updateEngineActionStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody)">
+<section class="detail" id="updateEngineActionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody)">
 <h3>updateEngineActionStatus</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/{engineActionGUID}/status/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateEngineActionStatus</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -202,7 +195,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>engineActionGUID</code> - identifier of the engine action request</dd>
 <dd><code>requestBody</code> - new status ordinal</dd>
@@ -215,13 +207,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActiveClaimedEngineActions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getActiveClaimedEngineActions(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <h3>getActiveClaimedEngineActions</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/governance-engines/{governanceEngineGUID}/active-engine-actions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></span>&nbsp;<span class="element-name">getActiveClaimedEngineActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -235,7 +225,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - userId of caller</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of governance engine</dd>
 <dd><code>startFrom</code> - starting from element</dd>
@@ -249,13 +238,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="claimEngineAction(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<section class="detail" id="claimEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
 <h3>claimEngineAction</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/{engineActionGUID}/claim")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">claimEngineAction</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -266,7 +253,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>engineActionGUID</code> - identifier of the engine action request.</dd>
 <dd><code>requestBody</code> - null request body</dd>
@@ -279,13 +265,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody)">
+<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody)">
 <h3>updateActionTargetStatus</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/action-targets/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateActionTargetStatus</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
@@ -297,7 +281,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>requestBody</code> - relationship properties</dd>
 <dt>Returns:</dt>
@@ -309,13 +292,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="recordCompletionStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody)">
+<section class="detail" id="recordCompletionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody)">
 <h3>recordCompletionStatus</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/{governanceActionGUID}/completion-status")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">recordCompletionStatus</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
@@ -326,7 +307,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>governanceActionGUID</code> - unique identifier of the governance action to update</dd>
 <dd><code>requestBody</code> - completion status enum value, optional guard strings for triggering subsequent action(s) plus

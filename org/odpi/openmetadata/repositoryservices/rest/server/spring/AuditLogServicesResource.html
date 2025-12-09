@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}/audit-log")
+@RequestMapping("/servers/{serverName}/open-metadata/repository-services/audit-log")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">AuditLogServicesResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">AuditLogServicesResource provides the server-side support for the OMRS Repository REST Services API
@@ -112,14 +112,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../properties/AuditLogReportResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">AuditLogReportResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuditLogReport(java.lang.String,java.lang.String)" class="member-name-link">getAuditLogReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuditLogReport(java.lang.String)" class="member-name-link">getAuditLogReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the report from the local server's audit log.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../properties/AuditLogSeveritiesResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">AuditLogSeveritiesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSeverityList(java.lang.String,java.lang.String)" class="member-name-link">getSeverityList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSeverityList(java.lang.String)" class="member-name-link">getSeverityList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the details of the severities that this server supports.</div>
 </div>
@@ -156,36 +154,30 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getSeverityList(java.lang.String,java.lang.String)">
+<section class="detail" id="getSeverityList(java.lang.String)">
 <h3>getSeverityList</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/severity-definitions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../properties/AuditLogSeveritiesResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">AuditLogSeveritiesResponse</a></span>&nbsp;<span class="element-name">getSeverityList</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the details of the severities that this server supports.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server</dd>
-<dd><code>userId</code> - calling user</dd>
 <dt>Returns:</dt>
 <dd>variety of properties</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getAuditLogReport(java.lang.String,java.lang.String)">
+<section class="detail" id="getAuditLogReport(java.lang.String)">
 <h3>getAuditLogReport</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/report")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../properties/AuditLogReportResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">AuditLogReportResponse</a></span>&nbsp;<span class="element-name">getAuditLogReport</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the report from the local server's audit log.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - server to query</dd>
-<dd><code>userId</code> - calling user</dd>
 <dt>Returns:</dt>
 <dd>registration properties for server</dd>
 </dl>

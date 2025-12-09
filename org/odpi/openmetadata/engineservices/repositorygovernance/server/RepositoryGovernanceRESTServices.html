@@ -72,12 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class RepositoryGovernanceRESTServices" class="title">Class RepositoryGovernanceRESTServices</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">org.odpi.openmetadata.tokencontroller.TokenController</a>
 <div class="inheritance">org.odpi.openmetadata.engineservices.repositorygovernance.server.RepositoryGovernanceRESTServices</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RepositoryGovernanceRESTServices</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></span></div>
 <div class="block">RepositoryGovernanceRESTServices provides the external service implementation for a repository governance engine.
  Each method contains the engine host server name and the repository governance engine identifier (guid).
  The RepositoryGovernanceRESTServices locates the correct repository governance engine instance within the correct
@@ -110,8 +112,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/ConnectorReportResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorReportResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnector(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">validateConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnector(java.lang.String,java.lang.String)" class="member-name-link">validateConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate the connector and return its connector type.</div>
@@ -119,6 +120,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.tokencontroller.TokenController">Methods inherited from class&nbsp;org.odpi.openmetadata.tokencontroller.<a href="../../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></h3>
+<code><a href="../../../tokencontroller/TokenController.html#getUser(java.lang.String,java.lang.String)">getUser</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -148,20 +152,17 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="validateConnector(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="validateConnector(java.lang.String,java.lang.String)">
 <h3>validateConnector</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/ConnectorReportResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorReportResponse</a></span>&nbsp;<span class="element-name">validateConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</span></div>
 <div class="block">Validate the connector and return its connector type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - integration daemon server name</dd>
-<dd><code>userId</code> - calling user</dd>
 <dd><code>connectorProviderClassName</code> - name of a specific connector or null for all connectors</dd>
 <dt>Returns:</dt>
 <dd>connector type or
-
   InvalidParameterException the connector provider class name is not a valid connector fo this service
   UserNotAuthorizedException user not authorized to issue this request
   PropertyServerException there was a problem detected by the integration service</dd>

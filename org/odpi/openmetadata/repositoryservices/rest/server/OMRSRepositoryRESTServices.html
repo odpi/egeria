@@ -83,18 +83,18 @@ loadScripts(document, 'script');</script>
  If localRepositoryConnector is null when a REST call is received, the request is rejected.  Otherwise,
  it uses the supplied server name to locate the appropriate metadata collection for its local
  repository and pass it the requested call.
-
+ <p>
  OMRSRepositoryRESTServices is itself wrapped by classes that provide REST annotations.  In the Egeria code base
  OMRSRepositoryResource from the repository-services-spring module uses spring boot annotations.  Other servers
  may use a different type of REST annotations and so the spring wrapper may be disregarded and replaced.
-
+ <p>
  The REST services are based around the OMRSMetadataInstanceStore interface.
  <p>
      OMRSMetadataInstanceStore is the common interface for working with the contents of a metadata repository.
      Within a metadata collection are the type definitions (TypeDefs) and metadata instances (Entities and
      Relationships).  OMRSMetadataCollectionBase provides empty implementation of the abstract methods of
      OMRSMetadataInstanceStore.
-
+ <p>
      The methods on OMRSMetadataInstanceStore are in the following major groups:
  </p>
  <ul>
@@ -217,6 +217,32 @@ loadScripts(document, 'script');</script>
  <a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefGallery.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefGallery</a>&nbsp;newTypes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a collection of related types.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#captureInvalidParameterException(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException)" class="member-name-link">captureInvalidParameterException</a><wbr>(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>&nbsp;error)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set the exception information into the response.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#capturePropertyServerException(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException)" class="member-name-link">capturePropertyServerException</a><wbr>(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>&nbsp;error)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set the exception information into the response.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#captureRuntimeExceptions(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,java.lang.Throwable,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">captureRuntimeExceptions</a><wbr>(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;error,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">A runtime error occurred.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#captureUserNotAuthorizedException(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException)" class="member-name-link">captureUserNotAuthorizedException</a><wbr>(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>&nbsp;error)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set the exception information into the response.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntityDetailResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityDetailResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyEntity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.ClassificationRequest)" class="member-name-link">classifyEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -4017,6 +4043,62 @@ loadScripts(document, 'script');</script>
   InvalidParameterException unknown servername
   UserNotAuthorizedException unsupported userId
   RepositoryErrorException null local repository</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="captureRuntimeExceptions(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,java.lang.Throwable,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<h3>captureRuntimeExceptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">captureRuntimeExceptions</span><wbr><span class="parameters">(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;error,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
+<div class="block">A runtime error occurred.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>response</code> - REST Response</dd>
+<dd><code>error</code> - returned response</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dd><code>auditLog</code> - log location for recording an unexpected exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="captureInvalidParameterException(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException)">
+<h3>captureInvalidParameterException</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">captureInvalidParameterException</span><wbr><span class="parameters">(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>&nbsp;error)</span></div>
+<div class="block">Set the exception information into the response.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>response</code> - REST Response</dd>
+<dd><code>error</code> - returned response.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="capturePropertyServerException(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException)">
+<h3>capturePropertyServerException</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">capturePropertyServerException</span><wbr><span class="parameters">(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>&nbsp;error)</span></div>
+<div class="block">Set the exception information into the response.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>response</code> - REST Response</dd>
+<dd><code>error</code> - returned response.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="captureUserNotAuthorizedException(org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse,org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException)">
+<h3>captureUserNotAuthorizedException</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">captureUserNotAuthorizedException</span><wbr><span class="parameters">(<a href="../properties/OMRSAPIResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIResponse</a>&nbsp;response,
+ <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>&nbsp;error)</span></div>
+<div class="block">Set the exception information into the response.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>response</code> - REST Response</dd>
+<dd><code>error</code> - returned response.</dd>
 </dl>
 </section>
 </li>

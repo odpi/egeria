@@ -73,6 +73,9 @@ org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestvalidvalues
+org.odpi.openmetadata.adapters.connectors.organizationinsight.controls
+org.odpi.openmetadata.adapters.connectors.organizationinsight.ffdc
+org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
@@ -101,10 +104,8 @@ org.odpi.openmetadata.adapters.connectors.restclients.factory
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
-org.odpi.openmetadata.adapters.connectors.secretsstore.envar
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc
-org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
@@ -164,16 +165,6 @@ org.odpi.openmetadata.adminservices.spring
 org.odpi.openmetadata.adminservices.store
 org.odpi.openmetadata.archiveutilities.bigglossaries
 org.odpi.openmetadata.archiveutilities.bigglossaries.catalogcontent
-org.odpi.openmetadata.archiveutilities.openconnectors
-org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas
-org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka
-org.odpi.openmetadata.archiveutilities.openconnectors.apis
-org.odpi.openmetadata.archiveutilities.openconnectors.base
-org.odpi.openmetadata.archiveutilities.openconnectors.core
-org.odpi.openmetadata.archiveutilities.openconnectors.digitalproducts
-org.odpi.openmetadata.archiveutilities.openconnectors.nanny
-org.odpi.openmetadata.archiveutilities.openconnectors.postgres
-org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog
 org.odpi.openmetadata.archiveutilities.simplecatalogs
 org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent
 org.odpi.openmetadata.commonservices.ffdc
@@ -222,6 +213,20 @@ org.odpi.openmetadata.conformance.workbenches.platform
 org.odpi.openmetadata.conformance.workbenches.repository
 org.odpi.openmetadata.conformance.workbenches.repository.connectorconsumer
 org.odpi.openmetadata.conformance.workbenches.repository.listener
+org.odpi.openmetadata.contentpacks.core
+org.odpi.openmetadata.contentpacks.core.apacheatlas
+org.odpi.openmetadata.contentpacks.core.apachekafka
+org.odpi.openmetadata.contentpacks.core.apis
+org.odpi.openmetadata.contentpacks.core.base
+org.odpi.openmetadata.contentpacks.core.core
+org.odpi.openmetadata.contentpacks.core.digitalproducts
+org.odpi.openmetadata.contentpacks.core.egeria
+org.odpi.openmetadata.contentpacks.core.files
+org.odpi.openmetadata.contentpacks.core.nanny
+org.odpi.openmetadata.contentpacks.core.openlineage
+org.odpi.openmetadata.contentpacks.core.organizationinsight
+org.odpi.openmetadata.contentpacks.core.postgres
+org.odpi.openmetadata.contentpacks.core.unitycatalog
 org.odpi.openmetadata.engineservices.assetanalysis.server.spring
 org.odpi.openmetadata.engineservices.governanceaction.admin
 org.odpi.openmetadata.engineservices.governanceaction.api
@@ -379,7 +384,6 @@ org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.server
 org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.server.spring
 org.odpi.openmetadata.frameworkservices.omf.admin
 org.odpi.openmetadata.frameworkservices.omf.client
-org.odpi.openmetadata.frameworkservices.omf.client.handlers
 org.odpi.openmetadata.frameworkservices.omf.client.rest
 org.odpi.openmetadata.frameworkservices.omf.connectors.outtopic
 org.odpi.openmetadata.frameworkservices.omf.converters
@@ -387,7 +391,6 @@ org.odpi.openmetadata.frameworkservices.omf.ffdc
 org.odpi.openmetadata.frameworkservices.omf.handlers
 org.odpi.openmetadata.frameworkservices.omf.listener
 org.odpi.openmetadata.frameworkservices.omf.outtopic
-org.odpi.openmetadata.frameworkservices.omf.properties
 org.odpi.openmetadata.frameworkservices.omf.rest
 org.odpi.openmetadata.frameworkservices.omf.server
 org.odpi.openmetadata.frameworkservices.omf.server.spring
@@ -395,6 +398,7 @@ org.odpi.openmetadata.fvt.utilities
 org.odpi.openmetadata.fvt.utilities.auditlog
 org.odpi.openmetadata.fvt.utilities.exceptions
 org.odpi.openmetadata.governanceservers.enginehostservices.admin
+org.odpi.openmetadata.governanceservers.enginehostservices.api
 org.odpi.openmetadata.governanceservers.enginehostservices.client
 org.odpi.openmetadata.governanceservers.enginehostservices.client.rest
 org.odpi.openmetadata.governanceservers.enginehostservices.enginemap
@@ -405,7 +409,6 @@ org.odpi.openmetadata.governanceservers.enginehostservices.registration
 org.odpi.openmetadata.governanceservers.enginehostservices.rest
 org.odpi.openmetadata.governanceservers.enginehostservices.server
 org.odpi.openmetadata.governanceservers.enginehostservices.threads
-org.odpi.openmetadata.governanceservers.integrationdaemonservices.api
 org.odpi.openmetadata.governanceservers.integrationdaemonservices.client
 org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc
 org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers
@@ -435,7 +438,6 @@ org.odpi.openmetadata.platformservices.server
 org.odpi.openmetadata.platformservices.server.spring
 org.odpi.openmetadata.reports
 org.odpi.openmetadata.reports.componentid
-org.odpi.openmetadata.reports.platform
 org.odpi.openmetadata.repositoryservices.admin
 org.odpi.openmetadata.repositoryservices.archivemanager
 org.odpi.openmetadata.repositoryservices.archiveutilities
@@ -465,7 +467,7 @@ org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executor
 org.odpi.openmetadata.repositoryservices.eventmanagement
 org.odpi.openmetadata.repositoryservices.events
 org.odpi.openmetadata.repositoryservices.events.beans
-org.odpi.openmetadata.repositoryservices.events.beans.v1
+org.odpi.openmetadata.repositoryservices.events.beans.v2
 org.odpi.openmetadata.repositoryservices.events.future
 org.odpi.openmetadata.repositoryservices.ffdc
 org.odpi.openmetadata.repositoryservices.ffdc.exception

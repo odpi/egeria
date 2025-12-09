@@ -2056,7 +2056,7 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateTypeDefPatch</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                          throws <span class="exceptions"><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                          throws <span class="exceptions"><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></span></div>
 <div class="block">Verify that a TypeDefPatch is not null and is for a recognized type.</div>
 <dl class="notes">
@@ -2065,7 +2065,7 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <dd><code>typeDefPatch</code> - typeDefPatch to test</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
+<dd><code><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
 <dd><code><a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></code> - the typeDefPatch is invalid</dd>
 </dl>
 </section>
@@ -2077,7 +2077,7 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
  <a href="../properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;originalTypeDef,
  <a href="../properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a>&nbsp;typeDefPatch,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                   throws <span class="exceptions"><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                   throws <span class="exceptions"><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></span></div>
 <div class="block">Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
  the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
@@ -2091,7 +2091,7 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <dt>Returns:</dt>
 <dd>updated TypeDef</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
+<dd><code><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the original typeDef or typeDefPatch is null</dd>
 <dd><code><a href="../../../../ffdc/exception/PatchErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PatchErrorException</a></code> - the patch is either badly formatted, or does not apply to the supplied TypeDef</dd>
 </dl>
 </section>

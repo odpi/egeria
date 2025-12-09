@@ -110,13 +110,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize(org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">initialize</a><wbr>(<a href="../../../../adminservices/configuration/properties/AccessServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AccessServiceConfig</a>&nbsp;accessServiceConfig,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize(org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">initialize</a><wbr>(<a href="../../../../adminservices/configuration/properties/AccessServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AccessServiceConfig</a>&nbsp;accessServiceConfig,
  <a href="../../../../repositoryservices/connectors/omrstopic/OMRSTopicConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicConnector</a>&nbsp;enterpriseOMRSTopicConnector,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;enterpriseOMRSRepositoryConnector,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
  int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Initialize the access service.</div>
@@ -161,7 +163,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="initialize(org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,int)">
+<section class="detail" id="initialize(org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="../../../../adminservices/configuration/properties/AccessServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AccessServiceConfig</a>&nbsp;accessServiceConfig,
  <a href="../../../../repositoryservices/connectors/omrstopic/OMRSTopicConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicConnector</a>&nbsp;enterpriseOMRSTopicConnector,
@@ -169,13 +171,15 @@ loadScripts(document, 'script');</script>
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
  int&nbsp;maxPageSize)</span>
                 throws <span class="exceptions"><a href="../../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Initialize the access service.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../adminservices/registration/AccessServiceAdmin.html#initialize(org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,int)">initialize</a></code>&nbsp;in class&nbsp;<code><a href="../../../../adminservices/registration/AccessServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">AccessServiceAdmin</a></code></dd>
+<dd><code><a href="../../../../adminservices/registration/AccessServiceAdmin.html#initialize(org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig,org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">initialize</a></code>&nbsp;in class&nbsp;<code><a href="../../../../adminservices/registration/AccessServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">AccessServiceAdmin</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>accessServiceConfig</code> - specific configuration properties for this access service.</dd>
 <dd><code>enterpriseOMRSTopicConnector</code> - connector for receiving OMRS Events from the cohorts</dd>
@@ -183,7 +187,9 @@ loadScripts(document, 'script');</script>
 <dd><code>auditLog</code> - audit log component for logging messages.</dd>
 <dd><code>localServerName</code> - name of this server</dd>
 <dd><code>localServerUserId</code> - user id to use on OMRS calls where there is no end user.</dd>
-<dd><code>localServerPassword</code> - password to use on OMRS calls where there is no end user.</dd>
+<dd><code>localServerSecretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>localServerSecretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>localServerSecretsStoreCollection</code> - secrets store collection for bearer token</dd>
 <dd><code>maxPageSize</code> - max number of results to return on single request.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - invalid parameters in the configuration properties.</dd>

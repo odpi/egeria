@@ -145,16 +145,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The user requests to detach a non-anchored element from the metadata element in the catalog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#READ" class="member-name-link">READ</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PUBLISH" class="member-name-link">PUBLISH</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The user requests to publish the metadata element.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#READ" class="member-name-link">READ</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The user requests to read the metadata element in the catalog.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UPDATE_PROPERTIES" class="member-name-link">UPDATE_PROPERTIES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UPDATE_PROPERTIES" class="member-name-link">UPDATE_PROPERTIES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user requests to change the description of the metadata element in the catalog.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UPDATE_STATUS" class="member-name-link">UPDATE_STATUS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UPDATE_STATUS" class="member-name-link">UPDATE_STATUS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The user requests to change the status of the metadata element in the catalog.</div>
 </div>
 </div>
@@ -311,6 +315,13 @@ the order they are declared.</div>
 <h3>DECLASSIFY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AccessOperation.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">AccessOperation</a></span>&nbsp;<span class="element-name">DECLASSIFY</span></div>
 <div class="block">The user requests to remove a classification from the metadata element in the catalog.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PUBLISH">
+<h3>PUBLISH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AccessOperation.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">AccessOperation</a></span>&nbsp;<span class="element-name">PUBLISH</span></div>
+<div class="block">The user requests to publish the metadata element.  This is a special type of classification that potentially changes the governance zones.</div>
 </section>
 </li>
 </ul>

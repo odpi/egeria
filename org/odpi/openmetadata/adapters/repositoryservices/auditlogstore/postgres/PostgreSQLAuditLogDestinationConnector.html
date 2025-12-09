@@ -243,7 +243,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="storeLogRecord(org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord)">
 <h3>storeLogRecord</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">storeLogRecord</span><wbr><span class="parameters">(<a href="../../../../repositoryservices/connectors/stores/auditlogstore/OMRSAuditLogRecord.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore">OMRSAuditLogRecord</a>&nbsp;logRecord)</span>
-                      throws <span class="exceptions"><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></span></div>
+                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Store the audit log record in the audit log store.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -255,7 +255,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>unique identifier assigned to the log record</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the logRecord parameter is invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the logRecord parameter is invalid.</dd>
 </dl>
 </section>
 </li>
@@ -263,7 +263,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAuditLogRecord(java.lang.String)">
 <h3>getAuditLogRecord</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../repositoryservices/connectors/stores/auditlogstore/OMRSAuditLogRecord.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore">OMRSAuditLogRecord</a></span>&nbsp;<span class="element-name">getAuditLogRecord</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logRecordId)</span>
-                                     throws <span class="exceptions"><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                     throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Retrieve a specific audit log record.</div>
 <dl class="notes">
@@ -276,7 +276,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>requested audit log record</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the logRecordId parameter is invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the logRecordId parameter is invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>
 </section>
@@ -288,7 +288,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;endDate,
  int&nbsp;offset,
  int&nbsp;maximumRecords)</span>
-                                                       throws <span class="exceptions"><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Retrieve a list of log records written in a specified time period.  The offset and maximumRecords
@@ -306,7 +306,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>list of log records from the specified time period</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the start and/or end date parameters are invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the start and/or end date parameters are invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - indicates that the offset or the maximumRecords parameters are invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>
@@ -320,7 +320,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;endDate,
  int&nbsp;offset,
  int&nbsp;maximumRecords)</span>
-                                                      throws <span class="exceptions"><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                      throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Retrieve a list of log records that have specific severity.  The offset and maximumRecords
@@ -339,7 +339,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>list of log records from the specified time period</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the severity, start and/or end date parameters are invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the severity, start and/or end date parameters are invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - indicates that the offset or the maximumRecords parameters are invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>
@@ -353,7 +353,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;endDate,
  int&nbsp;offset,
  int&nbsp;maximumRecords)</span>
-                                                       throws <span class="exceptions"><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+                                                       throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a>,
 <a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Retrieve a list of log records written by a specific component.  The offset and maximumRecords
@@ -372,7 +372,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>list of log records from the specified time period</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../repositoryservices/ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - indicates that the component, start and/or end date parameters are invalid.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - indicates that the component, start and/or end date parameters are invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/PagingErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">PagingErrorException</a></code> - indicates that the offset or the maximumRecords parameters are invalid.</dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - indicates that the audit log store is not available or has an error.</dd>
 </dl>

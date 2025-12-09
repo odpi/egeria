@@ -115,8 +115,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection)" class="member-name-link">VirtualConnection</a><wbr>(<a href="VirtualConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">VirtualConnection</a>&nbsp;templateVirtualConnection)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">VirtualConnection</a><wbr>(<a href="Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;templateConnection)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Copy/clone constructor.</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection)" class="member-name-link">VirtualConnection</a><wbr>(<a href="VirtualConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">VirtualConnection</a>&nbsp;templateVirtualConnection)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Copy/clone constructor.</div>
 </div>
 </div>
@@ -168,7 +172,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></h3>
-<code><a href="Connection.html#getClearPassword()">getClearPassword</a>, <a href="Connection.html#getConfigurationProperties()">getConfigurationProperties</a>, <a href="Connection.html#getConnectionType()">getConnectionType</a>, <a href="Connection.html#getConnectorType()">getConnectorType</a>, <a href="Connection.html#getEncryptedPassword()">getEncryptedPassword</a>, <a href="Connection.html#getEndpoint()">getEndpoint</a>, <a href="Connection.html#getSecuredProperties()">getSecuredProperties</a>, <a href="Connection.html#getUserId()">getUserId</a>, <a href="Connection.html#setClearPassword(java.lang.String)">setClearPassword</a>, <a href="Connection.html#setConfigurationProperties(java.util.Map)">setConfigurationProperties</a>, <a href="Connection.html#setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">setConnectorType</a>, <a href="Connection.html#setEncryptedPassword(java.lang.String)">setEncryptedPassword</a>, <a href="Connection.html#setEndpoint(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint)">setEndpoint</a>, <a href="Connection.html#setSecuredProperties(java.util.Map)">setSecuredProperties</a>, <a href="Connection.html#setUserId(java.lang.String)">setUserId</a></code></div>
+<code><a href="Connection.html#getClearPassword()">getClearPassword</a>, <a href="Connection.html#getConfigurationProperties()">getConfigurationProperties</a>, <a href="Connection.html#getConnectionType()">getConnectionType</a>, <a href="Connection.html#getConnectorType()">getConnectorType</a>, <a href="Connection.html#getConnectorType(java.lang.String)">getConnectorType</a>, <a href="Connection.html#getEncryptedPassword()">getEncryptedPassword</a>, <a href="Connection.html#getEndpoint()">getEndpoint</a>, <a href="Connection.html#getSecretStoreConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSecretStoreConnection</a>, <a href="Connection.html#getSecuredProperties()">getSecuredProperties</a>, <a href="Connection.html#getUserId()">getUserId</a>, <a href="Connection.html#setClearPassword(java.lang.String)">setClearPassword</a>, <a href="Connection.html#setConfigurationProperties(java.util.Map)">setConfigurationProperties</a>, <a href="Connection.html#setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">setConnectorType</a>, <a href="Connection.html#setEncryptedPassword(java.lang.String)">setEncryptedPassword</a>, <a href="Connection.html#setEndpoint(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint)">setEndpoint</a>, <a href="Connection.html#setSecuredProperties(java.util.Map)">setSecuredProperties</a>, <a href="Connection.html#setUserId(java.lang.String)">setUserId</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="Referenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Referenceable</a></h3>
 <code><a href="Referenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="Referenceable.html#getDescription()">getDescription</a>, <a href="Referenceable.html#getDisplayName()">getDisplayName</a>, <a href="Referenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="Referenceable.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="Referenceable.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="Referenceable.html#setDescription(java.lang.String)">setDescription</a>, <a href="Referenceable.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="Referenceable.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="Referenceable.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
@@ -207,6 +211,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>templateVirtualConnection</code> - element to copy</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<h3>VirtualConnection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">VirtualConnection</span><wbr><span class="parameters">(<a href="Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;templateConnection)</span></div>
+<div class="block">Copy/clone constructor.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>templateConnection</code> - element to copy</dd>
 </dl>
 </section>
 </li>

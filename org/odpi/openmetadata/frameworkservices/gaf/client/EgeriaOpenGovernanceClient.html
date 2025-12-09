@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">ActionControlInterface</a></code>, <code><a href="../../../frameworks/opengovernance/client/DuplicateManagementInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">DuplicateManagementInterface</a></code>, <code><a href="../../../frameworks/opengovernance/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceActionProcessInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/opengovernance/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">ActionControlInterface</a></code>, <code><a href="../../../frameworks/opengovernance/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceActionProcessInterface</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">EgeriaOpenGovernanceClient</span>
@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.<a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></h3>
-<code><a href="OpenGovernanceClientBase.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="OpenGovernanceClientBase.html#nullRequestBody">nullRequestBody</a></code></div>
+<code><a href="OpenGovernanceClientBase.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="OpenGovernanceClientBase.html#nullRequestBody">nullRequestBody</a>, <a href="OpenGovernanceClientBase.html#restClient">restClient</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.client.<a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a></h3>
 <code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#propertyHelper">propertyHelper</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverName">serverName</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a></code></div>
@@ -107,18 +107,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int)" class="member-name-link">EgeriaOpenGovernanceClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">EgeriaOpenGovernanceClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- int&nbsp;maxPageSize)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">EgeriaOpenGovernanceClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword,
- int&nbsp;maxPageSize)</code></div>
-<div class="col-last odd-row-color">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </div>
 </div>
@@ -130,7 +126,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Summary</h2>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.<a href="OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></h3>
-<code><a href="OpenGovernanceClientBase.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a>, <a href="OpenGovernanceClientBase.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a>, <a href="OpenGovernanceClientBase.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a>, <a href="OpenGovernanceClientBase.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,java.util.Date)">getGovernanceActionProcessGraph</a>, <a href="OpenGovernanceClientBase.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionType</a>, <a href="OpenGovernanceClientBase.html#linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">linkConsolidatedDuplicate</a>, <a href="OpenGovernanceClientBase.html#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkElementsAsPeerDuplicates</a></code></div>
+<code><a href="OpenGovernanceClientBase.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a>, <a href="OpenGovernanceClientBase.html#getActiveEngineActions(java.lang.String,int,int)">getActiveEngineActions</a>, <a href="OpenGovernanceClientBase.html#getEngineAction(java.lang.String,java.lang.String)">getEngineAction</a>, <a href="OpenGovernanceClientBase.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,java.util.Date)">getGovernanceActionProcessGraph</a>, <a href="OpenGovernanceClientBase.html#initiateEngineAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">initiateEngineAction</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a>, <a href="OpenGovernanceClientBase.html#initiateGovernanceActionType(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionType</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.client.<a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a></h3>
 <code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#toString()">toString</a></code></div>
@@ -149,32 +145,15 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>EgeriaOpenGovernanceClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EgeriaOpenGovernanceClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- int&nbsp;maxPageSize)</span>
-                           throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
-<dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
-                                   REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">
-<h3>EgeriaOpenGovernanceClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EgeriaOpenGovernanceClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword,
- int&nbsp;maxPageSize)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                            throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
@@ -182,9 +161,11 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
-<dd><code>serverUserId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>serverPassword</code> - caller's password embedded in all HTTP requests</dd>
+<dd><code>localServerSecretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>localServerSecretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>localServerSecretsStoreCollection</code> - secrets store collection for bearer token</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
+<dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>

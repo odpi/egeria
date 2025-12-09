@@ -79,7 +79,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../frameworks/opengovernance/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">ActionControlInterface</a></code>, <code><a href="../../../frameworks/opengovernance/client/DuplicateManagementInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">DuplicateManagementInterface</a></code>, <code><a href="../../../frameworks/opengovernance/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceActionProcessInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/opengovernance/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">ActionControlInterface</a></code>, <code><a href="../../../frameworks/opengovernance/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceActionProcessInterface</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -108,10 +108,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>protected final <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#nullRequestBody" class="member-name-link">nullRequestBody</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">GAFRESTClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#restClient" class="member-name-link">restClient</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.client.<a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a></h3>
-<code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#propertyHelper">propertyHelper</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverName">serverName</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serviceURLMarker">serviceURLMarker</a></code></div>
+<code><a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#propertyHelper">propertyHelper</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverName">serverName</a>, <a href="../../../frameworks/opengovernance/client/OpenGovernanceClient.html#serverPlatformURLRoot">serverPlatformURLRoot</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -122,21 +125,15 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">OpenGovernanceClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">OpenGovernanceClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- int&nbsp;maxPageSize)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">OpenGovernanceClientBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword,
- int&nbsp;maxPageSize)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </div>
 </div>
 </section>
@@ -227,33 +224,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Using the named governance action type as a template, initiate an engine action.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">linkConsolidatedDuplicate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consolidatedElementGUID,
- int&nbsp;statusIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardPropertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;source,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notes,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sourceElementGUIDs)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">linkElementsAsPeerDuplicates</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
- int&nbsp;statusIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardPropertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;source,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notes,
- boolean&nbsp;setKnownDuplicate)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Link elements as peer duplicates.</div>
-</div>
 </div>
 </div>
 </div>
@@ -275,6 +245,12 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="restClient">
+<h3>restClient</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">GAFRESTClient</a></span>&nbsp;<span class="element-name">restClient</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="invalidParameterHandler">
 <h3>invalidParameterHandler</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></span>&nbsp;<span class="element-name">invalidParameterHandler</span></div>
@@ -295,46 +271,26 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>OpenGovernanceClientBase</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenGovernanceClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenGovernanceClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- int&nbsp;maxPageSize)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                          throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>localServerSecretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>localServerSecretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>localServerSecretsStoreCollection</code> - secrets store collection for bearer token</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
-                                   REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">
-<h3>OpenGovernanceClientBase</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenGovernanceClientBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword,
- int&nbsp;maxPageSize)</span>
-                         throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
- userId/password of the calling server.  The end user's userId is sent on each request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
-<dd><code>serverUserId</code> - caller's userId embedded in all HTTP requests</dd>
-<dd><code>serverPassword</code> - caller's password embedded in all HTTP requests</dd>
-<dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
+<dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
@@ -538,81 +494,6 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">
-<h3>linkElementsAsPeerDuplicates</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkElementsAsPeerDuplicates</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
- int&nbsp;statusIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardPropertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;source,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notes,
- boolean&nbsp;setKnownDuplicate)</span>
-                                  throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Link elements as peer duplicates. Create a simple relationship between two elements.
- If the relationship already exists, the properties are updated.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElement1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
-<dd><code>metadataElement2GUID</code> - unique identifier of the metadata element at end 2 of the relationship</dd>
-<dd><code>statusIdentifier</code> - what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)</dd>
-<dd><code>steward</code> - identifier of the steward</dd>
-<dd><code>stewardTypeName</code> - type of element used to identify the steward</dd>
-<dd><code>stewardPropertyName</code> - property name used to identify steward</dd>
-<dd><code>source</code> - source of the duplicate detection processing</dd>
-<dd><code>notes</code> - notes for the steward</dd>
-<dd><code>setKnownDuplicate</code> - boolean flag indicating whether the KnownDuplicate classification should be set on the linked entities.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-                                    not valid for this type of relationship</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to create this type of relationship</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">
-<h3>linkConsolidatedDuplicate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkConsolidatedDuplicate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consolidatedElementGUID,
- int&nbsp;statusIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stewardPropertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;source,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notes,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sourceElementGUIDs)</span>
-                               throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.
- (The consolidated element is created using createMetadataElement.)</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>consolidatedElementGUID</code> - unique identifier of the metadata element</dd>
-<dd><code>statusIdentifier</code> - what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)</dd>
-<dd><code>steward</code> - identifier of the steward</dd>
-<dd><code>stewardTypeName</code> - type of element used to identify the steward</dd>
-<dd><code>stewardPropertyName</code> - property name used to identify steward</dd>
-<dd><code>source</code> - source of the duplicate detection processing</dd>
-<dd><code>notes</code> - notes for the steward</dd>
-<dd><code>sourceElementGUIDs</code> - List of the source elements that must be linked to the consolidated element.  It is assumed that they already
-                           have the KnownDuplicateClassification.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-                                    not valid for this type of relationship</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to create this type of relationship</dd>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </section>
 </li>

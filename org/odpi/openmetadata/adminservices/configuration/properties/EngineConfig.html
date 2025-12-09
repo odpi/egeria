@@ -73,13 +73,15 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="AdminServicesConfigHeader.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">org.odpi.openmetadata.adminservices.configuration.properties.AdminServicesConfigHeader</a>
+<div class="inheritance"><a href="OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig</a>
 <div class="inheritance">org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">EngineConfig</span>
-<span class="extends-implements">extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AdminServicesConfigHeader</a></span></div>
+<span class="extends-implements">extends <a href="OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a></span></div>
 <div class="block">EngineConfig provides the properties to configure a single governance engine in an service (in an engine hosting server).
  The configuration for each of these engines is extracted from the partner OMAS using
  the engine name as the qualified name.</div>
@@ -164,6 +166,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig">Methods inherited from class&nbsp;org.odpi.openmetadata.adminservices.configuration.properties.<a href="OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a></h3>
+<code><a href="OMAGServerClientConfig.html#getOMAGServerName()">getOMAGServerName</a>, <a href="OMAGServerClientConfig.html#getOMAGServerPlatformRootURL()">getOMAGServerPlatformRootURL</a>, <a href="OMAGServerClientConfig.html#getSecretsStoreCollection()">getSecretsStoreCollection</a>, <a href="OMAGServerClientConfig.html#getSecretsStoreLocation()">getSecretsStoreLocation</a>, <a href="OMAGServerClientConfig.html#getSecretsStoreProvider()">getSecretsStoreProvider</a>, <a href="OMAGServerClientConfig.html#setOMAGServerName(java.lang.String)">setOMAGServerName</a>, <a href="OMAGServerClientConfig.html#setOMAGServerPlatformRootURL(java.lang.String)">setOMAGServerPlatformRootURL</a>, <a href="OMAGServerClientConfig.html#setSecretsStoreCollection(java.lang.String)">setSecretsStoreCollection</a>, <a href="OMAGServerClientConfig.html#setSecretsStoreLocation(java.lang.String)">setSecretsStoreLocation</a>, <a href="OMAGServerClientConfig.html#setSecretsStoreProvider(java.lang.String)">setSecretsStoreProvider</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -281,7 +286,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="OMAGServerClientConfig.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a></code></dd>
 <dt>Returns:</dt>
 <dd>JSON style description of variables.</dd>
 </dl>
@@ -294,7 +299,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Validate that an object is equal depending on their stored values.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="OMAGServerClientConfig.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object</dd>
 <dt>Returns:</dt>
@@ -309,7 +314,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a hash code based on the values of this object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="OMAGServerClientConfig.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a></code></dd>
 <dt>Returns:</dt>
 <dd>in hash code</dd>
 </dl>

@@ -289,12 +289,16 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0021 - Governance engine {0} in engine host server {1} is configured to process governance requests of type {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION_DURING_RESTART" class="member-name-link">UNEXPECTED_EXCEPTION_DURING_RESTART</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">ENGINE-HOST-SERVICES-0037 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION_DURING_RESTART" class="member-name-link">UNEXPECTED_EXCEPTION_DURING_RESTART</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-2002 - {0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_NAME" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_NAME" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0025 - Governance engine called {0} is not known by metadata server {1}.</div>
 </div>
 </div>
@@ -617,6 +621,13 @@ the order they are declared.</div>
 <h3>ENGINE_ACTION_CANCELLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_CANCELLED</span></div>
 <div class="block">ENGINE-HOST-SERVICES-0036 - Governance engine {0} is cancelling running governance service for engine action {1}; thread name is {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_EXCEPTION">
+<h3>UNEXPECTED_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">ENGINE-HOST-SERVICES-0037 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
 </section>
 </li>
 <li>

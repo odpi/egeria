@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
+@RequestMapping("/open-metadata/platform-services/server-platform")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerPlatformOriginResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">OMAGServerPlatformOriginResource provides the Spring wrapper for the origin service that helps the client
@@ -110,8 +110,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerPlatformOrigin(java.lang.String)" class="member-name-link">getServerPlatformOrigin</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerPlatformOrganizationName()" class="member-name-link">getServerPlatformOrganizationName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the name of the organization running this platform.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerPlatformOrigin()" class="member-name-link">getServerPlatformOrigin</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the origin of this server platform implementation.</div>
 </div>
 </div>
@@ -146,17 +151,32 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getServerPlatformOrigin(java.lang.String)">
+<section class="detail" id="getServerPlatformOrigin()">
 <h3>getServerPlatformOrigin</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/origin")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerPlatformOrigin</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerPlatformOrigin</span>()
+                               throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return the origin of this server platform implementation.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - name of the user making the request</dd>
 <dt>Returns:</dt>
 <dd>String description</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getServerPlatformOrganizationName()">
+<h3>getServerPlatformOrganizationName</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/organization-name")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerPlatformOrganizationName</span>()
+                                         throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Retrieve the name of the organization running this platform.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>String description</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code></dd>
 </dl>
 </section>
 </li>

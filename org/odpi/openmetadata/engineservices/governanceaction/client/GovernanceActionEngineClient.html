@@ -95,16 +95,12 @@ implements <a href="../api/GovernanceActionAPI.html" title="interface in org.odp
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">GovernanceActionEngineClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Create a client-side object for calling a governance action engine.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">GovernanceActionEngineClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">GovernanceActionEngineClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
-<div class="col-last odd-row-color">
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Create a client-side object for calling a governance action engine.</div>
 </div>
 </div>
@@ -122,8 +118,7 @@ implements <a href="../api/GovernanceActionAPI.html" title="interface in org.odp
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnector(java.lang.String,java.lang.String)" class="member-name-link">validateConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnector(java.lang.String)" class="member-name-link">validateConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate the connector and return its connector type.</div>
 </div>
@@ -145,36 +140,19 @@ implements <a href="../api/GovernanceActionAPI.html" title="interface in org.odp
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String)">
-<h3>GovernanceActionEngineClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceActionEngineClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span>
-                             throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a client-side object for calling a governance action engine.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverPlatformRootURL</code> - the root url of the platform where the governance action engine is running.</dd>
-<dd><code>serverName</code> - the name of the engine host server where the governance action engine is running</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>GovernanceActionEngineClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceActionEngineClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a client-side object for calling a governance action engine.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverPlatformRootURL</code> - the root url of the platform where the governance action engine is running.</dd>
 <dd><code>serverName</code> - the name of the engine host server where the governance action engine is running</dd>
-<dd><code>userId</code> - user id for the HTTP request</dd>
-<dd><code>password</code> - password for the HTTP request</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 </dl>
@@ -189,19 +167,17 @@ implements <a href="../api/GovernanceActionAPI.html" title="interface in org.odp
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="validateConnector(java.lang.String,java.lang.String)">
+<section class="detail" id="validateConnector(java.lang.String)">
 <h3>validateConnector</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a></span>&nbsp;<span class="element-name">validateConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a></span>&nbsp;<span class="element-name">validateConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</span>
                                   throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Validate the connector and return its connector type.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/GovernanceActionAPI.html#validateConnector(java.lang.String,java.lang.String)">validateConnector</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceActionAPI.html" title="interface in org.odpi.openmetadata.engineservices.governanceaction.api">GovernanceActionAPI</a></code></dd>
+<dd><code><a href="../api/GovernanceActionAPI.html#validateConnector(java.lang.String)">validateConnector</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceActionAPI.html" title="interface in org.odpi.openmetadata.engineservices.governanceaction.api">GovernanceActionAPI</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
 <dd><code>connectorProviderClassName</code> - name of a specific connector or null for all connectors</dd>
 <dt>Returns:</dt>
 <dd>connector type and other capabilities for this connector</dd>

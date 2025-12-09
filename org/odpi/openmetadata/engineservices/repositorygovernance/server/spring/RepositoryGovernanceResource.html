@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/servers/{serverName}/open-metadata/engine-services/repository-governance/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/engine-services/repository-governance")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">RepositoryGovernanceResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">RepositoryGovernanceResource provides the server-side catcher for REST calls using Spring that validate RepositoryGovernance Service implementations</div>
@@ -109,8 +109,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ConnectorReportResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorReportResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnector(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">validateConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateConnector(java.lang.String,java.lang.String)" class="member-name-link">validateConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate the connector and return its connector type.</div>
@@ -147,13 +146,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="validateConnector(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="validateConnector(java.lang.String,java.lang.String)">
 <h3>validateConnector</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/validate-connector/{connectorProviderClassName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ConnectorReportResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorReportResponse</a></span>&nbsp;<span class="element-name">validateConnector</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</span></div>
 <div class="block">Validate the connector and return its connector type.  The engine service does not need to
@@ -162,7 +159,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - engine host server name</dd>
-<dd><code>userId</code> - calling user</dd>
 <dd><code>connectorProviderClassName</code> - name of a specific connector or null for all connectors</dd>
 <dt>Returns:</dt>
 <dd>connector type or

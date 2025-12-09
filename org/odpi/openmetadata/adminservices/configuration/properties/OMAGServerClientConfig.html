@@ -79,7 +79,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a></code>, <code><a href="EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a></code>, <code><a href="../../rest/EngineServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceRequestBody</a></code>, <code><a href="IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a></code>, <code><a href="ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a></code>, <code><a href="../../rest/ViewServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceRequestBody</a></code></dd>
+<dd><code><a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a></code>, <code><a href="../../../governanceservers/enginehostservices/properties/GovernanceEngineSummary.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.properties">GovernanceEngineSummary</a></code>, <code><a href="IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a></code>, <code><a href="ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a></code>, <code><a href="../../rest/ViewServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceRequestBody</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerClientConfig</span>
@@ -135,20 +135,52 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the root URL of the OMAG ServerPlatform.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreCollection()" class="member-name-link">getSecretsStoreCollection</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the secrets collection to use for the connection to the remote server.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreLocation()" class="member-name-link">getSecretsStoreLocation</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreProvider()" class="member-name-link">getSecretsStoreProvider</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the class name of the secrets store provider.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOMAGServerName(java.lang.String)" class="member-name-link">setOMAGServerName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;omagServerName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOMAGServerName(java.lang.String)" class="member-name-link">setOMAGServerName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;omagServerName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the name of the OMAG server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOMAGServerPlatformRootURL(java.lang.String)" class="member-name-link">setOMAGServerPlatformRootURL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;omagServerPlatformRootURL)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOMAGServerPlatformRootURL(java.lang.String)" class="member-name-link">setOMAGServerPlatformRootURL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;omagServerPlatformRootURL)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the root URL of the OMAG Server Platform.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecretsStoreCollection(java.lang.String)" class="member-name-link">setSecretsStoreCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the secrets collection to use for the connection to the remote server.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecretsStoreLocation(java.lang.String)" class="member-name-link">setSecretsStoreLocation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecretsStoreProvider(java.lang.String)" class="member-name-link">setSecretsStoreProvider</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the class name of the secrets store provider.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -239,6 +271,74 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>omagServerName</code> - string server name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreProvider()">
+<h3>getSecretsStoreProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStoreProvider</span>()</div>
+<div class="block">Return the class name of the secrets store provider.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecretsStoreProvider(java.lang.String)">
+<h3>setSecretsStoreProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecretsStoreProvider</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider)</span></div>
+<div class="block">Set up the class name of the secrets store provider.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>secretsStoreProvider</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreLocation()">
+<h3>getSecretsStoreLocation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStoreLocation</span>()</div>
+<div class="block">Return the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecretsStoreLocation(java.lang.String)">
+<h3>setSecretsStoreLocation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecretsStoreLocation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation)</span></div>
+<div class="block">Set up the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>secretsStoreLocation</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreCollection()">
+<h3>getSecretsStoreCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStoreCollection</span>()</div>
+<div class="block">Return the secrets collection to use for the connection to the remote server.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecretsStoreCollection(java.lang.String)">
+<h3>setSecretsStoreCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecretsStoreCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection)</span></div>
+<div class="block">Set up the secrets collection to use for the connection to the remote server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>secretsStoreCollection</code> - string</dd>
 </dl>
 </section>
 </li>

@@ -71,7 +71,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">java.lang.Throwable</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">java.lang.Exception</a>
 <div class="inheritance"><a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException</a>
 <div class="inheritance">org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</div>
+</div>
 </div>
 </div>
 </div>
@@ -83,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGConfigurationErrorException</span>
-<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFCheckedExceptionBase</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">OMAGConfigurationErrorException is used when configuration parameters passed on earlier calls turn out to
  be invalid or make the new call invalid.</div>
 <dl class="notes">
@@ -105,16 +107,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">OMAGConfigurationErrorException</a><wbr>(int&nbsp;httpCode,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;className,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction)</code></div>
-<div class="col-last even-row-color">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String%5B%5D,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">OMAGConfigurationErrorException</a><wbr>(int&nbsp;httpCode,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String%5B%5D,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">OMAGConfigurationErrorException</a><wbr>(int&nbsp;httpCode,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;className,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorMessage,
@@ -124,18 +117,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;caughtErrorClassName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;relatedProperties)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">This is the constructor used when receiving an exception from a remote server.</div>
-</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Exception)" class="member-name-link">OMAGConfigurationErrorException</a><wbr>(int&nbsp;httpCode,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;className,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;caughtError)</code></div>
 <div class="col-last even-row-color">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
+<div class="block">This is the constructor used when receiving an exception from a remote server.</div>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase)" class="member-name-link">OMAGConfigurationErrorException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorMessage,
  <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFCheckedExceptionBase</a>&nbsp;template)</code></div>
@@ -178,8 +161,11 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.ffdc.<a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></h3>
+<code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html#getParameterName()">getParameterName</a>, <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html#hashCode()">hashCode</a>, <a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html#toString()">toString</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.ffdc.<a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFCheckedExceptionBase</a></h3>
-<code><a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getErrorMessage()">getErrorMessage</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getRelatedProperties()">getRelatedProperties</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedCaughtException()">getReportedCaughtException</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedCaughtExceptionClassName()">getReportedCaughtExceptionClassName</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedErrorMessage()">getReportedErrorMessage</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedErrorMessageId()">getReportedErrorMessageId</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedErrorMessageParameters()">getReportedErrorMessageParameters</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedHTTPCode()">getReportedHTTPCode</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedSystemAction()">getReportedSystemAction</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedUserAction()">getReportedUserAction</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportingActionDescription()">getReportingActionDescription</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportingClassName()">getReportingClassName</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#hashCode()">hashCode</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#toString()">toString</a></code></div>
+<code><a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getErrorMessage()">getErrorMessage</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getRelatedProperties()">getRelatedProperties</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedCaughtException()">getReportedCaughtException</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedCaughtExceptionClassName()">getReportedCaughtExceptionClassName</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedErrorMessage()">getReportedErrorMessage</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedErrorMessageId()">getReportedErrorMessageId</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedErrorMessageParameters()">getReportedErrorMessageParameters</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedHTTPCode()">getReportedHTTPCode</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedSystemAction()">getReportedSystemAction</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportedUserAction()">getReportedUserAction</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportingActionDescription()">getReportingActionDescription</a>, <a href="../../../frameworks/openmetadata/ffdc/OMFCheckedExceptionBase.html#getReportingClassName()">getReportingClassName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Throwable">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#addSuppressed(java.lang.Throwable)" title="class or interface in java.lang" class="external-link">addSuppressed</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#fillInStackTrace()" title="class or interface in java.lang" class="external-link">fillInStackTrace</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#getCause()" title="class or interface in java.lang" class="external-link">getCause</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#getLocalizedMessage()" title="class or interface in java.lang" class="external-link">getLocalizedMessage</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#getMessage()" title="class or interface in java.lang" class="external-link">getMessage</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#getStackTrace()" title="class or interface in java.lang" class="external-link">getStackTrace</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#getSuppressed()" title="class or interface in java.lang" class="external-link">getSuppressed</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#initCause(java.lang.Throwable)" title="class or interface in java.lang" class="external-link">initCause</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#printStackTrace()" title="class or interface in java.lang" class="external-link">printStackTrace</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#printStackTrace(java.io.PrintStream)" title="class or interface in java.lang" class="external-link">printStackTrace</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#printStackTrace(java.io.PrintWriter)" title="class or interface in java.lang" class="external-link">printStackTrace</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html#setStackTrace(java.lang.StackTraceElement%5B%5D)" title="class or interface in java.lang" class="external-link">setStackTrace</a></code></div>
@@ -310,54 +296,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>errorMessage</code> - associated message</dd>
 <dd><code>template</code> - object to copy</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<h3>OMAGConfigurationErrorException</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="element-name">OMAGConfigurationErrorException</span><wbr><span class="parameters">(int&nbsp;httpCode,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;className,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction)</span></div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">This is the typical constructor used for creating a OMAGConfigurationErrorException.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>httpCode</code> - http response code to use if this exception flows over a REST call</dd>
-<dd><code>className</code> - name of class reporting error</dd>
-<dd><code>actionDescription</code> - description of function it was performing when error detected</dd>
-<dd><code>errorMessage</code> - description of error</dd>
-<dd><code>systemAction</code> - actions of the system as a result of the error</dd>
-<dd><code>userAction</code> - instructions for correcting the error</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Exception)">
-<h3>OMAGConfigurationErrorException</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="element-name">OMAGConfigurationErrorException</span><wbr><span class="parameters">(int&nbsp;httpCode,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;className,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;caughtError)</span></div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">This is the constructor used for creating a OMAGConfigurationErrorException that resulted from a previous error.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>httpCode</code> - http response code to use if this exception flows over a REST call</dd>
-<dd><code>className</code> - name of class reporting error</dd>
-<dd><code>actionDescription</code> - description of function it was performing when error detected</dd>
-<dd><code>errorMessage</code> - description of error</dd>
-<dd><code>systemAction</code> - actions of the system as a result of the error</dd>
-<dd><code>userAction</code> - instructions for correcting the error</dd>
-<dd><code>caughtError</code> - the error that resulted in this exception.</dd>
 </dl>
 </section>
 </li>

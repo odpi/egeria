@@ -100,17 +100,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#defaultZones" class="member-name-link">defaultZones</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../repositoryhandler/RepositoryErrorHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryErrorHandler</a></code></div>
+<div class="col-second even-row-color"><code><a href="#errorHandler" class="member-name-link">errorHandler</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../repositoryhandler/RepositoryErrorHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryErrorHandler</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#errorHandler" class="member-name-link">errorHandler</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></div>
-<div class="col-second even-row-color"><code><a href="#metadataCollection" class="member-name-link">metadataCollection</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#publishZones" class="member-name-link">publishZones</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#metadataCollection" class="member-name-link">metadataCollection</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a></code></div>
 <div class="col-second even-row-color"><code><a href="#repositoryConnector" class="member-name-link">repositoryConnector</a></code></div>
@@ -121,9 +115,6 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a></code></div>
 <div class="col-second even-row-color"><code><a href="#repositoryHelper" class="member-name-link">repositoryHelper</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#supportedZones" class="member-name-link">supportedZones</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.multitenant.AuditableServerServiceInstance">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.multitenant.<a href="AuditableServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">AuditableServerServiceInstance</a></h3>
@@ -141,36 +132,22 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int)" class="member-name-link">AccessServerServiceInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;publishZones,
- <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- int&nbsp;maxPageSize)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Set up the local repository connector that will service the REST Calls.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">AccessServerServiceInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;publishZones,
- <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- int&nbsp;maxPageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outTopicConnectorProviderName,
- <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;outTopicEventBusConnection)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Set up the local repository connector that will service the REST Calls.</div>
-</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int)" class="member-name-link">AccessServerServiceInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Set up the local repository connector that will service the REST Calls.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">AccessServerServiceInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
+ <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
+ int&nbsp;maxPageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outTopicConnectorProviderName,
+ <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;outTopicEventBusConnection)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Set up the local repository connector that will service the REST Calls.</div>
 </div>
 </div>
@@ -253,24 +230,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../repositoryhandler/RepositoryErrorHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryErrorHandler</a></span>&nbsp;<span class="element-name">errorHandler</span></div>
 </section>
 </li>
-<li>
-<section class="detail" id="supportedZones">
-<h3>supportedZones</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">supportedZones</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="defaultZones">
-<h3>defaultZones</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">defaultZones</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="publishZones">
-<h3>publishZones</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">publishZones</span></div>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -302,41 +261,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>AccessServerServiceInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AccessServerServiceInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;publishZones,
- <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- int&nbsp;maxPageSize)</span>
-                            throws <span class="exceptions"><a href="ffdc/exceptions/NewInstanceException.html" title="class in org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions">NewInstanceException</a></span></div>
-<div class="block">Set up the local repository connector that will service the REST Calls.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceName</code> - name of this service</dd>
-<dd><code>repositoryConnector</code> - link to the repository responsible for servicing the REST calls.</dd>
-<dd><code>supportedZones</code> - list of zones that access service is allowed to serve Assets from.</dd>
-<dd><code>defaultZones</code> - list of zones that access service should set in all new Assets.</dd>
-<dd><code>publishZones</code> - list of zones that the access service sets up in published Asset instances.</dd>
-<dd><code>auditLog</code> - logging destination</dd>
-<dd><code>localServerUserId</code> - userId used for server initiated actions</dd>
-<dd><code>maxPageSize</code> - maximum page size</dd>
-<dt>Throws:</dt>
-<dd><code><a href="ffdc/exceptions/NewInstanceException.html" title="class in org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions">NewInstanceException</a></code> - a problem occurred during initialization</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
-<h3>AccessServerServiceInstance</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AccessServerServiceInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;publishZones,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  int&nbsp;maxPageSize,
@@ -348,9 +276,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serviceName</code> - name of this service</dd>
 <dd><code>repositoryConnector</code> - link to the repository responsible for servicing the REST calls.</dd>
-<dd><code>supportedZones</code> - list of zones that access service is allowed to serve Assets from.</dd>
-<dd><code>defaultZones</code> - list of zones that access service should set in all new Assets.</dd>
-<dd><code>publishZones</code> - list of zones that the access service sets up in published Asset instances.</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>localServerUserId</code> - userId used for server initiated actions</dd>
 <dd><code>maxPageSize</code> - maximum page size</dd>

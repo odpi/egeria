@@ -77,7 +77,6 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/api/logout")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">LogoutController</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">LogoutController provides the REST API to log out a user.</div>
@@ -109,8 +108,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logout(jakarta.servlet.http.HttpServletRequest)" class="member-name-link">logout</a><wbr>(jakarta.servlet.http.HttpServletRequest&nbsp;request)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#platformLogout(jakarta.servlet.http.HttpServletRequest)" class="member-name-link">platformLogout</a><wbr>(jakarta.servlet.http.HttpServletRequest&nbsp;request)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove details of the token.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#serverLogout(java.lang.String)" class="member-name-link">serverLogout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove details of the token.</div>
 </div>
 </div>
@@ -145,15 +149,31 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="logout(jakarta.servlet.http.HttpServletRequest)">
-<h3>logout</h3>
-<div class="member-signature"><span class="annotations">@GetMapping
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logout</span><wbr><span class="parameters">(jakarta.servlet.http.HttpServletRequest&nbsp;request)</span>
-            throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
+<section class="detail" id="platformLogout(jakarta.servlet.http.HttpServletRequest)">
+<h3>platformLogout</h3>
+<div class="member-signature"><span class="annotations">@GetMapping("/api/token/logout")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">platformLogout</span><wbr><span class="parameters">(jakarta.servlet.http.HttpServletRequest&nbsp;request)</span>
+                    throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
 <div class="block">Remove details of the token.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>request</code> - HTTP request</dd>
+<dt>Throws:</dt>
+<dd><code>org.springframework.web.client.HttpClientErrorException</code> - problem with the request</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="serverLogout(java.lang.String)">
+<h3>serverLogout</h3>
+<div class="member-signature"><span class="annotations">@GetMapping("/servers/{serverName}/api/token/logout")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">serverLogout</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span>
+                  throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
+<div class="block">Remove details of the token.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - HTTP request</dd>
 <dt>Throws:</dt>
 <dd><code>org.springframework.web.client.HttpClientErrorException</code> - problem with the request</dd>
 </dl>

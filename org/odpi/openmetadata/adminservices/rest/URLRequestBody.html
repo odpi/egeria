@@ -82,6 +82,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">URLRequestBody</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">URLRequestBody provides a container for transporting a URL string in a request body.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -121,14 +122,46 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare objects</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUrlRoot()" class="member-name-link">getUrlRoot</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreCollection()" class="member-name-link">getSecretsStoreCollection</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the secrets collection to use for the connection to the remote server.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreLocation()" class="member-name-link">getSecretsStoreLocation</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreProvider()" class="member-name-link">getSecretsStoreProvider</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the class name of the secrets store provider.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUrlRoot()" class="member-name-link">getUrlRoot</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the URL root (typically host name and port).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Simple hash for the object</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecretsStoreCollection(java.lang.String)" class="member-name-link">setSecretsStoreCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the secrets collection to use for the connection to the remote server.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecretsStoreLocation(java.lang.String)" class="member-name-link">setSecretsStoreLocation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecretsStoreProvider(java.lang.String)" class="member-name-link">setSecretsStoreProvider</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the class name of the secrets store provider.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUrlRoot(java.lang.String)" class="member-name-link">setUrlRoot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlRoot)</code></div>
@@ -202,6 +235,74 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>urlRoot</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreProvider()">
+<h3>getSecretsStoreProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStoreProvider</span>()</div>
+<div class="block">Return the class name of the secrets store provider.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecretsStoreProvider(java.lang.String)">
+<h3>setSecretsStoreProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecretsStoreProvider</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreProvider)</span></div>
+<div class="block">Set up the class name of the secrets store provider.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>secretsStoreProvider</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreLocation()">
+<h3>getSecretsStoreLocation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStoreLocation</span>()</div>
+<div class="block">Return the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecretsStoreLocation(java.lang.String)">
+<h3>setSecretsStoreLocation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecretsStoreLocation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreLocation)</span></div>
+<div class="block">Set up the location information for the secrets store - this is stored in the endpoint network address for the
+ secrets store connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>secretsStoreLocation</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreCollection()">
+<h3>getSecretsStoreCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStoreCollection</span>()</div>
+<div class="block">Return the secrets collection to use for the connection to the remote server.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSecretsStoreCollection(java.lang.String)">
+<h3>setSecretsStoreCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecretsStoreCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretsStoreCollection)</span></div>
+<div class="block">Set up the secrets collection to use for the connection to the remote server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>secretsStoreCollection</code> - string</dd>
 </dl>
 </section>
 </li>

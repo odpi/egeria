@@ -96,11 +96,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">GovernanceEngineMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">GovernanceEngineMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
- <a href="../../../frameworkservices/gaf/client/GovernanceConfigurationClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceConfigurationClient</a>&nbsp;configurationClient,
- <a href="../../../frameworkservices/gaf/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClient</a>&nbsp;engineActionClient,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color">
@@ -125,34 +122,37 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the governance engine handler for a specific governance engine name if known.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineHandlers()" class="member-name-link">getGovernanceEngineHandlers</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineHandler(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)" class="member-name-link">getGovernanceEngineHandler</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;governanceEngine)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the governance engine handler for a specific governance engine name if known.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineHandlers()" class="member-name-link">getGovernanceEngineHandlers</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of active governance engine handlers.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineNames()" class="member-name-link">getGovernanceEngineNames</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineNames()" class="member-name-link">getGovernanceEngineNames</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of the configured engines.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineNames(java.lang.String)" class="member-name-link">getGovernanceEngineNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineNames(java.lang.String)" class="member-name-link">getGovernanceEngineNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of the configured engines for a particular engine service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineProperties(java.util.List,java.lang.String,java.lang.String)" class="member-name-link">setGovernanceEngineProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engineConfigs,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerURLRoot)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a placeholder entry in the governance handler map for a governance engine.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineProperties(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String)" class="member-name-link">setGovernanceEngineProperties</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerURLRoot)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineProperties(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread)" class="member-name-link">setGovernanceEngineProperties</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
+ <a href="../../../frameworks/openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a>&nbsp;eventClient,
+ <a href="../threads/EngineConfigurationRefreshThread.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.threads">EngineConfigurationRefreshThread</a>&nbsp;configurationRefreshThread)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a placeholder entry in the governance handler map for a governance engine.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown()" class="member-name-link">shutdown</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Shutdown all engines ...</div>
 </div>
 </div>
 </div>
@@ -172,13 +172,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
 <h3>GovernanceEngineMap</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceEngineMap</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
- <a href="../../../frameworkservices/gaf/client/GovernanceConfigurationClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceConfigurationClient</a>&nbsp;configurationClient,
- <a href="../../../frameworkservices/gaf/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClient</a>&nbsp;engineActionClient,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</span></div>
 <div class="block">Create a client-side object for calling a survey action engine.</div>
@@ -186,9 +183,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>localServerName</code> - the name of the engine host server where the survey action engine is running</dd>
 <dd><code>localServerUserId</code> - user id for the engine host server to use</dd>
-<dd><code>localServerPassword</code> - optional password for the engine host server to use</dd>
-<dd><code>configurationClient</code> - client to retrieve the configuration</dd>
-<dd><code>engineActionClient</code> - client used by the engine host services to control the execution of engine action requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>maxPageSize</code> - maximum number of results that can be returned in a single request</dd>
 </dl>
@@ -207,10 +201,24 @@ loadScripts(document, 'script');</script>
 <h3>getGovernanceEngineHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></span>&nbsp;<span class="element-name">getGovernanceEngineHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</span></div>
 <div class="block">Return the governance engine handler for a specific governance engine name if known.
- If the handler does not yet exist, null is returned</div>
+ If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>governanceEngineName</code> - name to lookup</dd>
+<dd><code>governanceEngineName</code> - engine to lookup</dd>
+<dt>Returns:</dt>
+<dd>handler or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernanceEngineHandler(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)">
+<h3>getGovernanceEngineHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></span>&nbsp;<span class="element-name">getGovernanceEngineHandler</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;governanceEngine)</span></div>
+<div class="block">Return the governance engine handler for a specific governance engine name if known.
+ If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>governanceEngine</code> - engine to lookup</dd>
 <dt>Returns:</dt>
 <dd>handler or null</dd>
 </dl>
@@ -252,33 +260,28 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setGovernanceEngineProperties(java.util.List,java.lang.String,java.lang.String)">
-<h3>setGovernanceEngineProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceEngineProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engineConfigs,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerURLRoot)</span></div>
-<div class="block">Set up a placeholder entry in the governance handler map for a governance engine.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>engineConfigs</code> - list of engine descriptions</dd>
-<dd><code>partnerServerName</code> - name of the server where the engine definition is located</dd>
-<dd><code>partnerURLRoot</code> - url of the platform where the server is located</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setGovernanceEngineProperties(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String)">
+<section class="detail" id="setGovernanceEngineProperties(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread)">
 <h3>setGovernanceEngineProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceEngineProperties</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerURLRoot)</span></div>
+ <a href="../../../frameworks/openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a>&nbsp;eventClient,
+ <a href="../threads/EngineConfigurationRefreshThread.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.threads">EngineConfigurationRefreshThread</a>&nbsp;configurationRefreshThread)</span>
+                                   throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Set up a placeholder entry in the governance handler map for a governance engine.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>engineConfig</code> - description of the engine</dd>
-<dd><code>partnerServerName</code> - name of the server where the engine definition is located</dd>
-<dd><code>partnerURLRoot</code> - url of the platform where the server is located</dd>
+<dd><code>eventClient</code> - client for receiving events</dd>
+<dd><code>configurationRefreshThread</code> - thread for controlling the receipt of events.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - Problem create the client</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="shutdown()">
+<h3>shutdown</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">shutdown</span>()</div>
+<div class="block">Shutdown all engines ...</div>
 </section>
 </li>
 </ul>

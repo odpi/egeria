@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient">Fields inherited from class&nbsp;org.odpi.openmetadata.adminservices.client.<a href="OMAGServerConfigurationClient.html" title="class in org.odpi.openmetadata.adminservices.client">OMAGServerConfigurationClient</a></h3>
-<code><a href="OMAGServerConfigurationClient.html#adminUserId">adminUserId</a>, <a href="OMAGServerConfigurationClient.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="OMAGServerConfigurationClient.html#nullRequestBody">nullRequestBody</a>, <a href="OMAGServerConfigurationClient.html#restClient">restClient</a>, <a href="OMAGServerConfigurationClient.html#serverName">serverName</a>, <a href="OMAGServerConfigurationClient.html#serverPlatformRootURL">serverPlatformRootURL</a></code></div>
+<code><a href="OMAGServerConfigurationClient.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="OMAGServerConfigurationClient.html#nullRequestBody">nullRequestBody</a>, <a href="OMAGServerConfigurationClient.html#restClient">restClient</a>, <a href="OMAGServerConfigurationClient.html#serverName">serverName</a>, <a href="OMAGServerConfigurationClient.html#serverPlatformRootURL">serverPlatformRootURL</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -104,19 +104,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EngineHostConfigurationClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;adminUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">EngineHostConfigurationClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretStoreCollection,
+ <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EngineHostConfigurationClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;adminUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionPassword)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Create a new client that passes a connection userId and password in each HTTP request.</div>
 </div>
 </div>
 </section>
@@ -133,59 +128,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAllEngineServices()" class="member-name-link">clearAllEngineServices</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Disable the engine services.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineDefinitionsClientConfig()" class="member-name-link">clearEngineDefinitionsClientConfig</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Clear the configuration for the metadata access server that provides the governance engine definitions through the
- Governance Engine OMAS.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineHostServices()" class="member-name-link">clearEngineHostServices</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the configuration for the engine host services.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineService(java.lang.String)" class="member-name-link">clearEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineHostServicesConfiguration()" class="member-name-link">getEngineHostServicesConfiguration</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Disable the engine services.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureEngineService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.List)" class="member-name-link">configureEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;engineServiceOptions,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engines)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Enable a single engine service.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureEngineService(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)" class="member-name-link">configureEngineService</a><wbr>(<a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;serviceConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add configuration for a single engine service to the server's config document.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disableEngineService(java.lang.String)" class="member-name-link">disableEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Disable a single engine service.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredEngineServices()" class="member-name-link">getConfiguredEngineServices</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of engine services for this server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../configuration/properties/EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineHostServicesConfiguration()" class="member-name-link">getEngineHostServicesConfiguration</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configuration for the complete engine host services in this server.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServiceConfiguration(java.lang.String)" class="member-name-link">getEngineServiceConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the configuration for the named engine service for this server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegisteredEngineServices()" class="member-name-link">getRegisteredEngineServices</a>()</code></div>
@@ -193,27 +143,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of engine services for this server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineDefinitionsClientConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig)" class="member-name-link">setEngineDefinitionsClientConfig</a><wbr>(<a href="../configuration/properties/OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a>&nbsp;clientConfig)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineHostServicesConfig(java.util.List)" class="member-name-link">setEngineHostServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engineHostServicesConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name and platform URL root for the metadata server running the Open Metadata Store that provides
- the governance engine definitions used by the engine services.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineHostServicesConfig(org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig)" class="member-name-link">setEngineHostServicesConfig</a><wbr>(<a href="../configuration/properties/EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a>&nbsp;engineHostServicesConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration for the Engine Host Services in an Engine Host OMAG Server in a single call.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineServicesConfig(java.util.List)" class="member-name-link">setEngineServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;&nbsp;engineServicesConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the configuration for all the open metadata engine services (OMESs).</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient">Methods inherited from class&nbsp;org.odpi.openmetadata.adminservices.client.<a href="OMAGServerConfigurationClient.html" title="class in org.odpi.openmetadata.adminservices.client">OMAGServerConfigurationClient</a></h3>
-<code><a href="OMAGServerConfigurationClient.html#addAuditLogDestination(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">addAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addConsoleAuditLogDestination(java.util.List)">addConsoleAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addEventTopicAuditLogDestination(java.lang.String,java.util.List)">addEventTopicAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addEventTopicAuditLogDestination(java.util.List)">addEventTopicAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addFileAuditLogDestination(java.lang.String,java.util.List)">addFileAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addFileAuditLogDestination(java.util.List)">addFileAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addJDBCAuditLogDestination(java.util.List,java.lang.String)">addJDBCAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addSLF4JAuditLogDestination(java.util.List)">addSLF4JAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#clearAuditLogDestination(java.lang.String)">clearAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#clearAuditLogDestinations()">clearAuditLogDestinations</a>, <a href="OMAGServerConfigurationClient.html#clearOMAGServerConfig()">clearOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#clearServerSecurityConnection()">clearServerSecurityConnection</a>, <a href="OMAGServerConfigurationClient.html#deployOMAGServerConfig(java.lang.String)">deployOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#getBasicServerProperties()">getBasicServerProperties</a>, <a href="OMAGServerConfigurationClient.html#getOMAGServerConfig()">getOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#getOMAGServerInstanceConfig()">getOMAGServerInstanceConfig</a>, <a href="OMAGServerConfigurationClient.html#getServerSecurityConnection()">getServerSecurityConnection</a>, <a href="OMAGServerConfigurationClient.html#getServerTypeClassification()">getServerTypeClassification</a>, <a href="OMAGServerConfigurationClient.html#setAuditLogDestinations(java.util.List)">setAuditLogDestinations</a>, <a href="OMAGServerConfigurationClient.html#setBasicServerProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">setBasicServerProperties</a>, <a href="OMAGServerConfigurationClient.html#setDefaultAuditLog()">setDefaultAuditLog</a>, <a href="OMAGServerConfigurationClient.html#setEventBus(java.lang.String,java.lang.String,java.util.Map)">setEventBus</a>, <a href="OMAGServerConfigurationClient.html#setMaxPageSize(int)">setMaxPageSize</a>, <a href="OMAGServerConfigurationClient.html#setOMAGServerConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">setOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#setOrganizationName(java.lang.String)">setOrganizationName</a>, <a href="OMAGServerConfigurationClient.html#setServerDescription(java.lang.String)">setServerDescription</a>, <a href="OMAGServerConfigurationClient.html#setServerPassword(java.lang.String)">setServerPassword</a>, <a href="OMAGServerConfigurationClient.html#setServerSecurityConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">setServerSecurityConnection</a>, <a href="OMAGServerConfigurationClient.html#setServerType(java.lang.String)">setServerType</a>, <a href="OMAGServerConfigurationClient.html#setServerURLRoot(java.lang.String)">setServerURLRoot</a>, <a href="OMAGServerConfigurationClient.html#setServerUserId(java.lang.String)">setServerUserId</a>, <a href="OMAGServerConfigurationClient.html#updateAuditLogDestination(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">updateAuditLogDestination</a></code></div>
+<code><a href="OMAGServerConfigurationClient.html#addAuditLogDestination(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">addAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addConsoleAuditLogDestination(java.util.List)">addConsoleAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addEventTopicAuditLogDestination(java.lang.String,java.util.List)">addEventTopicAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addEventTopicAuditLogDestination(java.util.List)">addEventTopicAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addFileAuditLogDestination(java.lang.String,java.util.List)">addFileAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addFileAuditLogDestination(java.util.List)">addFileAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addJDBCAuditLogDestination(java.util.List,java.lang.String)">addJDBCAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#addSLF4JAuditLogDestination(java.util.List)">addSLF4JAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#clearAuditLogDestination(java.lang.String)">clearAuditLogDestination</a>, <a href="OMAGServerConfigurationClient.html#clearAuditLogDestinations()">clearAuditLogDestinations</a>, <a href="OMAGServerConfigurationClient.html#clearOMAGServerConfig()">clearOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#clearServerSecurityConnection()">clearServerSecurityConnection</a>, <a href="OMAGServerConfigurationClient.html#deployOMAGServerConfig(java.lang.String)">deployOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#getBasicServerProperties()">getBasicServerProperties</a>, <a href="OMAGServerConfigurationClient.html#getOMAGServerConfig()">getOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#getOMAGServerInstanceConfig()">getOMAGServerInstanceConfig</a>, <a href="OMAGServerConfigurationClient.html#getServerSecurityConnection()">getServerSecurityConnection</a>, <a href="OMAGServerConfigurationClient.html#getServerTypeClassification()">getServerTypeClassification</a>, <a href="OMAGServerConfigurationClient.html#setAuditLogDestinations(java.util.List)">setAuditLogDestinations</a>, <a href="OMAGServerConfigurationClient.html#setBasicServerProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">setBasicServerProperties</a>, <a href="OMAGServerConfigurationClient.html#setDefaultAuditLog()">setDefaultAuditLog</a>, <a href="OMAGServerConfigurationClient.html#setEventBus(java.lang.String,java.lang.String,java.util.Map)">setEventBus</a>, <a href="OMAGServerConfigurationClient.html#setMaxPageSize(int)">setMaxPageSize</a>, <a href="OMAGServerConfigurationClient.html#setOMAGServerConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">setOMAGServerConfig</a>, <a href="OMAGServerConfigurationClient.html#setOrganizationName(java.lang.String)">setOrganizationName</a>, <a href="OMAGServerConfigurationClient.html#setServerDescription(java.lang.String)">setServerDescription</a>, <a href="OMAGServerConfigurationClient.html#setServerSecurityConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">setServerSecurityConnection</a>, <a href="OMAGServerConfigurationClient.html#setServerType(java.lang.String)">setServerType</a>, <a href="OMAGServerConfigurationClient.html#setServerURLRoot(java.lang.String)">setServerURLRoot</a>, <a href="OMAGServerConfigurationClient.html#setServerUserId(java.lang.String)">setServerUserId</a>, <a href="OMAGServerConfigurationClient.html#updateAuditLogDestination(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">updateAuditLogDestination</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -229,44 +168,26 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>EngineHostConfigurationClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EngineHostConfigurationClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;adminUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL)</span>
-                              throws <span class="exceptions"><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EngineHostConfigurationClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;secretStoreCollection,
+ <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
+                              throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>adminUserId</code> - administrator's (end user's) userId to associate with calls.</dd>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformRootURL</code> - the network address of the server running the admin services</dd>
+<dd><code>secretStoreProvider</code> - class name of the secrets store</dd>
+<dd><code>secretStoreLocation</code> - location (networkAddress) of the secrets store</dd>
+<dd><code>secretStoreCollection</code> - name of the collection of secrets to use to connect to the remote server</dd>
+<dd><code>auditLog</code> - destination for log messages.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
-                                       REST API calls.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<h3>EngineHostConfigurationClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EngineHostConfigurationClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;adminUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionPassword)</span>
-                              throws <span class="exceptions"><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes a connection userId and password in each HTTP request.  This is the
- userId/password of the calling server.  The end user's userId is passed as the admin userId.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>adminUserId</code> - administrator's (end user's) userId to associate with calls.</dd>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformRootURL</code> - the network address of the server running the admin services</dd>
-<dd><code>connectionUserId</code> - caller's system userId embedded in all HTTP requests</dd>
-<dd><code>connectionPassword</code> - caller's system password embedded in all HTTP requests</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                        REST API calls.</dd>
 </dl>
 </section>
@@ -283,34 +204,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRegisteredEngineServices()">
 <h3>getRegisteredEngineServices</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</span>&nbsp;<span class="element-name">getRegisteredEngineServices</span>()
-                                                        throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                                                        throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Return the list of engine services for this server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of engine service descriptions</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConfiguredEngineServices()">
-<h3>getConfiguredEngineServices</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</span>&nbsp;<span class="element-name">getConfiguredEngineServices</span>()
-                                                        throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Return the list of engine services for this server.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of engine service descriptions</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter.</dd>
 <dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </section>
@@ -318,155 +221,35 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getEngineHostServicesConfiguration()">
 <h3>getEngineHostServicesConfiguration</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../configuration/properties/EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a></span>&nbsp;<span class="element-name">getEngineHostServicesConfiguration</span>()
-                                                            throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;</span>&nbsp;<span class="element-name">getEngineHostServicesConfiguration</span>()
+                                                      throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Return the configuration for the complete engine host services in this server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>response containing the engine host services configuration</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter.</dd>
 <dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getEngineServiceConfiguration(java.lang.String)">
-<h3>getEngineServiceConfiguration</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a></span>&nbsp;<span class="element-name">getEngineServiceConfiguration</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span>
-                                                  throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Return the configuration for the named engine service for this server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceURLMarker</code> - engine service name used in URL</dd>
-<dt>Returns:</dt>
-<dd>response containing the engine services configuration</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEngineDefinitionsClientConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig)">
-<h3>setEngineDefinitionsClientConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineDefinitionsClientConfig</span><wbr><span class="parameters">(<a href="../configuration/properties/OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a>&nbsp;clientConfig)</span>
-                                      throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Set up the name and platform URL root for the metadata server running the Open Metadata Store that provides
- the governance engine definitions used by the engine services.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>clientConfig</code> - URL root and server name for the metadata server.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="configureEngineService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.List)">
-<h3>configureEngineService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">configureEngineService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;engineServiceOptions,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engines)</span>
-                            throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Enable a single engine service.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>partnerOMASServerURLRoot</code> - URL root of the OMAG Server Platform where the access service used by this view service is running</dd>
-<dd><code>partnerOMASServerName</code> - name of metadata access server where the access service used by this view service is running</dd>
-<dd><code>serviceURLMarker</code> - string indicating which engine service it is configuring</dd>
-<dd><code>engineServiceOptions</code> - property name/value pairs used to configure the engine service</dd>
-<dd><code>engines</code> - list of qualified names of the engines and optional user information</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="disableEngineService(java.lang.String)">
-<h3>disableEngineService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disableEngineService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span>
-                          throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Disable a single engine service.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceURLMarker</code> - string indicating which engine service it is disabling</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="configureEngineService(org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)">
-<h3>configureEngineService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">configureEngineService</span><wbr><span class="parameters">(<a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;serviceConfig)</span>
-                            throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Add configuration for a single engine service to the server's config document.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceConfig</code> - all values to configure an engine service</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEngineServicesConfig(java.util.List)">
-<h3>setEngineServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineServicesConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;&nbsp;engineServicesConfig)</span>
-                             throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Set up the configuration for all the open metadata engine services (OMESs).  This overrides
- the current values.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>engineServicesConfig</code> - list of configuration properties for each engine service.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEngineHostServicesConfig(org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig)">
+<section class="detail" id="setEngineHostServicesConfig(java.util.List)">
 <h3>setEngineHostServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineHostServicesConfig</span><wbr><span class="parameters">(<a href="../configuration/properties/EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a>&nbsp;engineHostServicesConfig)</span>
-                                 throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineHostServicesConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engineHostServicesConfig)</span>
+                                 throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Set up the configuration for the Engine Host Services in an Engine Host OMAG Server in a single call.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>engineHostServicesConfig</code> - governance engine definition client config and list of configuration properties for each engine service.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter.</dd>
 <dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </section>
@@ -475,65 +258,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="clearEngineHostServices()">
 <h3>clearEngineHostServices</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearEngineHostServices</span>()
-                             throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
+                             throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Clear the configuration for the engine host services.</div>
 <dl class="notes">
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearEngineDefinitionsClientConfig()">
-<h3>clearEngineDefinitionsClientConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearEngineDefinitionsClientConfig</span>()
-                                        throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Clear the configuration for the metadata access server that provides the governance engine definitions through the
- Governance Engine OMAS.</div>
-<dl class="notes">
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearAllEngineServices()">
-<h3>clearAllEngineServices</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearAllEngineServices</span>()
-                            throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Disable the engine services.  This removes all configuration for the engine services in the engine host server.</div>
-<dl class="notes">
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
-<dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearEngineService(java.lang.String)">
-<h3>clearEngineService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearEngineService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span>
-                        throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
-<a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
-<a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
-<div class="block">Disable the engine services.  This removes all configuration for the engine services from the engine host server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serviceURLMarker</code> - engine service name used in URL</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
-<dd><code><a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a></code> - invalid parameter.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the supplied userId is not authorized to issue this command.</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter.</dd>
 <dd><code><a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></code> - unusual state in the admin server.</dd>
 </dl>
 </section>

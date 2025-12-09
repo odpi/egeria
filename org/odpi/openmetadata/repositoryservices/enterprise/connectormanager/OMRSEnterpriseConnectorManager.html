@@ -136,12 +136,14 @@ implements <a href="OMRSConnectionConsumer.html" title="interface in org.odpi.op
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean,int,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String)" class="member-name-link">OMRSEnterpriseConnectorManager</a><wbr>(boolean&nbsp;enterpriseAccessEnabled,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean,int,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">OMRSEnterpriseConnectorManager</a><wbr>(boolean&nbsp;enterpriseAccessEnabled,
  int&nbsp;maxPageSize,
  <a href="../../localrepository/repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor for the enterprise connector manager.</div>
 </div>
@@ -229,14 +231,16 @@ implements <a href="OMRSConnectionConsumer.html" title="interface in org.odpi.op
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(boolean,int,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(boolean,int,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>OMRSEnterpriseConnectorManager</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OMRSEnterpriseConnectorManager</span><wbr><span class="parameters">(boolean&nbsp;enterpriseAccessEnabled,
  int&nbsp;maxPageSize,
  <a href="../../localrepository/repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreProvider,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreLocation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerSecretsStoreCollection)</span></div>
 <div class="block">Constructor for the enterprise connector manager.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -248,7 +252,9 @@ implements <a href="OMRSConnectionConsumer.html" title="interface in org.odpi.op
 <dd><code>repositoryContentManager</code> - repository content manager used by the connectors.</dd>
 <dd><code>auditLog</code> - audit log to act as a factory for connector audit logs.</dd>
 <dd><code>localServerUserId</code> - userId for the local server</dd>
-<dd><code>localServerPassword</code> - password for the local server</dd>
+<dd><code>localServerSecretsStoreProvider</code> - secrets store connector for bearer token</dd>
+<dd><code>localServerSecretsStoreLocation</code> - secrets store location for bearer token</dd>
+<dd><code>localServerSecretsStoreCollection</code> - secrets store collection for bearer token</dd>
 </dl>
 </section>
 </li>
@@ -283,7 +289,7 @@ implements <a href="OMRSConnectionConsumer.html" title="interface in org.odpi.op
 <div class="block">The disconnect processing involves disconnecting the local connector then unregistering all remote repositories with
  each of the connector consumers. Each connector consumer will pass the disconnect() request to each of their repository
  connector instances.
-
+ <p>
  If there is an error during disconnect of the local connector, it is logged here and re-thrown to generate an audit log entry.</div>
 <dl class="notes">
 <dt>Throws:</dt>

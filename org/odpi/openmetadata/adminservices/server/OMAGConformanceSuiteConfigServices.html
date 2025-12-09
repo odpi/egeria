@@ -72,12 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class OMAGConformanceSuiteConfigServices" class="title">Class OMAGConformanceSuiteConfigServices</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">org.odpi.openmetadata.tokencontroller.TokenController</a>
 <div class="inheritance">org.odpi.openmetadata.adminservices.server.OMAGConformanceSuiteConfigServices</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGConformanceSuiteConfigServices</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></span></div>
 <div class="block">OMAGConformanceSuiteConfigServices configures the Open Metadata Conformance Suite workbenches
  in an OMAG Server.</div>
 </section>
@@ -108,42 +110,36 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disableAllConformanceSuiteWorkbenches(java.lang.String,java.lang.String)" class="member-name-link">disableAllConformanceSuiteWorkbenches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disableAllConformanceSuiteWorkbenches(java.lang.String)" class="member-name-link">disableAllConformanceSuiteWorkbenches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that all the conformance suite tests are deactivated in this server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disablePlatformConformanceSuiteServices(java.lang.String,java.lang.String)" class="member-name-link">disablePlatformConformanceSuiteServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disablePlatformConformanceSuiteServices(java.lang.String)" class="member-name-link">disablePlatformConformanceSuiteServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that the repository conformance suite tests are deactivated in this server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disableRepositoryConformanceSuiteServices(java.lang.String,java.lang.String)" class="member-name-link">disableRepositoryConformanceSuiteServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disableRepositoryConformanceSuiteServices(java.lang.String)" class="member-name-link">disableRepositoryConformanceSuiteServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that the repository conformance suite tests are deactivated in this server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enablePlatformConformanceSuiteWorkbench(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)" class="member-name-link">enablePlatformConformanceSuiteWorkbench</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enablePlatformConformanceSuiteWorkbench(java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)" class="member-name-link">enablePlatformConformanceSuiteWorkbench</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/URLRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">URLRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that the platform conformance suite workbench is activated in this server to test the
  support of the platform services running in the platform at tutPlatformRootURL.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enableRepositoryConformanceSuiteWorkbench(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig)" class="member-name-link">enableRepositoryConformanceSuiteWorkbench</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enableRepositoryConformanceSuiteWorkbench(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig)" class="member-name-link">enableRepositoryConformanceSuiteWorkbench</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/RepositoryConformanceWorkbenchConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryConformanceWorkbenchConfig</a>&nbsp;repositoryConformanceWorkbenchConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that the repository conformance suite workbench is activated in this server to test the
  support of the repository services running in the server named tutRepositoryServerName.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enableRepositoryPerformanceSuiteWorkbench(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig)" class="member-name-link">enableRepositoryPerformanceSuiteWorkbench</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enableRepositoryPerformanceSuiteWorkbench(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig)" class="member-name-link">enableRepositoryPerformanceSuiteWorkbench</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/RepositoryPerformanceWorkbenchConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryPerformanceWorkbenchConfig</a>&nbsp;repositoryPerformanceWorkbenchConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that the repository conformance suite workbench is activated in this server to test the
@@ -152,6 +148,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.tokencontroller.TokenController">Methods inherited from class&nbsp;org.odpi.openmetadata.tokencontroller.<a href="../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></h3>
+<code><a href="../../tokencontroller/TokenController.html#getUser(java.lang.String,java.lang.String)">getUser</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -181,118 +180,106 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="enableRepositoryConformanceSuiteWorkbench(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig)">
+<section class="detail" id="enableRepositoryConformanceSuiteWorkbench(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig)">
 <h3>enableRepositoryConformanceSuiteWorkbench</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">enableRepositoryConformanceSuiteWorkbench</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">enableRepositoryConformanceSuiteWorkbench</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/RepositoryConformanceWorkbenchConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryConformanceWorkbenchConfig</a>&nbsp;repositoryConformanceWorkbenchConfig)</span></div>
 <div class="block">Request that the repository conformance suite workbench is activated in this server to test the
  support of the repository services running in the server named tutRepositoryServerName.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>repositoryConformanceWorkbenchConfig</code> - configuration for the repository conformance workbench.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.
  OMAGConfigurationErrorException unexpected exception.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="enableRepositoryPerformanceSuiteWorkbench(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig)">
+<section class="detail" id="enableRepositoryPerformanceSuiteWorkbench(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig)">
 <h3>enableRepositoryPerformanceSuiteWorkbench</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">enableRepositoryPerformanceSuiteWorkbench</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">enableRepositoryPerformanceSuiteWorkbench</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/RepositoryPerformanceWorkbenchConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryPerformanceWorkbenchConfig</a>&nbsp;repositoryPerformanceWorkbenchConfig)</span></div>
 <div class="block">Request that the repository conformance suite workbench is activated in this server to test the
  performance of the repository services running in the server named tutRepositoryServerName.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>repositoryPerformanceWorkbenchConfig</code> - configuration for the repository performance workbench.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.
  OMAGConfigurationErrorException unexpected exception.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="enablePlatformConformanceSuiteWorkbench(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)">
+<section class="detail" id="enablePlatformConformanceSuiteWorkbench(java.lang.String,org.odpi.openmetadata.adminservices.rest.URLRequestBody)">
 <h3>enablePlatformConformanceSuiteWorkbench</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">enablePlatformConformanceSuiteWorkbench</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">enablePlatformConformanceSuiteWorkbench</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/URLRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">URLRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Request that the platform conformance suite workbench is activated in this server to test the
  support of the platform services running in the platform at tutPlatformRootURL.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>requestBody</code> - url of the OMAG platform to test.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.
  OMAGConfigurationErrorException unexpected exception.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="disableRepositoryConformanceSuiteServices(java.lang.String,java.lang.String)">
+<section class="detail" id="disableRepositoryConformanceSuiteServices(java.lang.String)">
 <h3>disableRepositoryConformanceSuiteServices</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">disableRepositoryConformanceSuiteServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">disableRepositoryConformanceSuiteServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Request that the repository conformance suite tests are deactivated in this server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.
  OMAGConfigurationErrorException unexpected exception.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="disablePlatformConformanceSuiteServices(java.lang.String,java.lang.String)">
+<section class="detail" id="disablePlatformConformanceSuiteServices(java.lang.String)">
 <h3>disablePlatformConformanceSuiteServices</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">disablePlatformConformanceSuiteServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">disablePlatformConformanceSuiteServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Request that the repository conformance suite tests are deactivated in this server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.
  OMAGConfigurationErrorException unexpected exception.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="disableAllConformanceSuiteWorkbenches(java.lang.String,java.lang.String)">
+<section class="detail" id="disableAllConformanceSuiteWorkbenches(java.lang.String)">
 <h3>disableAllConformanceSuiteWorkbenches</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">disableAllConformanceSuiteWorkbenches</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">disableAllConformanceSuiteWorkbenches</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Request that all the conformance suite tests are deactivated in this server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter.
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+ InvalidParameterException invalid serverName parameter.
  OMAGConfigurationErrorException unexpected exception.</dd>
 </dl>
 </section>

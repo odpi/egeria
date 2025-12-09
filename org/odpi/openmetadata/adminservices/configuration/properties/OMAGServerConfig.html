@@ -73,13 +73,15 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="AdminServicesConfigHeader.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">org.odpi.openmetadata.adminservices.configuration.properties.AdminServicesConfigHeader</a>
+<div class="inheritance"><a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">org.odpi.openmetadata.adminservices.configuration.properties.BasicServerProperties</a>
 <div class="inheritance">org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerConfig</span>
-<span class="extends-implements">extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AdminServicesConfigHeader</a></span></div>
+<span class="extends-implements">extends <a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">BasicServerProperties</a></span></div>
 <div class="block">OMAGServerConfig provides the properties used to initialize an open metadata and governance (OMAG) server.
  The OMAG server configuration has the following basic properties, plus configuration for the subsystems
  that should be activated in the OMAG Server:
@@ -135,18 +137,18 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#COMPATIBLE_VERSIONS" class="member-name-link">COMPATIBLE_VERSIONS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#defaultLocalServerType" class="member-name-link">defaultLocalServerType</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#defaultMaxPageSize" class="member-name-link">defaultMaxPageSize</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#VERSION_ONE" class="member-name-link">VERSION_ONE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#VERSION_TWO" class="member-name-link">VERSION_TWO</a></code></div>
+<div class="col-second even-row-color"><code><a href="#VERSION_SIX" class="member-name-link">VERSION_SIX</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#VERSION_TWO" class="member-name-link">VERSION_TWO</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.adminservices.configuration.properties.BasicServerProperties">Fields inherited from class&nbsp;org.odpi.openmetadata.adminservices.configuration.properties.<a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">BasicServerProperties</a></h3>
+<code><a href="BasicServerProperties.html#defaultLocalServerType">defaultLocalServerType</a>, <a href="BasicServerProperties.html#defaultMaxPageSize">defaultMaxPageSize</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -204,113 +206,71 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional list of dynamic integration groups.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineHostServicesConfig()" class="member-name-link">getEngineHostServicesConfig</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EventBusConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EventBusConfig</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEventBusConfig()" class="member-name-link">getEventBusConfig</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the configuration for the engine host services that control an engine host OMAG Server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EventBusConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EventBusConfig</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEventBusConfig()" class="member-name-link">getEventBusConfig</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the information used to create connections to an event bus.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerDescription()" class="member-name-link">getLocalServerDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the description of the local server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerId()" class="member-name-link">getLocalServerId</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEnginesConfig()" class="member-name-link">getGovernanceEnginesConfig</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the configuration for the engine host services that control an engine host OMAG Server.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerId()" class="member-name-link">getLocalServerId</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an unique identifier for this server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerName()" class="member-name-link">getLocalServerName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerName()" class="member-name-link">getLocalServerName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the local server.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerPassword()" class="member-name-link">getLocalServerPassword</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the password that the local server should use on outbound REST calls (this is the password for
- the localServerUserId).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerType()" class="member-name-link">getLocalServerType</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRepositoryServicesConfig()" class="member-name-link">getRepositoryServicesConfig</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the descriptive name for the server type.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerURL()" class="member-name-link">getLocalServerURL</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the base URL for calling the local server.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerUserId()" class="member-name-link">getLocalServerUserId</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the userId that the local server should use when processing events and there is no external user
- driving the operation.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxPageSize()" class="member-name-link">getMaxPageSize</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the maximum page size supported by this server.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrganizationName()" class="member-name-link">getOrganizationName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the organization that is running the server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRepositoryServicesConfig()" class="member-name-link">getRepositoryServicesConfig</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the Open Metadata Repository Services (OMRS) config.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerSecurityConnection()" class="member-name-link">getServerSecurityConnection</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerSecurityConnection()" class="member-name-link">getServerSecurityConnection</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection for the optional server security connector that validates calls to
  this server from admin to operations to metadata and governance services.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionId()" class="member-name-link">getVersionId</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionId()" class="member-name-link">getVersionId</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the versionId of this document.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServicesConfig()" class="member-name-link">getViewServicesConfig</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServicesConfig()" class="member-name-link">getViewServicesConfig</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configuration for the registered Open Metadata View Services (OMVSs).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServicesConfig(java.util.List)" class="member-name-link">setAccessServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AccessServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AccessServiceConfig</a>&gt;&nbsp;accessServicesConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessServicesConfig(java.util.List)" class="member-name-link">setAccessServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AccessServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AccessServiceConfig</a>&gt;&nbsp;accessServicesConfig)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration for the registered Open Metadata Access Services (OMASs).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditTrail(java.util.List)" class="member-name-link">setAuditTrail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;auditTrail)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditTrail(java.util.List)" class="member-name-link">setAuditTrail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;auditTrail)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the audit log messages.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConformanceSuiteConfig(org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig)" class="member-name-link">setConformanceSuiteConfig</a><wbr>(<a href="ConformanceSuiteConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ConformanceSuiteConfig</a>&nbsp;conformanceSuiteConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConformanceSuiteConfig(org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig)" class="member-name-link">setConformanceSuiteConfig</a><wbr>(<a href="ConformanceSuiteConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ConformanceSuiteConfig</a>&nbsp;conformanceSuiteConfig)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration for the open metadata conformance suite services.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDynamicIntegrationGroupsConfig(java.util.List)" class="member-name-link">setDynamicIntegrationGroupsConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&gt;&nbsp;dynamicIntegrationGroupsConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the optional list of dynamic integration groups.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineHostServicesConfig(org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig)" class="member-name-link">setEngineHostServicesConfig</a><wbr>(<a href="EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a>&nbsp;engineHostServicesConfig)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDynamicIntegrationGroupsConfig(java.util.List)" class="member-name-link">setDynamicIntegrationGroupsConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationGroupConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationGroupConfig</a>&gt;&nbsp;dynamicIntegrationGroupsConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the configuration for the engine host services that control an engine host OMAG Server.</div>
+<div class="block">Set up the optional list of dynamic integration groups.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEventBusConfig(org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig)" class="member-name-link">setEventBusConfig</a><wbr>(<a href="EventBusConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EventBusConfig</a>&nbsp;eventBusConfig)</code></div>
@@ -318,9 +278,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the information used to create connections to an event bus.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerDescription(java.lang.String)" class="member-name-link">setLocalServerDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerDescription)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEnginesConfig(java.util.List)" class="member-name-link">setGovernanceEnginesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;governanceEnginesConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the description of the local server.</div>
+<div class="block">Set up the configuration for the engine host services that control an engine host OMAG Server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerId(java.lang.String)" class="member-name-link">setLocalServerId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerId)</code></div>
@@ -331,38 +291,6 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerName(java.lang.String)" class="member-name-link">setLocalServerName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the name of the local server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerPassword(java.lang.String)" class="member-name-link">setLocalServerPassword</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the password that the local server should use on outbound REST calls (this is the password for
- the localServerUserId).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerType(java.lang.String)" class="member-name-link">setLocalServerType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerType)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the descriptive name for the server type.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerURL(java.lang.String)" class="member-name-link">setLocalServerURL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerURL)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the base URL for calling the local server.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalServerUserId(java.lang.String)" class="member-name-link">setLocalServerUserId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the userId that the local server should use when processing events and there is no external user
- driving the operation.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxPageSize(int)" class="member-name-link">setMaxPageSize</a><wbr>(int&nbsp;maxPageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the maximum page size supported by this server.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOrganizationName(java.lang.String)" class="member-name-link">setOrganizationName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organizationName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the organization that is running the server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRepositoryServicesConfig(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">setRepositoryServicesConfig</a><wbr>(<a href="RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
@@ -393,6 +321,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adminservices.configuration.properties.BasicServerProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adminservices.configuration.properties.<a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">BasicServerProperties</a></h3>
+<code><a href="BasicServerProperties.html#getLocalServerDescription()">getLocalServerDescription</a>, <a href="BasicServerProperties.html#getLocalServerType()">getLocalServerType</a>, <a href="BasicServerProperties.html#getLocalServerURL()">getLocalServerURL</a>, <a href="BasicServerProperties.html#getLocalServerUserId()">getLocalServerUserId</a>, <a href="BasicServerProperties.html#getMaxPageSize()">getMaxPageSize</a>, <a href="BasicServerProperties.html#getOrganizationName()">getOrganizationName</a>, <a href="BasicServerProperties.html#getSecretsStoreCollection()">getSecretsStoreCollection</a>, <a href="BasicServerProperties.html#getSecretsStoreLocation()">getSecretsStoreLocation</a>, <a href="BasicServerProperties.html#getSecretsStoreProvider()">getSecretsStoreProvider</a>, <a href="BasicServerProperties.html#setLocalServerDescription(java.lang.String)">setLocalServerDescription</a>, <a href="BasicServerProperties.html#setLocalServerType(java.lang.String)">setLocalServerType</a>, <a href="BasicServerProperties.html#setLocalServerURL(java.lang.String)">setLocalServerURL</a>, <a href="BasicServerProperties.html#setLocalServerUserId(java.lang.String)">setLocalServerUserId</a>, <a href="BasicServerProperties.html#setMaxPageSize(int)">setMaxPageSize</a>, <a href="BasicServerProperties.html#setOrganizationName(java.lang.String)">setOrganizationName</a>, <a href="BasicServerProperties.html#setSecretsStoreCollection(java.lang.String)">setSecretsStoreCollection</a>, <a href="BasicServerProperties.html#setSecretsStoreLocation(java.lang.String)">setSecretsStoreLocation</a>, <a href="BasicServerProperties.html#setSecretsStoreProvider(java.lang.String)">setSecretsStoreProvider</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -436,29 +367,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="COMPATIBLE_VERSIONS">
-<h3>COMPATIBLE_VERSIONS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">COMPATIBLE_VERSIONS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="defaultLocalServerType">
-<h3>defaultLocalServerType</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">defaultLocalServerType</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="defaultMaxPageSize">
-<h3>defaultMaxPageSize</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">defaultMaxPageSize</span></div>
+<section class="detail" id="VERSION_SIX">
+<h3>VERSION_SIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">VERSION_SIX</span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="see-list">
-<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig.defaultMaxPageSize">Constant Field Values</a></li>
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig.VERSION_SIX">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="COMPATIBLE_VERSIONS">
+<h3>COMPATIBLE_VERSIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">COMPATIBLE_VERSIONS</span></div>
 </section>
 </li>
 </ul>
@@ -540,28 +465,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getLocalServerDescription()">
-<h3>getLocalServerDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLocalServerDescription</span>()</div>
-<div class="block">Return the description of the local server.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>String server description</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLocalServerDescription(java.lang.String)">
-<h3>setLocalServerDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalServerDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerDescription)</span></div>
-<div class="block">Set up the description of the local server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>localServerDescription</code> - String local server description</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getLocalServerName()">
 <h3>getLocalServerName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLocalServerName</span>()</div>
@@ -580,144 +483,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>localServerName</code> - String local server name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLocalServerType()">
-<h3>getLocalServerType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLocalServerType</span>()</div>
-<div class="block">Return the descriptive name for the server type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>String server type</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLocalServerType(java.lang.String)">
-<h3>setLocalServerType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalServerType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerType)</span></div>
-<div class="block">Set up the descriptive name for the server type.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>localServerType</code> - String server type</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOrganizationName()">
-<h3>getOrganizationName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOrganizationName</span>()</div>
-<div class="block">Return the name of the organization that is running the server.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>String organization name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setOrganizationName(java.lang.String)">
-<h3>setOrganizationName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOrganizationName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organizationName)</span></div>
-<div class="block">Set up the name of the organization that is running the server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>organizationName</code> - String organization name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLocalServerURL()">
-<h3>getLocalServerURL</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLocalServerURL</span>()</div>
-<div class="block">Return the base URL for calling the local server.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>String URL</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLocalServerURL(java.lang.String)">
-<h3>setLocalServerURL</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalServerURL</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerURL)</span></div>
-<div class="block">Set up the base URL for calling the local server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>localServerURL</code> - String URL</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLocalServerUserId()">
-<h3>getLocalServerUserId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLocalServerUserId</span>()</div>
-<div class="block">Return the userId that the local server should use when processing events and there is no external user
- driving the operation.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>user id</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLocalServerUserId(java.lang.String)">
-<h3>setLocalServerUserId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalServerUserId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId)</span></div>
-<div class="block">Set up the userId that the local server should use when processing events and there is no external user
- driving the operation.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>localServerUserId</code> - string user id</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLocalServerPassword()">
-<h3>getLocalServerPassword</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLocalServerPassword</span>()</div>
-<div class="block">Return the password that the local server should use on outbound REST calls (this is the password for
- the localServerUserId).  Using userId's and passwords for server authentication is not suitable
- for production environments.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>password in clear</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLocalServerPassword(java.lang.String)">
-<h3>setLocalServerPassword</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalServerPassword</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword)</span></div>
-<div class="block">Set up the password that the local server should use on outbound REST calls (this is the password for
- the localServerUserId).  Using userId's and passwords for server authentication is not suitable
- for production environments.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>localServerPassword</code> - password in clear</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMaxPageSize()">
-<h3>getMaxPageSize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMaxPageSize</span>()</div>
-<div class="block">Return the maximum page size supported by this server.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int number of elements</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMaxPageSize(int)">
-<h3>setMaxPageSize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxPageSize</span><wbr><span class="parameters">(int&nbsp;maxPageSize)</span></div>
-<div class="block">Set up the maximum page size supported by this server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxPageSize</code> - int number of elements</dd>
 </dl>
 </section>
 </li>
@@ -878,9 +643,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getEngineHostServicesConfig()">
-<h3>getEngineHostServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a></span>&nbsp;<span class="element-name">getEngineHostServicesConfig</span>()</div>
+<section class="detail" id="getGovernanceEnginesConfig()">
+<h3>getGovernanceEnginesConfig</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceEnginesConfig</span>()</div>
 <div class="block">Return the configuration for the engine host services that control an engine host OMAG Server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -889,13 +654,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setEngineHostServicesConfig(org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig)">
-<h3>setEngineHostServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineHostServicesConfig</span><wbr><span class="parameters">(<a href="EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a>&nbsp;engineHostServicesConfig)</span></div>
+<section class="detail" id="setGovernanceEnginesConfig(java.util.List)">
+<h3>setGovernanceEnginesConfig</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceEnginesConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;governanceEnginesConfig)</span></div>
 <div class="block">Set up the configuration for the engine host services that control an engine host OMAG Server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>engineHostServicesConfig</code> - properties for an engine host server</dd>
+<dd><code>governanceEnginesConfig</code> - properties for an engine host server</dd>
 </dl>
 </section>
 </li>
@@ -929,7 +694,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="BasicServerProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">BasicServerProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>JSON style description of variables.</dd>
 </dl>
@@ -942,7 +707,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Validate that an object is equal depending on their stored values.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="BasicServerProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">BasicServerProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - object</dd>
 <dt>Returns:</dt>
@@ -957,7 +722,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a hash code based on the values of this object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dd><code><a href="BasicServerProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="BasicServerProperties.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">BasicServerProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>in hash code</dd>
 </dl>

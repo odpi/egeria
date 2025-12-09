@@ -100,14 +100,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#localServerUserPassword" class="member-name-link">localServerUserPassword</a></code></div>
+<div class="col-second even-row-color"><code><a href="#remoteServerName" class="member-name-link">remoteServerName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#remoteServerName" class="member-name-link">remoteServerName</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#remoteServerURL" class="member-name-link">remoteServerURL</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#remoteServerURL" class="member-name-link">remoteServerURL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.multitenant.AuditableServerServiceInstance">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.multitenant.<a href="AuditableServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">AuditableServerServiceInstance</a></h3>
@@ -125,11 +122,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)" class="member-name-link">OMVSServiceInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,java.lang.String)" class="member-name-link">OMVSServiceInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL)</code></div>
@@ -153,12 +149,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRemoteServerName()" class="member-name-link">getRemoteServerName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">the remote server name</div>
+<div class="block">The remote server name</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRemoteServerURL()" class="member-name-link">getRemoteServerURL</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">the remote server URL</div>
+<div class="block">The remote server URL</div>
 </div>
 </div>
 </div>
@@ -195,12 +191,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">remoteServerURL</span></div>
 </section>
 </li>
-<li>
-<section class="detail" id="localServerUserPassword">
-<h3>localServerUserPassword</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">localServerUserPassword</span></div>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -210,13 +200,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,java.lang.String,java.lang.String)">
 <h3>OMVSServiceInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OMVSServiceInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserPassword,
  int&nbsp;maxPageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;remoteServerURL)</span></div>
@@ -227,7 +216,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serviceName</code> - name of this service</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>localServerUserId</code> - user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.</dd>
-<dd><code>localServerUserPassword</code> - password to use as part of an HTTP authentication mechanism.</dd>
 <dd><code>maxPageSize</code> - maximum page size</dd>
 <dd><code>remoteServerName</code> - remote server name</dd>
 <dd><code>remoteServerURL</code> - remote server URL</dd>
@@ -246,7 +234,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRemoteServerName()">
 <h3>getRemoteServerName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getRemoteServerName</span>()</div>
-<div class="block">the remote server name</div>
+<div class="block">The remote server name</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the remote server name</dd>
@@ -257,7 +245,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRemoteServerURL()">
 <h3>getRemoteServerURL</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getRemoteServerURL</span>()</div>
-<div class="block">the remote server URL</div>
+<div class="block">The remote server URL</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the remote server URL</dd>

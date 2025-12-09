@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ConfigEngineHostServicesResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">ConfigEngineServicesResource provides the configuration for setting up the Open Metadata Engine
@@ -110,114 +110,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEngine(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)" class="member-name-link">addEngine</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEngine(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)" class="member-name-link">addEngine</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engine)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add another engine to the list of governance engines that will use the metadata from the same metadata access server as the
- engine host uses for retrieving the engine configuration.</div>
+<div class="block">Add another governance engine the list of governance engines for an engine host OMAG server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAllEngineServices(java.lang.String,java.lang.String)" class="member-name-link">clearAllEngineServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Disable the engine services.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineDefinitionsClientConfig(java.lang.String,java.lang.String)" class="member-name-link">clearEngineDefinitionsClientConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove the configuration for the Governance Engine OMAS Engine client configuration in a single call.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineHostServicesConfig(java.lang.String,java.lang.String)" class="member-name-link">clearEngineHostServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineHostServicesConfig(java.lang.String)" class="member-name-link">clearEngineHostServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the configuration of the specialist services for an Engine Host OMAG Server in a single call.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineList(java.lang.String,java.lang.String)" class="member-name-link">clearEngineList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove the configuration for the engine list in a single call.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearEngineService(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">clearEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove an engine service.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureAllEngineServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody)" class="member-name-link">configureAllEngineServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../rest/EngineServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Enable all non-deprecated, registered engine service.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureEngineService(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody)" class="member-name-link">configureEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="../rest/EngineServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Enable a single registered engine service.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureEngineService(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)" class="member-name-link">configureEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;serviceConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add configuration for a single engine service to the server's config document.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredEngineServices(java.lang.String,java.lang.String)" class="member-name-link">getConfiguredEngineServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of registered engine services for this server.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/EngineHostServicesResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineHostServicesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineHostServicesConfiguration(java.lang.String,java.lang.String)" class="member-name-link">getEngineHostServicesConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineHostServicesConfiguration(java.lang.String)" class="member-name-link">getEngineHostServicesConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configuration of the specialist services for an Engine Host OMAG Server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/EngineServiceConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceConfigResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServiceConfiguration(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getEngineServiceConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the configuration for the named engine service for this server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineDefinitionsClientConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig)" class="member-name-link">setEngineDefinitionsClientConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a>&nbsp;clientConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name and platform URL root for the metadata server running the Governance Engine OMAS that provides
- the governance engine definitions used by the engine services.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineHostServicesConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig)" class="member-name-link">setEngineHostServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a>&nbsp;servicesConfig)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineHostServicesConfig(java.lang.String,java.util.List)" class="member-name-link">setEngineHostServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;governanceEngines)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the configuration of the specialist services for an Engine Host OMAG Server in a single call.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineList(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setEngineList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engines)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of governance engines that will use the metadata from the same metadata access server as the
- engine host uses for retrieving the engine configuration.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineServicesConfig(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setEngineServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;&nbsp;engineServicesConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the configuration for all the open metadata engine services (OMESs).</div>
 </div>
 </div>
 </div>
@@ -251,318 +163,35 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getConfiguredEngineServices(java.lang.String,java.lang.String)">
-<h3>getConfiguredEngineServices</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/engine-services")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></span>&nbsp;<span class="element-name">getConfiguredEngineServices</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Return the list of registered engine services for this server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>serverName</code> - name of server</dd>
-<dt>Returns:</dt>
-<dd>list of engine service descriptions</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEngineServiceConfiguration(java.lang.String,java.lang.String,java.lang.String)">
-<h3>getEngineServiceConfiguration</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/engine-services/{serviceURLMarker}/configuration")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/EngineServiceConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceConfigResponse</a></span>&nbsp;<span class="element-name">getEngineServiceConfiguration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span></div>
-<div class="block">Return the configuration for the named engine service for this server.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>serverName</code> - name of server</dd>
-<dd><code>serviceURLMarker</code> - engine service name used in URL</dd>
-<dt>Returns:</dt>
-<dd>response containing the engine services configuration</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEngineDefinitionsClientConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig)">
-<h3>setEngineDefinitionsClientConfig</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/engine-definitions/client-config")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setEngineDefinitionsClientConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="../configuration/properties/OMAGServerClientConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerClientConfig</a>&nbsp;clientConfig)</span></div>
-<div class="block">Set up the name and platform URL root for the metadata server running the Governance Engine OMAS that provides
- the governance engine definitions used by the engine services.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>clientConfig</code> - URL root and server name for the metadata server.</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEngineList(java.lang.String,java.lang.String,java.util.List)">
-<h3>setEngineList</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/engine-list")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setEngineList</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engines)</span></div>
-<div class="block">Set up the list of governance engines that will use the metadata from the same metadata access server as the
- engine host uses for retrieving the engine configuration.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>engines</code> - list of engines supported by the server</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="addEngine(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)">
+<section class="detail" id="addEngine(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)">
 <h3>addEngine</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/engine")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addEngine</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engine)</span></div>
-<div class="block">Add another engine to the list of governance engines that will use the metadata from the same metadata access server as the
- engine host uses for retrieving the engine configuration.</div>
+<div class="block">Add another governance engine the list of governance engines for an engine host OMAG server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>engine</code> - definition of a single engine</dd>
 <dt>Returns:</dt>
 <dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="configureEngineService(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody)">
-<h3>configureEngineService</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/engine-services/{serviceURLMarker}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">configureEngineService</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- @RequestBody
- <a href="../rest/EngineServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Enable a single registered engine service.  This builds the engine service configuration for the
- server's config document.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>serviceURLMarker</code> - string indicating which engine service it is configuring</dd>
-<dd><code>requestBody</code> - minimum values to configure an engine service</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException the event bus has not been configured or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="configureAllEngineServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody)">
-<h3>configureAllEngineServices</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/engine-services")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">configureAllEngineServices</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="../rest/EngineServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineServiceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Enable all non-deprecated, registered engine service.  This builds the engine service configuration for the
- server's config document.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>requestBody</code> - minimum values to configure an engine service</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException the event bus has not been configured or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="configureEngineService(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig)">
-<h3>configureEngineService</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/engine-services/configuration")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">configureEngineService</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;serviceConfig)</span></div>
-<div class="block">Add configuration for a single engine service to the server's config document.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>serviceConfig</code> - all values to configure an engine service</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException the event bus has not been configured or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setEngineServicesConfig(java.lang.String,java.lang.String,java.util.List)">
-<h3>setEngineServicesConfig</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/engine-services/configuration/all")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setEngineServicesConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;&nbsp;engineServicesConfig)</span></div>
-<div class="block">Set up the configuration for all the open metadata engine services (OMESs).  This overrides
- the current values.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>engineServicesConfig</code> - list of configuration properties for each engine service.</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or engineServicesConfig parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearEngineDefinitionsClientConfig(java.lang.String,java.lang.String)">
-<h3>clearEngineDefinitionsClientConfig</h3>
-<div class="member-signature"><span class="annotations">@DeleteMapping(path="/engine-definitions/client-config")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearEngineDefinitionsClientConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Remove the configuration for the Governance Engine OMAS Engine client configuration in a single call.  This overrides the current values.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dt>Returns:</dt>
-<dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearEngineList(java.lang.String,java.lang.String)">
-<h3>clearEngineList</h3>
-<div class="member-signature"><span class="annotations">@DeleteMapping(path="/engine-list")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearEngineList</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Remove the configuration for the engine list in a single call.  This overrides the current values.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dt>Returns:</dt>
-<dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearAllEngineServices(java.lang.String,java.lang.String)">
-<h3>clearAllEngineServices</h3>
-<div class="member-signature"><span class="annotations">@DeleteMapping(path="/engine-services")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearAllEngineServices</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Disable the engine services.  This removes all configuration for the engine services in the engine host.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter or
- OMAGConfigurationErrorException unusual state in the admin server.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="clearEngineService(java.lang.String,java.lang.String,java.lang.String)">
-<h3>clearEngineService</h3>
-<div class="member-signature"><span class="annotations">@DeleteMapping(path="/engine-services/{serviceURLMarker}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearEngineService</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span></div>
-<div class="block">Remove an engine service.  This removes all configuration for the engine service.  Other configured engine services are untouched.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>serviceURLMarker</code> - engine service name used in URL</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName  parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEngineHostServicesConfiguration(java.lang.String,java.lang.String)">
+<section class="detail" id="getEngineHostServicesConfiguration(java.lang.String)">
 <h3>getEngineHostServicesConfiguration</h3>
-<div class="member-signature"><span class="annotations">@GetMapping({"/engine-host-services/configuration","/engine-host-services"})
+<div class="member-signature"><span class="annotations">@GetMapping("/governance-engines")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/EngineHostServicesResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">EngineHostServicesResponse</a></span>&nbsp;<span class="element-name">getEngineHostServicesConfiguration</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the configuration of the specialist services for an Engine Host OMAG Server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
 <dd><code>serverName</code> - name of server</dd>
 <dt>Returns:</dt>
 <dd>response containing the engine host services configuration</dd>
@@ -570,47 +199,41 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setEngineHostServicesConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig)">
+<section class="detail" id="setEngineHostServicesConfig(java.lang.String,java.util.List)">
 <h3>setEngineHostServicesConfig</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/engine-host-services")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/governance-engines")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setEngineHostServicesConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
- <a href="../configuration/properties/EngineHostServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineHostServicesConfig</a>&nbsp;servicesConfig)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;governanceEngines)</span></div>
 <div class="block">Set up the configuration of the specialist services for an Engine Host OMAG Server in a single call.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
-<dd><code>servicesConfig</code> - full configuration for the engine host server.</dd>
+<dd><code>governanceEngines</code> - full configuration for the engine host server.</dd>
 <dt>Returns:</dt>
 <dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearEngineHostServicesConfig(java.lang.String,java.lang.String)">
+<section class="detail" id="clearEngineHostServicesConfig(java.lang.String)">
 <h3>clearEngineHostServicesConfig</h3>
-<div class="member-signature"><span class="annotations">@DeleteMapping(path="/engine-host-services")
+<div class="member-signature"><span class="annotations">@DeleteMapping(path="/governance-engines")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearEngineHostServicesConfig</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Remove the configuration of the specialist services for an Engine Host OMAG Server in a single call.  This overrides the current values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dt>Returns:</dt>
 <dd>void response
- OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ UserNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGConfigurationErrorException unexpected exception or
- OMAGInvalidParameterException invalid serverName parameter.</dd>
+ InvalidParameterException invalid serverName parameter.</dd>
 </dl>
 </section>
 </li>

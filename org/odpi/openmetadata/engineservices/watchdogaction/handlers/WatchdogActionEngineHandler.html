@@ -77,9 +77,14 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="../../../governanceservers/enginehostservices/api/WatchdogEventSupportingEngine.html" title="interface in org.odpi.openmetadata.governanceservers.enginehostservices.api">WatchdogEventSupportingEngine</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">WatchdogActionEngineHandler</span>
-<span class="extends-implements">extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></span></div>
+<span class="extends-implements">extends <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a>
+implements <a href="../../../governanceservers/enginehostservices/api/WatchdogEventSupportingEngine.html" title="interface in org.odpi.openmetadata.governanceservers.enginehostservices.api">WatchdogEventSupportingEngine</a></span></div>
 <div class="block">The WatchdogActionEngineHandler is responsible for running watchdog action services on demand.  It is initialized
  with the configuration for the watchdog action services it supports along with the clients to the
  asset properties store and annotations store.</div>
@@ -92,7 +97,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler">Fields inherited from class&nbsp;org.odpi.openmetadata.governanceservers.enginehostservices.admin.<a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></h3>
-<code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#auditLog">auditLog</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#configurationClient">configurationClient</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineActionClient">engineActionClient</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineServiceName">engineServiceName</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineUserId">engineUserId</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#governanceEngineGUID">governanceEngineGUID</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#governanceEngineName">governanceEngineName</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#governanceEngineProperties">governanceEngineProperties</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#maxPageSize">maxPageSize</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#serverName">serverName</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#serverUserId">serverUserId</a></code></div>
+<code><a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#auditLog">auditLog</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#configurationClient">configurationClient</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineActionClient">engineActionClient</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineConfig">engineConfig</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineServiceName">engineServiceName</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#engineUserId">engineUserId</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#governanceEngineGUID">governanceEngineGUID</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#governanceEngineName">governanceEngineName</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#governanceEngineProperties">governanceEngineProperties</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#maxPageSize">maxPageSize</a>, <a href="../../../governanceservers/enginehostservices/admin/GovernanceEngineHandler.html#serverName">serverName</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -103,10 +108,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">WatchdogActionEngineHandler</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">WatchdogActionEngineHandler</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
  <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="../../../frameworkservices/gaf/client/GovernanceConfigurationClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceConfigurationClient</a>&nbsp;configurationClient,
@@ -168,12 +171,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
 <h3>WatchdogActionEngineHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">WatchdogActionEngineHandler</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerServerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
  <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="../../../frameworkservices/gaf/client/GovernanceConfigurationClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceConfigurationClient</a>&nbsp;configurationClient,
@@ -186,8 +187,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>engineConfig</code> - the unique identifier of the governance action engine.</dd>
 <dd><code>localServerName</code> - the name of the engine host server where the governance action engine is running</dd>
-<dd><code>partnerServerName</code> - name of partner server</dd>
-<dd><code>partnerURLRoot</code> - partner platform</dd>
 <dd><code>serverUserId</code> - user id for the server to use</dd>
 <dd><code>openMetadataClient</code> - access to the open metadata store</dd>
 <dd><code>configurationClient</code> - client to retrieve the configuration</dd>
@@ -213,6 +212,8 @@ loadScripts(document, 'script');</script>
                           throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Pass on the watchdog event to any governance service that supports them.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../governanceservers/enginehostservices/api/WatchdogEventSupportingEngine.html#publishWatchdogEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">publishWatchdogEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../governanceservers/enginehostservices/api/WatchdogEventSupportingEngine.html" title="interface in org.odpi.openmetadata.governanceservers.enginehostservices.api">WatchdogEventSupportingEngine</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>watchdogGovernanceEvent</code> - element describing the changing metadata data.</dd>
 <dt>Throws:</dt>

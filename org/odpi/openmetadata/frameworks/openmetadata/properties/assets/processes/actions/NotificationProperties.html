@@ -108,7 +108,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties)" class="member-name-link">NotificationProperties</a><wbr>(<a href="NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties)" class="member-name-link">NotificationProperties</a><wbr>(<a href="ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ActionProperties</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
@@ -126,36 +126,6 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSystemAction()" class="member-name-link">getSystemAction</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the action taken by the producer of this notification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserResponse()" class="member-name-link">getUserResponse</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the suggested action that the receiver of this notification should take.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return hash code based on properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSystemAction(java.lang.String)" class="member-name-link">setSystemAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the action taken by the producer of this notification.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUserResponse(java.lang.String)" class="member-name-link">setUserResponse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userResponse)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the suggested action that the receiver of this notification should take.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -165,8 +135,11 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.<a href="ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ActionProperties</a></h3>
+<code><a href="ActionProperties.html#equals(java.lang.Object)">equals</a>, <a href="ActionProperties.html#getSituation()">getSituation</a>, <a href="ActionProperties.html#hashCode()">hashCode</a>, <a href="ActionProperties.html#setSituation(java.lang.String)">setSituation</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.<a href="../ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a></h3>
-<code><a href="../ProcessProperties.html#getActivityStatus()">getActivityStatus</a>, <a href="../ProcessProperties.html#getCompletionTime()">getCompletionTime</a>, <a href="../ProcessProperties.html#getDueTime()">getDueTime</a>, <a href="../ProcessProperties.html#getFormula()">getFormula</a>, <a href="../ProcessProperties.html#getFormulaType()">getFormulaType</a>, <a href="../ProcessProperties.html#getLastPauseTime()">getLastPauseTime</a>, <a href="../ProcessProperties.html#getLastResumeTime()">getLastResumeTime</a>, <a href="../ProcessProperties.html#getLastReviewTime()">getLastReviewTime</a>, <a href="../ProcessProperties.html#getPriority()">getPriority</a>, <a href="../ProcessProperties.html#getRequestedStartTime()">getRequestedStartTime</a>, <a href="../ProcessProperties.html#getRequestedTime()">getRequestedTime</a>, <a href="../ProcessProperties.html#getStartTime()">getStartTime</a>, <a href="../ProcessProperties.html#getUserDefinedActivityStatus()">getUserDefinedActivityStatus</a>, <a href="../ProcessProperties.html#setActivityStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">setActivityStatus</a>, <a href="../ProcessProperties.html#setCompletionTime(java.util.Date)">setCompletionTime</a>, <a href="../ProcessProperties.html#setDueTime(java.util.Date)">setDueTime</a>, <a href="../ProcessProperties.html#setFormula(java.lang.String)">setFormula</a>, <a href="../ProcessProperties.html#setFormulaType(java.lang.String)">setFormulaType</a>, <a href="../ProcessProperties.html#setLastPauseTime(java.util.Date)">setLastPauseTime</a>, <a href="../ProcessProperties.html#setLastResumeTime(java.util.Date)">setLastResumeTime</a>, <a href="../ProcessProperties.html#setLastReviewTime(java.util.Date)">setLastReviewTime</a>, <a href="../ProcessProperties.html#setPriority(int)">setPriority</a>, <a href="../ProcessProperties.html#setRequestedStartTime(java.util.Date)">setRequestedStartTime</a>, <a href="../ProcessProperties.html#setRequestedTime(java.util.Date)">setRequestedTime</a>, <a href="../ProcessProperties.html#setStartTime(java.util.Date)">setStartTime</a>, <a href="../ProcessProperties.html#setUserDefinedActivityStatus(java.lang.String)">setUserDefinedActivityStatus</a></code></div>
+<code><a href="../ProcessProperties.html#getActivityStatus()">getActivityStatus</a>, <a href="../ProcessProperties.html#getCompletionTime()">getCompletionTime</a>, <a href="../ProcessProperties.html#getDueTime()">getDueTime</a>, <a href="../ProcessProperties.html#getExpectedBehaviour()">getExpectedBehaviour</a>, <a href="../ProcessProperties.html#getFormula()">getFormula</a>, <a href="../ProcessProperties.html#getFormulaType()">getFormulaType</a>, <a href="../ProcessProperties.html#getLastPauseTime()">getLastPauseTime</a>, <a href="../ProcessProperties.html#getLastResumeTime()">getLastResumeTime</a>, <a href="../ProcessProperties.html#getLastReviewTime()">getLastReviewTime</a>, <a href="../ProcessProperties.html#getPriority()">getPriority</a>, <a href="../ProcessProperties.html#getRequestedStartTime()">getRequestedStartTime</a>, <a href="../ProcessProperties.html#getRequestedTime()">getRequestedTime</a>, <a href="../ProcessProperties.html#getStartTime()">getStartTime</a>, <a href="../ProcessProperties.html#getUserDefinedActivityStatus()">getUserDefinedActivityStatus</a>, <a href="../ProcessProperties.html#setActivityStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">setActivityStatus</a>, <a href="../ProcessProperties.html#setCompletionTime(java.util.Date)">setCompletionTime</a>, <a href="../ProcessProperties.html#setDueTime(java.util.Date)">setDueTime</a>, <a href="../ProcessProperties.html#setExpectedBehaviour(java.lang.String)">setExpectedBehaviour</a>, <a href="../ProcessProperties.html#setFormula(java.lang.String)">setFormula</a>, <a href="../ProcessProperties.html#setFormulaType(java.lang.String)">setFormulaType</a>, <a href="../ProcessProperties.html#setLastPauseTime(java.util.Date)">setLastPauseTime</a>, <a href="../ProcessProperties.html#setLastResumeTime(java.util.Date)">setLastResumeTime</a>, <a href="../ProcessProperties.html#setLastReviewTime(java.util.Date)">setLastReviewTime</a>, <a href="../ProcessProperties.html#setPriority(int)">setPriority</a>, <a href="../ProcessProperties.html#setRequestedStartTime(java.util.Date)">setRequestedStartTime</a>, <a href="../ProcessProperties.html#setRequestedTime(java.util.Date)">setRequestedTime</a>, <a href="../ProcessProperties.html#setStartTime(java.util.Date)">setStartTime</a>, <a href="../ProcessProperties.html#setUserDefinedActivityStatus(java.lang.String)">setUserDefinedActivityStatus</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></h3>
 <code><a href="../../AssetProperties.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="../../AssetProperties.html#getNamespace()">getNamespace</a>, <a href="../../AssetProperties.html#getResourceName()">getResourceName</a>, <a href="../../AssetProperties.html#getSource()">getSource</a>, <a href="../../AssetProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="../../AssetProperties.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="../../AssetProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="../../AssetProperties.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../../AssetProperties.html#setSource(java.lang.String)">setSource</a>, <a href="../../AssetProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
@@ -201,9 +174,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties)">
 <h3>NotificationProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">NotificationProperties</span><wbr><span class="parameters">(<a href="NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">NotificationProperties</span><wbr><span class="parameters">(<a href="ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ActionProperties</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -220,50 +193,6 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getSystemAction()">
-<h3>getSystemAction</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSystemAction</span>()</div>
-<div class="block">Return the action taken by the producer of this notification.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setSystemAction(java.lang.String)">
-<h3>setSystemAction</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSystemAction</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction)</span></div>
-<div class="block">Set up the action taken by the producer of this notification.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>systemAction</code> - string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getUserResponse()">
-<h3>getUserResponse</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUserResponse</span>()</div>
-<div class="block">Return the suggested action that the receiver of this notification should take.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setUserResponse(java.lang.String)">
-<h3>setUserResponse</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUserResponse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userResponse)</span></div>
-<div class="block">Set up the suggested action that the receiver of this notification should take.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userResponse</code> - string</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
@@ -273,34 +202,6 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="ActionProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ActionProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="equals(java.lang.Object)">
-<h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../ProcessProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>objectToCompare</code> - supplied object</dd>
-<dt>Returns:</dt>
-<dd>boolean result of comparison</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="hashCode()">
-<h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Return hash code based on properties.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../ProcessProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a></code></dd>
-<dt>Returns:</dt>
-<dd>int</dd>
 </dl>
 </section>
 </li>
