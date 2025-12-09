@@ -160,7 +160,7 @@ public class RepositoryHandler
         {
             errorHandler.handleEntityProxy(error, guid, entityTypeName, methodName, guidParameterName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -746,7 +746,7 @@ public class RepositoryHandler
                                         properties,
                                         methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -909,7 +909,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnsupportedProperty(error, methodName, newPropertiesParameterName);
             }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException error)
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
@@ -1346,7 +1346,11 @@ public class RepositoryHandler
                 errorHandler.handleNoEntity(entityTypeGUID, entityTypeName, properties, methodName);
             }
         }
-        catch (UserNotAuthorizedException error)
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException error)
+        {
+            errorHandler.handleUnsupportedProperty(error, methodName, newPropertiesParameterName);
+        }
+        catch (UserNotAuthorizedException | InvalidParameterException error)
         {
             /*
              * This comes from validateProvenance.  The call to validate provenance is in the try...catch
@@ -1354,14 +1358,7 @@ public class RepositoryHandler
              */
             throw error;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException error)
-        {
-            errorHandler.handleUnsupportedProperty(error, methodName, newPropertiesParameterName);
-        }
+
         catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
@@ -1414,10 +1411,6 @@ public class RepositoryHandler
              * in case the caller has passed bad parameters.
              */
             throw error;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
         }
         catch (Exception error)
         {
@@ -1473,7 +1466,7 @@ public class RepositoryHandler
                                                              pageSize,
                                                              sequencingOrder);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -1537,7 +1530,7 @@ public class RepositoryHandler
                                                                pageSize,
                                                                sequencingOrder);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -1642,10 +1635,6 @@ public class RepositoryHandler
              * in case the caller has passed bad parameters.
              */
             throw error;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
         }
         catch (Exception error)
         {
@@ -1754,10 +1743,6 @@ public class RepositoryHandler
         catch (UserNotAuthorizedException | PropertyServerException error)
         {
             throw error;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException error)
         {
@@ -1990,10 +1975,6 @@ public class RepositoryHandler
                  */
                 throw error;
             }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-            {
-                errorHandler.handleUnauthorizedUser(userId, methodName);
-            }
             catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException error)
             {
                 errorHandler.handleUnsupportedProperty(error, methodName, newPropertiesParameterName);
@@ -2139,10 +2120,6 @@ public class RepositoryHandler
                  * in case the caller has passed bad parameters.
                  */
                 throw error;
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-            {
-                errorHandler.handleUnauthorizedUser(userId, methodName);
             }
             catch (Exception error)
             {
@@ -2394,9 +2371,9 @@ public class RepositoryHandler
                                                                                               methodName,
                                                                                               metadataCollection.getMetadataCollectionId(userId)));
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
+            throw error;
         }
         catch (Exception error)
         {
@@ -2450,10 +2427,6 @@ public class RepositoryHandler
              * in case the caller has passed bad parameters.
              */
             throw error;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
         }
         catch (Exception error)
         {
@@ -2554,7 +2527,7 @@ public class RepositoryHandler
                 log.debug("No entities of type {}", entityTypeGUID);
             }
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3320,7 +3293,7 @@ public class RepositoryHandler
         {
             errorHandler.handleEntityProxy(error, guid, entityTypeName, methodName, guidParameterName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3402,7 +3375,7 @@ public class RepositoryHandler
                                          effectiveTime,
                                          methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3483,7 +3456,7 @@ public class RepositoryHandler
                                          effectiveTime,
                                          methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3561,7 +3534,7 @@ public class RepositoryHandler
                                          effectiveTime,
                                          methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3649,7 +3622,7 @@ public class RepositoryHandler
                                          effectiveTime,
                                          methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3734,7 +3707,7 @@ public class RepositoryHandler
                 return accumulator.getRelationships();
             }
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3796,7 +3769,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnknownRelationship(error, relationshipGUID, relationshipTypeName, methodName, relationshipParameterName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        catch (UserNotAuthorizedException  error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3870,7 +3843,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnknownRelationship(error, relationshipGUID, relationshipTypeName, methodName, relationshipParameterName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        catch (UserNotAuthorizedException  error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -3927,7 +3900,7 @@ public class RepositoryHandler
                                                              pageSize,
                                                              sequencingOrder);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -4198,7 +4171,7 @@ public class RepositoryHandler
 
                         accumulator.addRelationships(startingProxy, retrievingEntity.getGUID(), filterRelationshipsByEntityEnd(retrievedRelationships, retrievingEntity, attachmentEntityEnd, forDuplicateProcessing));
                     }
-                    catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+                    catch (UserNotAuthorizedException error)
                     {
                         errorHandler.handleUnauthorizedUser(userId, methodName);
                     }
@@ -4251,7 +4224,7 @@ public class RepositoryHandler
 
                 return filterRelationshipsByEntityEnd(relationships, startingEntity, attachmentEntityEnd, forDuplicateProcessing);
             }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException error)
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
@@ -4318,7 +4291,7 @@ public class RepositoryHandler
                                          effectiveTime,
                                          methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -5173,7 +5146,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnsupportedProperty(error, methodName, newPropertiesParameterName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        catch (UserNotAuthorizedException  error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -5329,10 +5302,6 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
         catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
@@ -5398,10 +5367,6 @@ public class RepositoryHandler
              */
             throw error;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException  error)
         {
             /* All ok since the relationship has already been deleted by another thread */
@@ -5458,7 +5423,7 @@ public class RepositoryHandler
                                                  relationshipTypeName,
                                                  relationshipGUID);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        catch (UserNotAuthorizedException  error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -5513,11 +5478,7 @@ public class RepositoryHandler
              */
             throw error;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5672,10 +5633,6 @@ public class RepositoryHandler
         {
             errorHandler.handleUnsupportedProperty(error, methodName, newPropertiesParameterName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
         catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
@@ -5722,10 +5679,6 @@ public class RepositoryHandler
         catch (UserNotAuthorizedException | PropertyServerException error)
         {
             throw error;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
         }
         catch (Exception   error)
         {
@@ -5787,10 +5740,6 @@ public class RepositoryHandler
              */
             throw error;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
         catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
@@ -5846,7 +5795,7 @@ public class RepositoryHandler
                                                             asOfTime,
                                                             level);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        catch (UserNotAuthorizedException  error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }

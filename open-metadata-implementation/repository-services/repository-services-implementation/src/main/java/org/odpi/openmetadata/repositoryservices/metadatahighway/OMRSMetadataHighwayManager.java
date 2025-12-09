@@ -581,9 +581,9 @@ public class OMRSMetadataHighwayManager
 
             OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
 
-            if (protocolVersion == OpenMetadataEventProtocolVersion.V1)
+            if (protocolVersion == OpenMetadataEventProtocolVersion.V2)
             {
-                topicConnector.setEventProtocolLevel(OMRSEventProtocolVersion.V1);
+                topicConnector.setEventProtocolLevel(OMRSEventProtocolVersion.V2);
             }
 
             return topicConnector;
@@ -594,7 +594,7 @@ public class OMRSMetadataHighwayManager
 
             if (log.isDebugEnabled())
             {
-                log.debug("Unable to create topic connector: " + error.toString());
+                log.debug("Unable to create topic connector: " + error);
             }
 
             auditLog.logMessage(methodName,

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/product-manager")
 
-@Tag(name="API: Product Manager OMVS", description="The Product Manager OMVS provides APIs for managing context events.",
+@Tag(name="API: Product Manager", description="Supports the definition and maintenance of digital products and digital product families.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/product-manager/overview/"))
 

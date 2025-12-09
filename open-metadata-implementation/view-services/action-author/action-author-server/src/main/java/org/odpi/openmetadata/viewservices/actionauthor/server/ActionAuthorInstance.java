@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
  * ActionAuthorInstance caches references to objects it needs for a specific server.
@@ -28,45 +28,39 @@ public class ActionAuthorInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException problem with server name or platform URL
      */
-    public ActionAuthorInstance(String       serverName,
-                                AuditLog     auditLog,
-                                String       localServerUserId,
-                                String       localServerUserPassword,
-                                int          maxPageSize,
-                                String       remoteServerName,
-                                String       remoteServerURL) throws InvalidParameterException
+    public ActionAuthorInstance(String   serverName,
+                                AuditLog auditLog,
+                                String   localServerUserId,
+                                String   localServerSecretsStoreProvider,
+                                String   localServerSecretsStoreLocation,
+                                String   localServerSecretsStoreCollection,
+                                int      maxPageSize,
+                                String   remoteServerName,
+                                String   remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        OpenMetadataClient openMetadataClient;
-        if (localServerUserPassword == null)
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    maxPageSize);
-
-        }
-        else
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    localServerUserId,
-                                                                    localServerUserPassword,
-                                                                    maxPageSize);
-        }
+        OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                                                  remoteServerURL,
+                                                                                  localServerSecretsStoreProvider,
+                                                                                  localServerSecretsStoreLocation,
+                                                                                  localServerSecretsStoreCollection,
+                                                                                  maxPageSize,
+                                                                                  auditLog);
 
         governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
                                                                 auditLog,
@@ -76,8 +70,7 @@ public class ActionAuthorInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open governance client.  This client is from the Open Governance Framework (OGF) and is for
-     * working with automation services.
+     * Return the governance definition client.
      *
      * @return client
      */

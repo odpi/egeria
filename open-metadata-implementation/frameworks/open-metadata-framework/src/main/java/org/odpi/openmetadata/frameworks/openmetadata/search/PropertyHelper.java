@@ -513,6 +513,10 @@ public class PropertyHelper
                     {
                         elementHeader.setAnchor(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setLatestChange(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
                     {
                         elementHeader.setZoneMembership(this.getElementClassification(attachedClassification));
@@ -585,6 +589,10 @@ public class PropertyHelper
                     {
                         elementHeader.setTemplate(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setTemplateSubstitute(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName))
                     {
                         elementHeader.setSchemaType(this.getElementClassification(attachedClassification));
@@ -604,6 +612,14 @@ public class PropertyHelper
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName))
                     {
                         elementHeader.setPrimaryKey(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setKnownDuplicate(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setConsolidateDuplicate(this.getElementClassification(attachedClassification));
                     }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName))
                     {

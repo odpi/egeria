@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.events;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1RegistrySection;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2RegistrySection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,11 +55,11 @@ public class OMRSRegistryEvent extends OMRSEvent
      *
      * @param inboundEvent incoming Event.
      */
-    public OMRSRegistryEvent(OMRSEventV1 inboundEvent)
+    public OMRSRegistryEvent(OMRSEventV2 inboundEvent)
     {
         super(inboundEvent);
 
-        OMRSEventV1RegistrySection registrySection = inboundEvent.getRegistryEventSection();
+        OMRSEventV2RegistrySection registrySection = inboundEvent.getRegistryEventSection();
 
         if (registrySection != null)
         {
@@ -212,11 +212,11 @@ public class OMRSRegistryEvent extends OMRSEvent
      *
      * @return OMRSEvent (Version 1) object
      */
-    public OMRSEventV1  getOMRSEventV1()
+    public OMRSEventV2 getOMRSEventV1()
     {
-        OMRSEventV1     omrsEvent = super.getOMRSEventV1();
+        OMRSEventV2 omrsEvent = super.getOMRSEventV1();
 
-        OMRSEventV1RegistrySection registrySection  = new OMRSEventV1RegistrySection();
+        OMRSEventV2RegistrySection registrySection = new OMRSEventV2RegistrySection();
 
         registrySection.setRegistryEventType(this.registryEventType);
         registrySection.setRegistrationTimestamp(this.registrationTimestamp);

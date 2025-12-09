@@ -5,7 +5,7 @@
 
 # Open Metadata Framework (OMF)
 
-The Open Metadata Framework (OMF) provides base definitions ofr the open metadata type system.
+The Open Metadata Framework (OMF) provides base definitions for the open metadata standards.
 
 More information is available on Egeria's [documentation site](https://egeria-project.org/frameworks/omf/overview/).
 

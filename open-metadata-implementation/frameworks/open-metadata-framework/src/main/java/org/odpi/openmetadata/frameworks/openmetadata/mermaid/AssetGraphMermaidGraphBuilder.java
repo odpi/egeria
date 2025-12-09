@@ -55,24 +55,27 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                 }
             }
 
-            for (RelatedMetadataNodeSummary line : assetGraph.getRelationships())
+            if (assetGraph.getRelationships() != null)
             {
-                if ((line != null) &&
-                        (! propertyHelper.isTypeOf(line.getRelationshipHeader(), Arrays.asList(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName))))
+                for (RelatedMetadataNodeSummary line : assetGraph.getRelationships())
                 {
-                    VisualStyle visualStyle = getVisualStyleForRelationship(line.getRelationshipHeader());
+                    if ((line != null) &&
+                            (! propertyHelper.isTypeOf(line.getRelationshipHeader(), Arrays.asList(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                                                   OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName))))
+                    {
+                        VisualStyle visualStyle = getVisualStyleForRelationship(line.getRelationshipHeader());
 
-                    super.addRelatedNodeSummary(line, visualStyle);
+                        super.addRelatedNodeSummary(line, visualStyle);
+                    }
                 }
             }
         }

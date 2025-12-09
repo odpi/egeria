@@ -57,20 +57,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMAGServerConfig extends AdminServicesConfigHeader
+public class OMAGServerConfig extends BasicServerProperties
 {
-    public static final String         VERSION_ONE = "V1.0";
-    public static final String         VERSION_TWO = "V2.0";
-    public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(List.of(VERSION_TWO));
+    public static final String       VERSION_ONE         = "V1.0";
+    public static final String       VERSION_TWO         = "V2.0";
+    public static final String       VERSION_SIX         = "V6.0";
+    public static final List<String> COMPATIBLE_VERSIONS = new ArrayList<>(List.of(VERSION_SIX));
 
-    /*
-     * Default values used when the server configuration does not provide a value.
-     */
-    public  static final String  defaultLocalServerType                   = null;
-    private static final String  defaultLocalOrganizationName             = null;
-    private static final String  defaultLocalServerURL                    = "~{egeriaEndpoint}~";
-    private static final String  defaultLocalServerUserId                 = "OMAGServer";
-    public  static final int     defaultMaxPageSize                       = 1000;
+
 
     /*
      * Configuration document version number - if not in document then assume V1.0.
@@ -82,21 +76,15 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     private String                          localServerId                   = null; // set on first server startup
     private String                          localServerName                 = null;
-    private String                          localServerDescription          = null;
-    private String                          localServerType                 = null;
-    private String                          organizationName                = defaultLocalOrganizationName;
-    private String                          localServerURL                  = defaultLocalServerURL;
-    private String                          localServerUserId               = defaultLocalServerUserId;
-    private String                          localServerPassword             = null;
-    private int                             maxPageSize                     = defaultMaxPageSize;
+
     private Connection                      serverSecurityConnection        = null;
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
     private List<IntegrationGroupConfig>    dynamicIntegrationGroupsConfig  = null;
+    private List<EngineConfig>              governanceEnginesConfig         = null;
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
-    private EngineHostServicesConfig        engineHostServicesConfig        = null;
     private List<String>                    auditTrail                      = null;
 
 
@@ -122,20 +110,13 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         {
             versionId                       = template.getVersionId();
             localServerId                   = template.getLocalServerId();
-            localServerName                 = template.getLocalServerName();
-            localServerDescription          = template.getLocalServerDescription();
-            localServerType                 = template.getLocalServerType();
-            organizationName                = template.getOrganizationName();
-            localServerURL                  = template.getLocalServerURL();
-            localServerUserId               = template.getLocalServerUserId();
-            localServerPassword             = template.getLocalServerPassword();
-            maxPageSize                     = template.getMaxPageSize();
+
             serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
-            dynamicIntegrationGroupsConfig  = template.getDynamicIntegrationGroupsConfig();
-            engineHostServicesConfig        = template.getEngineHostServicesConfig();
-            viewServicesConfig              = template.getViewServicesConfig();
+            dynamicIntegrationGroupsConfig = template.getDynamicIntegrationGroupsConfig();
+            governanceEnginesConfig        = template.getGovernanceEnginesConfig();
+            viewServicesConfig             = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
             auditTrail                      = template.getAuditTrail();
@@ -188,28 +169,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the description of the local server.
-     *
-     * @return String server description
-     */
-    public String getLocalServerDescription()
-    {
-        return localServerDescription;
-    }
-
-
-    /**
-     * Set up the description of the local server.
-     *
-     * @param localServerDescription String local server description
-     */
-    public void setLocalServerDescription(String localServerDescription)
-    {
-        this.localServerDescription = localServerDescription;
-    }
-
-
-    /**
      * Return the name of the local server.
      *
      * @return String server name
@@ -228,144 +187,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setLocalServerName(String localServerName)
     {
         this.localServerName = localServerName;
-    }
-
-
-    /**
-     * Return the descriptive name for the server type.
-     *
-     * @return String server type
-     */
-    public String getLocalServerType()
-    {
-        return localServerType;
-    }
-
-
-    /**
-     * Set up the descriptive name for the server type.
-     *
-     * @param localServerType String server type
-     */
-    public void setLocalServerType(String localServerType)
-    {
-        this.localServerType = localServerType;
-    }
-
-
-    /**
-     * Return the name of the organization that is running the server.
-     *
-     * @return String organization name
-     */
-    public String getOrganizationName()
-    {
-        return organizationName;
-    }
-
-
-    /**
-     * Set up the name of the organization that is running the server.
-     *
-     * @param organizationName String organization name
-     */
-    public void setOrganizationName(String organizationName)
-    {
-        this.organizationName = organizationName;
-    }
-
-
-    /**
-     * Return the base URL for calling the local server.
-     *
-     * @return String URL
-     */
-    public String getLocalServerURL()
-    {
-        return localServerURL;
-    }
-
-
-    /**
-     * Set up the base URL for calling the local server.
-     *
-     * @param localServerURL String URL
-     */
-    public void setLocalServerURL(String localServerURL)
-    {
-        this.localServerURL = localServerURL;
-    }
-
-
-    /**
-     * Return the userId that the local server should use when processing events and there is no external user
-     * driving the operation.
-     *
-     * @return user id
-     */
-    public String getLocalServerUserId()
-    {
-        return localServerUserId;
-    }
-
-
-    /**
-     * Set up the userId that the local server should use when processing events and there is no external user
-     * driving the operation.
-     *
-     * @param localServerUserId string user id
-     */
-    public void setLocalServerUserId(String localServerUserId)
-    {
-        this.localServerUserId = localServerUserId;
-    }
-
-
-    /**
-     * Return the password that the local server should use on outbound REST calls (this is the password for
-     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
-     * for production environments.
-     *
-     * @return password in clear
-     */
-    public String getLocalServerPassword()
-    {
-        return localServerPassword;
-    }
-
-
-    /**
-     * Set up the password that the local server should use on outbound REST calls (this is the password for
-     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
-     * for production environments.
-     *
-     * @param localServerPassword password in clear
-     */
-    public void setLocalServerPassword(String localServerPassword)
-    {
-        this.localServerPassword = localServerPassword;
-    }
-
-
-    /**
-     * Return the maximum page size supported by this server.
-     *
-     * @return int number of elements
-     */
-    public int getMaxPageSize()
-    {
-        return maxPageSize;
-    }
-
-
-    /**
-     * Set up the maximum page size supported by this server.
-     *
-     * @param maxPageSize int number of elements
-     */
-    public void setMaxPageSize(int maxPageSize)
-    {
-        this.maxPageSize = maxPageSize;
     }
 
 
@@ -530,20 +351,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return properties for an engine host server
      */
-    public EngineHostServicesConfig getEngineHostServicesConfig()
+    public List<EngineConfig> getGovernanceEnginesConfig()
     {
-        return engineHostServicesConfig;
+        return governanceEnginesConfig;
     }
 
 
     /**
      * Set up the configuration for the engine host services that control an engine host OMAG Server.
      *
-     * @param engineHostServicesConfig properties for an engine host server
+     * @param governanceEnginesConfig properties for an engine host server
      */
-    public void setEngineHostServicesConfig(EngineHostServicesConfig engineHostServicesConfig)
+    public void setGovernanceEnginesConfig(List<EngineConfig> governanceEnginesConfig)
     {
-        this.engineHostServicesConfig = engineHostServicesConfig;
+        this.governanceEnginesConfig = governanceEnginesConfig;
     }
 
 
@@ -582,13 +403,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 "versionId='" + versionId + '\'' +
                 ", localServerId='" + localServerId + '\'' +
                 ", localServerName='" + localServerName + '\'' +
-                ", localServerDescription='" + localServerDescription + '\'' +
-                ", localServerType='" + localServerType + '\'' +
-                ", organizationName='" + organizationName + '\'' +
-                ", localServerURL='" + localServerURL + '\'' +
-                ", localServerUserId='" + localServerUserId + '\'' +
-                ", localServerPassword='" + localServerPassword + '\'' +
-                ", maxPageSize=" + maxPageSize +
                 ", serverSecurityConnection=" + serverSecurityConnection +
                 ", eventBusConfig=" + eventBusConfig +
                 ", accessServicesConfig=" + accessServicesConfig +
@@ -596,10 +410,11 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", viewServicesConfig=" + viewServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
                 ", conformanceSuiteConfig=" + conformanceSuiteConfig +
-                ", engineHostServicesConfig=" + engineHostServicesConfig +
+                ", engineHostServicesConfig=" + governanceEnginesConfig +
                 ", auditTrail=" + auditTrail +
                 "} " + super.toString();
     }
+
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -610,36 +425,23 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         OMAGServerConfig that = (OMAGServerConfig) objectToCompare;
-        return getMaxPageSize() == that.getMaxPageSize() &&
-                       Objects.equals(getVersionId(), that.getVersionId()) &&
-                       Objects.equals(getLocalServerId(), that.getLocalServerId()) &&
-                       Objects.equals(getLocalServerName(), that.getLocalServerName()) &&
-                       Objects.equals(getLocalServerDescription(), that.getLocalServerDescription()) &&
-                       Objects.equals(getLocalServerType(), that.getLocalServerType()) &&
-                       Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
-                       Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
-                       Objects.equals(getLocalServerUserId(), that.getLocalServerUserId()) &&
-                       Objects.equals(getLocalServerPassword(), that.getLocalServerPassword()) &&
-                       Objects.equals(getServerSecurityConnection(), that.getServerSecurityConnection()) &&
-                       Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
-                       Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
-                       Objects.equals(getDynamicIntegrationGroupsConfig(), that.getDynamicIntegrationGroupsConfig()) &&
-                       Objects.equals(getEngineHostServicesConfig(), that.getEngineHostServicesConfig()) &&
-                       Objects.equals(getViewServicesConfig(), that.getViewServicesConfig()) &&
-                       Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
-                       Objects.equals(getConformanceSuiteConfig(), that.getConformanceSuiteConfig()) &&
-                       Objects.equals(getAuditTrail(), that.getAuditTrail());
+        return Objects.equals(versionId, that.versionId) &&
+                Objects.equals(localServerId, that.localServerId) &&
+                Objects.equals(localServerName, that.localServerName) &&
+                Objects.equals(serverSecurityConnection, that.serverSecurityConnection) &&
+                Objects.equals(eventBusConfig, that.eventBusConfig) &&
+                Objects.equals(accessServicesConfig, that.accessServicesConfig) &&
+                Objects.equals(dynamicIntegrationGroupsConfig, that.dynamicIntegrationGroupsConfig) &&
+                Objects.equals(viewServicesConfig, that.viewServicesConfig) &&
+                Objects.equals(repositoryServicesConfig, that.repositoryServicesConfig) &&
+                Objects.equals(conformanceSuiteConfig, that.conformanceSuiteConfig) &&
+                Objects.equals(governanceEnginesConfig, that.governanceEnginesConfig) &&
+                Objects.equals(auditTrail, that.auditTrail);
     }
-
 
     /**
      * Return a hash code based on the values of this object.
@@ -649,10 +451,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(versionId, localServerId, localServerName, localServerDescription, localServerType,
-                            organizationName, localServerURL, localServerUserId, localServerPassword, maxPageSize,
-                            serverSecurityConnection, eventBusConfig, accessServicesConfig,
-                            dynamicIntegrationGroupsConfig, viewServicesConfig, engineHostServicesConfig,
-                            repositoryServicesConfig, conformanceSuiteConfig, auditTrail);
+        return Objects.hash(super.hashCode(), versionId, localServerId, localServerName, serverSecurityConnection,
+                            eventBusConfig, accessServicesConfig, dynamicIntegrationGroupsConfig, viewServicesConfig,
+                            repositoryServicesConfig, conformanceSuiteConfig, governanceEnginesConfig, auditTrail);
     }
 }

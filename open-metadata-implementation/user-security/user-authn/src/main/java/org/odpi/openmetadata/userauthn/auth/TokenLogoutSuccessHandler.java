@@ -41,7 +41,7 @@ public class TokenLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler imp
         String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest().getHeader("Authorization");
 
-        if (tokenClient!=null && token != null )
+        if (tokenClient!=null && token != null)
         {
             tokenClient.del(token);
         }

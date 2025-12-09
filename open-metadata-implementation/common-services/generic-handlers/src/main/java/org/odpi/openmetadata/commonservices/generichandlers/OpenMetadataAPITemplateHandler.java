@@ -44,90 +44,20 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public OpenMetadataAPITemplateHandler(OpenMetadataAPIGenericConverter<B> converter,
-                                         Class<B>                           beanClass,
-                                         String                             serviceName,
-                                         String                             serverName,
-                                         InvalidParameterHandler invalidParameterHandler,
-                                         RepositoryHandler repositoryHandler,
-                                         OMRSRepositoryHelper repositoryHelper,
-                                         String                             localServerUserId,
-                                         OpenMetadataServerSecurityVerifier securityVerifier,
-                                         List<String> supportedZones,
-                                         List<String>                       defaultZones,
-                                         List<String>                       publishZones,
-                                         AuditLog auditLog)
+                                         Class<B>                            beanClass,
+                                         String                              serviceName,
+                                         String                              serverName,
+                                         InvalidParameterHandler             invalidParameterHandler,
+                                         RepositoryHandler                   repositoryHandler,
+                                         OMRSRepositoryHelper                repositoryHelper,
+                                         String                              localServerUserId,
+                                         OpenMetadataServerSecurityVerifier  securityVerifier,
+                                         AuditLog                            auditLog)
     {
-        super(converter, beanClass, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-    }
-
-
-
-    /**
-     * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is preloaded with
-     * properties that should override the properties from the template.  This is the top-level method to call from the specific handlers.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param templateGUID unique identifier of existing entity to use
-     * @param templateGUIDParameterName name of parameter passing the templateGUID
-     * @param entityTypeGUID unique identifier of the type for the entity
-     * @param entityTypeName unique name of the type for the entity
-     * @param uniqueParameterValue the value of a unique property (typically qualifiedName) in the new entity - this is used to create unique names in the
-     *                             attachments.
-     * @param uniqueParameterName name of the property where the unique value is stored.
-     * @param propertyBuilder this property builder has the new properties supplied by the caller.  They will be augmented by the template
-     *                        properties and classification.
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
-     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
-     * @param placeholderProperties values to override placeholder variables in the template
-     * @param methodName calling method
-     * @return unique identifier of the new bean
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws PropertyServerException there is a problem in the repository services
-     * @throws UserNotAuthorizedException the user is not authorized to access one of the elements.
-     */
-    public String createBeanFromTemplate(String                        userId,
-                                         String                        externalSourceGUID,
-                                         String                        externalSourceName,
-                                         String                        templateGUID,
-                                         String                        templateGUIDParameterName,
-                                         String                        entityTypeGUID,
-                                         String                        entityTypeName,
-                                         String                        uniqueParameterValue,
-                                         String                        uniqueParameterName,
-                                         OpenMetadataAPIGenericBuilder propertyBuilder,
-                                         List<String>                  serviceSupportedZones,
-                                         boolean                       deepCopy,
-                                         boolean                       templateSubstitute,
-                                         Map<String, String>           placeholderProperties,
-                                         String                        methodName) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
-    {
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           entityTypeGUID,
-                                           entityTypeName,
-                                           uniqueParameterValue,
-                                           uniqueParameterName,
-                                           propertyBuilder,
-                                           serviceSupportedZones,
-                                           deepCopy,
-                                           templateSubstitute,
-                                           false,
-                                           placeholderProperties,
-                                           methodName);
+        super(converter, beanClass, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier, auditLog);
     }
 
 
@@ -147,7 +77,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      * @param uniqueParameterName name of the property where the unique value is stored.
      * @param propertyBuilder this property builder has the new properties supplied by the caller.  They will be augmented by the template
      *                        properties and classification.
-     * @param serviceSupportedZones list of supported zones for this service
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param allowRetrieve can an existing element be returned if it exists
@@ -168,7 +97,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                          String                        uniqueParameterValue,
                                          String                        uniqueParameterName,
                                          OpenMetadataAPIGenericBuilder propertyBuilder,
-                                         List<String>                  serviceSupportedZones,
                                          boolean                       deepCopy,
                                          boolean                       templateSubstitute,
                                          boolean                       allowRetrieve,
@@ -196,7 +124,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                   uniqueParameterValue,
                                                   uniqueParameterName,
                                                   propertyBuilder,
-                                                  serviceSupportedZones,
                                                   deepCopy,
                                                   templateSubstitute,
                                                   allowRetrieve,
@@ -312,7 +239,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      * @param uniqueParameterName name of the property where the unique value is stored.
      * @param propertyBuilder this property builder has the new properties supplied by the caller.  They will be augmented by the template
      *                        properties and classification.
-     * @param serviceSupportedZones list of supported zones for this service
      * @param deepCopy should the template creation extend to the anchored element or just the direct entity?
      * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param placeholderProperties values to override placeholder variables in the template
@@ -337,7 +263,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                     String                        uniqueParameterValue,
                                                     String                        uniqueParameterName,
                                                     OpenMetadataAPIGenericBuilder propertyBuilder,
-                                                    List<String>                  serviceSupportedZones,
                                                     boolean                       deepCopy,
                                                     boolean                       templateSubstitute,
                                                     boolean                       allowRetrieve,
@@ -396,7 +321,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                    2,
                                                    forLineage,
                                                    forDuplicateProcessing,
-                                                   serviceSupportedZones,
                                                    effectiveTime,
                                                    methodName);
             }
@@ -425,7 +349,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                     false,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
-                                                                                    serviceSupportedZones,
                                                                                     effectiveTime,
                                                                                     methodName);
             if (templateAnchorEntity != null)
@@ -501,7 +424,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                null,
                                                                forLineage,
                                                                forDuplicateProcessing,
-                                                               serviceSupportedZones,
                                                                effectiveTime,
                                                                methodName);
 
@@ -607,7 +529,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                    uniqueParameterValue,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
-                                                                   serviceSupportedZones,
                                                                    effectiveTime,
                                                                    placeholderProperties,
                                                                    methodName);
@@ -638,7 +559,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      * @param qualifiedName unique name for this new bean - must not be null
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones list of supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param placeholderProperties values to override placeholder variables in the template
      * @param methodName calling method
@@ -658,7 +578,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                         String              qualifiedName,
                                                         boolean             forLineage,
                                                         boolean             forDuplicateProcessing,
-                                                        List<String>        serviceSupportedZones,
                                                         Date                effectiveTime,
                                                         Map<String, String> placeholderProperties,
                                                         String              methodName) throws InvalidParameterException,
@@ -760,7 +679,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                               null,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
-                                                                              serviceSupportedZones,
                                                                               0, 0,
                                                                               effectiveTime,
                                                                               methodName);
@@ -803,7 +721,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                                     false,
                                                                                                     forLineage,
                                                                                                     forDuplicateProcessing,
-                                                                                                    serviceSupportedZones,
                                                                                                     effectiveTime,
                                                                                                     methodName);
 
@@ -904,7 +821,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                            nextQualifiedName,
                                                                            nextQualifiedNameParameterName,
                                                                            builder,
-                                                                           serviceSupportedZones,
                                                                            true,
                                                                            false,
                                                                            false,

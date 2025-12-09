@@ -4,13 +4,16 @@ package org.odpi.openmetadata.platformservices.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformOriginServices;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
  * discover the type of the server platform.
  */
 @RestController
-@RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
+@RequestMapping("/open-metadata/platform-services/server-platform")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
                                                    "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
@@ -35,7 +45,6 @@ public class OMAGServerPlatformOriginResource
     /**
      * Return the origin of this server platform implementation.
      *
-     * @param userId name of the user making the request
      * @return String description
      */
     @GetMapping(path = "/origin")
@@ -47,9 +56,29 @@ public class OMAGServerPlatformOriginResource
                             content = @Content(mediaType ="text/plain"))
             })
 
-    public String getServerPlatformOrigin(@Parameter(description="calling user") @PathVariable String   userId)
+    public String getServerPlatformOrigin() throws UserNotAuthorizedException
     {
-        return originAPI.getServerPlatformOrigin(userId);
+        return originAPI.getServerPlatformOrigin();
     }
 
+
+    /**
+     * Retrieve the name of the organization running this platform.
+     *
+     * @return String description
+     */
+    @GetMapping(path = "/organization-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation( summary = "getServerPlatformOrganizationName",
+            description="Retrieve the name of the organization running this platform.",
+            responses = {
+                    @ApiResponse(responseCode = "200",description="OMAG Server Platform Owning Organization",
+                            content = @Content(mediaType ="text/plain"))
+            })
+
+    public String getServerPlatformOrganizationName() throws UserNotAuthorizedException
+    {
+        return originAPI.getServerPlatformOrganizationName();
+    }
 }

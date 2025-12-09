@@ -923,16 +923,35 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                  "A governance engine that runs repository governance services.",
                                  "https://egeria-project.org/concepts/repository-governance-engine/"),
 
+    /**
+     * Governance Action - A description of an action that supports the implementation of a governance program.
+     */
+    GOVERNANCE_ACTION("Governance Action",
+                      null,
+                      OpenMetadataType.GOVERNANCE_ACTION.typeName,
+                      null,
+                      "A description of an action that supports the implementation of a governance program.",
+                      "https://egeria-project.org/concepts/governance-action/"),
 
     /**
-     * Governance Action Service - A connector that coordinates governance of digital resources and metadata.
+     * Governance Action Process - A modelled workflow process to perform a governance action.
      */
     GOVERNANCE_ACTION_PROCESS("Governance Action Process",
-                              DeployedImplementationType.PROCESS,
+                              DeployedImplementationType.GOVERNANCE_ACTION,
                               OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                               null,
                               "A modelled workflow process to perform a governance action.",
-                                        "https://egeria-project.org/concepts/governance-action-process/"),
+                              "https://egeria-project.org/concepts/governance-action-process/"),
+
+    /**
+     * Governance Action Type - A modelled governance action comprising of a single step.
+     */
+    GOVERNANCE_ACTION_TYPE("Governance Action Type",
+                              DeployedImplementationType.GOVERNANCE_ACTION,
+                              OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
+                              null,
+                              "A modelled governance action comprising of a single step.",
+                              "https://egeria-project.org/concepts/governance-action-type/"),
 
     /**
      * Connector that manages metadata exchange with a third party technology.

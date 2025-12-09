@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc;
 
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
 
 import java.util.List;
 
@@ -484,7 +482,7 @@ public class InvalidParameterHandler
                                        String                superTypeName,
                                        String                serviceName,
                                        String                methodName,
-                                       OMRSRepositoryHelper  repositoryHelper) throws InvalidParameterException
+                                       OMRSRepositoryHelper repositoryHelper) throws InvalidParameterException
 
     {
         final String parameterName = "typeName";

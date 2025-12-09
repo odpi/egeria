@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagem
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -1400,5 +1399,182 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
                                                                                      PropertyServerException
     {
         stewardshipManagementHandler.removeMoreInformationFromElement(connectorUserId, elementGUID, moreInformationGUID, deleteOptions);
+    }
+
+
+    /**
+     * Classify the element with the ConsolidatedDuplicate classification
+     *
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setConsolidatedDuplicateClassification(String                          elementGUID,
+                                                       ConsolidatedDuplicateProperties properties,
+                                                       MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
+    {
+        stewardshipManagementHandler.setConsolidatedDuplicateClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the ConsolidatedDuplicate classification from the element.
+     *
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConsolidatedDuplicateClassification(String                elementGUID,
+                                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        stewardshipManagementHandler.clearConsolidatedDuplicateClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Create a ConsolidatedDuplicateLink relationship between an element and one of the source elements of its properties.
+     *
+     * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
+     * @param sourceElementGUID unique identifier of one of the source elements
+     * @param properties properties for the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void linkConsolidatedDuplicateToSourceElement(String                       elementGUID,
+                                                         String                       sourceElementGUID,
+                                                         ConsolidatedDuplicateLinkProperties properties,
+                                                         MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        stewardshipManagementHandler.linkConsolidatedDuplicateToSourceElement(connectorUserId,
+                                                                              elementGUID,
+                                                                              sourceElementGUID,
+                                                                              properties,
+                                                                              metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove a ConsolidatedDuplicateLink relationship between an element and one of its source elements.
+     *
+     * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
+     * @param sourceElementGUID unique identifier of one of the source elements
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void unlinkConsolidatedDuplicateFromSourceElement(String        elementGUID,
+                                                             String        sourceElementGUID,
+                                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        stewardshipManagementHandler.unlinkConsolidatedDuplicateFromSourceElement(connectorUserId, elementGUID, sourceElementGUID, deleteOptions);
+    }
+
+
+    /**
+     * Classify the element to indicate that there are other elements representing the same concept.
+     *
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setKnownDuplicateClassification(String                   elementGUID,
+                                                KnownDuplicateProperties properties,
+                                                MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        stewardshipManagementHandler.setKnownDuplicateClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the KnownDuplicate classification from the element.
+     *
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearKnownDuplicateClassification(String                elementGUID,
+                                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        stewardshipManagementHandler.clearKnownDuplicateClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+
+    /**
+     * Link two elements that represent the same concept.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param peerDuplicateGUID unique identifier of the peer duplicate
+     * @param properties properties for the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void linkElementsAsPeerDuplicates(String                      elementGUID,
+                                             String                      peerDuplicateGUID,
+                                             PeerDuplicateLinkProperties properties,
+                                             MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        stewardshipManagementHandler.linkElementsAsPeerDuplicates(connectorUserId,
+                                                                  elementGUID,
+                                                                  peerDuplicateGUID,
+                                                                  properties,
+                                                                  metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove a PeerDuplicateLink relationship between two elements.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param peerDuplicateGUID unique identifier of the peer duplicate
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void unlinkElementsAsPeerDuplicates(String        elementGUID,
+                                               String        peerDuplicateGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        stewardshipManagementHandler.unlinkElementsAsPeerDuplicates(connectorUserId, elementGUID, peerDuplicateGUID, deleteOptions);
     }
 }

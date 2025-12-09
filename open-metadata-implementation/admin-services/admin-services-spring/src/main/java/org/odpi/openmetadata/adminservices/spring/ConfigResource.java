@@ -4,6 +4,10 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
@@ -18,7 +22,14 @@ import org.springframework.web.bind.annotation.*;
  * configuration document is not found, a new one is created.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -33,96 +44,114 @@ public class ConfigResource
     /**
      * Return the stored configuration document for the server.
      *
-     * @param userId  user that is issuing the request
      * @param serverName  local server name
      * @return OMAGServerConfig properties or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName parameter.
      */
     @GetMapping(path = "/configuration")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getStoredConfiguration",
                description="Return the stored configuration document for the server.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String userId,
-                                                           @PathVariable String serverName)
+    public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String serverName)
     {
-        return adminAPI.getStoredConfiguration(userId, serverName);
+        return adminAPI.getStoredConfiguration(serverName);
+    }
+
+
+    /**
+     * Return the stored configuration document for the server.
+     *
+     * @param serverName  local server name
+     * @return OMAGServerConfig properties or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName parameter.
+     */
+    @GetMapping(path = "/configuration/resolved")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getResolvedConfiguration",
+            description="Return the configuration document for the server with the placeholders resolved.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public OMAGServerConfigResponse getResolvedConfiguration(@PathVariable String serverName)
+    {
+        return adminAPI.getResolvedConfiguration(serverName);
     }
 
 
     /**
      * Set up the configuration properties for an OMAG Server in a single command.
      *
-     * @param userId  user that is issuing the request
      * @param serverName  local server name
      * @param omagServerConfig  configuration for the server
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
     @PostMapping(path = "/configuration")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setOMAGServerConfig",
                description="Set up the configuration properties for an OMAG Server in a single command.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse setOMAGServerConfig(@PathVariable String           userId,
-                                            @PathVariable String           serverName,
+    public VoidResponse setOMAGServerConfig(@PathVariable String           serverName,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
     {
-        return adminAPI.setOMAGServerConfig(userId, serverName, omagServerConfig);
+        return adminAPI.setOMAGServerConfig(serverName, omagServerConfig);
     }
 
 
     /**
      * Clear the configuration properties for an OMAG Server in a single command.
      *
-     * @param userId  user that is issuing the request
      * @param serverName  local server name
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
     @DeleteMapping(path = "/configuration")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearOMAGServerConfig",
                description="Clear the configuration properties for an OMAG Server in a single command.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearOMAGServerConfig(@PathVariable String userId,
-                                              @PathVariable String serverName)
+    public VoidResponse clearOMAGServerConfig(@PathVariable String serverName)
     {
-        return adminAPI.clearOMAGServerConfig(userId, serverName);
+        return adminAPI.clearOMAGServerConfig(serverName);
     }
 
 
     /**
      * Push the configuration for the server to another OMAG Server Platform.
      *
-     * @param userId  user that is issuing the request
      * @param serverName  local server name
      * @param destinationPlatform  location of the platform where the config is to be deployed to
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration or
-     * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
+     * InvalidParameterException invalid serverName or destinationPlatform parameter.
      */
     @PostMapping(path = "/configuration/deploy")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="deployOMAGServerConfig",
                description="Push the configuration for the server to another OMAG Server Platform.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse deployOMAGServerConfig(@PathVariable String           userId,
-                                               @PathVariable String           serverName,
+    public VoidResponse deployOMAGServerConfig(@PathVariable String           serverName,
                                                @RequestBody  URLRequestBody   destinationPlatform)
     {
-        return adminAPI.deployOMAGServerConfig(userId, serverName, destinationPlatform);
+        return adminAPI.deployOMAGServerConfig(serverName, destinationPlatform);
     }
 }

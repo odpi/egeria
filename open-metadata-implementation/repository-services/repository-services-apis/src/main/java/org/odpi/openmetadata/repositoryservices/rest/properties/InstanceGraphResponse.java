@@ -148,17 +148,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
         return "InstanceGraphResponse{" +
                 "entityElementList=" + entityElementList +
                 ", relationshipElementList=" + relationshipElementList +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
-                '}';
+                "} " + super.toString();
     }
 
 

@@ -28,38 +28,40 @@ public class TemplateManagerInstance extends OMVSServiceInstance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param localServerUserId userId used for server initiated actions
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException problem with server name or platform URL
      */
-    public TemplateManagerInstance(String       serverName,
-                                   AuditLog     auditLog,
-                                   String       localServerUserId,
-                                   String       localServerUserPassword,
-                                   int          maxPageSize,
-                                   String       remoteServerName,
-                                   String       remoteServerURL) throws InvalidParameterException
+    public TemplateManagerInstance(String   serverName,
+                                   AuditLog auditLog,
+                                   String   localServerUserId,
+                                   String   localServerSecretsStoreProvider,
+                                   String   localServerSecretsStoreLocation,
+                                   String   localServerSecretsStoreCollection,
+                                   int      maxPageSize,
+                                   String   remoteServerName,
+                                   String   remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        if (localServerUserPassword == null)
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
-        }
-        else
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-        }
+        openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                               remoteServerURL,
+                                                               localServerSecretsStoreProvider,
+                                                               localServerSecretsStoreLocation,
+                                                               localServerSecretsStoreCollection,
+                                                               maxPageSize,
+                                                               auditLog);
 
         templateHandler = new TemplateHandler(serverName, auditLog, myDescription.getViewServiceFullName(), openMetadataClient);
     }

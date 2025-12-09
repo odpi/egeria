@@ -4,6 +4,8 @@ package org.odpi.openmetadata.governanceservers.enginehostservices.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -13,6 +15,7 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.rest.Governanc
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummaryResponse;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,45 +34,52 @@ public class EngineHostClient
     /**
      * Create a client-side object for calling a governance engine.
      *
-     * @param serverPlatformRootURL the root url of the platform where the governance engine is running.
-     * @param serverName the name of the governance server where the governance engine is running
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
+     * @param auditLog destination for log messages.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public EngineHostClient(String serverPlatformRootURL,
-                            String serverName) throws InvalidParameterException
+    public EngineHostClient(String   serverName,
+                            String   serverPlatformURLRoot,
+                            String   secretsStoreProvider,
+                            String   secretsStoreLocation,
+                            String   secretsStoreCollection,
+                            AuditLog auditLog) throws InvalidParameterException
     {
-        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverPlatformRootURL = serverPlatformURLRoot;
         this.serverName            = serverName;
 
-        this.restClient = new EngineHostRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new EngineHostRESTClient(serverName, serverPlatformRootURL, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
 
 
     /**
      * Create a client-side object for calling a governance engine.
      *
-     * @param serverPlatformRootURL the root url of the platform where the governance engine is running.
-     * @param serverName the name of the governance server where the governance engine is running
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public EngineHostClient(String serverPlatformRootURL,
-                            String serverName,
-                            String userId,
-                            String password) throws InvalidParameterException
+    public EngineHostClient(String                             serverName,
+                            String                             serverPlatformURLRoot,
+                            Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                            AuditLog                           auditLog) throws InvalidParameterException
     {
-        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverPlatformRootURL = serverPlatformURLRoot;
         this.serverName            = serverName;
 
-        this.restClient = new EngineHostRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new EngineHostRESTClient(serverName, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
     }
 
 
     /**
      * Retrieve the description and status of the requested governance engine.
      *
-     * @param userId calling user
      * @param governanceEngineName qualifiedName of the governance engine to target
      *
      * @return governance engine summary
@@ -77,20 +87,16 @@ public class EngineHostClient
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public GovernanceEngineSummary getGovernanceEngineSummary(String userId,
-                                                              String governanceEngineName) throws InvalidParameterException,
+    public GovernanceEngineSummary getGovernanceEngineSummary(String governanceEngineName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummary";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/{2}/summary";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/{1}/summary";
 
         GovernanceEngineSummaryResponse restResult = restClient.callGovernanceEngineSummaryGetRESTCall(methodName,
                                                                                                            serverPlatformRootURL + urlTemplate,
                                                                                                            serverName,
-                                                                                                           userId,
                                                                                                            governanceEngineName);
 
         exceptionHandler.detectAndThrowInvalidParameterException(restResult);
@@ -102,62 +108,23 @@ public class EngineHostClient
 
 
     /**
-     * Retrieve the description and status of each governance engine assigned to a specific Open Metadata Engine Service (OMES).
-     *
-     * @param userId calling user
-     * @param serviceURLMarker engine service url unique identifier (eg asset-analysis for Asset Analysis OMES)
-     *
-     * @return list of governance engine summaries
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    public List<GovernanceEngineSummary> getGovernanceEngineSummaries(String userId,
-                                                                      String serviceURLMarker) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        final String   methodName = "getGovernanceEngineSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/{2}/governance-engines/summary";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        GovernanceEngineSummariesResponse restResult = restClient.callGovernanceEngineSummariesGetRESTCall(methodName,
-                                                                                                           serverPlatformRootURL + urlTemplate,
-                                                                                                           serverName,
-                                                                                                           userId,
-                                                                                                           serviceURLMarker);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-
-        return restResult.getGovernanceEngineSummaries();
-    }
-
-
-    /**
      * Retrieve the description and status of each governance engine assigned to the Engine Host OMAG Server.
      *
-     * @param userId calling user
      * @return list of governance engine summaries
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public List<GovernanceEngineSummary> getGovernanceEngineSummaries(String userId) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<GovernanceEngineSummary> getGovernanceEngineSummaries() throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/summary";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/summary";
 
         GovernanceEngineSummariesResponse restResult = restClient.callGovernanceEngineSummariesGetRESTCall(methodName,
                                                                                                            serverPlatformRootURL + urlTemplate,
-                                                                                                           serverName,
-                                                                                                           userId);
+                                                                                                           serverName);
 
         exceptionHandler.detectAndThrowInvalidParameterException(restResult);
         exceptionHandler.detectAndThrowPropertyServerException(restResult);
@@ -173,29 +140,25 @@ public class EngineHostClient
      * governance server is initializing.  This request just ensures that the latest configuration
      * is in use.
      *
-     * @param userId identifier of calling user
      * @param governanceEngineName qualifiedName of the governance engine to target
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the governance engine.
      */
-    public  void refreshConfig(String userId,
-                               String governanceEngineName) throws InvalidParameterException,
+    public  void refreshConfig(String governanceEngineName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
         final String   methodName = "refreshConfig";
         final String   governanceEngineParameterName = "governanceEngineName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/{2}/refresh-config";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/{1}/refresh-config";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceEngineName, governanceEngineParameterName, methodName);
 
         restClient.callVoidGetRESTCall(methodName,
                                        serverPlatformRootURL + urlTemplate,
                                        serverName,
-                                       userId,
                                        governanceEngineName);
     }
 
@@ -206,24 +169,20 @@ public class EngineHostClient
      * governance server is initializing.  This request just ensures that the latest configuration
      * is in use.
      *
-     * @param userId identifier of calling user
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the governance engine.
      */
-    public  void refreshConfig(String userId) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    public  void refreshConfig() throws InvalidParameterException,
+                                        UserNotAuthorizedException,
+                                        PropertyServerException
     {
         final String   methodName = "refreshConfig";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/refresh-config";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/refresh-config";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
 
         restClient.callVoidGetRESTCall(methodName,
                                        serverPlatformRootURL + urlTemplate,
-                                       serverName,
-                                       userId);
+                                       serverName);
     }
 }

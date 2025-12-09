@@ -78,9 +78,12 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         /*
          * Add the graph content
          */
-        for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+        if (openMetadataRootElements != null)
         {
-            this.addElementToMermaidGraph(openMetadataRootElement);
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                this.addElementToMermaidGraph(openMetadataRootElement);
+            }
         }
     }
 
@@ -119,7 +122,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         super.addRelatedElementSummary(openMetadataRootElement.getSourcedFromTemplate(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
 
         super.addRelatedElementSummaries(openMetadataRootElement.getTemplatesForCataloguing(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getSupportedImplementationTypes(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+        super.addRelatedElementSummaries(openMetadataRootElement.getTemplateUses(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
         
         super.addRelatedElementSummaries(openMetadataRootElement.getSearchKeywords(), VisualStyle.TAG, openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getKeywordElements(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());

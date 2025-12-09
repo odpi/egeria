@@ -147,22 +147,25 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @param governanceDefinitionGUID       unique identifier of the governance definition (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateGovernanceDefinition(String                         governanceDefinitionGUID,
-                                           UpdateOptions                  updateOptions,
-                                           GovernanceDefinitionProperties properties) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public boolean updateGovernanceDefinition(String                         governanceDefinitionGUID,
+                                              UpdateOptions                  updateOptions,
+                                              GovernanceDefinitionProperties properties) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
-        governanceDefinitionHandler.updateGovernanceDefinition(connectorUserId, governanceDefinitionGUID, updateOptions, properties);
+        boolean updateOccurred = governanceDefinitionHandler.updateGovernanceDefinition(connectorUserId, governanceDefinitionGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(governanceDefinitionGUID);
         }
+
+        return updateOccurred;
     }
 
 

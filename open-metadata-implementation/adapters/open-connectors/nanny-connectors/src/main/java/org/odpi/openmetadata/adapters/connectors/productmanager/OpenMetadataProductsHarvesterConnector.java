@@ -14,7 +14,9 @@ import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.V
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
@@ -41,9 +43,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reference
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
@@ -123,6 +123,13 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                                                                                                             integrationContext.getMetadataAccessServer(),
                                                                                                             integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
+            if ((secretsStoreConnectorMap == null) || (secretsStoreConnectorMap.isEmpty()))
+            {
+                throw new ConnectorCheckedException(ProductManagerErrorCode.NO_SECRETS.getMessageDefinition(connectorName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+            }
+
             /*
              * These governance definitions support the product catalog initiative.
              * They are linked to the product catalog.
@@ -133,9 +140,9 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
              * The product folders are set up first so that the top level folder for the product catalog can be
              * the anchor scope for every thing else.
              */
-            productFolders        = this.getProductCatalogFolders();
             productRoles          = this.getProductRoles();
             solutionBlueprintGUID = this.getSolutionBlueprint();
+            productFolders        = this.getProductCatalogFolders();
             glossaryTerms         = this.getGlossaryTerms();
             communities           = this.getCommunities();
             communityNoteLogs     = this.getCommunityNoteLogs();
@@ -339,16 +346,16 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                                                      PropertyServerException,
                                                      UserNotAuthorizedException
     {
-        Map<String, String> productMap = new HashMap<>();
+        products = new HashMap<>();
 
         for (ProductDefinition productDefinition : ProductDefinitionEnum.values())
         {
             String productGUID = this.getProduct(productDefinition);
 
-            productMap.put(productDefinition.getQualifiedName(), productGUID);
+            products.put(productDefinition.getQualifiedName(), productGUID);
         }
 
-        return productMap;
+        return products;
     }
 
 
@@ -963,12 +970,13 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
         if (connectorTypeGUID != null)
         {
+            ConnectionClient connectionClient = integrationContext.getConnectionClient();
+            EndpointClient   endpointClient = integrationContext.getEndpointClient();
+
             /*
              * Set up the connection for the asset.
              */
-            ConnectionClient connectionClient = integrationContext.getConnectionClient();
-
-            ConnectionProperties connectionProperties = new ConnectionProperties();
+            VirtualConnectionProperties connectionProperties = new VirtualConnectionProperties();
 
             connectionProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_connection");
             connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
@@ -993,8 +1001,97 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
             auditLog.logMessage(methodName,
                                 ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
                                                                                                            connectionProperties.getTypeName(),
-                                                                                                           connectionProperties.getDisplayName(),
-                                                                                                           connectionGUID));
+                                                                                                           connectionProperties.getDisplayName(), connectionGUID));
+
+            /*
+             * Pass on all of the secrets stores to the product asset.  These secret stores are set up
+             * initially in the content pack for this connector.
+             */
+            for (String purpose : secretsStoreConnectorMap.keySet())
+            {
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentGUID(connectionGUID);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
+
+                /*
+                 * Get connection to copy
+                 */
+                Connection secretsConnectorConnection = secretsStoreConnectorMap.get(purpose).getConnection();
+
+                /*
+                 * Create secret store connection
+                 */
+                ConnectionProperties secretsStoreConnection = new ConnectionProperties();
+                secretsStoreConnection.setQualifiedName(productDefinition.getQualifiedName() + "::" + purpose + "_secretsStore_connection");
+                secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
+                secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
+                secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+                if (secretsConnectorConnection.getConfigurationProperties() != null)
+                {
+                    Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
+                    secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
+                }
+
+                /*
+                 * Embed secrets store connection in product connection.
+                 */
+                EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                embeddedConnectionProperties.setDisplayName(purpose);
+
+                String secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
+
+                auditLog.logMessage(methodName,
+                                    ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                               secretsStoreConnection.getTypeName(),
+                                                                                                               secretsStoreConnection.getDisplayName(),
+                                                                                                               secretsStoreConnectionGUID));
+
+                /*
+                 * Link connector type to connection.
+                 */
+                connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
+                                                             secretsConnectorConnection.getConnectorType().getGUID(),
+                                                             connectionClient.getMetadataSourceOptions(),
+                                                             null);
+
+                auditLog.logMessage(methodName,
+                                    ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                  secretsStoreConnection.getTypeName(),
+                                                                                                  secretsStoreConnectionGUID,
+                                                                                                  OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                                  secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+
+                /*
+                 * Add secrets store location as an endpoint.
+                 */
+                EndpointProperties secretsStoreEndpoint = new EndpointProperties();
+                secretsStoreEndpoint.setQualifiedName(productDefinition.getQualifiedName() + "::" + purpose + "_secretsStore_locationEndpoint");
+                secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
+
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentGUID(secretsStoreConnectionGUID);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+                String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
+
+                auditLog.logMessage(methodName,
+                                    ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                               secretsStoreEndpoint.getTypeName(),
+                                                                                                               secretsStoreEndpoint.getDisplayName(),
+                                                                                                               secretsStoreEndpointGUID));
+
+                auditLog.logMessage(methodName,
+                                    ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                  secretsStoreConnection.getTypeName(),
+                                                                                                  secretsStoreConnectionGUID,
+                                                                                                  secretsStoreEndpoint.getTypeName(),
+                                                                                                  secretsStoreEndpointGUID,
+                                                                                                  OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+            }
+
+
             /*
              * Connect the connection to the connectorType
              */
@@ -1005,10 +1102,10 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             auditLog.logMessage(methodName,
                                 ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                              dataSetProperties.getTypeName(),
-                                                                                              assetGUID,
                                                                                               connectionProperties.getTypeName(),
                                                                                               connectionGUID,
+                                                                                              OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                              connectorTypeGUID,
                                                                                               OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
 
             /*
@@ -1016,16 +1113,17 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
              */
             EndpointProperties endpointProperties = new EndpointProperties();
 
-            endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_endpoint");
+            endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_platformEndpoint");
             endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
             endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
             endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
             endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot());
 
+            newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentGUID(connectionGUID);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
 
-            EndpointClient endpointClient = integrationContext.getEndpointClient();
+            endpointClient = integrationContext.getEndpointClient();
 
             String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
 
@@ -1037,12 +1135,11 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             auditLog.logMessage(methodName,
                                 ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                              dataSetProperties.getTypeName(),
-                                                                                              assetGUID,
+                                                                                              connectionProperties.getTypeName(),
+                                                                                              connectionGUID,
                                                                                               endpointProperties.getTypeName(),
                                                                                               endpointGUID,
                                                                                               OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
-
         }
 
 
@@ -1209,7 +1306,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         /*
          * All of the digital products use the same solution design, so it is attached at the top.
          */
-        SolutionBlueprintClient solutionBlueprintClient = integrationContext.getSolutionBlueprintClient();
+        CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
         solutionBlueprintClient.linkSolutionDesign(topLevelGUID,
                                                    solutionBlueprintGUID,
                                                    solutionBlueprintClient.getMetadataSourceOptions(),
@@ -1943,12 +2040,12 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
         String blueprintQualifiedName = ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getQualifiedName();
 
-        SolutionBlueprintClient solutionBlueprintClient = integrationContext.getSolutionBlueprintClient();
+        CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
 
         /*
          * If the solution blueprint is already present then return its GUID,
          */
-        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getSolutionBlueprintsByName(blueprintQualifiedName, null);
+        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getCollectionsByName(blueprintQualifiedName, null);
 
         if (solutionBlueprints != null)
         {
@@ -1980,10 +2077,10 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
         newElementOptions.setIsOwnAnchor(true);
 
-        String blueprintGUID = solutionBlueprintClient.createSolutionBlueprint(newElementOptions,
-                                                                               null,
-                                                                               solutionBlueprintProperties,
-                                                                               null);
+        String blueprintGUID = solutionBlueprintClient.createCollection(newElementOptions,
+                                                                        null,
+                                                                        solutionBlueprintProperties,
+                                                                        null);
 
         auditLog.logMessage(methodName,
                             ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,

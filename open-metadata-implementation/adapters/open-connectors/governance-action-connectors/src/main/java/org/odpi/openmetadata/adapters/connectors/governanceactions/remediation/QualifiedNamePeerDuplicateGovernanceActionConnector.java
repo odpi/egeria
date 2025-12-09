@@ -6,10 +6,12 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDuplicateLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
@@ -90,15 +92,19 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends General
                             continue;
                         }
 
-                        governanceContext.getDuplicateManagementClient().linkElementsAsPeerDuplicates(targetElementGUID,
+                        ClassificationManagerClient classificationManagerClient = governanceContext.getClassificationManagerClient();
+
+                        PeerDuplicateLinkProperties peerDuplicateLinkProperties = new PeerDuplicateLinkProperties();
+
+                        peerDuplicateLinkProperties.setStatusIdentifier(1);
+                        classificationManagerClient.linkElementsAsPeerDuplicates(targetElementGUID,
                                                                        duplicateAssetGUID,
-                                                                       1,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       true);
+                                                                       peerDuplicateLinkProperties,
+                                                                       classificationManagerClient.getMetadataSourceOptions());
+
+                        classificationManagerClient.setKnownDuplicateClassification(targetElementGUID, null, classificationManagerClient.getMetadataSourceOptions());
+                        classificationManagerClient.setKnownDuplicateClassification(duplicateAssetGUID, null, classificationManagerClient.getMetadataSourceOptions());
+
                         outputGuards.add(QualifiedNamePeerDuplicateGuard.DUPLICATE_ASSIGNED.getName());
                         completionStatus = QualifiedNamePeerDuplicateGuard.DUPLICATE_ASSIGNED.getCompletionStatus();
                         break;

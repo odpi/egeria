@@ -90,17 +90,7 @@ public class TypeDefResponse extends OMRSAPIResponse
     {
         return "TypeDefResponse{" +
                 "typeDef=" + typeDef +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
-                '}';
+                "} " + super.toString();
     }
 
 

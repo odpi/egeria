@@ -33,41 +33,26 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public GovernanceActionEngineClient(String serverPlatformRootURL,
-                                        String serverName) throws InvalidParameterException
-    {
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.serverName            = serverName;
-
-        this.restClient = new GovernanceActionRESTClient(serverName, serverPlatformRootURL);
-    }
-
-
-    /**
-     * Create a client-side object for calling a governance action engine.
-     *
-     * @param serverPlatformRootURL the root url of the platform where the governance action engine is running.
-     * @param serverName the name of the engine host server where the governance action engine is running
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     */
-    public GovernanceActionEngineClient(String serverPlatformRootURL,
                                         String serverName,
-                                        String userId,
-                                        String password) throws InvalidParameterException
+                                        String localServerSecretsStoreProvider,
+                                        String localServerSecretsStoreLocation,
+                                        String localServerSecretsStoreCollection) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
 
-        this.restClient = new GovernanceActionRESTClient(serverName, serverPlatformRootURL, userId, password);
-
+        this.restClient = new GovernanceActionRESTClient(serverName,
+                                                         serverPlatformRootURL,
+                                                         localServerSecretsStoreProvider,
+                                                         localServerSecretsStoreLocation,
+                                                         localServerSecretsStoreCollection,
+                                                         null);
     }
 
 
     /**
      * Validate the connector and return its connector type.
      *
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type and other capabilities for this connector
@@ -76,22 +61,19 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorReport validateConnector(String userId,
-                                             String connectorProviderClassName) throws InvalidParameterException,
+    public ConnectorReport validateConnector(String connectorProviderClassName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/governance-action/users/{1}/validate-connector";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/governance-action/validate-connector";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
         ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
                                                                                           serverPlatformRootURL + urlTemplate,
                                                                                           serverName,
-                                                                                          userId,
                                                                                           connectorProviderClassName);
 
         return restResult.getConnectorReport();

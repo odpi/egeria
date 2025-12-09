@@ -166,22 +166,22 @@ public class SchemaMakerRESTServices extends TokenController
      * @param schemaTypeGUID unique identifier of the schema type (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSchemaType(String                   serverName,
-                                         String                   urlMarker,
-                                         String                   schemaTypeGUID,
-                                         UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSchemaType(String                   serverName,
+                                            String                   urlMarker,
+                                            String                   schemaTypeGUID,
+                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSchemaType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -197,10 +197,10 @@ public class SchemaMakerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof SchemaTypeProperties schemaTypeProperties)
                 {
-                    handler.updateSchemaType(userId,
-                                             schemaTypeGUID,
-                                             requestBody,
-                                             schemaTypeProperties);
+                    response.setFlag(handler.updateSchemaType(userId,
+                                                              schemaTypeGUID,
+                                                              requestBody,
+                                                              schemaTypeProperties));
                 }
                 else
                 {

@@ -45,10 +45,10 @@ public class OpenMetadataTypeDefSummary extends OpenMetadataTypeDefLink
      * @param versionName active version name for the OpenMetadataTypeDef
      */
     OpenMetadataTypeDefSummary(OpenMetadataTypeDefCategory category,
-                               String          guid,
-                               String          name,
-                               long            version,
-                               String          versionName)
+                               String                      guid,
+                               String                      name,
+                               long                        version,
+                               String                      versionName)
     {
         super(guid, name);
 
@@ -96,6 +96,7 @@ public class OpenMetadataTypeDefSummary extends OpenMetadataTypeDefLink
     {
         this.category = category;
     }
+
 
     /**
      * Return the version of the OpenMetadataTypeDef.  Versions are created when a OpenMetadataTypeDef's properties are changed.  If

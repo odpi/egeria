@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: My Profile OMVS", description="The My Profile OMVS provides APIs for retrieving and updating a user's personal profile, roles and actions.",
+@Tag(name="API: My Profile", description="Retrieve and updates a user's profile, roles and actions.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/my-profile/overview/"))
 
@@ -70,7 +70,7 @@ public class MyProfileResource
      * Create a new action and link it to the supplied actor and targets (if applicable).
      *
      * @param serverName name of the server instances for this request
-     * @param requestBody properties of the action action
+     * @param requestBody properties of the action
      *
      * @return unique identifier of the action or
      * InvalidParameterException a parameter is invalid

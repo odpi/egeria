@@ -33,49 +33,30 @@ public class RepositoryGovernanceClient  implements RepositoryGovernanceAPI
      *
      * @param serverPlatformRootURL the root url of the platform where the archive engine is running.
      * @param serverName the name of the engine host server where the archive engine is running
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param repositoryGovernanceEngineName the unique name of the archive engine.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public RepositoryGovernanceClient(String serverPlatformRootURL,
                                       String serverName,
+                                      String localServerSecretsStoreProvider,
+                                      String localServerSecretsStoreLocation,
+                                      String localServerSecretsStoreCollection,
                                       String repositoryGovernanceEngineName) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
         this.repositoryGovernanceEngineName = repositoryGovernanceEngineName;
 
-        this.restClient = new RepositoryGovernanceRESTClient(serverName, serverPlatformRootURL);
-    }
-
-
-    /**
-     * Create a client-side object for calling a archive engine.
-     *
-     * @param serverPlatformRootURL the root url of the platform where the archive engine is running.
-     * @param serverName the name of the engine host server where the archive engine is running
-     * @param repositoryGovernanceEngineName the unique name of the archive engine.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     */
-    public RepositoryGovernanceClient(String serverPlatformRootURL,
-                                      String serverName,
-                                      String repositoryGovernanceEngineName,
-                                      String userId,
-                                      String password) throws InvalidParameterException
-    {
-        this.serverPlatformRootURL          = serverPlatformRootURL;
-        this.serverName                     = serverName;
-        this.repositoryGovernanceEngineName = repositoryGovernanceEngineName;
-
-        this.restClient = new RepositoryGovernanceRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new RepositoryGovernanceRESTClient(serverName, serverPlatformRootURL, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, null);
     }
 
 
     /**
      * Validate the connector and return its connector type.
      *
-     * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector report for this connector
@@ -84,22 +65,19 @@ public class RepositoryGovernanceClient  implements RepositoryGovernanceAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorReport validateConnector(String userId,
-                                             String connectorProviderClassName) throws InvalidParameterException,
+    public ConnectorReport validateConnector(String connectorProviderClassName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
         final String methodName = "validateConnector";
         final String nameParameter = "connectorProviderClassName";
-        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/repository-governance/users/{1}/validate-connector";
+        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/repository-governance/validate-connector";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
         ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
                                                                                           serverPlatformRootURL + urlTemplate,
                                                                                           serverName,
-                                                                                          userId,
                                                                                           connectorProviderClassName);
 
         return restResult.getConnectorReport();

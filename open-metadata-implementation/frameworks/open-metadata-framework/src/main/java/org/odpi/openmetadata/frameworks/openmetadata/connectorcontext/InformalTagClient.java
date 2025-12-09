@@ -126,22 +126,25 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param informalTagGUID       unique identifier of the informal tag (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateInformalTag(String                informalTagGUID,
-                                  UpdateOptions         updateOptions,
-                                  InformalTagProperties properties) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public boolean updateInformalTag(String                informalTagGUID,
+                                     UpdateOptions         updateOptions,
+                                     InformalTagProperties properties) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        informalTagHandler.updateTagDescription(connectorUserId, informalTagGUID, updateOptions, properties);
+        boolean updateOccurred = informalTagHandler.updateTagDescription(connectorUserId, informalTagGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(informalTagGUID);
         }
+
+        return updateOccurred;
     }
 
 

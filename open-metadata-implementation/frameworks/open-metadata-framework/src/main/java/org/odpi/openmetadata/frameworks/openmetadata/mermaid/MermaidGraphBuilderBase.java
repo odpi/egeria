@@ -131,22 +131,28 @@ public class MermaidGraphBuilderBase
                                      anchorNode.anchorTypeName,
                                      VisualStyle.LINEAGE_ANCHOR);
 
-                for (String anchoredElement : anchoredElements)
+                if (anchoredElements != null)
                 {
-                    appendMermaidDottedLine(null,
-                                            anchorGUID,
-                                            "Anchor for",
-                                            anchoredElement);
+                    for (String anchoredElement : anchoredElements)
+                    {
+                        appendMermaidDottedLine(null,
+                                                anchorGUID,
+                                                "Anchor for",
+                                                anchoredElement);
+                    }
                 }
             }
             else if (usedNodeNames.contains(anchorGUID))
             {
-                for (String anchoredElement : anchoredElements)
+                if (anchoredElements != null)
                 {
-                    appendMermaidDottedLine(null,
-                                            anchorGUID,
-                                            "Anchor for",
-                                            anchoredElement);
+                    for (String anchoredElement : anchoredElements)
+                    {
+                        appendMermaidDottedLine(null,
+                                                anchorGUID,
+                                                "Anchor for",
+                                                anchoredElement);
+                    }
                 }
             }
         }
@@ -1992,6 +1998,11 @@ public class MermaidGraphBuilderBase
                                                 visualStyle,
                                                 relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
                                                 lineStyle);
+
+                this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getSideLinks(),
+                                                visualStyle,
+                                                relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
+                                                lineStyle);
             }
         }
     }
@@ -2096,44 +2107,47 @@ public class MermaidGraphBuilderBase
          * Build a list of value guids.  Later processing will hunt around for links to tie them
          * together.
          */
-        for (RelatedMetadataElementSummary node : requiredSolutionComponents)
+        if (requiredSolutionComponents != null)
         {
-            if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+            for (RelatedMetadataElementSummary node : requiredSolutionComponents)
             {
-                validNodeGUIDs.add(node.getRelatedElement().getElementHeader().getGUID());
+                if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                {
+                    validNodeGUIDs.add(node.getRelatedElement().getElementHeader().getGUID());
 
-                if (node.getRelatedElement().getProperties() instanceof SolutionComponentProperties solutionComponentProperties)
-                {
-                    appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
-                                         getNodeDisplayName(node.getRelatedElement()),
-                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         node.getRelatedElement().getProperties(),
-                                         getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
-                                                                          this.getVisualStyleForSolutionComponent(solutionComponentProperties.getSolutionComponentType())));
-                }
-                else
-                {
-                    appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
-                                         getNodeDisplayName(node.getRelatedElement()),
-                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         node.getRelatedElement().getProperties(),
-                                         getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
-                                                                          this.getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.GOVERNED_ELEMENT)));
+                    if (node.getRelatedElement().getProperties() instanceof SolutionComponentProperties solutionComponentProperties)
+                    {
+                        appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
+                                             getNodeDisplayName(node.getRelatedElement()),
+                                             node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                             node.getRelatedElement().getProperties(),
+                                             getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
+                                                                              this.getVisualStyleForSolutionComponent(solutionComponentProperties.getSolutionComponentType())));
+                    }
+                    else
+                    {
+                        appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
+                                             getNodeDisplayName(node.getRelatedElement()),
+                                             node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                             node.getRelatedElement().getProperties(),
+                                             getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
+                                                                              this.getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.GOVERNED_ELEMENT)));
+                    }
                 }
             }
-        }
 
-        for (RelatedMetadataElementSummary node : requiredSolutionComponents)
-        {
-            if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+            for (RelatedMetadataElementSummary node : requiredSolutionComponents)
             {
-                /*
-                 * Build out the relationships between the components in the graph.
-                 * Also add the actors.
-                 */
-                this.addSolutionComponentLinksToGraph(node,
-                                                      solutionLinkingWireGUIDs,
-                                                      validNodeGUIDs);
+                if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                {
+                    /*
+                     * Build out the relationships between the components in the graph.
+                     * Also add the actors.
+                     */
+                    this.addSolutionComponentLinksToGraph(node,
+                                                          solutionLinkingWireGUIDs,
+                                                          validNodeGUIDs);
+                }
             }
         }
     }

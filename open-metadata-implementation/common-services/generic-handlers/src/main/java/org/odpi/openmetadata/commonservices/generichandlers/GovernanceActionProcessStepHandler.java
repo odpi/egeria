@@ -33,9 +33,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public GovernanceActionProcessStepHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -47,9 +44,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                               OMRSRepositoryHelper               repositoryHelper,
                                               String                             localServerUserId,
                                               OpenMetadataServerSecurityVerifier securityVerifier,
-                                              List<String>                       supportedZones,
-                                              List<String>                       defaultZones,
-                                              List<String>                       publishZones,
                                               AuditLog                           auditLog)
     {
         super(converter,
@@ -61,9 +55,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
               repositoryHelper,
               localServerUserId,
               securityVerifier,
-              supportedZones,
-              defaultZones,
-              publishZones,
               auditLog);
 
     }
@@ -75,7 +66,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
      * @param userId calling user
      * @param processStepGUID unique identifier of the governance action process step
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
      * @return requested metadata element
@@ -86,7 +76,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
      */
     public B getGovernanceActionProcessStepByGUID(String       userId,
                                                   String       processStepGUID,
-                                                  List<String> serviceSupportedZones,
                                                   Date         effectiveTime,
                                                   String       methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
@@ -100,7 +89,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                           false,
                                           false,
-                                          serviceSupportedZones,
                                           effectiveTime,
                                           methodName);
     }

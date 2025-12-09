@@ -4,17 +4,21 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
-import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceErrorCode;
-import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
-import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
 import org.odpi.openmetadata.commonservices.multitenant.AccessServerServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessStepElement;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.EngineActionConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceActionProcessConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceActionProcessStepConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceErrorCode;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
@@ -28,7 +32,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
 
     private final GovernanceEngineConfigurationHandler                                   governanceEngineConfigurationHandler;
     private final IntegrationGroupConfigurationHandler                                   integrationGroupConfigurationHandler;
-    private final MetadataElementHandler<OpenMetadataElement>                            metadataElementHandler;
     private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
     private final AssetHandler<GovernanceActionProcessElement>                           governanceActionProcessHandler;
     private final GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> governanceActionProcessStepHandler;
@@ -50,9 +53,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
     {
         super(myDescription.getServiceName(),
               repositoryConnector,
-              null,
-              null,
-              null,
               auditLog,
               localServerUserId,
               maxPageSize);
@@ -68,9 +68,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                                                  repositoryHelper,
                                                                                                  localServerUserId,
                                                                                                  securityVerifier,
-                                                                                                 supportedZones,
-                                                                                                 defaultZones,
-                                                                                                 publishZones,
                                                                                                  auditLog);
 
             this.integrationGroupConfigurationHandler = new IntegrationGroupConfigurationHandler(serviceName,
@@ -80,24 +77,7 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                                                  repositoryHelper,
                                                                                                  localServerUserId,
                                                                                                  securityVerifier,
-                                                                                                 supportedZones,
-                                                                                                 defaultZones,
-                                                                                                 publishZones,
                                                                                                  auditLog);
-
-            this.metadataElementHandler = new MetadataElementHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                                       OpenMetadataElement.class,
-                                                                       serviceName,
-                                                                       serverName,
-                                                                       invalidParameterHandler,
-                                                                       repositoryHandler,
-                                                                       repositoryHelper,
-                                                                       localServerUserId,
-                                                                       securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
-                                                                       auditLog);
 
             this.engineActionHandler = new EngineActionHandler<>(new EngineActionConverter<>(repositoryHelper, serviceName, serverName),
                                                                  EngineActionElement.class,
@@ -108,9 +88,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                  repositoryHelper,
                                                                  localServerUserId,
                                                                  securityVerifier,
-                                                                 supportedZones,
-                                                                 defaultZones,
-                                                                 publishZones,
                                                                  auditLog);
 
             this.governanceActionProcessHandler = new AssetHandler<>(new GovernanceActionProcessConverter<>(repositoryHelper, serviceName, serverName),
@@ -122,9 +99,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                      repositoryHelper,
                                                                      localServerUserId,
                                                                      securityVerifier,
-                                                                     supportedZones,
-                                                                     defaultZones,
-                                                                     publishZones,
                                                                      auditLog);
 
             this.governanceActionProcessStepHandler = new GovernanceActionProcessStepHandler<>(new GovernanceActionProcessStepConverter<>(repositoryHelper, serviceName, serverName),
@@ -136,9 +110,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                                                repositoryHelper,
                                                                                                localServerUserId,
                                                                                                securityVerifier,
-                                                                                               supportedZones,
-                                                                                               defaultZones,
-                                                                                               publishZones,
                                                                                                auditLog);
         }
         else
@@ -169,16 +140,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
     IntegrationGroupConfigurationHandler getIntegrationGroupConfigurationHandler()
     {
         return integrationGroupConfigurationHandler;
-    }
-
-    /**
-     * Return the handler for open metadata store requests.
-     *
-     * @return handler object
-     */
-    public MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
-    {
-        return metadataElementHandler;
     }
 
 

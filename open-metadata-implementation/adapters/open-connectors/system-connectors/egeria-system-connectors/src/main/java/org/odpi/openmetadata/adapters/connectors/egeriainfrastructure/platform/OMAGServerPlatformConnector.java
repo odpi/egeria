@@ -9,8 +9,6 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGC
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties.OMAGServerPlatformProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
@@ -35,7 +33,6 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
     private String   targetRootURL = null;
     private String   platformName = "OMAG Server Platform";
-    private String   clientUserId = null;
 
     private EgeriaExtractor extractor = null;
 
@@ -87,17 +84,6 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
 
     /**
-     * Set up new calling user.
-     *
-     * @param clientUserId caller's userId
-     */
-    public void setClientUserId(String clientUserId)
-    {
-        this.clientUserId = clientUserId;
-    }
-
-
-    /**
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *
@@ -138,20 +124,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
          */
         try
         {
-            if (connectionBean.getUserId() != null)
-            {
-                extractor = new EgeriaExtractor(targetRootURL,
-                                                platformName,
-                                                null,
-                                                connectionBean.getUserId());
-            }
-            else
-            {
-                extractor = new EgeriaExtractor(targetRootURL,
-                                                platformName,
-                                                null,
-                                                clientUserId);
-            }
+            extractor = new EgeriaExtractor(targetRootURL, platformName, null, secretsStoreConnectorMap, auditLog);
         }
         catch (Exception error)
         {
@@ -304,17 +277,16 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      * Return all the OMAG Server configurations that are stored on this platform.
      *
      * @return the OMAG Server configurations that are stored on this platform
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
+    public Set<OMAGServerConfig> getAllServerConfigurations() throws UserNotAuthorizedException,
                                                                      OMAGConfigurationErrorException,
-                                                                     OMAGInvalidParameterException
+                                                                     InvalidParameterException
     {
         return extractor.getAllServerConfigurations();
     }
-
 
 
     /**
@@ -322,14 +294,14 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      *
      * @param serverName                 local server name
      * @param destinationPlatformURLRoot location of the platform where the config is to be deployed to
-     * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
-     * @throws OMAGInvalidParameterException   invalid serverName or destinationPlatform parameter.
+     * @throws InvalidParameterException   invalid serverName or destinationPlatform parameter.
      */
     public void deployOMAGServerConfig(String serverName,
-                                       String destinationPlatformURLRoot) throws OMAGNotAuthorizedException,
+                                       String destinationPlatformURLRoot) throws UserNotAuthorizedException,
                                                                                  OMAGConfigurationErrorException,
-                                                                                 OMAGInvalidParameterException
+                                                                                 InvalidParameterException
     {
         extractor.deployOMAGServerConfig(serverName, destinationPlatformURLRoot);
     }
@@ -340,15 +312,32 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
      *
      * @param serverName local server name
      * @return OMAGServerConfig properties
-     * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException   invalid serverName parameter.
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    public OMAGServerConfig getOMAGServerConfig(String serverName) throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
-                                                                          OMAGConfigurationErrorException
+    public OMAGServerConfig getStoredOMAGServerConfig(String serverName) throws UserNotAuthorizedException,
+                                                                                InvalidParameterException,
+                                                                                OMAGConfigurationErrorException
     {
-        return extractor.getOMAGServerConfig(serverName);
+        return extractor.getStoredOMAGServerConfig(serverName);
+    }
+
+
+    /**
+     * Return the complete set of configuration properties in use by the server.
+     *
+     * @param serverName local server name
+     * @return OMAGServerConfig properties
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    public OMAGServerConfig getResolvedOMAGServerConfig(String serverName) throws UserNotAuthorizedException,
+                                                                                  InvalidParameterException,
+                                                                                  OMAGConfigurationErrorException
+    {
+        return extractor.getResolvedOMAGServerConfig(serverName);
     }
 
 

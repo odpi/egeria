@@ -9,9 +9,13 @@ import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.springframework.core.ParameterizedTypeReference;
+
+import java.util.Map;
 
 
 /**
@@ -32,14 +36,22 @@ public class RESTClient
      *
      * @param serverName name of the OMAG Server to call
      * @param url URL root of the server platform where the OMAG Server is running.
+     * @param secretsStoreProvider secrets store connector
+     * @param secretsStoreLocation secrets store location
+     * @param secretsStoreCollection secrets store collection
+     * @param secretsStorePurpose the purpose to select
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected RESTClient(String    serverName,
-                         String    url,
-                         AuditLog  auditLog) throws InvalidParameterException
+    protected RESTClient(String              serverName,
+                         String              url,
+                         String              secretsStoreProvider,
+                         String              secretsStoreLocation,
+                         String              secretsStoreCollection,
+                         SecretsStorePurpose secretsStorePurpose,
+                         AuditLog            auditLog) throws InvalidParameterException
     {
         final String  methodName = "RESTClient(no authentication)";
 
@@ -47,10 +59,16 @@ public class RESTClient
         this.url = url;
         this.auditLog = auditLog;
 
-        RESTClientFactory factory = new RESTClientFactory(serverName, url);
-
         try
         {
+            RESTClientFactory factory = new RESTClientFactory(serverName,
+                                                              url,
+                                                              secretsStoreProvider,
+                                                              secretsStoreLocation,
+                                                              secretsStoreCollection,
+                                                              secretsStorePurpose.getName(),
+                                                              auditLog);
+
             this.clientConnector = factory.getClientConnector();
         }
         catch (Exception error)
@@ -69,17 +87,15 @@ public class RESTClient
      *
      * @param serverName name of the OMAG Server to call
      * @param url URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
+     * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected RESTClient(String   serverName,
-                         String   url,
-                         String   userId,
-                         String   password,
-                         AuditLog auditLog) throws InvalidParameterException
+    protected RESTClient(String                             serverName,
+                         String                             url,
+                         Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                         AuditLog                           auditLog) throws InvalidParameterException
     {
         final String  methodName = "RESTClient(userId and password)";
 
@@ -87,15 +103,13 @@ public class RESTClient
         this.url = url;
         this.auditLog = auditLog;
 
-        RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           url,
-                                                           userId,
-                                                           password,
-                                                           null,
-                                                           auditLog);
-
         try
         {
+            RESTClientFactory  factory = new RESTClientFactory(serverName,
+                                                               url,
+                                                               secretsStoreConnectorMap,
+                                                               auditLog);
+
             this.clientConnector = factory.getClientConnector();
         }
         catch (Exception  error)

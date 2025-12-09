@@ -3,15 +3,16 @@
 
 package org.odpi.openmetadata.adminservices.client;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody;
 import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 import java.util.Map;
@@ -25,41 +26,24 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public ViewServerConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public ViewServerConfigurationClient(String   serverName,
+                                         String   serverPlatformRootURL,
+                                         String   secretStoreProvider,
+                                         String   secretStoreLocation,
+                                         String   secretStoreCollection,
+                                         AuditLog auditLog) throws InvalidParameterException
     {
-        super(adminUserId, serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
-
-
-    /**
-     * Create a new client that passes a connection userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is passed as the admin userId.
-     *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param connectionUserId      caller's system userId embedded in all HTTP requests
-     * @param connectionPassword    caller's system password embedded in all HTTP requests
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
-     *                                       REST API calls.
-     */
-    public ViewServerConfigurationClient(String adminUserId,
-                                         String serverName,
-                                         String serverPlatformRootURL,
-                                         String connectionUserId,
-                                         String connectionPassword) throws OMAGInvalidParameterException
-    {
-        super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
-    }
-
 
 
     /*
@@ -71,20 +55,19 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * Return the list of view services for this server.
      *
      * @return list of view service descriptions
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<RegisteredOMAGService> getRegisteredViewServices() throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
+    public List<RegisteredOMAGService> getRegisteredViewServices() throws UserNotAuthorizedException,
+                                                                          InvalidParameterException,
                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "getRegisteredViewServices";
         final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/view-services";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
-                                                                                                     serverPlatformRootURL + urlTemplate,
-                                                                                                     adminUserId);
+                                                                                                     serverPlatformRootURL + urlTemplate);
         return restResult.getServices();
     }
 
@@ -99,20 +82,19 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * Return the list of view services for this server.
      *
      * @return list of view service descriptions
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<RegisteredOMAGService> getConfiguredViewServices() throws OMAGNotAuthorizedException, 
-                                                                          OMAGInvalidParameterException,
+    public List<RegisteredOMAGService> getConfiguredViewServices() throws UserNotAuthorizedException, 
+                                                                          InvalidParameterException,
                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "getConfiguredViewServices";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
                                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                                     adminUserId,
                                                                                                      serverName);
         return restResult.getServices();
     }
@@ -122,20 +104,19 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * Return the configuration for the view services in this server.
      *
      * @return list of view service configuration
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<ViewServiceConfig> getViewServicesConfiguration() throws OMAGNotAuthorizedException, 
-                                                                         OMAGInvalidParameterException,
+    public List<ViewServiceConfig> getViewServicesConfiguration() throws UserNotAuthorizedException, 
+                                                                         InvalidParameterException,
                                                                          OMAGConfigurationErrorException
     {
         final String methodName  = "getViewServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services/configuration";
 
         ViewServicesResponse restResult = restClient.callViewServicesGetRESTCall(methodName, 
                                                                                  serverPlatformRootURL + urlTemplate,
-                                                                                 adminUserId,
                                                                                  serverName);
         return restResult.getServices();
     }
@@ -146,21 +127,20 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * Return the configuration for the view services in this server.
      *
      * @param viewServices  list of view service configuration
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setViewServicesConfiguration(List<ViewServiceConfig> viewServices) throws OMAGNotAuthorizedException,
-                                                                                          OMAGInvalidParameterException,
+    public void setViewServicesConfiguration(List<ViewServiceConfig> viewServices) throws UserNotAuthorizedException,
+                                                                                          InvalidParameterException,
                                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "setViewServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services/configuration";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         viewServices,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -173,45 +153,29 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     /**
      * Enable a single view service.
      *
-     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
-     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
      * @param serviceURLMarker string indicating which view service it is configuring
-     * @param viewServiceOptions property name/value pairs used to configure the view service
+     * @param viewServiceConfig properties used to configure the view service
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureViewService(String              partnerOMASServerURLRoot,
-                                     String              partnerOMASServerName,
-                                     String              serviceURLMarker,
-                                     Map<String, Object> viewServiceOptions) throws OMAGNotAuthorizedException,
-                                                                                    OMAGInvalidParameterException,
+    public void configureViewService(String            serviceURLMarker,
+                                     ViewServiceConfig viewServiceConfig) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
                                                                                     OMAGConfigurationErrorException
     {
         final String methodName    = "configureViewService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services/{1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, serviceURLMarker, methodName);
 
-        ViewServiceRequestBody requestBody = new ViewServiceRequestBody();
-
-        requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
-        requestBody.setOMAGServerName(partnerOMASServerName);
-        requestBody.setViewServiceOptions(viewServiceOptions);
+        ViewServiceRequestBody requestBody = new ViewServiceRequestBody(viewServiceConfig);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        adminUserId,
                                         serverName,
                                         serviceURLMarker);
     }
@@ -222,30 +186,22 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      *
      * @param serviceURLMarker string indicating which view service it is configuring
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void disableViewService(String serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                   OMAGInvalidParameterException,
+    public void disableViewService(String serviceURLMarker) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
                                                                    OMAGConfigurationErrorException
     {
         final String methodName    = "disableViewService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services/{1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        adminUserId,
                                         serverName,
                                         serviceURLMarker);
     }
@@ -255,33 +211,29 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     /**
      * Enable all registered view services with the same partner server and options.
      *
-     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
-     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
+     * @param metadataServerDetails URL root of the OMAG Server Platform  and
+     *  details of metadata access server where the OMF Services used by this view service is running
      * @param viewServiceOptions property name/value pairs used to configure the view service
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureAllViewService(String                       partnerOMASServerURLRoot,
-                                        String                       partnerOMASServerName,
-                                        Map<String, Object>          viewServiceOptions) throws OMAGNotAuthorizedException,
-                                                                                                OMAGInvalidParameterException,
-                                                                                                OMAGConfigurationErrorException
+    public void configureAllViewService(OMAGServerClientConfig metadataServerDetails,
+                                        Map<String, Object>    viewServiceOptions) throws UserNotAuthorizedException,
+                                                                                          InvalidParameterException,
+                                                                                          OMAGConfigurationErrorException
     {
         final String methodName    = "configureAllViewService";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services";
 
-        ViewServiceRequestBody requestBody = new ViewServiceRequestBody();
+        ViewServiceRequestBody requestBody = new ViewServiceRequestBody(metadataServerDetails);
 
-        requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
-        requestBody.setOMAGServerName(partnerOMASServerName);
         requestBody.setViewServiceOptions(viewServiceOptions);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -289,20 +241,19 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     /**
      * Disable the view services.  This removes all configuration for the view server.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearAllViewServices() throws OMAGNotAuthorizedException, 
-                                              OMAGInvalidParameterException,
+    public void clearAllViewServices() throws UserNotAuthorizedException, 
+                                              InvalidParameterException,
                                               OMAGConfigurationErrorException
     {
         final String methodName  = "clearAllViewServices";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          adminUserId,
                                           serverName);
     }
 }

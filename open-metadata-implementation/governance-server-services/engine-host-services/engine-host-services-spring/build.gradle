@@ -5,6 +5,7 @@
 
 
 dependencies {
+    implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-server')

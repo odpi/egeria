@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaSolutionComponent;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -30,18 +32,18 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMet
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.CohortMemberProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.InventoryCatalogProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataCohortPeerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataRepositoryCohortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +52,7 @@ import java.util.Map;
 
 public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase implements OpenMetadataEventListener
 {
-    List<PlatformDetails> monitoredPlatforms = new ArrayList<>();
+    Map<String, PlatformDetails> monitoredPlatforms = new HashMap<>();
     String                clientUserId = null;
 
     final static String EGERIA_DEPLOYMENT_CATEGORY = "Egeria Deployment";
@@ -66,12 +68,17 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
         String                      platformDisplayName   = null;
         OMAGServerPlatformConnector platformConnector     = null;
 
+        Map<String, String>         knownServerNameToGUID = new HashMap<>();
+
         @Override
         public String toString()
         {
             return "PlatformDetails{" +
+                    "platformRootURL='" + platformRootURL + '\'' +
                     ", platformGUID='" + platformGUID + '\'' +
                     ", platformDisplayName='" + platformDisplayName + '\'' +
+                    ", platformConnector=" + platformConnector +
+                    ", knownServerNameToGUID=" + knownServerNameToGUID +
                     '}';
         }
     }
@@ -121,7 +128,6 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                 error);
         }
 
-
         /*
          * Record the start
          */
@@ -131,6 +137,35 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                 OMAGConnectorAuditCode.EGERIA_CONNECTOR_START.getMessageDefinition(connectorName,
                                                                                                    clientUserId,
                                                                                                    monitoredPlatforms.toString()));
+        }
+
+        try
+        {
+            AssetClient   assetClient   = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
+            SearchOptions searchOptions = assetClient.getSearchOptions(0, integrationContext.getMaxPageSize());
+
+            /*
+             * Ignore the templates
+             */
+            searchOptions.setSkipClassifiedElements(List.of(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName));
+
+            List<OpenMetadataRootElement> softwarePlatforms = assetClient.findAssets(null, searchOptions);
+
+            /*
+             * This is the bootstrap situation - create a platform for the local metadata store.
+             */
+            if ((softwarePlatforms == null) || (softwarePlatforms.isEmpty()))
+            {
+                catalogPlatform(integrationContext.getMetadataAccessServerPlatformURLRoot());
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logMessage(methodName,
+                                OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()));
         }
     }
 
@@ -150,14 +185,13 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
     {
         final String methodName = "refresh";
 
-        AssetClient assetClient = integrationContext.getAssetClient();
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
         try
         {
             /*
              * Ensure we have all the known OMAG Server Platforms
              */
             SearchOptions searchOptions = assetClient.getSearchOptions(0, integrationContext.getMaxPageSize());
-            searchOptions.setMetadataElementTypeName(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
 
             List<OpenMetadataRootElement> softwarePlatforms = assetClient.findAssets(null, searchOptions);
 
@@ -186,6 +220,12 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
              * Now it is time the catalog the servers running on these platforms.
              */
             processPlatforms();
+
+            /*
+             * Now all of the servers are catalogued and up to date, loop through them all and test that
+             * the lineage relationships between them are still correct.
+             */
+            checkServerLineage();
         }
         catch (Exception error)
         {
@@ -247,7 +287,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
              */
             boolean alreadyMonitored = false;
 
-            for (PlatformDetails platformDetails : monitoredPlatforms)
+            for (PlatformDetails platformDetails : monitoredPlatforms.values())
             {
                 if (elementHeader.getGUID().equals(platformDetails.platformGUID))
                 {
@@ -273,7 +313,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                         platformDetails.platformDisplayName = displayName;
                         platformDetails.platformRootURL     = omagServerPlatformConnector.getConnection().getEndpoint().getNetworkAddress();
 
-                        monitoredPlatforms.add(platformDetails);
+                        monitoredPlatforms.put(platformDetails.platformRootURL, platformDetails);
                     }
                 }
                 catch (Exception error)
@@ -299,21 +339,30 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
     {
         final String methodName = "processPlatforms";
 
-        for (PlatformDetails platformDetails : monitoredPlatforms)
+        for (PlatformDetails platformDetails : monitoredPlatforms.values())
         {
             if (platformDetails != null)
             {
                 try
                 {
+                    /*
+                     * Retrieve the actual live configuration and status of the platform and its servers.
+                     * This is the ground truth that will be used to update the open metadata elements.
+                     */
                     OMAGServerPlatformProperties platformProperties = platformDetails.platformConnector.getPlatformReport();
 
+                    /*
+                     * This is the list of known servers that the platform has run since starting.  Not all will
+                     * necessarily be running now.
+                     */
                     if (platformProperties.getOMAGServers() != null)
                     {
                         /*
-                         * These maps are scoped by the platform so it is ok to work with server names.
+                         * These maps are scoped by the platform, so it is ok to work with server names.
                          */
                         Map<String, OMAGServerProperties> knownServerMap   = new HashMap<>();
                         List<String>                      processedServers = new ArrayList<>();
+                        String                            platformURLRoot  = null;
 
                         /*
                          * Extract the known servers into a map for convenient processing.
@@ -322,13 +371,42 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                         {
                             if (omagServerProperties != null)
                             {
-                                knownServerMap.put(omagServerProperties.getServerName(), omagServerProperties);
+                                knownServerMap.put(this.getServerResourceName(omagServerProperties.getServerName(),
+                                                                              omagServerProperties.getOrganizationName()),
+                                                   omagServerProperties);
+
+                                /*
+                                 * Check that the egeriaEndpoint has not changed.  This change is a typical precursor to connecting the
+                                 * workspace into a cohort.  This means there will be multiple instances of this connector
+                                 * running and the connections need to be updated away from local host.
+                                 */
+                                if (omagServerProperties instanceof OMAGMetadataStoreProperties omagMetadataStoreProperties)
+                                {
+                                    if ((omagMetadataStoreProperties.getRemoteRepositoryConnector() != null) &&
+                                            (omagMetadataStoreProperties.getRemoteRepositoryConnector().getNetworkAddress() != null))
+                                    {
+                                         String[] split = omagMetadataStoreProperties.getRemoteRepositoryConnector().getNetworkAddress().split("/servers/");
+
+                                         platformURLRoot = split[0];
+                                    }
+                                }
                             }
                         }
 
                         /*
-                         * Compare the known servers with the servers linked from the platform in the metadata server.
-                         * These are assumed to be correct and are added to the processed server list,
+                         * If egeriaEndpoint (in application.properties) has changed, update the monitored platform map.
+                         * The subsequent cataloguing effort will fix the network addresses in the catalogued servers.
+                         */
+                        if ((platformURLRoot != null) && (! platformURLRoot.equals(platformDetails.platformRootURL)))
+                        {
+                            monitoredPlatforms.put(platformDetails.platformRootURL, null);
+                            platformDetails.platformRootURL = platformURLRoot;
+                            monitoredPlatforms.put(platformDetails.platformRootURL, platformDetails);
+                            platformProperties.setPlatformURLRoot(platformURLRoot);
+                        }
+
+                        /*
+                         * Retrieve the platform definition from the metadata repository.
                          */
                         AssetClient platformClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
                         OpenMetadataRootElement platformElement = platformClient.getAssetByGUID(platformDetails.platformGUID,
@@ -336,26 +414,59 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
                         if ((platformElement != null) && (platformElement.getHostedITAssets() != null))
                         {
+                            /*
+                             * Before starting on the servers, check that the platform is up-to-date.
+                             */
+                            updatePlatform(platformProperties, platformElement);
+
+                            /*
+                             * Compare the known servers with the servers linked from the platform in the metadata server.
+                             * These are updated and needed and are added to the processed server list,
+                             */
                             for (RelatedMetadataElementSummary deploymentElement : platformElement.getHostedITAssets())
                             {
                                 if ((deploymentElement != null) &&
                                         (deploymentElement.getRelatedElement().getProperties() instanceof AssetProperties assetProperties) &&
-                                        (assetProperties.getDisplayName() != null))
+                                        (assetProperties.getResourceName() != null))
                                 {
-                                    String serverDisplayName = assetProperties.getDisplayName();
+                                    /*
+                                     * The resource name is used since it may include the organization name
+                                     * with the server name if set up - this is important if multiple workspaces
+                                     * are linked in a cohort - the same servers will be running, and they are
+                                     * distinguished by the organization name - each egeria-workspaces should have a unique
+                                     * organization name set up in both the application.properties and in the server config.
+                                     */
+                                    String serverResourceName = assetProperties.getResourceName();
 
-                                    OMAGServerProperties omagServerProperties = knownServerMap.get(serverDisplayName);
+                                    OMAGServerProperties omagServerProperties = knownServerMap.get(serverResourceName);
 
+                                    /*
+                                     * The catalogued server element is also known to the real platform, and so they can be synchronized.
+                                     * Notice that we don't delete servers that are not recognized.  This is because servers are
+                                     * dynamic and it may come back.  If a server is permanently removed from the platform,
+                                     * then it should be manually removed from open metadata.
+                                     */
                                     if (omagServerProperties != null)
                                     {
-                                        processedServers.add(serverDisplayName);
+                                        AssetClient serverClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+                                        OpenMetadataRootElement serverElement = serverClient.getAssetByGUID(deploymentElement.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                            serverClient.getGetOptions());
+                                        updateServer(omagServerProperties, platformProperties, deploymentElement.getRelatedElement().getElementHeader().getGUID(), serverElement.getEndpoint(), platformDetails);
+
+                                        /*
+                                         * The server name to GUID is saved to aid the management of lineage relationships between the servers.
+                                         */
+                                        platformDetails.knownServerNameToGUID.put(omagServerProperties.getServerName(), deploymentElement.getRelatedElement().getElementHeader().getGUID());
+
+                                        processedServers.add(serverResourceName);
                                     }
                                 }
                             }
                         }
 
                         /*
-                         * Now do through the known servers that were not linked to the platform.
+                         * Now go through the known servers that were not linked to the platform.
                          */
                         for (OMAGServerProperties omagServerProperties : knownServerMap.values())
                         {
@@ -363,14 +474,16 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                             {
                                 String qualifiedName = this.getServerQualifiedName(platformProperties.getPlatformURLRoot(),
                                                                                    omagServerProperties.getServerType(),
-                                                                                   omagServerProperties.getServerName());
+                                                                                   omagServerProperties.getServerName(),
+                                                                                   omagServerProperties.getOrganizationName());
 
-                                if (! processedServers.contains(omagServerProperties.getServerName()))
+                                if (! processedServers.contains(this.getServerResourceName(omagServerProperties.getServerName(),
+                                                                                           omagServerProperties.getOrganizationName())))
                                 {
                                     /*
                                      * This is a new server.  Has it been catalogued before - maybe with a different platform?
                                      */
-                                    String matchingServerGUID = null;
+                                    OpenMetadataRootElement matchingServer = null;
 
                                     List<OpenMetadataRootElement> softwareServerElements = integrationContext.getAssetClient().getAssetsByName(qualifiedName, null);
 
@@ -380,7 +493,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                         {
                                             if (softwareServerElement != null)
                                             {
-                                                matchingServerGUID = softwareServerElement.getElementHeader().getGUID();
+                                                matchingServer = softwareServerElement;
                                                 break;
                                             }
                                         }
@@ -389,7 +502,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                     /*
                                      * This server has not been catalogued before.
                                      */
-                                    if (matchingServerGUID == null)
+                                    String matchingServerGUID = null;
+                                    if (matchingServer == null)
                                     {
                                         matchingServerGUID = catalogServer(omagServerProperties, platformProperties, platformElement);
 
@@ -404,6 +518,16 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                                                                                    omagServerProperties.getServerName(),
                                                                                                                    platformProperties.getPlatformURLRoot()));
                                     }
+                                    else
+                                    {
+                                        /*
+                                         * The server has been catalogued before - but with a different platform.
+                                         */
+                                        matchingServerGUID = matchingServer.getElementHeader().getGUID();
+                                        updateServer(omagServerProperties, platformProperties, matchingServerGUID, matchingServer.getEndpoint(), platformDetails);
+                                    }
+
+                                    platformDetails.knownServerNameToGUID.put(omagServerProperties.getServerName(), matchingServerGUID);
 
                                     /*
                                      * Now connect the server to the platform
@@ -413,6 +537,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                                                       integrationContext.getAssetClient().getMetadataSourceOptions(),
                                                                                       null);
                                 }
+
+
                             }
                         }
                     }
@@ -432,6 +558,45 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
 
     /**
+     * Check that the lineage linkage between servers is correct.  This lineage used the ProcessCall
+     * lineage relationship to show which servers call which servers.
+     *
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void checkServerLineage() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+        int startFrom = 0;
+
+        List<OpenMetadataRootElement> softwareServers = assetClient.findAssets(null,
+                                                                               assetClient.getSearchOptions(startFrom,
+                                                                                                            integrationContext.getMaxPageSize()));
+
+        while (softwareServers != null)
+        {
+            for (OpenMetadataRootElement softwareServer : softwareServers)
+            {
+                if (softwareServer != null)
+                {
+                    /*
+                     * Not all servers are Egeria servers and so the deployedImplementationType is used
+                     * to determine which servers to link.
+                     */
+                    // todo
+                }
+            }
+
+            startFrom = startFrom + integrationContext.getMaxPageSize();
+            softwareServers = assetClient.findAssets(null,
+                                                     assetClient.getSearchOptions(startFrom,
+                                                                                  integrationContext.getMaxPageSize()));
+        }
+    }
+
+    /**
      * Construct the qualified name for a server.
      *
      * @param platformURLRoot network address of the platform
@@ -441,23 +606,61 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
      */
     private String getServerQualifiedName(String platformURLRoot,
                                           String serverType,
-                                          String serverName)
+                                          String serverName,
+                                          String organizationName)
     {
-        return serverType + "::" + platformURLRoot + "::" + serverName;
+        if (organizationName == null)
+        {
+            return serverType + "::" + platformURLRoot + "::" + serverName;
+        }
+        else
+        {
+            return serverType + "::" + platformURLRoot + "::" + organizationName + "." + serverName;
+        }
     }
 
 
     /**
-     * Construct the resource name for a server.
+     * Construct the qualified name for a server.
      *
-     * @param serverId unique identifier for the server
+     * @param platformURLRoot network address of the platform
+     * @param serverName unique name for the server.
+     * @param organizationName owning organization
+     * @return composite qualified name
+     */
+    private String getServerDisplayName(String platformURLRoot,
+                                        String serverName,
+                                        String organizationName)
+    {
+        if (organizationName == null)
+        {
+            return serverName + " on " + platformURLRoot;
+        }
+        else
+        {
+            return serverName + " from " + organizationName + " on " + platformURLRoot;
+        }
+    }
+
+
+    /**
+     * Construct the qualified name for a server.
+     *
+     * @param organizationName owning organization
      * @param serverName unique name for the server.
      * @return composite qualified name
      */
-    private String getServerResourceName(String serverId,
-                                         String serverName)
+    private String getServerResourceName(String serverName,
+                                        String organizationName)
     {
-        return  serverName + " [" + serverId + "]";
+        if (organizationName == null)
+        {
+            return serverName;
+        }
+        else
+        {
+            return organizationName + "." + serverName;
+        }
     }
 
 
@@ -494,6 +697,45 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
     }
 
 
+    /**
+     * Return the url for the server.
+     *
+     * @param serverType server type
+     * @return string
+     */
+    private String getURL(String serverType)
+    {
+        if (ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName().equals(serverType))
+        {
+            return "https://egeria-project.org/concepts/integration-daemon/";
+        }
+        else if (ServerTypeClassification.ENGINE_HOST.getServerTypeName().equals(serverType))
+        {
+            return "https://egeria-project.org/concepts/engine-host/";
+        }
+        else if (ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName().equals(serverType))
+        {
+            return "https://egeria-project.org/concepts/metadata-access-store/";
+        }
+        else if (ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName().equals(serverType))
+        {
+            return "https://egeria-project.org/concepts/metadata-access-point/";
+        }
+        else if (ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName().equals(serverType))
+        {
+            return "https://egeria-project.org/concepts/metadata-access-server/";
+        }
+        else if (ServerTypeClassification.VIEW_SERVER.getServerTypeName().equals(serverType))
+        {
+            return "https://egeria-project.org/concepts/view-server/";
+        }
+        else
+        {
+            return "https://egeria-project.org/concepts/omag-server-platform/";
+        }
+    }
+
+
 
     /**
      * Return the unique identifier of the solution component for the server.
@@ -522,9 +764,133 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
             return EgeriaSolutionComponent.VIEW_SERVER.getGUID();
         }
 
-        return null;
+        return EgeriaSolutionComponent.SERVER_PLATFORM.getGUID();
     }
 
+
+
+    /**
+     * Create a metadata element to represent the local platform.
+     *
+     * @param platformURLRoot location of the platform
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void catalogPlatform(String platformURLRoot) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        OpenMetadataStore openMetadataAccess = integrationContext.getOpenMetadataStore();
+
+        String templateGUID = this.getTemplateGUID(null);
+
+        Map<String, String> placeholderProperties = new HashMap<>();
+
+        placeholderProperties.put(OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getName(), platformURLRoot);
+        placeholderProperties.put(OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getName(), "Local OMAG Server Platform");
+        placeholderProperties.put(OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getName(), "OMAG Server Platform running on " + platformURLRoot + ".");
+        placeholderProperties.put(OMAGServerPlatformPlaceholderProperty.PLATFORM_USER_ID.getName(), null);
+        placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
+
+        String platformQualifiedName = EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformURLRoot;
+
+        /*
+         * Replacement properties are used to override the standard naming conventions for software servers and to
+         * ensure this connector is able to match the operational configuration with the values in open metadata.
+         * It is also an opportunity to test this feature.
+         */
+        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                               platformQualifiedName);
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                             EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.CATEGORY.name,
+                                                             EGERIA_DEPLOYMENT_CATEGORY);
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.URL.name,
+                                                             this.getURL(null));
+
+        String platformGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
+                                                                              null,
+                                                                              true,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              templateGUID,
+                                                                              elementProperties,
+                                                                              placeholderProperties,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              false);
+
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+        String solutionComponentGUID = this.getSolutionComponentGUID(null);
+
+        if (solutionComponentGUID != null)
+        {
+            ImplementedByProperties implementedByProperties = new ImplementedByProperties();
+
+            implementedByProperties.setRole("running instance");
+            implementedByProperties.setDescription("Server instance discovered by " + connectorName + ".");
+
+            governanceDefinitionClient.linkDesignToImplementation(solutionComponentGUID, platformGUID, governanceDefinitionClient.getMetadataSourceOptions(), implementedByProperties);
+        }
+    }
+
+
+    /**
+     * Update the platform element in open metadata with the latest values from the platform.
+     *
+     * @param platformProperties values extracted from the platform
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void updatePlatform(OMAGServerPlatformProperties platformProperties,
+                                OpenMetadataRootElement      platformElement) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        SoftwareServerPlatformProperties softwareServerPlatformProperties = new SoftwareServerPlatformProperties();
+
+        if (platformProperties.getPlatformOrganization() != null)
+        {
+            softwareServerPlatformProperties.setQualifiedName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformProperties.getPlatformOrganization() + "::" + platformProperties.getPlatformURLRoot());
+        }
+        else
+        {
+            softwareServerPlatformProperties.setQualifiedName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformProperties.getPlatformURLRoot());
+        }
+
+        softwareServerPlatformProperties.setDisplayName(platformProperties.getPlatformPublicProperties().getDisplayName());
+        softwareServerPlatformProperties.setDescription(platformProperties.getPlatformPublicProperties().getDescription());
+        softwareServerPlatformProperties.setURL(this.getURL(null));
+        softwareServerPlatformProperties.setVersionIdentifier(platformProperties.getPlatformBuildProperties().getVersion());
+        softwareServerPlatformProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
+
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        additionalProperties.put("organizationName", platformProperties.getPlatformPublicProperties().getOrganizationName());
+        additionalProperties.put("buildTime", platformProperties.getPlatformBuildProperties().getTime().toString());
+
+        softwareServerPlatformProperties.setAdditionalProperties(additionalProperties);
+
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
+
+        assetClient.updateAsset(platformElement.getElementHeader().getGUID(),
+                                assetClient.getUpdateOptions(true),
+                                softwareServerPlatformProperties);
+
+        checkAndUpdateEndpoint(platformProperties.getPlatformURLRoot(), platformElement.getEndpoint());
+    }
 
 
     /**
@@ -552,17 +918,18 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
         Map<String, String> placeholderProperties = new HashMap<>();
 
-        placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), platformProperties.getPlatformURLRoot());
+        placeholderProperties.put(OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getName(), platformProperties.getPlatformURLRoot());
         placeholderProperties.put(PlaceholderProperty.SERVER_NAME.getName(), omagServerProperties.getServerName());
         placeholderProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), this.getSecretsStorePathName(platformElement));
         placeholderProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), omagServerProperties.getServerType() + "::" + omagServerProperties.getServerName());
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), platformProperties.getPlatformOrigin());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), omagServerProperties.getDescription());
-        placeholderProperties.put(PlaceholderProperty.CONNECTION_USER_ID.getName(), omagServerProperties.getUserId());
+        placeholderProperties.put(PlaceholderProperty.CONNECTION_USER_ID.getName(), null);
 
         String serverQualifiedName = this.getServerQualifiedName(platformProperties.getPlatformURLRoot(),
                                                                  omagServerProperties.getServerType(),
-                                                                 omagServerProperties.getServerName());
+                                                                 omagServerProperties.getServerName(),
+                                                                 omagServerProperties.getOrganizationName());
         /*
          * Replacement properties are used to override the standard naming conventions for software servers and to
          * ensure this connector is able to match the operational configuration with the values in open metadata.
@@ -574,7 +941,9 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DISPLAY_NAME.name,
-                                                             omagServerProperties.getServerName());
+                                                             this.getServerDisplayName(platformProperties.getPlatformURLRoot(),
+                                                                                       omagServerProperties.getServerName(),
+                                                                                       omagServerProperties.getOrganizationName()));
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
@@ -582,11 +951,16 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.RESOURCE_NAME.name,
-                                                             this.getServerResourceName(omagServerProperties.getServerId(), omagServerProperties.getServerName()));
+                                                             this.getServerResourceName(omagServerProperties.getServerName(),
+                                                                                        omagServerProperties.getOrganizationName()));
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.CATEGORY.name,
                                                              EGERIA_DEPLOYMENT_CATEGORY);
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.URL.name,
+                                                             this.getURL(omagServerProperties.getServerType()));
 
         String serverGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                                               null,
@@ -601,6 +975,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                                               null,
                                                                               null,
                                                                               false);
+
+
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
 
@@ -680,8 +1056,275 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
         }
 
         addCohorts(serverGUID, serverQualifiedName, omagServerProperties, omagServerProperties.getCohorts());
+        checkAndLinkGovernanceServerCapabilities(omagServerProperties, serverGUID);
+
 
         return serverGUID;
+    }
+
+
+    /**
+     * Create a metadata element to represent the server.
+     *
+     * @param omagServerProperties operational details of the server
+     * @param platformProperties  operational details of the platform
+     * @param serverGUID metadata details of the server
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void updateServer(OMAGServerProperties          omagServerProperties,
+                              OMAGServerPlatformProperties  platformProperties,
+                              String                        serverGUID,
+                              RelatedMetadataElementSummary endpoint,
+                              PlatformDetails               platformDetails) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        SoftwareServerProperties softwareServerProperties = new SoftwareServerProperties();
+
+        softwareServerProperties.setQualifiedName(this.getServerQualifiedName(platformProperties.getPlatformURLRoot(),
+                                                                              omagServerProperties.getServerType(),
+                                                                              omagServerProperties.getServerName(),
+                                                                              omagServerProperties.getOrganizationName()));
+        softwareServerProperties.setDisplayName(this.getServerDisplayName(platformProperties.getPlatformURLRoot(),
+                                                                          omagServerProperties.getServerName(),
+                                                                          omagServerProperties.getOrganizationName()));
+        softwareServerProperties.setVersionIdentifier(platformProperties.getPlatformBuildProperties().getVersion());
+        softwareServerProperties.setResourceName(this.getServerResourceName(omagServerProperties.getServerName(),
+                                                                            omagServerProperties.getOrganizationName()));
+        softwareServerProperties.setDeployedImplementationType(omagServerProperties.getServerType());
+        softwareServerProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
+        softwareServerProperties.setURL(this.getURL(omagServerProperties.getServerType()));
+
+        Map<String, String> additionalProperties = new HashMap<>();
+        additionalProperties.put("organizationName", omagServerProperties.getOrganizationName());
+        additionalProperties.put("serverId", omagServerProperties.getServerId());
+        additionalProperties.put("serverName", omagServerProperties.getServerName());
+
+        softwareServerProperties.setAdditionalProperties(additionalProperties);
+
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+        assetClient.updateAsset(serverGUID,
+                                assetClient.getUpdateOptions(true),
+                                softwareServerProperties);
+
+        checkAndUpdateEndpoint(platformDetails.platformRootURL, endpoint);
+
+        checkAndLinkGovernanceServerCapabilities(omagServerProperties, serverGUID);
+    }
+
+
+    /**
+     * Integration Daemons and Engine Hosts are controlled by SoftwareCapability entities.  This method connects the
+     * server definitions to the configured software capabilities.
+     *
+     * @param omagServerProperties properties from the live server
+     * @param serverGUID unique identifier of the metadata element for the server
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void checkAndLinkGovernanceServerCapabilities(OMAGServerProperties omagServerProperties,
+                                                          String               serverGUID) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        /*
+         * Engine hosts are connected to governance engines.
+         */
+        if (omagServerProperties instanceof OMAGEngineHostProperties engineHostProperties)
+        {
+            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+            OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+
+            List<String> processedEngines = new ArrayList<>();
+
+            if (serverElement != null)
+            {
+                /*
+                 * First identify the server capabilities that are already connected to the server element
+                 * - that those that should not be connected to the server element because they are longer defined.
+                 */
+                if (serverElement.getCapabilities() != null)
+                {
+                    for (RelatedMetadataElementSummary softwareCapability : serverElement.getCapabilities())
+                    {
+                        /*
+                         * Ignore software capabilities that are not governance engines.
+                         */
+                        if ((softwareCapability != null) && (propertyHelper.isTypeOf(softwareCapability.getRelatedElement().getElementHeader(),
+                                                                                     OpenMetadataType.GOVERNANCE_ENGINE.typeName)))
+                        {
+                            /*
+                             * Loop through the running engines to see if it matches the linked governance engine.
+                             */
+                            if (engineHostProperties.getGovernanceEngineSummaries() != null)
+                            {
+                                for (GovernanceEngineSummary governanceEngineSummary : engineHostProperties.getGovernanceEngineSummaries())
+                                {
+                                    if ((governanceEngineSummary != null) &&
+                                            (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
+                                            (governanceEngineSummary.getGovernanceEngineGUID().equals(softwareCapability.getRelatedElement().getElementHeader().getGUID())))
+                                    {
+                                        /*
+                                         * All is right - remember that this engine is processed.
+                                         */
+                                        processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
+                                    }
+                                }
+                            }
+
+                            if (! processedEngines.contains(softwareCapability.getRelatedElement().getElementHeader().getGUID()))
+                            {
+                                /*
+                                 * The software capability is no longer running.
+                                 */
+                                assetClient.detachSoftwareCapability(serverElement.getElementHeader().getGUID(), softwareCapability.getRelatedElement().getElementHeader().getGUID(), assetClient.getDeleteOptions(false));
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Attach the software capabilities that are missing from the server element.
+                 */
+                if (engineHostProperties.getGovernanceEngineSummaries() != null)
+                {
+                    for (GovernanceEngineSummary governanceEngineSummary : engineHostProperties.getGovernanceEngineSummaries())
+                    {
+                        if ((governanceEngineSummary != null) &&
+                                (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
+                                (! processedEngines.contains(governanceEngineSummary.getGovernanceEngineGUID())))
+                        {
+                            SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
+
+                            supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
+
+                            assetClient.linkSoftwareCapability(serverGUID, governanceEngineSummary.getGovernanceEngineGUID(), assetClient.getMetadataSourceOptions(), supportedSoftwareCapabilityProperties);
+
+                            processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+         * Integration Daemons are connected to integration groups.
+         */
+        else if (omagServerProperties instanceof OMAGIntegrationDaemonProperties omagIntegrationDaemonProperties)
+        {
+            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+            OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+
+            List<String> processedGroups = new ArrayList<>();
+
+            if (serverElement != null)
+            {
+                /*
+                 * First identify the server capabilities that are already connected to the server element
+                 * - that those that should not be connected to the server element because they are longer defined.
+                 */
+                if (serverElement.getCapabilities() != null)
+                {
+                    for (RelatedMetadataElementSummary softwareCapability : serverElement.getCapabilities())
+                    {
+                        /*
+                         * Ignore software capabilities that are not governance engines.
+                         */
+                        if ((softwareCapability != null) && (propertyHelper.isTypeOf(softwareCapability.getRelatedElement().getElementHeader(),
+                                                                                     OpenMetadataType.INTEGRATION_GROUP.typeName)))
+                        {
+                            /*
+                             * Loop through the running engines to see if it matches the linked governance engine.
+                             */
+                            if (omagIntegrationDaemonProperties.getIntegrationGroups() != null)
+                            {
+                                for (OMAGIntegrationGroupProperties integrationGroupProperties : omagIntegrationDaemonProperties.getIntegrationGroups())
+                                {
+                                    if ((integrationGroupProperties != null) &&
+                                            (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
+                                            (integrationGroupProperties.getIntegrationGroupGUID().equals(softwareCapability.getRelatedElement().getElementHeader().getGUID())))
+                                    {
+                                        /*
+                                         * All is right - remember that this engine is processed.
+                                         */
+                                        processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
+                                    }
+                                }
+                            }
+
+                            if (! processedGroups.contains(softwareCapability.getRelatedElement().getElementHeader().getGUID()))
+                            {
+                                /*
+                                 * The software capability is no longer running.
+                                 */
+                                assetClient.detachSoftwareCapability(serverElement.getElementHeader().getGUID(), softwareCapability.getRelatedElement().getElementHeader().getGUID(), assetClient.getDeleteOptions(false));
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Attach the software capabilities that are missing from the server element.
+                 */
+                if (omagIntegrationDaemonProperties.getIntegrationGroups() != null)
+                {
+                    for (OMAGIntegrationGroupProperties integrationGroupProperties : omagIntegrationDaemonProperties.getIntegrationGroups())
+                    {
+                        if ((integrationGroupProperties != null) &&
+                                (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
+                                (! processedGroups.contains(integrationGroupProperties.getIntegrationGroupGUID())))
+                        {
+                            SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
+
+                            supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
+
+                            assetClient.linkSoftwareCapability(serverGUID, integrationGroupProperties.getIntegrationGroupGUID(), assetClient.getMetadataSourceOptions(), supportedSoftwareCapabilityProperties);
+
+                            processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Check that the endpoint matches the platform URL root - update it if it does not.
+     *
+     * @param platformURLRoot latest platformURL root (probably from egeriaEndpoint in application.properties
+     * @param endpoint current endpoint element
+     *
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void checkAndUpdateEndpoint(String                        platformURLRoot,
+                                        RelatedMetadataElementSummary endpoint) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        if ((endpoint != null) && (endpoint.getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties))
+        {
+            if (! platformURLRoot.equals(endpointProperties.getNetworkAddress()))
+            {
+                EndpointClient endpointClient = integrationContext.getEndpointClient();
+
+                EndpointProperties properties = new EndpointProperties();
+
+                endpointProperties.setNetworkAddress(platformURLRoot);
+
+                endpointClient.updateEndpoint(endpoint.getRelatedElement().getElementHeader().getGUID(),
+                                              endpointClient.getUpdateOptions(true),
+                                              properties);
+            }
+        }
     }
 
 

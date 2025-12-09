@@ -9,9 +9,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -163,17 +166,73 @@ public class MetadataExpertRESTServices extends TokenController
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param requestBody new properties
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse updateMetadataElementInStore(String                      serverName,
-                                                     String                      urlMarker,
-                                                     String                      metadataElementGUID,
-                                                     UpdatePropertiesRequestBody requestBody)
+    public BooleanResponse updateMetadataElementInStore(String                      serverName,
+                                                        String                      urlMarker,
+                                                        String                      metadataElementGUID,
+                                                        UpdatePropertiesRequestBody requestBody)
     {
         final String methodName = "updateMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setFlag(handler.updateMetadataElementInStore(userId,
+                                                                      metadataElementGUID,
+                                                                      requestBody,
+                                                                      requestBody.getProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse publishMetadataElement(String                    serverName,
+                                               String                    urlMarker,
+                                               String                    metadataElementGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "publishMetadataElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -189,17 +248,53 @@ public class MetadataExpertRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.updateMetadataElementInStore(userId,
-                                                     metadataElementGUID,
-                                                     requestBody,
-                                                     requestBody.getProperties());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.publishMetadataElement(userId, metadataElementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse withdrawMetadataElement(String                    serverName,
+                                                String                    urlMarker,
+                                                String                    metadataElementGUID,
+                                                MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "withdrawMetadataElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.withdrawMetadataElement(userId, metadataElementGUID, requestBody);
         }
         catch (Throwable error)
         {

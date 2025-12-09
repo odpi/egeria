@@ -82,6 +82,11 @@ public enum AccessOperation
      */
     DECLASSIFY(12, "Declassify", "The user requests to remove a classification from the metadata element in the catalog."),
 
+    /**
+     * The user requests to publish the metadata element.  This is a special type of classification that potentially changes the governance zones.
+     */
+    PUBLISH(13, "Publish", "The user requests to publish the metadata element.  This is a special type of classification that potentially changes the governance zones."),
+
     ;
 
     private  final int    ordinal;

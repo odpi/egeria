@@ -35,7 +35,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -44,7 +43,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
     public FeedbackManagerInstance(String                  serverName,
                                    AuditLog                auditLog,
                                    String                  localServerUserId,
-                                   String                  localServerUserPassword,
                                    int                     maxPageSize,
                                    String                  remoteServerName,
                                    String                  remoteServerURL,
@@ -54,15 +52,12 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
         this.likeMap = new ViewServiceClientMap<>(LikeHandler.class,
                                                   serverName,
-                                                  localServerUserId,
-                                                  localServerUserPassword,
                                                   auditLog,
                                                   activeViewServices,
                                                   myDescription.getViewServiceFullName(),
@@ -71,8 +66,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
 
         this.ratingMap = new ViewServiceClientMap<>(RatingHandler.class,
                                                     serverName,
-                                                    localServerUserId,
-                                                    localServerUserPassword,
                                                     auditLog,
                                                     activeViewServices,
                                                     myDescription.getViewServiceFullName(),
@@ -81,8 +74,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
 
         this.commentMap = new ViewServiceClientMap<>(CommentHandler.class,
                                                      serverName,
-                                                     localServerUserId,
-                                                     localServerUserPassword,
                                                      auditLog,
                                                      activeViewServices,
                                                      myDescription.getViewServiceFullName(),
@@ -91,8 +82,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
 
         this.informalTagMap = new ViewServiceClientMap<>(InformalTagHandler.class,
                                                          serverName,
-                                                         localServerUserId,
-                                                         localServerUserPassword,
                                                          auditLog,
                                                          activeViewServices,
                                                          myDescription.getViewServiceFullName(),
@@ -101,8 +90,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
 
         this.noteLogMap = new ViewServiceClientMap<>(NoteLogHandler.class,
                                                      serverName,
-                                                     localServerUserId,
-                                                     localServerUserPassword,
                                                      auditLog,
                                                      activeViewServices,
                                                      myDescription.getViewServiceFullName(),

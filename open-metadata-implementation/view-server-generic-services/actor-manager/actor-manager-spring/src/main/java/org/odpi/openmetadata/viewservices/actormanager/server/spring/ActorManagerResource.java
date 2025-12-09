@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Actor Manager OMVS", description="Create and edit information about the people, teams and automated processes running in your organization. These are collectively called actors and their definition includes an actor profile, the roles they perform, and their user identities.",
+@Tag(name="API: Actor Manager", description="Create and edit information about the people, teams and automated processes running in your organization. These are collectively called actors and their definition includes an actor profile, the roles they perform, and their user identities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/actor-manager/overview/"))
 
@@ -111,7 +111,7 @@ public class ActorManagerResource
      * @param actorProfileGUID unique identifier of the actor profile (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -124,13 +124,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-profile"))
 
-    public VoidResponse updateActorProfile(@PathVariable
-                                           String                                  serverName,
-                                           @PathVariable String             urlMarker,
-                                           @PathVariable
-                                           String                                  actorProfileGUID,
-                                           @RequestBody (required = false)
-                                           UpdateElementRequestBody requestBody)
+    public BooleanResponse updateActorProfile(@PathVariable
+                                              String                                  serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable
+                                              String                                  actorProfileGUID,
+                                              @RequestBody (required = false)
+                                              UpdateElementRequestBody requestBody)
     {
         return restAPI.updateActorProfile(serverName, urlMarker, actorProfileGUID, requestBody);
     }
@@ -402,7 +402,7 @@ public class ActorManagerResource
      * @param actorRoleGUID unique identifier of the actor role (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -415,13 +415,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/actor-role"))
 
-    public VoidResponse updateActorRole(@PathVariable
-                                        String                                  serverName,
-                                        @PathVariable String             urlMarker,
-                                        @PathVariable
-                                        String                                  actorRoleGUID,
-                                        @RequestBody (required = false)
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse updateActorRole(@PathVariable
+                                           String                                  serverName,
+                                           @PathVariable String             urlMarker,
+                                           @PathVariable
+                                           String                                  actorRoleGUID,
+                                           @RequestBody (required = false)
+                                           UpdateElementRequestBody requestBody)
     {
         return restAPI.updateActorRole(serverName, urlMarker, actorRoleGUID, requestBody);
     }
@@ -838,7 +838,7 @@ public class ActorManagerResource
      * @param userIdentityGUID unique identifier of the user identity (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -851,13 +851,13 @@ public class ActorManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/user-identity"))
 
-    public VoidResponse updateUserIdentity(@PathVariable
-                                           String                                  serverName,
-                                           @PathVariable String             urlMarker,
-                                           @PathVariable
-                                           String                                  userIdentityGUID,
-                                           @RequestBody (required = false)
-                                           UpdateElementRequestBody requestBody)
+    public BooleanResponse updateUserIdentity(@PathVariable
+                                              String                                  serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable
+                                              String                                  userIdentityGUID,
+                                              @RequestBody (required = false)
+                                              UpdateElementRequestBody requestBody)
     {
         return restAPI.updateUserIdentity(serverName, urlMarker, userIdentityGUID, requestBody);
     }

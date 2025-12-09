@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Connection Maker OMVS", description="Connections describe the network and API information used connect to different sources of data and function.  The connection has three parts to it: the connection which links everything together, the connector type which defined the type of connector to use to connect to the data, and the endpoint which holds the network information. The Connection Maker OMVS supports the creation and editing of connections, connector types and endpoints.",
+@Tag(name="API: Connection Maker", description="Connections describe the network and API information used connect to different sources of data and function.  The connection has three parts to it: the connection which links everything together, the connector type which defined the type of connector to use to connect to the data, and the endpoint which holds the network information. The Connection Maker OMVS supports the creation and editing of connections, connector types and endpoints.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/connection-maker/overview/"))
 
@@ -111,7 +111,7 @@ public class ConnectionMakerResource
      * @param connectionGUID unique identifier of the connection (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -124,13 +124,13 @@ public class ConnectionMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/connection"))
 
-    public VoidResponse updateConnection(@PathVariable
-                                         String                                  serverName,
-                                         @PathVariable String             urlMarker,
-                                         @PathVariable
-                                         String                                  connectionGUID,
-                                         @RequestBody (required = false)
-                                         UpdateElementRequestBody requestBody)
+    public BooleanResponse updateConnection(@PathVariable
+                                            String                                  serverName,
+                                            @PathVariable String             urlMarker,
+                                            @PathVariable
+                                            String                                  connectionGUID,
+                                            @RequestBody (required = false)
+                                            UpdateElementRequestBody requestBody)
     {
         return restAPI.updateConnection(serverName, urlMarker, connectionGUID, requestBody);
     }
@@ -688,7 +688,7 @@ public class ConnectionMakerResource
      * @param connectorTypeGUID unique identifier of the connectorType (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -701,13 +701,13 @@ public class ConnectionMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/connector-type"))
 
-    public VoidResponse updateConnectorType(@PathVariable
-                                            String                                  serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable
-                                            String                                  connectorTypeGUID,
-                                            @RequestBody (required = false)
-                                            UpdateElementRequestBody requestBody)
+    public BooleanResponse updateConnectorType(@PathVariable
+                                               String                                  serverName,
+                                               @PathVariable String             urlMarker,
+                                               @PathVariable
+                                               String                                  connectorTypeGUID,
+                                               @RequestBody (required = false)
+                                               UpdateElementRequestBody requestBody)
     {
         return restAPI.updateConnectorType(serverName, urlMarker, connectorTypeGUID, requestBody);
     }

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -1878,8 +1878,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         if (newClassification != null)
         {
             Classification updatedClassification = new Classification(newClassification);
-
-            updatedClassification = incrementVersion(userName, newClassification, updatedClassification);
 
             return this.addClassificationToEntity(sourceName, entity, updatedClassification, methodName);
         }

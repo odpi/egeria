@@ -680,6 +680,7 @@ Content-Type: application/json
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
+
 ###
 
 @glossaryTermGUID=add guid here
@@ -1072,4 +1073,198 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+
+
+###
+# @name setKnownDuplicateClassification
+# Classify the element to indicate that is has one or more duplicate in the open metadata ecosystem.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/known-duplicate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "KnownDuplicateProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearKnownDuplicateClassification
+# Remove the KnownDuplicate classification from the element.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/known-duplicate/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+
+@peerDuplicateGUID=add guid here
+
+###
+# @name setupSemanticAssignment
+# Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+# This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "relationshipProperties" : {
+     "class": "PeerDuplicateLinkProperties",
+     "statusIdentifier" : 0,
+     "steward" : "Add value here",
+     "stewardTypeName" : "Add value here",
+     "stewardPropertyName" : "Add value here",
+     "source" : "Add value here",
+     "notes" : "Add value here"
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name unlinkElementsAsPeerDuplicates
+# Remove the PeerDuplicateLink a relationship between two elements that showed they represent the same 'thing'.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/peer-duplicate/{{peerDuplicateGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name setConsolidatedDuplicateClassification
+# Classify the element to indicate that it is derived from one or more duplicates in the open metadata ecosystem.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/consolidated-duplicate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "ConsolidatedDuplicateProperties",
+       "statusIdentifier" : 0,
+       "steward" : "Add value here",
+       "stewardTypeName" : "Add value here",
+       "stewardPropertyName" : "Add value here",
+       "source" : "Add value here",
+       "notes" : "Add value here"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name clearConsolidatedDuplicateClassification
+# Remove the ConsolidatedDuplicate classification from the element.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/consolidated-duplicate/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+
+@sourceElementGUID=add guid here
+
+###
+# @name linkConsolidatedDuplicateToSource
+# Create a relationship between two elements that shows that one is a combination of a number of duplicates, and it should
+# be used instead.
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/consolidated-duplicate-source/{{sourceElementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "relationshipProperties" : {
+     "class": "ConsolidatedDuplicateLinkProperties"
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name unlinkConsolidatedDuplicateFromSourceElement
+# Remove the ConsolidatedDuplicateLink relationship between two elements that showed they represent the same "thing".
+#
+# Duplicate Management: https://egeria-project.org/features/duplicate-management/overview
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/consolidated-duplicate-source/{{sourceElementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
 

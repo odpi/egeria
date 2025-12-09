@@ -28,6 +28,9 @@ public class QueryOptions extends PagingOptions
     private List<ElementStatus> limitResultsByStatus          = null;
     private SequencingOrder     sequencingOrder               = SequencingOrder.LAST_UPDATE_RECENT;
     private String              sequencingProperty            = null;
+    private List<String>        skipClassifiedElements        = null;
+    private List<String>        includeOnlyClassifiedElements = null;
+    private List<String>        governanceZoneFilter          = null;
 
 
     /**
@@ -50,12 +53,15 @@ public class QueryOptions extends PagingOptions
 
         if (template != null)
         {
-            anchorGUID           = template.getAnchorGUID();
-            anchorScopeGUID      = template.getAnchorScopeGUID();
-            anchorDomainName     = template.getAnchorDomainName();
-            limitResultsByStatus = template.getLimitResultsByStatus();
-            sequencingOrder      = template.getSequencingOrder();
-            sequencingProperty   = template.getSequencingProperty();
+            anchorGUID                    = template.getAnchorGUID();
+            anchorScopeGUID               = template.getAnchorScopeGUID();
+            anchorDomainName              = template.getAnchorDomainName();
+            limitResultsByStatus          = template.getLimitResultsByStatus();
+            sequencingOrder               = template.getSequencingOrder();
+            sequencingProperty            = template.getSequencingProperty();
+            skipClassifiedElements        = template.getSkipClassifiedElements();
+            includeOnlyClassifiedElements = template.getIncludeOnlyClassifiedElements();
+            governanceZoneFilter          = template.getGovernanceZoneFilter();
         }
     }
 
@@ -221,6 +227,83 @@ public class QueryOptions extends PagingOptions
 
 
     /**
+     * Return the list of governance zones to restrict the elements (if any) returned to members of these
+     * zones.  If the value is null (the default) then all matching elements are returned, subject to
+     * the usual security restrictions.  Be aware that governance zones are only set on anchor elements.
+     * Any element retrieved that is anchored to another element will not be returned if this filter is set.
+     *
+     * @return list of governance zone names
+     */
+    public List<String> getGovernanceZoneFilter()
+    {
+        return governanceZoneFilter;
+    }
+
+
+
+    /**
+     * Return the list of classification names that should not be found on any returned elements. The default
+     * is null which means that the classifications of an element do not add additional filters for the results.
+     *
+     * @return list of classification names or null.
+     */
+    public List<String> getSkipClassifiedElements()
+    {
+        return skipClassifiedElements;
+    }
+
+
+    /**
+     * Set up the list of classification names that should not be found on any returned elements. The default
+     * is null which means that the classifications of an element do not add additional filters for the results.
+     *
+     * @param skipClassifiedElements list of classification names or null.
+     */
+    public void setSkipClassifiedElements(List<String> skipClassifiedElements)
+    {
+        this.skipClassifiedElements = skipClassifiedElements;
+    }
+
+
+    /**
+     * Return the list of classification names that must be found on any returned elements. The default
+     * is null which means that the classifications of an element do not add additional filters for the results.
+     *
+     * @return list of classification names or null.
+     */
+    public List<String> getIncludeOnlyClassifiedElements()
+    {
+        return includeOnlyClassifiedElements;
+    }
+
+
+    /**
+     * Set up the list of classification names that must be found on any returned elements. The default
+     * is null which means that the classifications of an element do not add additional filters for the results.
+     *
+     * @param includeOnlyClassifiedElements list of classification names or null.
+     */
+    public void setIncludeOnlyClassifiedElements(List<String> includeOnlyClassifiedElements)
+    {
+        this.includeOnlyClassifiedElements = includeOnlyClassifiedElements;
+    }
+
+
+    /**
+     * Set up the list of governance zones to restrict the elements (if any) returned to members of these
+     * zones.  If the value is null (the default) then all matching elements are returned, subject to
+     * the usual security restrictions.  Be aware that governance zones are only set on anchor elements.
+     * Any element retrieved that is anchored to another element will not be returned if this filter is set.
+     *
+     * @param governanceZoneFilter list of governance zone names
+     */
+    public void setGovernanceZoneFilter(List<String> governanceZoneFilter)
+    {
+        this.governanceZoneFilter = governanceZoneFilter;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -235,6 +318,9 @@ public class QueryOptions extends PagingOptions
                 ", limitResultsByStatus=" + limitResultsByStatus +
                 ", sequencingOrder=" + sequencingOrder +
                 ", sequencingProperty='" + sequencingProperty + '\'' +
+                ", skipClassifiedElements=" + skipClassifiedElements +
+                ", includeOnlyClassifiedElements=" + includeOnlyClassifiedElements +
+                ", governanceZoneFilter=" + governanceZoneFilter +
                 "} " + super.toString();
     }
 
@@ -257,7 +343,10 @@ public class QueryOptions extends PagingOptions
                 Objects.equals(anchorScopeGUID, that.anchorScopeGUID) &&
                 Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
                 sequencingOrder == that.sequencingOrder &&
-                Objects.equals(sequencingProperty, that.sequencingProperty);
+                Objects.equals(sequencingProperty, that.sequencingProperty) &&
+                Objects.equals(skipClassifiedElements, that.skipClassifiedElements) &&
+                Objects.equals(includeOnlyClassifiedElements, that.includeOnlyClassifiedElements) &&
+                Objects.equals(governanceZoneFilter, that.governanceZoneFilter);
     }
 
 
@@ -269,6 +358,6 @@ public class QueryOptions extends PagingOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, anchorDomainName, anchorScopeGUID, limitResultsByStatus, sequencingOrder, sequencingProperty);
+        return Objects.hash(super.hashCode(), anchorGUID, anchorDomainName, anchorScopeGUID, limitResultsByStatus, sequencingOrder, sequencingProperty, skipClassifiedElements, includeOnlyClassifiedElements, governanceZoneFilter);
     }
 }

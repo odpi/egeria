@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: External Links OMVS", description="External references identify web pages where the information about useful resources such as downloadable data sources and models, or key documentation are located. External identifiers capture the identifiers for data items residing outside of the open metadata ecosystem whose contents have been synchronised into the open metadata system.  They are linked to their open metadata equivalent elements.  The External Links OMVS provides APIs for supporting the creation and editing of external references, and external identifiers along with queries to locate them.",
+@Tag(name="API: External Links", description="External references identify web pages where the information about useful resources such as downloadable data sources and models, or key documentation are located. External identifiers capture the identifiers for data items residing outside of the open metadata ecosystem whose contents have been synchronised into the open metadata system.  They are linked to their open metadata equivalent elements.  The External Links OMVS provides APIs for supporting the creation and editing of external references, and external identifiers along with queries to locate them.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/external-links/overview/"))
 
@@ -111,7 +111,7 @@ public class ExternalLinksResource
      * @param externalReferenceGUID unique identifier of the external reference (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -124,13 +124,11 @@ public class ExternalLinksResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse updateExternalReference(@PathVariable
-                                                String                                  serverName,
-                                                @PathVariable String             urlMarker,
-                                                @PathVariable
-                                                String                                  externalReferenceGUID,
-                                                @RequestBody (required = false)
-                                                UpdateElementRequestBody requestBody)
+    public BooleanResponse updateExternalReference(@PathVariable String                                  serverName,
+                                                   @PathVariable String             urlMarker,
+                                                   @PathVariable String                                  externalReferenceGUID,
+                                                   @RequestBody (required = false)
+                                                       UpdateElementRequestBody requestBody)
     {
         return restAPI.updateExternalReference(serverName, urlMarker, externalReferenceGUID, requestBody);
     }
@@ -522,7 +520,7 @@ public class ExternalLinksResource
      * @param externalIdGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
-     * @return void or
+     * @return boolean or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
@@ -535,11 +533,11 @@ public class ExternalLinksResource
             externalDocs = @ExternalDocumentation(description = "External Identifiers",
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
-    public VoidResponse updateExternalIdentifier(@PathVariable String                   serverName,
-                                                 @PathVariable String                   urlMarker,
-                                                 @PathVariable String                   externalIdGUID,
-                                                 @RequestBody  (required = false)
-                                                 UpdateElementRequestBody requestBody)
+    public BooleanResponse updateExternalIdentifier(@PathVariable String                   serverName,
+                                                    @PathVariable String                   urlMarker,
+                                                    @PathVariable String                   externalIdGUID,
+                                                    @RequestBody  (required = false)
+                                                        UpdateElementRequestBody requestBody)
     {
         return restAPI.updateExternalIdentifier(serverName, urlMarker, externalIdGUID, requestBody);
     }

@@ -5,6 +5,7 @@
 
 
 dependencies {
+    implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')

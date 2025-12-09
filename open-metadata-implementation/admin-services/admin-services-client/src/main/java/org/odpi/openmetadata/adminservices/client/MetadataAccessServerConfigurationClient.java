@@ -6,13 +6,13 @@ package org.odpi.openmetadata.adminservices.client;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,41 +28,24 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public MetadataAccessServerConfigurationClient(String adminUserId,
-                                                   String serverName,
-                                                   String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public MetadataAccessServerConfigurationClient(String   serverName,
+                                                   String   serverPlatformRootURL,
+                                                   String   secretStoreProvider,
+                                                   String   secretStoreLocation,
+                                                   String   secretStoreCollection,
+                                                   AuditLog auditLog) throws InvalidParameterException
     {
-        super(adminUserId, serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
-
-
-    /**
-     * Create a new client that passes a connection userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is passed as the admin userId.
-     *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param connectionUserId      caller's system userId embedded in all HTTP requests
-     * @param connectionPassword    caller's system password embedded in all HTTP requests
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
-     *                                       REST API calls.
-     */
-    public MetadataAccessServerConfigurationClient(String adminUserId,
-                                                   String serverName,
-                                                   String serverPlatformRootURL,
-                                                   String connectionUserId,
-                                                   String connectionPassword) throws OMAGInvalidParameterException
-    {
-        super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
-    }
-
 
 
     /*
@@ -74,20 +57,19 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * Return the list of access services for this server.
      *
      * @return list of access service descriptions
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<RegisteredOMAGService> getRegisteredAccessServices() throws OMAGNotAuthorizedException,
-                                                                            OMAGInvalidParameterException,
+    public List<RegisteredOMAGService> getRegisteredAccessServices() throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "getRegisteredAccessServices";
         final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/access-services";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
-                                                                                                     serverPlatformRootURL + urlTemplate,
-                                                                                                     adminUserId);
+                                                                                                     serverPlatformRootURL + urlTemplate);
         return restResult.getServices();
     }
 
@@ -102,20 +84,19 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * Return the list of access services that are configured for this server.
      *
      * @return list of access service descriptions
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<RegisteredOMAGService> getConfiguredAccessServices() throws OMAGNotAuthorizedException,
-                                                                            OMAGInvalidParameterException,
+    public List<RegisteredOMAGService> getConfiguredAccessServices() throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "getConfiguredAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
                                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                                     adminUserId,
                                                                                                      serverName);
         return restResult.getServices();
     }
@@ -125,20 +106,19 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * Return the configuration for the access services in this server.
      *
      * @return list of access service configuration
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<AccessServiceConfig> getAccessServicesConfiguration() throws OMAGNotAuthorizedException,
-                                                                             OMAGInvalidParameterException,
+    public List<AccessServiceConfig> getAccessServicesConfiguration() throws UserNotAuthorizedException,
+                                                                             InvalidParameterException,
                                                                              OMAGConfigurationErrorException
     {
         final String methodName  = "getAccessServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/configuration";
 
         AccessServicesResponse restResult = restClient.callAccessServicesGetRESTCall(methodName,
                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                     adminUserId,
                                                                                      serverName);
         return restResult.getServices();
     }
@@ -155,12 +135,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      *
      * @param serviceURLMarker string indicating which access service it is configuring
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureAccessService(String  serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                        OMAGInvalidParameterException,
+    public void configureAccessService(String  serviceURLMarker) throws UserNotAuthorizedException,
+                                                                        InvalidParameterException,
                                                                         OMAGConfigurationErrorException
     {
         this.configureAccessService(serviceURLMarker, new HashMap<>());
@@ -172,30 +152,22 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      *
      * @param serviceURLMarker string indicating which access service it is disabling
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void disableAccessService(String  serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                        OMAGInvalidParameterException,
+    public void disableAccessService(String  serviceURLMarker) throws UserNotAuthorizedException,
+                                                                        InvalidParameterException,
                                                                         OMAGConfigurationErrorException
     {
         final String methodName    = "disableAccessService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        adminUserId,
                                         serverName,
                                         serviceURLMarker);
     }
@@ -207,32 +179,24 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * @param serviceURLMarker string indicating which access service it is configuring
      * @param accessServiceOptions property name/value pairs used to configure the access service
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void configureAccessService(String              serviceURLMarker,
-                                       Map<String, Object> accessServiceOptions) throws OMAGNotAuthorizedException,
-                                                                                        OMAGInvalidParameterException,
+                                       Map<String, Object> accessServiceOptions) throws UserNotAuthorizedException,
+                                                                                        InvalidParameterException,
                                                                                         OMAGConfigurationErrorException
     {
         final String methodName    = "configureAccessService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
-                                        adminUserId,
                                         serverName,
                                         serviceURLMarker);
     }
@@ -243,12 +207,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      *
      * @param serviceURLMarker string indicating which access service it is configuring
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureAccessServiceNoTopics(String  serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                                OMAGInvalidParameterException,
+    public void configureAccessServiceNoTopics(String  serviceURLMarker) throws UserNotAuthorizedException,
+                                                                                InvalidParameterException,
                                                                                 OMAGConfigurationErrorException
     {
         this.configureAccessServiceNoTopics(serviceURLMarker, new HashMap<>());
@@ -261,32 +225,24 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * @param serviceURLMarker string indicating which access service it is configuring
      * @param accessServiceOptions property name/value pairs used to configure the access service
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void configureAccessServiceNoTopics(String              serviceURLMarker,
-                                               Map<String, Object> accessServiceOptions) throws OMAGNotAuthorizedException,
-                                                                                                OMAGInvalidParameterException,
+                                               Map<String, Object> accessServiceOptions) throws UserNotAuthorizedException,
+                                                                                                InvalidParameterException,
                                                                                                 OMAGConfigurationErrorException
     {
         final String methodName    = "configureAccessServiceNoTopics";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/no-topics";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/no-topics";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
-                                        adminUserId,
                                         serverName,
                                         serviceURLMarker);
     }
@@ -298,21 +254,20 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      *
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureAllAccessServices(Map<String, Object> accessServiceOptions) throws OMAGNotAuthorizedException,
-                                                                                            OMAGInvalidParameterException,
+    public void configureAllAccessServices(Map<String, Object> accessServiceOptions) throws UserNotAuthorizedException,
+                                                                                            InvalidParameterException,
                                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "configureAllAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -325,21 +280,20 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      *
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureAllAccessServicesNoTopics(Map<String, Object> accessServiceOptions) throws OMAGNotAuthorizedException,
-                                                                                                    OMAGInvalidParameterException,
+    public void configureAllAccessServicesNoTopics(Map<String, Object> accessServiceOptions) throws UserNotAuthorizedException,
+                                                                                                    InvalidParameterException,
                                                                                                     OMAGConfigurationErrorException
     {
         final String methodName  = "configureAllAccessServicesNoTopics";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/no-topics";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/no-topics";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -350,30 +304,22 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * @param serviceURLMarker string indicating which access service it requested
      *
      * @return map of topic names to descriptions
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Map<String, String> getAccessServiceTopicNames(String  serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                                           OMAGInvalidParameterException,
+    public Map<String, String> getAccessServiceTopicNames(String  serviceURLMarker) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
                                                                                            OMAGConfigurationErrorException
     {
         final String methodName    = "getAccessServiceTopicNames";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/topic-names";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/topic-names";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
                                                                          serverPlatformRootURL + urlTemplate,
-                                                                         adminUserId,
                                                                          serverName,
                                                                          serviceURLMarker);
 
@@ -385,20 +331,19 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * Retrieve the topic names for all configured access service
      *
      * @return map of topic names to descriptions
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Map<String, String> getAllAccessServiceTopicNames() throws OMAGNotAuthorizedException,
-                                                                      OMAGInvalidParameterException,
+    public Map<String, String> getAllAccessServiceTopicNames() throws UserNotAuthorizedException,
+                                                                      InvalidParameterException,
                                                                       OMAGConfigurationErrorException
     {
         final String methodName    = "getAllAccessServiceTopicNames";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/topic-names";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/topic-names";
 
         StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
                                                                          serverPlatformRootURL + urlTemplate,
-                                                                         adminUserId,
                                                                          serverName);
 
         return response.getStringMap();
@@ -412,32 +357,24 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * @param serviceURLMarker string indicating which access service it is configuring
      * @param topicName new topic name
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void overrideAccessServiceOutTopic(String  serviceURLMarker,
-                                              String  topicName) throws OMAGNotAuthorizedException,
-                                                                        OMAGInvalidParameterException,
+                                              String  topicName) throws UserNotAuthorizedException,
+                                                                        InvalidParameterException,
                                                                         OMAGConfigurationErrorException
     {
         final String methodName    = "overrideAccessServiceOutTopic";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/topic-names/out-topic";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/topic-names/out-topic";
 
-        try
-        {
-            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
-                                        adminUserId,
                                         serverName,
                                         serviceURLMarker);
     }
@@ -447,20 +384,19 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * Disable the access services.  This removes all configuration for the access services
      * and disables the enterprise repository services.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearAllAccessServices() throws OMAGNotAuthorizedException,
-                                                OMAGInvalidParameterException,
+    public void clearAllAccessServices() throws UserNotAuthorizedException,
+                                                InvalidParameterException,
                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "clearAllAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          adminUserId,
                                           serverName);
     }
 
@@ -475,21 +411,20 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * the current values.
      *
      * @param accessServicesConfig - list of configuration properties for each access service.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig) throws OMAGNotAuthorizedException,
-                                                                                               OMAGInvalidParameterException,
+    public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig) throws UserNotAuthorizedException,
+                                                                                               InvalidParameterException,
                                                                                                OMAGConfigurationErrorException
     {
         final String methodName  = "setAccessServicesConfig";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/configuration";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServicesConfig,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -498,21 +433,20 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
      *
      * @param configurationProperties additional properties for the cohort
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void addRemoteEnterpriseTopic(Map<String, Object>  configurationProperties) throws OMAGNotAuthorizedException,
-                                                                                              OMAGInvalidParameterException,
+    public void addRemoteEnterpriseTopic(Map<String, Object>  configurationProperties) throws UserNotAuthorizedException,
+                                                                                              InvalidParameterException,
                                                                                               OMAGConfigurationErrorException
     {
         final String methodName  = "setEnterpriseAccessConfig";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/enterprise-access/remote-topic";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/enterprise-access/remote-topic";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         configurationProperties,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -526,21 +460,20 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * the enterprise access services are not sufficient.
      *
      * @param enterpriseAccessConfig - enterprise repository services configuration properties.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setEnterpriseAccessConfig(EnterpriseAccessConfig enterpriseAccessConfig) throws OMAGNotAuthorizedException,
-                                                                                                OMAGInvalidParameterException,
+    public void setEnterpriseAccessConfig(EnterpriseAccessConfig enterpriseAccessConfig) throws UserNotAuthorizedException,
+                                                                                                InvalidParameterException,
                                                                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "setEnterpriseAccessConfig";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/enterprise-access/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/enterprise-access/configuration";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         enterpriseAccessConfig,
-                                        adminUserId,
                                         serverName);
     }
 }

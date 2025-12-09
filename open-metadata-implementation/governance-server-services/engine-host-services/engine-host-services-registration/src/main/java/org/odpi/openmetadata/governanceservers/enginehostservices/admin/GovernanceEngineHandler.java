@@ -16,6 +16,7 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHos
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
+import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
 
 import java.util.*;
 
@@ -26,14 +27,13 @@ import java.util.*;
  */
 public abstract class GovernanceEngineHandler
 {
+    protected EngineConfig            engineConfig;
     protected String                  serverName;         /* Initialized in constructor */
-    protected String                  serverUserId;       /* Initialized in constructor */
     protected GovernanceContextClient engineActionClient; /* Initialized in constructor */
 
     protected String                  engineUserId;      /* Initialized in constructor */
     protected AuditLog                auditLog;          /* Initialized in constructor */
     protected int                     maxPageSize;       /* Initialized in constructor */
-
     protected final String               engineServiceName;      /* Initialized in constructor */
     protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
@@ -72,10 +72,10 @@ public abstract class GovernanceEngineHandler
                                    AuditLog                      auditLog,
                                    int                           maxPageSize)
     {
+        this.engineConfig = engineConfig;
         this.engineServiceName = engineServiceName;
         this.governanceEngineName = engineConfig.getEngineQualifiedName();
         this.serverName = localServerName;
-        this.serverUserId = serverUserId;
         this.engineUserId = engineConfig.getEngineUserId();
         if (engineUserId == null)
         {
@@ -86,7 +86,6 @@ public abstract class GovernanceEngineHandler
         this.auditLog                = auditLog;
         this.maxPageSize             = maxPageSize;
     }
-
 
     /**
      * Return the governance engine name - used for error logging.
@@ -118,7 +117,8 @@ public abstract class GovernanceEngineHandler
      */
     public synchronized GovernanceEngineSummary getSummary()
     {
-        GovernanceEngineSummary mySummary = new GovernanceEngineSummary();
+        GovernanceEngineSummary mySummary = new GovernanceEngineSummary(engineConfig);
+
 
         mySummary.setGovernanceEngineName(governanceEngineName);
         mySummary.setGovernanceEngineTypeName(governanceEngineTypeName);
@@ -186,7 +186,7 @@ public abstract class GovernanceEngineHandler
          * Begin by extracting the properties for the governance engine from the metadata server.
          * This method throws exceptions if there is a problem retrieving the governance engine properties.
          */
-        this.governanceEngineElement = configurationClient.getGovernanceEngineByName(serverUserId, governanceEngineName);
+        this.governanceEngineElement = configurationClient.getGovernanceEngineByName(engineUserId, governanceEngineName);
 
         if ((governanceEngineElement == null) ||
                 (governanceEngineElement.getElementHeader() == null) ||
@@ -248,7 +248,7 @@ public abstract class GovernanceEngineHandler
 
         while (moreToReceive)
         {
-            List<RegisteredGovernanceServiceElement> registeredGovernanceServices = configurationClient.getRegisteredGovernanceServices(serverUserId,
+            List<RegisteredGovernanceServiceElement> registeredGovernanceServices = configurationClient.getRegisteredGovernanceServices(engineUserId,
                                                                                                                                         governanceEngineGUID,
                                                                                                                                         startingFrom,
                                                                                                                                         maxPageSize);
@@ -300,7 +300,7 @@ public abstract class GovernanceEngineHandler
         {
             if (registeredGovernanceServiceGUID != null)
             {
-                RegisteredGovernanceServiceElement registeredGovernanceServiceElement = configurationClient.getRegisteredGovernanceService(serverUserId,
+                RegisteredGovernanceServiceElement registeredGovernanceServiceElement = configurationClient.getRegisteredGovernanceService(engineUserId,
                                                                                                                                            governanceEngineGUID,
                                                                                                                                            registeredGovernanceServiceGUID);
 
@@ -435,7 +435,7 @@ public abstract class GovernanceEngineHandler
             {
                 int startFrom = 0;
 
-                List<EngineActionElement> engineActionElements = engineActionClient.getActiveClaimedEngineActions(serverUserId,
+                List<EngineActionElement> engineActionElements = engineActionClient.getActiveClaimedEngineActions(engineUserId,
                                                                                                                   governanceEngineElement.getElementHeader().getGUID(),
                                                                                                                   startFrom,
                                                                                                                   maxPageSize);
@@ -452,7 +452,7 @@ public abstract class GovernanceEngineHandler
                     }
 
                     startFrom            = startFrom + maxPageSize;
-                    engineActionElements = engineActionClient.getActiveClaimedEngineActions(serverUserId,
+                    engineActionElements = engineActionClient.getActiveClaimedEngineActions(engineUserId,
                                                                                             governanceEngineElement.getElementHeader().getGUID(),
                                                                                             startFrom,
                                                                                             maxPageSize);
@@ -482,7 +482,7 @@ public abstract class GovernanceEngineHandler
 
         try
         {
-            List<EngineActionElement> activeEngineActions = engineActionClient.getActiveEngineActions(serverUserId,
+            List<EngineActionElement> activeEngineActions = engineActionClient.getActiveEngineActions(engineUserId,
                                                                                                       startFrom,
                                                                                                       pageSize);
 
@@ -512,7 +512,7 @@ public abstract class GovernanceEngineHandler
                 }
 
                 startFrom           = startFrom + pageSize;
-                activeEngineActions = engineActionClient.getActiveEngineActions(serverUserId,
+                activeEngineActions = engineActionClient.getActiveEngineActions(engineUserId,
                                                                                 startFrom,
                                                                                 pageSize);
             }
@@ -609,7 +609,7 @@ public abstract class GovernanceEngineHandler
 
         try
         {
-            EngineActionElement latestEngineActionElement = engineActionClient.getEngineAction(serverUserId, engineActionGUID);
+            EngineActionElement latestEngineActionElement = engineActionClient.getEngineAction(engineUserId, engineActionGUID);
 
             /*
              * Is this engine action for this engine?
@@ -621,7 +621,7 @@ public abstract class GovernanceEngineHandler
                  */
                 if (latestEngineActionElement.getActionStatus() == ActivityStatus.APPROVED)
                 {
-                    engineActionClient.claimEngineAction(serverUserId, engineActionGUID);
+                    engineActionClient.claimEngineAction(engineUserId, engineActionGUID);
 
                     runGovernanceService(engineActionGUID,
                                          latestEngineActionElement.getRequestType(),
@@ -632,7 +632,7 @@ public abstract class GovernanceEngineHandler
                                          latestEngineActionElement.getActionTargetElements());
                 }
                 else if ((latestEngineActionElement.getActionStatus() == ActivityStatus.CANCELLED) &&
-                        (serverUserId.equals(latestEngineActionElement.getProcessingEngineUserId())))
+                        (engineUserId.equals(latestEngineActionElement.getProcessingEngineUserId())))
                 {
                     cancelGovernanceService(engineActionGUID);
                 }

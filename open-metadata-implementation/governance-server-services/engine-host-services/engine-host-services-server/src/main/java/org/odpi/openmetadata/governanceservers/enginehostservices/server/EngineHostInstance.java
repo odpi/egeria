@@ -13,7 +13,6 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHos
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
-import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
 
 
 import java.util.ArrayList;
@@ -26,8 +25,7 @@ import java.util.List;
  */
 public class EngineHostInstance extends GovernanceServerServiceInstance
 {
-    private final EngineConfigurationRefreshThread     configurationRefreshThread;
-    private final GovernanceEngineMap                  governanceEngineHandlers;
+    private final GovernanceEngineMap governanceEngineHandlers;
 
 
     /**
@@ -38,7 +36,6 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
      * @param auditLog link to the repository responsible for servicing the REST calls
      * @param localServerUserId userId to use for local server initiated actions
      * @param maxPageSize max number of results to return on single request
-     * @param configurationRefreshThread handler managing the threading for the active integration connectors in this server
      * @param governanceEngineHandlers map from governance engine name to governance engine handler
      */
     EngineHostInstance(String                           serverName,
@@ -46,12 +43,10 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
                        AuditLog                         auditLog,
                        String                           localServerUserId,
                        int                              maxPageSize,
-                       EngineConfigurationRefreshThread configurationRefreshThread,
                        GovernanceEngineMap              governanceEngineHandlers)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
-        this.configurationRefreshThread = configurationRefreshThread;
         this.governanceEngineHandlers = governanceEngineHandlers;
     }
 
@@ -264,30 +259,16 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
     }
 
 
-
-
     /**
      * Shutdown the engines
      */
     @Override
     public void shutdown()
     {
-        if ((governanceEngineHandlers != null) && (! governanceEngineHandlers.getGovernanceEngineHandlers().isEmpty()))
+        if (governanceEngineHandlers != null)
         {
-            for (GovernanceEngineHandler handler : governanceEngineHandlers.getGovernanceEngineHandlers())
-            {
-                if (handler != null)
-                {
-                    handler.terminate();
-                }
-            }
+            governanceEngineHandlers.shutdown();
         }
-
-
-        /*
-         * Shutdown the thread managing the configuration refresh.
-         */
-        configurationRefreshThread.stop();
 
         super.shutdown();
     }

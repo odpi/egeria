@@ -462,7 +462,7 @@ public class ConnectorConfigurationFactory
         Connection secretsStoreConnection = new Connection();
         Endpoint   endpoint               = new Endpoint();
 
-        if (storageProperties.containsKey(PostgresConfigurationProperty.SECRETS_STORE.getName()))
+        if ((storageProperties != null) && (storageProperties.containsKey(PostgresConfigurationProperty.SECRETS_STORE.getName())))
         {
             endpoint.setNetworkAddress(storageProperties.get(PostgresConfigurationProperty.SECRETS_STORE.getName()).toString());
         }

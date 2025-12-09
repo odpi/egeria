@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,7 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BasicOptions
 {
-    private List<String> governanceZoneFilter   = null;
     private boolean      forLineage             = false;
     private boolean      forDuplicateProcessing = false;
     private Date         effectiveTime          = null;
@@ -47,34 +45,7 @@ public class BasicOptions
             forLineage             = template.getForLineage();
             forDuplicateProcessing = template.getForDuplicateProcessing();
             effectiveTime          = template.getEffectiveTime();
-            governanceZoneFilter   = template.getGovernanceZoneFilter();
         }
-    }
-
-
-    /**
-     * Return the list of governance zones to restrict the assets (if any) returned to members of these
-     * zones.  If the value is null (the default) then all matching assets are returned, subject to
-     * the usual security restrictions.
-     *
-     * @return list of governance zone names
-     */
-    public List<String> getGovernanceZoneFilter()
-    {
-        return governanceZoneFilter;
-    }
-
-
-    /**
-     * Set up the list of governance zones to restrict the assets (if any) returned to members of these
-     * zones.  If the value is null (the default) then all matching assets are returned, subject to
-     * the usual security restrictions.
-     *
-     * @param governanceZoneFilter list of governance zone names
-     */
-    public void setGovernanceZoneFilter(List<String> governanceZoneFilter)
-    {
-        this.governanceZoneFilter = governanceZoneFilter;
     }
 
 
@@ -154,8 +125,7 @@ public class BasicOptions
     public String toString()
     {
         return "BasicOptions{" +
-                "governanceZoneFilter=" + governanceZoneFilter +
-                ", forLineage=" + forLineage +
+                "forLineage=" + forLineage +
                 ", forDuplicateProcessing=" + forDuplicateProcessing +
                 ", effectiveTime=" + effectiveTime +  '}';
     }
@@ -180,7 +150,6 @@ public class BasicOptions
         BasicOptions that = (BasicOptions) objectToCompare;
         return forLineage == that.forLineage &&
                 forDuplicateProcessing == that.forDuplicateProcessing &&
-                Objects.equals(governanceZoneFilter, that.governanceZoneFilter) &&
                 Objects.equals(effectiveTime, that.effectiveTime);
     }
 
@@ -193,6 +162,6 @@ public class BasicOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(forLineage, forDuplicateProcessing, governanceZoneFilter, effectiveTime);
+        return Objects.hash(forLineage, forDuplicateProcessing, effectiveTime);
     }
 }

@@ -1,11 +1,32 @@
 # Egeria-repository-services-audit-log
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@server=active-metadata-store
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
 
 ###
 # @name Get supported audit log severities
 # Return a list of the severities that are supported in this server.
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/audit-log/severity-definitions
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/audit-log/severity-definitions
+Authorization: Bearer {{token}}
 
 ###
 # @name Get audit log report
 # Return the status of the audit log service.  This include dettails of the components and how much they are logging.
-GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/audit-log/report
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/audit-log/report
+Authorization: Bearer {{token}}

@@ -50,25 +50,31 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
      * Constructor receives key information from the configuration services.
      *
      * @param localServerUserId userId that this server should use on requests
-     * @param localServerPassword password that this server should use on requests
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum number of elements that can be returned on a single call
      * @param auditLog audit log for administrator messages
      * @param configuration configuration for this work pad/workbench
      */
     public PerformanceWorkPad(String                                localServerUserId,
-                              String                                localServerPassword,
+                              String                                localServerSecretsStoreProvider,
+                              String                                localServerSecretsStoreLocation,
+                              String                                localServerSecretsStoreCollection,
                               int                                   maxPageSize,
                               AuditLog                              auditLog,
                               RepositoryPerformanceWorkbenchConfig  configuration)
     {
         super(workbenchId,
-                workbenchName,
-                workbenchVersionNumber,
-                workbenchDocURL,
-                localServerUserId,
-                localServerPassword,
-                tutType,
-                maxPageSize);
+              workbenchName,
+              workbenchVersionNumber,
+              workbenchDocURL,
+              localServerUserId,
+              localServerSecretsStoreProvider,
+              localServerSecretsStoreLocation,
+              localServerSecretsStoreCollection,
+              tutType,
+              maxPageSize);
 
         this.auditLog = auditLog;
 
@@ -632,18 +638,26 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     public String toString()
     {
         return "PerformanceWorkPad{" +
-                "workbenchId='" + workbenchId + '\'' +
-                ", workbenchName='" + workbenchName + '\'' +
-                ", workbenchVersionNumber='" + workbenchVersionNumber + '\'' +
-                ", workbenchDocURL='" + workbenchDocURL + '\'' +
-                ", localServerUserId='" + localServerUserId + '\'' +
-                ", localServerPassword='" + localServerPassword + '\'' +
-                ", tutName='" + tutName + '\'' +
+                "auditLog=" + auditLog +
+                ", tutServerName='" + tutServerName + '\'' +
+                ", tutMetadataCollectionId='" + tutMetadataCollectionId + '\'' +
+                ", tutServerType='" + tutServerType + '\'' +
+                ", tutOrganization='" + tutOrganization + '\'' +
+                ", instancesPerType=" + instancesPerType +
                 ", maxSearchResults=" + maxSearchResults +
-                ", tutType='" + tutType + '\'' +
-                ", maxPageSize=" + maxPageSize +
+                ", waitBetweenScenarios=" + waitBetweenScenarios +
                 ", profilesToSkip=" + profilesToSkip +
                 ", methodsToSkip=" + methodsToSkip +
-                '}';
+                ", tutRepositoryConnector=" + tutRepositoryConnector +
+                ", localMetadataCollectionId='" + localMetadataCollectionId + '\'' +
+                ", localRepositoryConnector=" + localRepositoryConnector +
+                ", totalEntitiesCreated=" + totalEntitiesCreated +
+                ", totalRelationshipsCreated=" + totalRelationshipsCreated +
+                ", totalEntitiesFound=" + totalEntitiesFound +
+                ", totalRelationshipsFound=" + totalRelationshipsFound +
+                ", profileNames=" + getProfileNames() +
+                ", profileResults=" + getProfileResults() +
+                ", profileSummaries=" + getProfileSummaries() +
+                "} " + super.toString();
     }
 }

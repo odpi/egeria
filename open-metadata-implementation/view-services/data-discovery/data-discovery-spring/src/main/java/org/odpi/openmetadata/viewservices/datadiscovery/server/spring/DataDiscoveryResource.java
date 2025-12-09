@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Data Discovery OMVS", description="Survey reports capture the analysis of IT resources and data. Egeria supports many types of surveys, but this API enables external survey and analysis engines (such as data quality analysers) to load their findings into open metadata.",
+@Tag(name="API: Data Discovery", description="Survey reports capture the analysis of IT resources and data. Egeria supports many types of surveys, but this API enables external survey and analysis engines (such as data quality analysers) to load their findings into open metadata.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-discovery/overview/"))
 
@@ -105,7 +105,7 @@ public class DataDiscoveryResource
      * @param annotationGUID unique identifier of the annotation (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -118,12 +118,12 @@ public class DataDiscoveryResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/annotation"))
 
-    public VoidResponse updateAnnotation(@PathVariable
-                                         String                                  serverName,
-                                         @PathVariable
-                                         String                                  annotationGUID,
-                                         @RequestBody (required = false)
-                                         UpdateElementRequestBody requestBody)
+    public BooleanResponse updateAnnotation(@PathVariable
+                                            String                                  serverName,
+                                            @PathVariable
+                                            String                                  annotationGUID,
+                                            @RequestBody (required = false)
+                                            UpdateElementRequestBody requestBody)
     {
         return restAPI.updateAnnotation(serverName, annotationGUID, requestBody);
     }

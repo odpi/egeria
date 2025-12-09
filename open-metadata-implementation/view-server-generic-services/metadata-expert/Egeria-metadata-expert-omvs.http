@@ -138,6 +138,40 @@ Content-Type: application/json
   "replaceProperties" : false
 }
 
+###
+# @name publishMetadataElement
+# Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/publish
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name withdrawMetadataElement
+# Update the zone membership to decrease its visibility.  The defaultZones are defined in the user directory.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/withdraw
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
 
 ###
 # @name updateMetadataElementStatusInStore

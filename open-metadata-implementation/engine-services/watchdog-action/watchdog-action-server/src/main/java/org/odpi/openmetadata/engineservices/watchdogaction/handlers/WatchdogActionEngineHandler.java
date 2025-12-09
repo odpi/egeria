@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClien
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
+import org.odpi.openmetadata.governanceservers.enginehostservices.api.WatchdogEventSupportingEngine;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,14 +36,12 @@ import java.util.Map;
  * with the configuration for the watchdog action services it supports along with the clients to the
  * asset properties store and annotations store.
  */
-public class WatchdogActionEngineHandler extends GovernanceEngineHandler
+public class WatchdogActionEngineHandler extends GovernanceEngineHandler implements WatchdogEventSupportingEngine
 {
-    private final GovernanceContextClient   governanceContextClient;    /* Initialized in constructor */
     private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
 
     private final OpenMetadataClient        openMetadataClient; /* Initialized in constructor */
 
-    private static final String supportGovernanceEngineType = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
     private final PropertyHelper       propertyHelper   = new PropertyHelper();
 
     /**
@@ -50,8 +49,6 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
      *
      * @param engineConfig the unique identifier of the governance action engine.
      * @param localServerName the name of the engine host server where the governance action engine is running
-     * @param partnerServerName name of partner server
-     * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
      * @param openMetadataClient access to the open metadata store
      * @param configurationClient client to retrieve the configuration
@@ -62,8 +59,6 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
      */
     public WatchdogActionEngineHandler(EngineConfig                  engineConfig,
                                        String                        localServerName,
-                                       String                        partnerServerName,
-                                       String                        partnerURLRoot,
                                        String                        serverUserId,
                                        OpenMetadataClient            openMetadataClient,
                                        GovernanceConfigurationClient configurationClient,
@@ -83,9 +78,8 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
 
         this.openMetadataClient        = openMetadataClient;
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
-        this.governanceContextClient   = governanceContextClient;
 
-        this.governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
+        governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
     }
 
 
@@ -96,6 +90,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
      *
      * @throws InvalidParameterException Vital fields of the governance action are not filled out
      */
+    @Override
     public void publishWatchdogEvent(OpenMetadataOutTopicEvent watchdogGovernanceEvent) throws InvalidParameterException
     {
         governanceListenerManager.processEvent(watchdogGovernanceEvent);
@@ -192,7 +187,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
 
     /**
      * Extract the notification type to process from the action targets.  If there are multiple
-     * action targets that are assets then the method picks one and logs a message to
+     * action targets that are notification types then the method picks one and logs a message to
      * say the others are being ignored.
      *
      * @param actionTargetElements action target elements
@@ -217,7 +212,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
         List<String> ignoredNotificationTypes = new ArrayList<>();
 
         /*
-         * First pick out all the assets ...
+         * First pick out all the notification types ...
          */
         List<ActionTargetElement> notificationTargetElements = new ArrayList<>();
 
@@ -232,6 +227,9 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
             }
         }
 
+        /*
+         * If there was only one notification type attached as an action type, then use it.
+         */
         if (notificationTargetElements.size() == 1)
         {
             NotificationTypeGUID = notificationTargetElements.get(0).getTargetElement().getElementGUID();
@@ -239,17 +237,19 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
         else
         {
             /*
-             * Since there are multiple assets, only pick out the ones with an action target name of "newAsset".
+             * Since there are multiple notification types, only pick out the ones with an action target name of "newAsset".
              */
             for (ActionTargetElement actionTargetElement : notificationTargetElements)
             {
-                // todo check the action target is not in progress
-                if (ActionTarget.NOTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
+                if ((ActionTarget.NOTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName())) &&
+                        ((actionTargetElement.getStatus() == ActivityStatus.REQUESTED) ||
+                         (actionTargetElement.getStatus() == ActivityStatus.APPROVED) ||
+                         (actionTargetElement.getStatus() == ActivityStatus.WAITING)))
                 {
                     if (NotificationTypeGUID == null)
                     {
                         NotificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
-                        engineActionClient.updateActionTargetStatus(serverUserId,
+                        engineActionClient.updateActionTargetStatus(engineUserId,
                                                                     actionTargetElement.getActionTargetRelationshipGUID(),
                                                                     ActivityStatus.IN_PROGRESS,
                                                                     new Date(),
@@ -332,7 +332,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
 
         return new WatchdogActionServiceHandler(governanceEngineProperties,
                                                 governanceEngineGUID,
-                                                serverUserId,
+                                                engineUserId,
                                                 engineActionGUID,
                                                 engineActionClient,
                                                 governanceServiceCache.getServiceRequestType(),

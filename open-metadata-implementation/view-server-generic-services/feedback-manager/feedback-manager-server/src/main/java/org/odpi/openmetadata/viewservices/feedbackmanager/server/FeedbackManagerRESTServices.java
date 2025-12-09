@@ -834,21 +834,21 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param urlMarker  view service URL marker
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
-     * @return void or
+     * @return boolean or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateTagDescription(String                   serverName,
-                                               String                   urlMarker,
-                                               String                   tagGUID,
-                                               UpdateElementRequestBody requestBody)
+    public BooleanResponse   updateTagDescription(String                   serverName,
+                                                  String                   urlMarker,
+                                                  String                   tagGUID,
+                                                  UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateTagDescription";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse  response = new VoidResponse();
+        BooleanResponse  response = new BooleanResponse();
         AuditLog      auditLog = null;
 
         try

@@ -32,12 +32,8 @@ public class ComponentIdReport
     private static final String fileMetadataArchiveConnector = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
     private static final String inMemRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
     private static final String readOnlyRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
-    private static final String xtdbRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
-    private static final String janusRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
     private static final String postgresRepositoryConnectorClassName = "org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.PostgresOMRSRepositoryConnectorProvider";
     private static final String restRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
-    private static final String platformSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider";
-    private static final String serverSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
     private static final String secretsStoreSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider";
     private static final String jdbcResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider";
     private static final String dataFolderResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider";
@@ -58,11 +54,9 @@ public class ComponentIdReport
     private static final String gaOpenLineageIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationProvider";
     private static final String openLineageCataloguerIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider";
     private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
-    private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.YAMLSecretsStoreProvider";
     private static final String yamlSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider";
     private static final String apacheAtlasSurveyServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider";
-    private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.frameworks.surveyaction.SequentialSurveyPipelineProvider";
     private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
     private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";
     private static final String csvFileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider";
@@ -90,6 +84,17 @@ public class ComponentIdReport
     private static final String unityCatalogVolumeSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideVolumeSurveyProvider";
     private static final String harvestOpenMetadataProviderClassName = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider";
     private static final String harvestSurveysProviderClassName = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider";
+    private static final String productHarvesterProviderClassName = "org.odpi.openmetadata.adapters.connectors.productmanager.OpenMetadataProductsHarvesterProvider";
+    private static final String validValueTabularDataSetProviderClassName = "org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueDataSetProvider";
+    private static final String validValueListTabularDataSetProviderClassName = "org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListProvider";
+    private static final String csvFileTabularDataSetProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider";
+    private static final String csvFileTabularDataSetCollectionProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider";
+    private static final String postgresTabularDataSetProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetProvider";
+    private static final String postgresTabularDataSetCollectionProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetCollectionProvider";
+    private static final String karmaPointProviderClassName = "org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.KarmaPointAwardsServiceProvider";
+    private static final String monitoredResourceProviderClassName = "org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.MonitoredResourceNotificationServiceProvider";
+    private static final String oneTimeProviderClassName = "org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.OneTimeNotificationServiceProvider";
+    private static final String periodicRefreshProviderClassName = "org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.PeriodicRefreshNotificationServiceProvider";
 
 
     /**
@@ -219,13 +224,9 @@ public class ComponentIdReport
         this.addConnectorDescription(directoryMetadataArchiveConnector, report);
         this.addConnectorDescription(fileMetadataArchiveConnector, report);
         this.addConnectorDescription(inMemRepositoryConnector, report);
-        // Problem with gradle file this.addConnectorDescription(janusRepositoryConnector, report);
-        this.addConnectorDescription(xtdbRepositoryConnector, report);
         this.addConnectorDescription(postgresRepositoryConnectorClassName, report);
         this.addConnectorDescription(readOnlyRepositoryConnector, report);
         this.addConnectorDescription(restRepositoryConnector, report);
-        this.addConnectorDescription(platformSecurityConnectorProviderClassName, report);
-        this.addConnectorDescription(serverSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(secretsStoreSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(jdbcResourceConnectorProviderClassName, report);
         this.addConnectorDescription(csvFileResourceConnectorProviderClassName, report);
@@ -246,14 +247,12 @@ public class ComponentIdReport
         this.addConnectorDescription(gaOpenLineageIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(openLineageCataloguerIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(openLineageEventReceiverIntegrationConnectorProviderClassName, report);
-        this.addConnectorDescription(envVarSecretsStoreProviderClassName, report);
         this.addConnectorDescription(yamlSecretsStoreProviderClassName, report);
         this.addConnectorDescription(apacheAtlasRESTConnectorProviderClassName, report);
         this.addConnectorDescription(apacheAtlasSurveyServiceProviderClassName, report);
         this.addConnectorDescription(folderSurveyActionProviderClassName, report);
         this.addConnectorDescription(fileSurveyActionProviderClassName, report);
         this.addConnectorDescription(csvFileSurveyActionProviderClassName, report);
-        this.addConnectorDescription(sequentialSurveyPipelineProviderClassName, report);
         this.addConnectorDescription(postgresServerCatalogProviderClassName, report);
         this.addConnectorDescription(postgresServerSurveyProviderClassName, report);
         this.addConnectorDescription(postgresDatabaseSurveyProviderClassName, report);
@@ -278,6 +277,17 @@ public class ComponentIdReport
         this.addConnectorDescription(unityCatalogVolumeSurveyProviderClassName, report);
         this.addConnectorDescription(harvestOpenMetadataProviderClassName, report);
         this.addConnectorDescription(harvestSurveysProviderClassName, report);
+        this.addConnectorDescription(productHarvesterProviderClassName, report);
+        this.addConnectorDescription(validValueTabularDataSetProviderClassName, report);
+        this.addConnectorDescription(validValueListTabularDataSetProviderClassName, report);
+        this.addConnectorDescription(postgresTabularDataSetProviderClassName, report);
+        this.addConnectorDescription(postgresTabularDataSetCollectionProviderClassName, report);
+        this.addConnectorDescription(karmaPointProviderClassName, report);
+        this.addConnectorDescription(monitoredResourceProviderClassName, report);
+        this.addConnectorDescription(oneTimeProviderClassName, report);
+        this.addConnectorDescription(periodicRefreshProviderClassName, report);
+        this.addConnectorDescription(csvFileTabularDataSetProviderClassName, report);
+        this.addConnectorDescription(csvFileTabularDataSetCollectionProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

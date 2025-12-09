@@ -88,7 +88,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
         {
             if (targetRootURL != null)
             {
-                RESTClient restClient = new RESTClient(connectorName, targetRootURL, auditLog);
+                RESTClient restClient = new RESTClient(connectorName, targetRootURL, secretsStoreConnectorMap, auditLog);
 
                 restClients.put(targetRootURL, restClient);
             }
@@ -235,7 +235,10 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                                                                        endpointProperties.getNetworkAddress()));
                         }
 
-                        RESTClient restClient = new RESTClient(connectorName, endpointProperties.getNetworkAddress(), auditLog);
+                        RESTClient restClient = new RESTClient(connectorName,
+                                                               endpointProperties.getNetworkAddress(),
+                                                               secretsStoreConnectorMap,
+                                                               auditLog);
 
                         restClients.put(endpointProperties.getNetworkAddress(), restClient);
                     }

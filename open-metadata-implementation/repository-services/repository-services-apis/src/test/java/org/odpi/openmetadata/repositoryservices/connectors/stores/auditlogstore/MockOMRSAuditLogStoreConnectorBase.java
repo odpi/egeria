@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
 
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 
 import java.util.Date;

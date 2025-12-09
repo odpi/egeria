@@ -436,14 +436,15 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                 {
                     ProcessProperties processProperties = this.getEgeriaProcessProperties(atlasEntity);
 
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                              atlasEntity.getTypeName(),
-                                                                                                              atlasEntity.getGuid(),
-                                                                                                              egeriaProcessTypeName,
-                                                                                                              egeriaProcessGUID));
-
-                    assetClient.updateAsset(egeriaProcessGUID, assetClient.getUpdateOptions(true), processProperties);
+                    if (assetClient.updateAsset(egeriaProcessGUID, assetClient.getUpdateOptions(true), processProperties))
+                    {
+                        auditLog.logMessage(methodName,
+                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                                  atlasEntity.getTypeName(),
+                                                                                                                  atlasEntity.getGuid(),
+                                                                                                                  egeriaProcessTypeName,
+                                                                                                                  egeriaProcessGUID));
+                    }
                 }
             }
         }

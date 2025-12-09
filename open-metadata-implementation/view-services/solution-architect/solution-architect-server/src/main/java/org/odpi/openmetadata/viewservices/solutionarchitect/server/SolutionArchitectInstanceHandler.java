@@ -8,10 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
 
 
 /**
@@ -71,11 +68,11 @@ public class SolutionArchitectInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public SolutionBlueprintHandler getSolutionBlueprintHandler(String userId,
-                                                                String serverName,
-                                                                String serviceOperationName) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public CollectionHandler getSolutionBlueprintHandler(String userId,
+                                                         String serverName,
+                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         SolutionArchitectInstance instance = (SolutionArchitectInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 

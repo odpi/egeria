@@ -24,7 +24,7 @@ public class OneTimeNotificationServiceProvider extends WatchdogActionServicePro
     private static final int    connectorComponentId       = 709;
     private static final String connectorTypeGUID          = "1e17871b-684a-4176-bedb-8ddda09fb1e6";
     private static final String connectorTypeQualifiedName = "Egeria:GovernanceService:Watchdog:OneTimeNotificationService";
-    private static final String connectorTypeDisplayName   = "Open Metadata Watchdog Service";
+    private static final String connectorTypeDisplayName   = "One Time Notification Service";
     private static final String connectorTypeDescription   = "A Watchdog Action Service that notifies all subscribers once and then completes.";
     private static final String connectorWikiPage          = "https://egeria-project.org/connectors/watchdog/open-metadata-notification-service/";
 

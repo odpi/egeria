@@ -8,19 +8,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.CommunityHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.MetadataRepositoryCohortHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataCohortPeerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataRepositoryCohortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -138,18 +133,20 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateCommunity(String                             metadataRepositoryCohortGUID,
-                                UpdateOptions                      updateOptions,
-                                MetadataRepositoryCohortProperties properties) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    public boolean updateMetadataRepositoryCohort(String                             metadataRepositoryCohortGUID,
+                                                  UpdateOptions                      updateOptions,
+                                                  MetadataRepositoryCohortProperties properties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
-        metadataRepositoryCohortHandler.updateMetadataRepositoryCohort(connectorUserId, metadataRepositoryCohortGUID, updateOptions, properties);
+        boolean updateOccurred = metadataRepositoryCohortHandler.updateMetadataRepositoryCohort(connectorUserId, metadataRepositoryCohortGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(metadataRepositoryCohortGUID);
         }
+
+        return updateOccurred;
     }
 
 

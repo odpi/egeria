@@ -3,8 +3,11 @@
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
@@ -24,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The OMRSRESTMetadataCollection represents a remote metadata repository that supports the OMRS REST API.
@@ -54,15 +58,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param repositoryValidator  class used to validate type definitions and instances.
      * @param auditLog             optional logging destination
      * @param metadataCollectionId unique identifier for the metadata collection
+     * @param secretsStoreConnectorMap secrets to create bearer token
      * @throws RepositoryErrorException problem creating the REST client
      */
-    OMRSRESTMetadataCollection(OMRSRESTRepositoryConnector parentConnector,
-                               String                      serverName,
-                               String                      repositoryName,
-                               OMRSRepositoryHelper        repositoryHelper,
-                               OMRSRepositoryValidator     repositoryValidator,
-                               AuditLog                    auditLog,
-                               String                      metadataCollectionId) throws RepositoryErrorException
+    OMRSRESTMetadataCollection(OMRSRESTRepositoryConnector        parentConnector,
+                               String                             serverName,
+                               String                             repositoryName,
+                               OMRSRepositoryHelper               repositoryHelper,
+                               OMRSRepositoryValidator            repositoryValidator,
+                               AuditLog                           auditLog,
+                               String                             metadataCollectionId,
+                               Map<String, SecretsStoreConnector> secretsStoreConnectorMap) throws RepositoryErrorException
     {
         /*
          * The metadata collection id is the unique id for the metadata collection.  It is managed by the super class.
@@ -78,13 +84,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
          */
         Connection connection      = parentConnector.getConnection();
         String     endpointAddress = null;
-        String     localServerUserId = null;
-        String    localServerPassword = null;
 
         if (connection != null)
         {
-            localServerUserId = connection.getUserId();
-            localServerPassword = connection.getClearPassword();
             Endpoint endpoint = connection.getEndpoint();
 
             if (endpoint != null)
@@ -107,10 +109,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         try
         {
-            this.omrsClient = new LocalRepositoryServicesClient(serverName,
-                                                                endpointAddress,
-                                                                localServerUserId,
-                                                                localServerPassword);
+            this.omrsClient = new LocalRepositoryServicesClient(serverName, endpointAddress, secretsStoreConnectorMap);
         }
         catch (Exception error)
         {

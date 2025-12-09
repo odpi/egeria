@@ -61,9 +61,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public FilesAndFoldersHandler(OpenMetadataAPIGenericConverter<FILESYSTEM> fileSystemConverter,
@@ -79,9 +76,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                   OMRSRepositoryHelper                        repositoryHelper,
                                   String                                      localServerUserId,
                                   OpenMetadataServerSecurityVerifier          securityVerifier,
-                                  List<String>                                supportedZones,
-                                  List<String>                                defaultZones,
-                                  List<String>                                publishZones,
                                   AuditLog                                    auditLog)
     {
 
@@ -99,9 +93,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        repositoryHelper,
                                                                        localServerUserId,
                                                                        securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
                                                                        auditLog);
 
         this.folderHandler          = new AssetHandler<>(folderConverter,
@@ -113,9 +104,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                          repositoryHelper,
                                                          localServerUserId,
                                                          securityVerifier,
-                                                         supportedZones,
-                                                         defaultZones,
-                                                         publishZones,
                                                          auditLog);
 
         this.fileHandler            = new AssetHandler<>(fileConverter,
@@ -127,9 +115,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                          repositoryHelper,
                                                          localServerUserId,
                                                          securityVerifier,
-                                                         supportedZones,
-                                                         defaultZones,
-                                                         publishZones,
                                                          auditLog);
     }
 
@@ -305,7 +290,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        effectiveTo,
                                                        forLineage,
                                                        forDuplicateProcessing,
-                                                       folderHandler.getSupportedZones(),
                                                        effectiveTime,
                                                        methodName);
     }
@@ -842,6 +826,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      OpenMetadataType.FILE_FOLDER.typeGUID,
                                                                      OpenMetadataType.FILE_FOLDER.typeName,
                                                                      specificMatchPropertyNames,
+                                                                     true,
                                                                      true,
                                                                      null,
                                                                      null,

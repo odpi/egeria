@@ -28,7 +28,7 @@ class CanonicalGlossaryOwlModelArchiveBuilder extends DesignModelArchiveBuilder 
      */
     private static final String archiveDescription = "Archive produced using the Owl Canonical Glossary Model";
     private static final long versionNumber = 1L;
-    private static final String versionName = "1.0";
+    private static final String versionName = "6.0-SNAPSHOT";
     private static final Logger log = LoggerFactory.getLogger(CanonicalGlossaryOwlModelArchiveBuilder.class);
 
     private GlossaryModel model;

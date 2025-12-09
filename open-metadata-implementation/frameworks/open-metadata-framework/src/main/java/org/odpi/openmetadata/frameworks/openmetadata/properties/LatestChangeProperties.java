@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LatestChangeProperties extends ClassificationBeanProperties
 {
-    private LatestChangeTarget latestChangeTarget   = null;
-    private LatestChangeAction latestChangeAction   = null;
-    private String             classificationName   = null;
+    private LatestChangeTarget changeTarget = null;
+    private LatestChangeAction changeAction = null;
+    private String             classificationName = null;
     private String             attachmentGUID       = null;
     private String             attachmentTypeName   = null;
     private String             relationshipTypeName = null;
@@ -54,9 +54,9 @@ public class LatestChangeProperties extends ClassificationBeanProperties
 
         if (template != null)
         {
-            latestChangeTarget   = template.getLatestChangeTarget();
-            latestChangeAction   = template.getLatestChangeAction();
-            classificationName   = template.getClassificationName();
+            changeTarget = template.getChangeTarget();
+            changeAction = template.getChangeAction();
+            classificationName = template.getClassificationName();
             attachmentGUID       = template.getAttachmentGUID();
             attachmentTypeName   = template.getAttachmentTypeName();
             relationshipTypeName = template.getRelationshipTypeName();
@@ -70,20 +70,20 @@ public class LatestChangeProperties extends ClassificationBeanProperties
      *
      * @return enum
      */
-    public LatestChangeTarget getLatestChangeTarget()
+    public LatestChangeTarget getChangeTarget()
     {
-        return latestChangeTarget;
+        return changeTarget;
     }
 
 
     /**
      * Set up  the relationship of element that has been changed to the anchor.
      *
-     * @param latestChangeTarget enum
+     * @param changeTarget enum
      */
-    public void setLatestChangeTarget(LatestChangeTarget latestChangeTarget)
+    public void setChangeTarget(LatestChangeTarget changeTarget)
     {
-        this.latestChangeTarget = latestChangeTarget;
+        this.changeTarget = changeTarget;
     }
 
 
@@ -92,20 +92,20 @@ public class LatestChangeProperties extends ClassificationBeanProperties
      *
      * @return enum
      */
-    public LatestChangeAction getLatestChangeAction()
+    public LatestChangeAction getChangeAction()
     {
-        return latestChangeAction;
+        return changeAction;
     }
 
 
     /**
      * Set up the type of change.
      *
-     * @param latestChangeAction enum
+     * @param changeAction enum
      */
-    public void setLatestChangeAction(LatestChangeAction latestChangeAction)
+    public void setChangeAction(LatestChangeAction changeAction)
     {
-        this.latestChangeAction = latestChangeAction;
+        this.changeAction = changeAction;
     }
 
 
@@ -251,8 +251,8 @@ public class LatestChangeProperties extends ClassificationBeanProperties
     public String toString()
     {
         return "LatestChangeProperties{" +
-                "latestChangeTarget=" + latestChangeTarget +
-                ", latestChangeAction=" + latestChangeAction +
+                "latestChangeTarget=" + changeTarget +
+                ", latestChangeAction=" + changeAction +
                 ", classificationName='" + classificationName + '\'' +
                 ", attachmentGUID='" + attachmentGUID + '\'' +
                 ", attachmentTypeName='" + attachmentTypeName + '\'' +
@@ -275,8 +275,8 @@ public class LatestChangeProperties extends ClassificationBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         LatestChangeProperties that = (LatestChangeProperties) objectToCompare;
-        return latestChangeTarget == that.latestChangeTarget &&
-                latestChangeAction == that.latestChangeAction &&
+        return changeTarget == that.changeTarget &&
+                changeAction == that.changeAction &&
                 Objects.equals(classificationName, that.classificationName) &&
                 Objects.equals(attachmentGUID, that.attachmentGUID) &&
                 Objects.equals(attachmentTypeName, that.attachmentTypeName) &&
@@ -293,6 +293,6 @@ public class LatestChangeProperties extends ClassificationBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), latestChangeTarget, latestChangeAction, classificationName, attachmentGUID, attachmentTypeName, relationshipTypeName, userId, description);
+        return Objects.hash(super.hashCode(), changeTarget, changeAction, classificationName, attachmentGUID, attachmentTypeName, relationshipTypeName, userId, description);
     }
 }

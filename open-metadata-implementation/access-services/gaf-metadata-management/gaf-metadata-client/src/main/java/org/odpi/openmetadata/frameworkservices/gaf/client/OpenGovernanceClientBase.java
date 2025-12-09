@@ -5,18 +5,15 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +25,7 @@ import java.util.Map;
  */
 public class OpenGovernanceClientBase extends OpenGovernanceClient
 {
-    private   final GAFRESTClient           restClient;               /* Initialized in constructor */
+    protected final GAFRESTClient           restClient;               /* Initialized in constructor */
 
     protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     protected final NullRequestBody         nullRequestBody = new NullRequestBody();
@@ -38,58 +35,32 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize           pre-initialized parameter limit
+     * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public OpenGovernanceClientBase(String serviceURLMarker,
-                                    String serverName,
-                                    String serverPlatformURLRoot,
-                                    int    maxPageSize) throws InvalidParameterException
+    public OpenGovernanceClientBase(String   serverName,
+                                    String   serverPlatformURLRoot,
+                                    String   localServerSecretsStoreProvider,
+                                    String   localServerSecretsStoreLocation,
+                                    String   localServerSecretsStoreCollection,
+                                    int      maxPageSize,
+                                    AuditLog auditLog) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
 
         final String methodName = "Constructor (no security)";
 
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's password embedded in all HTTP requests
-     * @param maxPageSize           pre-initialized parameter limit
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public OpenGovernanceClientBase(String serviceURLMarker,
-                                    String serverName,
-                                    String serverPlatformURLRoot,
-                                    String serverUserId,
-                                    String serverPassword,
-                                    int    maxPageSize) throws InvalidParameterException
-    {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
-
-        final String methodName = "Client Constructor (with security)";
-
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
-
+        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
     }
 
 
@@ -145,7 +116,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         final String methodName = "initiateEngineAction";
         final String qualifiedNameParameterName = "qualifiedName";
         final String engineNameParameterName = "governanceEngineName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/governance-engines/{3}/engine-actions/initiate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/governance-engines/{2}/engine-actions/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -173,7 +144,6 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  serviceURLMarker,
                                                                   userId,
                                                                   governanceEngineName);
 
@@ -214,7 +184,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     {
         final String methodName = "initiateGovernanceActionType";
         final String qualifiedNameParameterName = "governanceActionTypeQualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/governance-action-types/initiate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/governance-action-types/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceActionTypeQualifiedName, qualifiedNameParameterName, methodName);
@@ -234,7 +204,6 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  serviceURLMarker,
                                                                   userId);
 
         return restResult.getGUID();
@@ -274,7 +243,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     {
         final String methodName = "initiateGovernanceActionProcess";
         final String qualifiedNameParameterName = "processQualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/governance-action-processes/initiate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/governance-action-processes/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(processQualifiedName, qualifiedNameParameterName, methodName);
@@ -294,7 +263,6 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  serviceURLMarker,
                                                                   userId);
 
         return restResult.getGUID();
@@ -322,7 +290,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     {
         final String methodName = "getEngineAction";
         final String guidParameterName = "engineActionGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/engine-actions/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/engine-actions/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
@@ -330,7 +298,6 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         EngineActionElementResponse restResult = restClient.callEngineActionGetRESTCall(methodName,
                                                                                         urlTemplate,
                                                                                         serverName,
-                                                                                        serviceURLMarker,
                                                                                         userId,
                                                                                         engineActionGUID);
 
@@ -357,7 +324,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     {
         final String methodName = "cancelEngineAction";
         final String guidParameterName = "engineActionGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/engine-actions/{3}/cancel";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/engine-actions/{2}/cancel";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
@@ -366,7 +333,6 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
-                                        serviceURLMarker,
                                         userId,
                                         engineActionGUID);
     }
@@ -392,145 +358,19 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                                                      PropertyServerException
     {
         final String methodName = "getActiveEngineActions";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/engine-actions/active?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/engine-actions/active?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           serverName,
-                                                                                          serviceURLMarker,
                                                                                           userId,
                                                                                           Integer.toString(startFrom),
                                                                                           Integer.toString(pageSize));
 
         return restResult.getElements();
     }
-
-    
-    /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements.
-     * If the relationship already exists, the properties are updated.
-     *
-     * @param userId caller's userId
-     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
-     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
-     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
-     * @param steward identifier of the steward
-     * @param stewardTypeName type of element used to identify the steward
-     * @param stewardPropertyName property name used to identify steward
-     * @param source source of the duplicate detection processing
-     * @param notes notes for the steward
-     * @param setKnownDuplicate boolean flag indicating whether the KnownDuplicate classification should be set on the linked entities.
-     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the caller is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public void linkElementsAsPeerDuplicates(String  userId,
-                                             String  metadataElement1GUID,
-                                             String  metadataElement2GUID,
-                                             int     statusIdentifier,
-                                             String  steward,
-                                             String  stewardTypeName,
-                                             String  stewardPropertyName,
-                                             String  source,
-                                             String  notes,
-                                             boolean setKnownDuplicate) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String methodName = "linkElementsAsPeerDuplicates";
-        final String end1ParameterName = "metadataElement1GUID";
-        final String end2ParameterName = "metadataElement2GUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/related-elements/link-as-peer-duplicate";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
-        invalidParameterHandler.validateGUID(metadataElement2GUID, end2ParameterName, methodName);
-
-        PeerDuplicatesRequestBody requestBody = new PeerDuplicatesRequestBody();
-
-        requestBody.setMetadataElement1GUID(metadataElement1GUID);
-        requestBody.setMetadataElement2GUID(metadataElement2GUID);
-        requestBody.setStatusIdentifier(statusIdentifier);
-        requestBody.setSteward(steward);
-        requestBody.setStewardTypeName(stewardTypeName);
-        requestBody.setStewardPropertyName(stewardPropertyName);
-        requestBody.setSource(source);
-        requestBody.setNotes(notes);
-        requestBody.setSetKnownDuplicate(setKnownDuplicate);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        serviceURLMarker,
-                                        userId);
-    }
-
-
-    /**
-     * Identify an element that acts as a consolidated version for a set of duplicate elements.
-     * (The consolidated element is created using createMetadataElement.)
-     *
-     * @param userId caller's userId
-     * @param consolidatedElementGUID unique identifier of the metadata element
-     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
-     * @param steward identifier of the steward
-     * @param stewardTypeName type of element used to identify the steward
-     * @param stewardPropertyName property name used to identify steward
-     * @param source source of the duplicate detection processing
-     * @param notes notes for the steward
-     * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
-     *                           have the KnownDuplicateClassification.
-     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the caller is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public void linkConsolidatedDuplicate(String       userId,
-                                          String       consolidatedElementGUID,
-                                          int          statusIdentifier,
-                                          String       steward,
-                                          String       stewardTypeName,
-                                          String       stewardPropertyName,
-                                          String       source,
-                                          String       notes,
-                                          List<String> sourceElementGUIDs) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        final String methodName = "linkConsolidatedDuplicate";
-        final String consolidatedElementGUIDParameterName = "consolidatedElementGUID";
-        final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/related-elements/link-as-consolidated-duplicate";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(consolidatedElementGUID, consolidatedElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(sourceElementGUIDs, sourceElementGUIDsParameterName, methodName);
-
-        ConsolidatedDuplicatesRequestBody requestBody = new ConsolidatedDuplicatesRequestBody();
-
-        requestBody.setConsolidatedElementGUID(consolidatedElementGUID);
-        requestBody.setStatusIdentifier(statusIdentifier);
-        requestBody.setSteward(steward);
-        requestBody.setStewardTypeName(stewardTypeName);
-        requestBody.setStewardPropertyName(stewardPropertyName);
-        requestBody.setSource(source);
-        requestBody.setNotes(notes);
-        requestBody.setSourceElementGUIDs(sourceElementGUIDs);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        serviceURLMarker,
-                                        userId);
-    }
-
 
 
     /* =====================================================================================================================
@@ -564,7 +404,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     {
         final String methodName = "getGovernanceActionProcessGraph";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/graph";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/governance-action-processes/{2}/graph";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -576,7 +416,6 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                                                                                                   urlTemplate,
                                                                                                                   requestBody,
                                                                                                                   serverName,
-                                                                                                                  serviceURLMarker,
                                                                                                                   userId,
                                                                                                                   processGUID);
 

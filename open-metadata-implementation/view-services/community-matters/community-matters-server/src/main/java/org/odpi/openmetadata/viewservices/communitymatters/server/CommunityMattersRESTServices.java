@@ -161,12 +161,12 @@ public class CommunityMattersRESTServices extends TokenController
      * @param communityGUID unique identifier of the community (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateCommunity(String                   serverName,
+    public BooleanResponse updateCommunity(String                   serverName,
                                         String                   communityGUID,
                                         UpdateElementRequestBody requestBody)
     {
@@ -174,8 +174,8 @@ public class CommunityMattersRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -191,10 +191,10 @@ public class CommunityMattersRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof CommunityProperties communityProperties)
                 {
-                    handler.updateCommunity(userId,
-                                            communityGUID,
-                                            requestBody,
-                                            communityProperties);
+                    response.setFlag(handler.updateCommunity(userId,
+                                                             communityGUID,
+                                                             requestBody,
+                                                             communityProperties));
                 }
                 else
                 {

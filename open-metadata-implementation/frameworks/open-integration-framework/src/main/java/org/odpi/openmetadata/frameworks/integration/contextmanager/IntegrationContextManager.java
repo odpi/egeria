@@ -40,12 +40,13 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     protected ConnectedAssetClient    connectedAssetClient       = null;
     protected OpenMetadataClient      openMetadataClient         = null;
     protected AssetHandler            assetHandler               = null;
-    protected OpenMetadataEventClient openMetadataEventClient    = null;
     protected OpenGovernanceClient    openGovernanceClient       = null;
     protected String                  localServerName            = null;
     protected String                  localServiceName           = null;
     protected String                  localServerUserId          = null;
-    protected String                  localServerPassword        = null;
+    protected String                  secretsStoreProvider       = null;
+    protected String                  secretsStoreLocation       = null;
+    protected String                  secretsStoreCollection     = null;
     protected int                     maxPageSize                = 0;
     protected AuditLog                auditLog                   = null;
 
@@ -70,7 +71,9 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
@@ -79,7 +82,9 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                          String   partnerOMASServerName,
                                          String   partnerOMASPlatformRootURL,
                                          String   userId,
-                                         String   password,
+                                         String   secretsStoreProvider,
+                                         String   secretsStoreLocation,
+                                         String   secretsStoreCollection,
                                          int      maxPageSize,
                                          AuditLog auditLog)
     {
@@ -88,7 +93,9 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
         this.partnerOMASPlatformRootURL = partnerOMASPlatformRootURL;
         this.partnerOMASServerName      = partnerOMASServerName;
         this.localServerUserId          = userId;
-        this.localServerPassword        = password;
+        this.secretsStoreProvider       = secretsStoreProvider;
+        this.secretsStoreLocation       = secretsStoreLocation;
+        this.secretsStoreCollection     = secretsStoreCollection;
         this.maxPageSize                = maxPageSize;
         this.auditLog                   = auditLog;
 

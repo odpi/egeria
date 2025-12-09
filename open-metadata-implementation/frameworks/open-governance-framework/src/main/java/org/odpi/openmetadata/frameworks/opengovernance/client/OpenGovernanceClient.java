@@ -10,11 +10,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
  * Metadata Access Server OMAG Server.
  */
 public abstract class OpenGovernanceClient  implements ActionControlInterface,
-                                                       GovernanceActionProcessInterface,
-                                                       DuplicateManagementInterface
+                                                       GovernanceActionProcessInterface
 {
     protected final String serverName;               /* Initialized in constructor */
-    protected final String serviceURLMarker;         /* Initialized in constructor */
     protected final String serverPlatformURLRoot;    /* Initialized in constructor */
 
     protected PropertyHelper propertyHelper = new PropertyHelper();
@@ -23,15 +21,12 @@ public abstract class OpenGovernanceClient  implements ActionControlInterface,
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      */
-    public OpenGovernanceClient(String serviceURLMarker,
-                                String serverName,
+    public OpenGovernanceClient(String serverName,
                                 String serverPlatformURLRoot)
     {
-        this.serviceURLMarker = serviceURLMarker;
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
     }
@@ -48,7 +43,6 @@ public abstract class OpenGovernanceClient  implements ActionControlInterface,
     {
         return "OpenMetadataClient{" +
                 "serverName='" + serverName + '\'' +
-                ", serviceURLMarker='" + serviceURLMarker + '\'' +
                 ", serverPlatformURLRoot='" + serverPlatformURLRoot + '\'' +
                 '}';
     }

@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
-import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationConnectorDefinition;
+import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CertificationTypeDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;

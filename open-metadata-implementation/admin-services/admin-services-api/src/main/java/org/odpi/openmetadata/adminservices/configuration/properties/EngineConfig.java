@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EngineConfig extends AdminServicesConfigHeader
+public class EngineConfig extends OMAGServerClientConfig
 {
     private String engineId            = UUID.randomUUID().toString();
     private String engineQualifiedName = null;

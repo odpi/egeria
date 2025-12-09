@@ -33,7 +33,6 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -42,7 +41,6 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
     public ClassificationExplorerInstance(String                  serverName,
                                           AuditLog                auditLog,
                                           String                  localServerUserId,
-                                          String                  localServerUserPassword,
                                           int                     maxPageSize,
                                           String                  remoteServerName,
                                           String                  remoteServerURL,
@@ -52,15 +50,12 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
         this.stewardshipManagementHandlerHashMap = new ViewServiceClientMap<>(StewardshipManagementHandler.class,
                                                                               serverName,
-                                                                              localServerUserId,
-                                                                              localServerUserPassword,
                                                                               auditLog,
                                                                               activeViewServices,
                                                                               myDescription.getViewServiceFullName(),
@@ -69,8 +64,6 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
 
         this.searchKeywordMap = new ViewServiceClientMap<>(SearchKeywordHandler.class,
                                                            serverName,
-                                                           localServerUserId,
-                                                           localServerUserPassword,
                                                            auditLog,
                                                            activeViewServices,
                                                            myDescription.getViewServiceFullName(),

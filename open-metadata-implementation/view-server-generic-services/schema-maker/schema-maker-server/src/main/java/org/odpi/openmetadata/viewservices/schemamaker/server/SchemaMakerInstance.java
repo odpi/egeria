@@ -36,34 +36,29 @@ public class SchemaMakerInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
-     * @param localServerUserPassword  password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @param activeViewServices list of view services active in this server
      */
     public SchemaMakerInstance(String                  serverName,
-                                AuditLog                auditLog,
-                                String                  localServerUserId,
-                                String                  localServerUserPassword,
-                                int                     maxPageSize,
-                                String                  remoteServerName,
-                                String                  remoteServerURL,
-                                List<ViewServiceConfig> activeViewServices)
+                               AuditLog                auditLog,
+                               String                  localServerUserId,
+                               int                     maxPageSize,
+                               String                  remoteServerName,
+                               String                  remoteServerURL,
+                               List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
         this.schemaTypeHandlerMap = new ViewServiceClientMap<>(SchemaTypeHandler.class,
                                                                serverName,
-                                                               localServerUserId,
-                                                               localServerUserPassword,
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
@@ -72,8 +67,6 @@ public class SchemaMakerInstance extends OMVSServiceInstance
 
         this.schemaAttributeHandlerMap = new ViewServiceClientMap<>(SchemaAttributeHandler.class,
                                                                     serverName,
-                                                                    localServerUserId,
-                                                                    localServerUserPassword,
                                                                     auditLog,
                                                                     activeViewServices,
                                                                     myDescription.getViewServiceFullName(),

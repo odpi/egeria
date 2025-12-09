@@ -22,9 +22,6 @@ public abstract class GovernanceEngineHandlerFactory
      * @param engineConfig information about the governance engine.
      * @param localServerName the name of the engine host server where the survey action engine is running
      * @param localServerUserId user id for the engine host server to use
-     * @param localServerPassword optional password for the engine host server to use
-     * @param partnerServerName name of partner server
-     * @param partnerURLRoot partner platform
      * @param configurationClient client to retrieve the configuration
      * @param serverClient client used by the engine host services to control the execution of engine action requests
      * @param auditLog logging destination
@@ -35,9 +32,6 @@ public abstract class GovernanceEngineHandlerFactory
     public abstract GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                  engineConfig,
                                                                           String                        localServerName,
                                                                           String                        localServerUserId,
-                                                                          String                        localServerPassword,
-                                                                          String                        partnerServerName,
-                                                                          String                        partnerURLRoot,
                                                                           GovernanceConfigurationClient configurationClient,
                                                                           GovernanceContextClient       serverClient,
                                                                           AuditLog                      auditLog,

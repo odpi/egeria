@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -14,7 +16,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  * This is a tricky request because the entity has been deleted so it is
  * not retrievable until restored.  Also, this is an optional function
  * so the repository where the entity has its home may not support restore.
- *
+ * <p>
  * The only possible approach is to step through the repositories hoping that one
  * will respond positively.
  */
@@ -71,10 +73,6 @@ public class RestoreEntityExecutor extends RepositoryExecutorBase
             restoredEntity = metadataCollection.restoreEntity(userId, entityGUID);
             result = true;
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(error);
-        }
         catch (FunctionNotSupportedException error)
         {
             accumulator.captureException(error);
@@ -92,6 +90,10 @@ public class RestoreEntityExecutor extends RepositoryExecutorBase
             accumulator.captureException(error);
         }
         catch (UserNotAuthorizedException error)
+        {
+            accumulator.captureException(error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(error);
         }

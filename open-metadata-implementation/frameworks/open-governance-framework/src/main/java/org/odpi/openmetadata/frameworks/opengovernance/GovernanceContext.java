@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.opengovernance;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.DuplicateManagementClient;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
@@ -217,13 +216,4 @@ public interface GovernanceContext
      * @return completion status enum
      */
     CompletionStatus getCompletionStatus();
-
-
-
-    /**
-     * Return the client that manages deduplication.
-     *
-     * @return deduplication manager
-     */
-    DuplicateManagementClient getDuplicateManagementClient();
 }

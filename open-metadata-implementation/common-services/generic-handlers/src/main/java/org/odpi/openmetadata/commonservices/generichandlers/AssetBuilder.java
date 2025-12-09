@@ -165,68 +165,6 @@ public class AssetBuilder extends ReferenceableBuilder
     }
 
 
-    /**
-     * Set up the AssetZones classification for this entity.
-     * This method overrides an previously defined AssetZones classification for this entity.
-     *
-     * @param userId calling user
-     * @param zoneMembership list of zone names for the zones this asset is a member of
-     * @param methodName calling method
-     * @throws InvalidParameterException AssetZones is not supported in the local repository, or any repository
-     *                                   connected by an open metadata repository cohort
-     */
-    protected void setAssetZones(String       userId,
-                                 List<String> zoneMembership,
-                                 String       methodName) throws InvalidParameterException
-    {
-        try
-        {
-            Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  InstanceProvenanceType.LOCAL_COHORT,
-                                                                                  userId,
-                                                                                  OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  getZoneMembershipProperties(zoneMembership, methodName));
-            newClassifications.put(classification.getName(), classification);
-        }
-        catch (TypeErrorException error)
-        {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
-        }
-    }
-
-
-    /**
-     * Return the bean properties describing the asset's zone membership in an InstanceProperties object.
-     *
-     * @param zoneMembership list of zone names for the zones this asset is a member of
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    InstanceProperties getZoneMembershipProperties(List<String> zoneMembership,
-                                                   String       methodName)
-    {
-        InstanceProperties properties = null;
-
-        if (zoneMembership != null)
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           null,
-                                                                           OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                           zoneMembership,
-                                                                           methodName);
-        }
-
-        setEffectivityDates(properties);
-
-        return properties;
-    }
-
-
 
     /**
      * Set up the AssetOwnership classification for this entity.

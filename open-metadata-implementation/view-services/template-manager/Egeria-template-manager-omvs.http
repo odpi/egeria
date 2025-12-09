@@ -18,3 +18,189 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
+
+###
+
+@elementGUID=add guid here
+@templateGUID=add guid here
+
+###
+# @name linkSourcedFrom
+# Attach a template to an element that was created from it.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/sourced-from/{{templateGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "relationshipProperties" : {
+     "class": "SourceFromProperties",
+     "sourceVersionNumber" : 0
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name detachSourcedFrom
+# Detach the source template for an element.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/sourced-from/{{templateGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name linkCatalogTemplate
+# Attach a template to an element that was created from it.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/catalog-template/{{templateGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "relationshipProperties" : {
+     "class": "CatalogTemplateProperties"
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name detachCatalogTemplate
+# Detach a template for an element that this template is relevant to.   For example, a project.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/catalog-template/{{templateGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name addTemplateClassification
+# Classify an element as suitable to be used as a template for cataloguing elements of a similar types.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "TemplateProperties",
+       "displayName" : "Add value here",
+       "description" : "Add value here",
+       "versionIdentifier" : "Add value here",
+       "additionalProperties" : {}
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name removeTemplateClassification
+# Remove the Template classification from the element.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/template/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+
+###
+# @name addTemplateSubstituteClassification
+# Classify an element as suitable to be used as a template substitute for cataloguing elements of a similar types.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/template-substitute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "TemplateSubstituteProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name removeTemplateSubstituteClassification
+# Remove the TemplateSubstitute classification from the element.
+#
+# Templated Cataloguing: https://egeria-project.org/features/templated-cataloguing/overview/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/elements/{{elementGUID}}/template-substitute/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+

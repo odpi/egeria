@@ -8,11 +8,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.InformationSupplyChainMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -20,12 +22,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * InformationSupplyChainHandler provides methods to define information supply chains.
  */
-public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
+public class InformationSupplyChainHandler extends CollectionHandler
 {
     final private MetadataRelationshipSummaryConverter<MetadataRelationshipSummary> metadataRelationshipSummaryConverter;
 
@@ -47,108 +48,6 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
                                                                                                localServiceName,
                                                                                                localServerName);
-    }
-
-
-    /**
-     * Create a new information supply chain.
-     *
-     * @param userId                 userId of user making request.
-     * @param newElementOptions details of the element to create
-     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
-     * @param properties             properties for the new element.
-     * @param parentRelationshipProperties properties to include in parent relationship
-     *
-     * @return unique identifier of the newly created element
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String createInformationSupplyChain(String                                userId,
-                                               NewElementOptions                     newElementOptions,
-                                               Map<String, ClassificationProperties> initialClassifications,
-                                               InformationSupplyChainProperties      properties,
-                                               RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
-                                                                                                                          PropertyServerException,
-                                                                                                                          UserNotAuthorizedException
-    {
-        final String methodName = "createInformationSupplyChain";
-
-        return super.createNewElement(userId,
-                                      newElementOptions,
-                                      initialClassifications,
-                                      properties,
-                                      parentRelationshipProperties,
-                                      methodName);
-    }
-
-
-    /**
-     * Create a new metadata element to represent an information supply chain using an existing  element as a template.
-     * The template defines additional classifications and relationships that should be added to the new information supply chain.
-     *
-     * @param userId                       calling user
-     * @param templateOptions details of the element to create
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
-     * @param replacementProperties properties of the new metadata element.  These override the template values
-     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
-     *                              template element - and their anchored elements, which are also copied as part of this operation.
-     * @param parentRelationshipProperties properties to include in parent relationship
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createInformationSupplyChainFromTemplate(String                 userId,
-                                                           TemplateOptions        templateOptions,
-                                                           String                 templateGUID,
-                                                           ElementProperties      replacementProperties,
-                                                           Map<String, String>    placeholderProperties,
-                                                           RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
-                                                                                                                       UserNotAuthorizedException,
-                                                                                                                       PropertyServerException
-    {
-        return super.createElementFromTemplate(userId,
-                                               templateOptions,
-                                               templateGUID,
-                                               replacementProperties,
-                                               placeholderProperties,
-                                               parentRelationshipProperties);
-    }
-
-
-    /**
-     * Update the properties of an information supply chain.
-     *
-     * @param userId                 userId of user making request.
-     * @param informationSupplyChainGUID         unique identifier of the information supply chain (returned from create)
-     * @param updateOptions provides a structure for the additional options when updating an element.
-     * @param properties             properties for the element.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void   updateInformationSupplyChain(String                           userId,
-                                               String                           informationSupplyChainGUID,
-                                               UpdateOptions                    updateOptions,
-                                               InformationSupplyChainProperties properties) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
-    {
-        final String methodName = "updateInformationSupplyChain";
-        final String guidParameterName = "informationSupplyChainGUID";
-
-        super.updateElement(userId,
-                            informationSupplyChainGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
     }
 
 
@@ -224,108 +123,6 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                                                         peerOneGUID,
                                                         peerTwoGUID,
                                                         deleteOptions);
-    }
-
-
-
-    /**
-     * Connect two peers in an information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.
-     *
-     * @param userId          userId of user making request
-     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
-     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param compositionProperties   description of the relationship.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void composeInformationSupplyChains(String                         userId,
-                                               String                         informationSupplyChainGUID,
-                                               String                         nestedInformationSupplyChainGUID,
-                                               MetadataSourceOptions          metadataSourceOptions,
-                                               CollectionMembershipProperties compositionProperties) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
-    {
-        final String methodName = "composeInformationSupplyChains";
-        final String end1GUIDParameterName = "informationSupplyChainGUID";
-        final String end2GUIDParameterName = "nestedInformationSupplyChainGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(informationSupplyChainGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
-
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                        informationSupplyChainGUID,
-                                                        nestedInformationSupplyChainGUID,
-                                                        metadataSourceOptions,
-                                                        relationshipBuilder.getNewElementProperties(compositionProperties));
-    }
-
-
-    /**
-     * Detach a nested information supply chain from its parent.
-     *
-     * @param userId          userId of user making request.
-     * @param informationSupplyChainGUID  unique identifier of the parent information supply chain
-     * @param nestedInformationSupplyChainGUID      unique identifier of the child information supply chain
-     * @param deleteOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void decomposeInformationSupplyChains(String        userId,
-                                                 String        informationSupplyChainGUID,
-                                                 String        nestedInformationSupplyChainGUID,
-                                                 DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
-    {
-        final String methodName = "decomposeInformationSupplyChains";
-
-        final String end1GUIDParameterName = "informationSupplyChainGUID";
-        final String end2GUIDParameterName = "nestedInformationSupplyChainGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(informationSupplyChainGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
-
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                        informationSupplyChainGUID,
-                                                        nestedInformationSupplyChainGUID,
-                                                        deleteOptions);
-    }
-
-
-    /**
-     * Delete an information supply chain and all of its segments.
-     *
-     * @param userId   userId of user making request.
-     * @param informationSupplyChainGUID  unique identifier of the required element.
-     * @param deleteOptions options for a delete request
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void deleteInformationSupplyChain(String        userId,
-                                             String        informationSupplyChainGUID,
-                                             DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
-        final String methodName = "deleteInformationSupplyChain";
-        final String guidParameterName = "informationSupplyChainGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(informationSupplyChainGUID, guidParameterName, methodName);
-
-        openMetadataClient.deleteMetadataElementInStore(userId, informationSupplyChainGUID, deleteOptions);
     }
 
 

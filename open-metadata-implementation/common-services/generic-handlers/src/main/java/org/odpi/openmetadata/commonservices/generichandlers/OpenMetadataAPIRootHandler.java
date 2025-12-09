@@ -38,11 +38,6 @@ public class OpenMetadataAPIRootHandler<B>
     protected String                             localServerUserId;
     protected OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
-
-    protected List<String> supportedZones;
-    protected List<String> publishZones;
-    protected List<String>                       defaultZones;
-
     protected RepositoryErrorHandler errorHandler;
 
     protected final List<String> qualifiedNamePropertyNamesList;
@@ -64,9 +59,6 @@ public class OpenMetadataAPIRootHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
-     * @param defaultZones list of zones that the access service should set in all new Asset instances.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog destination for audit log events.
      */
     public OpenMetadataAPIRootHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -78,9 +70,6 @@ public class OpenMetadataAPIRootHandler<B>
                                       OMRSRepositoryHelper               repositoryHelper,
                                       String                             localServerUserId,
                                       OpenMetadataServerSecurityVerifier securityVerifier,
-                                      List<String>                       supportedZones,
-                                      List<String>                       defaultZones,
-                                      List<String>                       publishZones,
                                       AuditLog                           auditLog)
     {
         this.converter = converter;
@@ -97,10 +86,6 @@ public class OpenMetadataAPIRootHandler<B>
         {
                 this.securityVerifier = securityVerifier;
         }
-
-        this.supportedZones = supportedZones;
-        this.defaultZones   = defaultZones;
-        this.publishZones   = publishZones;
 
         this.auditLog = auditLog;
 
@@ -174,17 +159,6 @@ public class OpenMetadataAPIRootHandler<B>
         final String methodName = "getElementStub";
 
         return converter.getElementStub(beanClass, entityProxy, methodName);
-    }
-
-
-    /**
-     * Return the list of zones to use for retrieving assets.
-     *
-     * @return list of zone names
-     */
-    public List<String> getSupportedZones()
-    {
-        return supportedZones;
     }
 
 

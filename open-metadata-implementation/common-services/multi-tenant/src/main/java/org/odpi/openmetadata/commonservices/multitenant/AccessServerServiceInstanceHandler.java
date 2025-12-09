@@ -3,19 +3,15 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
@@ -44,31 +40,6 @@ public class AccessServerServiceInstanceHandler extends AuditableServerServiceIn
         super(serviceName);
     }
 
-
-    /**
-     * Retrieve the repository connector for the access service.
-     *
-     * @param userId calling userId
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return repository connector for exclusive use by the requested instance
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the repository connector is
-     *                                 not available - indicating a logic error
-     */
-    public OMRSRepositoryConnector getRepositoryConnector(String userId,
-                                                          String serverName,
-                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance) super.getServerServiceInstance(userId,
-                                                                                                            serverName,
-                                                                                                            serviceOperationName);
-
-        return instance.getRepositoryConnector();
-    }
 
 
     /**
@@ -124,59 +95,6 @@ public class AccessServerServiceInstanceHandler extends AuditableServerServiceIn
 
 
     /**
-     * Retrieve the repository handler for the access service. Provides an advanced API for the
-     * repository services.
-     *
-     * @param userId calling userId
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return repository handler
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public RepositoryHandler getRepositoryHandler(String userId,
-                                                  String serverName,
-                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance) super.getServerServiceInstance(userId,
-                                                                                                            serverName,
-                                                                                                            serviceOperationName);
-
-        return instance.getRepositoryHandler();
-    }
-
-
-    /**
-     * Retrieve the handler for managing errors from the repository services.
-     *
-     * @param userId calling userId
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return repository error handler
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public RepositoryErrorHandler getErrorHandler(String userId,
-                                                  String serverName,
-                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance) super.getServerServiceInstance(userId,
-                                                                                                            serverName,
-                                                                                                            serviceOperationName);
-
-        return instance.getErrorHandler();
-    }
-
-
-    /**
      * Return the service's official name.
      *
      * @param callingServiceURLName url fragment that indicates the service name
@@ -226,213 +144,6 @@ public class AccessServerServiceInstanceHandler extends AuditableServerServiceIn
 
 
     /**
-     * Get the instance for a specific service.
-     *
-     * @param userId calling user
-     * @param serverName name of this server
-     * @param callingServiceURLName url fragment that indicates the service name
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return specific service instance
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    private AccessServerServiceInstance getCallingServiceInstance(String userId,
-                                                                  String serverName,
-                                                                  String callingServiceURLName,
-                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
-    {
-        return (AccessServerServiceInstance)platformInstanceMap.getServiceInstance(userId,
-                                                                                   serverName,
-                                                                                   this.getServiceName(callingServiceURLName),
-                                                                                   serviceOperationName);
-    }
-
-
-    /**
-     * Get the supportedZones for a specific service. This is used in services that are shared by different
-     * access services.
-     *
-     * @param userId calling user
-     * @param serverName name of this server
-     * @param callingServiceURLName url fragment that indicates the service name
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of governance zones
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    public List<String> getSupportedZones(String  userId,
-                                          String  serverName,
-                                          String  callingServiceURLName,
-                                          String  serviceOperationName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        AccessServerServiceInstance callingServiceInstance = this.getCallingServiceInstance(userId,
-                                                                                            serverName,
-                                                                                            callingServiceURLName,
-                                                                                            serviceOperationName);
-        if (callingServiceInstance != null)
-        {
-            return callingServiceInstance.getSupportedZones();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Get the defaultZones for a specific service.  This is used in services that are shared by different
-     * access services.
-     *
-     * @param userId calling user
-     * @param serverName name of this server
-     * @param callingServiceURLName url fragment that indicates the service name
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of governance zones
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public List<String> getDefaultZones(String  userId,
-                                        String  serverName,
-                                        String  callingServiceURLName,
-                                        String  serviceOperationName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        AccessServerServiceInstance callingServiceInstance = this.getCallingServiceInstance(userId,
-                                                                                            serverName,
-                                                                                            callingServiceURLName,
-                                                                                            serviceOperationName);
-        if (callingServiceInstance != null)
-        {
-            return callingServiceInstance.getDefaultZones();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Get the publishZones for a specific service.  This is used in services that are shared by different
-     * access services.
-     *
-     * @param userId calling user
-     * @param serverName name of this server
-     * @param callingServiceURLName url fragment that indicates the service name
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of governance zones
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public List<String> getPublishZones(String  userId,
-                                        String  serverName,
-                                        String  callingServiceURLName,
-                                        String  serviceOperationName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        AccessServerServiceInstance callingServiceInstance = this.getCallingServiceInstance(userId,
-                                                                                            serverName,
-                                                                                            callingServiceURLName,
-                                                                                            serviceOperationName);
-        if (callingServiceInstance != null)
-        {
-            return callingServiceInstance.getPublishZones();
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Retrieve the supported zones set up for this service instance.
-     *
-     * @param userId calling userId
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of governance zones
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public List<String> getSupportedZones(String userId,
-                                          String serverName,
-                                          String serviceOperationName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance) super.getServerServiceInstance(userId,
-                                                                                                            serverName,
-                                                                                                            serviceOperationName);
-
-        return instance.getSupportedZones();
-    }
-
-
-    /**
-     * Retrieve the default zones set up for this service instance.
-     *
-     * @param userId calling userId
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of governance zones
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public List<String> getDefaultZones(String userId,
-                                        String serverName,
-                                        String serviceOperationName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance) super.getServerServiceInstance(userId,
-                                                                                                            serverName,
-                                                                                                            serviceOperationName);
-
-        return instance.getDefaultZones();
-    }
-
-
-    /**
-     * Retrieve the publishZones set up for this service instance.
-     *
-     * @param userId calling userId
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return list of governance zones
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws PropertyServerException the service name is not known or the metadata collection is
-     *                                 not available - indicating a logic error
-     */
-    public List<String> getPublishZones(String userId,
-                                        String serverName,
-                                        String serviceOperationName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance) super.getServerServiceInstance(userId,
-                                                                                                            serverName,
-                                                                                                            serviceOperationName);
-
-        return instance.getPublishZones();
-    }
-
-
-
-    /**
      * Return the connection used in the client to create a connector to access events from the out topic.
      *
      * @param userId calling user
@@ -458,38 +169,6 @@ public class AccessServerServiceInstanceHandler extends AuditableServerServiceIn
         if (instance != null)
         {
             return instance.getOutTopicClientConnection(callerId);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the requesting service's description.
-     *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @param accessServiceCode identifier for the service
-     * @return service description
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    public RegisteredOMAGService getRegisteredOMAGService(String userId,
-                                                          String serverName,
-                                                          int    accessServiceCode,
-                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
-    {
-        AccessServerServiceInstance instance = (AccessServerServiceInstance)super.getServerServiceInstance(userId,
-                                                                                                           serverName,
-                                                                                                           serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getRegisteredOMAGService(accessServiceCode);
         }
 
         return null;

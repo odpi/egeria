@@ -43,7 +43,9 @@ public class EgeriaOpenMetadataEventClient extends OpenMetadataEventClient
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId this server's userId
-     * @param serverPassword this server's userId
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
      * @param callerId unique identifier of the caller
@@ -52,26 +54,21 @@ public class EgeriaOpenMetadataEventClient extends OpenMetadataEventClient
     public EgeriaOpenMetadataEventClient(String   serverName,
                                          String   serverPlatformURLRoot,
                                          String   serverUserId,
-                                         String   serverPassword,
+                                         String   secretsStoreProvider,
+                                         String   secretsStoreLocation,
+                                         String   secretsStoreCollection,
                                          int      maxPageSize,
                                          AuditLog auditLog,
                                          String   callerId) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serverUserId,serverPassword, serviceName, maxPageSize, auditLog, callerId);
+        super(serverName, serverPlatformURLRoot, serverUserId, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, serviceName, maxPageSize, auditLog, callerId);
 
         final String methodName = "Constructor (with REST Client)";
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        if (serverPassword == null)
-        {
-            this.restClient = new OCFRESTClient(serverName, serverPlatformURLRoot);
-        }
-        else
-        {
-            this.restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword, auditLog);
-        }
+        this.restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
 
 

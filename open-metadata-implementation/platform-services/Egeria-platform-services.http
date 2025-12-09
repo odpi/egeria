@@ -1,20 +1,47 @@
 # Egeria-platform-services
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@server=active-metadata-store
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
 
 ###
 # @name Get OMAG Server Platform Origin
 # Query the originator and version of this server platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/origin
+GET {{baseURL}}/open-metadata/platform-services/server-platform/origin
+
+###
+# @name Get OMAG Server Platform Organization
+# Query the organization that owns this platform.
+GET {{baseURL}}/open-metadata/platform-services/server-platform/organization-name
+Authorization: Bearer {{token}}
 
 ###
 # @name Get Platform Security Connection
 # Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/security/connection
+GET {{baseURL}}/open-metadata/platform-services/server-platform/security/connection
+Authorization: Bearer {{token}}
 
 ###
 # @name Set Platform Security Connection
 # Set up the connection for the platform security connector.  This connector verifies the authorization of any user calling the platform or admin services.  This call is preconfigured to set up the sample platform security connector.  This allows only the Coco Pharmaceuticals IT administrator, `garygeeke`, to issue platform calls.
 # Once you have set up this security connector in your OMAG Server Platform, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were "working" earlier to verify this).  To switch the user to one that the OMAG Server Platform will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `garygeeke`.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/security/connection
+POST {{baseURL}}/open-metadata/platform-services/server-platform/security/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -32,72 +59,79 @@ Content-Type: application/json
 ###
 # @name Delete Platform Security Connection
 # Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/security/connection
+DELETE {{baseURL}}/open-metadata/platform-services/server-platform/security/connection
+Authorization: Bearer {{token}}
 
 ###
 # @name Get registered access services
 # Retrieve the list of Open Metadata Access Services (OMASs) that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/access-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services/access-services
+Authorization: Bearer {{token}}
 
 ###
 # @name Get registered view services
 # Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/view-services
-
-###
-# @name Get registered integration services
-# Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/integration-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services/view-services
+Authorization: Bearer {{token}}
 
 ###
 # @name Get registered engine services
 # Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/engine-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services/engine-services
+Authorization: Bearer {{token}}
 
 ###
 # @name Get governance services
 # Retrieve the list of governance services that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/governance-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services/governance-services
+Authorization: Bearer {{token}}
 
 ###
 # @name Get common services
 # Retrieve the list of common services that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/common-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services/common-services
+Authorization: Bearer {{token}}
 
 ###
 # @name Get all services
 # Retrieve the list of services that are supported by this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services
+GET {{baseURL}}/open-metadata/platform-services/server-platform/registered-services
+Authorization: Bearer {{token}}
 
 ###
 # @name Get all known servers
 # Retrieve the list of servers that have run, are are still running on this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers
+GET {{baseURL}}/open-metadata/platform-services/server-platform/servers
+Authorization: Bearer {{token}}
 
 ###
 # @name Query if a specific server is known
 # Retrieve a boolean that indicates whether a specific servers is known to this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/is-known
+GET {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}/is-known
+Authorization: Bearer {{token}}
 
 ###
 # @name Get all active servers
 # Retrieve the list of servers that are are running on this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/active
+GET {{baseURL}}/open-metadata/platform-services/server-platform/servers/active
+Authorization: Bearer {{token}}
 
 ###
 # @name Query the status of a specific server
 # Retrieve the status of a specific server for this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/status
+GET {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}/status
+Authorization: Bearer {{token}}
 
 ###
 # @name Start server - using stored configuration
 # Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance
+POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}/instance
+Authorization: Bearer {{token}}
 
 ###
 # @name Start server - using supplied configuration
 # Activate a server on the OMAG Server Platform.  Use the configuration document passed on the request. This configuration document is saved to the configuration document store and then the server is started.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance
+POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}/instance
 Content-Type: application/json
 
 {
@@ -105,7 +139,7 @@ Content-Type: application/json
     "relatedHTTPCode": 200,
     "omagserverConfig": {
         "class": "OMAGServerConfig",
-        "versionId": "V2.0",
+        "versionId": "V6.0",
         "localServerId": "863ae16f-46eb-4f9a-a619-76917e8fa950",
         "localServerName": "myserver",
         "localServerType": "Open Metadata and Governance Server",
@@ -118,29 +152,35 @@ Content-Type: application/json
 ###
 # @name Query a connector
 # Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider
+GET {{baseURL}}/open-metadata/platform-services/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Shutdown server
 # Stop the server running on the OMAG Server Platform.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance
+DELETE {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}/instance
+Authorization: Bearer {{token}}
 
 ###
 # @name Shutdown and unregister server from cohorts
 # Unregister server and remove its configuration
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}
+DELETE {{baseURL}}/open-metadata/platform-services/server-platform/servers/{{server}}
+Authorization: Bearer {{token}}
 
 ###
 # @name Shutdown all active servers
 # Stop the server running on the OMAG Server Platform.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/instance
+DELETE {{baseURL}}/open-metadata/platform-services/server-platform/servers/instance
+Authorization: Bearer {{token}}
 
 ###
 # @name Shutdown and unregister all active servers
 # Stop the server running on the OMAG Server Platform.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers
+DELETE {{baseURL}}/open-metadata/platform-services/server-platform/servers
+Authorization: Bearer {{token}}
 
 ###
 # @name Shutdown server platform
 # Stop the server running on the OMAG Server Platform.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/instance
+DELETE {{baseURL}}/open-metadata/platform-services/server-platform/instance
+Authorization: Bearer {{token}}

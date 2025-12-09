@@ -13,18 +13,6 @@ These modules create utilities that produce reports for different aspects of the
   Code starts with the components that are shipped with Egeria.  Update to include your
   connector implementation.
 
-* **[egeria-platform-report](egeria-platform-report)** - issue commands to a running platform an reports on the status of
-  the platform itself and the servers running on it.  There are different options that control the
-  detail displayed.  Extend it with new options and layouts.
-
-* **[database-report](database-report)** - a utility to report on the databases catalogued in open metadata.
-
-* **[survey-report](survey-report)** - a utility to extract details of the 
-[Survey Report](https://egeria-project.org/concepts/survey-report/) attached to an asset.
-
-* **[valid-values-report](valid-values-report)** - the valid values report retrieves the reference data
-contained within a valid value set.
-
 * **[report-utilities](report-utilities)** - provide common formatting functions used in the reports.
 
 

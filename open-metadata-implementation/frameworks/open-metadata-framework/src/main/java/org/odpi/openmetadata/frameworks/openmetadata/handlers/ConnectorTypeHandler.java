@@ -118,26 +118,27 @@ public class ConnectorTypeHandler extends OpenMetadataHandlerBase
      * @param connectorTypeGUID      unique identifier of the connector type (returned from create)
      * @param updateOptions          provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateConnectorType(String                  userId,
-                                    String                  connectorTypeGUID,
-                                    UpdateOptions           updateOptions,
-                                    ConnectorTypeProperties properties) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    public boolean updateConnectorType(String                  userId,
+                                       String                  connectorTypeGUID,
+                                       UpdateOptions           updateOptions,
+                                       ConnectorTypeProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName = "updateConnectorType";
         final String guidParameterName = "connectorTypeGUID";
 
-        super.updateElement(userId,
-                            connectorTypeGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   connectorTypeGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

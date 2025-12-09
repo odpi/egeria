@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Community Matters OMVS", description="Communities bring people together from across the organization around a common theme, activity or skill. They are particularly useful for governance programs and cross-organization initiatives. The Community Matters OMVS provides APIs for managing the definition and members of the communities.",
+@Tag(name="API: Community Matters", description="Communities bring people together from across the organization around a common theme, activity or skill. They are particularly useful for governance programs and cross-organization initiatives. The Community Matters OMVS provides APIs for managing the definition and members of the communities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/community-matters/overview/"))
 
@@ -105,7 +105,7 @@ public class CommunityMattersResource
      * @param communityGUID unique identifier of the community (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -118,7 +118,7 @@ public class CommunityMattersResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/community"))
 
-    public VoidResponse updateCommunity(@PathVariable
+    public BooleanResponse updateCommunity(@PathVariable
                                         String                                  serverName,
                                         @PathVariable
                                         String                                  communityGUID,

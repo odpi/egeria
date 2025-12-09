@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedI
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,17 +36,16 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                   "User Token Manager",
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholder(),
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getPlaceholder(),
-                                  OMAGServerPlatformPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                  OMAGServerPlatformPlaceholderProperty.PLATFORM_USER_ID.getPlaceholder(),
                                   new OMAGServerPlatformProvider().getConnectorType().getGUID(),
-                                  OMAGServerPlatformPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                          OMAGServerPlatformPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
-                                  getOMAGServerPlatformConfigProperties(),
+                                  OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholder(),
                                   null,
+                                  PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                  SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                  new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                  PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                                   null,
-                                  null,
-                                  null,
-                                  null,
-                                  OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes()),
+                                  OMAGServerPlatformPlaceholderProperty.getPlatformPlaceholderPropertyTypes()),
 
     ENGINE_HOST_TEMPLATE("1764a891-4234-45f1-8cc3-536af40c790d",
                          EgeriaDeployedImplementationType.ENGINE_HOST,
@@ -57,31 +55,31 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                          new EngineHostProvider().getConnectorType().getGUID(),
-                         PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder(),
+                         OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholder(),
                          getOMAGServerConfigProperties(),
+                         PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                         SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                         new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                         PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                          null,
-                         null,
-                         null,
-                         null,
-                         null,
-                         getOMAGServerPlaceholderPropertyTypes()),
+                         OMAGServerPlatformPlaceholderProperty.getOMAGServerPlaceholderPropertyTypes()),
 
     INTEGRATION_DAEMON_TEMPLATE("6b3516f0-dd13-4786-9601-07215f995197",
                                 EgeriaDeployedImplementationType.INTEGRATION_DAEMON,
                                 DeployedImplementationType.REST_API_MANAGER,
-                                "Governance Engine Status APIs",
+                                "Integration Connector Status APIs",
                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                 new IntegrationDaemonProvider().getConnectorType().getGUID(),
-                                PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder(),
+                                OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholder(),
                                 getOMAGServerConfigProperties(),
+                                PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                                 null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                getOMAGServerPlaceholderPropertyTypes()),
+                                OMAGServerPlatformPlaceholderProperty.getOMAGServerPlaceholderPropertyTypes()),
 
     METADATA_ACCESS_SERVER_TEMPLATE("bd8de890-fa79-4c24-aab8-20b41b5893dd",
                                     EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER,
@@ -91,14 +89,14 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                     PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                     PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                     new MetadataAccessServerProvider().getConnectorType().getGUID(),
-                                    PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder(),
+                                    OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholder(),
                                     getOMAGServerConfigProperties(),
+                                    PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                                    SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                    new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                    PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                                     null,
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    getOMAGServerPlaceholderPropertyTypes()),
+                                    OMAGServerPlatformPlaceholderProperty.getOMAGServerPlaceholderPropertyTypes()),
 
     VIEW_SERVER_TEMPLATE("fd61ca01-390d-4aa2-a55d-426826aa4e1b",
                          EgeriaDeployedImplementationType.VIEW_SERVER,
@@ -108,14 +106,14 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                          new ViewServerProvider().getConnectorType().getGUID(),
-                         PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder(),
+                         OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholder(),
                          getOMAGServerConfigProperties(),
                          PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                          SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                          new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                          PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                          null,
-                         getViewServerPlaceholderPropertyTypes()),
+                         OMAGServerPlatformPlaceholderProperty.getViewServerPlaceholderPropertyTypes()),
 
     ;
 
@@ -151,36 +149,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     }
 
 
-    public static List<PlaceholderPropertyType> getOMAGServerPlaceholderPropertyTypes()
-    {
-        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-
-        return placeholderPropertyTypes;
-    }
-
-
-    public static List<PlaceholderPropertyType> getViewServerPlaceholderPropertyTypes()
-    {
-        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
-
-        return placeholderPropertyTypes;
-    }
 
 
     private final String                               guid;

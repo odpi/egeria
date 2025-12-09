@@ -36,6 +36,7 @@ public class ElementHeader extends ElementControlHeader
      */
     private String                      guid                     = null;
     private ElementClassification       anchor                   = null;
+    private ElementClassification       latestChange             = null;
     private ElementClassification       zoneMembership           = null;
     private ElementClassification       subjectArea              = null;
     private ElementClassification       impact                   = null;
@@ -51,11 +52,14 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       ownership                = null;
     private ElementClassification       memento                  = null;
     private ElementClassification       template                 = null;
+    private ElementClassification       templateSubstitute       = null;
     private ElementClassification       schemaType               = null; // TypeEmbeddedAttribute
     private ElementClassification       dataScope                = null;
     private ElementClassification       dataAssetEncoding        = null;
     private ElementClassification       calculatedValue          = null;
     private ElementClassification       primaryKey               = null;
+    private ElementClassification       knownDuplicate           = null;
+    private ElementClassification       consolidateDuplicate     = null;
     private List<ElementClassification> collectionRoles          = null;
     private List<ElementClassification> projectRoles             = null;
     private List<ElementClassification> otherClassifications     = null;
@@ -82,6 +86,7 @@ public class ElementHeader extends ElementControlHeader
         {
             this.guid                     = template.getGUID();
             this.anchor                   = template.getAnchor();
+            this.latestChange             = template.getLatestChange();
             this.zoneMembership           = template.getZoneMembership();
             this.subjectArea              = template.getSubjectArea();
             this.impact                   = template.getImpact();
@@ -97,11 +102,14 @@ public class ElementHeader extends ElementControlHeader
             this.ownership                = template.getOwnership();
             this.memento                  = template.getMemento();
             this.template                 = template.getTemplate();
+            this.templateSubstitute       = template.getTemplateSubstitute();
             this.schemaType               = template.getSchemaType();
             this.dataScope                = template.getDataScope();
             this.dataAssetEncoding        = template.getDataAssetEncoding();
             this.calculatedValue          = template.getCalculatedValue();
             this.primaryKey               = template.getPrimaryKey();
+            this.knownDuplicate           = template.getKnownDuplicate();
+            this.consolidateDuplicate     = template.getConsolidateDuplicate();
             this.collectionRoles          = template.getCollectionRoles();
             this.projectRoles             = template.getProjectRoles();
             this.otherClassifications     = template.getOtherClassifications();
@@ -161,6 +169,28 @@ public class ElementHeader extends ElementControlHeader
     public void setAnchor(ElementClassification anchor)
     {
         this.anchor = anchor;
+    }
+
+
+    /**
+     * Return the properties of the LatestChange classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getLatestChange()
+    {
+        return latestChange;
+    }
+
+
+    /**
+     * Set up the properties of the LatestChange classification
+     *
+     * @param latestChange classification
+     */
+    public void setLatestChange(ElementClassification latestChange)
+    {
+        this.latestChange = latestChange;
     }
 
 
@@ -473,6 +503,31 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the classification that indicates this element is part of a template. It
+     * links to an element via the SourcedFrom relationship that the template logically links to
+     * using a significant relationship.  The template substitute removes confusion that would occur if the
+     * template linked directly to this element using the significant relationship type.
+     *
+     * @return classification
+     */
+    public ElementClassification getTemplateSubstitute()
+    {
+        return templateSubstitute;
+    }
+
+
+    /**
+     * Set up the template substitute classification.
+     *
+     * @param templateSubstitute classification
+     */
+    public void setTemplateSubstitute(ElementClassification templateSubstitute)
+    {
+        this.templateSubstitute = templateSubstitute;
+    }
+
+
+    /**
      * Return whether this element is involved in duplicate processing.
      *
      * @return list
@@ -605,6 +660,50 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return whether this element has a known duplicate.
+     *
+     * @return classification
+     */
+    public ElementClassification getKnownDuplicate()
+    {
+        return knownDuplicate;
+    }
+
+
+    /**
+     * Set up whether this element has a known duplicate.
+     *
+     * @param knownDuplicate classification
+     */
+    public void setKnownDuplicate(ElementClassification knownDuplicate)
+    {
+        this.knownDuplicate = knownDuplicate;
+    }
+
+
+    /**
+     * Return whether this element is a consolidated duplication.
+     *
+     * @return classification
+     */
+    public ElementClassification getConsolidateDuplicate()
+    {
+        return consolidateDuplicate;
+    }
+
+
+    /**
+     * Set up whether this element is a consolidated duplication.
+     *
+     * @param consolidateDuplicate classification
+     */
+    public void setConsolidateDuplicate(ElementClassification consolidateDuplicate)
+    {
+        this.consolidateDuplicate = consolidateDuplicate;
+    }
+
+
+    /**
      * Return the optional list of category classifications found on a collection entity that indicate how a collection is being used.
      *
      * @return list of classifications
@@ -681,6 +780,7 @@ public class ElementHeader extends ElementControlHeader
         return "ElementHeader{" +
                 "guid='" + guid + '\'' +
                 ", anchor=" + anchor +
+                ", latestChange=" + latestChange +
                 ", zoneMembership=" + zoneMembership +
                 ", subjectArea=" + subjectArea +
                 ", impact=" + impact +
@@ -724,6 +824,7 @@ public class ElementHeader extends ElementControlHeader
         ElementHeader that = (ElementHeader) objectToCompare;
         return Objects.equals(guid, that.guid) &&
                 Objects.equals(anchor, that.anchor) &&
+                Objects.equals(latestChange, that.latestChange) &&
                 Objects.equals(zoneMembership, that.zoneMembership) &&
                 Objects.equals(subjectArea, that.subjectArea) &&
                 Objects.equals(impact, that.impact) &&
@@ -741,9 +842,12 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(ownership, that.ownership) &&
                 Objects.equals(memento, that.memento) &&
                 Objects.equals(template, that.template) &&
+                Objects.equals(templateSubstitute, that.templateSubstitute) &&
                 Objects.equals(schemaType, that.schemaType) &&
                 Objects.equals(calculatedValue, that.calculatedValue) &&
                 Objects.equals(primaryKey, that.primaryKey) &&
+                Objects.equals(knownDuplicate, that.knownDuplicate) &&
+                Objects.equals(consolidateDuplicate, that.consolidateDuplicate) &&
                 Objects.equals(collectionRoles, that.collectionRoles) &&
                 Objects.equals(projectRoles, that.projectRoles) &&
                 Objects.equals(otherClassifications, that.otherClassifications);
@@ -758,11 +862,12 @@ public class ElementHeader extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, subjectArea, impact, criticality,
+        return Objects.hash(super.hashCode(), guid, anchor, latestChange, zoneMembership, subjectArea, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
                             dataScope, dataAssetEncoding,
-                            template, schemaType, calculatedValue, primaryKey, collectionRoles,
-                            projectRoles, otherClassifications);
+                            template, templateSubstitute, schemaType, calculatedValue, primaryKey,
+                            knownDuplicate, consolidateDuplicate,
+                            collectionRoles, projectRoles, otherClassifications);
     }
 }

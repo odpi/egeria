@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.io.Serial;
 import java.util.Map;
@@ -12,7 +14,7 @@ import java.util.Map;
  * a metadata collection is not able to support the requested status.
  * The OMRSErrorCode adds specific details for the cause/effect of the error.
  */
-public class StatusNotSupportedException extends OMRSCheckedExceptionBase
+public class StatusNotSupportedException extends InvalidParameterException
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,7 +31,7 @@ public class StatusNotSupportedException extends OMRSCheckedExceptionBase
                                        String                     className,
                                        String                     actionDescription)
     {
-        super(messageDefinition, className, actionDescription);
+        super(messageDefinition, className, actionDescription, InstanceStatus.class.getName());
     }
 
 
@@ -47,7 +49,7 @@ public class StatusNotSupportedException extends OMRSCheckedExceptionBase
                                        String                     actionDescription,
                                        Map<String, Object> relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, relatedProperties);
+        super(messageDefinition, className, actionDescription, InstanceStatus.class.getName(), relatedProperties);
     }
 
 
@@ -65,7 +67,7 @@ public class StatusNotSupportedException extends OMRSCheckedExceptionBase
                                        String                     actionDescription,
                                        Exception                  caughtError)
     {
-        super(messageDefinition, className, actionDescription, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError, InstanceStatus.class.getName());
     }
 
 
@@ -85,7 +87,7 @@ public class StatusNotSupportedException extends OMRSCheckedExceptionBase
                                        Exception                  caughtError,
                                        Map<String, Object>        relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+        super(messageDefinition, className, actionDescription, caughtError, InstanceStatus.class.getName(), relatedProperties);
     }
 
 
@@ -126,44 +128,7 @@ public class StatusNotSupportedException extends OMRSCheckedExceptionBase
               systemAction,
               userAction,
               caughtErrorClassName,
+              InstanceStatus.class.getName(),
               relatedProperties);
-    }
-
-
-    /**
-     * This is the typical constructor for creating an StatusNotSupportedException.  It captures the essential details
-     * about the error, where it occurred and how to fix it.
-     *
-     * @param httpCode code to use across a REST interface
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     */
-    @Deprecated
-    public StatusNotSupportedException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This constructor is used when an unexpected exception has been caught that needs to be wrapped in an
-     * StatusNotSupportedException in order to add the essential details about the error, where it occurred and
-     * how to fix it.
-     *
-     * @param httpCode code to use across a REST interface
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtException the exception/error that caused this exception to be raised
-     */
-    @Deprecated
-    public StatusNotSupportedException(int httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtException)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtException);
     }
 }

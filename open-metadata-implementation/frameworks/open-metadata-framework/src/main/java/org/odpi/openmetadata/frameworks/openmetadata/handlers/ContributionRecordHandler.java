@@ -65,7 +65,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
     public String createContributionRecord(String                                userId,
                                            NewElementOptions                     newElementOptions,
                                            Map<String, ClassificationProperties> initialClassifications,
-                                           ContributionRecordProperties properties,
+                                           ContributionRecordProperties          properties,
                                            RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                       PropertyServerException,
                                                                                                                       UserNotAuthorizedException
@@ -78,6 +78,46 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
                                       properties,
                                       parentRelationshipProperties,
                                       methodName);
+    }
+
+
+    /**
+     * Adds a contribution record to the element.
+     *
+     * @param userId                       userId of user making request.
+     * @param elementGUID     unique identifier for the element
+     * @param metadataSourceOptions options for the request
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param properties   properties of the contribution record
+     * @param relationshipProperties properties for the ReferenceableFacet relationship
+     *
+     * @return guid of new contribution record.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addContributionRecordToElement(String                                userId,
+                                                 String                                elementGUID,
+                                                 MetadataSourceOptions                 metadataSourceOptions,
+                                                 Map<String, ClassificationProperties> initialClassifications,
+                                                 ContributionRecordProperties          properties,
+                                                 ContributionProperties                relationshipProperties) throws InvalidParameterException,
+                                                                                                                      PropertyServerException,
+                                                                                                                      UserNotAuthorizedException
+    {
+        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+
+        newElementOptions.setAnchorGUID(elementGUID);
+        newElementOptions.setParentGUID(elementGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName);
+        newElementOptions.setParentAtEnd1(true);
+
+        return this.createContributionRecord(userId,
+                                             newElementOptions,
+                                             initialClassifications,
+                                             properties,
+                                             relationshipProperties);
     }
 
 
@@ -123,26 +163,27 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
      * @param contributionRecordGUID       unique identifier of the contribution record (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateContributionRecord(String                       userId,
-                                         String                       contributionRecordGUID,
-                                         UpdateOptions                updateOptions,
-                                         ContributionRecordProperties properties) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+    public boolean updateContributionRecord(String                       userId,
+                                            String                       contributionRecordGUID,
+                                            UpdateOptions                updateOptions,
+                                            ContributionRecordProperties properties) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName                 = "updateContributionRecord";
         final String guidParameterName          = "contributionRecordGUID";
 
-        super.updateElement(userId,
-                            contributionRecordGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   contributionRecordGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

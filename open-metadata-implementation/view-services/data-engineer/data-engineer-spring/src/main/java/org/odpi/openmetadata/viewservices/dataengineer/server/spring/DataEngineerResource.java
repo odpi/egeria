@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-engineer")
 
-@Tag(name="API: Data Engineer OMVS", description="The Data Engineer OMVS provides APIs for managing data pipelines and reference data.",
+@Tag(name="API: Data Engineer", description="Managing metadata about data pipelines and reference data.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-engineer/overview/"))
 

@@ -8,21 +8,25 @@ import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistr
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceAuditCode;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * AccessServerServiceInstance caches references to OMRS objects for a specific Metadata Access Store.
@@ -37,16 +41,13 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
     protected RepositoryHandler       repositoryHandler;
     protected RepositoryErrorHandler  errorHandler;
 
-    protected List<String>            supportedZones;
-    protected List<String>            defaultZones;
-    protected List<String>            publishZones;
-
     private final Connection outTopicEventBusConnection;
     private final String     outTopicConnectorProviderName;
 
     private static final String  serverIdPropertyName = "local.server.id";
 
 
+
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
@@ -59,41 +60,12 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
      */
     public AccessServerServiceInstance(String                  serviceName,
                                        OMRSRepositoryConnector repositoryConnector,
-                                       AuditLog                auditLog,
-                                       String                  localServerUserId,
-                                       int                     maxPageSize) throws NewInstanceException
-    {
-        this(serviceName, repositoryConnector, null, null, null, auditLog, localServerUserId, maxPageSize);
-    }
-
-
-    /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
-     * @param serviceName name of this service
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that access service is allowed to serve Assets from.
-     * @param defaultZones list of zones that access service should set in all new Assets.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
-     * @param auditLog logging destination
-     * @param localServerUserId userId used for server initiated actions
-     * @param maxPageSize maximum page size
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    public AccessServerServiceInstance(String                  serviceName,
-                                       OMRSRepositoryConnector repositoryConnector,
-                                       List<String>            supportedZones,
-                                       List<String>            defaultZones,
-                                       List<String>            publishZones,
                                        AuditLog                auditLog,
                                        String                  localServerUserId,
                                        int                     maxPageSize) throws NewInstanceException
     {
         this(serviceName,
              repositoryConnector,
-             supportedZones,
-             defaultZones,
-             publishZones,
              auditLog,
              localServerUserId,
              maxPageSize,
@@ -107,9 +79,6 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that access service is allowed to serve Assets from.
-     * @param defaultZones list of zones that access service should set in all new Assets.
-     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
@@ -119,9 +88,6 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
      */
     public AccessServerServiceInstance(String                  serviceName,
                                        OMRSRepositoryConnector repositoryConnector,
-                                       List<String>            supportedZones,
-                                       List<String>            defaultZones,
-                                       List<String>            publishZones,
                                        AuditLog                auditLog,
                                        String                  localServerUserId,
                                        int                     maxPageSize,
@@ -143,9 +109,6 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
 
                 this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
                 this.repositoryHandler = new RepositoryHandler(auditLog, repositoryHelper, errorHandler, metadataCollection, maxPageSize);
-                this.supportedZones = supportedZones;
-                this.defaultZones = defaultZones;
-                this.publishZones = publishZones;
                 this.outTopicConnectorProviderName = outTopicConnectorProviderName;
                 this.outTopicEventBusConnection = outTopicEventBusConnection;
             }
@@ -313,54 +276,6 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
         validateActiveRepository(methodName);
 
         return errorHandler;
-    }
-
-
-    /**
-     * Return the list of zones that this instance of the OMAS should support.
-     *
-     * @return list of zone names.
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    List<String> getSupportedZones() throws PropertyServerException
-    {
-        final String methodName = "getSupportedZones";
-
-        validateActiveRepository(methodName);
-
-        return supportedZones;
-    }
-
-
-    /**
-     * Return the list of zones that this instance of the OMAS should set in any new Asset.
-     *
-     * @return list of zone names.
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    List<String> getDefaultZones() throws PropertyServerException
-    {
-        final String methodName = "getDefaultZones";
-
-        validateActiveRepository(methodName);
-
-        return defaultZones;
-    }
-
-
-    /**
-     * Return the list of zones that this instance of the OMAS should set in any published Asset.
-     *
-     * @return list of zone names.
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    List<String> getPublishZones() throws PropertyServerException
-    {
-        final String methodName = "getPublishZones";
-
-        validateActiveRepository(methodName);
-
-        return publishZones;
     }
 
 

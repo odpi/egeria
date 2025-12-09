@@ -121,26 +121,27 @@ public class DataClassHandler extends OpenMetadataHandlerBase
      * @param dataClassGUID          unique identifier of the data class (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateDataClass(String              userId,
-                                String              dataClassGUID,
-                                UpdateOptions       updateOptions,
-                                DataClassProperties properties) throws InvalidParameterException,
+    public boolean updateDataClass(String              userId,
+                                   String              dataClassGUID,
+                                   UpdateOptions       updateOptions,
+                                   DataClassProperties properties) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
         final String methodName = "updateDataClass";
         final String guidParameterName = "dataClassGUID";
 
-        super.updateElement(userId,
-                            dataClassGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   dataClassGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

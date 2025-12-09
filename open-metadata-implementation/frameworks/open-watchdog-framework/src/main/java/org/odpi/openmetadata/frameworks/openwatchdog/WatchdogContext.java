@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceCompletionInterface;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
-import org.odpi.openmetadata.frameworks.opengovernance.client.WatchDogEventInterface;
+import org.odpi.openmetadata.frameworks.opengovernance.client.WatchdogEventInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
@@ -33,9 +33,9 @@ import java.util.Map;
 
 /**
  * WatchdogContext provides a watchdog action service with access to information about
- * the survey request along with access to the open metadata repository interfaces.
+ * the watchdog request along with access to the open metadata repository interfaces.
  */
-public class WatchdogContext extends ConnectorContextBase implements WatchDogEventInterface
+public class WatchdogContext extends ConnectorContextBase implements WatchdogEventInterface
 {
     private final String                    notificationTypeGUID;
     private final String                    requestType;
@@ -49,8 +49,8 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
     private final MessageFormatter    messageFormatter = new MessageFormatter();
 
 
-    private final WatchDogEventInterface watchdogEventClient;
-    private final GovernanceCompletionInterface    governanceCompletionClient;
+    private final WatchdogEventInterface        watchdogEventClient;
+    private final GovernanceCompletionInterface governanceCompletionClient;
 
 
     /*
@@ -101,7 +101,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
                            OpenMetadataClient            openMetadataClient,
                            OpenGovernanceClient          openGovernanceClient,
                            GovernanceCompletionInterface governanceCompletionClient,
-                           WatchDogEventInterface        watchdogEventClient,
+                           WatchdogEventInterface watchdogEventClient,
                            AuditLog                      auditLog,
                            int                           maxPageSize,
                            DeleteMethod                  deleteMethod,
@@ -142,7 +142,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
-     * Return the unique identifier of the asset being discovered.
+     * Return the unique identifier of the associated notification.
      *
      * @return string guid
      * @throws UserNotAuthorizedException exception thrown if connector is no longer active
@@ -207,7 +207,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
     /**
      * Register a listener to receive events about changes to metadata elements in the open metadata store.
      * There can be only one registered listener.  If this method is called more than once, the new parameters
-     * replace the existing parameters.  This means the watchdog governance action service can change the
+     * replace the existing parameters.  This means the watchdog action service can change the
      * listener and the parameters that control the types of events received while it is running.
      * <br><br>
      * The types of events passed to the listener are controlled by the combination of the interesting event types and
@@ -264,8 +264,8 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
         {
             notificationProperties.setActivityStatus(ActivityStatus.FOR_INFO);
             notificationProperties.setDisplayName(messageFormatter.getFormattedMessage(notificationDescription));
-            notificationProperties.setSystemAction(notificationDescription.getSystemAction());
-            notificationProperties.setUserResponse(notificationDescription.getUserAction());
+            notificationProperties.setSituation(notificationDescription.getSystemAction());
+            notificationProperties.setExpectedBehaviour(notificationDescription.getUserAction());
         }
 
         return  notificationProperties;
@@ -273,7 +273,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
-     * Return the unique identifier of the asset being discovered.
+     * Return the elements that are linked to the notification type as monitored resources.
      *
      * @return string guid
      * @throws InvalidParameterException an invalid property has been passed
@@ -300,7 +300,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
-     * Return the unique identifier of the asset being discovered.
+     * Return the elements that are linked to the notification type as a subscriber.
      *
      * @return string guid
      * @throws InvalidParameterException an invalid property has been passed
@@ -349,11 +349,10 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
         validateIsActive(methodName);
 
-
         if (notificationTypeGUID != null)
         {
-            this.notificationHandler.notifySubscriber(subscriberGUID,
-                                                      notificationTypeGUID,
+            this.notificationHandler.notifySubscriber(connectorUserId,
+                                                      subscriberGUID,
                                                       notificationProperties,
                                                       notificationTypeGUID,
                                                       requestParameters,
@@ -431,7 +430,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
-     * Return the list of elements that this governance action service should work on.
+     * Return the list of elements that this watchdog action service should work on.
      *
      * @return cached list of action target metadata elements
      */
@@ -493,7 +492,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
-     * Declare that all the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the watchdog action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)

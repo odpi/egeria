@@ -25,9 +25,7 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
      * @param engineConfig        information about the governance engine.
      * @param localServerName     the name of the engine host server where the survey action engine is running
      * @param localServerUserId   user id for the engine host server to use
-     * @param localServerPassword optional password for the engine host server to use
-     * @param partnerServerName   name of partner server
-     * @param partnerURLRoot      partner platform
+
      * @param configurationClient client to retrieve the configuration
      * @param serverClient        client used by the engine host services to control the execution of engine action requests
      * @param auditLog            logging destination
@@ -38,9 +36,6 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
     public GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig                  engineConfig,
                                                                  String                        localServerName,
                                                                  String                        localServerUserId,
-                                                                 String                        localServerPassword,
-                                                                 String                        partnerServerName,
-                                                                 String                        partnerURLRoot,
                                                                  GovernanceConfigurationClient configurationClient,
                                                                  GovernanceContextClient       serverClient,
                                                                  AuditLog                      auditLog,
@@ -48,36 +43,21 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
     {
         if (engineConfig != null)
         {
-            ConnectedAssetClient surveyActionEngineClient;
-            OpenMetadataClient   openMetadataClient;
+            ConnectedAssetClient surveyActionEngineClient = new EgeriaConnectedAssetClient(engineConfig.getOMAGServerName(),
+                                                                                           engineConfig.getOMAGServerPlatformRootURL(),
+                                                                                           engineConfig.getSecretsStoreProvider(),
+                                                                                           engineConfig.getSecretsStoreLocation(),
+                                                                                           engineConfig.getSecretsStoreCollection(),
+                                                                                           maxPageSize,
+                                                                                           auditLog);
 
-            if (localServerPassword == null)
-            {
-                surveyActionEngineClient = new EgeriaConnectedAssetClient(partnerServerName,
-                                                                          partnerURLRoot,
-                                                                          maxPageSize,
-                                                                          auditLog);
-
-                openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
-                                                                       partnerURLRoot,
-                                                                       maxPageSize);
-            }
-            else
-            {
-                surveyActionEngineClient = new EgeriaConnectedAssetClient(partnerServerName,
-                                                                          partnerURLRoot,
-                                                                          localServerUserId,
-                                                                          localServerPassword,
-                                                                          maxPageSize,
-                                                                          auditLog);
-
-
-                openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
-                                                                       partnerURLRoot,
-                                                                       localServerUserId,
-                                                                       localServerPassword,
-                                                                       maxPageSize);
-            }
+            OpenMetadataClient   openMetadataClient = new EgeriaOpenMetadataStoreClient(engineConfig.getOMAGServerName(),
+                                                                                        engineConfig.getOMAGServerPlatformRootURL(),
+                                                                                        engineConfig.getSecretsStoreProvider(),
+                                                                                        engineConfig.getSecretsStoreLocation(),
+                                                                                        engineConfig.getSecretsStoreCollection(),
+                                                                                        maxPageSize,
+                                                                                        auditLog);
 
             return new SurveyActionEngineHandler(engineConfig,
                                                  localServerName,

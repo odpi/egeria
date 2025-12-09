@@ -527,21 +527,21 @@ public class GlossaryManagerRESTServices extends TokenController
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param requestBody new properties for the glossary term
      *
-     * @return  void or
+     * @return  boolean or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateGlossaryTerm(String                         serverName,
-                                           String                    glossaryTermGUID,
-                                           UpdateElementRequestBody requestBody)
+    public BooleanResponse updateGlossaryTerm(String                         serverName,
+                                              String                    glossaryTermGUID,
+                                              UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateGlossaryTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -557,7 +557,7 @@ public class GlossaryManagerRESTServices extends TokenController
                 {
                     GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
-                    handler.updateGlossaryTerm(userId, glossaryTermGUID, requestBody, properties);
+                    response.setFlag(handler.updateGlossaryTerm(userId, glossaryTermGUID, requestBody, properties));
                 }
                 else
                 {

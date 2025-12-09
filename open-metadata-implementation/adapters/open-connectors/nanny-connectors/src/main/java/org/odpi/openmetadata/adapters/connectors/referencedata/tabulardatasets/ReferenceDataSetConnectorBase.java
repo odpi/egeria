@@ -156,29 +156,7 @@ public abstract class ReferenceDataSetConnectorBase extends ConnectorBase implem
          */
         try
         {
-            OpenMetadataClient openMetadataClient;
-
-            if (clientUserId != null)
-            {
-                openMetadataClient = new EgeriaOpenMetadataStoreClient(serverName, targetRootURL, maxPageSize);
-            }
-            else
-            {
-                clientUserId = connectionBean.getUserId();
-
-                if (connectionBean.getClearPassword() != null)
-                {
-                    openMetadataClient = new EgeriaOpenMetadataStoreClient(serverName,
-                                                                           targetRootURL,
-                                                                           connectionBean.getUserId(),
-                                                                           connectionBean.getClearPassword(),
-                                                                           maxPageSize);
-                }
-                else
-                {
-                    openMetadataClient = new EgeriaOpenMetadataStoreClient(serverName, targetRootURL, maxPageSize);
-                }
-            }
+            OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreClient(serverName, targetRootURL, secretsStoreConnectorMap, maxPageSize, auditLog);
 
             connectorContext = new ConnectorContextBase(localServerName,
                                                         localServiceName,

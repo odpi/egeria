@@ -32,10 +32,12 @@ public class ConformanceSuiteOperationalServices
 {
     private final ConformanceServicesInstanceMap instanceMap = new ConformanceServicesInstanceMap();
 
-    private final String                  localServerName;               /* Initialized in constructor */
-    private final String                  localServerUserId;             /* Initialized in constructor */
-    private final String                  localServerPassword;           /* Initialized in constructor */
-    private final int                     maxPageSize;                   /* Initialized in constructor */
+    private final String localServerName;               /* Initialized in constructor */
+    private final String localServerUserId;             /* Initialized in constructor */
+    private final String localServerSecretStoreProvider;   /* Initialized in constructor */
+    private final String localServerSecretStoreLocation;   /* Initialized in constructor */
+    private final String localServerSecretStoreCollection; /* Initialized in constructor */
+    private final int    maxPageSize;                   /* Initialized in constructor */
 
 
     /**
@@ -43,18 +45,23 @@ public class ConformanceSuiteOperationalServices
      *
      * @param localServerName   name of the local server
      * @param localServerUserId user id for this server to use if processing inbound messages.
-     * @param localServerPassword password for this server to use with UserId when sending REST calls.
-     *                            (If null then REST calls have no authentication information in them.)
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize       maximum number of records that can be requested on the pageSize parameter
      */
     public ConformanceSuiteOperationalServices(String localServerName,
                                                String localServerUserId,
-                                               String localServerPassword,
+                                               String localServerSecretsStoreProvider,
+                                               String localServerSecretsStoreLocation,
+                                               String localServerSecretsStoreCollection,
                                                int    maxPageSize)
     {
         this.localServerName = localServerName;
         this.localServerUserId = localServerUserId;
-        this.localServerPassword = localServerPassword;
+        this.localServerSecretStoreProvider   = localServerSecretsStoreProvider;
+        this.localServerSecretStoreLocation   = localServerSecretsStoreLocation;
+        this.localServerSecretStoreCollection = localServerSecretsStoreCollection;
         this.maxPageSize = maxPageSize;
     }
 
@@ -105,7 +112,9 @@ public class ConformanceSuiteOperationalServices
         if (conformanceSuiteConfig.getPlatformWorkbenchConfig() != null)
         {
             PlatformConformanceWorkPad   platformConformanceWorkPad = new PlatformConformanceWorkPad(localServerUserId,
-                                                                                                     localServerPassword,
+                                                                                                     localServerSecretStoreProvider,
+                                                                                                     localServerSecretStoreLocation,
+                                                                                                     localServerSecretStoreCollection,
                                                                                                      maxPageSize,
                                                                                                      auditLog,
                                                                                                      conformanceSuiteConfig.getPlatformWorkbenchConfig());
@@ -123,7 +132,9 @@ public class ConformanceSuiteOperationalServices
         {
             final String workBenchName = "Repository Conformance Workbench";
             RepositoryConformanceWorkPad   repositoryConformanceWorkPad = new RepositoryConformanceWorkPad(localServerUserId,
-                                                                                                           localServerPassword,
+                                                                                                           localServerSecretStoreProvider,
+                                                                                                           localServerSecretStoreLocation,
+                                                                                                           localServerSecretStoreCollection,
                                                                                                            maxPageSize,
                                                                                                            auditLog,
                                                                                                            conformanceSuiteConfig.getRepositoryWorkbenchConfig());
@@ -147,10 +158,12 @@ public class ConformanceSuiteOperationalServices
         {
             final String workBenchName = "Repository Performance Workbench";
             PerformanceWorkPad performanceWorkPad = new PerformanceWorkPad(localServerUserId,
-                    localServerPassword,
-                    maxPageSize,
-                    auditLog,
-                    conformanceSuiteConfig.getRepositoryPerformanceConfig());
+                                                                           localServerSecretStoreProvider,
+                                                                           localServerSecretStoreLocation,
+                                                                           localServerSecretStoreCollection,
+                                                                           maxPageSize,
+                                                                           auditLog,
+                                                                           conformanceSuiteConfig.getRepositoryPerformanceConfig());
             workbenchWorkPads.add(performanceWorkPad);
 
             PerformanceWorkbench performanceWorkbench = new PerformanceWorkbench(performanceWorkPad);

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class MetadataExpertInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.METADATA_EXPERT;
 
-    private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataHandlerMap;
+    private final ViewServiceClientMap<EgeriaOpenMetadataStoreClient> openMetadataHandlerMap;
 
 
     /**
@@ -32,7 +32,6 @@ public class MetadataExpertInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -41,7 +40,6 @@ public class MetadataExpertInstance extends OMVSServiceInstance
     public MetadataExpertInstance(String                  serverName,
                                     AuditLog                auditLog,
                                     String                  localServerUserId,
-                                    String                  localServerUserPassword,
                                     int                     maxPageSize,
                                     String                  remoteServerName,
                                     String                  remoteServerURL,
@@ -51,15 +49,12 @@ public class MetadataExpertInstance extends OMVSServiceInstance
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
+        this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreClient.class,
                                                                  serverName,
-                                                                 localServerUserId,
-                                                                 localServerUserPassword,
                                                                  auditLog,
                                                                  activeViewServices,
                                                                  myDescription.getViewServiceFullName(),

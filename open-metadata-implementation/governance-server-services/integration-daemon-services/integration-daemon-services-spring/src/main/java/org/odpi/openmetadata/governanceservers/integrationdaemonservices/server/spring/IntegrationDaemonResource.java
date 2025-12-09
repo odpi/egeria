@@ -4,6 +4,10 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
@@ -20,7 +24,14 @@ import org.springframework.web.bind.annotation.*;
  * The integration daemon server routes these requests to the named integration services.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/integration-daemon/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/integration-daemon")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Integration Daemon Services", description="The integration daemon services host one or more integration services that support " +
         "metadata exchange with third party technology.",
@@ -38,10 +49,10 @@ public class IntegrationDaemonResource
      * listener for open lineage events.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param event open lineage event to publish.
      */
-    @PostMapping(path = "/api/v1/lineage")
+    @PostMapping(path = "/publish-open-lineage-event")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="publishOpenLineageEvent",
             description="Sent an Open Lineage event to the integration daemon.  It will pass it on to the integration connectors that have" +
@@ -49,11 +60,10 @@ public class IntegrationDaemonResource
             externalDocs=@ExternalDocumentation(description="Open Lineage Standard",
                     url="https://egeria-project.org/features/lineage-management/overview/#the-openlineage-standard"))
 
-    void publishOpenLineageEvent(@PathVariable String serverName,
-                                 @PathVariable String userId,
-                                 @RequestBody  String event)
+    VoidResponse publishOpenLineageEvent(@PathVariable String serverName,
+                                         @RequestBody  String event)
     {
-        restAPI.publishOpenLineageEvent(serverName, userId, event);
+        return restAPI.publishOpenLineageEvent(serverName, event);
     }
 
 
@@ -61,23 +71,22 @@ public class IntegrationDaemonResource
      * Return the status of each of the integration services and integration groups running in the integration daemon.
      *
      * @param serverName integration daemon name
-     * @param userId calling user
      * @return list of statuses - one for each assigned integration services or integration group
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @GetMapping(path = "/status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getIntegrationDaemonStatus",
             description="Return the status of each of the integration services and integration groups running in the integration daemon.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
-    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(@PathVariable String   serverName,
-                                                                      @PathVariable String   userId)
+    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(@PathVariable String   serverName)
     {
-        return restAPI.getIntegrationDaemonStatus(serverName, userId);
+        return restAPI.getIntegrationDaemonStatus(serverName);
     }
 
 
@@ -85,7 +94,6 @@ public class IntegrationDaemonResource
      * Retrieve the configuration properties of the named integration connector running in the integration daemon.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param connectorName name of a specific connector
      *
      * @return properties map or
@@ -94,6 +102,7 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @GetMapping(path = "/integration-connectors/{connectorName}/configuration-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConfigurationProperties",
             description="Retrieve the configuration properties of the named integration connector running in the integration daemon.",
@@ -101,10 +110,9 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public PropertiesResponse getConfigurationProperties(@PathVariable String serverName,
-                                                         @PathVariable String userId,
                                                          @PathVariable String connectorName)
     {
-        return restAPI.getConfigurationProperties(serverName, userId, connectorName);
+        return restAPI.getConfigurationProperties(serverName, connectorName);
     }
 
 
@@ -113,7 +121,6 @@ public class IntegrationDaemonResource
      * connector name is supplied.  This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
      * @return void or
@@ -122,6 +129,7 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-connectors/configuration-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateConfigurationProperties",
             description="Update the configuration properties of the integration connectors, or specific integration connector if a connector name is supplied.  This update is in memory and will not persist over a server restart.",
@@ -129,10 +137,9 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public  VoidResponse updateConfigurationProperties(@PathVariable String                               serverName,
-                                                       @PathVariable String                               userId,
                                                        @RequestBody  ConnectorConfigPropertiesRequestBody requestBody)
     {
-        return restAPI.updateConfigurationProperties(serverName, userId, requestBody);
+        return restAPI.updateConfigurationProperties(serverName, requestBody);
     }
 
 
@@ -141,7 +148,6 @@ public class IntegrationDaemonResource
      * This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param connectorName name of a specific connector
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
@@ -151,6 +157,7 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-connectors/{connectorName}/endpoint-network-address")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateEndpointNetworkAddress",
             description="Update the endpoint network address for a specific integration connector.  This update is in memory and will not persist over a server restart.",
@@ -158,11 +165,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public  VoidResponse updateEndpointNetworkAddress(@PathVariable String            serverName,
-                                                      @PathVariable String            userId,
                                                       @PathVariable String            connectorName,
                                                       @RequestBody  StringRequestBody requestBody)
     {
-        return restAPI.updateEndpointNetworkAddress(serverName, userId, connectorName, requestBody);
+        return restAPI.updateEndpointNetworkAddress(serverName, connectorName, requestBody);
     }
 
 
@@ -171,7 +177,6 @@ public class IntegrationDaemonResource
      * This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param connectorName name of a specific connector
      * @param requestBody new connection object
      *
@@ -181,6 +186,7 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-connectors/{connectorName}/connection")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateConnectorConnection",
             description="Update the connection for a specific integration connector.  This update is in memory and will not persist over a server restart.",
@@ -188,11 +194,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public  VoidResponse updateConnectorConnection(@PathVariable String     serverName,
-                                                   @PathVariable String     userId,
                                                    @PathVariable String     connectorName,
                                                    @RequestBody  Connection requestBody)
     {
-        return restAPI.updateConnectorConnection(serverName, userId, connectorName,requestBody);
+        return restAPI.updateConnectorConnection(serverName, connectorName,requestBody);
     }
 
 
@@ -200,7 +205,6 @@ public class IntegrationDaemonResource
      * Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param requestBody optional name of the connector to target - if no connector name is specified, all
      *                      connectors managed by this integration service are refreshed.
      *
@@ -210,6 +214,7 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @PostMapping(path = "/integration-connectors/refresh")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshConnectors",
             description="Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.",
@@ -217,10 +222,9 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public VoidResponse refreshConnectors(@PathVariable                  String          serverName,
-                                          @PathVariable                  String          userId,
                                           @RequestBody(required = false) NameRequestBody requestBody)
     {
-        return restAPI.refreshConnectors(serverName, userId, requestBody);
+        return restAPI.refreshConnectors(serverName, requestBody);
     }
 
 
@@ -228,7 +232,6 @@ public class IntegrationDaemonResource
      * Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param requestBody optional name of the connector to target - if no connector name is specified, all
      *                      connectors managed by this integration service are refreshed.
      *
@@ -238,6 +241,7 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @PostMapping(path = "/integration-connectors/restart")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="restartConnectors",
             description="Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.",
@@ -245,10 +249,9 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public VoidResponse restartConnectors(@PathVariable                  String          serverName,
-                                          @PathVariable                  String          userId,
                                           @RequestBody(required = false) NameRequestBody requestBody)
     {
-        return restAPI.restartConnectors(serverName, userId, requestBody);
+        return restAPI.restartConnectors(serverName, requestBody);
     }
 
 
@@ -256,13 +259,13 @@ public class IntegrationDaemonResource
      * Retrieve the description and status of the requested integration group.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @param integrationGroupName name of integration group of interest
      * @return list of statuses - on for each assigned integration groups or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
     @GetMapping(path = "/integration-groups/{integrationGroupName}/summary")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getIntegrationGroupSummary",
             description="Retrieve the description and status of the requested integration group.",
@@ -270,10 +273,9 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public IntegrationGroupSummaryResponse getIntegrationGroupSummary(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
                                                                       @PathVariable String integrationGroupName)
     {
-        return restAPI.getIntegrationGroupSummary(serverName, userId, integrationGroupName);
+        return restAPI.getIntegrationGroupSummary(serverName, integrationGroupName);
     }
 
 
@@ -281,22 +283,21 @@ public class IntegrationDaemonResource
      * Return a summary of each of the integration groups running in the integration daemon.
      *
      * @param serverName integration daemon server name
-     * @param userId calling user
      * @return list of statuses - one for each assigned integration groups
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
     @GetMapping(path = "/integration-groups/summary")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getIntegrationGroupSummaries",
             description="Return a summary of each of the integration groups running in the integration daemon.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
-    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(@PathVariable String serverName,
-                                                                          @PathVariable String userId)
+    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(@PathVariable String serverName)
     {
-        return restAPI.getIntegrationGroupSummaries(serverName, userId);
+        return restAPI.getIntegrationGroupSummaries(serverName);
     }
 
 
@@ -308,7 +309,6 @@ public class IntegrationDaemonResource
      * is in use.
      *
      * @param serverName name of the governance server
-     * @param userId identifier of calling user
      * @param integrationGroupName unique name of the integration group
      *
      * @return void or
@@ -317,6 +317,7 @@ public class IntegrationDaemonResource
      *  IntegrationGroupException there was a problem detected by the integration group.
      */
     @GetMapping(path = "/integration-groups/{integrationGroupName}/refresh-config")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshIntegrationGroupConfig",
             description="Request that the integration group refresh its configuration by calling the metadata access server. " +
@@ -328,9 +329,8 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public  VoidResponse refreshIntegrationGroupConfig(@PathVariable String serverName,
-                                                       @PathVariable String userId,
                                                        @PathVariable String integrationGroupName)
     {
-        return restAPI.refreshIntegrationGroupConfig(serverName, userId, integrationGroupName);
+        return restAPI.refreshIntegrationGroupConfig(serverName, integrationGroupName);
     }
 }

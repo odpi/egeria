@@ -5,6 +5,10 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
@@ -22,7 +26,14 @@ import java.util.Map;
  * configuration documents.  The default is to use a file for each configured OMAG server.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/stores")
+@RequestMapping("/open-metadata/admin-services/stores")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Set up Configuration Document Store",
      description="Dynamically change the connector that accesses the configuration document store.  This overrides the value set in the application.properties (which overrides the default plain-text File Configuration Document Store).  These services are only needed when testing a new implementation of the configuration document store.",
@@ -36,177 +47,174 @@ public class ConfigStoreResource
     /**
      * Override the default server configuration document.
      *
-     * @param userId calling user.
      * @param defaultServerConfig values to include in every new configured server.
      * @return void response
      */
     @PostMapping(path = "/default-configuration-document")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setDefaultOMAGServerConfig",
             description="Override the default server configuration document.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public  VoidResponse setDefaultOMAGServerConfig(@PathVariable String           userId,
-                                                    @RequestBody  OMAGServerConfig defaultServerConfig)
+    public  VoidResponse setDefaultOMAGServerConfig(@RequestBody  OMAGServerConfig defaultServerConfig)
     {
-        return adminStoreAPI.setDefaultOMAGServerConfig(userId, defaultServerConfig);
+        return adminStoreAPI.setDefaultOMAGServerConfig(defaultServerConfig);
     }
 
 
     /**
      * Return the default server configuration document.
      *
-     * @param userId calling user
      * @return OMAGServerConfig response
      */
     @GetMapping(path = "/default-configuration-document")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getDefaultOMAGServerConfig",
             description="Return the default server configuration document.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public OMAGServerConfigResponse getDefaultOMAGServerConfig(@PathVariable String       userId)
+    public OMAGServerConfigResponse getDefaultOMAGServerConfig()
     {
-        return adminStoreAPI.getDefaultOMAGServerConfig(userId);
+        return adminStoreAPI.getDefaultOMAGServerConfig();
     }
 
 
     /**
      * Clear the default configuration document.
      *
-     * @param userId calling user
      * @return void
      */
     @DeleteMapping(path = "/default-configuration-document")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearDefaultOMAGServerConfig",
             description="Clear the default configuration document.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearDefaultOMAGServerConfig(@PathVariable String   userId)
+    public VoidResponse clearDefaultOMAGServerConfig()
     {
-        return adminStoreAPI.clearDefaultOMAGServerConfig(userId);
+        return adminStoreAPI.clearDefaultOMAGServerConfig();
     }
 
 
     /**
      * Override the placeholder variables.
      *
-     * @param userId calling user.
      * @param placeholderVariables values to include in every new configured server.
      * @return void response
      */
     @PostMapping(path = "/placeholder-variables")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setPlaceholderVariables",
             description="Override the placeholder variables that will replace placeholders found in an OMAG server's configuration document at server start up.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public  VoidResponse setPlaceholderVariables(@PathVariable String              userId,
-                                                 @RequestBody  Map<String, String> placeholderVariables)
+    public  VoidResponse setPlaceholderVariables(@RequestBody  Map<String, String> placeholderVariables)
     {
-        return adminStoreAPI.setPlaceholderVariables(userId, placeholderVariables);
+        return adminStoreAPI.setPlaceholderVariables(placeholderVariables);
     }
 
 
     /**
      * Return the placeholder variables.
      *
-     * @param userId calling user
      * @return string map response
      */
     @GetMapping(path = "/placeholder-variables")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getPlaceholderVariables",
             description="Return the placeholder variables that will replace placeholders found in an OMAG server's configuration document at server start up.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public StringMapResponse getPlaceholderVariables(@PathVariable String       userId)
+    public StringMapResponse getPlaceholderVariables()
     {
-        return adminStoreAPI.getPlaceholderVariables(userId);
+        return adminStoreAPI.getPlaceholderVariables();
     }
 
 
     /**
      * Clear the placeholder variables used whenever an OMAG Server is started.
      *
-     * @param userId calling user
      * @return current setting of default server configuration
      */
     @DeleteMapping(path = "/placeholder-variables")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearPlaceholderVariables",
             description="Clear the placeholder variables used whenever an OMAG Server is started.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearPlaceholderVariables(@PathVariable String   userId)
+    public VoidResponse clearPlaceholderVariables()
     {
-        return adminStoreAPI.clearPlaceholderVariables(userId);
+        return adminStoreAPI.clearPlaceholderVariables();
     }
 
 
     /**
      * Override the default implementation or configuration of the configuration document store.
      *
-     * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
      * @return void response
      */
     @PostMapping(path = "/connection")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setConfigurationStoreConnection",
                description="Override the default implementation or configuration of the configuration document store.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
-    public VoidResponse setConfigurationStoreConnection(@PathVariable String     userId,
-                                                        @RequestBody  Connection connection)
+    public VoidResponse setConfigurationStoreConnection(@RequestBody  Connection connection)
     {
-        return adminStoreAPI.setConfigurationStoreConnection(userId, connection);
+        return adminStoreAPI.setConfigurationStoreConnection(connection);
     }
 
 
     /**
      * Return the connection object for the configuration store.  Null is returned if the server should use the default store.
      *
-     * @param userId calling user
      * @return connection response
      */
     @GetMapping(path = "/connection")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConfigurationStoreConnection",
                description="Return the connection object for the configuration store.  Null is returned if the server should use the default store.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
-    public ConnectionResponse getConfigurationStoreConnection(@PathVariable String       userId)
+    public ConnectionResponse getConfigurationStoreConnection()
     {
-        return adminStoreAPI.getConfigurationStoreConnection(userId);
+        return adminStoreAPI.getConfigurationStoreConnection();
     }
 
 
     /**
      * Clear the connection object for the configuration store which means the platform uses the default store.
      *
-     * @param userId calling user
      * @return void response
      */
     @DeleteMapping(path = "/connection")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearConfigurationStoreConnection",
                description="Clear the connection object for the configuration store which means the platform uses the default store.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
-    public  VoidResponse clearConfigurationStoreConnection(@PathVariable String   userId)
+    public  VoidResponse clearConfigurationStoreConnection()
     {
-        return adminStoreAPI.clearConfigurationStoreConnection(userId);
+        return adminStoreAPI.clearConfigurationStoreConnection();
     }
 }

@@ -1,5 +1,25 @@
 # Egeria-server-operations
 
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@server=active-metadata-store
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
 ###
 # @name Get active server configuration
 # Retrieve the configuration document used to start the named server.
@@ -7,25 +27,29 @@
 # This operation makes it possible to verify the configuration values actually
 # being used in the running server. An InvalidParameterException is returned if the server is not running.
 # Further Information: https://egeria-project.org/concepts/configuration-document
-GET {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/{{server}}/instance/configuration
+GET {{baseURL}}/open-metadata/server-operations/servers/{{server}}/instance/configuration
+Authorization: Bearer {{token}}
 
 ###
 # @name Get active server instance status
 # Retrieve the status for a running instance of a server. This includes the status of each running
 # service. It is used to verify that the required services are running.  An InvalidParameterException is returned if the server is not running.
 # Further Information: https://egeria-project.org/concepts/omag-server
-GET {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/{{server}}/instance/status
+GET {{baseURL}}/open-metadata/server-operations/servers/{{server}}/instance/status
+Authorization: Bearer {{token}}
 
 ###
 # @name Query the active services of a specific server
 # Retrieve the list of services that are running inside of a specific server.
-GET {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/{{server}}/services
+GET {{baseURL}}/open-metadata/server-operations/servers/{{server}}/services
+Authorization: Bearer {{token}}
 
 
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/{{server}}/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/{{server}}/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CocoComboArchive.omarchive
@@ -33,7 +57,8 @@ content-packs/CocoComboArchive.omarchive
 ###
 # @name Load open metadata archive connection
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/instance/open-metadata-archives/connection
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/instance/open-metadata-archives/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

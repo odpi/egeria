@@ -1270,7 +1270,7 @@ class InMemoryOMRSMetadataStore
                     matches = getClassificationsForInclusiveDate(classificationName,
                                                                  fromTime,
                                                                  toTime,
-                                                                 this.entity.getClassifications(),
+                                                                 historicalInstance.getClassifications(),
                                                                  followingUpdateTime);
 
                     if (matches != null)
@@ -1296,14 +1296,14 @@ class InMemoryOMRSMetadataStore
                         /*
                          * Add to the front
                          */
-                        historyResults.add(0, historyMap.get(version));
+                        historyResults.add(historyMap.get(version));
                     }
                     else
                     {
                         /*
                          * Add to the back
                          */
-                        historyResults.add(historyMap.get(version));
+                        historyResults.add(0, historyMap.get(version));
                     }
                 }
 

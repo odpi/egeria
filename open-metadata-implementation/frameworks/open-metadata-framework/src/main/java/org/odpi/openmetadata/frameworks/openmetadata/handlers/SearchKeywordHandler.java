@@ -100,23 +100,24 @@ public class SearchKeywordHandler extends OpenMetadataHandlerBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties   properties of the searchKeyword
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateSearchKeyword(String                  userId,
-                                      String                  searchKeywordGUID,
-                                      UpdateOptions           updateOptions,
-                                      SearchKeywordProperties properties) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public boolean updateSearchKeyword(String                  userId,
+                                       String                  searchKeywordGUID,
+                                       UpdateOptions           updateOptions,
+                                       SearchKeywordProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName = "updateSearchKeyword";
         final String propertiesParameterName   = "properties";
 
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
-        openMetadataClient.updateMetadataElementInStore(userId, searchKeywordGUID, updateOptions, elementBuilder.getNewElementProperties(properties));
+        return openMetadataClient.updateMetadataElementInStore(userId, searchKeywordGUID, updateOptions, elementBuilder.getNewElementProperties(properties));
     }
 
 

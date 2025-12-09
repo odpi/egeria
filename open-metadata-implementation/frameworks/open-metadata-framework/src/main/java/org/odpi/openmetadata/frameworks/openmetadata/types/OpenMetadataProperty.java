@@ -306,11 +306,6 @@ public enum OpenMetadataProperty
     /**
      * The user identifier for the person/system executing the request.
      */
-    USER("user", DataType.STRING, DataType.STRING.getName(), "The user identifier for the person/system executing the request.", null, "1afa1bb1-a9f0-4739-a45a-ff0d01b867f5"),
-
-    /**
-     * The user identifier for the person/system executing the request.
-     */
     USER_ID("userId", DataType.STRING, DataType.STRING.getName(), "The user identifier for the person/system executing the request.", null, "c65a21dc-d1ae-4a8f-ba33-58ec401c1b42"),
 
     /**
@@ -322,7 +317,6 @@ public enum OpenMetadataProperty
      * The fully qualified physical location of the data store.
      */
     PATH_NAME("pathName", DataType.STRING, DataType.STRING.getName(), "The fully qualified physical location of the data store.", null, "34d24b66-12f1-437c-afd3-1f1ab3377472"),
-
 
     /**
      * The url path segments that identify this API operation.
@@ -2770,22 +2764,22 @@ public enum OpenMetadataProperty
                   "a457adf0-7034-4988-968a-dd537d0ded15"),
 
     /**
-     * The action that has been taken by the producer of the notification.
+     * The activity/discovery of the producer that resulted in this action.
      */
-    SYSTEM_ACTION("systemAction",
-                  DataType.STRING, DataType.STRING.getName(),
-                  "The action that has been taken by the producer of the notification.",
-                  null,
-                  "6b354ca7-1a85-4cab-8b1e-0da5ad7f3724"),
+    SITUATION("situation",
+              DataType.STRING, DataType.STRING.getName(),
+              "The activity/discovery of the producer that resulted in this action.",
+              null,
+              "6b354ca7-1a85-4cab-8b1e-0da5ad7f3724"),
 
     /**
-     * The action that has been taken by the producer of the notification.
+     * The action that the person or automated process should perform.
      */
-    USER_RESPONSE("userResponse",
-                  DataType.STRING, DataType.STRING.getName(),
-                  "The action that the receiver of this notification should perform.",
-                  null,
-                  "0b015138-0870-4604-9df1-5bda47101d74"),
+    EXPECTED_BEHAVIOUR("expectedBehaviour",
+                       DataType.STRING, DataType.STRING.getName(),
+                       "The action that the person or automated process should perform.",
+                       null,
+                       "0b015138-0870-4604-9df1-5bda47101d74"),
 
     /**
      * Expression used to filter data values passing through element.

@@ -13,7 +13,7 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.Gove
 
 
 /**
- * OpenMetadataOutTopicListener is a class that is registered to listen on the Governance Engine OMAS's
+ * OpenMetadataOutTopicListener is a class that is registered to listen on the OMF's
  * out topic to receive any changes to metadata.
  */
 public class OpenMetadataOutTopicListener implements OpenMetadataEventListener

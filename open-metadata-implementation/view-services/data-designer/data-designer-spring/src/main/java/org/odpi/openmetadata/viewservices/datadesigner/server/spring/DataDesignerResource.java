@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Data Designer OMVS", description="Supports the building of data specifications and data dictionaries to support your teams when communicating data requirements to one another.  The data dictionary defines commonly used data fields, and the data specification defines the specific data requirements for a project. Data specifications are also used to describe the data provided by a digital product.",
+@Tag(name="API: Data Designer", description="Supports the building of data specifications and data dictionaries to support your teams when communicating data requirements to one another.  The data dictionary defines commonly used data fields, and the data specification defines the specific data requirements for a project. Data specifications are also used to describe the data provided by a digital product.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-designer/overview/"))
 
@@ -107,7 +107,7 @@ public class DataDesignerResource
      * @param dataStructureGUID unique identifier of the data structure (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -120,12 +120,12 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-structure"))
 
-    public VoidResponse updateDataStructure(@PathVariable
-                                            String                                  serverName,
-                                            @PathVariable
-                                            String                                  dataStructureGUID,
-                                            @RequestBody (required = false)
-                                            UpdateElementRequestBody requestBody)
+    public BooleanResponse updateDataStructure(@PathVariable
+                                                   String                                  serverName,
+                                               @PathVariable
+                                                   String                                  dataStructureGUID,
+                                               @RequestBody (required = false)
+                                                   UpdateElementRequestBody requestBody)
     {
         return restAPI.updateDataStructure(serverName, dataStructureGUID, requestBody);
     }
@@ -384,7 +384,7 @@ public class DataDesignerResource
      * @param dataFieldGUID unique identifier of the data field (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -397,12 +397,12 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-field"))
 
-    public VoidResponse updateDataField(@PathVariable
-                                        String                                  serverName,
-                                        @PathVariable
-                                        String                                  dataFieldGUID,
-                                        @RequestBody (required = false)
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse updateDataField(@PathVariable
+                                               String                                  serverName,
+                                           @PathVariable
+                                               String                                  dataFieldGUID,
+                                           @RequestBody (required = false)
+                                               UpdateElementRequestBody requestBody)
     {
         return restAPI.updateDataField(serverName, dataFieldGUID, requestBody);
     }
@@ -662,7 +662,7 @@ public class DataDesignerResource
      * @param dataClassGUID unique identifier of the data class (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -675,12 +675,12 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-class"))
 
-    public VoidResponse updateDataClass(@PathVariable
-                                        String                                  serverName,
-                                        @PathVariable
-                                        String                                  dataClassGUID,
-                                        @RequestBody (required = false)
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse updateDataClass(@PathVariable
+                                               String                                  serverName,
+                                           @PathVariable
+                                               String                                  dataClassGUID,
+                                           @RequestBody (required = false)
+                                               UpdateElementRequestBody requestBody)
     {
         return restAPI.updateDataClass(serverName, dataClassGUID, requestBody);
     }

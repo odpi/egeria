@@ -9,8 +9,13 @@ import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RES
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
 import org.odpi.openmetadata.conformance.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
+
+import java.util.Map;
 
 
 /**
@@ -24,22 +29,35 @@ class RESTClient
 
 
     /**
-     * Constructor for no authentication.
+     * Constructor for bearer token authentication.
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @throws RESTConfigurationException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    RESTClient(String serverName,
-               String serverPlatformURLRoot) throws RESTConfigurationException
+    RESTClient(String   serverName,
+               String   serverPlatformURLRoot,
+               String   secretsStoreProvider,
+               String   secretsStoreLocation,
+               String   secretsStoreCollection,
+               AuditLog auditLog) throws RESTConfigurationException
     {
         final String  methodName = "RESTClient(no authentication)";
 
-        RESTClientFactory  factory = new RESTClientFactory(serverName, serverPlatformURLRoot);
-
         try
         {
+            RESTClientFactory  factory = new RESTClientFactory(serverName,
+                                                               serverPlatformURLRoot,
+                                                               secretsStoreProvider,
+                                                               secretsStoreLocation,
+                                                               secretsStoreCollection,
+                                                               SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                                               auditLog);
+
             this.clientConnector = factory.getClientConnector();
         }
         catch (Exception     error)
@@ -64,27 +82,25 @@ class RESTClient
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages.
      * @throws RESTConfigurationException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    RESTClient(String serverName,
-               String serverPlatformURLRoot,
-               String userId,
-               String password) throws RESTConfigurationException
+    RESTClient(String                             serverName,
+               String                             serverPlatformURLRoot,
+               Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+               AuditLog                           auditLog) throws RESTConfigurationException
     {
         final String  methodName = "RESTClient(userId and password)";
 
-        RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           serverPlatformURLRoot,
-                                                           userId,
-                                                           password,
-                                                           null,
-                                                           null);
-
         try
         {
+            RESTClientFactory  factory = new RESTClientFactory(serverName,
+                                                               serverPlatformURLRoot,
+                                                               secretsStoreConnectorMap,
+                                                               auditLog);
+
             this.clientConnector = factory.getClientConnector();
         }
         catch (Exception     error)

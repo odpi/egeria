@@ -46,7 +46,7 @@ public class OMRSConfigurationFactory
      */
     private OpenMetadataEventProtocolVersion getDefaultEnterpriseOMRSTopicProtocolVersion()
     {
-        return OpenMetadataEventProtocolVersion.V1;
+        return OpenMetadataEventProtocolVersion.V2;
     }
 
 
@@ -57,7 +57,7 @@ public class OMRSConfigurationFactory
      */
     private OpenMetadataEventProtocolVersion getDefaultCohortOMRSTopicProtocolVersion()
     {
-        return OpenMetadataEventProtocolVersion.V1;
+        return OpenMetadataEventProtocolVersion.V2;
     }
 
 

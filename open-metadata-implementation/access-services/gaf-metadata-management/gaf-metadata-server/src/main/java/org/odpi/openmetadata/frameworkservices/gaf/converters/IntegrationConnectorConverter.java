@@ -90,19 +90,35 @@ public class IntegrationConnectorConverter<B> extends OMFConverter<B>
                     properties.setDescription(this.removeDescription(instanceProperties));
                     properties.setUsesBlockingCalls(this.removeUsesBlockingCalls(instanceProperties));
 
-                    if (supplementaryEntities != null)
+                    /*
+                     * Locate the connection attached to the asset and construct the nested collection of objects
+                     * that makes up the connection.  Note that connections can be nested in other connections to
+                     * multiple levels.
+                     */
+                    if (relationships != null)
                     {
-                        for (EntityDetail entity : supplementaryEntities)
+                        for (Relationship relationship : relationships)
                         {
-                            if ((entity != null) && (entity.getType() != null))
+                            if ((relationship != null) && (relationship.getType() != null))
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION.typeName))
+                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
                                 {
-                                    properties.setConnection(super.getEmbeddedConnection(beanClass,
-                                                                                         entity,
-                                                                                         supplementaryEntities,
-                                                                                         relationships,
-                                                                                         methodName));
+                                    String entityGUID = relationship.getEntityTwoProxy().getGUID();
+
+                                    if (supplementaryEntities != null)
+                                    {
+                                        for (EntityDetail entity : supplementaryEntities)
+                                        {
+                                            if ((entity != null) && (entity.getGUID().equals(entityGUID)))
+                                            {
+                                                properties.setConnection(super.getEmbeddedConnection(beanClass,
+                                                                                                     entity,
+                                                                                                     supplementaryEntities,
+                                                                                                     relationships,
+                                                                                                     methodName));
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -18,7 +18,6 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataUserSecurity;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
-import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -177,32 +176,97 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * Return the list of visible zones for this user.
      *
      * @param userId calling user
+     * @param typeName type of the element
+     * @param methodName name of the called service
      * @return list of zone names
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException problem from the verifier
      * @throws UserNotAuthorizedException user not recognized
      */
-    public List<String> getVisibleZones(String userId) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    public List<String> getSupportedZones(String userId,
+                                          String typeName,
+                                          String methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         /*
-         * The userId is always one of the visible zones
+         * The userId is always one of the supported zones
          */
-        Set<String> updatedZones = new HashSet<>(Collections.singletonList(userId));
-
         if (userSecurityConnector != null)
         {
-            OpenMetadataUserAccount userAccount = userSecurityConnector.getUserAccount(userId);
-
-            if ((userAccount != null) && (userAccount.getZoneAccess() != null) && (! userAccount.getZoneAccess().isEmpty()))
-            {
-                updatedZones.addAll(userAccount.getZoneAccess().keySet());
-
-            }
+            return userSecurityConnector.getSupportedZonesForUser(new ArrayList<>(Collections.singletonList(userId)),
+                                                                  typeName,
+                                                                  methodName,
+                                                                  userId);
         }
 
-        return new ArrayList<>(updatedZones);
+        return new ArrayList<>(Collections.singletonList(userId));
+    }
+
+
+    /**
+     * Return the list of visible zones for this user.
+     *
+     * @param userId calling user
+     * @param typeName type of the element
+     * @param methodName name of the called service
+     * @return list of zone names
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem from the verifier
+     * @throws UserNotAuthorizedException user not recognized
+     */
+    public List<String> getDefaultZones(List<String> initialZones,
+                                        String       userId,
+                                        String       typeName,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        /*
+         * The userId is always one of the supported zones
+         */
+        if (userSecurityConnector != null)
+        {
+            return userSecurityConnector.getDefaultZonesForUser(initialZones,
+                                                                typeName,
+                                                                methodName,
+                                                                userId);
+        }
+
+        return initialZones;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the default zones depending on the user and the
+     * default publish zones set up for the service.  This is called whenever an element is published.
+     *
+     * @param currentZones default setting of the published zones
+     * @param userId calling user
+     * @param typeName type of the element
+     * @param methodName name of the called service
+     *
+     * @return list of published zones for the user
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem from the verifier
+     * @throws UserNotAuthorizedException user not recognized
+     */
+    public List<String> getPublishZones(List<String> currentZones,
+                                        String       userId,
+                                        String       typeName,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        if (userSecurityConnector != null)
+        {
+            return userSecurityConnector.getPublishZonesForUser(currentZones,
+                                                                typeName,
+                                                                methodName,
+                                                                userId);
+        }
+
+        return currentZones;
     }
 
 
@@ -402,7 +466,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                                                InvalidParameterException,
                                                                                                PropertyServerException
     {
-        this.elementVisibleToUser(userId, "<new>", classifications, repositoryHelper, serviceName, methodName);
+        this.elementVisibleToUser(userId, "<new>", entityTypeName, classifications, repositoryHelper, serviceName, methodName);
 
         if (elementSecurityConnector != null)
         {
@@ -415,13 +479,19 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * Validate that the user has visibility to the zones associated with the element.
      *
      * @param userId calling user
+     * @param elementGUID element to verify
+     * @param typeName name of type
      * @param classifications element's classification where the ZoneMembership lies
+     * @param repositoryHelper repository helper
+     * @param serviceName calling service
+     * @param methodName calling method
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void elementVisibleToUser(String               userId,
                                       String               elementGUID,
+                                      String               typeName,
                                       List<Classification> classifications,
                                       OMRSRepositoryHelper repositoryHelper,
                                       String               serviceName,
@@ -450,7 +520,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                 invalidParameterHandler.validateElementInSupportedZone(elementGUID,
                                                                        OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                        elementZoneMembership,
-                                                                       this.getVisibleZones(userId),
+                                                                       this.getSupportedZones(userId, typeName, methodName),
                                                                        serviceName,
                                                                        methodName);
             }
@@ -480,6 +550,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         this.elementVisibleToUser(userId,
                                   requestedEntity.getGUID(),
+                                  requestedEntity.getType().getTypeDefName(),
                                   requestedEntity.getClassifications(),
                                   repositoryHelper,
                                   serviceName,

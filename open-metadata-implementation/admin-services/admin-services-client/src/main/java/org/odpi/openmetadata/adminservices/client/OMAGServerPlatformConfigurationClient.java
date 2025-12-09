@@ -6,16 +6,18 @@ package org.odpi.openmetadata.adminservices.client;
 import org.odpi.openmetadata.adminservices.client.rest.AdminServicesRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
+import java.util.Map;
 import java.util.Set;
 
 
@@ -26,7 +28,6 @@ import java.util.Set;
  */
 public class OMAGServerPlatformConfigurationClient
 {
-    protected String adminUserId;              /* Initialized in constructor */
     protected String serverPlatformRootURL;    /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -37,29 +38,29 @@ public class OMAGServerPlatformConfigurationClient
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public OMAGServerPlatformConfigurationClient(String adminUserId,
-                                                 String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public OMAGServerPlatformConfigurationClient(String                             serverPlatformRootURL,
+                                                 Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                 AuditLog                           auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
         try
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, methodName);
-            invalidParameterHandler.validateUserId(adminUserId, methodName);
 
-            this.adminUserId           = adminUserId;
             this.serverPlatformRootURL = serverPlatformRootURL;
 
-            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL);
+            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -68,33 +69,33 @@ public class OMAGServerPlatformConfigurationClient
      * Create a new client that passes a connection userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is passed as the admin userId.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param connectionUserId      caller's system userId embedded in all HTTP requests
-     * @param connectionPassword    caller's system password embedded in all HTTP requests
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public OMAGServerPlatformConfigurationClient(String adminUserId,
-                                                 String serverPlatformRootURL,
-                                                 String connectionUserId,
-                                                 String connectionPassword) throws OMAGInvalidParameterException
+    public OMAGServerPlatformConfigurationClient(String   serverPlatformRootURL,
+                                                 String   secretStoreProvider,
+                                                 String   secretStoreLocation,
+                                                 String   secretStoreCollection,
+                                                 AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor (with security)";
 
         try
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, methodName);
-            invalidParameterHandler.validateUserId(adminUserId, methodName);
 
-            this.adminUserId           = adminUserId;
             this.serverPlatformRootURL = serverPlatformRootURL;
 
-            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, connectionUserId, connectionPassword);
+            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
     }
 
@@ -103,17 +104,17 @@ public class OMAGServerPlatformConfigurationClient
      * Override the default server configuration document.
      *
      * @param defaultServerConfig values to include in every new configured server.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setDefaultOMAGServerConfig(OMAGServerConfig defaultServerConfig) throws OMAGNotAuthorizedException,
-                                                                                        OMAGInvalidParameterException,
+    public void setDefaultOMAGServerConfig(OMAGServerConfig defaultServerConfig) throws UserNotAuthorizedException,
+                                                                                        InvalidParameterException,
                                                                                         OMAGConfigurationErrorException
     {
         final String methodName    = "setDefaultOMAGServerConfig";
         final String parameterName = "defaultServerConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/stores/default-configuration-document";
+        final String urlTemplate   = "/open-metadata/admin-services/stores/default-configuration-document";
 
         try
         {
@@ -121,13 +122,12 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        defaultServerConfig,
-                                        adminUserId);
+                                        defaultServerConfig);
     }
 
 
@@ -135,20 +135,19 @@ public class OMAGServerPlatformConfigurationClient
      * Return the default server configuration document.
      *
      * @return connection response
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public OMAGServerConfig getDefaultOMAGServerConfig() throws OMAGNotAuthorizedException,
-                                                                OMAGInvalidParameterException,
+    public OMAGServerConfig getDefaultOMAGServerConfig() throws UserNotAuthorizedException,
+                                                                InvalidParameterException,
                                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "getDefaultOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/stores/default-configuration-document";
+        final String urlTemplate = "/open-metadata/admin-services/stores/default-configuration-document";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
-                                                                                         serverPlatformRootURL + urlTemplate,
-                                                                                         adminUserId);
+                                                                                         serverPlatformRootURL + urlTemplate);
 
         return restResult.getOMAGServerConfig();
     }
@@ -157,20 +156,19 @@ public class OMAGServerPlatformConfigurationClient
     /**
      * Clear the default configuration document.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearDefaultServerConfig() throws OMAGNotAuthorizedException,
-                                                  OMAGInvalidParameterException,
+    public void clearDefaultServerConfig() throws UserNotAuthorizedException,
+                                                  InvalidParameterException,
                                                   OMAGConfigurationErrorException
     {
         final String methodName  = "clearDefaultServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/stores/default-configuration-document";
+        final String urlTemplate = "/open-metadata/admin-services/stores/default-configuration-document";
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                          serverPlatformRootURL + urlTemplate,
-                                          adminUserId);
+                                          serverPlatformRootURL + urlTemplate);
     }
 
 
@@ -178,17 +176,17 @@ public class OMAGServerPlatformConfigurationClient
      * Override the default implementation or configuration of the configuration document store.
      *
      * @param connection connection object that defines the configuration document store
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setConfigurationStoreConnection(Connection connection) throws OMAGNotAuthorizedException,
-                                                                              OMAGInvalidParameterException,
+    public void setConfigurationStoreConnection(Connection connection) throws UserNotAuthorizedException,
+                                                                              InvalidParameterException,
                                                                               OMAGConfigurationErrorException
     {
         final String methodName    = "setConfigurationStoreConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/stores/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/stores/connection";
 
         try
         {
@@ -196,33 +194,31 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        connection,
-                                        adminUserId);
+                                        connection);
     }
 
 
     /**
      * Clear the connection object for the configuration store which means the platform uses the default store.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearConfigurationStoreConnection() throws OMAGNotAuthorizedException,
-                                                           OMAGInvalidParameterException,
+    public void clearConfigurationStoreConnection() throws UserNotAuthorizedException,
+                                                           InvalidParameterException,
                                                            OMAGConfigurationErrorException
     {
         final String methodName  = "clearConfigurationStoreConnection";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/stores/connection";
+        final String urlTemplate = "/open-metadata/admin-services/stores/connection";
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                          serverPlatformRootURL + urlTemplate,
-                                          adminUserId);
+                                          serverPlatformRootURL + urlTemplate);
     }
 
 
@@ -231,20 +227,19 @@ public class OMAGServerPlatformConfigurationClient
      * using the default store with the default configuration.
      *
      * @return Platform security connection
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Connection getConfigurationStoreConnection() throws OMAGNotAuthorizedException,
-                                                               OMAGInvalidParameterException,
+    public Connection getConfigurationStoreConnection() throws UserNotAuthorizedException,
+                                                               InvalidParameterException,
                                                                OMAGConfigurationErrorException
     {
         final String methodName  = "getConfigurationStoreConnection";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/stores/connection";
+        final String urlTemplate = "/open-metadata/admin-services/stores/connection";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
-                                                                             adminUserId);
+                                                                             serverPlatformRootURL + urlTemplate);
 
         return restResult.getConnection();
     }
@@ -255,18 +250,18 @@ public class OMAGServerPlatformConfigurationClient
      * checks on API requests to the platform.
      *
      * @param connection connection object that defines the platform security connector
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     @Deprecated
-    public void setPlatformSecurityConnection(Connection connection) throws OMAGNotAuthorizedException,
-                                                                            OMAGInvalidParameterException,
+    public void setPlatformSecurityConnection(Connection connection) throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
                                                                             OMAGConfigurationErrorException
     {
         final String methodName    = "setPlatformSecurityConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/platform/security/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/platform/security/connection";
 
         try
         {
@@ -274,7 +269,7 @@ public class OMAGServerPlatformConfigurationClient
         }
         catch (InvalidParameterException error)
         {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
         PlatformSecurityRequestBody requestBody = new PlatformSecurityRequestBody();
@@ -283,8 +278,7 @@ public class OMAGServerPlatformConfigurationClient
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        requestBody,
-                                        adminUserId);
+                                        requestBody);
     }
 
 
@@ -294,21 +288,20 @@ public class OMAGServerPlatformConfigurationClient
      * come from the surrounding deployment environment.
      * This is the default state.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     @Deprecated
-    public void clearPlatformSecurityConnection() throws OMAGNotAuthorizedException,
-                                                         OMAGInvalidParameterException,
+    public void clearPlatformSecurityConnection() throws UserNotAuthorizedException,
+                                                         InvalidParameterException,
                                                          OMAGConfigurationErrorException
     {
         final String methodName  = "clearPlatformSecurityConnection";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/platform/security/connection";
+        final String urlTemplate = "/open-metadata/admin-services/platform/security/connection";
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                          serverPlatformRootURL + urlTemplate,
-                                          adminUserId);
+                                          serverPlatformRootURL + urlTemplate);
     }
 
 
@@ -317,21 +310,20 @@ public class OMAGServerPlatformConfigurationClient
      * has been set up.
      *
      * @return Platform security connection
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     @Deprecated
-    public Connection getPlatformSecurityConnection() throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
-                                                                          OMAGConfigurationErrorException
+    public Connection getPlatformSecurityConnection() throws UserNotAuthorizedException,
+                                                             InvalidParameterException,
+                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "getPlatformSecurityConnection";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/platform/security/connection";
+        final String urlTemplate = "/open-metadata/admin-services/platform/security/connection";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
-                                                                                   adminUserId);
+                                                                             serverPlatformRootURL + urlTemplate);
 
         return restResult.getConnection();
     }
@@ -342,20 +334,19 @@ public class OMAGServerPlatformConfigurationClient
      * Return all the OMAG Server configurations that are stored on this platform
      *
      * @return the OMAG Server configurations that are stored on this platform
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
+    public Set<OMAGServerConfig> getAllServerConfigurations() throws UserNotAuthorizedException,
                                                                      OMAGConfigurationErrorException,
-                                                                     OMAGInvalidParameterException
+                                                                     InvalidParameterException
     {
         final String methodName  = "getPlatformServerConfigs";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/configurations";
+        final String urlTemplate = "/open-metadata/admin-services/configurations";
 
         OMAGServerConfigsResponse restResult = restClient.callGetAllServerConfigurationsRESTCall(methodName,
-                                                                                                 serverPlatformRootURL + urlTemplate,
-                                                                                                 adminUserId);
+                                                                                                 serverPlatformRootURL + urlTemplate);
 
         return restResult.getOMAGServerConfigs();
     }

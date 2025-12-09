@@ -80,7 +80,14 @@ public class PropertyFacetClient extends ConnectorContextClientBase
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
     {
-        return propertyFacetHandler.addPropertyFacetToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties, relationshipProperties);
+        String propertyFacetGUID = propertyFacetHandler.addPropertyFacetToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties, relationshipProperties);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementCreation(propertyFacetGUID);
+        }
+
+        return propertyFacetGUID;
     }
 
 
@@ -91,17 +98,25 @@ public class PropertyFacetClient extends ConnectorContextClientBase
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties   properties of the comment
      *
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updatePropertyFacet(String                  propertyFacetGUID,
-                                      UpdateOptions           updateOptions,
-                                      PropertyFacetProperties properties) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public boolean updatePropertyFacet(String                  propertyFacetGUID,
+                                       UpdateOptions           updateOptions,
+                                       PropertyFacetProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        propertyFacetHandler.updatePropertyFacet(connectorUserId, propertyFacetGUID, updateOptions, properties);
+        boolean updateOccurred = propertyFacetHandler.updatePropertyFacet(connectorUserId, propertyFacetGUID, updateOptions, properties);
+
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
+        {
+            parentContext.getIntegrationReportWriter().reportElementUpdate(propertyFacetGUID);
+        }
+
+        return updateOccurred;
     }
 
 
@@ -121,6 +136,11 @@ public class PropertyFacetClient extends ConnectorContextClientBase
                                                                         UserNotAuthorizedException
     {
         propertyFacetHandler.deletePropertyFacet(connectorUserId, propertyFacetGUID, deleteOptions);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementDelete(propertyFacetGUID);
+        }
     }
 
 

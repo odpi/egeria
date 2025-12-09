@@ -123,26 +123,27 @@ public class MetadataRepositoryCohortHandler extends OpenMetadataHandlerBase
      * @param metadataRepositoryCohortGUID       unique identifier of the open metadata repository cohort (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateMetadataRepositoryCohort(String                             userId,
-                                               String                             metadataRepositoryCohortGUID,
-                                               UpdateOptions                      updateOptions,
-                                               MetadataRepositoryCohortProperties properties) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    public boolean updateMetadataRepositoryCohort(String                             userId,
+                                                  String                             metadataRepositoryCohortGUID,
+                                                  UpdateOptions                      updateOptions,
+                                                  MetadataRepositoryCohortProperties properties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         final String methodName        = "updateMetadataRepositoryCohort";
         final String guidParameterName = "metadataRepositoryCohortGUID";
 
-        super.updateElement(userId,
-                            metadataRepositoryCohortGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   metadataRepositoryCohortGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

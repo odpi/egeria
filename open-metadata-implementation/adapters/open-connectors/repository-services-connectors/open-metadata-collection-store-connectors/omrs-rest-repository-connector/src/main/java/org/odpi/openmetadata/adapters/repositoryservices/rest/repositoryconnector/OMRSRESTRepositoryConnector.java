@@ -50,7 +50,8 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
                                                                 repositoryHelper,
                                                                 repositoryValidator,
                                                                 auditLog,
-                                                                metadataCollectionId);
+                                                                metadataCollectionId,
+                                                                secretsStoreConnectorMap);
         }
         catch (RepositoryErrorException  error)
         {

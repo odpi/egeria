@@ -20,7 +20,6 @@ public abstract class GovernanceConfiguration
 {
     protected final String                                  serverName;               /* Initialized in constructor */
     protected final String                                  serverPlatformURLRoot;    /* Initialized in constructor */
-    protected final String                                  serviceURLMarker;         /* Initialized in constructor */
 
 
     /**
@@ -28,15 +27,12 @@ public abstract class GovernanceConfiguration
      *
      * @param serverName remote server to call
      * @param serverPlatformURLRoot  platform hosting remote server
-     * @param serviceURLMarker service that his request is being made to
      */
     public GovernanceConfiguration(String serverName,
-                                   String serverPlatformURLRoot,
-                                   String serviceURLMarker)
+                                   String serverPlatformURLRoot)
     {
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.serviceURLMarker      = serviceURLMarker;
     }
 
 

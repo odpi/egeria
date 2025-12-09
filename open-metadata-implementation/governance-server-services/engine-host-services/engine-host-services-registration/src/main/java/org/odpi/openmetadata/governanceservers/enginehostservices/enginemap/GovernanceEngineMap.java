@@ -5,14 +5,17 @@ package org.odpi.openmetadata.governanceservers.enginehostservices.enginemap;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
+import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
 
 import java.util.*;
 
@@ -32,9 +35,6 @@ public class GovernanceEngineMap
 
     private final String                        localServerName;
     private final String                        localServerUserId;
-    private final String                        localServerPassword;
-    private final GovernanceConfigurationClient configurationClient;
-    private final GovernanceContextClient       engineActionClient;
     private final AuditLog                      auditLog;
     private final int                           maxPageSize;
 
@@ -44,17 +44,11 @@ public class GovernanceEngineMap
      *
      * @param localServerName the name of the engine host server where the survey action engine is running
      * @param localServerUserId user id for the engine host server to use
-     * @param localServerPassword optional password for the engine host server to use
-     * @param configurationClient client to retrieve the configuration
-     * @param engineActionClient client used by the engine host services to control the execution of engine action requests
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public GovernanceEngineMap(String                        localServerName,
                                String                        localServerUserId,
-                               String                        localServerPassword,
-                               GovernanceConfigurationClient configurationClient,
-                               GovernanceContextClient       engineActionClient,
                                AuditLog                      auditLog,
                                int                           maxPageSize)
     {
@@ -62,9 +56,6 @@ public class GovernanceEngineMap
 
         this.localServerName     = localServerName;
         this.localServerUserId   = localServerUserId;
-        this.localServerPassword = localServerPassword;
-        this.configurationClient = configurationClient;
-        this.engineActionClient  = engineActionClient;
         this.auditLog            = auditLog;
         this.maxPageSize         = maxPageSize;
     }
@@ -72,34 +63,66 @@ public class GovernanceEngineMap
 
     /**
      * Return the governance engine handler for a specific governance engine name if known.
-     * If the handler does not yet exist, null is returned
+     * If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned
      *
-     * @param governanceEngineName name to lookup
+     * @param governanceEngineName engine to lookup
      * @return handler or null
      */
     public synchronized GovernanceEngineHandler getGovernanceEngineHandler(String governanceEngineName)
     {
-        final String methodName = "getGovernanceEngineHandler(name)";
-
         GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngineName);
 
         if (engineHandlerProperties != null)
         {
+            /*
+             * The engine is configured in this server.  Is it active?
+             */
+            return engineHandlerProperties.getGovernanceEngineHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the governance engine handler for a specific governance engine name if known.
+     * If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned
+     *
+     * @param governanceEngine engine to lookup
+     * @return handler or null
+     */
+    public synchronized GovernanceEngineHandler getGovernanceEngineHandler(EngineConfig governanceEngine)
+    {
+        final String methodName = "getGovernanceEngineHandler(name)";
+
+        GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngine.getEngineQualifiedName());
+
+        if (engineHandlerProperties != null)
+        {
+            /*
+             * The engine is configured in this server.  Is it active?
+             */
             GovernanceEngineHandler governanceEngineHandler = engineHandlerProperties.getGovernanceEngineHandler();
 
             if (governanceEngineHandler == null)
             {
                 try
                 {
-                    GovernanceEngineElement governanceEngineElement = configurationClient.getGovernanceEngineByName(localServerUserId,
-                                                                                                                    governanceEngineName);
+                    GovernanceConfigurationClient configurationClient = engineHandlerProperties.getGovernanceConfigurationClient();
 
-                    governanceEngineHandler = this.createGovernanceEngineHandler(governanceEngineElement);
+                    GovernanceEngineElement governanceEngineElement = configurationClient.getGovernanceEngineByName(governanceEngine.getEngineUserId(),
+                                                                                                                    governanceEngine.getEngineQualifiedName());
+
+                    if (governanceEngineElement != null)
+                    {
+                        governanceEngineHandler = this.createGovernanceEngineHandler(governanceEngine, governanceEngineElement);
+                    }
                 }
                 catch (Exception error)
                 {
                     auditLog.logException(methodName,
-                                          EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(governanceEngineName,
+                                          EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(governanceEngine.getEngineQualifiedName(),
                                                                                                                        error.getClass().getName(),
                                                                                                                        error.getMessage()),
                                           error);
@@ -121,16 +144,17 @@ public class GovernanceEngineMap
      * @return governance engine handler
      * @throws InvalidParameterException problem creating handler
      */
-    private GovernanceEngineHandler createGovernanceEngineHandler(GovernanceEngineElement governanceEngineElement) throws InvalidParameterException
+    private GovernanceEngineHandler createGovernanceEngineHandler(EngineConfig            governanceEngine,
+                                                                  GovernanceEngineElement governanceEngineElement) throws InvalidParameterException
     {
         GovernanceEngineHandler governanceEngineHandler = null;
 
-        if (governanceEngineElement != null)
+        if (governanceEngine != null)
         {
             /*
-             * The engine exists in open metadata.
+             * The engine exists in open metadata - find out what type of engine this is.
              */
-            GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngineElement.getProperties().getQualifiedName());
+            GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngine.getEngineQualifiedName());
 
             if (engineHandlerProperties != null)
             {
@@ -144,14 +168,21 @@ public class GovernanceEngineMap
                 if (governanceEngineHandlerFactory != null)
                 {
                     /*
-                     * The type of governance engine is supported by this engine host. so create the governance engine.
+                     * The type of governance engine is supported by this engine host. So create the governance engine.
                      */
+                    GovernanceConfigurationClient configurationClient = engineHandlerProperties.getGovernanceConfigurationClient();
+
+                    GovernanceContextClient engineActionClient = new GovernanceContextClient(governanceEngine.getOMAGServerName(),
+                                                                                             governanceEngine.getOMAGServerPlatformRootURL(),
+                                                                                             governanceEngine.getSecretsStoreProvider(),
+                                                                                             governanceEngine.getSecretsStoreLocation(),
+                                                                                             governanceEngine.getSecretsStoreCollection(),
+                                                                                             maxPageSize,
+                                                                                             auditLog);
+
                     governanceEngineHandler = governanceEngineHandlerFactory.createGovernanceEngineHandler(engineHandlerProperties.getEngineConfig(),
                                                                                                            localServerName,
                                                                                                            localServerUserId,
-                                                                                                           localServerPassword,
-                                                                                                           engineHandlerProperties.getPartnerServerName(),
-                                                                                                           engineHandlerProperties.getPartnerURLRoot(),
                                                                                                            configurationClient,
                                                                                                            engineActionClient,
                                                                                                            auditLog,
@@ -236,50 +267,52 @@ public class GovernanceEngineMap
         return null;
     }
 
-    /**
-     * Set up a placeholder entry in the governance handler map for a governance engine.
-     *
-     * @param engineConfigs list of engine descriptions
-     * @param partnerServerName name of the server where the engine definition is located
-     * @param partnerURLRoot url of the platform where the server is located
-     */
-    public synchronized void setGovernanceEngineProperties(List<EngineConfig> engineConfigs,
-                                                           String             partnerServerName,
-                                                           String             partnerURLRoot)
-    {
-        if (engineConfigs != null)
-        {
-           for (EngineConfig engineConfig : engineConfigs)
-           {
-               this.setGovernanceEngineProperties(engineConfig,
-                                                  partnerServerName,
-                                                  partnerURLRoot);
-           }
-        }
-    }
-
 
     /**
      * Set up a placeholder entry in the governance handler map for a governance engine.
      *
      * @param engineConfig description of the engine
-     * @param partnerServerName name of the server where the engine definition is located
-     * @param partnerURLRoot url of the platform where the server is located
+     * @param eventClient client for receiving events
+     * @param configurationRefreshThread thread for controlling the receipt of events.
+     * @throws InvalidParameterException Problem create the client
      */
-    public synchronized void setGovernanceEngineProperties(EngineConfig engineConfig,
-                                                           String       partnerServerName,
-                                                           String       partnerURLRoot)
+    public synchronized void setGovernanceEngineProperties(EngineConfig                     engineConfig,
+                                                           OpenMetadataEventClient          eventClient,
+                                                           EngineConfigurationRefreshThread configurationRefreshThread) throws InvalidParameterException
     {
         if ((engineConfig != null) &&
                 (engineConfig.getEngineQualifiedName() != null) &&
                 (governanceEngineHandlerMap.get(engineConfig.getEngineQualifiedName()) == null))
         {
-            GovernanceEngineHandlerProperties engineHandlerProperties = new GovernanceEngineHandlerProperties(engineConfig,
-                                                                                                              partnerServerName,
-                                                                                                              partnerURLRoot);
+            GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(engineConfig.getOMAGServerName(),
+                                                                                                  engineConfig.getOMAGServerPlatformRootURL(),
+                                                                                                  engineConfig.getSecretsStoreProvider(),
+                                                                                                  engineConfig.getSecretsStoreLocation(),
+                                                                                                  engineConfig.getSecretsStoreCollection(),
+                                                                                                  maxPageSize,
+                                                                                                  auditLog);
 
-            governanceEngineHandlerMap.put(engineConfig.getEngineQualifiedName(),
-                                           engineHandlerProperties);
+            GovernanceEngineHandlerProperties engineHandlerProperties = new GovernanceEngineHandlerProperties(engineConfig,
+                                                                                                              eventClient,
+                                                                                                              configurationRefreshThread,
+                                                                                                              configurationClient);
+
+            governanceEngineHandlerMap.put(engineConfig.getEngineQualifiedName(), engineHandlerProperties);
+        }
+    }
+
+
+    /**
+     * Shutdown all engines ...
+     */
+    public synchronized void shutdown()
+    {
+        for (GovernanceEngineHandlerProperties handler : governanceEngineHandlerMap.values())
+        {
+            if (handler != null)
+            {
+                handler.shutdown();
+            }
         }
     }
 
@@ -290,19 +323,29 @@ public class GovernanceEngineMap
     static class GovernanceEngineHandlerProperties
     {
         private final EngineConfig engineConfig;
-        private final String partnerServerName;
-        private final String partnerURLRoot;
+        private final OpenMetadataEventClient          eventClient;
+        private final EngineConfigurationRefreshThread configurationRefreshThread;
         private       String governanceEngineTypeName = null;
+        private final GovernanceConfigurationClient governanceConfigurationClient;
 
         GovernanceEngineHandler governanceEngineHandler = null;
 
-        public GovernanceEngineHandlerProperties(EngineConfig engineConfig,
-                                                 String       partnerServerName,
-                                                 String       partnerURLRoot)
+        /**
+         *
+         * @param engineConfig description of the engine
+         * @param eventClient client for receiving events
+         * @param configurationRefreshThread thread for controlling the receipt of events
+         * @param governanceConfigurationClient client for accessing open metadata definitions
+         */
+        public GovernanceEngineHandlerProperties(EngineConfig                     engineConfig,
+                                                 OpenMetadataEventClient          eventClient,
+                                                 EngineConfigurationRefreshThread configurationRefreshThread,
+                                                 GovernanceConfigurationClient    governanceConfigurationClient)
         {
-            this.engineConfig        = engineConfig;
-            this.partnerServerName   = partnerServerName;
-            this.partnerURLRoot      = partnerURLRoot;
+            this.engineConfig                  = engineConfig;
+            this.eventClient                   = eventClient;
+            this.configurationRefreshThread    = configurationRefreshThread;
+            this.governanceConfigurationClient = governanceConfigurationClient;
         }
 
 
@@ -316,25 +359,6 @@ public class GovernanceEngineMap
             return engineConfig;
         }
 
-        /**
-         * Return the name of the metadata access service that is used by this engine.
-         *
-         * @return server name
-         */
-        public String getPartnerServerName()
-        {
-            return partnerServerName;
-        }
-
-        /**
-         * Return the platform URL root where the metadata access service is running.
-         *
-         * @return url root
-         */
-        public String getPartnerURLRoot()
-        {
-            return partnerURLRoot;
-        }
 
         /**
          * Set ip the governance action handler and type name ofr this governance engine.
@@ -369,6 +393,39 @@ public class GovernanceEngineMap
         public String getGovernanceEngineTypeName()
         {
             return governanceEngineTypeName;
+        }
+
+
+        /**
+         * Return the client for open metadata describing the engine.
+         *
+         * @return client
+         */
+        public GovernanceConfigurationClient getGovernanceConfigurationClient()
+        {
+            return governanceConfigurationClient;
+        }
+
+
+        /**
+         * Perform shutdown of the engine.
+         */
+        public void shutdown()
+        {
+            if (eventClient != null)
+            {
+                eventClient.disconnect();
+            }
+
+            if (configurationRefreshThread != null)
+            {
+                configurationRefreshThread.stop();
+            }
+
+            if (governanceEngineHandler != null)
+            {
+                governanceEngineHandler.terminate();
+            }
         }
     }
 }

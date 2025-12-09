@@ -7,11 +7,11 @@ import org.odpi.openmetadata.adminservices.client.CohortMemberConfigurationClien
 import org.odpi.openmetadata.adminservices.client.MetadataAccessStoreConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
@@ -44,20 +44,28 @@ public class ServerConfig
     private static final int    maxPageSize = 600;
 
     private final String platformURLRoot;
-    private final String clientUserId;
+    private final String secretsStoreProvider;
+    private final String secretsStoreLocation;
+    private final String secretsStoreCollection;
 
 
     /**
      * Set up the parameters for the utility.
      *
      * @param platformURLRoot location of server
-     * @param clientUserId userId to access the server
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      */
     private ServerConfig(String platformURLRoot,
-                         String clientUserId)
+                         String secretsStoreProvider,
+                         String secretsStoreLocation,
+                         String secretsStoreCollection)
     {
-        this.platformURLRoot = platformURLRoot;
-        this.clientUserId    = clientUserId;
+        this.platformURLRoot        = platformURLRoot;
+        this.secretsStoreProvider   = secretsStoreProvider;
+        this.secretsStoreLocation   = secretsStoreLocation;
+        this.secretsStoreCollection = secretsStoreCollection;
     }
 
 
@@ -74,14 +82,14 @@ public class ServerConfig
             /*
              * This client is from the platform services module and queries the runtime state of the platform and the servers that are running on it.
              */
-            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot);
+            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             /*
              * This is the first call to the platform and determines the version of the software.
              * If the platform is not running, or the remote service is not an OMAG Server Platform,
              * the utility fails at this point.
              */
-            return platformServicesClient.getPlatformOrigin(clientUserId);
+            return platformServicesClient.getPlatformOrigin();
         }
         catch (Exception error)
         {
@@ -100,12 +108,12 @@ public class ServerConfig
      *
      * @param client client responsible for the server configuration
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    private void setEventBus(OMAGServerConfigurationClient client) throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
+    private void setEventBus(OMAGServerConfigurationClient client) throws UserNotAuthorizedException,
+                                                                          InvalidParameterException,
                                                                           OMAGConfigurationErrorException
     {
         if (eventBusURLRoot != null)
@@ -135,12 +143,12 @@ public class ServerConfig
      *
      * @param client client responsible for the server configuration
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    private void setSecuritySecurityConnector(OMAGServerConfigurationClient client) throws OMAGNotAuthorizedException,
-                                                                                           OMAGInvalidParameterException,
+    private void setSecuritySecurityConnector(OMAGServerConfigurationClient client) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
                                                                                            OMAGConfigurationErrorException
     {
         if (serverSecurityConnectorProviderClassName != null)
@@ -168,7 +176,7 @@ public class ServerConfig
         {
             System.out.println("Configuring metadata store: " + serverName);
 
-            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(clientUserId, serverName, platformURLRoot);
+            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             client.setServerDescription("Metadata Access Store called " + serverName + " running on platform " + platformURLRoot);
             client.setServerUserId(systemUserId);
@@ -359,7 +367,7 @@ public class ServerConfig
 
         try
         {
-            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(clientUserId, serverName, platformURLRoot);
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             /*
              * This is the list of configured audit log connections.  Locating the console audit log connection
@@ -436,7 +444,7 @@ public class ServerConfig
         {
             System.out.println("Configuring integration daemon: " + serverName);
 
-            IntegrationDaemonConfigurationClient client = new IntegrationDaemonConfigurationClient(clientUserId, serverName, platformURLRoot);
+            IntegrationDaemonConfigurationClient client = new IntegrationDaemonConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             client.setServerDescription("Integration daemon called " + serverName + " running on platform " + platformURLRoot);
             client.setServerUserId(systemUserId);
@@ -465,7 +473,7 @@ public class ServerConfig
     {
         try
         {
-            CohortMemberConfigurationClient client = new CohortMemberConfigurationClient(clientUserId, serverName, platformURLRoot);
+            CohortMemberConfigurationClient client = new CohortMemberConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             client.addCohortRegistration(cohortName, null);
         }
@@ -487,7 +495,7 @@ public class ServerConfig
     {
         try
         {
-            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(clientUserId, serverName, platformURLRoot);
+            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             client.addStartUpOpenMetadataArchiveFile(archiveFileName);
         }
@@ -509,7 +517,7 @@ public class ServerConfig
     {
         try
         {
-            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(clientUserId, serverName, platformURLRoot);
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             client.setServerUserId(userId);
         }
@@ -529,7 +537,7 @@ public class ServerConfig
     {
         try
         {
-            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(clientUserId, serverName, platformURLRoot);
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
 
             client.clearOMAGServerConfig();
         }
@@ -647,15 +655,17 @@ public class ServerConfig
      * The  parameters are used to override the report's default values. If mode is set to "interactive"
      * the caller is prompted for a command and one to many server names.
      *
-     * @param args 1. service platform URL root, 2. client userId, 3. mode 4. server name 5. server name ...
+     * @param args 1. service platform URL root, 2. client secret collection, 3. mode 4. server name 5. server name ...
      */
     public static void main(String[] args)
     {
         final String interactiveMode = "interactive";
         final String endInteractiveMode = "exit";
 
+        String       secretsStoreProvider = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
+        String       secretsStoreLocation = "loading-bay/secrets/default.omsecrets";
         String       platformURLRoot = "https://localhost:9443";
-        String       clientUserId = "garygeeke";
+        String       secretsStoreCollection = "garygeeke";
         String       mode = interactiveMode;
 
         if (args.length > 0)
@@ -665,7 +675,7 @@ public class ServerConfig
 
         if (args.length > 1)
         {
-            clientUserId = args[1];
+            secretsStoreCollection = args[1];
         }
 
         if (args.length > 2)
@@ -674,11 +684,11 @@ public class ServerConfig
         }
 
         System.out.println("==================================");
-        System.out.println("OMAG Server Configuration Utility:    " + new Date().toString());
+        System.out.println("OMAG Server Configuration Utility:    " + new Date());
         System.out.println("==================================");
         System.out.print("Running against platform: " + platformURLRoot);
 
-        ServerConfig utility = new ServerConfig(platformURLRoot, clientUserId);
+        ServerConfig utility = new ServerConfig(platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection);
 
         HttpHelper.noStrictSSL();
 
@@ -694,7 +704,7 @@ public class ServerConfig
             System.exit(-1);
         }
 
-        System.out.println("Using userId: " + clientUserId);
+        System.out.println("Using secretsStoreCollection: " + secretsStoreCollection);
         System.out.println();
 
         try

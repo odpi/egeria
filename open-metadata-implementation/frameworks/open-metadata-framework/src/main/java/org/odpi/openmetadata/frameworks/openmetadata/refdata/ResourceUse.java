@@ -99,6 +99,13 @@ public enum ResourceUse
                    null),
 
     /**
+     * Generate insight.
+     */
+    GENERATE_INSIGHT("Generate Insight",
+                   "Analyse information and create new insight.",
+                   null),
+
+    /**
      * Choose the appropriate path to take.
      */
     CHOOSE_PATH("Choose Path",

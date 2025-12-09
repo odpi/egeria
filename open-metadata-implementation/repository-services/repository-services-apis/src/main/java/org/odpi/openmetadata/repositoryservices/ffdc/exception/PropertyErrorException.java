@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.io.Serial;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.Map;
  * The PropertyErrorException is thrown by an OMRS Connector when the properties defined for a specific entity
  * or relationship instance do not match the TypeDefs for the metadata collection.
  */
-public class PropertyErrorException extends OMRSCheckedExceptionBase
+public class PropertyErrorException extends InvalidParameterException
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -27,7 +29,7 @@ public class PropertyErrorException extends OMRSCheckedExceptionBase
                                   String                     className,
                                   String                     actionDescription)
     {
-        super(messageDefinition, className, actionDescription);
+        super(messageDefinition, className, actionDescription, InstanceProperties.class.getName());
     }
 
 
@@ -45,7 +47,7 @@ public class PropertyErrorException extends OMRSCheckedExceptionBase
                                   String                     actionDescription,
                                   Map<String, Object> relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, relatedProperties);
+        super(messageDefinition, className, actionDescription, InstanceProperties.class.getName(), relatedProperties);
     }
 
 
@@ -63,7 +65,7 @@ public class PropertyErrorException extends OMRSCheckedExceptionBase
                                   String                     actionDescription,
                                   Exception                  caughtError)
     {
-        super(messageDefinition, className, actionDescription, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError, InstanceProperties.class.getName());
     }
 
 
@@ -83,7 +85,7 @@ public class PropertyErrorException extends OMRSCheckedExceptionBase
                                   Exception                  caughtError,
                                   Map<String, Object>        relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+        super(messageDefinition, className, actionDescription, caughtError, InstanceProperties.class.getName(), relatedProperties);
     }
 
 
@@ -124,41 +126,7 @@ public class PropertyErrorException extends OMRSCheckedExceptionBase
               systemAction,
               userAction,
               caughtErrorClassName,
+              InstanceProperties.class.getName(),
               relatedProperties);
-    }
-
-
-    /**
-     * This is the typical constructor used for creating a PropertyErrorException.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     */
-    @Deprecated
-    public PropertyErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This is the constructor used for creating a PropertyErrorException that resulted from a previous error.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError  the error that resulted in this exception.
-     */
-    @Deprecated
-    public PropertyErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }

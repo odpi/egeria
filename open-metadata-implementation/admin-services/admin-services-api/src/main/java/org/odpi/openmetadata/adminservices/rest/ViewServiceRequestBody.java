@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 
 import java.util.Map;
 import java.util.Objects;
@@ -46,6 +47,28 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
         {
             viewServiceOptions = template.getViewServiceOptions();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public ViewServiceRequestBody(ViewServiceConfig template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public ViewServiceRequestBody(OMAGServerClientConfig template)
+    {
+        super(template);
     }
 
 

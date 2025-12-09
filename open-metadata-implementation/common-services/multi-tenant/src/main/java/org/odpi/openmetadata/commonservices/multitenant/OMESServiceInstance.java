@@ -10,10 +10,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public class OMESServiceInstance extends AuditableServerServiceInstance
 {
-    protected String remoteServerName;
-    protected String remoteServerURLRoot;
-
-
     /**
      * Set up the OMES service instance
      *
@@ -22,41 +18,15 @@ public class OMESServiceInstance extends AuditableServerServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
-     * @param remoteServerName  remote server name
-     * @param remoteServerURLRoot remote server URL
      */
     public OMESServiceInstance(String   serverName,
                                String   serviceName,
                                AuditLog auditLog,
                                String   localServerUserId,
-                               int      maxPageSize,
-                               String   remoteServerName,
-                               String   remoteServerURLRoot)
+                               int      maxPageSize)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
-        this.remoteServerName    = remoteServerName;
-        this.remoteServerURLRoot = remoteServerURLRoot;
-
         this.setServerName(serverName);
-    }
-    
-
-    /**
-     * Return the remote server name
-     *
-     * @return string server name
-     */
-    public String getRemoteServerName() {
-        return remoteServerName;
-    }
-
-
-    /**
-     * the remote server URL
-     * @return string server URL
-     */
-    public String getRemoteServerURLRoot() {
-        return remoteServerURLRoot;
     }
 }

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -29,6 +31,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class ActionProperties extends ProcessProperties
 {
+    private String situation = null;
+
     /**
      * Default constructor
      */
@@ -44,10 +48,38 @@ public class ActionProperties extends ProcessProperties
      *
      * @param template object to copy
      */
-    public ActionProperties(ProcessProperties template)
+    public ActionProperties(ActionProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            situation = template.getSituation();
+        }
     }
+
+
+    /**
+     * Return the activity/discovery of the producer that resulted in this action.
+     *
+     * @return string
+     */
+    public String getSituation()
+    {
+        return situation;
+    }
+
+
+    /**
+     * Set up the activity/discovery of the producer that resulted in this action.
+     *
+     * @param situation string
+     */
+    public void setSituation(String situation)
+    {
+        this.situation = situation;
+    }
+
 
 
     /**
@@ -59,6 +91,36 @@ public class ActionProperties extends ProcessProperties
     public String toString()
     {
         return "ActionProperties{" +
+                "situation='" + situation + '\'' +
                 "} " + super.toString();
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        ActionProperties that = (ActionProperties) objectToCompare;
+        return Objects.equals(situation, that.situation);
+    }
+
+
+    /**
+     * Return hash code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), situation);
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class TokenController
 {
-    private static final Logger log = LoggerFactory.getLogger(RESTExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(TokenController.class);
 
     /**
      * Return userId extracted from the token in the HTTP header.

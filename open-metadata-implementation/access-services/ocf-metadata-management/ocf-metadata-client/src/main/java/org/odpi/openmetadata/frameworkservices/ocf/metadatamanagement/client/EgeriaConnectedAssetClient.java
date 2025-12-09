@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
@@ -17,46 +15,27 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
  */
 public class EgeriaConnectedAssetClient extends ConnectedAssetClientBase
 {
-    private final static String serviceURLMarker = AccessServiceDescription.OCF_METADATA_MANAGEMENT.getServiceURLMarker();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
-     * @param maxPageSize maximum page size for this process
-     * @param auditLog destination for log messages
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
+     * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public EgeriaConnectedAssetClient(String   serverName,
                                       String   serverPlatformURLRoot,
+                                      String   localServerSecretsStoreProvider,
+                                      String   localServerSecretsStoreLocation,
+                                      String   localServerSecretsStoreCollection,
                                       int      maxPageSize,
                                       AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, maxPageSize, auditLog);
-    }
-
-
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @param maxPageSize maximum page size for this process
-     * @param auditLog destination for log messages
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public EgeriaConnectedAssetClient(String   serverName,
-                                      String   serverPlatformURLRoot,
-                                      String   userId,
-                                      String   password,
-                                      int      maxPageSize,
-                                      AuditLog auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, userId, password, maxPageSize, auditLog);
+        super(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, maxPageSize, auditLog);
     }
 }

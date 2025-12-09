@@ -7,9 +7,11 @@ import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.platformservices.properties.PublicProperties;
 import org.odpi.openmetadata.platformservices.properties.BuildProperties;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
@@ -18,6 +20,7 @@ import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 
 import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -26,10 +29,13 @@ import java.util.Date;
 class PlatformServicesRESTClient extends FFDCRESTClient
 {
     /**
-     * Constructor for no authentication with audit log.
+     * Create a new client with bearer token authentication embedded in the HTTP request.
      *
      * @param platformName name of the OMAG Server to call
      * @param platformURLRoot URL root of the server manager where the OMAG Server is running.
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -37,64 +43,31 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      */
     PlatformServicesRESTClient(String   platformName,
                                String   platformURLRoot,
+                               String   secretsStoreProvider,
+                               String   secretsStoreLocation,
+                               String   secretsStoreCollection,
                                AuditLog auditLog) throws InvalidParameterException
     {
-        super(platformName, platformURLRoot, auditLog);
+        super(platformName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
 
 
     /**
-     * Constructor for no authentication.
+     * Create a new client with bearer token authentication embedded in the HTTP request.
      *
      * @param platformName name of the OMAG Server to call
      * @param platformURLRoot URL root of the server manager where the OMAG Server is running.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    PlatformServicesRESTClient(String platformName,
-                               String platformURLRoot) throws InvalidParameterException
-    {
-        super(platformName, platformURLRoot);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication with audit log.
-     *
-     * @param platformName name of the OMAG Server to call
-     * @param platformURLRoot URL root of the server manager where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
+     * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
+     *                                       REST API calls.
      */
-    PlatformServicesRESTClient(String   platformName,
-                               String   platformURLRoot,
-                               String   userId,
-                               String   password,
-                               AuditLog auditLog) throws InvalidParameterException
+    PlatformServicesRESTClient(String                             platformName,
+                               String                             platformURLRoot,
+                               Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                               AuditLog                           auditLog) throws InvalidParameterException
     {
-        super(platformName, platformURLRoot, userId, password, auditLog);
-    }
-
-
-    /**
-     * Constructor for simple userId and password authentication.
-     *
-     * @param platformName name of the OMAG Server to call
-     * @param platformURLRoot URL root of the server manager where the OMAG Server is running.
-     * @param userId user id for the HTTP request
-     * @param password password for the HTTP request
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    PlatformServicesRESTClient(String platformName,
-                               String platformURLRoot,
-                               String userId,
-                               String password) throws InvalidParameterException
-    {
-        super(platformName, platformURLRoot, userId, password);
+        super(platformName, platformURLRoot, secretsStoreConnectorMap, auditLog);
     }
 
 
@@ -166,6 +139,24 @@ class PlatformServicesRESTClient extends FFDCRESTClient
                                                    Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, BuildProperties.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns an AboutProperties object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    PublicProperties callPublicPropertiesGetRESTCall(String    methodName,
+                                                     String    urlTemplate,
+                                                     Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, PublicProperties.class, urlTemplate, params);
     }
 
 

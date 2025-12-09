@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 import java.io.Serial;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  * The PagingErrorException is thrown by an OMRS Connector when the caller has passed invalid paging attributes
  * on a search call.
  */
-public class PagingErrorException extends OMRSCheckedExceptionBase
+public class PagingErrorException extends InvalidParameterException
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,7 +29,7 @@ public class PagingErrorException extends OMRSCheckedExceptionBase
                                 String                     className,
                                 String                     actionDescription)
     {
-        super(messageDefinition, className, actionDescription);
+        super(messageDefinition, className, actionDescription, "paging");
     }
 
 
@@ -44,9 +45,9 @@ public class PagingErrorException extends OMRSCheckedExceptionBase
     public PagingErrorException(ExceptionMessageDefinition messageDefinition,
                                 String                     className,
                                 String                     actionDescription,
-                                Map<String, Object> relatedProperties)
+                                Map<String, Object>        relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, relatedProperties);
+        super(messageDefinition, className, actionDescription, "paging", relatedProperties);
     }
 
 
@@ -64,7 +65,7 @@ public class PagingErrorException extends OMRSCheckedExceptionBase
                                 String                     actionDescription,
                                 Exception                  caughtError)
     {
-        super(messageDefinition, className, actionDescription, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError, "paging");
     }
 
 
@@ -84,7 +85,7 @@ public class PagingErrorException extends OMRSCheckedExceptionBase
                                 Exception                  caughtError,
                                 Map<String, Object>        relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+        super(messageDefinition, className, actionDescription, caughtError, "paging", relatedProperties);
     }
 
 
@@ -125,41 +126,7 @@ public class PagingErrorException extends OMRSCheckedExceptionBase
               systemAction,
               userAction,
               caughtErrorClassName,
+              "paging",
               relatedProperties);
-    }
-
-
-    /**
-     * This is the typical constructor used for creating a PagingErrorException.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     */
-    @Deprecated
-    public PagingErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This is the constructor used for creating a PagingErrorException that resulted from a previous error.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError  the error that resulted in this exception.
-     */
-    @Deprecated
-    public PagingErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }

@@ -21,7 +21,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -78,7 +78,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
     private String                    connectionName       = OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR.getComponentName();
     private String                    topicName = unknownTopicName;
-    private OMRSEventProtocolVersion  eventProtocolVersion = OMRSEventProtocolVersion.V1;
+    private OMRSEventProtocolVersion  eventProtocolVersion = OMRSEventProtocolVersion.V2;
 
     protected AuditLog auditLog = null;
 
@@ -341,7 +341,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         final String methodName = "sendRegistryEvent";
 
-        if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
+        if (eventProtocolVersion == OMRSEventProtocolVersion.V2)
         {
             return this.sendEvent(registryEvent.getOMRSEventV1(), true);
         }
@@ -365,7 +365,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         final String methodName = "sendTypeDefEvent";
 
-        if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
+        if (eventProtocolVersion == OMRSEventProtocolVersion.V2)
         {
             return this.sendEvent(typeDefEvent.getOMRSEventV1(), false);
         }
@@ -389,7 +389,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         final String methodName = "sendInstanceEvent";
 
-        if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
+        if (eventProtocolVersion == OMRSEventProtocolVersion.V2)
         {
             this.sendEvent(instanceEvent.getOMRSEventV1(), true);
         }
@@ -406,7 +406,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param event    OMRSEvent object containing the event properties
      * @param logEvent should an audit log message be created?
      */
-    private CompletableFuture<Boolean> sendEvent(OMRSEventV1 event,
+    private CompletableFuture<Boolean> sendEvent(OMRSEventV2 event,
                                                  boolean     logEvent)
     {
         final String methodName = "sendEvent";
@@ -432,7 +432,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param logEvent flag to indicate that the event should be logged
      * @return true
      */
-    private boolean sendEventTask(OMRSEventV1 event,
+    private boolean sendEventTask(OMRSEventV2 event,
                                   boolean     logEvent)
     {
         final String methodName = "sendEventTask";
@@ -509,7 +509,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             /*
              * If the event bean is successfully created then pass it on to the registered listeners.
              */
-            if (eventBean instanceof OMRSEventV1 finalEventBean)
+            if (eventBean instanceof OMRSEventV2 finalEventBean)
             {
                 //internalTopicListeners.parallelStream().forEach((topicListener) ->
                 for (OMRSTopicListener topicListener : internalTopicListeners)
@@ -555,7 +555,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * @param event Version 1 of the OMRSEvent that defines the category and payload of the incoming event.
      * @param topicListener listener that will receive the event.
      */
-    private void processOMRSEvent(OMRSEventV1        event,
+    private void processOMRSEvent(OMRSEventV2 event,
                                   OMRSTopicListener  topicListener)
     {
         String   actionDescription = "Process Incoming Event";

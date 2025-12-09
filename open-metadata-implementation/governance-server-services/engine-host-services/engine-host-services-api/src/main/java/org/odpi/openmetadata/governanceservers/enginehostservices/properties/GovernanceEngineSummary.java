@@ -6,6 +6,8 @@ package org.odpi.openmetadata.governanceservers.enginehostservices.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceEngineSummary
+public class GovernanceEngineSummary extends OMAGServerClientConfig
 {
     private String                 governanceEngineName        = null;
     private String                 governanceEngineTypeName    = null;
@@ -45,6 +47,8 @@ public class GovernanceEngineSummary
      */
     public GovernanceEngineSummary(GovernanceEngineSummary template)
     {
+        super (template);
+
         if (template != null)
         {
             governanceEngineName = template.getGovernanceEngineName();
@@ -56,6 +60,18 @@ public class GovernanceEngineSummary
             governanceRequestTypes = template.getGovernanceRequestTypes();
         }
     }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public GovernanceEngineSummary(OMAGServerClientConfig template)
+    {
+        super (template);
+    }
+
 
     /**
      * Return the name of this governance engine.
@@ -230,14 +246,14 @@ public class GovernanceEngineSummary
     public String toString()
     {
         return "GovernanceEngineSummary{" +
-                       "governanceEngineName='" + governanceEngineName + '\'' +
-                       ", governanceEngineTypeName='" + governanceEngineTypeName + '\'' +
-                       ", governanceEngineService='" + governanceEngineService + '\'' +
-                       ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
-                       ", governanceEngineDescription='" + governanceEngineDescription + '\'' +
-                       ", governanceEngineStatus=" + governanceEngineStatus +
-                       ", governanceRequestTypes=" + governanceRequestTypes +
-                       '}';
+                "governanceEngineName='" + governanceEngineName + '\'' +
+                ", governanceEngineTypeName='" + governanceEngineTypeName + '\'' +
+                ", governanceEngineService='" + governanceEngineService + '\'' +
+                ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
+                ", governanceEngineDescription='" + governanceEngineDescription + '\'' +
+                ", governanceEngineStatus=" + governanceEngineStatus +
+                ", governanceRequestTypes=" + governanceRequestTypes +
+                "} " + super.toString();
     }
 
 
@@ -250,34 +266,21 @@ public class GovernanceEngineSummary
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         GovernanceEngineSummary that = (GovernanceEngineSummary) objectToCompare;
-        return Objects.equals(governanceEngineName, that.governanceEngineName) &&
-                       Objects.equals(governanceEngineTypeName, that.governanceEngineTypeName) &&
-                       Objects.equals(governanceEngineService, that.governanceEngineService) &&
-                       Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
-                Objects.equals(governanceEngineDescription, that.governanceEngineDescription) &&
-                governanceEngineStatus == that.governanceEngineStatus &&
-                Objects.equals(governanceRequestTypes, that.governanceRequestTypes);
+        return Objects.equals(governanceEngineName, that.governanceEngineName) && Objects.equals(governanceEngineTypeName, that.governanceEngineTypeName) && Objects.equals(governanceEngineService, that.governanceEngineService) && Objects.equals(governanceEngineGUID, that.governanceEngineGUID) && Objects.equals(governanceEngineDescription, that.governanceEngineDescription) && governanceEngineStatus == that.governanceEngineStatus && Objects.equals(governanceRequestTypes, that.governanceRequestTypes);
     }
 
-
-   /**
+    /**
      * Simple hash for the object
      *
      * @return int
      */
-   @Override
-   public int hashCode()
-   {
-       return Objects.hash(governanceEngineName, governanceEngineTypeName, governanceEngineService,
-                           governanceEngineGUID, governanceEngineDescription, governanceEngineStatus, governanceRequestTypes);
-   }
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), governanceEngineName, governanceEngineTypeName, governanceEngineService, governanceEngineGUID, governanceEngineDescription, governanceEngineStatus, governanceRequestTypes);
+    }
 }

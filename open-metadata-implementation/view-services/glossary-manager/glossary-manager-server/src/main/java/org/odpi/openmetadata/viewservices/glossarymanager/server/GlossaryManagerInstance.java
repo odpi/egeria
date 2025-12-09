@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
  * GlossaryManagerInstance caches references to objects it needs for a specific server.
@@ -25,49 +25,44 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
     private final GlossaryTermHandler glossaryTermHandler;
 
     /**
-     * Set up the Glossary Manager OMVS instance*
+     * Set up the Glossary Manager OMVS instance
+     *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
-     * @param localServerUserPassword password to use as part of an HTTP authentication mechanism.
+     * @param localServerUserId userId used for server initiated actions
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
      * @throws InvalidParameterException problem with server name or platform URL
      */
-    public GlossaryManagerInstance(String       serverName,
-                                   AuditLog     auditLog,
-                                   String       localServerUserId,
-                                   String       localServerUserPassword,
-                                   int          maxPageSize,
-                                   String       remoteServerName,
-                                   String       remoteServerURL) throws InvalidParameterException
+    public GlossaryManagerInstance(String   serverName,
+                                   AuditLog auditLog,
+                                   String   localServerUserId,
+                                   String   localServerSecretsStoreProvider,
+                                   String   localServerSecretsStoreLocation,
+                                   String   localServerSecretsStoreCollection,
+                                   int      maxPageSize,
+                                   String   remoteServerName,
+                                   String   remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
-        OpenMetadataClient openMetadataClient;
-        if (localServerUserPassword == null)
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    maxPageSize);
-
-        }
-        else
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    localServerUserId,
-                                                                    localServerUserPassword,
-                                                                    maxPageSize);
-        }
+        OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                                                  remoteServerURL,
+                                                                                  localServerSecretsStoreProvider,
+                                                                                  localServerSecretsStoreLocation,
+                                                                                  localServerSecretsStoreCollection,
+                                                                                  maxPageSize,
+                                                                                  auditLog);
 
         glossaryHandler = new CollectionHandler(serverName,
                                                 auditLog,

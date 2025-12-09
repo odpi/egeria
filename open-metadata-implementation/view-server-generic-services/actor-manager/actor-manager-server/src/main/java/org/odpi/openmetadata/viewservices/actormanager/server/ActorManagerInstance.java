@@ -37,7 +37,6 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
-     * @param localServerUserPassword  password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
@@ -46,7 +45,6 @@ public class ActorManagerInstance extends OMVSServiceInstance
     public ActorManagerInstance(String                  serverName,
                                 AuditLog                auditLog,
                                 String                  localServerUserId,
-                                String                  localServerUserPassword,
                                 int                     maxPageSize,
                                 String                  remoteServerName,
                                 String                  remoteServerURL,
@@ -56,15 +54,12 @@ public class ActorManagerInstance extends OMVSServiceInstance
               myDescription.getViewServiceFullName(),
               auditLog,
               localServerUserId,
-              localServerUserPassword,
               maxPageSize,
               remoteServerName,
               remoteServerURL);
 
         actorProfileHandlerMap = new ViewServiceClientMap<>(ActorProfileHandler.class,
                                                             serverName,
-                                                            localServerUserId,
-                                                            localServerUserPassword,
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
@@ -72,8 +67,6 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                             maxPageSize);
         actorRoleHandlerMap = new ViewServiceClientMap<>(ActorRoleHandler.class,
                                                          serverName,
-                                                         localServerUserId,
-                                                         localServerUserPassword,
                                                          auditLog,
                                                          activeViewServices,
                                                          myDescription.getViewServiceFullName(),
@@ -81,8 +74,6 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                          maxPageSize);
         userIdentityHandlerMap = new ViewServiceClientMap<>(UserIdentityHandler.class,
                                                             serverName,
-                                                            localServerUserId,
-                                                            localServerUserPassword,
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
@@ -90,8 +81,6 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                             maxPageSize);
         this.governanceDefinitionClientMap = new ViewServiceClientMap<>(GovernanceDefinitionHandler.class,
                                                                         serverName,
-                                                                        localServerUserId,
-                                                                        localServerUserPassword,
                                                                         auditLog,
                                                                         activeViewServices,
                                                                         myDescription.getViewServiceFullName(),

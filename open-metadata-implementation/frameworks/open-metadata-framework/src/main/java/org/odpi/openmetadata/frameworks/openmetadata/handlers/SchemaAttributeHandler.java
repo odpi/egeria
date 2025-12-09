@@ -133,26 +133,27 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param schemaAttributeGUID      unique identifier of the schema attribute (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateSchemaAttribute(String                    userId,
-                                      String                    schemaAttributeGUID,
-                                      UpdateOptions             updateOptions,
-                                      SchemaAttributeProperties properties) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    public boolean updateSchemaAttribute(String                    userId,
+                                         String                    schemaAttributeGUID,
+                                         UpdateOptions             updateOptions,
+                                         SchemaAttributeProperties properties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         final String methodName = "updateSchemaAttribute";
         final String guidParameterName = "schemaAttributeGUID";
 
-        super.updateElement(userId,
-                            schemaAttributeGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   schemaAttributeGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -39,7 +38,7 @@ public class EmbeddedProcessProperties extends ActionProperties
      *
      * @param template template object to copy.
      */
-    public EmbeddedProcessProperties(ProcessProperties template)
+    public EmbeddedProcessProperties(ActionProperties template)
     {
         super(template);
     }

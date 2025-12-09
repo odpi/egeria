@@ -4,6 +4,10 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminForAccessServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
@@ -23,7 +27,14 @@ import java.util.Map;
  * Services (OMASs).
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -39,70 +50,67 @@ public class ConfigAccessServicesResource
     /**
      * Return the list of access services that are configured for this server.
      *
-     * @param userId calling user
      * @param serverName name of server
      * @return list of access service descriptions
      */
     @GetMapping(path = "/access-services")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConfiguredAccessServices",
                description="Return the list of access services that are configured for this server.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String userId,
-                                                                      @PathVariable String serverName)
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String serverName)
     {
-        return adminAPI.getConfiguredAccessServices(userId, serverName);
+        return adminAPI.getConfiguredAccessServices(serverName);
     }
 
 
     /**
      * Return the configuration for the access services in this server.
      *
-     * @param userId calling user
      * @param serverName name of server
      * @return list of access service configurations
      */
     @GetMapping(path = "/access-services/configuration")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAccessServicesConfiguration",
                description="Return the detailed configuration for the access services in this server.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public AccessServicesResponse getAccessServicesConfiguration(@PathVariable String userId,
-                                                                 @PathVariable String serverName)
+    public AccessServicesResponse getAccessServicesConfiguration(@PathVariable String serverName)
     {
-        return adminAPI.getAccessServicesConfiguration(userId, serverName);
+        return adminAPI.getAccessServicesConfiguration(serverName);
     }
 
 
     /**
      * Enable a single access service.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @param serviceURLMarker string indicating which access service it is configuring
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services/{serviceURLMarker}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="configureAccessService",
                description="Enable a single access service.  This access service will send notifications if it is part of its implementation.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse configureAccessService(@PathVariable                   String              userId,
-                                               @PathVariable                   String              serverName,
+    public VoidResponse configureAccessService(@PathVariable                   String              serverName,
                                                @PathVariable                   String              serviceURLMarker,
                                                @RequestBody(required = false)  Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAccessService(userId, serverName, serviceURLMarker, accessServiceOptions);
+        return adminAPI.configureAccessService(serverName, serviceURLMarker, accessServiceOptions);
     }
 
 
@@ -110,15 +118,15 @@ public class ConfigAccessServicesResource
      * Enable all access services that are registered with this server platform.
      * The access services are set up to use the default event bus.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="configureAllAccessServices",
                description="Enable all access services that are registered with this server platform.  The access services will send notifications if it is part of its implementation.",
@@ -126,11 +134,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
 
-    public VoidResponse configureAllAccessServices(@PathVariable                  String              userId,
-                                                   @PathVariable                  String              serverName,
+    public VoidResponse configureAllAccessServices(@PathVariable                  String              serverName,
                                                    @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAllAccessServices(userId, serverName, accessServiceOptions);
+        return adminAPI.configureAllAccessServices(serverName, accessServiceOptions);
     }
 
 
@@ -139,28 +146,27 @@ public class ConfigAccessServicesResource
      * Enable a single access service.
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @param serviceURLMarker string indicating which access service it is configuring
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services/{serviceURLMarker}/no-topics")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="configureAccessServiceNoTopics",
                description="Enable a single access service.  Notifications, if supported, are disabled.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse configureAccessServiceNoTopics(@PathVariable                  String              userId,
-                                                       @PathVariable                  String              serverName,
+    public VoidResponse configureAccessServiceNoTopics(@PathVariable                  String              serverName,
                                                        @PathVariable                  String              serviceURLMarker,
                                                        @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAccessServiceNoTopics(userId, serverName, serviceURLMarker, accessServiceOptions);
+        return adminAPI.configureAccessServiceNoTopics(serverName, serviceURLMarker, accessServiceOptions);
     }
 
 
@@ -168,231 +174,222 @@ public class ConfigAccessServicesResource
      * Enable all access services that are registered with this server platform.
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/access-services/no-topics")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="configureAllAccessServicesNoTopics",
                description="Enable all access services that are registered with this server platform.  Notifications, if supported, are disabled.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse configureAllAccessServicesNoTopics(@PathVariable                  String              userId,
-                                                           @PathVariable                  String              serverName,
+    public VoidResponse configureAllAccessServicesNoTopics(@PathVariable                  String              serverName,
                                                            @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAllAccessServicesNoTopics(userId, serverName, accessServiceOptions);
+        return adminAPI.configureAllAccessServicesNoTopics(serverName, accessServiceOptions);
     }
 
 
     /**
      * Disable the access services.  This removes all configuration for the access services and disables the enterprise repository services.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @DeleteMapping(path = "/access-services")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearAllAccessServices",
                description="Disable the access services.  This removes all configuration for the access services and disables the enterprise repository services.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse clearAllAccessServices(@PathVariable String          userId,
-                                               @PathVariable String          serverName)
+    public VoidResponse clearAllAccessServices(@PathVariable String serverName)
     {
-        return adminAPI.clearAllAccessServices(userId, serverName);
+        return adminAPI.clearAllAccessServices(serverName);
     }
 
 
     /**
      * Retrieve the config for an access service.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param serviceURLMarker string indicating which access service it is configuring
      * @return AccessServiceConfig response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @GetMapping(path = "/access-services/{serviceURLMarker}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAccessServiceConfig",
                description="Retrieve the config for an access service.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public AccessServiceConfigResponse getAccessServiceConfig(@PathVariable String userId,
-                                                              @PathVariable String serverName,
+    public AccessServiceConfigResponse getAccessServiceConfig(@PathVariable String serverName,
                                                               @PathVariable String serviceURLMarker)
     {
-        return adminAPI.getAccessServiceConfig(userId, serverName, serviceURLMarker);
+        return adminAPI.getAccessServiceConfig(serverName, serviceURLMarker);
     }
 
 
     /**
      * Retrieve the topic names for this access service.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param serviceURLMarker string indicating which access service it requested
      *
      * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     @GetMapping(path = "/access-services/{serviceURLMarker}/topic-names")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAccessServiceTopicNames",
                description="Retrieve the topic names for this access service.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public StringMapResponse getAccessServiceTopicNames(@PathVariable String userId,
-                                                        @PathVariable String serverName,
+    public StringMapResponse getAccessServiceTopicNames(@PathVariable String serverName,
                                                         @PathVariable String serviceURLMarker)
     {
-        return adminAPI.getAccessServiceTopicNames(userId, serverName, serviceURLMarker);
+        return adminAPI.getAccessServiceTopicNames(serverName, serviceURLMarker);
     }
 
 
     /**
      * Retrieve the topic names for all access services.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      *
      * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     @GetMapping(path = "/access-services/topic-names")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllAccessServiceTopicNames",
                description="Retrieve the topic names for all access services.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public StringMapResponse  getAllAccessServiceTopicNames(@PathVariable String userId,
-                                                            @PathVariable String serverName)
+    public StringMapResponse  getAllAccessServiceTopicNames(@PathVariable String serverName)
     {
-        return adminAPI.getAllAccessServiceTopicNames(userId, serverName);
+        return adminAPI.getAllAccessServiceTopicNames(serverName);
     }
 
 
     /**
      * Update the out topic name for a specific access service.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param serviceURLMarker string indicating which access service it requested
      * @param topicName string for new topic name
      *
      * @return map of topic names or
-     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
+     * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     @PostMapping(path = "/access-services/{serviceURLMarker}/topic-names/out-topic")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="overrideAccessServiceOutTopicName",
                description="Update the out topic name for a specific access service.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse  overrideAccessServiceOutTopicName(@PathVariable String userId,
-                                                           @PathVariable String serverName,
+    public VoidResponse  overrideAccessServiceOutTopicName(@PathVariable String serverName,
                                                            @PathVariable String serviceURLMarker,
                                                            @RequestBody  String topicName)
     {
-        return adminAPI.overrideAccessServiceOutTopicName(userId, serverName, serviceURLMarker, topicName);
+        return adminAPI.overrideAccessServiceOutTopicName(serverName, serviceURLMarker, topicName);
     }
 
 
     /**
      * Remove the config for an access service.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param serviceURLMarker string indicating which access service to clear
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @DeleteMapping(path = "/access-services/{serviceURLMarker}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearAccessService",
                description="Remove the config for an access service.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse clearAccessService(@PathVariable String userId,
-                                           @PathVariable String serverName,
+    public VoidResponse clearAccessService(@PathVariable String serverName,
                                            @PathVariable String serviceURLMarker)
     {
-        return adminAPI.clearAccessService(userId, serverName, serviceURLMarker);
+        return adminAPI.clearAccessService(serverName, serviceURLMarker);
     }
 
 
     /**
      * Set up the configuration for selected open metadata access services (OMASs).  This overrides the current configured values.
      *
-     * @param userId                user that is issuing the request.
      * @param serverName            local server name.
      * @param accessServicesConfig  list of configuration properties for each access service.
      * @return void response or
-     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter or
+     * UserNotAuthorizedException     the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or accessServicesConfig parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @PostMapping(path = "/access-services/configuration")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setAccessServicesConfig",
                description="Set up the configuration for selected open metadata access services (OMASs).  This overrides the current configured values.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse setAccessServicesConfig(@PathVariable String                    userId,
-                                                @PathVariable String                    serverName,
+    public VoidResponse setAccessServicesConfig(@PathVariable String                    serverName,
                                                 @RequestBody  List<AccessServiceConfig> accessServicesConfig)
     {
-        return adminAPI.setAccessServicesConfig(userId, serverName, accessServicesConfig);
+        return adminAPI.setAccessServicesConfig(serverName, accessServicesConfig);
     }
 
 
     /**
      * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param configurationProperties additional properties for the cohort
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or null userId parameter.
      */
     @PostMapping(path = "/enterprise-access/remote-topic")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addRemoteEnterpriseTopic",
                description="Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse addRemoteEnterpriseTopic(@PathVariable String               userId,
-                                                 @PathVariable String               serverName,
+    public VoidResponse addRemoteEnterpriseTopic(@PathVariable String               serverName,
                                                  @RequestBody  Map<String, Object>  configurationProperties)
     {
-        return adminAPI.addRemoteEnterpriseTopic(userId, serverName, configurationProperties);
+        return adminAPI.addRemoteEnterpriseTopic(serverName, configurationProperties);
     }
 
 
@@ -402,15 +399,15 @@ public class ConfigAccessServicesResource
      * notifications that cover metadata from the local repository plus any repositories connected via
      * open metadata repository cohorts.
      *
-     * @param userId  user that is issuing the request
      * @param serverName  local server name
      * @param enterpriseAccessConfig  enterprise repository services configuration properties.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or enterpriseAccessConfig parameter or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or enterpriseAccessConfig parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @PostMapping(path = "/enterprise-access/configuration")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setEnterpriseAccessConfig",
                description="Set up the configuration that controls the enterprise repository services.  These services are part" +
@@ -420,10 +417,9 @@ public class ConfigAccessServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 userId,
-                                                  @PathVariable String                 serverName,
+    public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 serverName,
                                                   @RequestBody  EnterpriseAccessConfig enterpriseAccessConfig)
     {
-        return adminAPI.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+        return adminAPI.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
     }
 }

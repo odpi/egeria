@@ -33,6 +33,68 @@ public class OMAGServerPlatformInstanceMap
     private static final Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
     private static final Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
 
+    private static final String   implementationOrigin = "Egeria OMAG Server Platform (version 6.0-SNAPSHOT)";
+    private static String   organizationName = null;
+
+    /**
+     * Return the platform origin string
+     *
+     * @param userId calling user
+     * @throws UserNotAuthorizedException calling user not allowed to use these services
+     */
+    public static String getPlatformOrigin(String userId) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+
+            return implementationOrigin;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+    }
+
+
+    /**
+     * Return the platform origin string
+     */
+    public static String getPlatformOrigin()
+    {
+        return implementationOrigin;
+    }
+
+
+    /**
+     * Return the organization name
+     *
+     * @param userId calling user
+     * @throws UserNotAuthorizedException calling user not allowed to use these services
+     */
+    public static String getOrganizationName(String userId) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+
+            return organizationName;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+    }
+
+
+    /**
+     * Set up the organization name
+     */
+    public static void setOrganizationName(String serverPlatformOrganizationName)
+    {
+        organizationName = serverPlatformOrganizationName;
+    }
+
 
     /**
      * Verify that the calling user is allowed to query the platform services.
@@ -110,6 +172,40 @@ public class OMAGServerPlatformInstanceMap
         service.setPartnerServerType(partnerServerType);
 
         return service;
+    }
+
+
+    /**
+     * Return the origin of this server platform implementation.
+     *
+     * @return String description
+     */
+    public String getServerPlatformOrigin() throws UserNotAuthorizedException
+    {
+        return getPlatformOrigin();
+    }
+
+
+    /**
+     * Return the name of the organization running this platform.
+     *
+     * @param userId name of the user making the request
+     * @return String description
+     */
+    public String getServerPlatformOrganizationName(String userId) throws UserNotAuthorizedException
+    {
+        return getOrganizationName(userId);
+    }
+
+
+    /**
+     * Set up the name of the organization running this platform.
+     *
+     * @param organizationName name of the owning organization
+     */
+    public void setServerPlatformOrganizationName(String organizationName)
+    {
+        setOrganizationName(organizationName);
     }
 
 

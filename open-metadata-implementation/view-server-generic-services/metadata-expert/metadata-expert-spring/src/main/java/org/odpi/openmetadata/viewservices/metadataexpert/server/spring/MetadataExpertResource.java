@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Metadata Expert OMVS", description="The Metadata Expert OMVS provides APIs for supporting the search, query and retrieval of open metadata.  It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).",
+@Tag(name="API: Metadata Expert", description="Supports advanced operations for the maintenance of open metadata.  It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/metadata-expert/overview/"))
 
@@ -110,12 +110,61 @@ public class MetadataExpertResource
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    public VoidResponse updateMetadataElementInStore(@PathVariable String                      serverName,
-                                                     @PathVariable String                      urlMarker,
-                                                     @PathVariable String                      metadataElementGUID,
-                                                     @RequestBody  UpdatePropertiesRequestBody requestBody)
+    public BooleanResponse updateMetadataElementInStore(@PathVariable String                      serverName,
+                                                        @PathVariable String                      urlMarker,
+                                                        @PathVariable String                      metadataElementGUID,
+                                                        @RequestBody  UpdatePropertiesRequestBody requestBody)
     {
         return restAPI.updateMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+    /**
+     * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/publish")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse publishMetadataElement(@PathVariable String                    serverName,
+                                               @PathVariable String                    urlMarker,
+                                               @PathVariable String                    metadataElementGUID,
+                                               @RequestBody  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.publishMetadataElement(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Update the zone membership to decrease its visibility.  The defaultZones are defined in the user directory.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/withdraw")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse withdrawMetadataElement(@PathVariable String                    serverName,
+                                                @PathVariable String                    urlMarker,
+                                                @PathVariable String                    metadataElementGUID,
+                                                @RequestBody  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.withdrawMetadataElement(serverName, urlMarker, metadataElementGUID, requestBody);
     }
 
 

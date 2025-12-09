@@ -56,9 +56,6 @@ public class GovernanceEngineConfigurationHandler
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve B instances from.
-     * @param defaultZones list of zones that the access service should set in all new B instances.
-     * @param publishZones list of zones that the access service sets up in published B instances.
      * @param auditLog logging destination
      */
     public GovernanceEngineConfigurationHandler(String                             serviceName,
@@ -68,9 +65,6 @@ public class GovernanceEngineConfigurationHandler
                                                 OMRSRepositoryHelper               repositoryHelper,
                                                 String                             localServerUserId,
                                                 OpenMetadataServerSecurityVerifier securityVerifier,
-                                                List<String>                       supportedZones,
-                                                List<String>                       defaultZones,
-                                                List<String>                       publishZones,
                                                 AuditLog                           auditLog)
     {
         this.serviceName = serviceName;
@@ -88,9 +82,6 @@ public class GovernanceEngineConfigurationHandler
                                                                        repositoryHelper,
                                                                        localServerUserId,
                                                                        securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
                                                                        auditLog);
 
         this.governanceServiceHandler = new AssetHandler<>(new GovernanceServiceConverter<>(repositoryHelper, serviceName, serverName),
@@ -102,9 +93,6 @@ public class GovernanceEngineConfigurationHandler
                                                            repositoryHelper,
                                                            localServerUserId,
                                                            securityVerifier,
-                                                           supportedZones,
-                                                           defaultZones,
-                                                           publishZones,
                                                            auditLog);
     }
 
@@ -116,7 +104,6 @@ public class GovernanceEngineConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param name qualified name or display name (if unique).
-     * @param serviceSupportedZones supported zones for calling service
      * @return properties from the governance engine definition.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -124,10 +111,9 @@ public class GovernanceEngineConfigurationHandler
      * @throws PropertyServerException problem retrieving the governance engine definition.
      */
     public GovernanceEngineElement getGovernanceEngineByName(String       userId,
-                                                             String       name,
-                                                             List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                                             String       name) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final  String   methodName = "getGovernanceEngineByName";
         final  String   nameParameter = "name";
@@ -147,7 +133,6 @@ public class GovernanceEngineConfigurationHandler
                                                       null,
                                                       false,
                                                       false,
-                                                      serviceSupportedZones,
                                                       null,
                                                       methodName);
     }
@@ -158,7 +143,6 @@ public class GovernanceEngineConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param guid unique identifier (guid) of the governance service definition.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return properties of the governance service.
      *
@@ -167,10 +151,9 @@ public class GovernanceEngineConfigurationHandler
      * @throws PropertyServerException problem retrieving the governance service definition.
      */
     public  GovernanceServiceElement getGovernanceServiceByGUID(String       userId,
-                                                                String       guid,
-                                                                List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+                                                                String       guid) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final  String   methodName = "getGovernanceServiceByGUID";
         final  String   guidParameter = "guid";
@@ -181,7 +164,6 @@ public class GovernanceEngineConfigurationHandler
                                                                OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                false,
                                                                false,
-                                                               serviceSupportedZones,
                                                                new Date(),
                                                                methodName);
     }
@@ -342,7 +324,6 @@ public class GovernanceEngineConfigurationHandler
                                                           OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                           false,
                                                           false,
-                                                          governanceEngineHandler.getSupportedZones(),
                                                           OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
                                                           OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                           instanceProperties,
@@ -357,7 +338,6 @@ public class GovernanceEngineConfigurationHandler
      * @param userId identifier of calling user
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the registered governance service.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return details of the governance service and the asset types it is registered for.
      *
@@ -367,8 +347,7 @@ public class GovernanceEngineConfigurationHandler
      */
     public RegisteredGovernanceServiceElement getRegisteredGovernanceService(String       userId,
                                                                              String       governanceEngineGUID,
-                                                                             String       governanceServiceGUID,
-                                                                             List<String> serviceSupportedZones) throws InvalidParameterException,
+                                                                             String       governanceServiceGUID) throws InvalidParameterException,
                                                                                                                         UserNotAuthorizedException,
                                                                                                                         PropertyServerException
     {
@@ -401,7 +380,7 @@ public class GovernanceEngineConfigurationHandler
         {
             RegisteredGovernanceServiceConverter converter = new RegisteredGovernanceServiceConverter(repositoryHelper, serviceName);
 
-            return converter.getBean(this.getGovernanceServiceByGUID(userId, governanceServiceGUID, serviceSupportedZones), relationships);
+            return converter.getBean(this.getGovernanceServiceByGUID(userId, governanceServiceGUID), relationships);
         }
 
         return null;
@@ -415,7 +394,6 @@ public class GovernanceEngineConfigurationHandler
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
-     * @param serviceSupportedZones supported zones for calling service
      *
      * @return list of unique identifiers
      *
@@ -426,10 +404,9 @@ public class GovernanceEngineConfigurationHandler
     public List<RegisteredGovernanceServiceElement> getRegisteredGovernanceServices(String       userId,
                                                                                     String       governanceEngineGUID,
                                                                                     int          startingFrom,
-                                                                                    int          maximumResults,
-                                                                                    List<String> serviceSupportedZones) throws InvalidParameterException,
-                                                                                                                               UserNotAuthorizedException,
-                                                                                                                               PropertyServerException
+                                                                                    int          maximumResults) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
     {
         final String methodName = "getRegisteredGovernanceServices";
         final String governanceEngineGUIDParameter = "governanceEngineGUID";
@@ -471,9 +448,7 @@ public class GovernanceEngineConfigurationHandler
                 {
                     try
                     {
-                        GovernanceServiceElement newElement = this.getGovernanceServiceByGUID(userId,
-                                                                                              end2.getGUID(),
-                                                                                              serviceSupportedZones);
+                        GovernanceServiceElement newElement = this.getGovernanceServiceByGUID(userId, end2.getGUID());
 
                         if (newElement != null)
                         {

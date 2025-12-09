@@ -49,7 +49,7 @@ public class OpenMetadataTypesArchive1_5
      * Specific values for initializing TypeDefs
      */
     private static final long   versionNumber = 1L;
-    private static final String versionName   = "1.0";
+    private static final String versionName   = "6.0-SNAPSHOT";
 
 
     private OMRSArchiveBuilder archiveBuilder;

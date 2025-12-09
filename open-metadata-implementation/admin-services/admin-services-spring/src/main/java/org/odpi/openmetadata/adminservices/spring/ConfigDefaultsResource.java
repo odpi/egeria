@@ -4,6 +4,10 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.rest.EventBusConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
@@ -19,7 +23,14 @@ import java.util.Map;
  * are updated after a subsystem is configured, they do not impact that subsystem's configuration.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/servers/{serverName}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -31,41 +42,6 @@ public class ConfigDefaultsResource
 {
     private final OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
-    /**
-     * Set up the default root URL for this server that is used to construct full URL paths to calls for
-     * this server's REST interfaces.  It is a value that is sent to other servers to allow
-     * them to call this server.
-     * The default value is "localhost:9443".
-     * ServerURLRoot is used as a default value during the configuration of the server's subsystems.
-     * If it is updated after a subsystem is configured then the new value is ignored.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param url  String url.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
-     */
-    @Deprecated
-    @PostMapping(path = "/server-url-root")
-
-    @Operation(summary="setServerURLRoot",
-               description="Set up the default root URL for this server that is used to construct full URL paths to calls for" +
-                                   " this server's REST interfaces.  It is a value that is sent to other servers to allow" +
-                                   " them to call this server." +
-                                   " The default value is \"localhost:9443\"." +
-                                   " ServerURLRoot is used as a default value during the configuration of the server's subsystems." +
-                                   " If it is updated after a subsystem is configured then the new value is ignored.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-the-server-url-root"))
-
-    public VoidResponse setServerURLRoot(@PathVariable String userId,
-                                         @PathVariable String serverName,
-                                         @RequestParam String url)
-    {
-        return adminAPI.setServerURLRoot(userId, serverName, url);
-    }
-
 
     /**
      * Set up the default root URL for this server's platform that is used to construct full URL paths to calls for
@@ -75,14 +51,14 @@ public class ConfigDefaultsResource
      * ServerRootURL is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param requestBody  String url.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or serverURLRoot parameter.
      */
     @PostMapping(path = "/server-url-root-for-caller")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setServerRootURL",
                description="Set up the default root URL for this server that is used to construct full URL paths to calls for" +
@@ -94,11 +70,10 @@ public class ConfigDefaultsResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-the-server-url-root"))
 
-    public VoidResponse setServerRootURL(@PathVariable String         userId,
-                                         @PathVariable String         serverName,
+    public VoidResponse setServerRootURL(@PathVariable String         serverName,
                                          @RequestBody  URLRequestBody requestBody)
     {
-        return adminAPI.setServerRootURL(userId, serverName, requestBody);
+        return adminAPI.setServerRootURL(serverName, requestBody);
     }
 
 
@@ -111,17 +86,17 @@ public class ConfigDefaultsResource
      * If openMetadataOutTopic is null, a default connection for this topic is created.  It can be removed using
      * clearOpenMetadataOutTopic
      *
-     * @param userId  user that is issuing the request.
      * @param serverName local server name.
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.
      * @param configurationProperties  property name/value pairs used to configure the connection to the event bus connector
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
-     * OMAGInvalidParameterException invalid serverName or serviceMode parameter.
+     * InvalidParameterException invalid serverName or serviceMode parameter.
      */
     @PostMapping(path = "/event-bus")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setEventBus",
                description="Set up the default event bus for embedding in event-driven connector.   The resulting connector will" +
@@ -132,37 +107,35 @@ public class ConfigDefaultsResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
-    public VoidResponse setEventBus(@PathVariable                   String              userId,
-                                    @PathVariable                   String              serverName,
+    public VoidResponse setEventBus(@PathVariable                   String              serverName,
                                     @RequestParam(required = false) String              connectorProvider,
                                     @RequestParam(required = false) String              topicURLRoot,
                                     @RequestBody (required = false) Map<String, Object> configurationProperties)
     {
-        return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties);
+        return adminAPI.setEventBus(serverName, connectorProvider, topicURLRoot, configurationProperties);
     }
 
 
     /**
      * Return the current configuration for the event bus.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName local server name.
      * @return event bus config response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
     @GetMapping(path = "/event-bus")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getEventBus",
                description="Return the current configuration for the event bus.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
-    public EventBusConfigResponse getEventBus(@PathVariable String userId,
-                                              @PathVariable String serverName)
+    public EventBusConfigResponse getEventBus(@PathVariable String serverName)
     {
-        return adminAPI.getEventBus(userId, serverName);
+        return adminAPI.getEventBus(serverName);
     }
 
 
@@ -170,23 +143,22 @@ public class ConfigDefaultsResource
      * Delete the current configuration for the event bus.
      * This does not impact that existing configuration for the server, only future configuration requests.
      *
-     * @param userId  user that is issuing the request.
      * @param serverName local server name.
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * InvalidParameterException invalid serverName parameter.
      */
     @DeleteMapping(path = "/event-bus")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="deleteEventBus",
                description="Delete the current configuration for the event bus.  This does not impact that existing configuration for the server, only future configuration requests.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
-    public VoidResponse deleteEventBus(@PathVariable String userId,
-                                       @PathVariable String serverName)
+    public VoidResponse deleteEventBus(@PathVariable String serverName)
     {
-        return adminAPI.deleteEventBus(userId, serverName);
+        return adminAPI.deleteEventBus(serverName);
     }
 }

@@ -7,15 +7,15 @@ import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
 import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,41 +29,24 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public CohortMemberConfigurationClient(String adminUserId,
-                                           String serverName,
-                                           String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public CohortMemberConfigurationClient(String   serverName,
+                                           String   serverPlatformRootURL,
+                                           String   secretStoreProvider,
+                                           String   secretStoreLocation,
+                                           String   secretStoreCollection,
+                                           AuditLog auditLog) throws InvalidParameterException
     {
-        super(adminUserId, serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
-
-
-    /**
-     * Create a new client that passes a connection userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is passed as the admin userId.
-     *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param connectionUserId      caller's system userId embedded in all HTTP requests
-     * @param connectionPassword    caller's system password embedded in all HTTP requests
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
-     *                                       REST API calls.
-     */
-    public CohortMemberConfigurationClient(String adminUserId,
-                                           String serverName,
-                                           String serverPlatformRootURL,
-                                           String connectionUserId,
-                                           String connectionPassword) throws OMAGInvalidParameterException
-    {
-        super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
-    }
-
 
     /*
      * =============================================================
@@ -80,27 +63,20 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @param additionalProperties additional properties for the event bus connection
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void addCohortRegistration(String              cohortName,
-                                      Map<String, Object> additionalProperties) throws OMAGNotAuthorizedException,
-                                                                                       OMAGInvalidParameterException,
+                                      Map<String, Object> additionalProperties) throws UserNotAuthorizedException,
+                                                                                       InvalidParameterException,
                                                                                        OMAGConfigurationErrorException
     {
         final String methodName    = "addCohortRegistration";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         Map<String, Object>  requestBody = additionalProperties;
         if (requestBody == null)
@@ -111,7 +87,6 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        adminUserId,
                                         serverName,
                                         cohortName);
     }
@@ -129,28 +104,21 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * @param cohortTopicStructure the style of cohort topic set up to use
      * @param additionalProperties additional properties for the event bus connection
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command
-     * @throws OMAGInvalidParameterException invalid parameter
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command
+     * @throws InvalidParameterException invalid parameter
      * @throws OMAGConfigurationErrorException unusual state in the admin server
      */
     public void addCohortRegistration(String               cohortName,
                                       CohortTopicStructure cohortTopicStructure,
-                                      Map<String, Object>  additionalProperties) throws OMAGNotAuthorizedException,
-                                                                                        OMAGInvalidParameterException,
+                                      Map<String, Object>  additionalProperties) throws UserNotAuthorizedException,
+                                                                                        InvalidParameterException,
                                                                                         OMAGConfigurationErrorException
     {
         final String methodName    = "addCohortRegistration";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-structure/{3}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-structure/{2}";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         Map<String, Object>  requestBody = additionalProperties;
         if (requestBody == null)
@@ -161,7 +129,6 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        adminUserId,
                                         serverName,
                                         cohortName,
                                         cohortTopicStructure);
@@ -174,30 +141,22 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @return string topic name
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public String getCohortTopicName(String cohortName) throws OMAGNotAuthorizedException,
-                                                               OMAGInvalidParameterException,
+    public String getCohortTopicName(String cohortName) throws UserNotAuthorizedException,
+                                                               InvalidParameterException,
                                                                OMAGConfigurationErrorException
     {
         final String methodName          = "getCohortTopicName";
         final String parameterName       = "cohortName";
-        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         StringResponse response = restClient.callStringGetRESTCall(methodName,
                                                                    serverPlatformRootURL + urlTemplate,
-                                                                   adminUserId,
                                                                    serverName,
                                                                    cohortName);
 
@@ -211,30 +170,22 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @return List of topic names - registration first, then types and then instances
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public DedicatedTopicList getDedicatedCohortTopicNames(String cohortName) throws OMAGNotAuthorizedException,
-                                                                                     OMAGInvalidParameterException,
+    public DedicatedTopicList getDedicatedCohortTopicNames(String cohortName) throws UserNotAuthorizedException,
+                                                                                     InvalidParameterException,
                                                                                      OMAGConfigurationErrorException
     {
         final String methodName    = "getDedicatedCohortTopicNames";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/dedicated-topic-names";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/dedicated-topic-names";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         DedicatedTopicListResponse response = restClient.callDedicatedTopicListGetRESTCall(methodName,
                                                                                            serverPlatformRootURL + urlTemplate,
-                                                                                           adminUserId,
                                                                                            serverName,
                                                                                            cohortName);
 
@@ -248,34 +199,26 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @param topicName new name for the topic.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void overrideCohortTopicName(String cohortName,
-                                        String topicName) throws OMAGNotAuthorizedException,
-                                                                 OMAGInvalidParameterException,
+                                        String topicName) throws UserNotAuthorizedException,
+                                                                 InvalidParameterException,
                                                                  OMAGConfigurationErrorException
     {
         final String methodName          = "overrideCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
-                                        adminUserId,
                                         serverName,
                                         cohortName);
     }
@@ -287,34 +230,27 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @param topicName new name for the topic.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void overrideRegistrationCohortTopicName(String cohortName,
-                                                    String topicName) throws OMAGNotAuthorizedException,
-                                                                             OMAGInvalidParameterException,
+                                                    String topicName) throws UserNotAuthorizedException,
+                                                                             InvalidParameterException,
                                                                              OMAGConfigurationErrorException
     {
         final String methodName          = "overrideRegistrationCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override/registration";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/registration";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
-                                        adminUserId,
                                         serverName,
                                         cohortName);
     }
@@ -326,34 +262,26 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @param topicName new name for the topic.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void overrideTypesCohortTopicName(String cohortName,
-                                             String topicName) throws OMAGNotAuthorizedException,
-                                                                      OMAGInvalidParameterException,
+                                             String topicName) throws UserNotAuthorizedException,
+                                                                      InvalidParameterException,
                                                                       OMAGConfigurationErrorException
     {
         final String methodName          = "overrideTypesCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override/types";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/types";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
-                                        adminUserId,
                                         serverName,
                                         cohortName);
     }
@@ -366,34 +294,26 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName  name of the cohort.
      * @param topicName new name for the topic.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void overrideInstancesCohortTopicName(String cohortName,
-                                                 String topicName) throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
+                                                 String topicName) throws UserNotAuthorizedException,
+                                                                          InvalidParameterException,
                                                                           OMAGConfigurationErrorException
     {
         final String methodName          = "overrideInstancesCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override/instances";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/instances";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
-                                        adminUserId,
                                         serverName,
                                         cohortName);
     }
@@ -410,32 +330,24 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      *
      * @param cohortName name of the cohort
      * @param cohortConfig configuration for the cohort
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void setCohortConfig(String       cohortName,
-                                CohortConfig cohortConfig) throws OMAGNotAuthorizedException,
-                                                                  OMAGInvalidParameterException,
+                                CohortConfig cohortConfig) throws UserNotAuthorizedException,
+                                                                  InvalidParameterException,
                                                                   OMAGConfigurationErrorException
     {
         final String methodName    = "setCohortConfig";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/configuration";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         cohortConfig,
-                                        adminUserId,
                                         serverName,
                                         cohortName);
     }
@@ -445,30 +357,22 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * Unregister this server from an open metadata repository cohort.
      *
      * @param cohortName  name of the cohort.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearCohortRegistration(String cohortName) throws OMAGNotAuthorizedException,
-                                                                  OMAGInvalidParameterException,
+    public void clearCohortRegistration(String cohortName) throws UserNotAuthorizedException,
+                                                                  InvalidParameterException,
                                                                   OMAGConfigurationErrorException
     {
         final String methodName    = "clearCohortRegistration";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}";
 
-        try
-        {
-            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          adminUserId,
                                           serverName,
                                           cohortName);
     }
@@ -484,31 +388,23 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * Add a new open metadata archive file to load at startup.
      *
      * @param fileName name of the open metadata archive file.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void addStartUpOpenMetadataArchiveFile(String fileName) throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
+    public void addStartUpOpenMetadataArchiveFile(String fileName) throws UserNotAuthorizedException,
+                                                                          InvalidParameterException,
                                                                           OMAGConfigurationErrorException
     {
         final String methodName    = "addStartUpOpenMetadataArchiveFile";
         final String parameterName = "fileName";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/open-metadata-archives/file";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/open-metadata-archives/file";
 
-        try
-        {
-            invalidParameterHandler.validateName(fileName, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(fileName, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         fileName,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -517,31 +413,23 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * Add a list of connections to connectors that can access an open metadata archive file.
      *
      * @param connections list of connections to open metadata archive connectors
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void addStartUpOpenMetadataArchiveList(List<Connection> connections) throws OMAGNotAuthorizedException,
-                                                                                       OMAGInvalidParameterException,
+    public void addStartUpOpenMetadataArchiveList(List<Connection> connections) throws UserNotAuthorizedException,
+                                                                                       InvalidParameterException,
                                                                                        OMAGConfigurationErrorException
     {
         final String methodName    = "addStartUpOpenMetadataArchiveFile";
         final String parameterName = "connections";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/open-metadata-archives";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/open-metadata-archives";
 
-        try
-        {
-            invalidParameterHandler.validateObject(connections, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateObject(connections, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connections,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -549,20 +437,19 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     /**
      * Clear the list of open metadata archives for loading at server startup.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearOpenMetadataArchives() throws OMAGNotAuthorizedException,
-                                                   OMAGInvalidParameterException,
+    public void clearOpenMetadataArchives() throws UserNotAuthorizedException,
+                                                   InvalidParameterException,
                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "clearOpenMetadataArchives";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/open-metadata-archives";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/open-metadata-archives";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          adminUserId,
                                           serverName);
     }
 
@@ -577,31 +464,23 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * Set up the configuration for the local repository in one operation.  This overrides the current values.
      *
      * @param localRepositoryConfig - configuration properties for the local repository.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    protected void setLocalRepositoryConfig(LocalRepositoryConfig localRepositoryConfig) throws OMAGNotAuthorizedException,
-                                                                                                OMAGInvalidParameterException,
+    protected void setLocalRepositoryConfig(LocalRepositoryConfig localRepositoryConfig) throws UserNotAuthorizedException,
+                                                                                                InvalidParameterException,
                                                                                                 OMAGConfigurationErrorException
     {
         final String methodName    = "setEventMapperConnection";
         final String parameterName = "localRepositoryConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/configuration";
 
-        try
-        {
-            invalidParameterHandler.validateObject(localRepositoryConfig, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateObject(localRepositoryConfig, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         localRepositoryConfig,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -611,20 +490,19 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * can be used to remove subsequent local repository configuration.  This call effectively sets the
      * type of a metadata server back to a metadata access point.
      *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void clearLocalRepository() throws OMAGNotAuthorizedException,
-                                              OMAGInvalidParameterException,
+    public void clearLocalRepository() throws UserNotAuthorizedException,
+                                              InvalidParameterException,
                                               OMAGConfigurationErrorException
     {
         final String methodName  = "clearLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          adminUserId,
                                           serverName);
     }
 
@@ -635,26 +513,19 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * URL is updated, and the server restarted, it will broadcast its new URL to the rest of the cohort.
      *
      * @param serverURLRoot  String url.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void resetRemoteCohortURL(String serverURLRoot) throws OMAGNotAuthorizedException,
-                                                                  OMAGInvalidParameterException,
+    public void resetRemoteCohortURL(String serverURLRoot) throws UserNotAuthorizedException,
+                                                                  InvalidParameterException,
                                                                   OMAGConfigurationErrorException
     {
         final String methodName    = "resetRemoteCohortURL";
         final String parameterName = "serverURLRoot";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/configuration/remote-repository-connector-url";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/configuration/remote-repository-connector-url";
 
-        try
-        {
-            invalidParameterHandler.validateName(serverURLRoot, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateName(serverURLRoot, parameterName, methodName);
 
         URLRequestBody requestBody = new URLRequestBody();
 
@@ -662,7 +533,6 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        adminUserId,
                                         serverName);
     }
 
@@ -679,20 +549,19 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * then the invalid parameter exception is returned.
      *
      * @return string guid
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public String getLocalMetadataCollectionName() throws OMAGNotAuthorizedException,
-                                                          OMAGInvalidParameterException,
+    public String getLocalMetadataCollectionName() throws UserNotAuthorizedException,
+                                                          InvalidParameterException,
                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "getLocalMetadataCollectionName";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/metadata-collection-name";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-name";
 
         StringResponse restResult = restClient.callStringGetRESTCall(methodName,
                                                                      serverPlatformRootURL + urlTemplate,
-                                                                     adminUserId,
                                                                      serverName);
         return restResult.getResultString();
     }
@@ -704,21 +573,20 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * If this is not set then the default value is the local server name.
      *
      * @param name  metadata collection name.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setLocalMetadataCollectionName(String name) throws OMAGNotAuthorizedException,
-                                                                   OMAGInvalidParameterException,
+    public void setLocalMetadataCollectionName(String name) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
                                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "setLocalMetadataCollectionName";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/metadata-collection-name/{2}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-name/{1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         nullRequestBody,
-                                        adminUserId,
                                         serverName,
                                         name);
     }
@@ -729,20 +597,19 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * then the invalid parameter exception is returned.
      *
      * @return string guid
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public String getLocalMetadataCollectionId() throws OMAGNotAuthorizedException,
-                                                        OMAGInvalidParameterException,
+    public String getLocalMetadataCollectionId() throws UserNotAuthorizedException,
+                                                        InvalidParameterException,
                                                         OMAGConfigurationErrorException
     {
         final String methodName  = "getLocalMetadataCollectionId";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/metadata-collection-id";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-id";
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
                                                                  serverPlatformRootURL + urlTemplate,
-                                                                 adminUserId,
                                                                  serverName);
         return restResult.getGUID();
     }
@@ -753,31 +620,23 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * then the invalid parameter exception is returned.
      *
      * @param metadataCollectionId unique identifier for the metadata collection
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setLocalMetadataCollectionId(String metadataCollectionId) throws OMAGNotAuthorizedException,
-                                                                                 OMAGInvalidParameterException,
+    public void setLocalMetadataCollectionId(String metadataCollectionId) throws UserNotAuthorizedException,
+                                                                                 InvalidParameterException,
                                                                                  OMAGConfigurationErrorException
     {
         final String methodName  = "setLocalMetadataCollectionId";
         final String parameterName = "metadataCollectionId";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/metadata-collection-id";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-id";
 
-        try
-        {
-            invalidParameterHandler.validateGUID(metadataCollectionId, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateGUID(metadataCollectionId, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         metadataCollectionId,
-                                        adminUserId,
                                         serverName);
     }
 }

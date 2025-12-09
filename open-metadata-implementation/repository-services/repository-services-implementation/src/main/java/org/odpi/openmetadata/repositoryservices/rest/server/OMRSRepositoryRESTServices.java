@@ -3,10 +3,15 @@
 package org.odpi.openmetadata.repositoryservices.rest.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.commonservices.ffdc.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
@@ -41,18 +46,18 @@ import java.util.Map;
  * If localRepositoryConnector is null when a REST call is received, the request is rejected.  Otherwise,
  * it uses the supplied server name to locate the appropriate metadata collection for its local
  * repository and pass it the requested call.
- *
+ * <p>
  * OMRSRepositoryRESTServices is itself wrapped by classes that provide REST annotations.  In the Egeria code base
  * OMRSRepositoryResource from the repository-services-spring module uses spring boot annotations.  Other servers
  * may use a different type of REST annotations and so the spring wrapper may be disregarded and replaced.
- *
+ * <p>
  * The REST services are based around the OMRSMetadataInstanceStore interface.
  * <p>
  *     OMRSMetadataInstanceStore is the common interface for working with the contents of a metadata repository.
  *     Within a metadata collection are the type definitions (TypeDefs) and metadata instances (Entities and
  *     Relationships).  OMRSMetadataCollectionBase provides empty implementation of the abstract methods of
  *     OMRSMetadataInstanceStore.
- *
+ * <p>
  *     The methods on OMRSMetadataInstanceStore are in the following major groups:
  * </p>
  * <ul>
@@ -97,9 +102,12 @@ public class OMRSRepositoryRESTServices
     private static final String                                serviceName     = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
     private static final Logger                                log             = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
     private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
-    private static final String                                anonymousUserId = "anon"; // TODO add to config
+    private static final RESTCallLogger                        restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(OMRSRepositoryRESTServices.class),
+                                                                                                    instanceHandler.getServiceName());
+    private static final String                                anonymousUserId = "anon";
 
     private static final MessageFormatter messageFormatter = new MessageFormatter();
+
 
     /**
      * Set up the local repository connector that will service the local repository REST Calls.
@@ -280,34 +288,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getMetadataCollectionId";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         MetadataCollectionIdResponse response = new MetadataCollectionIdResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setMetadataCollectionId(metadataCollection.getMetadataCollectionId(userId));
         }
-        catch (InvalidParameterException error)
+        catch (Throwable error)
         {
-            captureInvalidParameterException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (RepositoryErrorException error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -336,12 +335,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getAllTypes";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefGalleryResponse response = new TypeDefGalleryResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             TypeDefGallery typeDefGallery = metadataCollection.getAllTypes(userId);
@@ -351,24 +353,12 @@ public class OMRSRepositoryRESTServices
                 response.setTypeDefs(typeDefGallery.getTypeDefs());
             }
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -392,12 +382,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "findTypesByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefGalleryResponse response = new TypeDefGalleryResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             TypeDefGallery typeDefGallery = metadataCollection.findTypesByName(userId, name);
@@ -408,24 +401,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -447,34 +428,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "findTypeDefsByCategory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDefs(metadataCollection.findTypeDefsByCategory(userId, category));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -496,34 +468,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "findAttributeTypeDefsByCategory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AttributeTypeDefListResponse response = new AttributeTypeDefListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDefs(metadataCollection.findAttributeTypeDefsByCategory(userId, category));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -545,34 +508,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "findTypeDefsByProperty";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDefs(metadataCollection.findTypeDefsByProperty(userId, matchCriteria));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -596,35 +550,26 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "findTypesByExternalID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<TypeDef> typeDefs = metadataCollection.findTypesByExternalID(userId, standard, organization, identifier);
             response.setTypeDefs(typeDefs);
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -646,34 +591,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "searchForTypeDefs";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDefs(metadataCollection.searchForTypeDefs(userId, searchCriteria));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -697,38 +633,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getTypeDefByGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefResponse response = new TypeDefResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(metadataCollection.getTypeDefByGUID(userId, guid));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -752,38 +675,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getAttributeTypeDefByGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AttributeTypeDefResponse response = new AttributeTypeDefResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDef(metadataCollection.getAttributeTypeDefByGUID(userId, guid));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnown(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -807,38 +717,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getTypeDefByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefResponse response = new TypeDefResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(metadataCollection.getTypeDefByName(userId, name));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -862,38 +759,25 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getAttributeTypeDefByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AttributeTypeDefResponse response = new AttributeTypeDefResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDef(metadataCollection.getAttributeTypeDefByName(userId, name));
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnown(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -929,9 +813,9 @@ public class OMRSRepositoryRESTServices
             auditLog.logMessage(methodName,
                                 OMRSAuditCode.AD_HOC_TYPE_DEFINITION.getMessageDefinition(typeName, typeGUID, serverName, userId, methodName));
         }
-
     }
 
+    
     /**
      * Create a collection of related types.
      *
@@ -956,12 +840,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addTypeDefGallery";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addTypeDefGallery(userId, newTypes);
@@ -991,44 +878,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotSupportedException error)
-        {
-            captureTypeDefNotSupportedException(response, error);
-        }
-        catch (TypeDefKnownException error)
-        {
-            captureTypeDefKnownException(response, error);
-        }
-        catch (TypeDefConflictException error)
-        {
-            captureTypeDefConflictException(response, error);
-        }
-        catch (InvalidTypeDefException error)
-        {
-            captureInvalidTypeDefException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1058,56 +913,27 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addTypeDef(userId, newTypeDef);
 
             this.logDynamicTypeManagement(serverName, userId, methodName, newTypeDef.getName(), newTypeDef.getGUID());
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotSupportedException error)
-        {
-            captureTypeDefNotSupportedException(response, error);
-        }
-        catch (TypeDefKnownException error)
-        {
-            captureTypeDefKnownException(response, error);
-        }
-        catch (TypeDefConflictException error)
-        {
-            captureTypeDefConflictException(response, error);
-        }
-        catch (InvalidTypeDefException error)
-        {
-            captureInvalidTypeDefException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1137,62 +963,31 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addAttributeTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addAttributeTypeDef(userId, newAttributeTypeDef);
 
             this.logDynamicTypeManagement(serverName, userId, methodName, newAttributeTypeDef.getName(), newAttributeTypeDef.getGUID());
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotSupportedException error)
-        {
-            captureTypeDefNotSupportedException(response, error);
-        }
-        catch (TypeDefKnownException error)
-        {
-            captureTypeDefKnownException(response, error);
-        }
-        catch (TypeDefConflictException error)
-        {
-            captureTypeDefConflictException(response, error);
-        }
-        catch (InvalidTypeDefException error)
-        {
-            captureInvalidTypeDefException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
-
-
-
+    
 
     /**
      * Verify that a definition of a TypeDef is either new or matches the definition already stored.
@@ -1216,46 +1011,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "verifyTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         BooleanResponse response = new BooleanResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setFlag(metadataCollection.verifyTypeDef(userId, typeDef));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotSupportedException error)
-        {
-            captureTypeDefNotSupportedException(response, error);
-        }
-        catch (TypeDefConflictException error)
-        {
-            captureTypeDefConflictException(response, error);
-        }
-        catch (InvalidTypeDefException error)
-        {
-            captureInvalidTypeDefException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1284,46 +1058,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "verifyAttributeTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         BooleanResponse response = new BooleanResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setFlag(metadataCollection.verifyAttributeTypeDef(userId, attributeTypeDef));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotSupportedException error)
-        {
-            captureTypeDefNotSupportedException(response, error);
-        }
-        catch (TypeDefConflictException error)
-        {
-            captureTypeDefConflictException(response, error);
-        }
-        catch (InvalidTypeDefException error)
-        {
-            captureInvalidTypeDefException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1353,59 +1106,27 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefResponse response = new TypeDefResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(metadataCollection.updateTypeDef(userId, typeDefPatch));
 
             this.logDynamicTypeManagement(serverName, userId, methodName, typeDefPatch.getTypeDefName(), typeDefPatch.getTypeDefGUID());
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnownException(response, error);
-        }
-        catch (PatchErrorException error)
-        {
-            response.setRelatedHTTPCode(error.getReportedHTTPCode());
-            response.setExceptionClassName(PatchErrorException.class.getName());
-            response.setActionDescription(error.getReportingActionDescription());
-            response.setExceptionErrorMessage(error.getReportedErrorMessage());
-            response.setExceptionErrorMessageId(error.getReportedErrorMessageId());
-            response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
-            response.setExceptionSystemAction(error.getReportedSystemAction());
-            response.setExceptionUserAction(error.getReportedUserAction());
-            if (error.getCause() != null)
-            {
-                response.setExceptionCausedBy(error.getCause().getClass().getName());
-            }
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1438,48 +1159,27 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "deleteTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
 
             this.logDynamicTypeManagement(serverName, userId, methodName, obsoleteTypeDefName, obsoleteTypeDefGUID);
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnownException(response, error);
-        }
-        catch (TypeDefInUseException error)
-        {
-            captureTypeDefInUseException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1512,48 +1212,27 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "deleteAttributeTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
 
             this.logDynamicTypeManagement(serverName, userId, methodName, obsoleteTypeDefName, obsoleteTypeDefGUID);
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnownException(response, error);
-        }
-        catch (TypeDefInUseException error)
-        {
-            captureTypeDefInUseException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1586,7 +1265,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reIdentifyTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String originalTypeDefName = null;
         String newTypeDefGUID = null;
@@ -1600,9 +1279,12 @@ public class OMRSRepositoryRESTServices
             newTypeDefGUID = requestParameters.getNewTypeDefGUID();
             newTypeDefName = requestParameters.getNewTypeDefName();
         }
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(metadataCollection.reIdentifyTypeDef(userId,
@@ -1613,32 +1295,12 @@ public class OMRSRepositoryRESTServices
 
             this.logDynamicTypeManagement(serverName, userId, methodName, originalTypeDefName, originalTypeDefGUID);
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1671,7 +1333,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reIdentifyAttributeTypeDef";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String originalAttributeTypeDefName = null;
         String newAttributeTypeDefGUID = null;
@@ -1685,9 +1347,12 @@ public class OMRSRepositoryRESTServices
             newAttributeTypeDefGUID = requestParameters.getNewTypeDefGUID();
             newAttributeTypeDefName = requestParameters.getNewTypeDefName();
         }
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDef(metadataCollection.reIdentifyAttributeTypeDef(userId,
@@ -1698,32 +1363,12 @@ public class OMRSRepositoryRESTServices
 
             this.logDynamicTypeManagement(serverName, userId, methodName, originalAttributeTypeDefName, originalAttributeTypeDefGUID);
         }
-        catch (FunctionNotSupportedException error)
+        catch (Throwable error)
         {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeDefNotKnownException error)
-        {
-            captureTypeDefNotKnown(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1753,34 +1398,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "isEntityKnown";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.isEntityKnown(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1806,38 +1442,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntitySummary";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntitySummaryResponse response = new EntitySummaryResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.getEntitySummary(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1886,42 +1509,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntityDetail";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.getEntityDetail(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (EntityProxyOnlyException error)
-        {
-            captureEntityProxyOnlyException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -1952,12 +1558,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntityDetail";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             if (asOfTime != null)
@@ -1969,36 +1578,12 @@ public class OMRSRepositoryRESTServices
                 response.setEntity(metadataCollection.getEntityDetail(userId, guid, null));
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (EntityProxyOnlyException error)
-        {
-            captureEntityProxyOnlyException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2029,12 +1614,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntityDetailHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityListResponse response = new EntityListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             if (historyRangeRequest != null)
@@ -2058,36 +1646,12 @@ public class OMRSRepositoryRESTServices
                                                                                HistorySequencingOrder.BACKWARDS));
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (EntityProxyOnlyException error)
-        {
-            captureEntityProxyOnlyException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2118,12 +1682,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getClassificationHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationListResponse response = new ClassificationListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             if (historyRangeRequest != null)
@@ -2149,36 +1716,12 @@ public class OMRSRepositoryRESTServices
                                                                                         HistorySequencingOrder.BACKWARDS));
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (EntityProxyOnlyException error)
-        {
-            captureEntityProxyOnlyException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2209,7 +1752,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelationshipsForEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String               relationshipTypeGUID    = null;
         int                  fromRelationshipElement = 0;
@@ -2230,8 +1773,12 @@ public class OMRSRepositoryRESTServices
             pageSize                = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -2251,44 +1798,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2320,7 +1835,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelationshipsForEntityHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String               relationshipTypeGUID    = null;
         int                  fromRelationshipElement = 0;
@@ -2343,8 +1858,12 @@ public class OMRSRepositoryRESTServices
             pageSize                = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -2364,44 +1883,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2432,7 +1919,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntities";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                entityTypeGUID               = null;
         List<String>          entitySubtypeGUIDs           = null;
@@ -2459,8 +1946,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntities(userId,
@@ -2482,40 +1973,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2546,7 +2009,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    entityTypeGUID                    = null;
         List<String>              entitySubtypeGUIDs                = null;
@@ -2575,8 +2038,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntities(userId,
@@ -2598,40 +2065,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2663,7 +2102,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByProperty";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String               entityTypeGUID               = null;
         InstanceProperties   matchProperties              = null;
@@ -2690,8 +2129,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntitiesByProperty(userId,
@@ -2711,42 +2154,13 @@ public class OMRSRepositoryRESTServices
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
             }
-
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2778,7 +2192,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByPropertyHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    entityTypeGUID                    = null;
         InstanceProperties        matchProperties                   = null;
@@ -2807,8 +2221,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntitiesByProperty(userId,
@@ -2830,40 +2248,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -2897,7 +2287,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByClassification";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String               entityTypeGUID                     = null;
         InstanceProperties   matchClassificationProperties      = null;
@@ -2922,8 +2312,12 @@ public class OMRSRepositoryRESTServices
             pageSize                           = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntitiesByClassification(userId,
@@ -2944,44 +2338,12 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3015,7 +2377,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByClassificationHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String               entityTypeGUID                     = null;
         InstanceProperties   matchClassificationProperties      = null;
@@ -3042,8 +2404,12 @@ public class OMRSRepositoryRESTServices
             asOfTime                           = findRequestParameters.getAsOfTime();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntitiesByClassification(userId,
@@ -3064,44 +2430,12 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3135,7 +2469,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByPropertyValue";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                  entityTypeGUID                    = null;
         int                     fromEntityElement                 = 0;
@@ -3158,8 +2492,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntitiesByPropertyValue(userId,
@@ -3180,40 +2518,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3247,7 +2557,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByPropertyValueHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                  entityTypeGUID                    = null;
         int                     fromEntityElement                 = 0;
@@ -3272,8 +2582,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.findEntitiesByPropertyValue(userId,
@@ -3293,40 +2607,12 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3351,34 +2637,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "isRelationshipKnown";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.isRelationshipKnown(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3427,38 +2704,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.getRelationship(userId, guid));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3488,12 +2752,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             if (asOfTime != null)
@@ -3505,32 +2772,12 @@ public class OMRSRepositoryRESTServices
                 response.setRelationship(metadataCollection.getRelationship(userId, guid, null));
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3560,12 +2807,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelationshipHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipListResponse response = new RelationshipListResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             if (historyRangeRequest != null)
@@ -3589,32 +2839,12 @@ public class OMRSRepositoryRESTServices
                                                                                     HistorySequencingOrder.BACKWARDS));
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3644,7 +2874,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationships";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    relationshipTypeGUID     = null;
         List<String>              relationshipSubtypeGUIDs = null;
@@ -3669,8 +2899,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = metadataCollection.findRelationships(userId,
@@ -3691,40 +2925,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3754,7 +2960,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    relationshipTypeGUID     = null;
         List<String>              relationshipSubtypeGUIDs = null;
@@ -3781,8 +2987,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = metadataCollection.findRelationships(userId,
@@ -3803,40 +3013,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3867,7 +3049,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByProperty";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    relationshipTypeGUID     = null;
         InstanceProperties        matchProperties          = null;
@@ -3892,8 +3074,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = metadataCollection.findRelationshipsByProperty(userId,
@@ -3914,40 +3100,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -3978,7 +3136,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByPropertyHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    relationshipTypeGUID     = null;
         InstanceProperties        matchProperties          = null;
@@ -4005,8 +3163,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = metadataCollection.findRelationshipsByProperty(userId,
@@ -4027,40 +3189,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4091,7 +3225,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByPropertyValue";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    relationshipTypeGUID     = null;
         int                       fromRelationshipElement  = 0;
@@ -4112,8 +3246,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = metadataCollection.findRelationshipsByPropertyValue(userId,
@@ -4133,40 +3271,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4197,7 +3307,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByPropertyValueHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                    relationshipTypeGUID     = null;
         int                       fromRelationshipElement  = 0;
@@ -4220,8 +3330,12 @@ public class OMRSRepositoryRESTServices
             pageSize                          = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = metadataCollection.findRelationshipsByPropertyValue(userId,
@@ -4241,40 +3355,12 @@ public class OMRSRepositoryRESTServices
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4307,7 +3393,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getLinkingEntities";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         List<InstanceStatus>      limitResultsByStatus = null;
 
@@ -4318,8 +3404,12 @@ public class OMRSRepositoryRESTServices
             limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = metadataCollection.getLinkingEntities(userId,
@@ -4333,36 +3423,12 @@ public class OMRSRepositoryRESTServices
                 response.setRelationshipElementList(instanceGraph.getRelationships());
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4395,7 +3461,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getLinkingEntitiesHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         List<InstanceStatus>      limitResultsByStatus = null;
         Date                      asOfTime = null;
@@ -4408,8 +3474,12 @@ public class OMRSRepositoryRESTServices
             asOfTime = findRequestParameters.getAsOfTime();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = metadataCollection.getLinkingEntities(userId,
@@ -4423,36 +3493,12 @@ public class OMRSRepositoryRESTServices
                 response.setRelationshipElementList(instanceGraph.getRelationships());
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4487,7 +3533,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntityNeighborhood";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         List<String>         entityTypeGUIDs                = null;
         List<String>         relationshipTypeGUIDs          = null;
@@ -4504,8 +3550,12 @@ public class OMRSRepositoryRESTServices
             limitResultsByClassification = findRequestParameters.getLimitResultsByClassification();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = metadataCollection.getEntityNeighborhood(userId,
@@ -4522,40 +3572,12 @@ public class OMRSRepositoryRESTServices
                 response.setRelationshipElementList(instanceGraph.getRelationships());
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4590,7 +3612,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntityNeighborhoodHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         List<String>         entityTypeGUIDs                = null;
         List<String>         relationshipTypeGUIDs          = null;
@@ -4609,8 +3631,12 @@ public class OMRSRepositoryRESTServices
             limitResultsByClassification = findRequestParameters.getLimitResultsByClassification();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = metadataCollection.getEntityNeighborhood(userId,
@@ -4627,40 +3653,12 @@ public class OMRSRepositoryRESTServices
                 response.setRelationshipElementList(instanceGraph.getRelationships());
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4697,7 +3695,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelatedEntities";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         List<String>         entityTypeGUIDs               = null;
         int                  fromEntityElement             = 0;
@@ -4720,8 +3718,12 @@ public class OMRSRepositoryRESTServices
             pageSize = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.getRelatedEntities(userId,
@@ -4741,44 +3743,12 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4815,7 +3785,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelatedEntitiesHistory";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         List<String>         entityTypeGUIDs               = null;
         int                  fromEntityElement             = 0;
@@ -4840,8 +3810,12 @@ public class OMRSRepositoryRESTServices
             pageSize = findRequestParameters.getPageSize();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = metadataCollection.getRelatedEntities(userId,
@@ -4861,44 +3835,12 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -4937,7 +3879,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                     entityTypeGUID = null;
         InstanceProperties         initialProperties = null;
@@ -4954,8 +3896,12 @@ public class OMRSRepositoryRESTServices
             initialStatus = requestBody.getInitialStatus();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.addEntity(userId,
@@ -4964,44 +3910,12 @@ public class OMRSRepositoryRESTServices
                                                             initialClassifications,
                                                             initialStatus));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (StatusNotSupportedException error)
-        {
-            captureStatusNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5039,7 +3953,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addExternalEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String                     entityTypeGUID = null;
         String                     externalSourceGUID = null;
@@ -5060,8 +3974,12 @@ public class OMRSRepositoryRESTServices
             initialStatus = requestBody.getInitialStatus();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.addExternalEntity(userId,
@@ -5072,44 +3990,12 @@ public class OMRSRepositoryRESTServices
                                                                     initialClassifications,
                                                                     initialStatus));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (StatusNotSupportedException error)
-        {
-            captureStatusNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5145,38 +4031,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addEntityProxy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.addEntityProxy(userId, entityProxy);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5207,46 +4081,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateEntityStatus";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.updateEntityStatus(userId, entityGUID, newStatus));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (StatusNotSupportedException error)
-        {
-            captureStatusNotSupportedException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5277,48 +4131,28 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateEntityProperties";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.updateEntityProperties(userId,
                                                                          entityGUID,
                                                                          propertiesRequestBody.getInstanceProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5345,42 +4179,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "undoEntityUpdate";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.undoEntityUpdate(userId, entityGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5413,7 +4230,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "deleteEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5426,38 +4243,22 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5487,7 +4288,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "purgeEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5500,42 +4301,22 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotDeletedException error)
-        {
-            captureEntityNotDeletedException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5563,46 +4344,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "restoreEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.restoreEntity(userId, deletedEntityGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (EntityNotDeletedException error)
-        {
-            captureEntityNotDeletedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5637,12 +4398,16 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "classifyEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.classifyEntity(userId,
@@ -5650,40 +4415,12 @@ public class OMRSRepositoryRESTServices
                                                                  classificationName,
                                                                  propertiesRequestBody.getInstanceProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5716,12 +4453,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "classifyEntityProxy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationResponse response = new ClassificationResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setClassification(metadataCollection.classifyEntity(userId,
@@ -5729,40 +4469,12 @@ public class OMRSRepositoryRESTServices
                                                                          classificationName,
                                                                          requestBody.getInstanceProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5797,12 +4509,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "classifyEntity (detailed)";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.classifyEntity(userId,
@@ -5814,40 +4529,12 @@ public class OMRSRepositoryRESTServices
                                                                  classificationRequestBody.getClassificationOriginGUID(),
                                                                  classificationRequestBody.getClassificationProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5880,12 +4567,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "classifyEntityProxy (detailed)";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationResponse response = new ClassificationResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setClassification(metadataCollection.classifyEntity(userId,
@@ -5897,40 +4587,12 @@ public class OMRSRepositoryRESTServices
                                                                          requestBody.getClassificationOriginGUID(),
                                                                          requestBody.getClassificationProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -5960,48 +4622,27 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "declassifyEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.declassifyEntity(userId,
                                                                    entityGUID,
                                                                    classificationName));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6031,48 +4672,28 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "declassifyEntityProxy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationResponse response = new ClassificationResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setClassification(metadataCollection.declassifyEntity(userId,
                                                                            entityProxy,
                                                                            classificationName));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6106,12 +4727,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateEntityClassification";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.updateEntityClassification(userId,
@@ -6119,40 +4743,12 @@ public class OMRSRepositoryRESTServices
                                                                              classificationName,
                                                                              propertiesRequestBody.getInstanceProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6184,12 +4780,15 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateEntityProxyClassification";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationResponse response = new ClassificationResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setClassification(metadataCollection.updateEntityClassification(userId,
@@ -6197,40 +4796,12 @@ public class OMRSRepositoryRESTServices
                                                                                      classificationName,
                                                                                      requestBody.getInstanceProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6263,7 +4834,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String             relationshipTypeGUID = null;
         InstanceProperties initialProperties = null;
@@ -6282,8 +4853,12 @@ public class OMRSRepositoryRESTServices
             initialStatus = createRequestParameters.getInitialStatus();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.addRelationship(userId,
@@ -6293,44 +4868,12 @@ public class OMRSRepositoryRESTServices
                                                                         entityTwoGUID,
                                                                         initialStatus));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (StatusNotSupportedException error)
-        {
-            captureStatusNotSupportedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6366,7 +4909,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addExternalRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String             relationshipTypeGUID = null;
         String             externalSourceGUID = null;
@@ -6389,8 +4932,12 @@ public class OMRSRepositoryRESTServices
             initialStatus = createRequestParameters.getInitialStatus();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.addExternalRelationship(userId,
@@ -6402,44 +4949,12 @@ public class OMRSRepositoryRESTServices
                                                                                 entityTwoGUID,
                                                                                 initialStatus));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (StatusNotSupportedException error)
-        {
-            captureStatusNotSupportedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6470,48 +4985,28 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateRelationshipStatus";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.updateRelationshipStatus(userId,
                                                                                  relationshipGUID,
                                                                                  newStatus));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (StatusNotSupportedException error)
-        {
-            captureStatusNotSupportedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6542,48 +5037,27 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "updateRelationshipProperties";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.updateRelationshipProperties(userId,
                                                                                      relationshipGUID,
                                                                                      propertiesRequestBody.getInstanceProperties()));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6610,42 +5084,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "undoRelationshipUpdate";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.undoRelationshipUpdate(userId, relationshipGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6677,7 +5134,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "deleteRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -6690,8 +5147,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.deleteRelationship(userId,
@@ -6699,32 +5160,12 @@ public class OMRSRepositoryRESTServices
                                                                            typeDefName,
                                                                            obsoleteRelationshipGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6754,7 +5195,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "purgeRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -6767,42 +5208,22 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotDeletedException error)
-        {
-            captureRelationshipNotDeletedException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6831,46 +5252,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "restoreRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.restoreRelationship(userId, deletedRelationshipGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (RelationshipNotDeletedException error)
-        {
-            captureRelationshipNotDeletedException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6908,7 +5309,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reIdentifyEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -6921,8 +5322,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.reIdentifyEntity(userId,
@@ -6931,32 +5336,12 @@ public class OMRSRepositoryRESTServices
                                                                    entityGUID,
                                                                    newEntityGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -6991,7 +5376,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reTypeEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefSummary currentTypeDefSummary = null;
         TypeDefSummary newTypeDefSummary = null;
@@ -7004,8 +5389,12 @@ public class OMRSRepositoryRESTServices
             newTypeDefSummary = typeDefChangeRequest.getNewTypeDef();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.reTypeEntity(userId,
@@ -7013,44 +5402,12 @@ public class OMRSRepositoryRESTServices
                                                                currentTypeDefSummary,
                                                                newTypeDefSummary));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (ClassificationErrorException error)
-        {
-            captureClassificationErrorException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7087,7 +5444,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reHomeEntity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -7100,8 +5457,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(metadataCollection.reHomeEntity(userId,
@@ -7112,32 +5473,12 @@ public class OMRSRepositoryRESTServices
                                                                newHomeMetadataCollectionId,
                                                                newHomeMetadataCollectionName));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7171,7 +5512,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reIdentifyRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -7184,8 +5525,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.reIdentifyRelationship(userId,
@@ -7194,32 +5539,12 @@ public class OMRSRepositoryRESTServices
                                                                                relationshipGUID,
                                                                                newRelationshipGUID));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7254,7 +5579,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reTypeRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         TypeDefSummary currentTypeDefSummary = null;
         TypeDefSummary newTypeDefSummary = null;
@@ -7267,8 +5592,12 @@ public class OMRSRepositoryRESTServices
             newTypeDefSummary = typeDefChangeRequest.getNewTypeDef();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.reTypeRelationship(userId,
@@ -7276,40 +5605,12 @@ public class OMRSRepositoryRESTServices
                                                                            currentTypeDefSummary,
                                                                            newTypeDefSummary));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7347,7 +5648,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "reHomeRelationship";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -7360,8 +5661,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(metadataCollection.reHomeRelationship(userId,
@@ -7372,32 +5677,12 @@ public class OMRSRepositoryRESTServices
                                                                            newHomeMetadataCollectionId,
                                                                            newHomeMetadataCollectionName));
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7438,58 +5723,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "saveEntityReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.saveEntityReferenceCopy(userId, entity);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (HomeEntityException error)
-        {
-            captureHomeEntityException(response, error);
-        }
-        catch (EntityConflictException error)
-        {
-            captureEntityConflictException(response, error);
-        }
-        catch (InvalidEntityException error)
-        {
-            captureInvalidEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7516,42 +5769,26 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName = "getHomeClassifications";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationListResponse response = new ClassificationListResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.getHomeClassifications(userId, entityGUID);
         }
-        catch (EntityNotKnownException  error)
+        catch (Throwable error)
         {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7579,12 +5816,16 @@ public class OMRSRepositoryRESTServices
                                                              HistoryRequest requestBody)
     {
         final String  methodName = "getHomeClassifications (with history)";
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ClassificationListResponse response = new ClassificationListResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             if (requestBody == null)
@@ -7596,32 +5837,12 @@ public class OMRSRepositoryRESTServices
                 metadataCollection.getHomeClassifications(userId, entityGUID, requestBody.getAsOfTime());
             }
         }
-        catch (EntityNotKnownException  error)
+        catch (Throwable error)
         {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7657,58 +5878,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "deleteEntityReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteEntityReferenceCopy(userId, entity);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (HomeEntityException error)
-        {
-            captureHomeEntityException(response, error);
-        }
-        catch (EntityConflictException error)
-        {
-            captureEntityConflictException(response, error);
-        }
-        catch (InvalidEntityException error)
-        {
-            captureInvalidEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7744,58 +5933,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "purgeEntityReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.purgeEntityReferenceCopy(userId, entity);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (HomeEntityException error)
-        {
-            captureHomeEntityException(response, error);
-        }
-        catch (EntityConflictException error)
-        {
-            captureEntityConflictException(response, error);
-        }
-        catch (InvalidEntityException error)
-        {
-            captureInvalidEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7829,7 +5986,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "purgeEntityReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -7842,8 +5999,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.purgeEntityReferenceCopy(userId,
@@ -7852,36 +6013,12 @@ public class OMRSRepositoryRESTServices
                                                         typeDefName,
                                                         homeMetadataCollectionId);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (HomeEntityException error)
-        {
-            captureHomeEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -7915,7 +6052,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "refreshEntityReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -7928,8 +6065,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.refreshEntityReferenceCopy(userId,
@@ -7938,36 +6079,12 @@ public class OMRSRepositoryRESTServices
                                                           typeDefName,
                                                           homeMetadataCollectionId);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (HomeEntityException error)
-        {
-            captureHomeEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8002,12 +6119,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName  = "saveClassificationReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
                 OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
@@ -8022,44 +6142,12 @@ public class OMRSRepositoryRESTServices
                 }
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityConflictException error)
-        {
-            captureEntityConflictException(response, error);
-        }
-        catch (InvalidEntityException error)
-        {
-            captureInvalidEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8093,12 +6181,15 @@ public class OMRSRepositoryRESTServices
     {
         final String methodName  = "purgeClassificationReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
                 OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
@@ -8113,44 +6204,12 @@ public class OMRSRepositoryRESTServices
                 }
             }
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (EntityConflictException error)
-        {
-            captureEntityConflictException(response, error);
-        }
-        catch (InvalidEntityException error)
-        {
-            captureInvalidEntityException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8187,62 +6246,26 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "saveRelationshipReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.saveRelationshipReferenceCopy(userId, relationship);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (InvalidRelationshipException error)
-        {
-            captureInvalidRelationshipException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (HomeRelationshipException error)
-        {
-            captureHomeRelationshipException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (RelationshipConflictException error)
-        {
-            captureRelationshipConflictException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8280,62 +6303,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "deleteRelationshipReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteRelationshipReferenceCopy(userId, relationship);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (InvalidRelationshipException error)
-        {
-            captureInvalidRelationshipException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (HomeRelationshipException error)
-        {
-            captureHomeRelationshipException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (RelationshipConflictException error)
-        {
-            captureRelationshipConflictException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8373,62 +6359,25 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "purgeRelationshipReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.deleteRelationshipReferenceCopy(userId, relationship);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (InvalidRelationshipException error)
-        {
-            captureInvalidRelationshipException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (HomeRelationshipException error)
-        {
-            captureHomeRelationshipException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (RelationshipConflictException error)
-        {
-            captureRelationshipConflictException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8463,7 +6412,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "purgeRelationshipReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -8476,8 +6425,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.purgeRelationshipReferenceCopy(userId,
@@ -8486,36 +6439,12 @@ public class OMRSRepositoryRESTServices
                                                               typeDefName,
                                                               homeMetadataCollectionId);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (HomeRelationshipException error)
-        {
-            captureHomeRelationshipException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8550,7 +6479,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "refreshRelationshipReferenceCopy";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -8563,8 +6492,12 @@ public class OMRSRepositoryRESTServices
             typeDefName = typeDefValidationForRequest.getTypeDefName();
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.refreshRelationshipReferenceCopy(userId,
@@ -8573,36 +6506,12 @@ public class OMRSRepositoryRESTServices
                                                                 typeDefName,
                                                                 homeMetadataCollectionId);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (RelationshipNotKnownException error)
-        {
-            captureRelationshipNotKnownException(response, error);
-        }
-        catch (HomeRelationshipException error)
-        {
-            captureHomeRelationshipException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8639,7 +6548,7 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "saveInstanceReferenceCopies";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         InstanceGraph instanceGraph = new InstanceGraph();
 
@@ -8651,62 +6560,22 @@ public class OMRSRepositoryRESTServices
             instanceGraph.setRelationships(instances.getRelationshipElementList());
         }
 
+        AuditLog                     auditLog = null;
+
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
             metadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (InvalidEntityException error)
-        {
-            captureInvalidEntityException(response, error);
-        }
-        catch (InvalidRelationshipException error)
-        {
-            captureInvalidRelationshipException(response, error);
-        }
-        catch (EntityNotKnownException error)
-        {
-            captureEntityNotKnownException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeDefErrorException(response, error);
-        }
-        catch (EntityConflictException error)
-        {
-            captureEntityConflictException(response, error);
-        }
-        catch (RelationshipConflictException error)
-        {
-            captureRelationshipConflictException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8738,33 +6607,23 @@ public class OMRSRepositoryRESTServices
 
         ConnectionResponse response = new ConnectionResponse();
 
-        log.debug("Calling method: " + methodName);
-
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        AuditLog                     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
 
             response.setConnection(instance.getRemoteEnterpriseOMRSTopicConnection());
         }
-        catch (RepositoryErrorException  error)
+        catch (Throwable error)
         {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (Exception error)
-        {
-            captureGenericException(response, error, userId, serverName, methodName);
+            this.captureRuntimeExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response);
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -8842,438 +6701,11 @@ public class OMRSRepositoryRESTServices
      *
      * @param response REST Response
      * @param error returned response.
-     */
-    private void captureUserNotAuthorizedException(OMRSAPIResponse response, UserNotAuthorizedException error)
-    {
-        final String propertyName = "userId";
-
-        if (error.getUserId() == null)
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-        else
-        {
-            Map<String, Object> exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put(propertyName, error.getUserId());
-
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureFunctionNotSupportedException(OMRSAPIResponse response, FunctionNotSupportedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureRepositoryErrorException(OMRSAPIResponse response, RepositoryErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidParameterException(OMRSAPIResponse response, InvalidParameterException error)
-    {
-        final String propertyName = "parameterName";
-
-        if (error.getParameterName() == null)
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-        else
-        {
-            Map<String, Object> exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put(propertyName, error.getParameterName());
-
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidTypeDefException(OMRSAPIResponse response, InvalidTypeDefException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefConflictException(OMRSAPIResponse response, TypeDefConflictException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefNotSupportedException(OMRSAPIResponse response, TypeDefNotSupportedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureHomeRelationshipException(OMRSAPIResponse response, HomeRelationshipException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureRelationshipNotKnownException(OMRSAPIResponse response, RelationshipNotKnownException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidRelationshipException(OMRSAPIResponse response, InvalidRelationshipException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureRelationshipConflictException(OMRSAPIResponse response, RelationshipConflictException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefErrorException(OMRSAPIResponse response, TypeErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void capturePropertyErrorException(OMRSAPIResponse response, PropertyErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureEntityNotKnownException(OMRSAPIResponse response, EntityNotKnownException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureHomeEntityException(OMRSAPIResponse response, HomeEntityException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefNotKnownException(TypeDefResponse response, TypeDefNotKnownException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefNotKnown(OMRSAPIResponse response, TypeDefNotKnownException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefKnownException(OMRSAPIResponse response, TypeDefKnownException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefInUseException(OMRSAPIResponse response, TypeDefInUseException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeDefNotKnownException(OMRSAPIResponse response, TypeDefNotKnownException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureEntityProxyOnlyException(OMRSAPIResponse response, EntityProxyOnlyException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureClassificationErrorException(OMRSAPIResponse response, ClassificationErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void capturePagingErrorException(OMRSAPIResponse response, PagingErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureTypeErrorException(OMRSAPIResponse response, TypeErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureStatusNotSupportedException(OMRSAPIResponse response, StatusNotSupportedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureEntityNotDeletedException(OMRSAPIResponse response, EntityNotDeletedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureRelationshipNotDeletedException(OMRSAPIResponse response, RelationshipNotDeletedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidEntityException(OMRSAPIResponse response, InvalidEntityException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response
-     * @param userId calling user
-     * @param serverName targeted server instance
-     * @param methodName calling method
-     */
-    private void captureGenericException(OMRSAPIResponse              response,
-                                         Exception                    error,
-                                         String                       userId,
-                                         String                       serverName,
-                                         String                       methodName)
-    {
-        String  message = error.getMessage();
-
-        if (message == null)
-        {
-            message = "null";
-        }
-
-        ExceptionMessageDefinition messageDefinition = OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               message);
-
-        response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
-        response.setExceptionClassName(error.getClass().getName());
-        response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
-        response.setExceptionSystemAction(messageDefinition.getSystemAction());
-        response.setExceptionUserAction(messageDefinition.getUserAction());
-        response.setExceptionErrorMessageId(messageDefinition.getMessageId());
-        response.setExceptionProperties(null);
-
-        try
-        {
-            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMRSAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                              methodName,
-                                                                                              message),
-                                      error);
-            }
-        }
-        catch (Exception  secondError)
-        {
-            log.error("Unexpected exception processing error {}", error, secondError);
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureEntityConflictException(OMRSAPIResponse response, EntityConflictException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
      * @param exceptionClassName class name of the exception to recreate
      */
-    private void captureCheckedException(OMRSAPIResponse          response,
-                                         OMRSCheckedExceptionBase error,
-                                         String                   exceptionClassName)
+    private void captureCheckedException(OMRSAPIResponse         response,
+                                         OMFCheckedExceptionBase error,
+                                         String                  exceptionClassName)
     {
         this.captureCheckedException(response, error, exceptionClassName, null);
     }
@@ -9286,13 +6718,14 @@ public class OMRSRepositoryRESTServices
      * @param error returned response.
      * @param exceptionClassName class name of the exception to recreate
      */
-    private void captureCheckedException(OMRSAPIResponse          response,
-                                         OMRSCheckedExceptionBase error,
-                                         String                   exceptionClassName,
-                                         Map<String, Object>      exceptionProperties)
+    private void captureCheckedException(OMRSAPIResponse         response,
+                                         OMFCheckedExceptionBase error,
+                                         String                  exceptionClassName,
+                                         Map<String, Object>     exceptionProperties)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
+        response.setExceptionSubclassName(error.getClass().getName());
         response.setActionDescription(error.getReportingActionDescription());
         response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionErrorMessageId(error.getReportedErrorMessageId());
@@ -9303,4 +6736,180 @@ public class OMRSRepositoryRESTServices
         response.setExceptionProperties(exceptionProperties);
     }
 
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     * @param auditLog log location for recording an unexpected exception
+     */
+    private void captureExceptions(OMRSAPIResponse response,
+                                   Exception    error,
+                                   String       methodName,
+                                   AuditLog     auditLog)
+    {
+        if (error instanceof PropertyServerException propertyServerException)
+        {
+            capturePropertyServerException(response, propertyServerException);
+        }
+        else if (error instanceof UserNotAuthorizedException userNotAuthorizedException)
+        {
+            captureUserNotAuthorizedException(response, userNotAuthorizedException);
+        }
+        else if (error instanceof InvalidParameterException invalidParameterException)
+        {
+            captureInvalidParameterException(response, invalidParameterException);
+        }
+        else
+        {
+            String message = error.getMessage();
+
+            if (message == null)
+            {
+                message = "null";
+            }
+
+            ExceptionMessageDefinition messageDefinition = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                         methodName,
+                                                                                                                         message);
+
+            response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
+            response.setExceptionClassName(PropertyServerException.class.getName());
+            response.setExceptionSubclassName(error.getClass().getName());
+            response.setExceptionCausedBy(error.getClass().getName());
+            response.setActionDescription(methodName);
+            response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
+            response.setExceptionErrorMessageId(messageDefinition.getMessageId());
+            response.setExceptionErrorMessageParameters(messageDefinition.getMessageParams());
+            response.setExceptionSystemAction(messageDefinition.getSystemAction());
+            response.setExceptionUserAction(messageDefinition.getUserAction());
+            response.setExceptionProperties(null);
+
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OMAGCommonAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(), methodName, message),
+                                      error);
+            }
+        }
+    }
+
+    /**
+     * A runtime error occurred.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     * @param auditLog log location for recording an unexpected exception
+     */
+    public  void captureRuntimeExceptions(OMRSAPIResponse response,
+                                          Throwable    error,
+                                          String       methodName,
+                                          AuditLog     auditLog)
+    {
+        if (error instanceof Exception exception)
+        {
+            /*
+             * An exception is handleable ...
+             */
+            captureExceptions(response, exception, methodName, auditLog);
+        }
+        else
+        {
+            /*
+             * An error exception or worse - this typically means that the JVM is in trouble and the platform
+             * can not safely continue.
+             */
+            System.out.println("Throwable from " + methodName + " causing platform to exit");
+            log.error("Throwable from " + methodName + " causing platform to exit", error);
+
+            System.out.println(error.toString());
+            System.exit(-1);
+        }
+    }
+
+
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    public  void captureInvalidParameterException(OMRSAPIResponse              response,
+                                                  InvalidParameterException error)
+    {
+        Map<String, Object>  exceptionProperties = error.getRelatedProperties();
+
+        String  parameterName = error.getParameterName();
+
+        if (parameterName != null)
+        {
+            if (exceptionProperties == null)
+            {
+                exceptionProperties = new HashMap<>();
+            }
+
+            exceptionProperties.put("parameterName", parameterName);
+        }
+
+        if (exceptionProperties != null)
+        {
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, InvalidParameterException.class.getName());
+        }
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    public  void capturePropertyServerException(OMRSAPIResponse            response,
+                                                PropertyServerException error)
+    {
+        captureCheckedException(response, error, PropertyServerException.class.getName());
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    public  void captureUserNotAuthorizedException(OMRSAPIResponse               response,
+                                                   UserNotAuthorizedException error)
+    {
+        Map<String, Object>  exceptionProperties = error.getRelatedProperties();
+
+        String  userId = error.getUserId();
+
+        if (userId != null)
+        {
+            if (exceptionProperties == null)
+            {
+                exceptionProperties = new HashMap<>();
+            }
+
+            exceptionProperties.put("userId", userId);
+        }
+
+        if (exceptionProperties != null)
+        {
+            captureCheckedException(response, error, UserNotAuthorizedException.class.getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, UserNotAuthorizedException.class.getName());
+        }
+    }
 }

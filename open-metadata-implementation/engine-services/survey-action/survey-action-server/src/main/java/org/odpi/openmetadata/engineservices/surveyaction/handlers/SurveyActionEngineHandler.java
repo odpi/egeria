@@ -232,7 +232,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                     if (assetGUID == null)
                     {
                         assetGUID = actionTargetElement.getTargetElement().getElementGUID();
-                        engineActionClient.updateActionTargetStatus(serverUserId,
+                        engineActionClient.updateActionTargetStatus(engineUserId,
                                                                     actionTargetElement.getActionTargetRelationshipGUID(),
                                                                     ActivityStatus.IN_PROGRESS,
                                                                     new Date(),
@@ -345,7 +345,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
 
         return new SurveyActionServiceHandler(governanceEngineProperties,
                                               governanceEngineGUID,
-                                              serverUserId,
+                                              engineUserId,
                                               engineActionGUID,
                                               engineActionClient,
                                               governanceServiceCache.getServiceRequestType(),

@@ -6,9 +6,9 @@ package org.odpi.openmetadata.adapters.connectors.secretsstore.yaml;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc.YAMLAuditCode;
-import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore.SecretsCollection;
-import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore.SecretsStore;
-import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore.TokenAPI;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.SecretsCollection;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.SecretsStore;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.TokenAPI;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
+import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -135,7 +136,18 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                             /*
                              * Save the token for next call.  It will be removed when the secrets store refreshes.
                              */
-                            secretsCollection.getSecrets().put(SecretsStoreCollectionProperty.TOKEN.getName(), token);
+                            Map<String,String> secrets = secretsCollection.getSecrets();
+
+                            if (secrets == null)
+                            {
+                                secrets = new HashMap<>();
+                            }
+
+                            secrets.put(SecretsStoreCollectionProperty.TOKEN.getName(), token);
+
+                            secretsCollection.setSecrets(secrets);
+
+                            return token;
                         }
                     }
                 }
@@ -295,9 +307,6 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                     HttpResponse<String> response = HttpClient.newHttpClient()
                             .send(request, HttpResponse.BodyHandlers.ofString());
 
-                    System.out.println(response.statusCode());
-                    System.out.println(response.body());
-
                     if (response.statusCode() == 200)
                     {
                         return getTokenFromResponseBody(response.body(),
@@ -393,7 +402,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 
                 body.append("\"")
                         .append(encode(dataKey))
-                        .append("\"=\"")
+                        .append("\":\"")
                         .append(encode(data.get(dataKey)))
                         .append("\"");
             }

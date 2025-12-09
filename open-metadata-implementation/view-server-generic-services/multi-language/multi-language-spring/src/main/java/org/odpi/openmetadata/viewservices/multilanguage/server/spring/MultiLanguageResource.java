@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/multi-language")
 
-@Tag(name="API: Multi Language OMVS", description="The Multi Language OMVS provides APIs for managing context events.",
+@Tag(name="API: Multi Language", description="Supports the maintenance of translations of text attributes in open metadata.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/multi-language/overview/"))
 

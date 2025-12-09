@@ -162,21 +162,21 @@ public class ReferenceDataRESTServices extends TokenController
      * @param validValueDefinitionGUID unique identifier of the validValueDefinition (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateValidValueDefinition(String                   serverName,
-                                                   String                   validValueDefinitionGUID,
-                                                   UpdateElementRequestBody requestBody)
+    public BooleanResponse updateValidValueDefinition(String                   serverName,
+                                                      String                   validValueDefinitionGUID,
+                                                      UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateValidValueDefinition";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -192,10 +192,10 @@ public class ReferenceDataRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                 {
-                    handler.updateValidValueDefinition(userId,
-                                                       validValueDefinitionGUID,
-                                                       requestBody,
-                                                       validValueDefinitionProperties);
+                    response.setFlag(handler.updateValidValueDefinition(userId,
+                                                                        validValueDefinitionGUID,
+                                                                        requestBody,
+                                                                        validValueDefinitionProperties));
                 }
                 else
                 {
@@ -215,8 +215,6 @@ public class ReferenceDataRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
 
 
     /**

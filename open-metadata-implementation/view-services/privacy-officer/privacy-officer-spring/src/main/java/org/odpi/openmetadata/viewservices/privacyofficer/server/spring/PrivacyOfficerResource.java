@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/privacy-officer")
 
-@Tag(name="API: Privacy Officer OMVS", description="The Privacy Officer OMVS provides APIs for supporting a Privacy Officer as they lead the data privacy governance program.  This builds on the capabilities of the Governance Officer OMVS.",
+@Tag(name="API: Privacy Officer", description="Supports a Privacy Officer as they lead the data privacy governance program.  This builds on the capabilities of the Governance Officer API.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/privacy-officer/overview/"))
 

@@ -43,9 +43,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve B instances from.
-     * @param defaultZones list of zones that the access service should set in all new B instances.
-     * @param publishZones list of zones that the access service sets up in published B instances.
      * @param auditLog destination for audit log events.
      */
     public AssetHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -57,9 +54,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                         OMRSRepositoryHelper               repositoryHelper,
                         String                             localServerUserId,
                         OpenMetadataServerSecurityVerifier securityVerifier,
-                        List<String>                       supportedZones,
-                        List<String>                       defaultZones,
-                        List<String>                       publishZones,
                         AuditLog                           auditLog)
     {
         super(converter,
@@ -71,9 +65,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
               repositoryHelper,
               localServerUserId,
               securityVerifier,
-              supportedZones,
-              defaultZones,
-              publishZones,
               auditLog);
 
         this.connectionHandler = new ConnectionHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
@@ -85,9 +76,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                          repositoryHelper,
                                                          localServerUserId,
                                                          securityVerifier,
-                                                         supportedZones,
-                                                         defaultZones,
-                                                         publishZones,
                                                          auditLog);
     }
 
@@ -170,11 +158,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        if (defaultZones != null)
-        {
-            builder.setAssetZones(userId, defaultZones, methodName);
-        }
-
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -217,7 +200,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTo        ending time for this relationship (null for all time)
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -251,7 +233,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                              Date                effectiveTo,
                                              boolean             forLineage,
                                              boolean             forDuplicateProcessing,
-                                             List<String>        serviceSupportedZones,
                                              Date                effectiveTime,
                                              String              methodName) throws InvalidParameterException,
                                                                                     PropertyServerException,
@@ -294,7 +275,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                  effectiveTo,
                                                  forLineage,
                                                  forDuplicateProcessing,
-                                                 serviceSupportedZones,
                                                  effectiveTime,
                                                  methodName);
         }
@@ -312,7 +292,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetTypeName type name of asset
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return an asset bean (with embedded connection details if available)
@@ -326,7 +305,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     String       assetTypeName,
                                     boolean      forLineage,
                                     boolean      forDuplicateProcessing,
-                                    List<String> serviceSupportedZones,
                                     Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
@@ -340,7 +318,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 null,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
-                                                                serviceSupportedZones,
                                                                 effectiveTime,
                                                                 methodName);
 
@@ -350,7 +327,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                    assetEntity,
                                                    forLineage,
                                                    forDuplicateProcessing,
-                                                   serviceSupportedZones,
                                                    effectiveTime,
                                                    methodName);
         }
@@ -369,7 +345,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetEntity entity for root connection object
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return connection object
@@ -381,7 +356,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                          EntityDetail assetEntity,
                                          boolean      forLineage,
                                          boolean      forDuplicateProcessing,
-                                         List<String> serviceSupportedZones,
                                          Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
@@ -424,7 +398,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 null,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
-                                                                serviceSupportedZones,
                                                                 effectiveTime,
                                                                 methodName);
             }
@@ -483,7 +456,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                 null,
                                                                                                 forLineage,
                                                                                                 forDuplicateProcessing,
-                                                                                                serviceSupportedZones,
                                                                                                 effectiveTime,
                                                                                                 methodName);
                                 if (supplementaryEntity != null)
@@ -547,7 +519,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                            connectionEntity.getType().getTypeDefName(),
                                                                                            null,
                                                                                            null,
-                                                                                           0,
+                                                                                           2,
                                                                                            null,
                                                                                            null,
                                                                                            SequencingOrder.CREATION_DATE_RECENT,

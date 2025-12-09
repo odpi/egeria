@@ -8,7 +8,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,14 +73,16 @@ public class OMRSOperationalServices
      */
     private static final Logger       log      = LoggerFactory.getLogger(OMRSOperationalServices.class);
 
-    private final String                         localServerName;               /* Initialized in constructor */
-    private final String                         localServerType;               /* Initialized in constructor */
-    private       String                         localMetadataCollectionName;   /* Initialized in constructor */
-    private final String                         localOrganizationName;         /* Initialized in constructor */
-    private final String                         localServerUserId;             /* Initialized in constructor */
-    private final String                         localServerPassword;           /* Initialized in constructor */
-    private final String                         localServerURL;                /* Initialized in constructor */
-    private final int                            maxPageSize;                   /* Initialized in constructor */
+    private final String localServerName;                  /* Initialized in constructor */
+    private final String localServerType;                  /* Initialized in constructor */
+    private       String localMetadataCollectionName;      /* Initialized in constructor */
+    private final String localOrganizationName;            /* Initialized in constructor */
+    private final String localServerUserId;                /* Initialized in constructor */
+    private final String localServerSecretStoreProvider;   /* Initialized in constructor */
+    private final String localServerSecretStoreLocation;   /* Initialized in constructor */
+    private final String localServerSecretStoreCollection; /* Initialized in constructor */
+    private final String localServerURL;                   /* Initialized in constructor */
+    private final int    maxPageSize;                      /* Initialized in constructor */
 
     private String                         localMetadataCollectionId          = null;
 
@@ -105,30 +107,34 @@ public class OMRSOperationalServices
      * @param localServerName name of the local server
      * @param localServerType type of the local server
      * @param organizationName name of the organization that owns the local server
-     * @param localServerUserId user id for this server to use in outbound REST calls and
-     *                          internal calls when processing inbound messages.
-     * @param localServerPassword password for this server to use on outbound REST calls.
+     * @param localServerUserId user id for this server to use in metadata requests
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param localServerURL URL root for this server.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
-    public OMRSOperationalServices(String                   localServerName,
-                                   String                   localServerType,
-                                   String                   organizationName,
-                                   String                   localServerUserId,
-                                   String                   localServerPassword,
-                                   String                   localServerURL,
-                                   int                      maxPageSize)
+    public OMRSOperationalServices(String localServerName,
+                                   String localServerType,
+                                   String organizationName,
+                                   String localServerUserId,
+                                   String localServerSecretsStoreProvider,
+                                   String localServerSecretsStoreLocation,
+                                   String localServerSecretsStoreCollection,                                   String                   localServerURL,
+                                   int    maxPageSize)
     {
         /*
          * Save details about the local server
          */
-        this.localServerName = localServerName;
-        this.localServerType = localServerType;
-        this.localOrganizationName = organizationName;
-        this.localServerUserId = localServerUserId;
-        this.localServerPassword = localServerPassword;
-        this.localServerURL = localServerURL;
-        this.maxPageSize = maxPageSize;
+        this.localServerName                  = localServerName;
+        this.localServerType                  = localServerType;
+        this.localOrganizationName            = organizationName;
+        this.localServerUserId                = localServerUserId;
+        this.localServerSecretStoreProvider   = localServerSecretsStoreProvider;
+        this.localServerSecretStoreLocation   = localServerSecretsStoreLocation;
+        this.localServerSecretStoreCollection = localServerSecretsStoreCollection;
+        this.localServerURL                   = localServerURL;
+        this.maxPageSize                      = maxPageSize;
     }
 
 
@@ -749,7 +755,9 @@ public class OMRSOperationalServices
                                                                             repositoryContentManager,
                                                                             auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER),
                                                                             localServerUserId,
-                                                                            localServerPassword);
+                                                                            localServerSecretStoreProvider,
+                                                                            localServerSecretStoreLocation,
+                                                                            localServerSecretStoreCollection);
         }
         else
         {
@@ -765,7 +773,9 @@ public class OMRSOperationalServices
                                                                             repositoryContentManager,
                                                                             auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER),
                                                                             localServerUserId,
-                                                                            localServerPassword);
+                                                                            localServerSecretStoreProvider,
+                                                                            localServerSecretStoreLocation,
+                                                                            localServerSecretStoreCollection);
 
             /*
              * Save information about the enterprise metadata collection for the OMRSEnterpriseConnectorProvider class as

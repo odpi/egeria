@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 
 import java.io.Serial;
@@ -12,7 +14,7 @@ import java.util.Map;
  * OMAGConfigurationErrorException is used when configuration parameters passed on earlier calls turn out to
  * be invalid or make the new call invalid.
  */
-public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
+public class OMAGConfigurationErrorException extends InvalidParameterException
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
                                            String                     className,
                                            String                     actionDescription)
     {
-        super(messageDefinition, className, actionDescription);
+        super(messageDefinition, className, actionDescription, OMAGServerConfig.class.getName());
     }
 
 
@@ -46,7 +48,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
                                            String                     actionDescription,
                                            Map<String, Object> relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, relatedProperties);
+        super(messageDefinition, className, actionDescription, OMAGServerConfig.class.getName(), relatedProperties);
     }
 
 
@@ -64,7 +66,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
                                            String                     actionDescription,
                                            Exception                  caughtError)
     {
-        super(messageDefinition, className, actionDescription, caughtError);
+        super(messageDefinition, className, actionDescription, caughtError, OMAGServerConfig.class.getName());
     }
 
 
@@ -84,7 +86,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
                                            Exception                  caughtError,
                                            Map<String, Object>        relatedProperties)
     {
-        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+        super(messageDefinition, className, actionDescription, caughtError, OMAGServerConfig.class.getName(), relatedProperties);
     }
 
 
@@ -125,6 +127,7 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
               systemAction,
               userAction,
               caughtErrorClassName,
+              null,
               relatedProperties);
     }
 
@@ -138,41 +141,6 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
     public OMAGConfigurationErrorException(String                  errorMessage,
                                            OMFCheckedExceptionBase template)
     {
-        super(errorMessage, template);
-    }
-
-
-    /**
-     * This is the typical constructor used for creating a OMAGConfigurationErrorException.
-     *
-     * @param httpCode http response code to use if this exception flows over a REST call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     */
-    @Deprecated
-    public OMAGConfigurationErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This is the constructor used for creating a OMAGConfigurationErrorException that resulted from a previous error.
-     *
-     * @param httpCode http response code to use if this exception flows over a REST call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     */
-    @Deprecated
-    public OMAGConfigurationErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+        super(errorMessage, template, OMAGServerConfig.class.getName());
     }
 }

@@ -79,6 +79,17 @@ public class VirtualConnection extends Connection
 
 
     /**
+     * Copy/clone constructor.
+     *
+     * @param templateConnection element to copy
+     */
+    public VirtualConnection(Connection templateConnection)
+    {
+        super(templateConnection);
+    }
+
+
+    /**
      * Return the list of embedded connections for this virtual connection.
      *
      * @return list of EmbeddedConnection objects

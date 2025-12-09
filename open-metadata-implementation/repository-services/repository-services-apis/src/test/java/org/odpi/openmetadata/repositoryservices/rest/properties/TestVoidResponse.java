@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;

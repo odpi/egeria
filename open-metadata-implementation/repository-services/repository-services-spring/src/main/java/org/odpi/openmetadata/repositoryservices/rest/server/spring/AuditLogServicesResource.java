@@ -4,6 +4,10 @@ package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogSeveritiesResponse;
@@ -19,7 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
  * that provide information about the local server's audit log.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/repository-services/users/{userId}/audit-log")
+@RequestMapping("/servers/{serverName}/open-metadata/repository-services/audit-log")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 
 @Tag(name="Repository Services - Audit Log", description="Details of the activity within an OMAG Server are written to " +
         "the server's configured audit log destinations.  This service retrieves information about the audit log and its " +
@@ -44,20 +55,19 @@ public class AuditLogServicesResource
      * Return the details of the severities that this server supports.
      *
      * @param serverName name of server
-     * @param userId calling user
      * @return variety of properties
      */
     @GetMapping(path = "/severity-definitions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSeverityList",
                description="Return the details of the severities that this server supports.",
                externalDocs=@ExternalDocumentation(description="Audit Log",
                                                    url="https://egeria-project.org/concepts/audit-log/"))
 
-    public AuditLogSeveritiesResponse getSeverityList(@PathVariable String   serverName,
-                                                      @PathVariable String   userId)
+    public AuditLogSeveritiesResponse getSeverityList(@PathVariable String   serverName)
     {
-        return restAPI.getSeverityList(serverName, userId);
+        return restAPI.getSeverityList(serverName);
     }
 
 
@@ -65,19 +75,18 @@ public class AuditLogServicesResource
      * Return the report from the local server's audit log.
      *
      * @param serverName server to query
-     * @param userId calling user
      * @return registration properties for server
      */
     @GetMapping(path = "/report")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAuditLogReport",
                description="Return the report from the local server's audit log.",
                externalDocs=@ExternalDocumentation(description="Audit Log",
                                                    url="https://egeria-project.org/concepts/audit-log/"))
 
-    public AuditLogReportResponse getAuditLogReport(@PathVariable String   serverName,
-                                                    @PathVariable String   userId)
+    public AuditLogReportResponse getAuditLogReport(@PathVariable String   serverName)
     {
-        return restAPI.getAuditLogReport(serverName, userId);
+        return restAPI.getAuditLogReport(serverName);
     }
 }

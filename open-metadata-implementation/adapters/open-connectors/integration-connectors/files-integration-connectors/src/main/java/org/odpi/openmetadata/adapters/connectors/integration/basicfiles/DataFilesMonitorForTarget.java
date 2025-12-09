@@ -426,12 +426,13 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                         {
                             properties.setStoreUpdateTime(fileLastModifiedDate);
 
-                            fileClient.updateAsset(dataFileInCatalog.getElementHeader().getGUID(), fileClient.getUpdateOptions(true), properties);
-
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                dataFileProperties.getPathName(),
-                                                                                                                                dataFileInCatalog.getElementHeader().getGUID()));
+                            if (fileClient.updateAsset(dataFileInCatalog.getElementHeader().getGUID(), fileClient.getUpdateOptions(true), properties))
+                            {
+                                auditLog.logMessage(methodName,
+                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                                    dataFileProperties.getPathName(),
+                                                                                                                                    dataFileInCatalog.getElementHeader().getGUID()));
+                            }
                         }
                     }
                     else

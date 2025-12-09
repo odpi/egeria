@@ -172,22 +172,22 @@ public class ActorManagerRESTServices extends TokenController
      * @param actorProfileGUID unique identifier of the actor profile (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateActorProfile(String                   serverName,
-                                           String                   urlMarker,
-                                           String                   actorProfileGUID,
-                                           UpdateElementRequestBody requestBody)
+    public BooleanResponse updateActorProfile(String                   serverName,
+                                              String                   urlMarker,
+                                              String                   actorProfileGUID,
+                                              UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateActorProfile";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -203,10 +203,10 @@ public class ActorManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof ActorProfileProperties actorProfileProperties)
                 {
-                    handler.updateActorProfile(userId,
-                                               actorProfileGUID,
-                                               requestBody,
-                                               actorProfileProperties);
+                    response.setFlag(handler.updateActorProfile(userId,
+                                                                actorProfileGUID,
+                                                                requestBody,
+                                                                actorProfileProperties));
                 }
                 else
                 {
@@ -685,22 +685,22 @@ public class ActorManagerRESTServices extends TokenController
      * @param actorRoleGUID unique identifier of the actor role (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateActorRole(String                   serverName,
-                                        String                   urlMarker,
-                                        String                   actorRoleGUID,
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse updateActorRole(String                   serverName,
+                                           String                   urlMarker,
+                                           String                   actorRoleGUID,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateActorRole";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -716,10 +716,10 @@ public class ActorManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof ActorRoleProperties actorRoleProperties)
                 {
-                    handler.updateActorRole(userId,
-                                            actorRoleGUID,
-                                            requestBody,
-                                            actorRoleProperties);
+                    response.setFlag(handler.updateActorRole(userId,
+                                                             actorRoleGUID,
+                                                             requestBody,
+                                                             actorRoleProperties));
                 }
                 else
                 {
@@ -1448,21 +1448,21 @@ public class ActorManagerRESTServices extends TokenController
      * @param userIdentityGUID unique identifier of the user identity (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateUserIdentity(String                   serverName,
-                                           String                   urlMarker,
-                                           String                   userIdentityGUID,
-                                           UpdateElementRequestBody requestBody)
+    public BooleanResponse updateUserIdentity(String                   serverName,
+                                              String                   urlMarker,
+                                              String                   userIdentityGUID,
+                                              UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateUserIdentity";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1479,10 +1479,10 @@ public class ActorManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
-                    handler.updateUserIdentity(userId,
-                                               userIdentityGUID,
-                                               requestBody,
-                                               userIdentityProperties);
+                    response.setFlag(handler.updateUserIdentity(userId,
+                                                                userIdentityGUID,
+                                                                requestBody,
+                                                                userIdentityProperties));
                 }
                 else
                 {

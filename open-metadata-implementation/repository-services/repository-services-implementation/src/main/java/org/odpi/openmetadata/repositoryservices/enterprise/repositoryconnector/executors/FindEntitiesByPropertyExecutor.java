@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -194,10 +196,6 @@ public class FindEntitiesByPropertyExecutor extends PageableEntityRepositoryExec
 
             accumulator.addEntities(results, metadataCollectionId);
         }
-        catch (InvalidParameterException error)
-        {
-            accumulator.captureException(metadataCollectionId, error);
-        }
         catch (FunctionNotSupportedException error)
         {
             accumulator.captureException(metadataCollectionId, error);
@@ -219,6 +217,10 @@ public class FindEntitiesByPropertyExecutor extends PageableEntityRepositoryExec
             accumulator.captureException(metadataCollectionId, error);
         }
         catch (UserNotAuthorizedException error)
+        {
+            accumulator.captureException(metadataCollectionId, error);
+        }
+        catch (InvalidParameterException error)
         {
             accumulator.captureException(metadataCollectionId, error);
         }

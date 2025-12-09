@@ -24,7 +24,7 @@ public class CSVTabularDataSetProvider extends ConnectorProviderBase
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 712;
+    private static final int    connectorComponentId   = 713;
 
     /*
      * Unique identifier for the connector type.

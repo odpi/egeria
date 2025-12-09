@@ -23,6 +23,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'io.openlineage:openlineage-java'
     implementation 'org.slf4j:slf4j-api'
 }
 

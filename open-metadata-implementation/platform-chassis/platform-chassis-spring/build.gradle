@@ -8,6 +8,7 @@ plugins {
 }
 
 dependencies {
+    compileOnly project(':open-metadata-implementation:user-security:token-controller')
     implementation 'org.springframework.boot:spring-boot'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
@@ -30,6 +31,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
+    implementation project(':open-metadata-implementation:common-services:multi-tenant')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')

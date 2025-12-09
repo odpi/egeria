@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -304,26 +305,27 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param collectionGUID unique identifier of the collection (returned from create)
      * @param updateOptions  provides a structure for the additional options when updating an element.
      * @param properties     properties for the collection.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateCollection(String               userId,
-                                 String               collectionGUID,
-                                 UpdateOptions        updateOptions,
-                                 CollectionProperties properties) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public boolean updateCollection(String               userId,
+                                    String               collectionGUID,
+                                    UpdateOptions        updateOptions,
+                                    CollectionProperties properties) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         final String methodName        = "updateCollection";
         final String guidParameterName = "collectionGUID";
 
-        super.updateElement(userId,
-                            collectionGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   collectionGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 
@@ -468,6 +470,80 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName,
                                                         parentGUID,
                                                         dataDescriptionCollectionGUID,
+                                                        deleteOptions);
+    }
+
+
+
+
+    /**
+     * Attach a solution blueprint to the element it describes.
+     *
+     * @param userId                  userId of user making request
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionDesign(String                   userId,
+                                   String                   parentGUID,
+                                   String                   solutionBlueprintGUID,
+                                   MetadataSourceOptions    metadataSourceOptions,
+                                   SolutionDesignProperties relationshipProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "linkSolutionDesign";
+        final String end1GUIDParameterName = "parentGUID";
+        final String end2GUIDParameterName = "solutionBlueprintGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(parentGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(solutionBlueprintGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName,
+                                                        parentGUID,
+                                                        solutionBlueprintGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a solution blueprint from the element it describes.
+     *
+     * @param userId                 userId of user making request.
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionDesign(String        userId,
+                                     String        parentGUID,
+                                     String        solutionBlueprintGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "detachSolutionDesign";
+
+        final String end1GUIDParameterName = "parentGUID";
+        final String end2GUIDParameterName = "solutionBlueprintGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(parentGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(solutionBlueprintGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName,
+                                                        parentGUID,
+                                                        solutionBlueprintGUID,
                                                         deleteOptions);
     }
 

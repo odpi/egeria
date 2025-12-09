@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.runtimemanager.server.spring;
 
+import io.openlineage.client.OpenLineage;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Runtime Manager OMVS", description="Egeria's runtime includes APIs for querying, configuring and managing its resources. The Runtime Manager OMVS provides APIs for retrieving configuration and status from servers and platforms.",
+@Tag(name="API: Runtime Manager", description="Egeria's runtime includes APIs for querying, configuring and managing its resources. Runtime Manager provides APIs for retrieving configuration and status from servers and platforms.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/runtime-manager/overview/"))
 
@@ -406,7 +407,7 @@ public class RuntimeManagerResource
      * @param metadataRepositoryCohortGUID unique identifier of the cohort (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -419,12 +420,10 @@ public class RuntimeManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/cohort-member"))
 
-    public VoidResponse updateMetadataRepositoryCohort(@PathVariable
-                                                       String                                  serverName,
-                                                       @PathVariable
-                                                       String                                  metadataRepositoryCohortGUID,
-                                                       @RequestBody (required = false)
-                                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateMetadataRepositoryCohort(@PathVariable String                                  serverName,
+                                                          @PathVariable String                                  metadataRepositoryCohortGUID,
+                                                          @RequestBody (required = false)
+                                                              UpdateElementRequestBody requestBody)
     {
         return restAPI.updateMetadataRepositoryCohort(serverName, metadataRepositoryCohortGUID, requestBody);
     }
@@ -979,7 +978,7 @@ public class RuntimeManagerResource
      * @param serverGUID unique identifier of the server to call
      * @param event open lineage event to publish.
      */
-    @PostMapping(path = "/integration-daemons/{serverGUID}/open-lineage-events/publish")
+    @PostMapping(path = "/integration-daemons/{serverGUID}/open-lineage-events/publish-event-string")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="publishOpenLineageEvent",
@@ -991,6 +990,31 @@ public class RuntimeManagerResource
     public VoidResponse publishOpenLineageEvent(@PathVariable String serverName,
                                                 @PathVariable String serverGUID,
                                                 @RequestBody  String event)
+    {
+        return restAPI.publishOpenLineageEvent(serverName, serverGUID, event);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param event open lineage event to publish.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/open-lineage-events/publish-event")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishOpenLineageEvent",
+            description="Send an Open Lineage event to the integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for open lineage events.",
+            externalDocs=@ExternalDocumentation(description="Open Lineage Standard",
+                    url="https://egeria-project.org/features/lineage-management/overview/#the-openlineage-standard"))
+
+    public VoidResponse publishOpenLineageEvent(@PathVariable String               serverName,
+                                                @PathVariable String               serverGUID,
+                                                @RequestBody  OpenLineage.RunEvent event)
     {
         return restAPI.publishOpenLineageEvent(serverName, serverGUID, event);
     }

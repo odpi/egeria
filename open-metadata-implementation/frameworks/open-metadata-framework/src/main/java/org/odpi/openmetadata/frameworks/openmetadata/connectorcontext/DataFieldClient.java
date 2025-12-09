@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -130,22 +129,25 @@ public class DataFieldClient extends ConnectorContextClientBase
      * @param dataFieldGUID       unique identifier of the dataField (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateDataField(String             dataFieldGUID,
-                                UpdateOptions      updateOptions,
-                                DataFieldProperties properties) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+    public boolean updateDataField(String              dataFieldGUID,
+                                   UpdateOptions       updateOptions,
+                                   DataFieldProperties properties) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
-        dataFieldHandler.updateDataField(connectorUserId, dataFieldGUID, updateOptions, properties);
+        boolean updateOccurred = dataFieldHandler.updateDataField(connectorUserId, dataFieldGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(dataFieldGUID);
         }
+
+        return updateOccurred;
     }
 
 

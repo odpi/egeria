@@ -8,8 +8,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1ErrorSection;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
+import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2ErrorSection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public abstract class OMRSEvent
      *
      * @param inboundEvent incoming Event.
      */
-    public OMRSEvent(OMRSEventV1 inboundEvent)
+    public OMRSEvent(OMRSEventV2 inboundEvent)
     {
         this.eventDirection = OMRSEventDirection.INBOUND;
 
@@ -74,7 +74,7 @@ public abstract class OMRSEvent
             this.eventOriginator = inboundEvent.getOriginator();
             this.eventCategory = inboundEvent.getEventCategory();
 
-            OMRSEventV1ErrorSection errorSection = inboundEvent.getErrorSection();
+            OMRSEventV2ErrorSection errorSection = inboundEvent.getErrorSection();
 
             if (errorSection != null)
             {
@@ -554,9 +554,9 @@ public abstract class OMRSEvent
      *
      * @return OMRSEvent (Version 1) object
      */
-    public OMRSEventV1  getOMRSEventV1()
+    public OMRSEventV2 getOMRSEventV1()
     {
-        OMRSEventV1     omrsEvent = new OMRSEventV1();
+        OMRSEventV2 omrsEvent = new OMRSEventV2();
 
         omrsEvent.setTimestamp(this.eventTimestamp);
         omrsEvent.setOriginator(this.eventOriginator);
@@ -564,7 +564,7 @@ public abstract class OMRSEvent
 
         if (this.genericErrorCode != null)
         {
-            OMRSEventV1ErrorSection errorSection = new OMRSEventV1ErrorSection();
+            OMRSEventV2ErrorSection errorSection = new OMRSEventV2ErrorSection();
 
             errorSection.setErrorCode(this.genericErrorCode);
             errorSection.setErrorMessage(this.errorMessage);

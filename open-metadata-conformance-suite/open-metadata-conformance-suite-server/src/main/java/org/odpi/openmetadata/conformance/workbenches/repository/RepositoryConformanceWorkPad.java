@@ -61,13 +61,17 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      * Constructor receives key information from the configuration services.
      *
      * @param localServerUserId userId that this server should use on requests
-     * @param localServerPassword password that this server should use on requests
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum number of elements that can be returned on a single call
      * @param auditLog audit log for administrator messages
      * @param configuration configuration for this work pad/workbench
      */
     public RepositoryConformanceWorkPad(String                                localServerUserId,
-                                        String                                localServerPassword,
+                                        String                                localServerSecretsStoreProvider,
+                                        String                                localServerSecretsStoreLocation,
+                                        String                                localServerSecretsStoreCollection,
                                         int                                   maxPageSize,
                                         AuditLog                              auditLog,
                                         RepositoryConformanceWorkbenchConfig  configuration)
@@ -77,7 +81,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
               workbenchVersionNumber,
               workbenchDocURL,
               localServerUserId,
-              localServerPassword,
+              localServerSecretsStoreProvider,
+              localServerSecretsStoreLocation,
+              localServerSecretsStoreCollection,
               tutType,
               maxPageSize);
 
@@ -962,16 +968,33 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public String toString()
     {
         return "RepositoryConformanceWorkPad{" +
-                "workbenchId='" + workbenchId + '\'' +
-                ", workbenchName='" + workbenchName + '\'' +
-                ", workbenchVersionNumber='" + workbenchVersionNumber + '\'' +
-                ", workbenchDocURL='" + workbenchDocURL + '\'' +
-                ", localServerUserId='" + localServerUserId + '\'' +
-                ", localServerPassword='" + localServerPassword + '\'' +
-                ", tutName='" + tutName + '\'' +
+                "auditLog=" + auditLog +
+                ", tutServerName='" + tutServerName + '\'' +
+                ", tutMetadataCollectionId='" + tutMetadataCollectionId + '\'' +
+                ", tutServerType='" + tutServerType + '\'' +
+                ", tutOrganization='" + tutOrganization + '\'' +
                 ", maxSearchResults=" + maxSearchResults +
-                ", tutType='" + tutType + '\'' +
-                ", maxPageSize=" + maxPageSize +
-                '}';
+                ", testEntityTypes=" + testEntityTypes +
+                ", tutRepositoryConnector=" + tutRepositoryConnector +
+                ", localMetadataCollectionId='" + localMetadataCollectionId + '\'' +
+                ", localRepositoryConnector=" + localRepositoryConnector +
+                ", supportedAttributeTypeDefsByGUIDFromRESTAPI=" + supportedAttributeTypeDefsByGUIDFromRESTAPI +
+                ", supportedAttributeTypeDefsByGUIDFromEvents=" + supportedAttributeTypeDefsByGUIDFromEvents +
+                ", supportedAttributeTypeDefsByName=" + supportedAttributeTypeDefsByName +
+                ", supportedTypeDefsByGUIDFromRESTAPI=" + supportedTypeDefsByGUIDFromRESTAPI +
+                ", supportedTypeDefsByGUIDFromEvents=" + supportedTypeDefsByGUIDFromEvents +
+                ", supportedTypeDefsByName=" + supportedTypeDefsByName +
+                ", entitySubTypes=" + entitySubTypes +
+                ", relationshipSubTypes=" + relationshipSubTypes +
+                ", relationshipEndTypes=" + relationshipEndTypes +
+                ", entityRelationshipTypes=" + entityRelationshipTypes +
+                ", entityInstances=" + entityInstances +
+                ", relationshipInstances=" + relationshipInstances +
+                ", profileNames=" + getProfileNames() +
+                ", profileResults=" + getProfileResults() +
+                ", profileSummaries=" + getProfileSummaries() +
+                ", entityTypeNames=" + getEntityTypeNames() +
+                ", relationshipTypeNames=" + getRelationshipTypeNames() +
+                "} " + super.toString();
     }
 }

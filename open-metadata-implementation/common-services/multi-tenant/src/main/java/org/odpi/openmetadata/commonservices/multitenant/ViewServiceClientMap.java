@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -36,19 +36,12 @@ public class ViewServiceClientMap<B>
     private final String                  serviceURLMarker;
     private final int                     maxPageSize;
 
-    private final String localServerUserId;
-    private final String localServerUserPassword;
-
-
-
     /**
      * Create new clients that pass userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param handlerClass          name of the class to create
      * @param localServerName       name of this server (view server)
-     * @param userId                caller's userId embedded in all HTTP requests
-     * @param password              caller's userId embedded in all HTTP requests
      * @param maxPageSize           maximum number of results supported by this server
      * @param activeViewServices    which view services are running
      * @param serviceName           local service name
@@ -57,8 +50,6 @@ public class ViewServiceClientMap<B>
      */
     public ViewServiceClientMap(Class<B>                handlerClass,
                                 String                  localServerName,
-                                String                  userId,
-                                String                  password,
                                 AuditLog                auditLog,
                                 List<ViewServiceConfig> activeViewServices,
                                 String                  serviceName,
@@ -71,8 +62,6 @@ public class ViewServiceClientMap<B>
         this.auditLog = auditLog;
         this.serviceName = serviceName;
         this.serviceURLMarker = serviceURLMarker;
-        this.localServerUserId = userId;
-        this.localServerUserPassword = password;
         this.maxPageSize = maxPageSize;
     }
 
@@ -109,8 +98,7 @@ public class ViewServiceClientMap<B>
                             {
                                 if (viewServicePartnerService.equals(commonServicesDescription.getServiceName()))
                                 {
-                                    viewServiceClient = this.createViewServiceClient(viewServiceConfig,
-                                                                                     commonServicesDescription.getServiceURLMarker());
+                                    viewServiceClient = this.createViewServiceClient(viewServiceConfig);
                                     viewServiceClientMap.put(viewServiceURLMarker, viewServiceClient);
                                     return viewServiceClient;
                                 }
@@ -120,8 +108,7 @@ public class ViewServiceClientMap<B>
                             {
                                 if (accessServiceDescription.getServiceName().equals(viewServicePartnerService))
                                 {
-                                    viewServiceClient = this.createViewServiceClient(viewServiceConfig,
-                                                                                     accessServiceDescription.getServiceURLMarker());
+                                    viewServiceClient = this.createViewServiceClient(viewServiceConfig);
                                     viewServiceClientMap.put(viewServiceURLMarker, viewServiceClient);
                                     return viewServiceClient;
                                 }
@@ -158,46 +145,32 @@ public class ViewServiceClientMap<B>
      * Create a new client.
      *
      * @param viewServiceConfig configuration from the matching view service
-     * @param partnerServiceURL url marker to call
      * @return client
      * @throws InvalidParameterException problem initializing the client
      * @throws PropertyServerException problem with the client class
      */
-    private B createViewServiceClient(ViewServiceConfig viewServiceConfig,
-                                      String            partnerServiceURL) throws InvalidParameterException,
+    private B createViewServiceClient(ViewServiceConfig viewServiceConfig) throws InvalidParameterException,
                                                                                   PropertyServerException
     {
         final String methodName = "createViewServiceClient";
 
         B viewServiceClient = null;
 
-        EgeriaOpenMetadataStoreHandler openMetadataClient;
-        EgeriaOpenGovernanceClient     openGovernanceClient;
-        if (localServerUserPassword == null)
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
-                                                                    viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                    maxPageSize);
+        EgeriaOpenMetadataStoreClient openMetadataClient = new EgeriaOpenMetadataStoreClient(viewServiceConfig.getOMAGServerName(),
+                                                                                             viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                             viewServiceConfig.getSecretsStoreProvider(),
+                                                                                             viewServiceConfig.getSecretsStoreLocation(),
+                                                                                             viewServiceConfig.getSecretsStoreCollection(),
+                                                                                             maxPageSize,
+                                                                                             auditLog);
 
-            openGovernanceClient = new EgeriaOpenGovernanceClient(viewServiceConfig.getOMAGServerName(),
-                                                                  viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                  maxPageSize);
-
-        }
-        else
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
-                                                                    viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                    localServerUserId,
-                                                                    localServerUserPassword,
-                                                                    maxPageSize);
-
-            openGovernanceClient = new EgeriaOpenGovernanceClient(viewServiceConfig.getOMAGServerName(),
-                                                                  viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                  localServerUserId,
-                                                                  localServerUserPassword,
-                                                                  maxPageSize);
-        }
+        EgeriaOpenGovernanceClient openGovernanceClient = new EgeriaOpenGovernanceClient(viewServiceConfig.getOMAGServerName(),
+                                                                                         viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                                         viewServiceConfig.getSecretsStoreProvider(),
+                                                                                         viewServiceConfig.getSecretsStoreLocation(),
+                                                                                         viewServiceConfig.getSecretsStoreCollection(),
+                                                                                         maxPageSize,
+                                                                                         auditLog);
 
         try
         {

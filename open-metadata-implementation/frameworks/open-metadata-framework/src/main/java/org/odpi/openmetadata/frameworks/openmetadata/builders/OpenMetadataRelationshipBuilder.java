@@ -944,6 +944,29 @@ public class OpenMetadataRelationshipBuilder
                                                                       OpenMetadataProperty.MANDATORY_GUARD.name,
                                                                       nextGovernanceActionProcessStepProperties.getMandatoryGuard());
             }
+            else if (properties instanceof PeerDuplicateLinkProperties peerDuplicateLinkProperties)
+            {
+                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                  OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                                  peerDuplicateLinkProperties.getStatusIdentifier());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.STEWARD.name,
+                                                                     peerDuplicateLinkProperties.getSteward());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
+                                                                     peerDuplicateLinkProperties.getStewardPropertyName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.STEWARD_TYPE_NAME.name,
+                                                                     peerDuplicateLinkProperties.getStewardTypeName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.SOURCE.name,
+                                                                     peerDuplicateLinkProperties.getSource());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.NOTES.name,
+                                                                     peerDuplicateLinkProperties.getNotes());
+
+
+            }
             else if (properties instanceof PersonRoleAppointmentProperties personRoleAppointmentProperties)
             {
                 elementProperties = propertyHelper.addIntProperty(elementProperties,

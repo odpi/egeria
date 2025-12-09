@@ -31,6 +31,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class ProcessProperties extends AssetProperties
 {
+    private String         expectedBehaviour         = null;
     private Date           requestedTime             = null;
     private Date           requestedStartTime        = null;
     private Date           startTime                 = null;
@@ -67,6 +68,7 @@ public class ProcessProperties extends AssetProperties
 
         if (template != null)
         {
+            expectedBehaviour         = template.getExpectedBehaviour();
             requestedTime             = template.getRequestedTime();
             requestedStartTime        = template.getRequestedStartTime();
             startTime                 = template.getStartTime();
@@ -92,6 +94,28 @@ public class ProcessProperties extends AssetProperties
     public ProcessProperties(AssetProperties template)
     {
         super(template);
+    }
+
+
+    /**
+     * Return the action that the person or automated process should perform.
+     *
+     * @return string
+     */
+    public String getExpectedBehaviour()
+    {
+        return expectedBehaviour;
+    }
+
+
+    /**
+     * Set up the action that the person or automated process should perform.
+     *
+     * @param expectedBehaviour string
+     */
+    public void setExpectedBehaviour(String expectedBehaviour)
+    {
+        this.expectedBehaviour = expectedBehaviour;
     }
 
 
@@ -388,7 +412,9 @@ public class ProcessProperties extends AssetProperties
     public String toString()
     {
         return "ProcessProperties{" +
-                "requestedTime=" + requestedTime +
+                "expectedBehaviour='" + expectedBehaviour + '\'' +
+                ", requestedTime=" + requestedTime +
+                ", requestedStartTime=" + requestedStartTime +
                 ", startTime=" + startTime +
                 ", dueTime=" + dueTime +
                 ", lastReviewTime=" + lastReviewTime +
@@ -403,7 +429,6 @@ public class ProcessProperties extends AssetProperties
                 "} " + super.toString();
     }
 
-
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -417,7 +442,7 @@ public class ProcessProperties extends AssetProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProcessProperties that = (ProcessProperties) objectToCompare;
-        return priority == that.priority && Objects.equals(requestedTime, that.requestedTime) && Objects.equals(startTime, that.startTime) && Objects.equals(dueTime, that.dueTime) && Objects.equals(lastReviewTime, that.lastReviewTime) && Objects.equals(lastPauseTime, that.lastPauseTime) && Objects.equals(lastResumeTime, that.lastResumeTime) && Objects.equals(completionTime, that.completionTime) && Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType) && activityStatus == that.activityStatus && Objects.equals(userDefinedActivityStatus, that.userDefinedActivityStatus);
+        return priority == that.priority && Objects.equals(expectedBehaviour, that.expectedBehaviour) && Objects.equals(requestedTime, that.requestedTime) && Objects.equals(startTime, that.startTime) && Objects.equals(dueTime, that.dueTime) && Objects.equals(lastReviewTime, that.lastReviewTime) && Objects.equals(lastPauseTime, that.lastPauseTime) && Objects.equals(lastResumeTime, that.lastResumeTime) && Objects.equals(completionTime, that.completionTime) && Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType) && activityStatus == that.activityStatus && Objects.equals(userDefinedActivityStatus, that.userDefinedActivityStatus);
     }
 
     /**
@@ -428,6 +453,6 @@ public class ProcessProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), requestedTime, startTime, dueTime, lastReviewTime, lastPauseTime, lastResumeTime, completionTime, priority, formula, formulaType, activityStatus, userDefinedActivityStatus);
+        return Objects.hash(super.hashCode(), expectedBehaviour, requestedTime, startTime, dueTime, lastReviewTime, lastPauseTime, lastResumeTime, completionTime, priority, formula, formulaType, activityStatus, userDefinedActivityStatus);
     }
 }

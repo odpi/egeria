@@ -1,4 +1,5 @@
 # Egeria-user-authn
+@baseURL=https://localhost:9443
 
 ###
 # @name Application info
@@ -20,8 +21,3 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
-###
-# @name Token (Request Parms)
-POST {{baseURL}}/api/token?
-    username=garygeeke&
-    password=secret

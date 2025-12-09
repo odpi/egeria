@@ -67,26 +67,29 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                 }
             }
 
-            for (AssetLineageGraphRelationship line : assetLineageGraph.getLineageRelationships())
+            if (assetLineageGraph.getLineageRelationships() != null)
             {
-                if (line != null)
+                for (AssetLineageGraphRelationship line : assetLineageGraph.getLineageRelationships())
                 {
-                    end1Elements.add(line.getEnd1AssetGUID());
-                    end2Elements.add(line.getEnd2AssetGUID());
-
-                    if ((highlightInformationSupplyChain != null) && (line.getInformationSupplyChains() != null) && (! line.getInformationSupplyChains().contains(highlightInformationSupplyChain)))
+                    if (line != null)
                     {
-                        super.appendMermaidThinLine(null,
+                        end1Elements.add(line.getEnd1AssetGUID());
+                        end2Elements.add(line.getEnd2AssetGUID());
+
+                        if ((highlightInformationSupplyChain != null) && (line.getInformationSupplyChains() != null) && (! line.getInformationSupplyChains().contains(highlightInformationSupplyChain)))
+                        {
+                            super.appendMermaidThinLine(null,
+                                                        line.getEnd1AssetGUID(),
+                                                        this.getListLabel(line.getRelationshipTypes()),
+                                                        line.getEnd2AssetGUID());
+                        }
+                        else
+                        {
+                            super.appendMermaidLine(null,
                                                     line.getEnd1AssetGUID(),
                                                     this.getListLabel(line.getRelationshipTypes()),
                                                     line.getEnd2AssetGUID());
-                    }
-                    else
-                    {
-                        super.appendMermaidLine(null,
-                                                line.getEnd1AssetGUID(),
-                                                this.getListLabel(line.getRelationshipTypes()),
-                                                line.getEnd2AssetGUID());
+                        }
                     }
                 }
             }
@@ -94,18 +97,21 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
             Map<String, AssetLineageGraphNode> ultimateSources      = new HashMap<>();
             Map<String, AssetLineageGraphNode> ultimateDestinations = new HashMap<>();
 
-            for (AssetLineageGraphNode node : assetLineageGraph.getLinkedAssets())
+            if (assetLineageGraph.getLinkedAssets() != null)
             {
-                if (node != null)
+                for (AssetLineageGraphNode node : assetLineageGraph.getLinkedAssets())
                 {
-                    if (! end1Elements.contains(node.getElementHeader().getGUID()))
+                    if (node != null)
                     {
-                        ultimateDestinations.put(node.getElementHeader().getGUID(), node);
-                    }
+                        if (!end1Elements.contains(node.getElementHeader().getGUID()))
+                        {
+                            ultimateDestinations.put(node.getElementHeader().getGUID(), node);
+                        }
 
-                    if (! end2Elements.contains(node.getElementHeader().getGUID()))
-                    {
-                        ultimateSources.put(node.getElementHeader().getGUID(), node);
+                        if (!end2Elements.contains(node.getElementHeader().getGUID()))
+                        {
+                            ultimateSources.put(node.getElementHeader().getGUID(), node);
+                        }
                     }
                 }
             }

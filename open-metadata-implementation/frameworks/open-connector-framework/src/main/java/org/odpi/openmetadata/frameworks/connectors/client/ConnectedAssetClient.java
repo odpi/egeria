@@ -23,7 +23,6 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
 {
     protected final String   serverName;               /* Initialized in constructor */
     protected final String   serverPlatformURLRoot;    /* Initialized in constructor */
-    protected final String   serviceURLMarker;         /* Initialized in constructor */
     protected final AuditLog auditLog;                 /* Initialized in constructor */
     protected final int      maxPageSize;              /* Initialized in constructor */
 
@@ -36,20 +35,17 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param maxPageSize maximum page size for this process
-     * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClient(String   serverName,
                                 String   serverPlatformURLRoot,
-                                String   serviceURLMarker,
                                 int      maxPageSize,
                                 AuditLog auditLog) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.serviceURLMarker = serviceURLMarker;
         this.auditLog = auditLog;
         this.maxPageSize = maxPageSize;
     }

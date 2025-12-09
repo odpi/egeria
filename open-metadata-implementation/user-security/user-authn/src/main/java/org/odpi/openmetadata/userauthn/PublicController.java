@@ -25,23 +25,23 @@ import jakarta.servlet.http.HttpServletRequest;
 public class PublicController
 {
     @Autowired
-    AppInfoBean appInfoBean;
+    AboutPlatformProperties aboutPlatformProperties;
 
     /**
      * Return information about this runtime.
      *
      * @param request the http servlet request
-     * @return an AppInfoBean that contains the app build information
+     * @return an AboutPlatformProperties that contains the app build information
      */
     @GetMapping( path = "/app/info")
 
     @Operation(summary="getApplicationInformation",
-               description="Return the title and description of the logical application to display to the caller.",
+               description="Return the platform's name, description and organization that identifies this application.  This can be used on splash screens.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/features/metadata-security/overview"))
+                                                   url="https://egeria-project.org/concepts/omag-server-platform"))
 
-    public AppInfoBean getApplicationInformation(HttpServletRequest request)
+    public AboutPlatformProperties getApplicationInformation(HttpServletRequest request)
     {
-        return appInfoBean;
+        return aboutPlatformProperties;
     }
 }

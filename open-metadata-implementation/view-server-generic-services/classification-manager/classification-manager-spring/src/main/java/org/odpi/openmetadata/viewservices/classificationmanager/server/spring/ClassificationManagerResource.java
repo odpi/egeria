@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Classification Manager OMVS",
+@Tag(name="API: Classification Manager",
         description="Attach classifications and governance relationships to open metadata elements to enhance the description of your digital resources and identify which resources need specific types of governance actions performed.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/classification-manager/overview/"))
@@ -1171,5 +1171,250 @@ public class ClassificationManagerResource
                                                        DeleteElementRequestBody requestBody)
     {
         return restAPI.removeSearchKeywordFromElement(serverName, urlMarker,  searchKeywordGUID, requestBody);
+    }
+
+
+    /**
+     * Create a relationship between two elements that show they represent the same "thing". If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param peerDuplicateGUID identifier of the duplicate to link
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/peer-duplicate/{peerDuplicateGUID}/attach")
+    @Operation(summary="linkElementsAsPeerDuplicates",
+            description="Create a relationship between two elements that show they represent the same 'thing'. If the relationship already exists, the properties are updated.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                     serverName,
+                                                     @PathVariable String                     urlMarker,
+                                                     @PathVariable String                     elementGUID,
+                                                     @PathVariable String                     peerDuplicateGUID,
+                                                     @RequestBody  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkElementsAsPeerDuplicates(serverName, urlMarker, elementGUID, peerDuplicateGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the PeerDuplicateLink a relationship between two elements that showed they represent the same "thing".
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param peerDuplicateGUID identifier of the duplicate to link
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/peer-duplicate/{peerDuplicateGUID}/detach")
+    @Operation(summary="unlinkElementsAsPeerDuplicates",
+            description="Remove the PeerDuplicateLink a relationship between two elements that showed they represent the same 'thing'.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse unlinkElementsAsPeerDuplicates(@PathVariable String                        serverName,
+                                                       @PathVariable String                        urlMarker,
+                                                       @PathVariable String                        elementGUID,
+                                                       @PathVariable String                        peerDuplicateGUID,
+                                                       @RequestBody  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.unlinkElementsAsPeerDuplicates(serverName, urlMarker, elementGUID, peerDuplicateGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the element to indicate that is has one or more duplicate in the open metadata ecosystem.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/known-duplicate")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setKnownDuplicateClassification",
+            description="Classify the element to indicate that is has one or more duplicate in the open metadata ecosystem.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse setKnownDuplicateClassification(@PathVariable String                    serverName,
+                                                        @PathVariable String                    urlMarker,
+                                                        @PathVariable String                    elementGUID,
+                                                        @RequestBody  (required = false) NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setKnownDuplicateClassification(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the KnownDuplicate classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/known-duplicate/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearKnownDuplicateClassification",
+            description="Remove the KnownDuplicate classification from the element.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse clearKnownDuplicateClassification(@PathVariable String                    serverName,
+                                                          @PathVariable String                    urlMarker,
+                                                          @PathVariable String                    elementGUID,
+                                                          @RequestBody  (required = false)
+                                                          DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearKnownDuplicateClassification(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+
+    /**
+     * Create a relationship between two elements that shows that one is a combination of a number of duplicates, and it should
+     * be used instead.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param sourceElementGUID identifier of the source to link
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/consolidated-duplicate-source/{sourceElementGUID}/attach")
+    @Operation(summary="linkConsolidatedDuplicateToSource",
+            description="Create a relationship between two elements that shows that one is a combination of a number of duplicates, and it should be used instead.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse linkConsolidatedDuplicateToSource(@PathVariable String                            serverName,
+                                                          @PathVariable String                            urlMarker,
+                                                          @PathVariable String                        elementGUID,
+                                                          @PathVariable String                        sourceElementGUID,
+                                                          @RequestBody  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkConsolidatedDuplicateToSourceElement(serverName, urlMarker, elementGUID, sourceElementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the ConsolidatedDuplicateLink relationship between two elements that showed they represent the same "thing".
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param sourceElementGUID identifier of the source to link
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/consolidated-duplicate-source/{sourceElementGUID}/detach")
+    @Operation(summary="unlinkConsolidatedDuplicateFromSourceElement",
+            description="Remove the ConsolidatedDuplicateLink relationship between two elements that showed they represent the same 'thing'.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse unlinkConsolidatedDuplicateFromSourceElement(@PathVariable String                        serverName,
+                                                                     @PathVariable String                        urlMarker,
+                                                                     @PathVariable String                        elementGUID,
+                                                                     @PathVariable String sourceElementGUID,
+                                                                     @RequestBody  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.unlinkConsolidatedDuplicateFromSourceElement(serverName, urlMarker, elementGUID, sourceElementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the element to indicate that it is derived from one or more duplicates in the open metadata ecosystem.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/consolidated-duplicate")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setConsolidatedDuplicateClassification",
+            description="Classify the element to indicate that it is derived from one or more duplicates in the open metadata ecosystem.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse setConsolidatedDuplicateClassification(@PathVariable String                    serverName,
+                                                               @PathVariable String                    urlMarker,
+                                                               @PathVariable String                    elementGUID,
+                                                               @RequestBody  (required = false) NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setConsolidatedDuplicateClassification(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the ConsolidatedDuplicate classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the metadata element to declassify
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/consolidated-duplicate/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearConsolidatedDuplicateClassification",
+            description="Remove the ConsolidatedDuplicate classification from the element.",
+            externalDocs=@ExternalDocumentation(description="Duplicate Management",
+                    url="https://egeria-project.org/features/duplicate-management/overview"))
+
+    public VoidResponse clearConsolidatedDuplicateClassification(@PathVariable String                    serverName,
+                                                                 @PathVariable String                    urlMarker,
+                                                                 @PathVariable String                    elementGUID,
+                                                                 @RequestBody  (required = false)
+                                                                 DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearConsolidatedDuplicateClassification(serverName, urlMarker, elementGUID, requestBody);
     }
 }

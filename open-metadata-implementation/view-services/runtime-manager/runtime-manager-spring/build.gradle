@@ -16,6 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'io.openlineage:openlineage-java'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

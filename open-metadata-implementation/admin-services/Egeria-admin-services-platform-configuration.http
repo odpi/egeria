@@ -1,16 +1,39 @@
 # Egeria-admin-services-platform-configuration
 
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
 ###
 # @name Get Configuration Document Store Connection
 # Query the Connection object used to create the connector to the configuration document.  If the result is null it means that the server is using the default connector that stores the configuration document as a file.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection
+GET {{baseURL}}/open-metadata/admin-services/stores/connection
+Authorization: Bearer {{token}}
+
 
 ###
 # @name Set Configuration Document Store Connection
 # Overrides the default connector that stores the configuration documents in a plain text file.
 # The request body is a Connection object that is used to create and configure the connector.
 # This call is preconfigured to switch the store to using the encrypted configuration document store.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection
+POST {{baseURL}}/open-metadata/admin-services/stores/connection
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -28,4 +51,5 @@ Content-Type: application/json
 ###
 # @name Delete Configuration Document Store Connection
 # Remove the currently configured Configuration Document Store Connection.  The default Configuration Document Store will be used for future configuration.  This stores the configuration in a file in plain text.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection
+DELETE {{baseURL}}/open-metadata/admin-services/stores/connection
+Authorization: Bearer {{token}}

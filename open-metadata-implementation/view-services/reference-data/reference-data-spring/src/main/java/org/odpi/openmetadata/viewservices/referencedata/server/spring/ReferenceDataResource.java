@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Reference Data OMVS", description="Reference data is used by systems as valid value lists.  Although the lists of reference data may be similar from system to system, they often vary in small details and use different identifiers.  Reference data management supports the capture, mapping and synchronization of the reference data across your systems, simplifying data pipeline processing and reducing data integration errors.",
+@Tag(name="API: Reference Data", description="Reference data is used by systems as valid value lists.  Although the lists of reference data may be similar from system to system, they often vary in small details and use different identifiers.  Reference data management supports the capture, mapping and synchronization of the reference data across your systems, simplifying data pipeline processing and reducing data integration errors.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/reference-data/overview/"))
 
@@ -119,12 +119,12 @@ public class ReferenceDataResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/valid-value-definition"))
 
-    public VoidResponse updateValidValueDefinition(@PathVariable
-                                                   String                                  serverName,
-                                                   @PathVariable
-                                                   String                                  validValueDefinitionGUID,
-                                                   @RequestBody (required = false)
-                                                   UpdateElementRequestBody requestBody)
+    public BooleanResponse updateValidValueDefinition(@PathVariable
+                                                      String                                  serverName,
+                                                      @PathVariable
+                                                      String                                  validValueDefinitionGUID,
+                                                      @RequestBody (required = false)
+                                                      UpdateElementRequestBody requestBody)
     {
         return restAPI.updateValidValueDefinition(serverName, validValueDefinitionGUID, requestBody);
     }

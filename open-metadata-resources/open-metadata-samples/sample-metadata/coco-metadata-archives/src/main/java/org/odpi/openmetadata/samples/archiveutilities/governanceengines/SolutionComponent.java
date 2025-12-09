@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.CollectionDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;

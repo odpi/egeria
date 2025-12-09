@@ -53,7 +53,7 @@ public enum ActivityStatus implements OpenMetadataEnum
     /**
      * The work for the activity is in progress.
      */
-    FOR_INFO     ("1a98344b-f43f-4bff-9604-323f18a999af",  6,  "For Information","The activity is designed to provide important information to the various actors.", false),
+    FOR_INFO        ("1a98344b-f43f-4bff-9604-323f18a999af",  6,  "For Information","The activity is designed to provide important information to the various actors.", false),
 
     /**
      * The work for the activity has successfully completed.

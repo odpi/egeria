@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
@@ -2757,10 +2759,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                              cohortConnector.getMetadataCollectionId(),
                                                              methodName);
                 }
-                catch (InvalidParameterException error)
-                {
-                    invalidParameterException = error;
-                }
                 catch (EntityNotKnownException error)
                 {
                     entityNotKnownException = error;
@@ -2784,6 +2782,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 catch (UserNotAuthorizedException error)
                 {
                     userNotAuthorizedException = error;
+                }
+                catch (InvalidParameterException error)
+                {
+                    invalidParameterException = error;
                 }
                 catch (Exception error)
                 {

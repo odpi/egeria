@@ -4032,7 +4032,8 @@ public enum OpenMetadataType
                                    "KnownDuplicate",
                                    OpenMetadataWikiPages.MODEL_0465_DUPLICATE_PROCESSING,
                                    "f415574b-8083-44ae-b349-46111f0a8b27",
-                                   "Defines that duplicate resolution processing is required."),
+                                   "Defines that duplicate resolution processing is required.",
+                                   KnownDuplicateProperties.class),
 
     /**
      * Link between detected duplicate entities.
@@ -4041,7 +4042,8 @@ public enum OpenMetadataType
                         "PeerDuplicateLink",
                         OpenMetadataWikiPages.MODEL_0465_DUPLICATE_PROCESSING,
                         "6347bfe3-38f5-458b-bf58-5628b0cf4677",
-                        "Link between detected duplicate entities."),
+                        "Link between detected duplicate entities.",
+                        PeerDuplicateLinkProperties.class),
 
     /**
      * An element that has be formed by combining the properties, classifications and relationships from multiple duplicate entities.
@@ -4050,7 +4052,8 @@ public enum OpenMetadataType
                                           "ConsolidatedDuplicate",
                                           OpenMetadataWikiPages.MODEL_0465_DUPLICATE_PROCESSING,
                                           "d4aa1713-46db-4a37-90c2-d443cca67b56",
-                                          "An element that has be formed by combining the properties, classifications and relationships from multiple duplicate entities."),
+                                          "An element that has be formed by combining the properties, classifications and relationships from multiple duplicate entities.",
+                                          ConsolidatedDuplicateProperties.class),
 
     /**
      * Link between a detected duplicate entity and an entity that contains the combined values of this entity and its other duplicates.
@@ -4059,7 +4062,8 @@ public enum OpenMetadataType
                                 "ConsolidatedDuplicateLink",
                                 OpenMetadataWikiPages.MODEL_0465_DUPLICATE_PROCESSING,
                                 "31141b33-46aa-4ee1-8d1e-15f19c562875",
-                                "Link between a detected duplicate entity and an entity that contains the combined values of this entity and its other duplicates."),
+                                "Link between a detected duplicate entity and an entity that contains the combined values of this entity and its other duplicates.",
+                                ConsolidatedDuplicateLinkProperties.class),
 
 
     /**

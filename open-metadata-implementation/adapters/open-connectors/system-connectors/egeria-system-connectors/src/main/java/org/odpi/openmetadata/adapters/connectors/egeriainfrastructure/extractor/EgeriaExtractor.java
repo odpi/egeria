@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.extractor;
 
+import io.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties.*;
 import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
@@ -11,9 +12,9 @@ import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -27,6 +28,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.propert
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.AuditLogServicesClient;
+import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -47,7 +49,9 @@ public class EgeriaExtractor
     private final String platformURLRoot;
     private final String platformName;
     private final String serverOfInterest;
-    private final String clientUserId;
+
+    private final Map<String, SecretsStoreConnector> secretsStoreConnectorMap;
+    private final AuditLog                           auditLog;
 
     private final PlatformServicesClient                platformServicesClient;
     private final OMAGServerPlatformConfigurationClient platformConfigurationClient;
@@ -65,33 +69,33 @@ public class EgeriaExtractor
      * @param platformURLRoot platform URL root
      * @param platformName name of the platform
      * @param serverOfInterest optional server name
-     * @param clientUserId userId to use for calls to the
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog logging destination
      * @throws InvalidParameterException invalid parameter
-     * @throws OMAGInvalidParameterException invalid parameter
      */
-    public EgeriaExtractor(String platformURLRoot,
-                           String platformName,
-                           String serverOfInterest,
-                           String clientUserId) throws InvalidParameterException,
-                                                       OMAGInvalidParameterException,
-                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+    public EgeriaExtractor(String                             platformURLRoot,
+                           String                             platformName,
+                           String                             serverOfInterest,
+                           Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                           AuditLog                           auditLog) throws InvalidParameterException
     {
-        this.platformURLRoot  = platformURLRoot;
-        this.platformName     = platformName;
-        this.serverOfInterest = serverOfInterest;
-        this.clientUserId     = clientUserId;
+        this.platformURLRoot          = platformURLRoot;
+        this.platformName             = platformName;
+        this.serverOfInterest         = serverOfInterest;
+        this.secretsStoreConnectorMap = secretsStoreConnectorMap;
+        this.auditLog                 = auditLog;
 
-        platformServicesClient        = new PlatformServicesClient(platformName, platformURLRoot);
-        platformConfigurationClient   = new OMAGServerPlatformConfigurationClient(clientUserId, platformURLRoot);
-        configurationManagementClient = new ConfigurationManagementClient(clientUserId, platformURLRoot);
-        serverOperationsClient        = new ServerOperationsClient(clientUserId, platformURLRoot);
+        platformServicesClient        = new PlatformServicesClient(platformName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+        platformConfigurationClient   = new OMAGServerPlatformConfigurationClient(platformURLRoot, secretsStoreConnectorMap, auditLog);
+        configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreConnectorMap, auditLog);
+        serverOperationsClient        = new ServerOperationsClient(platformName, platformURLRoot, secretsStoreConnectorMap, auditLog);
 
         if (serverOfInterest != null)
         {
-            integrationDaemonClient = new IntegrationDaemon(serverOfInterest, platformURLRoot);
-            engineHostClient = new EngineHostClient(platformURLRoot, serverOfInterest);
-            metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverOfInterest, platformURLRoot);
-            auditLogServicesClient = new AuditLogServicesClient(serverOfInterest, platformURLRoot);
+            integrationDaemonClient = new IntegrationDaemon(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
+            engineHostClient = new EngineHostClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
+            metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
+            auditLogServicesClient = new AuditLogServicesClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
         }
         else
         {
@@ -115,14 +119,16 @@ public class EgeriaExtractor
 
         platformReport.setPlatformName(platformName);
         platformReport.setPlatformURLRoot(platformURLRoot);
-        platformReport.setPlatformOrigin(platformServicesClient.getPlatformOrigin(clientUserId));
-        platformReport.setPlatformBuildProperties(platformServicesClient.getPlatformBuildProperties(clientUserId));
-        platformReport.setPlatformStartTime(platformServicesClient.getPlatformStartTime(clientUserId));
+        platformReport.setPlatformOrigin(platformServicesClient.getPlatformOrigin());
+        platformReport.setPlatformOrganization(platformServicesClient.getPlatformOrganizationName());
+        platformReport.setPlatformBuildProperties(platformServicesClient.getPlatformBuildProperties());
+        platformReport.setPlatformPublicProperties(platformServicesClient.getPublicProperties());
+        platformReport.setPlatformStartTime(platformServicesClient.getPlatformStartTime());
         platformReport.setPlatformSecurityConnection(this.getConnectorProperties("Platform Security Connector",
-                                                                                 platformServicesClient.getPlatformSecurityConnection(clientUserId)));
+                                                                                 platformServicesClient.getPlatformSecurityConnection()));
         platformReport.setConfigurationStoreConnection(this.getConnectorProperties("Configuration Store Connector",
                                                                                    platformConfigurationClient.getConfigurationStoreConnection()));
-        platformReport.setRegisteredOMAGServices(platformServicesClient.getAllServices(clientUserId));
+        platformReport.setRegisteredOMAGServices(platformServicesClient.getAllServices());
 
         /*
          * Collect server details.
@@ -135,7 +141,7 @@ public class EgeriaExtractor
         }
         else
         {
-            List<String> knownServers = platformServicesClient.getKnownServers(clientUserId);
+            List<String> knownServers = platformServicesClient.getKnownServers();
 
             if (knownServers != null)
             {
@@ -174,7 +180,7 @@ public class EgeriaExtractor
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return platformServicesClient.getConnectorType(clientUserId, connectorProviderClassName);
+        return platformServicesClient.getConnectorType(connectorProviderClassName);
     }
 
 
@@ -191,7 +197,7 @@ public class EgeriaExtractor
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        return platformServicesClient.getAccessServices(clientUserId);
+        return platformServicesClient.getAccessServices();
     }
 
 
@@ -208,7 +214,7 @@ public class EgeriaExtractor
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        return platformServicesClient.getEngineServices(clientUserId);
+        return platformServicesClient.getEngineServices();
     }
 
 
@@ -225,7 +231,7 @@ public class EgeriaExtractor
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return platformServicesClient.getViewServices(clientUserId);
+        return platformServicesClient.getViewServices();
     }
 
 
@@ -242,7 +248,7 @@ public class EgeriaExtractor
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return platformServicesClient.getIntegrationServices(clientUserId);
+        return platformServicesClient.getIntegrationServices();
     }
 
 
@@ -259,7 +265,7 @@ public class EgeriaExtractor
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        return platformServicesClient.getAllServices(clientUserId);
+        return platformServicesClient.getAllServices();
     }
 
 
@@ -278,10 +284,10 @@ public class EgeriaExtractor
      * @throws PropertyServerException unusual state in the server.
      */
     public String activateServer(String serverName) throws UserNotAuthorizedException,
-                                                                     InvalidParameterException,
-                                                                     PropertyServerException
+                                                           InvalidParameterException,
+                                                           PropertyServerException
     {
-        return platformServicesClient.activateWithStoredConfig(clientUserId, serverName);
+        return platformServicesClient.activateWithStoredConfig(serverName);
     }
 
 
@@ -298,7 +304,7 @@ public class EgeriaExtractor
                                           InvalidParameterException,
                                           PropertyServerException
     {
-        return platformServicesClient.activateWithStoredConfig(clientUserId, serverOfInterest);
+        return platformServicesClient.activateWithStoredConfig(serverOfInterest);
     }
 
 
@@ -314,7 +320,7 @@ public class EgeriaExtractor
                                                          InvalidParameterException,
                                                          PropertyServerException
     {
-        platformServicesClient.shutdownServer(clientUserId, serverName);
+        platformServicesClient.shutdownServer(serverName);
     }
 
 
@@ -329,7 +335,7 @@ public class EgeriaExtractor
                                                          InvalidParameterException,
                                                          PropertyServerException
     {
-        platformServicesClient.shutdownServer(clientUserId, serverOfInterest);
+        platformServicesClient.shutdownServer(serverOfInterest);
     }
 
 
@@ -344,7 +350,7 @@ public class EgeriaExtractor
                                             InvalidParameterException,
                                             PropertyServerException
     {
-        platformServicesClient.shutdownAllServers(clientUserId);
+        platformServicesClient.shutdownAllServers();
     }
 
 
@@ -362,7 +368,7 @@ public class EgeriaExtractor
                                                                       InvalidParameterException,
                                                                       PropertyServerException
     {
-        platformServicesClient.shutdownAndUnregisterServer(clientUserId, serverName);
+        platformServicesClient.shutdownAndUnregisterServer(serverName);
     }
 
 
@@ -379,7 +385,7 @@ public class EgeriaExtractor
                                                      InvalidParameterException,
                                                      PropertyServerException
     {
-        platformServicesClient.shutdownAndUnregisterServer(clientUserId, serverOfInterest);
+        platformServicesClient.shutdownAndUnregisterServer(serverOfInterest);
     }
 
 
@@ -395,7 +401,7 @@ public class EgeriaExtractor
                                                          InvalidParameterException,
                                                          PropertyServerException
     {
-        platformServicesClient.shutdownAndUnregisterAllServers(clientUserId);
+        platformServicesClient.shutdownAndUnregisterAllServers();
     }
 
 
@@ -406,7 +412,6 @@ public class EgeriaExtractor
      * event has been sent.
      * If the server has already registered in the past, it sends a reregistration request.
      *
-     * @param userId calling user
      * @param cohortName name of cohort
      *
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
@@ -415,8 +420,7 @@ public class EgeriaExtractor
      * @throws PropertyServerException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean connectToCohort(String userId,
-                                   String cohortName) throws InvalidParameterException,
+    public boolean connectToCohort(String cohortName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
@@ -424,19 +428,11 @@ public class EgeriaExtractor
 
         try
         {
-            return metadataHighwayServicesClient.connectToCohort(userId, cohortName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error, cohortName);
+            return metadataHighwayServicesClient.connectToCohort(cohortName);
         }
         catch (RepositoryErrorException error)
         {
             throw new PropertyServerException(error);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error, userId);
         }
     }
 
@@ -445,15 +441,13 @@ public class EgeriaExtractor
     /**
      * Disconnect communications from a specific cohort.
      *
-     * @param userId calling user
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws PropertyServerException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean disconnectFromCohort(String userId,
-                                        String cohortName) throws InvalidParameterException,
+    public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
@@ -461,19 +455,11 @@ public class EgeriaExtractor
 
         try
         {
-            return metadataHighwayServicesClient.disconnectFromCohort(userId, cohortName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error, cohortName);
+            return metadataHighwayServicesClient.disconnectFromCohort(cohortName);
         }
         catch (RepositoryErrorException error)
         {
             throw new PropertyServerException(error);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error, userId);
         }
     }
 
@@ -481,15 +467,13 @@ public class EgeriaExtractor
     /**
      * Unregister from a specific cohort and disconnect from cohort communications.
      *
-     * @param userId calling user
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws PropertyServerException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public boolean unregisterFromCohort(String userId,
-                                        String cohortName) throws InvalidParameterException,
+    public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
@@ -497,19 +481,11 @@ public class EgeriaExtractor
 
         try
         {
-            return metadataHighwayServicesClient.unregisterFromCohort(userId, cohortName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error, cohortName);
+            return metadataHighwayServicesClient.unregisterFromCohort(cohortName);
         }
         catch (RepositoryErrorException error)
         {
             throw new PropertyServerException(error);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error, userId);
         }
     }
 
@@ -523,17 +499,16 @@ public class EgeriaExtractor
      * Return all the OMAG Server configurations that are stored on this platform.
      *
      * @return the OMAG Server configurations that are stored on this platform
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
+    public Set<OMAGServerConfig> getAllServerConfigurations() throws UserNotAuthorizedException,
                                                                      OMAGConfigurationErrorException,
-                                                                     OMAGInvalidParameterException
+                                                                     InvalidParameterException
     {
         return configurationManagementClient.getAllServerConfigurations();
     }
-
 
 
     /**
@@ -541,14 +516,14 @@ public class EgeriaExtractor
      *
      * @param serverName                 local server name
      * @param destinationPlatformURLRoot location of the platform where the config is to be deployed to
-     * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
-     * @throws OMAGInvalidParameterException   invalid serverName or destinationPlatform parameter.
+     * @throws InvalidParameterException   invalid serverName or destinationPlatform parameter.
      */
     public void deployOMAGServerConfig(String serverName,
-                                       String destinationPlatformURLRoot) throws OMAGNotAuthorizedException,
+                                       String destinationPlatformURLRoot) throws UserNotAuthorizedException,
                                                                                  OMAGConfigurationErrorException,
-                                                                                 OMAGInvalidParameterException
+                                                                                 InvalidParameterException
     {
         configurationManagementClient.deployOMAGServerConfig(serverName, destinationPlatformURLRoot);
     }
@@ -559,32 +534,64 @@ public class EgeriaExtractor
      *
      * @param serverName local server name
      * @return OMAGServerConfig properties
-     * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException   invalid serverName parameter.
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    public OMAGServerConfig getOMAGServerConfig(String serverName) throws OMAGNotAuthorizedException,
-                                                                          OMAGInvalidParameterException,
-                                                                          OMAGConfigurationErrorException
+    public OMAGServerConfig getStoredOMAGServerConfig(String serverName) throws UserNotAuthorizedException,
+                                                                                InvalidParameterException,
+                                                                                OMAGConfigurationErrorException
     {
-        return configurationManagementClient.getOMAGServerConfig(serverName);
+        return configurationManagementClient.getStoredOMAGServerConfig(serverName);
     }
-
 
 
     /**
      * Return the complete set of configuration properties in use by the server.
      *
+     * @param serverName local server name
      * @return OMAGServerConfig properties
-     * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException   invalid serverName parameter.
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    public OMAGServerConfig getOMAGServerConfig() throws OMAGNotAuthorizedException,
-                                                         OMAGInvalidParameterException,
-                                                         OMAGConfigurationErrorException
+    public OMAGServerConfig getResolvedOMAGServerConfig(String serverName) throws UserNotAuthorizedException,
+                                                                                  InvalidParameterException,
+                                                                                  OMAGConfigurationErrorException
     {
-        return configurationManagementClient.getOMAGServerConfig(serverOfInterest);
+        return configurationManagementClient.getResolvedOMAGServerConfig(serverName);
+    }
+
+
+    /**
+     * Return the complete set of configuration properties in use by the server from the configuration store.
+     *
+     * @return OMAGServerConfig properties
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    public OMAGServerConfig getStoredOMAGServerConfig() throws UserNotAuthorizedException,
+                                                               InvalidParameterException,
+                                                               OMAGConfigurationErrorException
+    {
+        return configurationManagementClient.getStoredOMAGServerConfig(serverOfInterest);
+    }
+
+
+    /**
+     * Return the complete set of configuration properties in use by the server that have the placeholders resolved.
+     *
+     * @return OMAGServerConfig properties
+     * @throws UserNotAuthorizedException      the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException   invalid serverName parameter.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    public OMAGServerConfig getResolvedOMAGServerConfig() throws UserNotAuthorizedException,
+                                                                 InvalidParameterException,
+                                                                 OMAGConfigurationErrorException
+    {
+        return configurationManagementClient.getResolvedOMAGServerConfig(serverOfInterest);
     }
 
 
@@ -608,7 +615,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            return serverOperationsClient.getServerStatus(clientUserId, serverOfInterest);
+            return serverOperationsClient.getServerStatus(serverOfInterest);
         }
 
         return null;
@@ -630,7 +637,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            return serverOperationsClient.getActiveConfiguration(clientUserId, serverOfInterest);
+            return serverOperationsClient.getActiveConfiguration(serverOfInterest);
         }
 
         return null;
@@ -652,7 +659,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            return serverOperationsClient.getActiveServerStatus(clientUserId, serverOfInterest);
+            return serverOperationsClient.getActiveServerStatus(serverOfInterest);
         }
 
         return null;
@@ -674,7 +681,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            return serverOperationsClient.getActiveServices(clientUserId, serverOfInterest);
+            return serverOperationsClient.getActiveServices(serverOfInterest);
         }
 
         return null;
@@ -695,7 +702,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            serverOperationsClient.addOpenMetadataArchiveFile(clientUserId, serverOfInterest, fileName);
+            serverOperationsClient.addOpenMetadataArchiveFile(serverOfInterest, fileName);
         }
     }
 
@@ -714,7 +721,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            serverOperationsClient.addOpenMetadataArchive(clientUserId, serverOfInterest, connection);
+            serverOperationsClient.addOpenMetadataArchive(serverOfInterest, connection);
         }
     }
 
@@ -733,7 +740,7 @@ public class EgeriaExtractor
     {
         if (serverOfInterest != null)
         {
-            serverOperationsClient.addOpenMetadataArchiveContent(clientUserId, serverOfInterest, openMetadataArchive);
+            serverOperationsClient.addOpenMetadataArchiveContent(serverOfInterest, openMetadataArchive);
         }
     }
 
@@ -765,7 +772,7 @@ public class EgeriaExtractor
      */
     private OMAGServerProperties extractServerReport(String serverName) throws Exception
     {
-        OMAGServerConfig savedConfiguration = configurationManagementClient.getOMAGServerConfig(serverName);
+        OMAGServerConfig savedConfiguration = configurationManagementClient.getResolvedOMAGServerConfig(serverName);
 
         if (savedConfiguration != null)
         {
@@ -776,16 +783,17 @@ public class EgeriaExtractor
 
             if (serverTypeClassification == ServerTypeClassification.INTEGRATION_DAEMON)
             {
-                IntegrationDaemon integrationDaemonClient = new IntegrationDaemon(serverName, platformURLRoot);
+                IntegrationDaemon integrationDaemonClient = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
 
                 OMAGIntegrationDaemonProperties integrationDaemon = new OMAGIntegrationDaemonProperties();
 
-                IntegrationDaemonStatus integrationDaemonStatus = integrationDaemonClient.getIntegrationDaemonStatus(clientUserId);
+                IntegrationDaemonStatus integrationDaemonStatus = integrationDaemonClient.getIntegrationDaemonStatus();
 
                 if (integrationDaemonStatus != null)
                 {
                     if (integrationDaemonStatus.getIntegrationGroupSummaries() != null)
                     {
+
                         List<OMAGIntegrationGroupProperties> integrationGroups = new ArrayList<>();
 
                         for (IntegrationGroupSummary integrationGroupSummary : integrationDaemonStatus.getIntegrationGroupSummaries())
@@ -813,11 +821,11 @@ public class EgeriaExtractor
             }
             else if (serverTypeClassification == ServerTypeClassification.ENGINE_HOST)
             {
-                EngineHostClient engineHostClient = new EngineHostClient(platformURLRoot, serverName);
+                EngineHostClient engineHostClient = new EngineHostClient(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
 
                 OMAGEngineHostProperties engineHost = new OMAGEngineHostProperties();
 
-                engineHost.setGovernanceEngineSummaries(engineHostClient.getGovernanceEngineSummaries(clientUserId));
+                engineHost.setGovernanceEngineSummaries(engineHostClient.getGovernanceEngineSummaries());
 
                 serverProperties = engineHost;
             }
@@ -828,10 +836,24 @@ public class EgeriaExtractor
                 if ((savedConfiguration.getRepositoryServicesConfig() != null) &&
                     (savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig() != null))
                 {
-                    metadataStoreProperties.setRepositoryConnector(this.getConnectorProperties("Local Repository",
-                                                                                               savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getLocalRepositoryLocalConnection()));
+                    metadataStoreProperties.setLocalRepositoryConnector(this.getConnectorProperties("Local Repository Connector",
+                                                                                                    savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getLocalRepositoryLocalConnection()));
+                    metadataStoreProperties.setRemoteRepositoryConnector(this.getConnectorProperties("Remote Repository Connection used by other Cohort Members",
+                                                                                                     savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getLocalRepositoryRemoteConnection()));
 
                     metadataStoreProperties.setLocalMetadataCollectionId(savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getMetadataCollectionId());
+                    metadataStoreProperties.setLocalMetadataCollectionName(savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getMetadataCollectionName());
+
+                    /*
+                     * The local metadata collection id may be set up by the repository connector
+                     * if it is null in the configuration document.
+                     */
+                    if (metadataStoreProperties.getLocalMetadataCollectionId() == null)
+                    {
+                        LocalRepositoryServicesClient localRepositoryServicesClient = new LocalRepositoryServicesClient(serverName, platformURLRoot + "/servers/" + serverName, secretsStoreConnectorMap);
+
+                        metadataStoreProperties.setLocalMetadataCollectionId(localRepositoryServicesClient.getMetadataCollectionId());
+                    }
                 }
 
                 serverProperties = metadataStoreProperties;
@@ -884,7 +906,7 @@ public class EgeriaExtractor
             }
         }
 
-        ServerStatus platformServerStatus = platformServicesClient.getServerStatus(clientUserId, serverName);
+        ServerStatus platformServerStatus = platformServicesClient.getServerStatus(serverName);
 
         if (platformServerStatus != null)
         {
@@ -895,7 +917,7 @@ public class EgeriaExtractor
 
         try
         {
-            ServerServicesStatus activeServerStatus = platformServicesClient.getActiveServerStatus(clientUserId, serverName);
+            ServerServicesStatus activeServerStatus = platformServicesClient.getActiveServerStatus(serverName);
 
             if (activeServerStatus != null)
             {
@@ -919,16 +941,16 @@ public class EgeriaExtractor
      * @return corresponding details
      */
     private List<OMAGCohortProperties> getCohortConfigDetails(String             serverName,
-                                                              List<CohortConfig> cohortConfigs) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
+                                                              List<CohortConfig> cohortConfigs) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException
     {
         if (cohortConfigs != null)
         {
             try
             {
-                MetadataHighwayServicesClient metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverName, platformURLRoot);
+                MetadataHighwayServicesClient metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
 
-                List<CohortDescription> cohortDescriptions = metadataHighwayServicesClient.getCohortDescriptions(clientUserId);
+                List<CohortDescription> cohortDescriptions = metadataHighwayServicesClient.getCohortDescriptions();
 
                 Map<String, CohortConnectionStatus> cohortConnectionStatusMap = new HashMap<>();
 
@@ -988,8 +1010,8 @@ public class EgeriaExtractor
 
                         cohortDetails.setConnectors(cohortConnectors);
                         cohortDetails.setConnectionStatus(cohortConnectionStatusMap.get(cohortConfig.getCohortName()));
-                        cohortDetails.setLocalRegistration(metadataHighwayServicesClient.getLocalRegistration(clientUserId, cohortConfig.getCohortName()));
-                        cohortDetails.setRemoteRegistrations(metadataHighwayServicesClient.getRemoteRegistrations(clientUserId, cohortConfig.getCohortName()));
+                        cohortDetails.setLocalRegistration(metadataHighwayServicesClient.getLocalRegistration(cohortConfig.getCohortName()));
+                        cohortDetails.setRemoteRegistrations(metadataHighwayServicesClient.getRemoteRegistrations(cohortConfig.getCohortName()));
 
                         cohortPropertiesList.add(cohortDetails);
                     }
@@ -1094,8 +1116,7 @@ public class EgeriaExtractor
                                                                                        PropertyServerException
     {
         assert integrationDaemonClient != null;
-        return integrationDaemonClient.getConfigurationProperties(clientUserId,
-                                                                  connectorName);
+        return integrationDaemonClient.getConfigurationProperties(connectorName);
     }
 
 
@@ -1114,7 +1135,7 @@ public class EgeriaExtractor
                                                                                                   PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.updateConfigurationProperties(clientUserId, connectorName, isMergeUpdate, configurationProperties);
+        integrationDaemonClient.updateConfigurationProperties(connectorName, isMergeUpdate, configurationProperties);
     }
 
 
@@ -1131,7 +1152,7 @@ public class EgeriaExtractor
                                                                                         PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.updateEndpointNetworkAddress(clientUserId, connectorName, networkAddress);
+        integrationDaemonClient.updateEndpointNetworkAddress(connectorName, networkAddress);
 
     }
 
@@ -1148,7 +1169,7 @@ public class EgeriaExtractor
                                                                         PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.updateConnectorConnection(clientUserId, connectorName, connection);
+        integrationDaemonClient.updateConnectorConnection(connectorName, connection);
     }
 
 
@@ -1164,7 +1185,7 @@ public class EgeriaExtractor
                                                               PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.refreshConnector(clientUserId, connectorName);
+        integrationDaemonClient.refreshConnector(connectorName);
     }
 
 
@@ -1181,7 +1202,7 @@ public class EgeriaExtractor
                                            PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.refreshConnectors(clientUserId);
+        integrationDaemonClient.refreshConnectors();
     }
 
 
@@ -1200,7 +1221,7 @@ public class EgeriaExtractor
                                                               PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.restartConnector(clientUserId, connectorName);
+        integrationDaemonClient.restartConnector(connectorName);
     }
 
 
@@ -1217,7 +1238,7 @@ public class EgeriaExtractor
                                            PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.restartConnectors(clientUserId);
+        integrationDaemonClient.restartConnectors();
     }
 
 
@@ -1238,7 +1259,7 @@ public class EgeriaExtractor
                                                                                    PropertyServerException
     {
         assert integrationDaemonClient != null;
-        integrationDaemonClient.refreshConfig(clientUserId, integrationGroupName);
+        integrationDaemonClient.refreshConfig(integrationGroupName);
     }
 
 
@@ -1258,7 +1279,24 @@ public class EgeriaExtractor
     {
         assert integrationDaemonClient != null;
 
-        integrationDaemonClient.publishOpenLineageEvent(clientUserId, event);
+        integrationDaemonClient.publishOpenLineageEvent(event);
+    }
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(OpenLineage.RunEvent event) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        integrationDaemonClient.publishOpenLineageEvent(event);
     }
 
 
@@ -1285,10 +1323,8 @@ public class EgeriaExtractor
                                                                          PropertyServerException
     {
         assert engineHostClient != null;
-        engineHostClient.refreshConfig(clientUserId, governanceEngineName);
+        engineHostClient.refreshConfig(governanceEngineName);
     }
-
-
 
 
     /**
@@ -1306,71 +1342,6 @@ public class EgeriaExtractor
                                               PropertyServerException
     {
         assert engineHostClient != null;
-        engineHostClient.refreshConfig(clientUserId);
-    }
-
-
-    /*
-     * ========================================================================================
-     * Metadata Access Server specific services
-     */
-
-    /**
-     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
-     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
-     * event has been sent.
-     * If the server has already registered in the past, it sends a reregistration request.
-     *
-     * @param cohortName name of cohort
-     *
-     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
-     *
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to perform the operation requested
-     */
-    public boolean connectToCohort(String cohortName) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                             RepositoryErrorException,
-                                                             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-    {
-        assert metadataHighwayServicesClient != null;
-        return metadataHighwayServicesClient.connectToCohort(clientUserId, cohortName);
-    }
-
-
-
-    /**
-     * Disconnect communications from a specific cohort.
-     *
-     * @param cohortName name of cohort
-     * @return boolean flag to indicate success.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to perform the operation requested
-     */
-    public boolean disconnectFromCohort(String cohortName) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                  RepositoryErrorException,
-                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-    {
-        assert metadataHighwayServicesClient != null;
-        return metadataHighwayServicesClient.disconnectFromCohort(clientUserId, cohortName);
-    }
-
-
-    /**
-     * Unregister from a specific cohort and disconnect from cohort communications.
-     *
-     * @param cohortName name of cohort
-     * @return boolean flag to indicate success.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException one of the supplied parameters caused a problem
-     * @throws RepositoryErrorException there is a problem communicating with the remote server.
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the user is not authorized to perform the operation requested
-     */
-    public boolean unregisterFromCohort(String cohortName) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-                                                                  RepositoryErrorException,
-                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-    {
-        assert metadataHighwayServicesClient != null;
-        return metadataHighwayServicesClient.unregisterFromCohort(clientUserId, cohortName);
+        engineHostClient.refreshConfig();
     }
 }

@@ -154,7 +154,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
 
         RepositoryGovernanceServiceHandler repositoryGovernanceServiceHandler = new RepositoryGovernanceServiceHandler(governanceEngineProperties,
                                                                                                                        governanceEngineGUID,
-                                                                                                                       serverUserId,
+                                                                                                                       engineUserId,
                                                                                                                        engineActionGUID,
                                                                                                                        engineActionClient,
                                                                                                                        repositoryGovernanceRequestType,

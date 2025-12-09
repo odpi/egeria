@@ -80,18 +80,8 @@ public class DedicatedTopicListResponse extends AdminServicesAPIResponse
     public String toString()
     {
         return "DedicatedTopicListResponse{" +
-                       "dedicatedTopicList=" + dedicatedTopicList +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "dedicatedTopicList=" + dedicatedTopicList +
+                "} " + super.toString();
     }
 
 

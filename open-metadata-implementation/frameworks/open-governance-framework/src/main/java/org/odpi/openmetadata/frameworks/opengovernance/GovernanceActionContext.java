@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.client.*;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.DuplicateManagementClient;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
@@ -55,10 +54,9 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     private final ActionControlInterface           actionControlClient;
     private final GovernanceActionProcessInterface governanceActionProcessClient;
     private final ConnectedAssetClient             connectedAssetClient;
-    private final GovernanceCompletionInterface    governanceCompletionClient;
-    private final DuplicateManagementClient duplicateManagementClient;
-    private final WatchDogEventInterface    watchdogEventClient;
-    private final GovernanceConfiguration   governanceConfiguration;
+    private final GovernanceCompletionInterface governanceCompletionClient;
+    private final WatchdogEventInterface        watchdogEventClient;
+    private final GovernanceConfiguration       governanceConfiguration;
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
     private final MessageFormatter                 messageFormatter = new MessageFormatter();
@@ -117,7 +115,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                    GovernanceActionProcessInterface governanceActionProcessClient,
                                    ConnectedAssetClient             connectedAssetClient,
                                    GovernanceCompletionInterface    governanceCompletionClient,
-                                   WatchDogEventInterface           watchdogEventClient)
+                                   WatchdogEventInterface watchdogEventClient)
     {
         super(localServerName,
               localServiceName,
@@ -145,16 +143,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         this.governanceActionProcessClient = governanceActionProcessClient;
         this.connectedAssetClient = connectedAssetClient;
         this.governanceCompletionClient = governanceCompletionClient;
-        this.duplicateManagementClient = new DuplicateManagementClient(this,
-                                                                       localServerName,
-                                                                       localServiceName,
-                                                                       connectorUserId,
-                                                                       connectorGUID,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       duplicateManagementClient,
-                                                                       auditLog,
-                                                                       maxPageSize);
         this.watchdogEventClient       = watchdogEventClient;
     }
 
@@ -230,15 +218,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     {
         return actionTargetElements;
     }
-
-
-    /**
-     * Return the client that manages deduplication.
-     *
-     * @return deduplication manager
-     */
-    @Override
-    public DuplicateManagementClient getDuplicateManagementClient() { return duplicateManagementClient; }
 
 
     /**
@@ -1386,7 +1365,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                 ", completionStatus=" + completionStatus +
                 ", engineActionGUID='" + engineActionGUID + '\'' +
                 ", actionControlClient=" + actionControlClient +
-                ", duplicateManagementClient=" + duplicateManagementClient +
                 ", governanceActionProcessClient=" + governanceActionProcessClient +
                 ", governanceCompletionClient=" + governanceCompletionClient +
                 ", watchDogEventClient=" + watchdogEventClient +

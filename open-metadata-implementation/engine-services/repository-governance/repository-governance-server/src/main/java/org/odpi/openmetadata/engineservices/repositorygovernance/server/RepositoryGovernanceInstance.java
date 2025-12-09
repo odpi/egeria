@@ -19,17 +19,13 @@ public class RepositoryGovernanceInstance extends OMESServiceInstance
      * @param auditLog link to the repository responsible for servicing the REST calls.
      * @param localServerUserId userId to use for local server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param accessServiceRootURL URL root for server platform where the access service is running.
-     * @param accessServiceServerName name of the server where the access service is running.
      */
-    public RepositoryGovernanceInstance(String                                         serverName,
-                                        String                                         serviceName,
-                                        AuditLog                                       auditLog,
-                                        String                                         localServerUserId,
-                                        int                                            maxPageSize,
-                                        String                                         accessServiceRootURL,
-                                        String                                         accessServiceServerName)
+    public RepositoryGovernanceInstance(String   serverName,
+                                        String   serviceName,
+                                        AuditLog auditLog,
+                                        String   localServerUserId,
+                                        int      maxPageSize)
     {
-        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize, accessServiceRootURL, accessServiceServerName);
+        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
     }
 }

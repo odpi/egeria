@@ -50,6 +50,7 @@ public class HttpHelper
         {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            SSLContext.setDefault(sc);
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
         }

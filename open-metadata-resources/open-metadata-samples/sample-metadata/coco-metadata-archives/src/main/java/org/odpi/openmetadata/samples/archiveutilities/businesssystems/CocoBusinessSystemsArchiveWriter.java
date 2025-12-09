@@ -3,7 +3,11 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
-import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.unitycatalog.UnityCatalogPackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -44,10 +48,16 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
               archiveDescription,
               creationDate,
               archiveFileName,
-              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
-                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
-                                         new CocoSustainabilityArchiveWriter().getOpenMetadataArchive(),
-                                         new CocoGovernanceEnginesArchiveWriter().getOpenMetadataArchive()});
+              new OpenMetadataArchive[]{
+                      new CorePackArchiveWriter().getOpenMetadataArchive(),
+                      new EgeriaArchiveWriter().getOpenMetadataArchive(),
+                      new FilesArchiveWriter().getOpenMetadataArchive(),
+                      new PostgresPackArchiveWriter().getOpenMetadataArchive(),
+                      new UnityCatalogPackArchiveWriter().getOpenMetadataArchive(),
+                      new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
+                      new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
+                      new CocoSustainabilityArchiveWriter().getOpenMetadataArchive(),
+                      new CocoGovernanceEnginesArchiveWriter().getOpenMetadataArchive()});
     }
 
 

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processe
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -34,7 +33,7 @@ public class ToDoProperties extends ActionProperties
      *
      * @param template object to copy
      */
-    public ToDoProperties(ProcessProperties template)
+    public ToDoProperties(ActionProperties template)
     {
         super(template);
     }

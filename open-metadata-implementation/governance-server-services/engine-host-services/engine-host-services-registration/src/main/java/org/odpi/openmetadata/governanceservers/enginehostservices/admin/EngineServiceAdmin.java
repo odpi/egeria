@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
 
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.EngineServiceDefinition;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
-import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
 
@@ -30,26 +27,18 @@ public abstract class EngineServiceAdmin
     /**
      * Initialize engine service.
      *
-     * @param localServerId unique identifier of this server
      * @param localServerName name of this server
      * @param auditLog link to the repository responsible for servicing the REST calls
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages
-     * @param localServerPassword password for this server to use if sending REST requests
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions
-     * @param engineServiceConfig details of the options and the engines to run
-     * @param governanceEngineMap map of configured engines
+     * @param engineServiceDefinition details of the options and the engines to run
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
-    public abstract void initialize(String                        localServerId,
-                                    String                        localServerName,
+    public abstract void initialize(String                        localServerName,
                                     AuditLog                      auditLog,
                                     String                        localServerUserId,
-                                    String                        localServerPassword,
                                     int                           maxPageSize,
-                                    GovernanceConfigurationClient configurationClient,
-                                    EngineServiceConfig           engineServiceConfig,
-                                    GovernanceEngineMap           governanceEngineMap) throws OMAGConfigurationErrorException;
+                                    EngineServiceDefinition       engineServiceDefinition) throws OMAGConfigurationErrorException;
 
 
 
@@ -60,44 +49,12 @@ public abstract class EngineServiceAdmin
 
 
     /**
-     * Return the open metadata server's root URL from the configuration.
-     *
-     * @param engineServicesConfig configuration
-     * @return root URL
-     * @throws OMAGConfigurationErrorException No root URL present in the config
-     */
-    protected String getPartnerServiceRootURL(EngineServiceConfig engineServicesConfig) throws OMAGConfigurationErrorException
-    {
-        String accessServiceRootURL = engineServicesConfig.getOMAGServerPlatformRootURL();
-
-        if (accessServiceRootURL == null)
-        {
-            final String actionDescription = "Validate engine services configuration.";
-            final String methodName        = "getPartnerServiceRootURL";
-
-            auditLog.logMessage(actionDescription,
-                                EngineHostServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
-                                                                                                    localServerName,
-                                                                                                    engineServicesConfig.getEngineServicePartnerOMAS()));
-
-            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
-                                                                                                                 localServerName,
-                                                                                                                 engineServicesConfig.getEngineServicePartnerOMAS()),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-
-        return accessServiceRootURL;
-    }
-
-
-    /**
      * Validate the content of the configuration.
      *
-     * @param engineServiceConfig configuration
+     * @param engineServiceDefinition configuration
      * @throws InvalidParameterException Missing content from the config
      */
-    protected void validateConfigDocument(EngineServiceConfig engineServiceConfig) throws InvalidParameterException
+    protected void validateEngineDefinition(EngineServiceDefinition engineServiceDefinition) throws InvalidParameterException
     {
         final String methodName                  = "validateConfigDocument";
         final String configPropertyName          = "engineServiceConfig";
@@ -105,7 +62,7 @@ public abstract class EngineServiceAdmin
         final String serviceNamePropertyName     = "engineServiceConfig.engineServiceName";
         final String partnerOMASPropertyName     = "engineServiceConfig.engineServicePartnerOMAS";
 
-        if (engineServiceConfig == null)
+        if (engineServiceDefinition == null)
         {
             throw new InvalidParameterException(EngineHostServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(localServerName),
                                                 this.getClass().getName(),
@@ -113,40 +70,8 @@ public abstract class EngineServiceAdmin
                                                 configPropertyName);
         }
 
-        invalidParameterHandler.validateName(engineServiceConfig.getEngineServiceFullName(), fullServiceNamePropertyName, methodName);
-        invalidParameterHandler.validateName(engineServiceConfig.getEngineServiceName(), serviceNamePropertyName, methodName);
-        invalidParameterHandler.validateName(engineServiceConfig.getEngineServicePartnerOMAS(), partnerOMASPropertyName, methodName);
-    }
-
-
-    /**
-     * Return the open metadata server's name from the configuration.
-     *
-     * @param engineServiceConfig configuration
-     * @return server name
-     * @throws OMAGConfigurationErrorException No server name present in the config
-     */
-    protected String getPartnerServiceServerName(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
-    {
-        String accessServiceServerName = engineServiceConfig.getOMAGServerName();
-
-        if (accessServiceServerName == null)
-        {
-            final String actionDescription = "Validate engine service configuration.";
-            final String methodName        = "getPartnerServiceServerName";
-
-            auditLog.logMessage(actionDescription,
-                                EngineHostServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                            localServerName,
-                                                                                            engineServiceConfig.getEngineServicePartnerOMAS()));
-
-            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                                  localServerName,
-                                                                                                                  engineServiceConfig.getEngineServicePartnerOMAS()),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-
-        return accessServiceServerName;
+        invalidParameterHandler.validateName(engineServiceDefinition.getEngineServiceFullName(), fullServiceNamePropertyName, methodName);
+        invalidParameterHandler.validateName(engineServiceDefinition.getEngineServiceName(), serviceNamePropertyName, methodName);
+        invalidParameterHandler.validateName(engineServiceDefinition.getEngineServicePartnerOMAS(), partnerOMASPropertyName, methodName);
     }
 }

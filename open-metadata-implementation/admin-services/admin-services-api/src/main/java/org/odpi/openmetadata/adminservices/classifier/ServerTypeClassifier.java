@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.Governance
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 import java.util.List;
 
@@ -43,10 +43,10 @@ public class ServerTypeClassifier
      * Check that the config document will result in a valid type of server and return the type.
      *
      * @return server type classification or exception if anything wrong
-     * @throws OMAGInvalidParameterException null config doc
+     * @throws InvalidParameterException null config doc
      * @throws OMAGConfigurationErrorException incompatible config
      */
-    public ServerTypeClassification getServerType() throws OMAGInvalidParameterException,
+    public ServerTypeClassification getServerType() throws InvalidParameterException,
                                                            OMAGConfigurationErrorException
     {
         final String methodName = "getServerType";
@@ -60,7 +60,7 @@ public class ServerTypeClassifier
         List<IntegrationGroupConfig>    dynamicIntegrationGroupConfigList = configurationDocument.getDynamicIntegrationGroupsConfig();
         List<ViewServiceConfig>         viewServiceConfigList             = configurationDocument.getViewServicesConfig();
         ConformanceSuiteConfig          conformanceSuiteConfig            = configurationDocument.getConformanceSuiteConfig();
-        EngineHostServicesConfig        engineHostServicesConfig = configurationDocument.getEngineHostServicesConfig();
+        List<EngineConfig>              engineHostServicesConfig          = configurationDocument.getGovernanceEnginesConfig();
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
@@ -272,17 +272,18 @@ public class ServerTypeClassifier
      * @param serverName requested server
      * @param configurationDocument supplied document
      * @param methodName calling method
-     * @throws OMAGInvalidParameterException resulting exception if config document is null.
+     * @throws InvalidParameterException resulting exception if config document is null.
      */
     private void validateConfigurationDocumentNotNull(String            serverName,
                                                       OMAGServerConfig  configurationDocument,
-                                                      String            methodName) throws  OMAGInvalidParameterException
+                                                      String            methodName) throws  InvalidParameterException
     {
         if (configurationDocument == null)
         {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVER_CONFIG.getMessageDefinition(serverName),
-                                                    this.getClass().getName(),
-                                                    methodName);
+            throw new InvalidParameterException(OMAGAdminErrorCode.NULL_SERVER_CONFIG.getMessageDefinition(serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                OMAGServerConfig.class.getName());
         }
     }
 
@@ -297,17 +298,18 @@ public class ServerTypeClassifier
      * @param serverTypeClassification classification value derived from the analysis of the
      *                                 configuration document
      * @param methodName calling method
-     * @throws OMAGInvalidParameterException resulting exception if config document is null.
+     * @throws InvalidParameterException resulting exception if config document is null.
      */
     private void validateServerClassificationNotNull(String                    serverName,
                                                      ServerTypeClassification  serverTypeClassification,
-                                                     String                    methodName) throws OMAGInvalidParameterException
+                                                     String                    methodName) throws InvalidParameterException
     {
         if (serverTypeClassification == null)
         {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER.getMessageDefinition(serverName),
-                                                    this.getClass().getName(),
-                                                    methodName);
+            throw new InvalidParameterException(OMAGAdminErrorCode.UNCLASSIFIABLE_SERVER.getMessageDefinition(serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                ServerTypeClassification.class.getName());
         }
     }
 

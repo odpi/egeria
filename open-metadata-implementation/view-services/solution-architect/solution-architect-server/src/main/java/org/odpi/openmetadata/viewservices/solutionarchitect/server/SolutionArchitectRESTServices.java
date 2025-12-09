@@ -8,8 +8,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
@@ -77,11 +77,11 @@ public class SolutionArchitectRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties)
                 {
-                    response.setGUID(handler.createInformationSupplyChain(userId,
-                                                                          requestBody,
-                                                                          requestBody.getInitialClassifications(),
-                                                                          informationSupplyChainProperties,
-                                                                          requestBody.getParentRelationshipProperties()));
+                    response.setGUID(handler.createCollection(userId,
+                                                              requestBody,
+                                                              requestBody.getInitialClassifications(),
+                                                              informationSupplyChainProperties,
+                                                              requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -138,12 +138,12 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 InformationSupplyChainHandler handler = instanceHandler.getInformationSupplyChainHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createInformationSupplyChainFromTemplate(userId,
-                                                                                  requestBody,
-                                                                                  requestBody.getTemplateGUID(),
-                                                                                  requestBody.getReplacementProperties(),
-                                                                                  requestBody.getPlaceholderPropertyValues(),
-                                                                                  requestBody.getParentRelationshipProperties()));
+                response.setGUID(handler.createCollectionFromTemplate(userId,
+                                                                      requestBody,
+                                                                      requestBody.getTemplateGUID(),
+                                                                      requestBody.getReplacementProperties(),
+                                                                      requestBody.getPlaceholderPropertyValues(),
+                                                                      requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -167,21 +167,21 @@ public class SolutionArchitectRESTServices extends TokenController
      * @param informationSupplyChainGUID unique identifier of the information supply chain (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateInformationSupplyChain(String                   serverName,
-                                                       String                   informationSupplyChainGUID,
-                                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateInformationSupplyChain(String                   serverName,
+                                                        String                   informationSupplyChainGUID,
+                                                        UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateInformationSupplyChain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -197,17 +197,10 @@ public class SolutionArchitectRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof InformationSupplyChainProperties informationSupplyChainProperties)
                 {
-                    handler.updateInformationSupplyChain(userId,
-                                                         informationSupplyChainGUID,
-                                                         requestBody,
-                                                         informationSupplyChainProperties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateInformationSupplyChain(userId,
-                                                         informationSupplyChainGUID,
-                                                         requestBody,
-                                                         null);
+                    response.setFlag(handler.updateCollection(userId,
+                                                              informationSupplyChainGUID,
+                                                              requestBody,
+                                                              informationSupplyChainProperties));
                 }
                 else
                 {
@@ -396,19 +389,19 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
                 {
-                    handler.composeInformationSupplyChains(userId,
-                                                           informationSupplyChainGUID,
-                                                           nestedInformationSupplyChainGUID,
-                                                           requestBody,
-                                                           properties);
+                    handler.addToCollection(userId,
+                                            informationSupplyChainGUID,
+                                            nestedInformationSupplyChainGUID,
+                                            requestBody,
+                                            properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.composeInformationSupplyChains(userId,
-                                                           informationSupplyChainGUID,
-                                                           nestedInformationSupplyChainGUID,
-                                                           requestBody,
-                                                           null);
+                    handler.addToCollection(userId,
+                                            informationSupplyChainGUID,
+                                            nestedInformationSupplyChainGUID,
+                                            requestBody,
+                                            null);
                 }
                 else
                 {
@@ -417,11 +410,11 @@ public class SolutionArchitectRESTServices extends TokenController
             }
             else
             {
-                handler.composeInformationSupplyChains(userId,
-                                                       informationSupplyChainGUID,
-                                                       nestedInformationSupplyChainGUID,
-                                                       null,
-                                                       null);
+                handler.addToCollection(userId,
+                                        informationSupplyChainGUID,
+                                        nestedInformationSupplyChainGUID,
+                                        null,
+                                        null);
             }
         }
         catch (Throwable error)
@@ -469,10 +462,10 @@ public class SolutionArchitectRESTServices extends TokenController
 
             InformationSupplyChainHandler handler = instanceHandler.getInformationSupplyChainHandler(userId, serverName, methodName);
 
-            handler.decomposeInformationSupplyChains(userId,
-                                                     informationSupplyChainGUID,
-                                                     nestedInformationSupplyChainGUID,
-                                                     requestBody);
+            handler.removeFromCollection(userId,
+                                         informationSupplyChainGUID,
+                                         nestedInformationSupplyChainGUID,
+                                         requestBody);
         }
         catch (Throwable error)
         {
@@ -517,7 +510,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             InformationSupplyChainHandler handler = instanceHandler.getInformationSupplyChainHandler(userId, serverName, methodName);
 
-            handler.deleteInformationSupplyChain(userId, informationSupplyChainGUID, requestBody);
+            handler.deleteCollection(userId, informationSupplyChainGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -723,15 +716,15 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+                CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof SolutionBlueprintProperties properties)
                 {
-                    response.setGUID(handler.createSolutionBlueprint(userId,
-                                                                     requestBody,
-                                                                     requestBody.getInitialClassifications(),
-                                                                     properties,
-                                                                     requestBody.getParentRelationshipProperties()));
+                    response.setGUID(handler.createCollection(userId,
+                                                              requestBody,
+                                                              requestBody.getInitialClassifications(),
+                                                              properties,
+                                                              requestBody.getParentRelationshipProperties()));
                 }
                 else
                 {
@@ -786,14 +779,14 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+                CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createSolutionBlueprintFromTemplate(userId,
-                                                                             requestBody,
-                                                                             requestBody.getTemplateGUID(),
-                                                                             requestBody.getReplacementProperties(),
-                                                                             requestBody.getPlaceholderPropertyValues(),
-                                                                             requestBody.getParentRelationshipProperties()));
+                response.setGUID(handler.createCollectionFromTemplate(userId,
+                                                                      requestBody,
+                                                                      requestBody.getTemplateGUID(),
+                                                                      requestBody.getReplacementProperties(),
+                                                                      requestBody.getPlaceholderPropertyValues(),
+                                                                      requestBody.getParentRelationshipProperties()));
             }
             else
             {
@@ -817,12 +810,12 @@ public class SolutionArchitectRESTServices extends TokenController
      * @param solutionBlueprintGUID unique identifier of the solution blueprint (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSolutionBlueprint(String                   serverName,
+    public BooleanResponse updateSolutionBlueprint(String                   serverName,
                                                 String                   solutionBlueprintGUID,
                                                 UpdateElementRequestBody requestBody)
     {
@@ -830,7 +823,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -843,21 +836,11 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+                CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
                 if (requestBody.getProperties() instanceof SolutionBlueprintProperties properties)
                 {
-                    handler.updateSolutionBlueprint(userId,
-                                                    solutionBlueprintGUID,
-                                                    requestBody,
-                                                    properties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateSolutionBlueprint(userId,
-                                                    solutionBlueprintGUID,
-                                                    requestBody,
-                                                    null);
+                    response.setFlag(handler.updateCollection(userId, solutionBlueprintGUID, requestBody, properties));
                 }
                 else
                 {
@@ -911,25 +894,25 @@ public class SolutionArchitectRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
                 {
-                    handler.linkSolutionComponentToBlueprint(userId,
-                                                             parentSolutionBlueprintGUID,
-                                                             nestedSolutionComponentGUID,
-                                                             requestBody,
-                                                             properties);
+                    handler.addToCollection(userId,
+                                            parentSolutionBlueprintGUID,
+                                            nestedSolutionComponentGUID,
+                                            requestBody,
+                                            properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkSolutionComponentToBlueprint(userId,
-                                                             parentSolutionBlueprintGUID,
-                                                             nestedSolutionComponentGUID,
-                                                             requestBody,
-                                                             null);
+                    handler.addToCollection(userId,
+                                            parentSolutionBlueprintGUID,
+                                            nestedSolutionComponentGUID,
+                                            requestBody,
+                                            null);
                 }
                 else
                 {
@@ -938,11 +921,11 @@ public class SolutionArchitectRESTServices extends TokenController
             }
             else
             {
-                handler.linkSolutionComponentToBlueprint(userId,
-                                                         parentSolutionBlueprintGUID,
-                                                         nestedSolutionComponentGUID,
-                                                         null,
-                                                         null);
+                handler.addToCollection(userId,
+                                        parentSolutionBlueprintGUID,
+                                        nestedSolutionComponentGUID,
+                                        null,
+                                        null);
             }
         }
         catch (Throwable error)
@@ -988,12 +971,12 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
-            handler.detachSolutionComponentFromBlueprint(userId,
-                                                         parentSolutionBlueprintGUID,
-                                                         nestedSolutionComponentGUID,
-                                                         requestBody);
+            handler.removeFromCollection(userId,
+                                         parentSolutionBlueprintGUID,
+                                         nestedSolutionComponentGUID,
+                                         requestBody);
         }
         catch (Throwable error)
         {
@@ -1037,7 +1020,7 @@ public class SolutionArchitectRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1114,7 +1097,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
             handler.detachSolutionDesign(userId,
                                          parentGUID,
@@ -1162,9 +1145,9 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
-            handler.deleteSolutionBlueprint(userId, solutionBlueprintGUID, requestBody);
+            handler.deleteCollection(userId, solutionBlueprintGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1205,13 +1188,13 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.getSolutionBlueprintsByName(userId,
-                                                                         requestBody.getFilter(),
-                                                                         requestBody));
+                response.setElements(handler.getCollectionsByName(userId,
+                                                                  requestBody.getFilter(),
+                                                                  requestBody));
             }
             else
             {
@@ -1232,7 +1215,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * Retrieve the list of solution blueprint metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param solutionComponentGUID    unique identifier of the required element
+     * @param solutionBlueprintGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1241,7 +1224,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getSolutionBlueprintByGUID(String         serverName,
-                                                                      String         solutionComponentGUID,
+                                                                      String         solutionBlueprintGUID,
                                                                       GetRequestBody requestBody)
     {
         final String methodName = "getSolutionBlueprintByGUID";
@@ -1259,11 +1242,11 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getSolutionBlueprintByGUID(userId,
-                                                                   solutionComponentGUID,
-                                                                   requestBody));
+            response.setElement(handler.getCollectionByGUID(userId,
+                                                            solutionBlueprintGUID,
+                                                            requestBody));
         }
         catch (Throwable error)
         {
@@ -1304,19 +1287,15 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionBlueprintHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getSolutionBlueprintHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                response.setElements(handler.findSolutionBlueprints(userId,
-                                                                    requestBody.getSearchString(),
-                                                                    requestBody));
+                response.setElements(handler.findCollections(userId, requestBody.getSearchString(), requestBody));
             }
             else
             {
-                response.setElements(handler.findSolutionBlueprints(userId,
-                                                                    null,
-                                                                    null));
+                response.setElements(handler.findCollections(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -1580,21 +1559,21 @@ public class SolutionArchitectRESTServices extends TokenController
      * @param solutionComponentGUID unique identifier of the solution component (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSolutionComponent(String                   serverName,
-                                                String                   solutionComponentGUID,
-                                                UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSolutionComponent(String                   serverName,
+                                                   String                   solutionComponentGUID,
+                                                   UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSolutionComponent";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -1610,17 +1589,10 @@ public class SolutionArchitectRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof SolutionComponentProperties properties)
                 {
-                    handler.updateSolutionComponent(userId,
-                                                    solutionComponentGUID,
-                                                    requestBody,
-                                                    properties);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.updateSolutionComponent(userId,
-                                                    solutionComponentGUID,
-                                                    requestBody,
-                                                    null);
+                    response.setFlag(handler.updateSolutionComponent(userId,
+                                                                     solutionComponentGUID,
+                                                                     requestBody,
+                                                                     properties));
                 }
                 else
                 {

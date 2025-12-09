@@ -135,26 +135,27 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param annotationGUID       unique identifier of the annotation (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateAnnotation(String               userId,
-                                 String               annotationGUID,
-                                 UpdateOptions        updateOptions,
-                                 AnnotationProperties properties) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public boolean updateAnnotation(String               userId,
+                                    String               annotationGUID,
+                                    UpdateOptions        updateOptions,
+                                    AnnotationProperties properties) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         final String methodName        = "updateAnnotation";
         final String guidParameterName = "annotationGUID";
 
-        super.updateElement(userId,
-                            annotationGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   annotationGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 

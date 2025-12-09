@@ -5,6 +5,20 @@
 @baseURL=https://localhost:9443
 @adminUserId=garygeeke
 
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{adminUserId}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
 
 ###
 # ---------------------------------------------
@@ -15,7 +29,8 @@
 ###
 # @name Load open metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/active-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/servers/active-metadata-store/instance/open-metadata-archives/file
+Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CocoComboArchive.omarchive
@@ -28,7 +43,8 @@ content-packs/CocoComboArchive.omarchive
 
 ###
 # Add the ClinicalTrials at CocoPharmaceuticals engine to engine-host
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/engine
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -41,7 +57,8 @@ Content-Type: application/json
 
 ###
 # Add the AssetQuality at CocoPharmaceuticals engine to engine-host
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/engine
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -54,7 +71,8 @@ Content-Type: application/json
 
 ###
 # Restart the engine-host server on the OMAG Server Platform.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/engine-host/instance
+POST {{baseURL}}/open-metadata/platform-services/server-platform/servers/engine-host/instance
+Authorization: Bearer {{token}}
 
 
 ###

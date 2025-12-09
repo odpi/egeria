@@ -8,24 +8,38 @@
 @user=erinoverview
 @auditLogTopic=logging
 @localMatadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
-@server=postgres-metadata-store
+@server=active-metadata-store
 
+##
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId" : "{{user}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
 
 ###
 # @name get metadata collection Id
 GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/metadata-collection-id
+Authorization: Bearer {{token}}
 
 ###
 # @name Get types
 GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/all
+Authorization: Bearer {{token}}
 
 ###
 # @name Get Entity Detail
 GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}
-
-<> ./Get Entity.200.json
-// http://localhost:8080/open-metadata/repository-services/users/julesk/instances/entity/fd7d41e7-70f5-42ec-86d3-88683e599494
-
+Authorization: Bearer {{token}}
 ###
 
 @guid=108b85fe-d7b8-45c3-9fb8-742ac4e4fb14
@@ -34,11 +48,13 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{use
 # @name Get Relationship
 # The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
 GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/relationship/{{guid}}
+Authorization: Bearer {{token}}
 
 ###
 # @name Get All Relationships For Entity
 # The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
 POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}/relationships
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -51,6 +67,7 @@ Content-Type: application/json
 # @name Get Specific Relationships For Entity
 # The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
 POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}/relationships
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -65,15 +82,18 @@ Content-Type: application/json
 ###
 # @name Get TypeDef By Name
 GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/typedef/name/Asset
+Authorization: Bearer {{token}}
 
 ###
 # @name Get AttributeTypeDef By Name
 GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/types/attribute-typedef/name/GovernanceActionStatus
+Authorization: Bearer {{token}}
 
 ###
 # @name Find Entities By Property Value
 POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entities/by-property-value?
     searchCriteria=.*cust.*
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

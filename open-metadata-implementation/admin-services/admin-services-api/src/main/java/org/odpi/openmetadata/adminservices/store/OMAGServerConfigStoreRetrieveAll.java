@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.adminservices.store;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 
 import java.util.Set;
 

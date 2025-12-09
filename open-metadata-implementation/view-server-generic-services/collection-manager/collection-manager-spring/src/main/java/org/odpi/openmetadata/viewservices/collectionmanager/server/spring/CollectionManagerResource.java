@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Collection Manager OMVS",
+@Tag(name="API: Collection Manager",
         description="Maintain and explore the contents of collections. Collections are used to group related elements together.  The contents of a collection can also be organized into a hierarchy of folders. This useful function is used widely in open metadata.  For example, there are specialized collections for glossaries, solution blueprints, information supply chains, digital product catalogs, digital products themselves, agreements and event sets.  They may be also used to organize resources for a particular project, team or individual.",
         externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/collection-manager/overview/"))
 

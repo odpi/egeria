@@ -18,11 +18,19 @@ public interface FFDCResponse
 
 
     /**
-     * Return the name of the Java class name to use to recreate the exception.
+     * Return the base name of the Java class name to use to recreate the exception.
      *
      * @return String name of the fully-qualified java class name
      */
     String getExceptionClassName();
+
+
+    /**
+     * Return the name of the Java class name of the actual exception that may be use to recreate the exception.
+     *
+     * @return String name of the fully-qualified java class name
+     */
+    String getExceptionSubclassName();
 
 
     /**
@@ -102,11 +110,19 @@ public interface FFDCResponse
 
 
     /**
-     * Set up the name of the Java class name to use to recreate the exception.
+     * Set up the name of the Java class to use to recreate the exception.
      *
      * @param exceptionClassName - String name of the fully-qualified java class name
      */
     void setExceptionClassName(String exceptionClassName);
+
+
+    /**
+     * Set up the name of the actual Java class name to use to recreate the exception.
+     *
+     * @param exceptionClassName - String name of the fully-qualified java class name
+     */
+    void setExceptionSubclassName(String exceptionClassName);
 
 
     /**

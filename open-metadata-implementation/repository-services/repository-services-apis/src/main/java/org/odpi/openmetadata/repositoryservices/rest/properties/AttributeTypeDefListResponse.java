@@ -102,18 +102,10 @@ public class AttributeTypeDefListResponse extends OMRSAPIResponse
     public String toString()
     {
         return "AttributeTypeDefListResponse{" +
-                "relatedHTTPCode=" + relatedHTTPCode +
-                ", actionDescription='" + actionDescription + '\'' +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
-                '}';
+                "attributeTypeDefs=" + attributeTypeDefs +
+                "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

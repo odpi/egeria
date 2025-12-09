@@ -28,13 +28,17 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
      * Constructor receives key information from the configuration services.
      *
      * @param localServerUserId userId that this server should use on requests
-     * @param localServerPassword password that this server should use on requests
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize maximum number of elements that can be returned on a single call
      * @param auditLog audit log for administrator messages
      * @param configuration configuration for this work pad/workbench
      */
     public PlatformConformanceWorkPad(String                                localServerUserId,
-                                      String                                localServerPassword,
+                                      String                                localServerSecretsStoreProvider,
+                                      String                                localServerSecretsStoreLocation,
+                                      String                                localServerSecretsStoreCollection,
                                       int                                   maxPageSize,
                                       OMRSAuditLog                          auditLog,
                                       PlatformConformanceWorkbenchConfig    configuration)
@@ -44,7 +48,9 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
               workbenchVersionNumber,
               workbenchDocURL,
               localServerUserId,
-              localServerPassword,
+              localServerSecretsStoreProvider,
+              localServerSecretsStoreLocation,
+              localServerSecretsStoreCollection,
               tutType,
               maxPageSize);
 
@@ -322,17 +328,9 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
         return "PlatformConformanceWorkPad{" +
                 "auditLog=" + auditLog +
                 ", tutPlatformURLRoot='" + tutPlatformURLRoot + '\'' +
-                ", workbenchId='" + workbenchId + '\'' +
-                ", workbenchName='" + workbenchName + '\'' +
-                ", workbenchVersionNumber='" + workbenchVersionNumber + '\'' +
-                ", workbenchDocURL='" + workbenchDocURL + '\'' +
-                ", localServerUserId='" + localServerUserId + '\'' +
-                ", localServerPassword='" + localServerPassword + '\'' +
-                ", tutName='" + tutName + '\'' +
-                ", tutType='" + tutType + '\'' +
-                ", maxPageSize=" + maxPageSize +
-                ", testEvidenceList=" + testEvidenceList +
-                ", testCaseMap=" + testCaseMap +
-                '}';
+                ", profileNames=" + getProfileNames() +
+                ", profileResults=" + getProfileResults() +
+                ", profileSummaries=" + getProfileSummaries() +
+                "} " + super.toString();
     }
 }

@@ -14,10 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -131,22 +128,25 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
      * @param connectorTypeGUID       unique identifier of the connectorType (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateConnectorType(String             connectorTypeGUID,
-                                    UpdateOptions      updateOptions,
-                                    ConnectorTypeProperties properties) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    public boolean updateConnectorType(String                  connectorTypeGUID,
+                                       UpdateOptions           updateOptions,
+                                       ConnectorTypeProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        connectorTypeHandler.updateConnectorType(connectorUserId, connectorTypeGUID, updateOptions, properties);
+        boolean updateOccurred = connectorTypeHandler.updateConnectorType(connectorUserId, connectorTypeGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(connectorTypeGUID);
         }
+
+        return updateOccurred;
     }
 
 

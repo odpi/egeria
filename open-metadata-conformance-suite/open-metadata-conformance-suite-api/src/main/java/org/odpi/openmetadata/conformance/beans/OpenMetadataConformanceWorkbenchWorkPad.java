@@ -18,7 +18,9 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
     protected String              workbenchVersionNumber;
     protected String              workbenchDocURL;
     protected String              localServerUserId;
-    protected String              localServerPassword;
+    private final String localServerSecretStoreProvider;   /* Initialized in constructor */
+    private final String localServerSecretStoreLocation;   /* Initialized in constructor */
+    private final String localServerSecretStoreCollection; /* Initialized in constructor */
     protected String              tutName;
     protected String              tutType;
     protected int                 maxPageSize;
@@ -43,25 +45,31 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param workbenchVersionNumber version number of the workbench.
      * @param workbenchDocURL link to documentation for the workbench.
      * @param localServerUserId local server's userId
-     * @param localServerPassword local server's password
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param tutType type of technology to test
      * @param maxPageSize maximum number of results to return on any one call.
      */
-    public OpenMetadataConformanceWorkbenchWorkPad(String       workbenchId,
-                                                   String       workbenchName,
-                                                   String       workbenchVersionNumber,
-                                                   String       workbenchDocURL,
-                                                   String       localServerUserId,
-                                                   String       localServerPassword,
-                                                   String       tutType,
-                                                   int          maxPageSize)
+    public OpenMetadataConformanceWorkbenchWorkPad(String workbenchId,
+                                                   String workbenchName,
+                                                   String workbenchVersionNumber,
+                                                   String workbenchDocURL,
+                                                   String localServerUserId,
+                                                   String localServerSecretsStoreProvider,
+                                                   String localServerSecretsStoreLocation,
+                                                   String localServerSecretsStoreCollection,
+                                                   String tutType,
+                                                   int    maxPageSize)
     {
         this.workbenchId = workbenchId;
         this.workbenchName = workbenchName;
         this.workbenchVersionNumber = workbenchVersionNumber;
         this.workbenchDocURL = workbenchDocURL;
         this.localServerUserId = localServerUserId;
-        this.localServerPassword = localServerPassword;
+        this.localServerSecretStoreProvider   = localServerSecretsStoreProvider;
+        this.localServerSecretStoreLocation   = localServerSecretsStoreLocation;
+        this.localServerSecretStoreCollection = localServerSecretsStoreCollection;
         this.tutType = tutType;
         this.maxPageSize = maxPageSize;
         this.workbenchComplete = false;
@@ -154,17 +162,6 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
     public void setWorkbenchComplete()
     {
         this.workbenchComplete = true;
-    }
-
-
-    /**
-     * Return the password for this server.
-     *
-     * @return password
-     */
-    public String getLocalServerPassword()
-    {
-        return localServerPassword;
     }
 
 
@@ -733,14 +730,17 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
                 ", workbenchVersionNumber='" + workbenchVersionNumber + '\'' +
                 ", workbenchDocURL='" + workbenchDocURL + '\'' +
                 ", localServerUserId='" + localServerUserId + '\'' +
-                ", localServerPassword='" + localServerPassword + '\'' +
+                ", localServerSecretStoreProvider='" + localServerSecretStoreProvider + '\'' +
+                ", localServerSecretStoreLocation='" + localServerSecretStoreLocation + '\'' +
+                ", localServerSecretStoreCollection='" + localServerSecretStoreCollection + '\'' +
                 ", tutName='" + tutName + '\'' +
                 ", tutType='" + tutType + '\'' +
                 ", maxPageSize=" + maxPageSize +
+                ", workbenchComplete=" + workbenchComplete +
                 ", testEvidenceList=" + testEvidenceList +
                 ", testCaseMap=" + testCaseMap +
-                ", failedTestCases=" + getFailedTestCases() +
-                ", workbenchResults=" + getWorkbenchResults() +
+                ", lastActive=" + lastActive +
+                ", workbenchStatus=" + getWorkbenchStatus() +
                 '}';
     }
 }

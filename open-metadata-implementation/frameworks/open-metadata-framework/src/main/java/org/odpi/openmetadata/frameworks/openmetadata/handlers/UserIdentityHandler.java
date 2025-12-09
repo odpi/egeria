@@ -123,26 +123,27 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
      * @param userIdentityGUID      unique identifier of the user identity (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateUserIdentity(String                 userId,
-                                   String                 userIdentityGUID,
-                                   UpdateOptions          updateOptions,
-                                   UserIdentityProperties properties) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public boolean updateUserIdentity(String                 userId,
+                                      String                 userIdentityGUID,
+                                      UpdateOptions          updateOptions,
+                                      UserIdentityProperties properties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName = "updateUserIdentity";
         final String guidParameterName = "userIdentityGUID";
 
-        super.updateElement(userId,
-                            userIdentityGUID,
-                            guidParameterName,
-                            updateOptions,
-                            properties,
-                            methodName);
+        return super.updateElement(userId,
+                                   userIdentityGUID,
+                                   guidParameterName,
+                                   updateOptions,
+                                   properties,
+                                   methodName);
     }
 
 
@@ -176,8 +177,8 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
-                                                        userIdentityGUID,
                                                         profileGUID,
+                                                        userIdentityGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
@@ -212,8 +213,8 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
-                                                        userIdentityGUID,
                                                         profileGUID,
+                                                        userIdentityGUID,
                                                         deleteOptions);
     }
 

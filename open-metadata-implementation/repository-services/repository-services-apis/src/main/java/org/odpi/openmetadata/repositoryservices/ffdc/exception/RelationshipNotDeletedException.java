@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 
 import java.io.Serial;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  * relationship instance and the entity is not in DELETED status.
  *
  */
-public class RelationshipNotDeletedException extends OMRSCheckedExceptionBase
+public class RelationshipNotDeletedException extends PropertyServerException
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -126,40 +127,5 @@ public class RelationshipNotDeletedException extends OMRSCheckedExceptionBase
               userAction,
               caughtErrorClassName,
               relatedProperties);
-    }
-
-
-    /**
-     * This is the typical constructor used for creating an RelationshipNotDeletedException.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     */
-    @Deprecated
-    public RelationshipNotDeletedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-    }
-
-
-    /**
-     * This is the constructor used for creating an RelationshipNotDeletedException that resulted from a previous error.
-     *
-     * @param httpCode  http response code to use if this exception flows over a REST call
-     * @param className  name of class reporting error
-     * @param actionDescription  description of function it was performing when error detected
-     * @param errorMessage  description of error
-     * @param systemAction  actions of the system as a result of the error
-     * @param userAction  instructions for correcting the error
-     * @param caughtError  the error that resulted in this exception.
-     */
-    @Deprecated
-    public RelationshipNotDeletedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }

@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.adminservices.client;
 
 
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
 /**
  * MetadataAccessPointConfigurationClient configures a MetadataAccessPoint OMAG Server.  This server
@@ -17,38 +17,22 @@ public class MetadataAccessPointConfigurationClient extends MetadataAccessServer
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the admin services
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public MetadataAccessPointConfigurationClient(String adminUserId,
-                                                  String serverName,
-                                                  String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public MetadataAccessPointConfigurationClient(String   serverName,
+                                                  String   serverPlatformRootURL,
+                                                  String   secretStoreProvider,
+                                                  String   secretStoreLocation,
+                                                  String   secretStoreCollection,
+                                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(adminUserId, serverName, serverPlatformRootURL);
-    }
-
-
-    /**
-     * Create a new client that passes a connection userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is passed as the admin userId.
-     *
-     * @param adminUserId           administrator's (end user's) userId to associate with calls.
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param connectionUserId      caller's system userId embedded in all HTTP requests
-     * @param connectionPassword    caller's system password embedded in all HTTP requests
-     * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
-     *                                       REST API calls.
-     */
-    public MetadataAccessPointConfigurationClient(String adminUserId,
-                                                  String serverName,
-                                                  String serverPlatformRootURL,
-                                                  String connectionUserId,
-                                                  String connectionPassword) throws OMAGInvalidParameterException
-    {
-        super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
 }

@@ -16,6 +16,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementCla
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
@@ -75,6 +79,7 @@ public class ConnectorContextBase
     private final   CommunityClient                communityClient;
     private final   ConnectionClient               connectionClient;
     private final   ConnectorTypeClient            connectorTypeClient;
+    private final   ContributionRecordClient       contributionRecordClient;
     private final   DataClassClient                dataClassClient;
     private final   DataFieldClient                dataFieldClient;
     private final   DataStructureClient            dataStructureClient;
@@ -97,9 +102,9 @@ public class ConnectorContextBase
     private final   SchemaTypeClient               schemaTypeClient;
     private final   SearchKeywordClient            searchKeywordClient;
     private final   SoftwareCapabilityClient       softwareCapabilityClient;
-    private final   SolutionBlueprintClient        solutionBlueprintClient;
     private final   SolutionComponentClient        solutionComponentClient;
     private final   SpecificationPropertyClient    specificationPropertyClient;
+    private final   TemplateClient                 templateClient;
     private final   UserIdentityClient             userIdentityClient;
     private final   ValidMetadataValuesClient      validMetadataValuesClient;
     private final   ValidValueDefinitionClient     validValueDefinitionClient;
@@ -287,6 +292,17 @@ public class ConnectorContextBase
                                                            openMetadataClient,
                                                            auditLog,
                                                            maxPageSize);
+
+        this.contributionRecordClient = new ContributionRecordClient(this,
+                                                                     localServerName,
+                                                                     localServiceName,
+                                                                     connectorUserId,
+                                                                     connectorGUID,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     openMetadataClient,
+                                                                     auditLog,
+                                                                     maxPageSize);
 
         this.dataClassClient = new DataClassClient(this,
                                                    localServerName,
@@ -530,17 +546,6 @@ public class ConnectorContextBase
                                                                      auditLog,
                                                                      maxPageSize);
 
-        this.solutionBlueprintClient = new SolutionBlueprintClient(this,
-                                                                   localServerName,
-                                                                   localServiceName,
-                                                                   connectorUserId,
-                                                                   connectorGUID,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   openMetadataClient,
-                                                                   auditLog,
-                                                                   maxPageSize);
-
         this.solutionComponentClient = new SolutionComponentClient(this,
                                                                    localServerName,
                                                                    localServiceName,
@@ -562,6 +567,17 @@ public class ConnectorContextBase
                                                                            openMetadataClient,
                                                                            auditLog,
                                                                            maxPageSize);
+
+        this.templateClient = new TemplateClient(this,
+                                                 localServerName,
+                                                 localServiceName,
+                                                 connectorUserId,
+                                                 connectorGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 openMetadataClient,
+                                                 auditLog,
+                                                 maxPageSize);
 
         this.userIdentityClient = new UserIdentityClient(this,
                                                          localServerName,
@@ -891,6 +907,17 @@ public class ConnectorContextBase
 
 
     /**
+     * Return the client for managing contribution record.
+     *
+     * @return connector context client
+     */
+    public ContributionRecordClient getContributionRecordClient()
+    {
+        return contributionRecordClient;
+    }
+
+
+    /**
      * Return the client for managing data classes.
      *
      * @return connector context client
@@ -1184,17 +1211,6 @@ public class ConnectorContextBase
 
 
     /**
-     * Return the client for managing solution blueprints.
-     *
-     * @return connector context client
-     */
-    public SolutionBlueprintClient getSolutionBlueprintClient()
-    {
-        return solutionBlueprintClient;
-    }
-
-
-    /**
      * Return the client for managing solution components.
      *
      * @return connector context client
@@ -1214,6 +1230,15 @@ public class ConnectorContextBase
     {
         return specificationPropertyClient;
     }
+
+
+    /**
+     * Return the template client for managing special classifications and relationships
+     * associated with building templates.
+     *
+     * @return connector context client
+     */
+    public TemplateClient getTemplateClient() { return templateClient; }
 
 
     /**
@@ -1625,13 +1650,9 @@ public class ConnectorContextBase
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *
-     * @param qualifiedName unique identifier to give this new incident report
-     * @param domainIdentifier governance domain associated with this action (0=ALL)
-     * @param background description of the situation
+     * @param properties unique identifier to give this new incident report and description of the situation
      * @param impactedResources details of the resources impacted by this situation
      * @param previousIncidents links to previous incident reports covering this situation
-     * @param incidentClassifiers initial classifiers for the incident report
-     * @param additionalProperties additional arbitrary properties for the incident reports
      *
      * @return unique identifier of the resulting incident report
      *
@@ -1639,24 +1660,16 @@ public class ConnectorContextBase
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createIncidentReport(String                        qualifiedName,
-                                       int                           domainIdentifier,
-                                       String                        background,
-                                       List<IncidentImpactedElement> impactedResources,
-                                       List<IncidentDependency>      previousIncidents,
-                                       Map<String, Integer>          incidentClassifiers,
-                                       Map<String, String>           additionalProperties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+    public String createIncidentReport(IncidentReportProperties                properties,
+                                       Map<String, ImpactedResourceProperties> impactedResources,
+                                       Map<String, ReportDependencyProperties> previousIncidents) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         return openMetadataClient.createIncidentReport(connectorUserId,
-                                                       qualifiedName,
-                                                       domainIdentifier,
-                                                       background,
+                                                       properties,
                                                        impactedResources,
                                                        previousIncidents,
-                                                       incidentClassifiers,
-                                                       additionalProperties,
                                                        connectorGUID);
     }
 
@@ -1706,13 +1719,16 @@ public class ConnectorContextBase
         List<NewActionTarget> actionTargets = new ArrayList<>();
         actionTargets.add(actionTarget);
 
-        return this.openToDo(toDoQualifiedName,
-                             title,
-                             instructions,
-                             toDoType,
-                             priority,
-                             dueDate,
-                             null,
+        ToDoProperties toDoProperties = new ToDoProperties();
+
+        toDoProperties.setQualifiedName(toDoQualifiedName);
+        toDoProperties.setDisplayName(title);
+        toDoProperties.setDescription(instructions);
+        toDoProperties.setCategory(toDoType);
+        toDoProperties.setPriority(priority);
+        toDoProperties.setDueTime(dueDate);
+
+        return this.openToDo(toDoProperties,
                              assignToGUID,
                              null,
                              actionTargets);
@@ -1722,13 +1738,7 @@ public class ConnectorContextBase
     /**
      * Create a "To Do" request for someone to work on.
      *
-     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
-     * @param title short meaningful phrase for the person receiving the request
-     * @param instructions further details on what to do
-     * @param category a category of to dos (for example, "data error", "access request")
-     * @param priority priority value (based on organization's scale)
-     * @param dueDate date/time this needs to be completed
-     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param properties unique name for the to do plus other properties
      * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param actionTargets the list of elements that should be acted upon
@@ -1739,20 +1749,14 @@ public class ConnectorContextBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
-    public String openToDo(String                qualifiedName,
-                           String                title,
-                           String                instructions,
-                           String                category,
-                           int                   priority,
-                           Date                  dueDate,
-                           Map<String, String>   additionalProperties,
+    public String openToDo(ToDoProperties        properties,
                            String                assignToGUID,
                            String                sponsorGUID,
                            List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return openMetadataClient.openToDo(connectorUserId, qualifiedName, title, instructions, category, priority, dueDate, additionalProperties, assignToGUID, sponsorGUID, connectorGUID, actionTargets);
+        return openMetadataClient.openToDo(connectorUserId, properties, assignToGUID, sponsorGUID, connectorGUID, actionTargets);
     }
 
 

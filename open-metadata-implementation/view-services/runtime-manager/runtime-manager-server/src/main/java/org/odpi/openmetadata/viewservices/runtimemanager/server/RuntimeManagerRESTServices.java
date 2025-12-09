@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.runtimemanager.server;
 
 
+import io.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonConnector;
@@ -283,7 +284,6 @@ public class RuntimeManagerRESTServices extends TokenController
                     omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
                 }
 
-                omagServerPlatformConnector.setClientUserId(userId);
                 omagServerPlatformConnector.start();
                 response.setElement(omagServerPlatformConnector.getPlatformReport());
                 omagServerPlatformConnector.disconnect();
@@ -500,7 +500,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 response.setElement(omagServerConnector.getServerReport());
                 omagServerConnector.disconnect();
@@ -562,7 +561,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 response.setSuccessMessage(omagServerConnector.activateServer());
                 omagServerConnector.disconnect();
@@ -618,7 +616,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.shutdownServer();
                 omagServerConnector.disconnect();
@@ -674,7 +671,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.shutdownAndUnregisterServer();
                 omagServerConnector.disconnect();
@@ -825,21 +821,21 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param metadataRepositoryCohortGUID unique identifier of the cohort (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateMetadataRepositoryCohort(String                   serverName,
-                                                       String                   metadataRepositoryCohortGUID,
-                                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateMetadataRepositoryCohort(String                   serverName,
+                                                          String                   metadataRepositoryCohortGUID,
+                                                          UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateMetadataRepositoryCohort";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -855,10 +851,10 @@ public class RuntimeManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof MetadataRepositoryCohortProperties cohortProperties)
                 {
-                    handler.updateMetadataRepositoryCohort(userId,
-                                                           metadataRepositoryCohortGUID,
-                                                           requestBody,
-                                                           cohortProperties);
+                    response.setFlag(handler.updateMetadataRepositoryCohort(userId,
+                                                                            metadataRepositoryCohortGUID,
+                                                                            requestBody,
+                                                                            cohortProperties));
                 }
                 else
                 {
@@ -1234,7 +1230,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.addOpenMetadataArchiveFile(fileName);
                 omagServerConnector.disconnect();
@@ -1293,7 +1288,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.addOpenMetadataArchiveContent(openMetadataArchive);
                 omagServerConnector.disconnect();
@@ -1362,7 +1356,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof EngineHostConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.refreshEngineConfig(governanceEngineName);
                 omagServerConnector.disconnect();
@@ -1423,7 +1416,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof EngineHostConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.refreshEngineConfig();
                 omagServerConnector.disconnect();
@@ -1489,7 +1481,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 response.setProperties(omagServerConnector.getConfigurationProperties(connectorName));
                 omagServerConnector.disconnect();
@@ -1550,7 +1541,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.updateConfigurationProperties(requestBody.getConnectorName(),
                                                                   requestBody.getMergeUpdate(),
@@ -1615,7 +1605,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
                 if ((requestBody == null) || requestBody.getString() == null)
@@ -1686,7 +1675,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.updateConnectorConnection(connectorName, requestBody);
                 omagServerConnector.disconnect();
@@ -1747,7 +1735,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
                 if ((requestBody == null) || (requestBody.getName() == null))
@@ -1817,7 +1804,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
                 if ((requestBody == null) || (requestBody.getName() == null))
@@ -1890,7 +1876,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
                 omagServerConnector.refreshIntegrationGroupConfig(integrationGroupName);
@@ -1948,7 +1933,6 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
                 omagServerConnector.publishOpenLineageEvent(event);
@@ -1972,6 +1956,63 @@ public class RuntimeManagerRESTServices extends TokenController
         return response;
     }
 
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param event open lineage event to publish.
+     */
+    public VoidResponse publishOpenLineageEvent(String                serverName,
+                                                String               serverGUID,
+                                                OpenLineage.RunEvent event)
+    {
+        final String methodName = "publishOpenLineageEvent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.start();
+
+                omagServerConnector.publishOpenLineageEvent(event);
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
     /*
      * =============================================================
@@ -2018,10 +2059,9 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
-                response.setFlag(omagServerConnector.connectToCohort(userId, cohortName));
+                response.setFlag(omagServerConnector.connectToCohort(cohortName));
 
                 omagServerConnector.disconnect();
             }
@@ -2080,10 +2120,9 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
-                response.setFlag(omagServerConnector.disconnectFromCohort(userId, cohortName));
+                response.setFlag(omagServerConnector.disconnectFromCohort(cohortName));
 
                 omagServerConnector.disconnect();
             }
@@ -2141,10 +2180,9 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
-                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
 
-                response.setFlag(omagServerConnector.unregisterFromCohort(userId, cohortName));
+                response.setFlag(omagServerConnector.unregisterFromCohort(cohortName));
 
                 omagServerConnector.disconnect();
             }

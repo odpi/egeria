@@ -10,7 +10,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataRelationshipResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -166,21 +169,21 @@ public class AssetMakerRESTServices extends TokenController
      * @param assetGUID unique identifier of the asset (returned from create)
      * @param requestBody     properties for the new element.
      *
-     * @return void or
+     * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateAsset(String                   serverName,
-                                    String                   urlMarker,
-                                    String                   assetGUID,
-                                    UpdateElementRequestBody requestBody)
+    public BooleanResponse updateAsset(String                   serverName,
+                                       String                   urlMarker,
+                                       String                   assetGUID,
+                                       UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -197,10 +200,10 @@ public class AssetMakerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof AssetProperties assetProperties)
                 {
-                    handler.updateAsset(userId,
-                                        assetGUID,
-                                        requestBody,
-                                        assetProperties);
+                    response.setFlag(handler.updateAsset(userId,
+                                                         assetGUID,
+                                                         requestBody,
+                                                         assetProperties));
                 }
                 else
                 {
@@ -418,6 +421,362 @@ public class AssetMakerRESTServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * Working with infrastructure
+     */
+
+
+    /**
+     * Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID       unique identifier of the asset
+     * @param destinationGUID           unique identifier of the destination asset
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse deployITAsset(String                     serverName,
+                                      String                     urlMarker,
+                                      String                     assetGUID,
+                                      String                     destinationGUID,
+                                      NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "deployITAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.deployITAsset(userId, assetGUID, destinationGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DeployedOnProperties deployedOnProperties)
+            {
+                handler.deployITAsset(userId, assetGUID, destinationGUID, requestBody, deployedOnProperties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.deployITAsset(userId, assetGUID, destinationGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DeployedOnProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a DeployedOn relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID       unique identifier of the asset
+     * @param destinationGUID           unique identifier of the destination asset
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse unDeployITAsset(String                        serverName,
+                                        String                        urlMarker,
+                                        String                        assetGUID,
+                                        String                        destinationGUID,
+                                        DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "unDeployITAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.unDeployITAsset(userId, assetGUID, destinationGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Create a relationship that links a software capability to an infrastructure asset like a software server.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID          unique identifier of the data set
+     * @param capabilityGUID          unique identifier of the data asset supplying the data
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSoftwareCapability(String                     serverName,
+                                               String                     urlMarker,
+                                               String                     assetGUID,
+                                               String                     capabilityGUID,
+                                               NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSoftwareCapability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSoftwareCapability(userId, assetGUID, capabilityGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties)
+            {
+                handler.linkSoftwareCapability(userId, assetGUID, capabilityGUID, requestBody, supportedSoftwareCapabilityProperties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSoftwareCapability(userId, assetGUID, capabilityGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SupportedSoftwareCapabilityProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     *  Remove a relationship that links a software capability to an infrastructure asset like a software server.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID          unique identifier of the data set
+     * @param capabilityGUID  unique identifier of the data asset supplying the data
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSoftwareCapability(String                        serverName,
+                                                 String                        urlMarker,
+                                                 String                        assetGUID,
+                                                 String                        capabilityGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSoftwareCapability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSoftwareCapability(userId, assetGUID, capabilityGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * Working with data assets
+     */
+
+
+    /**
+     * Attach a data set to another asset (typically a data store) that is supplying the data.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkDataSetContent(String                     serverName,
+                                           String                     urlMarker,
+                                           String                     dataSetGUID,
+                                           String                     dataContentAssetGUID,
+                                           NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkDataSetContent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DataSetContentProperties dataSetContentProperties)
+            {
+                handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody, dataSetContentProperties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DataSetContentProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Detach a data set from another asset that was supplying the data and is no more.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID  unique identifier of the data asset supplying the data
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachDataSetContent(String                        serverName,
+                                             String                        urlMarker,
+                                             String                        dataSetGUID,
+                                             String                        dataContentAssetGUID,
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDataSetContent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
         return response;
     }
 

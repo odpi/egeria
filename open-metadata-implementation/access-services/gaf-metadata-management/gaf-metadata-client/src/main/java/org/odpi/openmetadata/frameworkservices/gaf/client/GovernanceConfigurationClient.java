@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.client;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
@@ -14,65 +12,28 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
  */
 public class GovernanceConfigurationClient extends GovernanceConfigurationClientBase
 {
-    private final static String serviceURLMarker = AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceURLMarker();
-
 
     /**
-     * Create a new client with no authentication embedded in the HTTP request.
+     * Create a new client with bearer token authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param maxPageSize           pre-initialized parameter limit
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public GovernanceConfigurationClient(String serverName,
-                                         String serverPlatformURLRoot,
-                                         int    maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, maxPageSize);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @param maxPageSize           pre-initialized parameter limit
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public GovernanceConfigurationClient(String serverName,
-                                         String serverPlatformURLRoot,
-                                         String userId,
-                                         String password,
-                                         int    maxPageSize) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, userId, password, maxPageSize);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param restClient pre-initialized REST client
-     * @param maxPageSize pre-initialized parameter limit
+     * @param secretsStoreProvider secrets store connector for bearer token
+     * @param secretsStoreLocation secrets store location for bearer token
+     * @param secretsStoreCollection secrets store collection for bearer token
+     * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
-     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
-    public GovernanceConfigurationClient(String        serverName,
-                                         String        serverPlatformURLRoot,
-                                         GAFRESTClient restClient,
-                                         int           maxPageSize,
-                                         AuditLog      auditLog) throws InvalidParameterException
+    public GovernanceConfigurationClient(String   serverName,
+                                         String   serverPlatformURLRoot,
+                                         String   secretsStoreProvider,
+                                         String   secretsStoreLocation,
+                                         String   secretsStoreCollection,
+                                         int      maxPageSize,
+                                         AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker, restClient, maxPageSize, auditLog);
+        super(serverName, serverPlatformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, maxPageSize, auditLog);
     }
 }

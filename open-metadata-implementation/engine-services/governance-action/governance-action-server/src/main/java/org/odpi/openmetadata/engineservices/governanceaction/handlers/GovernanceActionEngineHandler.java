@@ -5,6 +5,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.opengovernance.client.WatchdogEventInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetEl
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
+import org.odpi.openmetadata.governanceservers.enginehostservices.api.WatchdogEventSupportingEngine;
 
 import java.util.*;
 
@@ -27,7 +29,7 @@ import java.util.*;
  * with the configuration for the governance action services it supports along with the clients to the
  * asset properties store and annotations store.
  */
-public class GovernanceActionEngineHandler extends GovernanceEngineHandler
+public class GovernanceActionEngineHandler extends GovernanceEngineHandler implements WatchdogEventSupportingEngine
 {
     private final GovernanceContextClient   governanceContextClient;    /* Initialized in constructor */
     private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
@@ -43,8 +45,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      *
      * @param engineConfig the unique identifier of the governance action engine.
      * @param localServerName the name of the engine host server where the governance action engine is running
-     * @param partnerServerName name of partner server
-     * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
      * @param openMetadataClient access to the open metadata store
      * @param connectedAssetClient access to the open metadata store
@@ -56,8 +56,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      */
     public GovernanceActionEngineHandler(EngineConfig                  engineConfig,
                                          String                        localServerName,
-                                         String                        partnerServerName,
-                                         String                        partnerURLRoot,
                                          String                        serverUserId,
                                          OpenMetadataClient            openMetadataClient,
                                          ConnectedAssetClient          connectedAssetClient,
@@ -92,6 +90,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      *
      * @throws InvalidParameterException Vital fields of the governance action are not filled out
      */
+    @Override
     public void publishWatchdogEvent(OpenMetadataOutTopicEvent watchdogGovernanceEvent) throws InvalidParameterException
     {
         governanceListenerManager.processEvent(watchdogGovernanceEvent);
@@ -139,7 +138,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
             GovernanceActionServiceHandler governanceActionServiceHandler = new GovernanceActionServiceHandler(serverName,
                                                                                                                governanceEngineProperties,
                                                                                                                governanceEngineGUID,
-                                                                                                               serverUserId,
+                                                                                                               engineUserId,
                                                                                                                engineActionGUID,
                                                                                                                engineActionClient,
                                                                                                                governanceServiceCache.getServiceRequestType(),

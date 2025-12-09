@@ -50,7 +50,7 @@ public class TestOMRSEventProtocolVersion
 
         OMRSEventProtocolVersion  testValue;
 
-        testValue = OMRSEventProtocolVersion.V1;
+        testValue = OMRSEventProtocolVersion.V2;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
@@ -70,7 +70,7 @@ public class TestOMRSEventProtocolVersion
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(OMRSEventProtocolVersion.V1);
+            jsonString = objectMapper.writeValueAsString(OMRSEventProtocolVersion.V2);
         }
         catch (Exception   exc)
         {
@@ -79,7 +79,7 @@ public class TestOMRSEventProtocolVersion
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, OMRSEventProtocolVersion.class) == OMRSEventProtocolVersion.V1);
+            assertTrue(objectMapper.readValue(jsonString, OMRSEventProtocolVersion.class) == OMRSEventProtocolVersion.V2);
         }
         catch (Exception   exc)
         {
@@ -93,6 +93,6 @@ public class TestOMRSEventProtocolVersion
      */
     @Test public void testToString()
     {
-        assertTrue(OMRSEventProtocolVersion.V1.toString().contains("OMRSEventProtocolVersion"));
+        assertTrue(OMRSEventProtocolVersion.V2.toString().contains("OMRSEventProtocolVersion"));
     }
 }

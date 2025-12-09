@@ -20,7 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGMetadataStoreProperties extends OMAGServerProperties
 {
-    private OMAGConnectorProperties repositoryConnector         = null;
+    private OMAGConnectorProperties localRepositoryConnector    = null;
+    private OMAGConnectorProperties remoteRepositoryConnector   = null;
     private String                  localMetadataCollectionId   = null;
     private String                  localMetadataCollectionName = null;
 
@@ -35,20 +36,42 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
      *
      * @return connector properties
      */
-    public OMAGConnectorProperties getRepositoryConnector()
+    public OMAGConnectorProperties getLocalRepositoryConnector()
     {
-        return repositoryConnector;
+        return localRepositoryConnector;
     }
 
 
     /**
      * Set up details about the connector to the server's metadata repository.
      *
-     * @param repositoryConnector connector properties
+     * @param localRepositoryConnector connector properties
      */
-    public void setRepositoryConnector(OMAGConnectorProperties repositoryConnector)
+    public void setLocalRepositoryConnector(OMAGConnectorProperties localRepositoryConnector)
     {
-        this.repositoryConnector = repositoryConnector;
+        this.localRepositoryConnector = localRepositoryConnector;
+    }
+
+
+    /**
+     * Return the connector sent to fellow cohort members to enable them to contact this server.
+     *
+     * @return  connector properties
+     */
+    public OMAGConnectorProperties getRemoteRepositoryConnector()
+    {
+        return remoteRepositoryConnector;
+    }
+
+
+    /**
+     * Set up the connector sent to fellow cohort members to enable them to contact this server.
+     *
+     * @param remoteRepositoryConnector  connector properties
+     */
+    public void setRemoteRepositoryConnector(OMAGConnectorProperties remoteRepositoryConnector)
+    {
+        this.remoteRepositoryConnector = remoteRepositoryConnector;
     }
 
 
@@ -105,7 +128,8 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
     public String toString()
     {
         return "OMAGMetadataStoreProperties{" +
-                "repositoryConnector=" + repositoryConnector +
+                "localRepositoryConnector=" + localRepositoryConnector +
+                ", remoteRepositoryConnector=" + remoteRepositoryConnector +
                 ", localMetadataCollectionId='" + localMetadataCollectionId + '\'' +
                 ", localMetadataCollectionName='" + localMetadataCollectionName + '\'' +
                 "} " + super.toString();
@@ -124,7 +148,8 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         OMAGMetadataStoreProperties that = (OMAGMetadataStoreProperties) objectToCompare;
-        return Objects.equals(repositoryConnector, that.repositoryConnector) &&
+        return Objects.equals(localRepositoryConnector, that.localRepositoryConnector) &&
+                Objects.equals(remoteRepositoryConnector, that.remoteRepositoryConnector) &&
                 Objects.equals(localMetadataCollectionId, that.localMetadataCollectionId)  &&
                 Objects.equals(localMetadataCollectionName, that.localMetadataCollectionName);
     }
@@ -137,6 +162,6 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(repositoryConnector, localMetadataCollectionId, localMetadataCollectionName);
+        return Objects.hash(localRepositoryConnector, remoteRepositoryConnector, localMetadataCollectionId, localMetadataCollectionName);
     }
 }

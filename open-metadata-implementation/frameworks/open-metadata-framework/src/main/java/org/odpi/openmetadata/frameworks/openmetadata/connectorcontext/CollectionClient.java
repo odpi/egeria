@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -151,22 +152,25 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param collectionGUID       unique identifier of the collection (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
+     * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateCollection(String               collectionGUID,
-                                 UpdateOptions        updateOptions,
-                                 CollectionProperties properties) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public boolean updateCollection(String               collectionGUID,
+                                    UpdateOptions        updateOptions,
+                                    CollectionProperties properties) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
-        collectionHandler.updateCollection(connectorUserId, collectionGUID, updateOptions, properties);
+        boolean updateOccurred = collectionHandler.updateCollection(connectorUserId, collectionGUID, updateOptions, properties);
 
-        if (parentContext.getIntegrationReportWriter() != null)
+        if ((updateOccurred) && (parentContext.getIntegrationReportWriter() != null))
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(collectionGUID);
         }
+
+        return updateOccurred;
     }
 
 
@@ -254,6 +258,49 @@ public class CollectionClient extends ConnectorContextClientBase
                                                                           UserNotAuthorizedException
     {
         collectionHandler.detachDataDescription(connectorUserId, parentGUID, dataDescriptionCollectionGUID, deleteOptions);
+    }
+
+
+
+    /**
+     * Attach a solution blueprint to the element it describes.
+     *
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionDesign(String                   parentGUID,
+                                   String                   solutionBlueprintGUID,
+                                   MetadataSourceOptions    metadataSourceOptions,
+                                   SolutionDesignProperties relationshipProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        collectionHandler.linkSolutionDesign(connectorUserId, parentGUID, solutionBlueprintGUID, metadataSourceOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a solution blueprint from the element it describes.
+     *
+     * @param parentGUID  unique identifier of the element being described
+     * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionDesign(String        parentGUID,
+                                     String        solutionBlueprintGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        collectionHandler.detachSolutionDesign(connectorUserId, parentGUID, solutionBlueprintGUID, deleteOptions);
     }
 
 

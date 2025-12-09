@@ -27,7 +27,7 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
      */
     ENGINE_SERVICE_INITIALIZING("OMES-WATCHDOG-ACTION-0001",
                                 AuditLogRecordSeverityLevel.STARTUP,
-                                "The Watchdog Action engine services are initializing in server {0}; they will call services on server {1} at {2}",
+                                "The Watchdog Action engine services are initializing in server {0}",
                                 "A new OMAG server has been started that is configured to run the Watchdog Action OMES.  " +
                                  "Within this engine service are one or more watchdog action engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +

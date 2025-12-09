@@ -19,7 +19,9 @@ public abstract class OpenMetadataEventClient implements OpenMetadataEventInterf
     protected final String   serverName;               /* Initialized in constructor */
     protected final String   serverPlatformURLRoot;    /* Initialized in constructor */
     protected final String   userId;                   /* Initialized in constructor */
-    protected final String   password;                 /* Initialized in constructor */
+    protected final String   localServerSecretStoreProvider;   /* Initialized in constructor */
+    protected final String   localServerSecretStoreLocation;   /* Initialized in constructor */
+    protected final String   localServerSecretStoreCollection; /* Initialized in constructor */
     protected final AuditLog auditLog;                 /* Initialized in constructor */
     protected final String   callerId;                 /* Initialized in constructor */
     protected final int      maxPageSize;              /* Initialized in constructor */
@@ -31,7 +33,9 @@ public abstract class OpenMetadataEventClient implements OpenMetadataEventInterf
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId this server's userId
-     * @param serverPassword this server's userId
+     * @param localServerSecretsStoreProvider secrets store connector for bearer token
+     * @param localServerSecretsStoreLocation secrets store location for bearer token
+     * @param localServerSecretsStoreCollection secrets store collection for bearer token
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
      * @param callerId unique identifier of the caller
@@ -39,20 +43,24 @@ public abstract class OpenMetadataEventClient implements OpenMetadataEventInterf
     public OpenMetadataEventClient(String   serverName,
                                    String   serverPlatformURLRoot,
                                    String   serverUserId,
-                                   String   serverPassword,
+                                   String   localServerSecretsStoreProvider,
+                                   String   localServerSecretsStoreLocation,
+                                   String   localServerSecretsStoreCollection,
                                    String   serviceName,
                                    int      maxPageSize,
                                    AuditLog auditLog,
                                    String   callerId)
     {
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.userId                = serverUserId;
-        this.password              = serverPassword;
-        this.serviceName           = serviceName;
-        this.maxPageSize           = maxPageSize;
-        this.auditLog              = auditLog;
-        this.callerId              = callerId;
+        this.serverName                       = serverName;
+        this.serverPlatformURLRoot            = serverPlatformURLRoot;
+        this.userId                           = serverUserId;
+        this.localServerSecretStoreProvider   = localServerSecretsStoreProvider;
+        this.localServerSecretStoreLocation   = localServerSecretsStoreLocation;
+        this.localServerSecretStoreCollection = localServerSecretsStoreCollection;
+        this.serviceName                      = serviceName;
+        this.maxPageSize                      = maxPageSize;
+        this.auditLog                         = auditLog;
+        this.callerId                         = callerId;
     }
 
 
