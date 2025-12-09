@@ -18,7 +18,7 @@ pluginManagement {
         // problem when upgraded to version "9.0.0"
         id "io.freefair.aggregate-javadoc" version "6.6.3"
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "1.32.0"
+        id("com.autonomousapps.dependency-analysis") version "3.5.1"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
