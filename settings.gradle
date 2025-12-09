@@ -16,7 +16,7 @@ pluginManagement {
     }
     plugins {
         // problem when upgraded to version "9.0.0"
-        id "io.freefair.aggregate-javadoc" version "6.6.3"
+        id "io.freefair.aggregate-javadoc" version "9.1.0"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "1.32.0"
         // helps resolve log implementation clashes
