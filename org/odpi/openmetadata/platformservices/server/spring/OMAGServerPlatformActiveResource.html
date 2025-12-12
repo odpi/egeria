@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/DateResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DateResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformStartTime()" class="member-name-link">getPlatformStartTime</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the start time for this instance of the platform.</div>
@@ -170,14 +170,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of view services that are registered (supported) in this OMAG Server Platform
  and can be configured for a view server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../serveroperations/rest/ServerStatusResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerStatusResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerStatus(java.lang.String)" class="member-name-link">getServerStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/StringResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerPlatformOrganizationName()" class="member-name-link">getServerPlatformOrganizationName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the name of the organization running this platform.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../serveroperations/rest/ServerStatusResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerStatusResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerStatus(java.lang.String)" class="member-name-link">getServerStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return information about when the server has been active.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/BooleanResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">BooleanResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isServerKnown(java.lang.String)" class="member-name-link">isServerKnown</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/BooleanResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">BooleanResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isServerKnown(java.lang.String)" class="member-name-link">isServerKnown</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a flag to indicate if this server has ever run on this OMAG Server Platform instance.</div>
 </div>
 </div>
@@ -215,11 +220,23 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getPlatformStartTime()">
 <h3>getPlatformStartTime</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/start-time")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getPlatformStartTime</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/DateResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DateResponse</a></span>&nbsp;<span class="element-name">getPlatformStartTime</span>()</div>
 <div class="block">Return the start time for this instance of the platform.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>start date/time</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getServerPlatformOrganizationName()">
+<h3>getServerPlatformOrganizationName</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/organization-name")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/StringResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringResponse</a></span>&nbsp;<span class="element-name">getServerPlatformOrganizationName</span>()</div>
+<div class="block">Retrieve the name of the organization running this platform.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>String description</dd>
 </dl>
 </section>
 </li>

@@ -200,10 +200,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of externalId metadata elements that are attached to a specific infrastructure element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkExternalIdToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties)" class="member-name-link">linkExternalIdToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkExternalIdToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties)" class="member-name-link">linkExternalIdToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalidentifiers/ExternalIdLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers">ExternalIdLinkProperties</a>&nbsp;relationshipProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach an externalId to an element.</div>
@@ -349,12 +349,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkExternalIdToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties)">
+<section class="detail" id="linkExternalIdToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties)">
 <h3>linkExternalIdToElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkExternalIdToElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalidentifiers/ExternalIdLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers">ExternalIdLinkProperties</a>&nbsp;relationshipProperties)</span>
                              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -365,7 +365,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request</dd>
 <dd><code>externalIdGUID</code> - unique identifier of the externalId</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
-<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>

@@ -136,10 +136,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAssetUse(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties)" class="member-name-link">addAssetUse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAssetUse(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties)" class="member-name-link">addAssetUse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;softwareCapabilityGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/assets/infrastructure/CapabilityAssetUseProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure">CapabilityAssetUseProperties</a>&nbsp;relationshipProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship that represents the use of an asset (typically a data or process asset) by
@@ -415,12 +415,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addAssetUse(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties)">
+<section class="detail" id="addAssetUse(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties)">
 <h3>addAssetUse</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addAssetUse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;softwareCapabilityGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/assets/infrastructure/CapabilityAssetUseProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure">CapabilityAssetUseProperties</a>&nbsp;relationshipProperties)</span>
                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -432,7 +432,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request</dd>
 <dd><code>softwareCapabilityGUID</code> - unique identifier of the softwareCapability</dd>
 <dd><code>assetGUID</code> - unique identifier of the destination softwareCapability</dd>
-<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>

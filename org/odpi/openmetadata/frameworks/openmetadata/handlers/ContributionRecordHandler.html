@@ -188,10 +188,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of contribution records with a particular name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkContributionRecordToProfile(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionProperties)" class="member-name-link">linkContributionRecordToProfile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkContributionRecordToProfile(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionProperties)" class="member-name-link">linkContributionRecordToProfile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;profileGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contributionRecordGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/actors/ContributionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ContributionProperties</a>&nbsp;relationshipProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a profile to a contribution record.</div>
@@ -367,12 +367,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkContributionRecordToProfile(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionProperties)">
+<section class="detail" id="linkContributionRecordToProfile(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionProperties)">
 <h3>linkContributionRecordToProfile</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkContributionRecordToProfile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;profileGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contributionRecordGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/actors/ContributionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ContributionProperties</a>&nbsp;relationshipProperties)</span>
                                      throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -383,7 +383,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request</dd>
 <dd><code>contributionRecordGUID</code> - unique identifier of the contribution record</dd>
 <dd><code>profileGUID</code> - unique identifier of the profile</dd>
-<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>

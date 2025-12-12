@@ -243,10 +243,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Classify the glossary term to indicate that it describes a data value.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupTermRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties)" class="member-name-link">setupTermRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupTermRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties)" class="member-name-link">setupTermRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermTwoGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/glossaries/GlossaryTermRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">GlossaryTermRelationshipProperties</a>&nbsp;relationshipProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two terms together using a specialist relationship.</div>
@@ -509,12 +509,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setupTermRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties)">
+<section class="detail" id="setupTermRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties)">
 <h3>setupTermRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupTermRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermTwoGUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/glossaries/GlossaryTermRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">GlossaryTermRelationshipProperties</a>&nbsp;relationshipProperties)</span>
                            throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
@@ -525,7 +525,7 @@ loadScripts(document, 'script');</script>
 <dd><code>relationshipTypeName</code> - name of the type of relationship to create</dd>
 <dd><code>glossaryTermOneGUID</code> - unique identifier of the glossary term at end 1</dd>
 <dd><code>glossaryTermTwoGUID</code> - unique identifier of the glossary term at end 2</dd>
-<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>

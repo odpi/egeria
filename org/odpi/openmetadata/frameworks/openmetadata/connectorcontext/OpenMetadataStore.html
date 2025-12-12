@@ -224,10 +224,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a relationship between two metadata elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)" class="member-name-link">createRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)" class="member-name-link">createRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between two metadata elements.</div>
@@ -2018,12 +2018,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">
+<section class="detail" id="createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties)">
 <h3>createRelatedElementsInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createRelatedElementsInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
- <a href="../search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a>&nbsp;metadataSourceOptions,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&nbsp;properties)</span>
                                     throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
@@ -2036,7 +2036,7 @@ loadScripts(document, 'script');</script>
                              related and the properties that can be associated with this relationship.</dd>
 <dd><code>metadataElement1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
 <dd><code>metadataElement2GUID</code> - unique identifier of the metadata element at end 2 of the relationship</dd>
-<dd><code>metadataSourceOptions</code> - options to control access to open metadata</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>properties</code> - the properties of the relationship</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new relationship</dd>
