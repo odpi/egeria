@@ -158,7 +158,7 @@ public class DataStructureClient extends ConnectorContextClientBase
      *
      * @param dataStructureGUID unique identifier of the data structure
      * @param dataFieldGUID     unique identifier of the data field
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -166,12 +166,12 @@ public class DataStructureClient extends ConnectorContextClientBase
      */
     public void linkMemberDataField(String                    dataStructureGUID,
                                     String                    dataFieldGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     MemberDataFieldProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        dataStructureHandler.linkMemberDataField(connectorUserId, dataStructureGUID, dataFieldGUID, metadataSourceOptions, relationshipProperties);
+        dataStructureHandler.linkMemberDataField(connectorUserId, dataStructureGUID, dataFieldGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

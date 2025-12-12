@@ -163,7 +163,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param schemaAttributeGUID        unique identifier of the parent schema attribute
      * @param nestedSchemaAttributeGUID             unique identifier of the nested schema attribute
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -172,7 +172,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkNestedSchemaAttribute(String                          userId,
                                           String                          schemaAttributeGUID,
                                           String                          nestedSchemaAttributeGUID,
-                                          MetadataSourceOptions           metadataSourceOptions,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           NestedSchemaAttributeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -189,7 +189,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                         schemaAttributeGUID,
                                                         nestedSchemaAttributeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -237,7 +237,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param schemaTypeGUID        unique identifier of the parent schema type
      * @param nestedSchemaAttributeGUID             unique identifier of the nested schema attribute
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -246,7 +246,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkAttributeForSchema(String                          userId,
                                        String                          schemaTypeGUID,
                                        String                          nestedSchemaAttributeGUID,
-                                       MetadataSourceOptions           metadataSourceOptions,
+                                       MakeAnchorOptions               makeAnchorOptions,
                                        NestedSchemaAttributeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
@@ -263,7 +263,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
                                                         schemaTypeGUID,
                                                         nestedSchemaAttributeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -309,7 +309,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param primaryKeyColumnGUID        unique identifier of the primary key
      * @param foreignKeyColumnGUID             unique identifier of the foreign key
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -318,7 +318,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkForeignKey(String                userId,
                                String                primaryKeyColumnGUID,
                                String                foreignKeyColumnGUID,
-                               MetadataSourceOptions metadataSourceOptions,
+                               MakeAnchorOptions     makeAnchorOptions,
                                ForeignKeyProperties  relationshipProperties) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -335,7 +335,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
                                                         primaryKeyColumnGUID,
                                                         foreignKeyColumnGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -383,7 +383,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param schemaTypeGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -392,7 +392,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkExternalSchemaType(String                              userId,
                                        String                              schemaElementGUID,
                                        String                              schemaTypeGUID,
-                                       MetadataSourceOptions               metadataSourceOptions,
+                                       MakeAnchorOptions                   makeAnchorOptions,
                                        LinkedExternalSchemaTypeProperties  relationshipProperties) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
@@ -409,7 +409,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                         schemaElementGUID,
                                                         schemaTypeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -456,7 +456,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param schemaTypeGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -465,7 +465,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkMapFromSchemaType(String                      userId,
                                       String                      schemaElementGUID,
                                       String                      schemaTypeGUID,
-                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MakeAnchorOptions           makeAnchorOptions,
                                       MapToElementTypeProperties  relationshipProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
@@ -482,7 +482,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                         schemaElementGUID,
                                                         schemaTypeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -529,7 +529,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param schemaTypeGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -538,7 +538,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkMapToSchemaType(String                      userId,
                                     String                      schemaElementGUID,
                                     String                      schemaTypeGUID,
-                                    MetadataSourceOptions       metadataSourceOptions,
+                                    MakeAnchorOptions           makeAnchorOptions,
                                     MapToElementTypeProperties  relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -555,7 +555,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                         schemaElementGUID,
                                                         schemaTypeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -603,7 +603,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param graphEdgeGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param graphVertexGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -612,7 +612,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkGraphEdge(String                   userId,
                               String                   graphEdgeGUID,
                               String                   graphVertexGUID,
-                              MetadataSourceOptions    metadataSourceOptions,
+                              MakeAnchorOptions        makeAnchorOptions,
                               GraphEdgeLinkProperties  relationshipProperties) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
@@ -629,7 +629,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName,
                                                         graphEdgeGUID,
                                                         graphVertexGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -676,7 +676,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param queryTargetSchemaElementGUID  unique identifier of the schema element supplying all/part of the data
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -685,7 +685,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
     public void linkQueryTarget(String                                 userId,
                                 String                                 schemaElementGUID,
                                 String                                 queryTargetSchemaElementGUID,
-                                MetadataSourceOptions                  metadataSourceOptions,
+                                MakeAnchorOptions                      makeAnchorOptions,
                                 DerivedSchemaTypeQueryTargetProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
@@ -702,7 +702,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
                                                         schemaElementGUID,
                                                         queryTargetSchemaElementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

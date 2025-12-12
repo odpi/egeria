@@ -126,7 +126,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
                                                             OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                             elementGUID,
                                                             externalSourceGUID,
-                                                            this.getMetadataSourceOptions(),
+                                                            null,
                                                             null);
         }
 
@@ -207,7 +207,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      *
      * @param externalIdGUID            unique identifier of the external id
      * @param itAssetGUID             unique identifier of the infrastructure asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -215,12 +215,12 @@ public class ExternalIdClient extends ConnectorContextClientBase
      */
     public void linkExternalIdToElement(String                   itAssetGUID,
                                         String                   externalIdGUID,
-                                        MetadataSourceOptions    metadataSourceOptions,
+                                        MakeAnchorOptions        makeAnchorOptions,
                                         ExternalIdLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        externalIdHandler.linkExternalIdToElement(connectorUserId, itAssetGUID, externalIdGUID, metadataSourceOptions, relationshipProperties);
+        externalIdHandler.linkExternalIdToElement(connectorUserId, itAssetGUID, externalIdGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

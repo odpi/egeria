@@ -35,7 +35,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
     private final RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
     private final String serverName        = "<null>";
-    private final Date   platformStartTime = new Date();
+    private final static Date   platformStartTime = new Date();
 
 
     /**
@@ -43,15 +43,63 @@ public class OMAGServerPlatformActiveServices extends TokenController
      *
      * @return start date/time
      */
-    public Date getPlatformStartTime()
+    public DateResponse getPlatformStartTime()
     {
         final String methodName = "getPlatformStartTime";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        restCallLogger.logRESTCallReturn(token, platformStartTime.toString());
+        DateResponse response = new DateResponse();
 
-        return platformStartTime;
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            response.setDateValue(platformStartTime);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, platformStartTime.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Return the name of the organization running this platform.
+     *
+     * @return String description
+     * or UserNotAuthorizedException userId is not recognized
+     */
+    public StringResponse getServerPlatformOrganizationName()
+    {
+        final String methodName = "getServerPlatformOrganizationName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        StringResponse response = new StringResponse();
+
+        try
+        {
+            String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            response.setResultString(serverInstanceMap.getServerPlatformOrganizationName(userId));
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, platformStartTime.toString());
+        return response;
     }
 
 

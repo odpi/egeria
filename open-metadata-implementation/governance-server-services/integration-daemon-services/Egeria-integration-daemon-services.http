@@ -5,28 +5,41 @@
 @user=garygeeke
 
 ###
-# group: Integration Services
-# @name Retrieve the connector type for a connector
-# Restarts the requested Integration Service
-GET {{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{user}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
 
 ###
 # group: Integration Services
 # @name Refresh All integration Connectors
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
+POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
 
 ###
 # group: Integration Connectors
 # @name Refresh All integration Connectors
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
+POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
 
 ###
 # group: Integration Connectors
 # @name Refresh Integration Connector
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
+POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/integration-connectors/refresh
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -38,13 +51,15 @@ Content-Type: application/json
 # group: Integration Connectors
 # @name Restart All integration Connectors
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart
+POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/integration-connectors/restart
+Authorization: Bearer {{token}}
 
 ###
 # group: Integration Connectors
 # @name Restart Integration Connector
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart
+POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/integration-connectors/restart
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -55,13 +70,22 @@ Content-Type: application/json
 ###
 # @name Get Integration Daemon Status
 # Retrieves the status of the connectors running in the Integration Daemon
-GET {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/status
+GET {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/status
+Authorization: Bearer {{token}}
 
 ###
 
-@serviceURLName=asset-owner
-@connectorProfileClassName="className"
+@connectorProfileClassName=className
 
 ###
 # @name Validate Connector
-GET {{baseURL}}/servers/{{server}}/open-metadata/{{serviceURLName}}/users/{{user}}/validate-connector/{{connectorProfileClassName}}
+GET {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/validate-connector/{{connectorProfileClassName}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name Validate Connector example
+# Restarts the requested Integration Service
+GET {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider
+Authorization: Bearer {{token}}
+

@@ -179,7 +179,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param actorProfileGUID       unique identifier of the actor profile
      * @param locationGUID           unique identifier of the location
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -188,7 +188,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
     public void linkLocationToProfile(String                  userId,
                                       String                  actorProfileGUID,
                                       String                  locationGUID,
-                                      MetadataSourceOptions   metadataSourceOptions,
+                                      MakeAnchorOptions       makeAnchorOptions,
                                       KnownLocationProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -205,7 +205,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
                                                         actorProfileGUID,
                                                         locationGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -251,19 +251,19 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param personOneGUID          unique identifier of the first person profile
      * @param personTwoGUID          unique identifier of the second person profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkPeerPerson(String                userId,
-                               String                personOneGUID,
-                               String                personTwoGUID,
-                               MetadataSourceOptions metadataSourceOptions,
-                               PeerProperties        relationshipProperties) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public void linkPeerPerson(String            userId,
+                               String            personOneGUID,
+                               String            personTwoGUID,
+                               MakeAnchorOptions makeAnchorOptions,
+                               PeerProperties    relationshipProperties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName            = "linkPeerPerson";
         final String end1GUIDParameterName = "personOneGUID";
@@ -277,7 +277,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.PEER_RELATIONSHIP.typeName,
                                                         personOneGUID,
                                                         personTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -322,7 +322,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param superTeamGUID          unique identifier of the super team
      * @param subteamGUID            unique identifier of the subteam
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -331,7 +331,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
     public void linkTeamStructure(String                  userId,
                                   String                  superTeamGUID,
                                   String                  subteamGUID,
-                                  MetadataSourceOptions   metadataSourceOptions,
+                                  MakeAnchorOptions       makeAnchorOptions,
                                   TeamStructureProperties relationshipProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
@@ -348,7 +348,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
                                                         superTeamGUID,
                                                         subteamGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -393,7 +393,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param assetGUID       unique identifier of the asset
      * @param itProfileGUID            unique identifier of the IT profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -402,7 +402,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
     public void linkAssetToProfile(String                            userId,
                                    String                            assetGUID,
                                    String                            itProfileGUID,
-                                   MetadataSourceOptions             metadataSourceOptions,
+                                   MakeAnchorOptions                 makeAnchorOptions,
                                    ITInfrastructureProfileProperties relationshipProperties) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
@@ -419,7 +419,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
                                                         assetGUID,
                                                         itProfileGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

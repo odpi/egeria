@@ -1599,35 +1599,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
-     * Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
-     * according to the type definition since this will affect how the relationship is interpreted.
-     *
-     * @param userId caller's userId
-     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
-     *                             related and the properties that can be associated with this relationship.
-     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
-     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param properties the properties of the relationship
-     *
-     * @return unique identifier of the new relationship
-     *
-     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    @Override
-    public abstract String createRelatedElementsInStore(String                userId,
-                                                        String                relationshipTypeName,
-                                                        String                metadataElement1GUID,
-                                                        String                metadataElement2GUID,
-                                                        MetadataSourceOptions metadataSourceOptions,
-                                                        NewElementProperties  properties) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
-
-    /**
      * Update the properties associated with a relationship.
      *
      * @param userId caller's userId

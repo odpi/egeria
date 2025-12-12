@@ -33,6 +33,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
     private String   targetRootURL = null;
     private String   platformName = "OMAG Server Platform";
+    private String   delegatingUserId = null;
 
     private EgeriaExtractor extractor = null;
 
@@ -84,6 +85,17 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
 
     /**
+     * Set up the delegating userId - needed for operational calls.
+     *
+     * @param delegatingUserId user id
+     */
+    public void setDelegatingUserId(String delegatingUserId)
+    {
+        this.delegatingUserId = delegatingUserId;
+    }
+
+
+    /**
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *
@@ -124,7 +136,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
          */
         try
         {
-            extractor = new EgeriaExtractor(targetRootURL, platformName, null, secretsStoreConnectorMap, auditLog);
+            extractor = new EgeriaExtractor(targetRootURL, platformName, null, delegatingUserId, secretsStoreConnectorMap, auditLog);
         }
         catch (Exception error)
         {

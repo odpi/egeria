@@ -166,7 +166,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param surveyReportGUID       unique identifier of the report
      * @param newAnnotationGUID           unique identifier of the  annotation
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -175,7 +175,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void attachAnnotationToReport(String                       userId,
                                          String                       surveyReportGUID,
                                          String                       newAnnotationGUID,
-                                         MetadataSourceOptions        metadataSourceOptions,
+                                         MakeAnchorOptions            makeAnchorOptions,
                                          ReportedAnnotationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -192,7 +192,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                                         surveyReportGUID,
                                                         newAnnotationGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -238,7 +238,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID          unique identifier of the described element
      * @param annotationGUID          unique identifier of the annotation
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -247,7 +247,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void linkAnnotationToDescribedElement(String                         userId,
                                                  String                         elementGUID,
                                                  String                         annotationGUID,
-                                                 MetadataSourceOptions          metadataSourceOptions,
+                                                 MakeAnchorOptions              makeAnchorOptions,
                                                  AssociatedAnnotationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -264,7 +264,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         annotationGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -318,7 +318,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void linkAnnotationToItsPredecessor(String                        userId,
                                                String                        previousAnnotationGUID,
                                                String                        newAnnotationGUID,
-                                               MetadataSourceOptions         metadataSourceOptions,
+                                               MakeAnchorOptions             metadataSourceOptions,
                                                AnnotationExtensionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                             PropertyServerException,
                                                                                                             UserNotAuthorizedException
@@ -380,7 +380,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param annotationGUID       unique identifier of the annotation
      * @param schemaTypeGUID            unique identifier of the schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -389,7 +389,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void linkDiscoveredSchemaType(String                         userId,
                                          String                         annotationGUID,
                                          String                         schemaTypeGUID,
-                                         MetadataSourceOptions          metadataSourceOptions,
+                                         MakeAnchorOptions              makeAnchorOptions,
                                          DiscoveredSchemaTypeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException
@@ -406,7 +406,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DISCOVERED_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                         annotationGUID,
                                                         schemaTypeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -451,7 +451,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param annotationGUID               unique identifier of the annotation
      * @param assetGUID         unique identifier of the associated asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -460,7 +460,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void linkResourceProfileData(String                        userId,
                                         String                        annotationGUID,
                                         String                        assetGUID,
-                                        MetadataSourceOptions         metadataSourceOptions,
+                                        MakeAnchorOptions             makeAnchorOptions,
                                         ResourceProfileDataProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -477,7 +477,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
                                                         annotationGUID,
                                                         assetGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -522,7 +522,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param annotationGUID               unique identifier of the annotation
      * @param dataClassGUID         unique identifier of the associated data class
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -531,7 +531,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void linkDataClassMatch(String                   userId,
                                    String                   annotationGUID,
                                    String                   dataClassGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    DataClassMatchProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -548,7 +548,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_CLASS_MATCH_RELATIONSHIP.typeName,
                                                         annotationGUID,
                                                         dataClassGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -593,7 +593,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param annotationGUID               unique identifier of the annotation
      * @param elementGUID         unique identifier of the associated element
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -602,7 +602,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     public void linkRequestForActionTarget(String                           userId,
                                            String                           annotationGUID,
                                            String                           elementGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            RequestForActionTargetProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
@@ -619,7 +619,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName,
                                                         annotationGUID,
                                                         elementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

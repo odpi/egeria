@@ -155,7 +155,7 @@ public class ConnectionClient extends ConnectorContextClientBase
      *
      * @param connectionGUID       unique identifier of the connection
      * @param connectorTypeGUID unique identifier of the connector type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -163,12 +163,12 @@ public class ConnectionClient extends ConnectorContextClientBase
      */
     public void linkConnectionConnectorType(String                            connectionGUID,
                                             String                            connectorTypeGUID,
-                                            MetadataSourceOptions             metadataSourceOptions,
+                                            MakeAnchorOptions                 makeAnchorOptions,
                                             ConnectionConnectorTypeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
     {
-        connectionHandler.linkConnectionConnectorType(connectorUserId, connectionGUID, connectorTypeGUID, metadataSourceOptions, relationshipProperties);
+        connectionHandler.linkConnectionConnectorType(connectorUserId, connectionGUID, connectorTypeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -197,20 +197,20 @@ public class ConnectionClient extends ConnectorContextClientBase
      *
      * @param connectionGUID          unique identifier of the connection
      * @param endpointGUID          unique identifier of the endpoint
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkConnectionEndpoint(String                       connectionGUID,
-                                       String                       endpointGUID,
-                                       MetadataSourceOptions        metadataSourceOptions,
+    public void linkConnectionEndpoint(String                      connectionGUID,
+                                       String                      endpointGUID,
+                                       MakeAnchorOptions           makeAnchorOptions,
                                        ConnectToEndpointProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        connectionHandler.linkConnectionEndpoint(connectorUserId, connectionGUID, endpointGUID, metadataSourceOptions, relationshipProperties);
+        connectionHandler.linkConnectionEndpoint(connectorUserId, connectionGUID, endpointGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -239,7 +239,7 @@ public class ConnectionClient extends ConnectorContextClientBase
      *
      * @param connectionGUID unique identifier of the virtual connection
      * @param embeddedConnectionGUID unique identifier of the embedded connection
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -247,12 +247,12 @@ public class ConnectionClient extends ConnectorContextClientBase
      */
     public void linkEmbeddedConnection(String                       connectionGUID,
                                        String                       embeddedConnectionGUID,
-                                       MetadataSourceOptions        metadataSourceOptions,
+                                       MakeAnchorOptions            makeAnchorOptions,
                                        EmbeddedConnectionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
-        connectionHandler.linkEmbeddedConnection(connectorUserId, connectionGUID, embeddedConnectionGUID, metadataSourceOptions, relationshipProperties);
+        connectionHandler.linkEmbeddedConnection(connectorUserId, connectionGUID, embeddedConnectionGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -289,7 +289,7 @@ public class ConnectionClient extends ConnectorContextClientBase
      */
     public void linkAssetToConnection(String                    assetGUID,
                                       String                    connectionGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
+                                      MakeAnchorOptions         metadataSourceOptions,
                                       AssetConnectionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException

@@ -267,6 +267,69 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Return the name of the configured secrets collection name.
+     *
+     * @param secretStorePurpose which secrets store to use
+     * @return string name
+     */
+    public String getSecretsCollectionName(String secretStorePurpose)
+    {
+        if (secretsStoreConnectorMap != null)
+        {
+            SecretsStoreConnector secretsStoreConnector = secretsStoreConnectorMap.get(secretStorePurpose);
+            if (secretsStoreConnector != null)
+            {
+                return secretsStoreConnector.getSecretsCollectionName();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the location of the secrets store. (Endpoint network address of requested secrets store.)
+     *
+     * @param secretStorePurpose which secrets store to use
+     * @return string
+     */
+    public String getSecretsLocation(String secretStorePurpose)
+    {
+        if (secretsStoreConnectorMap != null)
+        {
+            SecretsStoreConnector secretsStoreConnector = secretsStoreConnectorMap.get(secretStorePurpose);
+            if (secretsStoreConnector != null)
+            {
+                return secretsStoreConnector.getSecretsLocation();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the class name of this connector's provider.
+     *
+     * @param secretStorePurpose which secrets store to use
+     * @return string
+     */
+    public String getSecretsProvider(String secretStorePurpose)
+    {
+        if (secretsStoreConnectorMap != null)
+        {
+            SecretsStoreConnector secretsStoreConnector = secretsStoreConnectorMap.get(secretStorePurpose);
+            if (secretsStoreConnector != null)
+            {
+                return secretsStoreConnector.getSecretsProvider();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Pass the configuration properties as placeholder properties.  This allows the caller to supply additional
      * properties to a template beyond those envisaged in the connector implementation.
      * The templating process is not affected if properties not use in the template are supplied
@@ -808,7 +871,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
-     * Log that the connector does no have an endpoint address.
+     * Log that the connector does not have an endpoint address.
      *
      * @param connectorName name of the connector
      * @param methodName calling method

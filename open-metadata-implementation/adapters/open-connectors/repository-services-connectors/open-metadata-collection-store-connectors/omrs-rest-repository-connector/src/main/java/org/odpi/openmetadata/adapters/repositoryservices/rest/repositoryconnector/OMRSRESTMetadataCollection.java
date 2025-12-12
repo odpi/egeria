@@ -213,30 +213,6 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
 
 
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
-     *
-     * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public String getMetadataCollectionId() throws RepositoryErrorException
-    {
-        if (remoteMetadataCollectionId == null)
-        {
-            final String methodName = "getMetadataCollectionId (deprecated)";
-
-            validateClient(methodName);
-            remoteMetadataCollectionId = omrsClient.getMetadataCollectionId();
-            validateMetadataCollectionId(remoteMetadataCollectionId, methodName);
-        }
-
-        return remoteMetadataCollectionId;
-    }
-
 
     /**
      * Returns the identifier of the metadata repository.  This is the identifier used to register the

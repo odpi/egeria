@@ -3,19 +3,29 @@
 package org.odpi.openmetadata.contentpacks.core.egeria;
 
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
+import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.contentpacks.core.ContentPackDefinition;
 import org.odpi.openmetadata.contentpacks.core.IntegrationGroupDefinition;
 import org.odpi.openmetadata.contentpacks.core.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -223,12 +233,21 @@ public class EgeriaArchiveWriter extends ContentPackBaseArchiveWriter
                                                 templateDefinition.getPlaceholders());
         }
 
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.EGERIA_CONTENT_PACK);
+
+
         /*
          * Create Egeria's integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.EGERIA_CONTENT_PACK);
         super.addIntegrationConnectors(ContentPackDefinition.EGERIA_CONTENT_PACK,
                                        IntegrationGroupDefinition.EGERIA);
+
+        /*
+         * Add catalog templates
+         */
+        this.addSoftwareServerCatalogTemplates(ContentPackDefinition.EGERIA_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.EGERIA_CONTENT_PACK);
 
         /*
          * Create the default governance engines
@@ -251,11 +270,127 @@ public class EgeriaArchiveWriter extends ContentPackBaseArchiveWriter
         this.addSolutionBlueprints(ContentPackDefinition.EGERIA_CONTENT_PACK);
         this.addSolutionLinkingWires(ContentPackDefinition.EGERIA_CONTENT_PACK);
 
+        //this.addDefaultOMAGServerPlatform();
+
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
          */
         archiveHelper.saveGUIDs();
         archiveHelper.saveUsedGUIDs();
+    }
+
+
+    /**
+     * This entry is used by Runtime Manager to display the platform report for 9443
+     */
+    private void addDefaultOMAGServerPlatform()
+    {
+        final String               guid     = "44bf319f-1e41-4da1-b771-2753b92b631a";
+        OMAGServerPlatformProvider provider = new OMAGServerPlatformProvider();
+
+        DeployedImplementationTypeDefinition deployedImplementationType = EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM;
+        DeployedImplementationTypeDefinition softwareCapabilityType     = DeployedImplementationType.USER_AUTHENTICATION_MANAGER;
+        String                               softwareCapabilityName     = "User Token Manager";
+        String serverName = "Default Local OMAG Server Platform";
+        String userId = "defaultplatformnpa";
+        String connectorTypeGUID = provider.getConnectorType().getGUID();
+        String networkAddress = "https://localhost:9443";
+
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
+        String               versionIdentifier  = "6.0-SNAPSHOT";
+        String               description     = "Default OMAG Server Platform running on local host and port 9443.";
+        List<Classification> classifications = null;
+
+
+        if (deployedImplementationType.getAssociatedClassification() != null)
+        {
+            classifications    = new ArrayList<>();
+            classifications.add(archiveHelper.getServerPurposeClassification(deployedImplementationType.getAssociatedClassification(), null));
+        }
+
+        archiveHelper.setGUID(qualifiedName, guid);
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  serverName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
+                                                  versionIdentifier,
+                                                  description,
+                                                  null,
+                                                  null,
+                                                  classifications);
+        assert(guid.equals(assetGUID));
+
+        archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
+                                            qualifiedName + "::" + softwareCapabilityName,
+                                            softwareCapabilityName,
+                                            null,
+                                            softwareCapabilityType.getDeployedImplementationType(),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            (Classification)null,
+                                            assetGUID,
+                                            deployedImplementationType.getAssociatedTypeName(),
+                                            OpenMetadataType.ASSET.typeName,
+                                            null);
+
+        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + "::" + softwareCapabilityName,
+                                                                 qualifiedName,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 1);
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
+                                                        null,
+                                                        qualifiedName + ":Endpoint",
+                                                        serverName + " endpoint",
+                                                        null,
+                                                        networkAddress,
+                                                        null,
+                                                        null);
+
+        archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), "loading-bay/secrets/default.omsecrets");
+
+        String connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
+                                                            qualifiedName + ":Connection",
+                                                            serverName + " connection",
+                                                            null,
+                                                            userId,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            configurationProperties,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null);
+
+        archiveHelper.addSecretsConnection(connectionGUID,
+                                           qualifiedName,
+                                           serverName,
+                                           assetGUID,
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           OpenMetadataType.ASSET.typeName,
+                                           null,
+                                           "OMAGConnectors",
+                                           SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                           "loading-bay/secrets/egeria-servers.omsecrets");
+
+        archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
     }
 
 

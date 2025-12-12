@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.Connection
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 
 import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS;
 
@@ -37,7 +38,7 @@ class OmasSetupAssetConnection implements TriConsumer<String, String, String> {
         try
         {
             ConnectionClient connectionClient = integrationContext.getConnectionClient();
-            connectionClient.linkAssetToConnection(assetGuid, connectionGuid, connectionClient.getMetadataSourceOptions(), null);
+            connectionClient.linkAssetToConnection(assetGuid, connectionGuid, new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()), null);
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {

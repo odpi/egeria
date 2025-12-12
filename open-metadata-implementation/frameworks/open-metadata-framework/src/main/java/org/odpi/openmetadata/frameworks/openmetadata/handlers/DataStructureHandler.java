@@ -149,7 +149,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param dataStructureGUID unique identifier of the data structure
      * @param dataFieldGUID     unique identifier of the data field
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -158,7 +158,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
     public void linkMemberDataField(String                    userId,
                                     String                    dataStructureGUID,
                                     String                    dataFieldGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     MemberDataFieldProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -175,7 +175,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
                                                         dataStructureGUID,
                                                         dataFieldGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -334,7 +334,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
      * @param dataClassGUID          unique identifier of the data class
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -343,7 +343,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
     public void linkDataClassDefinition(String                        userId,
                                         String                        dataDefinitionGUID,
                                         String                        dataClassGUID,
-                                        MetadataSourceOptions         metadataSourceOptions,
+                                        MakeAnchorOptions             makeAnchorOptions,
                                         DataClassDefinitionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -360,7 +360,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName,
                                                         dataDefinitionGUID,
                                                         dataClassGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -407,7 +407,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param dataDefinitionGUID     unique identifier of the data design element (eg data field) that uses the data class
      * @param glossaryTermGUID       unique identifier of the glossary term
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -416,7 +416,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
     public void linkSemanticDefinition(String                       userId,
                                        String                       dataDefinitionGUID,
                                        String                       glossaryTermGUID,
-                                       MetadataSourceOptions        metadataSourceOptions,
+                                       MakeAnchorOptions            makeAnchorOptions,
                                        SemanticDefinitionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
@@ -433,7 +433,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName,
                                                         dataDefinitionGUID,
                                                         glossaryTermGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -483,7 +483,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param certificationTypeGUID  unique identifier of the certification type
      * @param dataStructureGUID      unique identifier of the data structure
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties the properties of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -492,7 +492,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
     public void linkCertificationTypeToDataStructure(String                            userId,
                                                      String                            certificationTypeGUID,
                                                      String                            dataStructureGUID,
-                                                     MetadataSourceOptions             metadataSourceOptions,
+                                                     MakeAnchorOptions                 makeAnchorOptions,
                                                      DataStructureDefinitionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                       PropertyServerException,
                                                                                                                       UserNotAuthorizedException
@@ -509,7 +509,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName,
                                                         certificationTypeGUID,
                                                         dataStructureGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

@@ -156,7 +156,7 @@ public class SolutionComponentClient extends ConnectorContextClientBase
      *
      * @param parentSolutionComponentGUID unique identifier of the parent
      * @param solutionComponentGUID     unique identifier of the solution component
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -164,12 +164,12 @@ public class SolutionComponentClient extends ConnectorContextClientBase
      */
     public void linkSubcomponent(String                        parentSolutionComponentGUID,
                                  String                        solutionComponentGUID,
-                                 MetadataSourceOptions         metadataSourceOptions,
+                                 MakeAnchorOptions             makeAnchorOptions,
                                  SolutionCompositionProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-        solutionComponentHandler.linkSubcomponent(connectorUserId, parentSolutionComponentGUID, solutionComponentGUID, metadataSourceOptions, relationshipProperties);
+        solutionComponentHandler.linkSubcomponent(connectorUserId, parentSolutionComponentGUID, solutionComponentGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -198,7 +198,7 @@ public class SolutionComponentClient extends ConnectorContextClientBase
      *
      * @param solutionComponentOneGUID unique identifier of the solution component at end 1
      * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -206,12 +206,12 @@ public class SolutionComponentClient extends ConnectorContextClientBase
      */
     public void linkSolutionLinkingWire(String                        solutionComponentOneGUID,
                                         String                        solutionComponentTwoGUID,
-                                        MetadataSourceOptions         metadataSourceOptions,
+                                        MakeAnchorOptions             makeAnchorOptions,
                                         SolutionLinkingWireProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        solutionComponentHandler.linkSolutionLinkingWire(connectorUserId, solutionComponentOneGUID, solutionComponentTwoGUID, metadataSourceOptions, relationshipProperties);
+        solutionComponentHandler.linkSolutionLinkingWire(connectorUserId, solutionComponentOneGUID, solutionComponentTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -241,19 +241,19 @@ public class SolutionComponentClient extends ConnectorContextClientBase
      * @param solutionRoleGUID unique identifier of the parent
      * @param solutionComponentGUID     unique identifier of the solution component
      * @param relationshipProperties  description of the relationship.
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSolutionComponentActor(String                           solutionRoleGUID,
                                            String                           solutionComponentGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            SolutionComponentActorProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        solutionComponentHandler.linkSolutionComponentActor(connectorUserId, solutionRoleGUID, solutionComponentGUID, metadataSourceOptions, relationshipProperties);
+        solutionComponentHandler.linkSolutionComponentActor(connectorUserId, solutionRoleGUID, solutionComponentGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

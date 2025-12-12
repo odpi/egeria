@@ -148,7 +148,7 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID       unique identifier of the contact method
      * @param contactDetailsGUID           unique identifier of the contactDetails
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -157,7 +157,7 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
     public void linkContactDetails(String                   userId,
                                    String                   elementGUID,
                                    String                   contactDetailsGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    ContactThroughProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -174,7 +174,7 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         contactDetailsGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

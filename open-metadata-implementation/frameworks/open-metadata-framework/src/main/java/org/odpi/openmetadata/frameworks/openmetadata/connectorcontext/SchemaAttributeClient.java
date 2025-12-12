@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -171,7 +170,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      *
      * @param schemaAttributeGUID        unique identifier of the parent schema attribute
      * @param nestedSchemaAttributeGUID             unique identifier of the nested schema attribute
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -179,12 +178,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkNestedSchemaAttribute(String                          schemaAttributeGUID,
                                           String                          nestedSchemaAttributeGUID,
-                                          MetadataSourceOptions           metadataSourceOptions,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           NestedSchemaAttributeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkNestedSchemaAttribute(connectorUserId, schemaAttributeGUID, nestedSchemaAttributeGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkNestedSchemaAttribute(connectorUserId, schemaAttributeGUID, nestedSchemaAttributeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -213,7 +212,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      *
      * @param schemaTypeGUID        unique identifier of the parent schema type
      * @param nestedSchemaAttributeGUID             unique identifier of the nested schema attribute
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -221,12 +220,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkAttributeForSchema(String                          schemaTypeGUID,
                                        String                          nestedSchemaAttributeGUID,
-                                       MetadataSourceOptions           metadataSourceOptions,
+                                       MakeAnchorOptions               makeAnchorOptions,
                                        NestedSchemaAttributeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkAttributeForSchema(connectorUserId, schemaTypeGUID, nestedSchemaAttributeGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkAttributeForSchema(connectorUserId, schemaTypeGUID, nestedSchemaAttributeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -255,7 +254,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      *
      * @param primaryKeyColumnGUID        unique identifier of the primary key
      * @param foreignKeyColumnGUID             unique identifier of the foreign key
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -263,12 +262,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkForeignKey(String                primaryKeyColumnGUID,
                                String                foreignKeyColumnGUID,
-                               MetadataSourceOptions metadataSourceOptions,
+                               MakeAnchorOptions     makeAnchorOptions,
                                ForeignKeyProperties  relationshipProperties) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkForeignKey(connectorUserId, primaryKeyColumnGUID, foreignKeyColumnGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkForeignKey(connectorUserId, primaryKeyColumnGUID, foreignKeyColumnGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -299,7 +298,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param schemaTypeGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -307,12 +306,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkExternalSchemaType(String                              schemaElementGUID,
                                        String                              schemaTypeGUID,
-                                       MetadataSourceOptions               metadataSourceOptions,
+                                       MakeAnchorOptions                   makeAnchorOptions,
                                        LinkedExternalSchemaTypeProperties  relationshipProperties) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkExternalSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkExternalSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -342,7 +341,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param schemaTypeGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -350,12 +349,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkMapFromSchemaType(String                      schemaElementGUID,
                                       String                      schemaTypeGUID,
-                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MakeAnchorOptions           makeAnchorOptions,
                                       MapToElementTypeProperties  relationshipProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkMapFromSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkMapFromSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -385,7 +384,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param schemaTypeGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -393,12 +392,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkMapToSchemaType(String                      schemaElementGUID,
                                     String                      schemaTypeGUID,
-                                    MetadataSourceOptions       metadataSourceOptions,
+                                    MakeAnchorOptions           makeAnchorOptions,
                                     MapToElementTypeProperties  relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkMapToSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkMapToSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -428,7 +427,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param graphEdgeGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param graphVertexGUID             unique identifier of the linked schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -436,12 +435,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkGraphEdge(String                   graphEdgeGUID,
                               String                   graphVertexGUID,
-                              MetadataSourceOptions    metadataSourceOptions,
+                              MakeAnchorOptions        makeAnchorOptions,
                               GraphEdgeLinkProperties  relationshipProperties) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkGraphEdge(connectorUserId, graphEdgeGUID, graphVertexGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkGraphEdge(connectorUserId, graphEdgeGUID, graphVertexGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -471,7 +470,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaElementGUID        unique identifier of the schema element (typically this is a schema attribute
      *                                 but may be a root schema type
      * @param queryTargetSchemaElementGUID  unique identifier of the schema element supplying all/part of the data
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -479,12 +478,12 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkQueryTarget(String                                 schemaElementGUID,
                                 String                                 queryTargetSchemaElementGUID,
-                                MetadataSourceOptions                  metadataSourceOptions,
+                                MakeAnchorOptions                      makeAnchorOptions,
                                 DerivedSchemaTypeQueryTargetProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        schemaAttributeHandler.linkQueryTarget(connectorUserId, schemaElementGUID, queryTargetSchemaElementGUID, metadataSourceOptions, relationshipProperties);
+        schemaAttributeHandler.linkQueryTarget(connectorUserId, schemaElementGUID, queryTargetSchemaElementGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

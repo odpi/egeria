@@ -1084,33 +1084,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     }
 
 
-    /**
-     * Return the URL string to use for direct access to the metadata instance.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param guid unique identifier for the instance.
-     * @return String URL with placeholder for variables such as userId.
-     */
-    @Override
-    public String getEntityURL(String  sourceName, String guid)
-    {
-        return OMRSRepositoryRESTServices.getEntityURL(localServerName, guid);
-    }
-
-
-    /**
-     * Return the URL string to use for direct access to the metadata instance.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param guid unique identifier for the instance.
-     * @return String URL with placeholder for variables such as userId.
-     */
-    @Override
-    public String getRelationshipURL(String  sourceName, String guid)
-    {
-        return OMRSRepositoryRESTServices.getRelationshipURL(localServerName, guid);
-    }
-
 
     /**
      * Return the list of typedefs known by the local repository.

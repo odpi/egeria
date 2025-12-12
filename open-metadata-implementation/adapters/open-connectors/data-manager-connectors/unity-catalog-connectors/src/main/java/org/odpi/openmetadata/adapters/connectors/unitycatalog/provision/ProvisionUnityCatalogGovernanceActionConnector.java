@@ -20,6 +20,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
@@ -328,12 +329,12 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
                                                      catalogName,
                                                      super.getProperty(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), null));
 
-        MetadataSourceOptions metadataSourceOptions = governanceContext.getOpenMetadataStore().getMetadataSourceOptions();
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(governanceContext.getOpenMetadataStore().getMetadataSourceOptions());
 
-        metadataSourceOptions.setExternalSourceGUID(catalogGUID);
-        metadataSourceOptions.setExternalSourceName(catalogQualifiedName);
+        makeAnchorOptions.setExternalSourceGUID(catalogGUID);
+        makeAnchorOptions.setExternalSourceName(catalogQualifiedName);
 
-        TemplateOptions templateOptions = new TemplateOptions(metadataSourceOptions);
+        TemplateOptions templateOptions = new TemplateOptions(makeAnchorOptions);
 
         templateOptions.setAllowRetrieve(true);
         templateOptions.setAnchorGUID(schemaGUID);
@@ -361,7 +362,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
                 governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                       elementGUID,
                                                                                       rootSchemaTypeGUID,
-                                                                                      metadataSourceOptions,
+                                                                                      makeAnchorOptions,
                                                                                       null);
             }
         }

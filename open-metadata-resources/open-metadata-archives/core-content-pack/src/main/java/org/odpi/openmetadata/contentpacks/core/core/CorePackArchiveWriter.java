@@ -462,7 +462,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addMacBookProCatalogTemplate();
         this.addFileSystemTemplate();
         this.addUNIXFileSystemTemplate();
-        // this.addDefaultOMAGServerPlatform();
 
 
         /*
@@ -599,107 +598,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                           templateDefinition.getProtocol(),
                                           templateDefinition.getPlaceholders());
         }
-    }
-
-
-    /**
-     * This entry is used by Runtime Manager to display the platform report for 9443
-     */
-    private void addDefaultOMAGServerPlatform()
-    {
-        final String guid = "44bf319f-1e41-4da1-b771-2753b92b631a";
-        OMAGServerPlatformProvider provider = new OMAGServerPlatformProvider();
-
-        DeployedImplementationTypeDefinition deployedImplementationType = EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM;
-        DeployedImplementationTypeDefinition softwareCapabilityType = DeployedImplementationType.USER_AUTHENTICATION_MANAGER;
-        String softwareCapabilityName = "User Token Manager";
-        String serverName = "Default Local OMAG Server Platform";
-        String userId = "defaultplatformnpa";
-        String connectorTypeGUID = provider.getConnectorType().getGUID();
-        String networkAddress = "https://localhost:9443";
-
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
-        String               versionIdentifier  = "6.0-SNAPSHOT";
-        String               description        = "Default OMAG Server Platform running on local host and port 9443.";
-        List<Classification> classifications    = null;
-
-
-        if (deployedImplementationType.getAssociatedClassification() != null)
-        {
-            classifications    = new ArrayList<>();
-            classifications.add(archiveHelper.getServerPurposeClassification(deployedImplementationType.getAssociatedClassification(), null));
-        }
-
-        archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  serverName,
-                                                  deployedImplementationType.getDeployedImplementationType(),
-                                                  versionIdentifier,
-                                                  description,
-                                                  null,
-                                                  null,
-                                                  classifications);
-        assert(guid.equals(assetGUID));
-
-        archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
-                                            qualifiedName + "::" + softwareCapabilityName,
-                                            softwareCapabilityName,
-                                            null,
-                                            softwareCapabilityType.getDeployedImplementationType(),
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            (Classification)null,
-                                            assetGUID,
-                                            deployedImplementationType.getAssociatedTypeName(),
-                                            OpenMetadataType.ASSET.typeName,
-                                            null);
-
-        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + "::" + softwareCapabilityName,
-                                                                 qualifiedName,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 1);
-
-        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                        deployedImplementationType.getAssociatedTypeName(),
-                                                        OpenMetadataType.ASSET.typeName,
-                                                        null,
-                                                        qualifiedName + ":Endpoint",
-                                                        serverName + " endpoint",
-                                                        null,
-                                                        networkAddress,
-                                                        null,
-                                                        null);
-
-        archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
-
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), "loading-bay/secrets/default.omsecrets");
-
-        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                            serverName + " connection",
-                                                            null,
-                                                            userId,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            configurationProperties,
-                                                            null,
-                                                            connectorTypeGUID,
-                                                            endpointGUID,
-                                                            assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName(),
-                                                            OpenMetadataType.ASSET.typeName,
-                                                            null);
-
-        archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
     }
 
 

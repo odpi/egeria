@@ -2,7 +2,7 @@
 # The Asset Maker OMVS provides APIs for supporting the creation and editing of assets.
 
 @baseURL=https://localhost:9443
-@viewServer=view-server
+@viewServer=qs-view-server
 
 ###
 # =====================================================================================================================
@@ -255,28 +255,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Add value here",
-  "metadataElementTypeName": "DataFile",
-  "metadataElementSubtypeNames": ["CSVFile", "JSONFile"],
-  "startsWith" : false,
-  "endsWith" : false,
-  "ignoreCase" : true,
-  "startFrom" : 0,
-  "pageSize": 10,
-  "includeOnlyClassifiedElements": [],
-  "skipClassifiedElements": [],
-  "includeOnlyRelationships": [],
-  "skipRelationships": [],
-  "relationshipsPageSize": 0,
-  "graphQueryDepth": 10,
-  "governanceZoneFilter": [],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
+  "metadataElementTypeName": "SoftwareServerPlatform"
 }
 
 

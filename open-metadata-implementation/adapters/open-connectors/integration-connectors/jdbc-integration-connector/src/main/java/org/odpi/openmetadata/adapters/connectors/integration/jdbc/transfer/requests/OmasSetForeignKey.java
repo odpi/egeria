@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 
 import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS;
 
@@ -43,7 +44,7 @@ class OmasSetForeignKey implements TriConsumer<String, String, ForeignKeyPropert
         {
             databaseColumnClient.linkForeignKey(primaryKeyColumnGuid,
                                                 foreignKeyColumnGuid,
-                                                databaseColumnClient.getMetadataSourceOptions(),
+                                                new MakeAnchorOptions(databaseColumnClient.getMetadataSourceOptions()),
                                                 foreignKeyProperties);
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)

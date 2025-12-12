@@ -88,6 +88,8 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         super.createRequestTypes(ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK);
 
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK);
+
         /*
          * Create a sample process
          */

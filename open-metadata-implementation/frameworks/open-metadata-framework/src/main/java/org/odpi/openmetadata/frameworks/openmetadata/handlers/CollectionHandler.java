@@ -482,7 +482,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param parentGUID  unique identifier of the element being described
      * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -491,7 +491,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
     public void linkSolutionDesign(String                   userId,
                                    String                   parentGUID,
                                    String                   solutionBlueprintGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    SolutionDesignProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -508,7 +508,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName,
                                                         parentGUID,
                                                         solutionBlueprintGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -554,16 +554,16 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param userId                     userId of user making request
      * @param consumerDigitalProductGUID unique identifier of the digital product that has the dependency.
      * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
-     * @param metadataSourceOptions      options to control access to open metadata
+     * @param makeAnchorOptions      options to control access to open metadata
      * @param relationshipProperties     description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkDigitalProductDependency(String userId,
-                                             String consumerDigitalProductGUID,
-                                             String consumedDigitalProductGUID,
-                                             MetadataSourceOptions metadataSourceOptions,
+    public void linkDigitalProductDependency(String                             userId,
+                                             String                             consumerDigitalProductGUID,
+                                             String                             consumedDigitalProductGUID,
+                                             MakeAnchorOptions                  makeAnchorOptions,
                                              DigitalProductDependencyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -580,7 +580,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
                                                         consumerDigitalProductGUID,
                                                         consumedDigitalProductGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -626,16 +626,16 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param digitalSubscriberGUID   unique identifier of the subscriber (referenceable)
      * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
-     * @param metadataSourceOptions   options to control access to open metadata
+     * @param makeAnchorOptions   options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSubscriber(String userId,
-                               String digitalSubscriberGUID,
-                               String digitalSubscriptionGUID,
-                               MetadataSourceOptions metadataSourceOptions,
+    public void linkSubscriber(String                      userId,
+                               String                      digitalSubscriberGUID,
+                               String                      digitalSubscriptionGUID,
+                               MakeAnchorOptions           makeAnchorOptions,
                                DigitalSubscriberProperties relationshipProperties) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
@@ -652,7 +652,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName,
                                                         digitalSubscriberGUID,
                                                         digitalSubscriptionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -668,9 +668,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachSubscriber(String userId,
-                                 String digitalSubscriberGUID,
-                                 String digitalSubscriptionGUID,
+    public void detachSubscriber(String        userId,
+                                 String        digitalSubscriberGUID,
+                                 String        digitalSubscriptionGUID,
                                  DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -698,7 +698,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param userId                        userId of user making request
      * @param digitalProductGUID            unique identifier of the digital product
      * @param digitalProductManagerRoleGUID unique identifier of the product manager role
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -707,7 +707,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
     public void linkProductManager(String                    userId,
                                    String                    digitalProductGUID,
                                    String                    digitalProductManagerRoleGUID,
-                                   MetadataSourceOptions     metadataSourceOptions,
+                                   MakeAnchorOptions         makeAnchorOptions,
                                    AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -724,7 +724,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                         digitalProductManagerRoleGUID,
                                                         digitalProductGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -769,7 +769,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param agreementGUID          unique identifier of the agreement
      * @param actorGUID              unique identifier of the actor
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @return unique identifier of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -779,7 +779,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
     public String linkAgreementActor(String                   userId,
                                      String                   agreementGUID,
                                      String                   actorGUID,
-                                     MetadataSourceOptions    metadataSourceOptions,
+                                     MakeAnchorOptions        makeAnchorOptions,
                                      AgreementActorProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -796,7 +796,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                                OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName,
                                                                agreementGUID,
                                                                actorGUID,
-                                                               metadataSourceOptions,
+                                                               makeAnchorOptions,
                                                                relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -811,8 +811,8 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAgreementActor(String userId,
-                                     String agreementActorRelationshipGUID,
+    public void detachAgreementActor(String        userId,
+                                     String        agreementActorRelationshipGUID,
                                      DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -836,16 +836,16 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param agreementGUID          unique identifier of the agreement
      * @param agreementItemGUID      unique identifier of the agreement item
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAgreementItem(String userId,
-                                  String agreementGUID,
-                                  String agreementItemGUID,
-                                  MetadataSourceOptions metadataSourceOptions,
+    public void linkAgreementItem(String                  userId,
+                                  String                  agreementGUID,
+                                  String                  agreementItemGUID,
+                                  MakeAnchorOptions       makeAnchorOptions,
                                   AgreementItemProperties relationshipProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
@@ -862,7 +862,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
                                                         agreementGUID,
                                                         agreementItemGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -878,9 +878,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAgreementItem(String userId,
-                                    String agreementGUID,
-                                    String agreementItemGUID,
+    public void detachAgreementItem(String        userId,
+                                    String        agreementGUID,
+                                    String        agreementItemGUID,
                                     DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -914,10 +914,10 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkContract(String userId,
-                             String agreementGUID,
-                             String externalReferenceGUID,
-                             MetadataSourceOptions metadataSourceOptions,
+    public void linkContract(String                 userId,
+                             String                 agreementGUID,
+                             String                 externalReferenceGUID,
+                             MakeAnchorOptions      metadataSourceOptions,
                              ContractLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
@@ -950,9 +950,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachContract(String userId,
-                               String agreementGUID,
-                               String externalReferenceGUID,
+    public void detachContract(String        userId,
+                               String        agreementGUID,
+                               String        externalReferenceGUID,
                                DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -1526,7 +1526,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      *
      * @param userId                userId of user making request.
      * @param collectionGUID        unique identifier of the collection.
-     * @param metadataSourceOptions options to control access to open metadata
+     * @param makeAnchorOptions options to control access to open metadata
      * @param membershipProperties  properties describing the membership characteristics.
      * @param elementGUID           unique identifier of the element.
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1536,7 +1536,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
     public void addToCollection(String                         userId,
                                 String                         collectionGUID,
                                 String                         elementGUID,
-                                MetadataSourceOptions          metadataSourceOptions,
+                                MakeAnchorOptions              makeAnchorOptions,
                                 CollectionMembershipProperties membershipProperties) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -1549,7 +1549,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
-        String relationshipGUID = this.getMembershipRelationshipGUID(userId, collectionGUID, elementGUID, new QueryOptions(metadataSourceOptions));
+        String relationshipGUID = this.getMembershipRelationshipGUID(userId, collectionGUID, elementGUID, new QueryOptions(makeAnchorOptions));
 
         if (relationshipGUID == null)
         {
@@ -1557,14 +1557,14 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                             OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                             collectionGUID,
                                                             elementGUID,
-                                                            metadataSourceOptions,
+                                                            makeAnchorOptions,
                                                             relationshipBuilder.getNewElementProperties(membershipProperties));
         }
         else
         {
             this.updateCollectionMembership(userId,
                                             relationshipGUID,
-                                            new UpdateOptions(metadataSourceOptions),
+                                            new UpdateOptions(makeAnchorOptions),
                                             membershipProperties);
         }
     }
@@ -1607,7 +1607,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
         }
         else
         {
-            this.addToCollection(userId, collectionGUID, elementGUID, new NewElementOptions(updateOptions), membershipProperties);
+            this.addToCollection(userId, collectionGUID, elementGUID, new MakeAnchorOptions(updateOptions), membershipProperties);
         }
     }
 

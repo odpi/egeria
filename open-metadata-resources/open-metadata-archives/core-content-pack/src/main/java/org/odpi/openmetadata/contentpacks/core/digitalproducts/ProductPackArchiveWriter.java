@@ -34,7 +34,14 @@ public class ProductPackArchiveWriter extends ContentPackBaseArchiveWriter
     @Override
     public void getArchiveContent()
     {
-/*
+        /*
+         * Add catalog templates
+         */
+        this.addSoftwareServerCatalogTemplates(ContentPackDefinition.PRODUCTS_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.PRODUCTS_CONTENT_PACK);
+        this.addTabularDataSetCatalogTemplates(ContentPackDefinition.PRODUCTS_CONTENT_PACK);
+
+        /*
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.PRODUCTS_CONTENT_PACK);

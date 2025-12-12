@@ -84,7 +84,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      * @param actionControlClient client to the open governance services for use by the governance action service
-     * @param duplicateManagementClient client to the open governance services for use by the governance action service
      * @param governanceActionProcessClient client to the open governance services for use by the governance action service
      * @param connectedAssetClient client for working with connectors
      * @param governanceCompletionClient client to the open governance services for use by the governance action service
@@ -111,7 +110,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                    List<ActionTargetElement>        actionTargetElements,
                                    GovernanceConfiguration          governanceConfiguration,
                                    ActionControlInterface           actionControlClient,
-                                   OpenGovernanceClient             duplicateManagementClient,
                                    GovernanceActionProcessInterface governanceActionProcessClient,
                                    ConnectedAssetClient             connectedAssetClient,
                                    GovernanceCompletionInterface    governanceCompletionClient,
@@ -1032,7 +1030,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName,
                                                                sourceElementGUID,
                                                                targetElementGUID,
-                                                               openMetadataStore.getMetadataSourceOptions(),
+                                                               new MakeAnchorOptions(openMetadataStore.getMetadataSourceOptions()),
                                                                null);
     }
 
@@ -1103,7 +1101,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         return openMetadataStore.createRelatedElementsInStore(lineageRelationshipTypeName,
                                                               sourceElementGUID,
                                                               targetElementGUID,
-                                                              openMetadataStore.getMetadataSourceOptions(),
+                                                              new MakeAnchorOptions(openMetadataStore.getMetadataSourceOptions()),
                                                               new NewElementProperties(relationshipProperties));
 
     }

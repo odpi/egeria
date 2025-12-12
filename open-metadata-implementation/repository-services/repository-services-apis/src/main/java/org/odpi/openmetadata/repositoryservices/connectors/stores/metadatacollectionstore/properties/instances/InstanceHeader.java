@@ -37,11 +37,6 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     private String                    guid                   = null;
 
     /*
-     * Some metadata repositories offer a direct URL to access the instance.
-     */
-    private String                    instanceURL            = null;
-
-    /*
      * If this instance has been re-identified (its GUID changed), then this refers to the previous GUID by
      * which it was known (for full auditability).
      */
@@ -68,30 +63,8 @@ public abstract class InstanceHeader extends InstanceAuditHeader
         if (template != null)
         {
             this.guid = template.getGUID();
-            this.instanceURL = template.getInstanceURL();
             this.reIdentifiedFromGUID = template.getReIdentifiedFromGUID();
         }
-    }
-
-    /**
-     * Return the URL for this instance (or null if the metadata repository does not support instance URLs).
-     *
-     * @return String URL
-     */
-    public String getInstanceURL()
-    {
-        return instanceURL;
-    }
-
-
-    /**
-     * Set up the URL for this instance (or null if the metadata repository does not support instance URLs).
-     *
-     * @param instanceURL String URL
-     */
-    public void setInstanceURL(String instanceURL)
-    {
-        this.instanceURL = instanceURL;
     }
 
 
@@ -139,30 +112,16 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "InstanceHeader{" +
-                "headerVersion=" + getHeaderVersion() +
-                ", type=" + getType() +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", replicatedBy='" + getReplicatedBy() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", maintainedBy=" + getMaintainedBy() +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", guid='" + guid + '\'' +
-                ", instanceURL='" + instanceURL + '\'' +
+                "guid='" + guid + '\'' +
                 ", reIdentifiedFromGUID='" + reIdentifiedFromGUID + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                '}';
+                "} " + super.toString();
     }
+
+
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -187,7 +146,6 @@ public abstract class InstanceHeader extends InstanceAuditHeader
         }
         InstanceHeader that = (InstanceHeader) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(getInstanceURL(), that.getInstanceURL()) &&
                 Objects.equals(getReIdentifiedFromGUID(), that.getReIdentifiedFromGUID());
     }
 
@@ -201,6 +159,6 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, getInstanceURL(), reIdentifiedFromGUID);
+        return Objects.hash(super.hashCode(), guid, reIdentifiedFromGUID);
     }
 }

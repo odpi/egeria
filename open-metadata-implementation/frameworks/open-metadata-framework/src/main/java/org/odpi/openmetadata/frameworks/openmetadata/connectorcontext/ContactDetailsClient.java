@@ -166,7 +166,7 @@ public class ContactDetailsClient extends ConnectorContextClientBase
      *
      * @param elementGUID       unique identifier of the contact method
      * @param contactDetailsGUID           unique identifier of the contactDetails
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -174,7 +174,7 @@ public class ContactDetailsClient extends ConnectorContextClientBase
      */
     public void linkContactDetails(String                   elementGUID,
                                    String                   contactDetailsGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    ContactThroughProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -182,7 +182,7 @@ public class ContactDetailsClient extends ConnectorContextClientBase
         contactDetailsHandler.linkContactDetails(connectorUserId,
                                                  elementGUID,
                                                  contactDetailsGUID,
-                                                 metadataSourceOptions,
+                                                 makeAnchorOptions,
                                                  relationshipProperties);
     }
 

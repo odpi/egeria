@@ -153,7 +153,7 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param userIdentityGUID        unique identifier of the parent
      * @param profileGUID             unique identifier of the actor profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -162,7 +162,7 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
     public void linkIdentityToProfile(String                    userId,
                                       String                    userIdentityGUID,
                                       String                    profileGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
+                                      MakeAnchorOptions         makeAnchorOptions,
                                       ProfileIdentityProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -179,7 +179,7 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
                                                         profileGUID,
                                                         userIdentityGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

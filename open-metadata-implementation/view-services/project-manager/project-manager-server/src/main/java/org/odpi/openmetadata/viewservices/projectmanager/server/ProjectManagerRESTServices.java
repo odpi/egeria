@@ -773,11 +773,11 @@ public class ProjectManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof AssignmentScopeProperties projectTeamProperties)
                 {
-                    handler.setupProjectTeam(userId, projectGUID, actorGUID, null, projectTeamProperties);
+                    handler.setupProjectTeam(userId, projectGUID, actorGUID, requestBody, projectTeamProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.setupProjectTeam(userId, projectGUID, actorGUID, null, null);
+                    handler.setupProjectTeam(userId, projectGUID, actorGUID, requestBody, null);
                 }
                 else
                 {

@@ -767,10 +767,10 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkEndpointToITAsset(String                  serverName,
-                                              String                  urlMarker,
-                                              String                  itAssetGUID,
-                                              String                  endpointGUID,
+    public VoidResponse linkEndpointToITAsset(String                     serverName,
+                                              String                     urlMarker,
+                                              String                     itAssetGUID,
+                                              String                     endpointGUID,
                                               NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkEndpointToITAsset";

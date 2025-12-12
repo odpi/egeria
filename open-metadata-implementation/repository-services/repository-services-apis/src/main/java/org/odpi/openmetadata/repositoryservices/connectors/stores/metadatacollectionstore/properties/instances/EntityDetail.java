@@ -92,32 +92,14 @@ public class EntityDetail extends EntitySummary
      * @return JSON style description of variables.
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "EntityDetail{" +
                 "entityProperties=" + entityProperties +
                 ", properties=" + getProperties() +
-                ", classifications=" + getClassifications() +
-                ", headerVersion=" + getHeaderVersion() +
-                ", type=" + getType() +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", replicatedBy='" + getReplicatedBy() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", maintainedBy=" + getMaintainedBy() +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", reIdentifiedFromGUID='" + getReIdentifiedFromGUID() + '\'' +
-                '}';
+                "} " + super.toString();
     }
+
 
     /**
      * Validate that an object is equal depending on their stored values.

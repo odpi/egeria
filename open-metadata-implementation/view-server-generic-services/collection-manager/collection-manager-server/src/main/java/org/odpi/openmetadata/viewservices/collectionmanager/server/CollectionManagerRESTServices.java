@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -807,7 +806,7 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.linkDigitalProductDependency(userId,
                                                      consumerDigitalProductGUID,
                                                      consumedDigitalProductGUID,
-                                                     new MetadataSourceOptions(),
+                                                     null,
                                                      null);
             }
         }
@@ -937,7 +936,7 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.linkSubscriber(userId,
                                        digitalSubscriberGUID,
                                        digitalSubscriptionGUID,
-                                       new MetadataSourceOptions(),
+                                       null,
                                        null);
             }
         }
@@ -1198,7 +1197,7 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setGUID(handler.linkAgreementActor(userId,
                                                             agreementGUID,
                                                             actorGUID,
-                                                            new MetadataSourceOptions(),
+                                                            null,
                                                             null));
             }
         }
@@ -1323,7 +1322,7 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.linkAgreementItem(userId,
                                           agreementGUID,
                                           agreementItemGUID,
-                                          new MetadataSourceOptions(),
+                                          null,
                                           null);
             }
         }
@@ -1450,7 +1449,7 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.linkContract(userId,
                                      agreementGUID,
                                      externalReferenceGUID,
-                                     new MetadataSourceOptions(),
+                                     null,
                                      null);
             }
         }
@@ -2065,7 +2064,7 @@ public class CollectionManagerRESTServices extends TokenController
                 handler.addToCollection(userId,
                                         collectionGUID,
                                         elementGUID,
-                                        new MetadataSourceOptions(),
+                                        null,
                                         null);
             }
         }

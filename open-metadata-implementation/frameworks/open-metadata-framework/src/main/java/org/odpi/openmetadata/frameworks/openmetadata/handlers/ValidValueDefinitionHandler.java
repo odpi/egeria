@@ -187,7 +187,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
      * @param elementGUID           unique identifier of the location
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -196,7 +196,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkValidValueImplementation(String                              userId,
                                              String                              validValueDefinitionGUID,
                                              String                              elementGUID,
-                                             MetadataSourceOptions               metadataSourceOptions,
+                                             MakeAnchorOptions               makeAnchorOptions,
                                              ValidValuesImplementationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                 PropertyServerException,
                                                                                                                 UserNotAuthorizedException
@@ -213,7 +213,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
                                                         validValueDefinitionGUID,
                                                         elementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -259,16 +259,16 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID           unique identifier of the location
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkValidValuesAssignment(String                         userId,
-                                          String                         elementGUID,
-                                          String                         validValueDefinitionGUID,
-                                          MetadataSourceOptions          metadataSourceOptions,
+    public void linkValidValuesAssignment(String                          userId,
+                                          String                          elementGUID,
+                                          String                          validValueDefinitionGUID,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -285,7 +285,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         validValueDefinitionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -331,7 +331,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID           unique identifier of the location
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -340,7 +340,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkReferenceValueAssignment(String                             userId,
                                              String                             elementGUID,
                                              String                             validValueDefinitionGUID,
-                                             MetadataSourceOptions              metadataSourceOptions,
+                                             MakeAnchorOptions                  makeAnchorOptions,
                                              ReferenceValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -357,7 +357,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         validValueDefinitionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -403,7 +403,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param validValueOneGUID          unique identifier of the first valid value
      * @param validValueTwoGUID          unique identifier of the second valid value
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -412,7 +412,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkAssociatedValidValues(String                          userId,
                                           String                          validValueOneGUID,
                                           String                          validValueTwoGUID,
-                                          MetadataSourceOptions           metadataSourceOptions,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           ValidValueAssociationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -429,7 +429,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
                                                         validValueOneGUID,
                                                         validValueTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -474,7 +474,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param validValueOneGUID          unique identifier of the first valid value
      * @param validValueTwoGUID          unique identifier of the second valid value
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -483,7 +483,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkConsistentValidValues(String                          userId,
                                           String                          validValueOneGUID,
                                           String                          validValueTwoGUID,
-                                          MetadataSourceOptions           metadataSourceOptions,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           ConsistentValidValuesProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -500,7 +500,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
                                                         validValueOneGUID,
                                                         validValueTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -545,7 +545,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param validValueOneGUID          unique identifier of the first valid value
      * @param validValueTwoGUID          unique identifier of the second valid value
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -554,7 +554,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkMappedValidValues(String                       userId,
                                       String                       validValueOneGUID,
                                       String                       validValueTwoGUID,
-                                      MetadataSourceOptions        metadataSourceOptions,
+                                      MakeAnchorOptions            makeAnchorOptions,
                                       ValidValuesMappingProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
@@ -571,7 +571,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName,
                                                         validValueOneGUID,
                                                         validValueTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -616,7 +616,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param valueValueSetGUID          unique identifier of the super team
      * @param valueValueMemberGUID            unique identifier of the valueValueMember
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -625,7 +625,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkValidValueMember(String                     userId,
                                      String                     valueValueSetGUID,
                                      String                     valueValueMemberGUID,
-                                     MetadataSourceOptions      metadataSourceOptions,
+                                     MakeAnchorOptions          makeAnchorOptions,
                                      ValidValueMemberProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -642,7 +642,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                         valueValueSetGUID,
                                                         valueValueMemberGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -687,7 +687,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param referenceableGUID       unique identifier of the referenceable
      * @param validValueDefinitionGUID            unique identifier of the IT profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -696,7 +696,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
     public void linkSpecificationProperty(String                                    userId,
                                           String                                    referenceableGUID,
                                           String                                    validValueDefinitionGUID,
-                                          MetadataSourceOptions                     metadataSourceOptions,
+                                          MakeAnchorOptions                         makeAnchorOptions,
                                           SpecificationPropertyAssignmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
@@ -713,7 +713,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
                                                         referenceableGUID,
                                                         validValueDefinitionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

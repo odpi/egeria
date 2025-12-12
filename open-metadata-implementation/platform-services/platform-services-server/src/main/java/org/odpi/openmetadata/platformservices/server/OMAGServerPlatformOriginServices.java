@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.platformservices.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -25,21 +24,5 @@ public class OMAGServerPlatformOriginServices extends TokenController
     public String getServerPlatformOrigin() throws UserNotAuthorizedException
     {
         return serverInstanceMap.getServerPlatformOrigin();
-    }
-
-
-    /**
-     * Return the name of the organization running this platform.
-     *
-     * @return String description
-     * @throws UserNotAuthorizedException userId is not recognized
-     */
-    public String getServerPlatformOrganizationName() throws UserNotAuthorizedException
-    {
-        final String methodName = "getServerPlatformOrganizationName";
-
-        String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
-
-        return serverInstanceMap.getServerPlatformOrganizationName(userId);
     }
 }

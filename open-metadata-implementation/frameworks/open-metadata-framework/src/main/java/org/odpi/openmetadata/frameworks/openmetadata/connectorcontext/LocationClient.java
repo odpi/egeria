@@ -158,7 +158,7 @@ public class LocationClient extends ConnectorContextClientBase
      *
      * @param locationOneGUID          unique identifier of the first location
      * @param locationTwoGUID          unique identifier of the second location
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -166,12 +166,12 @@ public class LocationClient extends ConnectorContextClientBase
      */
     public void linkPeerLocations(String                     locationOneGUID,
                                   String                     locationTwoGUID,
-                                  MetadataSourceOptions      metadataSourceOptions,
+                                  MakeAnchorOptions          makeAnchorOptions,
                                   AdjacentLocationProperties relationshipProperties) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        locationHandler.linkPeerLocations(connectorUserId, locationOneGUID, locationTwoGUID, metadataSourceOptions, relationshipProperties);
+        locationHandler.linkPeerLocations(connectorUserId, locationOneGUID, locationTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -200,20 +200,20 @@ public class LocationClient extends ConnectorContextClientBase
      *
      * @param locationGUID          unique identifier of the super location
      * @param nestedLocationGUID            unique identifier of the nested location
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkNestedLocation(String                  locationGUID,
-                                   String                  nestedLocationGUID,
-                                   MetadataSourceOptions   metadataSourceOptions,
+    public void linkNestedLocation(String                   locationGUID,
+                                   String                   nestedLocationGUID,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    NestedLocationProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        locationHandler.linkNestedLocation(connectorUserId, locationGUID, nestedLocationGUID, metadataSourceOptions, relationshipProperties);
+        locationHandler.linkNestedLocation(connectorUserId, locationGUID, nestedLocationGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -242,7 +242,7 @@ public class LocationClient extends ConnectorContextClientBase
      *
      * @param elementGUID       unique identifier of the element to connect
      * @param locationGUID            unique identifier of the location
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -250,12 +250,12 @@ public class LocationClient extends ConnectorContextClientBase
      */
     public void linkKnownLocation(String                  elementGUID,
                                   String                  locationGUID,
-                                  MetadataSourceOptions   metadataSourceOptions,
+                                  MakeAnchorOptions       makeAnchorOptions,
                                   KnownLocationProperties relationshipProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        locationHandler.linkKnownLocation(connectorUserId, elementGUID, locationGUID, metadataSourceOptions, relationshipProperties);
+        locationHandler.linkKnownLocation(connectorUserId, elementGUID, locationGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

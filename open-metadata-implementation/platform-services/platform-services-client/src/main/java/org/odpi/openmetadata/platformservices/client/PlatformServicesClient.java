@@ -105,7 +105,9 @@ public class PlatformServicesClient
         
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/start-time";
 
-        return restClient.callDateGetRESTCall(methodName, urlTemplate);
+        DateResponse restResult = restClient.callDateGetRESTCall(methodName, urlTemplate);
+
+        return restResult.getDateValue();
     }
 
 
@@ -172,14 +174,16 @@ public class PlatformServicesClient
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String getPlatformOrganizationName() throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         final String methodName = "getPlatformOrganizationName";
         
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/organization-name";
 
-        return restClient.callStringGetRESTCall(methodName, urlTemplate);
+        StringResponse result = restClient.callStringResponseGetRESTCall(methodName, urlTemplate);
+
+        return result.getResultString();
     }
 
     

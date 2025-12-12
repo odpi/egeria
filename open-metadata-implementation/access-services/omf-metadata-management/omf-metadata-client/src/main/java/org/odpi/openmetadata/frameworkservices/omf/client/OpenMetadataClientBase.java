@@ -1913,43 +1913,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                         classificationName);
     }
 
-    /**
-     * Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
-     * according to the type definition since this will affect how the relationship is interpreted.
-     *
-     * @param userId caller's userId
-     * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
-     *                             related and the properties that can be associated with this relationship.
-     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
-     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param properties the properties of the relationship
-     *
-     * @return unique identifier of the new relationship
-     *
-     * @throws InvalidParameterException  the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-     *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
-     */
-    @Override
-    public String createRelatedElementsInStore(String                userId,
-                                               String                relationshipTypeName,
-                                               String                metadataElement1GUID,
-                                               String                metadataElement2GUID,
-                                               MetadataSourceOptions metadataSourceOptions,
-                                               NewElementProperties  properties) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        return this.createRelatedElementsInStore(userId,
-                                                 relationshipTypeName,
-                                                 metadataElement1GUID,
-                                                 metadataElement2GUID,
-                                                 new MakeAnchorOptions(metadataSourceOptions),
-                                                 properties);
-    }
-
 
     /**
      * Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
@@ -2287,9 +2250,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         /*
          * Set up the API options
          */
-        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-        metadataSourceOptions.setEffectiveTime(new Date());
-        metadataSourceOptions.setForLineage(true);
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
+        makeAnchorOptions.setEffectiveTime(new Date());
+        makeAnchorOptions.setForLineage(true);
+        makeAnchorOptions.setMakeAnchor(false);
 
 
         /*
@@ -2297,7 +2261,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
          */
         ElementProperties elementProperties = elementBuilder.getElementProperties(properties);
 
-        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setIsOwnAnchor(true);
@@ -2326,7 +2290,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName,
                                                           resourceGUID,
                                                           incidentReportGUID,
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
                     }
                 }
@@ -2344,7 +2308,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName,
                                                           previousIncidentGUID,
                                                           incidentReportGUID,
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
                     }
                 }
@@ -2471,15 +2435,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         /*
          * Set up the API options
          */
-        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-        metadataSourceOptions.setEffectiveTime(new Date());
-        metadataSourceOptions.setForLineage(true);
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
+        makeAnchorOptions.setEffectiveTime(new Date());
+        makeAnchorOptions.setForLineage(true);
+        makeAnchorOptions.setMakeAnchor(false);
 
         /*
          * Create the action entity
          */
 
-        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
@@ -2522,7 +2487,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                           actionGUID,
                                                           actionTarget.getActionTargetGUID(),
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           new NewElementProperties(relationshipProperties));
                     }
                 }
@@ -2537,7 +2502,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                   assignToRelationshipTypeName,
                                                   assignToGUID,
                                                   actionGUID,
-                                                  metadataSourceOptions,
+                                                  makeAnchorOptions,
                                                   new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                                             OpenMetadataProperty.ASSIGNMENT_TYPE.name,
                                                                                                             AssignmentType.CONTRIBUTOR.getName())));
@@ -2556,7 +2521,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
                                                           actionCauseGUID,
                                                           actionGUID,
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           null);
                     }
                 }
@@ -2609,15 +2574,16 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         /*
          * Set up the API options
          */
-        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-        metadataSourceOptions.setEffectiveTime(new Date());
-        metadataSourceOptions.setForLineage(true);
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
+        makeAnchorOptions.setEffectiveTime(new Date());
+        makeAnchorOptions.setForLineage(true);
+        makeAnchorOptions.setMakeAnchor(false);
 
 
         /*
          * Create the to do entity
          */
-        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setIsOwnAnchor(true);
@@ -2648,7 +2614,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                           toDoGUID,
                                                           actionTarget.getActionTargetGUID(),
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           new NewElementProperties(relationshipProperties));
                     }
                 }
@@ -2663,7 +2629,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                   OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                   sponsorGUID,
                                                   toDoGUID,
-                                                  metadataSourceOptions,
+                                                  makeAnchorOptions,
                                                   new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                                             OpenMetadataProperty.ASSIGNMENT_TYPE.name,
                                                                                                             AssignmentType.SPONSOR.getName())));
@@ -2678,7 +2644,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
                                                   originatorGUID,
                                                   toDoGUID,
-                                                  metadataSourceOptions,
+                                                  makeAnchorOptions,
                                                   null);
             }
         }
@@ -2736,9 +2702,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
             /*
              * Set up the API options
              */
-            MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+            MakeAnchorOptions metadataSourceOptions = new MakeAnchorOptions();
             metadataSourceOptions.setEffectiveTime(new Date());
             metadataSourceOptions.setForLineage(true);
+            metadataSourceOptions.setMakeAnchor(false);
 
             /*
              * Create the to do entity

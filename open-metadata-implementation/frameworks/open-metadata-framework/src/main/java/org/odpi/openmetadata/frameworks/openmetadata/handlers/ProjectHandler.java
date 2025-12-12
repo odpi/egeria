@@ -186,7 +186,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
     public void setupProjectDependency(String                      userId,
                                        String                      projectGUID,
                                        String                      dependsOnProjectGUID,
-                                       MetadataSourceOptions       metadataSourceOptions,
+                                       MakeAnchorOptions           metadataSourceOptions,
                                        ProjectDependencyProperties properties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -249,7 +249,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param projectGUID unique identifier of the project
      * @param managedProjectGUID unique identifier of the project it manages
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param properties  properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -259,7 +259,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
     public void setupProjectHierarchy(String                     userId,
                                       String                     projectGUID,
                                       String                     managedProjectGUID,
-                                      MetadataSourceOptions      metadataSourceOptions,
+                                      MakeAnchorOptions          makeAnchorOptions,
                                       ProjectHierarchyProperties properties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -276,7 +276,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                         projectGUID,
                                                         managedProjectGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -332,7 +332,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
     public void setupProjectTeam(String                    userId,
                                  String                    projectGUID,
                                  String                    actorGUID,
-                                 MetadataSourceOptions     metadataSourceOptions,
+                                 MakeAnchorOptions     metadataSourceOptions,
                                  AssignmentScopeProperties properties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -347,8 +347,8 @@ public class ProjectHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                        projectGUID,
                                                         actorGUID,
+                                                        projectGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
@@ -383,8 +383,8 @@ public class ProjectHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                        projectGUID,
                                                         actorGUID,
+                                                        projectGUID,
                                                         deleteOptions);
     }
 

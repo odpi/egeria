@@ -153,7 +153,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @param parentSolutionComponentGUID unique identifier of the parent solution component
      * @param childSolutionComponentGUID     unique identifier of the child solution component
      * @param relationshipProperties  description of the relationship.
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -161,7 +161,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     public void linkSubcomponent(String                        userId,
                                  String                        parentSolutionComponentGUID,
                                  String                        childSolutionComponentGUID,
-                                 MetadataSourceOptions         metadataSourceOptions,
+                                 MakeAnchorOptions             makeAnchorOptions,
                                  SolutionCompositionProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
@@ -178,7 +178,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
                                                         parentSolutionComponentGUID,
                                                         childSolutionComponentGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -224,7 +224,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param solutionComponentOneGUID unique identifier of the solution component at end 1
      * @param solutionComponentTwoGUID unique identifier of the solution component at end 2
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -233,7 +233,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     public void linkSolutionLinkingWire(String                        userId,
                                         String                        solutionComponentOneGUID,
                                         String                        solutionComponentTwoGUID,
-                                        MetadataSourceOptions         metadataSourceOptions,
+                                        MakeAnchorOptions             makeAnchorOptions,
                                         SolutionLinkingWireProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -250,7 +250,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
                                                         solutionComponentOneGUID,
                                                         solutionComponentTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -298,7 +298,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @param solutionRoleGUID unique identifier of the parent
      * @param solutionComponentGUID     unique identifier of the solution component
      * @param relationshipProperties  description of the relationship.
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -306,10 +306,10 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     public void linkSolutionComponentActor(String                           userId,
                                            String                           solutionRoleGUID,
                                            String                           solutionComponentGUID,
-                                           MetadataSourceOptions             metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            SolutionComponentActorProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
     {
         final String methodName = "linkSolutionComponentActor";
         final String end1GUIDParameterName = "parentSolutionRoleGUID";
@@ -323,7 +323,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
                                                         solutionRoleGUID,
                                                         solutionComponentGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

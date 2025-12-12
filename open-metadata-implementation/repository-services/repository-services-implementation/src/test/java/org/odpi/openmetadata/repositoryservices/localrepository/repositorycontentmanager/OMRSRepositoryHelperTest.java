@@ -513,7 +513,6 @@ public class OMRSRepositoryHelperTest
         object.setInstanceProvenanceType(InstanceProvenanceType.CONTENT_PACK);
         object.setMetadataCollectionId("TestHomeId");
         object.setGUID("TestInstanceGUID");
-        object.setInstanceURL("TestInstanceURL");
     }
 
     private OMRSRepositoryHelper createHelper() {

@@ -169,7 +169,7 @@ public class ProjectClient extends ConnectorContextClientBase
      */
     public void setupProjectDependency(String                      projectGUID,
                                        String                      dependsOnProjectGUID,
-                                       MetadataSourceOptions       metadataSourceOptions,
+                                       MakeAnchorOptions           metadataSourceOptions,
                                        ProjectDependencyProperties properties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -213,7 +213,7 @@ public class ProjectClient extends ConnectorContextClientBase
      */
     public void setupProjectHierarchy(String                     projectGUID,
                                       String                     managedProjectGUID,
-                                      MetadataSourceOptions      metadataSourceOptions,
+                                      MakeAnchorOptions          metadataSourceOptions,
                                       ProjectHierarchyProperties properties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -257,7 +257,7 @@ public class ProjectClient extends ConnectorContextClientBase
      */
     public void setupProjectTeam(String                    projectGUID,
                                  String                    actorGUID,
-                                 MetadataSourceOptions     metadataSourceOptions,
+                                 MakeAnchorOptions         metadataSourceOptions,
                                  AssignmentScopeProperties properties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException

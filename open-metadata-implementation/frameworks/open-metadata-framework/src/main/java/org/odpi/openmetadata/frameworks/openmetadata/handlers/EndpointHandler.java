@@ -149,7 +149,7 @@ public class EndpointHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param endpointGUID            unique identifier of the endpoint
      * @param itAssetGUID             unique identifier of the infrastructure asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -158,7 +158,7 @@ public class EndpointHandler extends OpenMetadataHandlerBase
     public void linkEndpointToITAsset(String                   userId,
                                       String                   itAssetGUID,
                                       String                   endpointGUID,
-                                      MetadataSourceOptions    metadataSourceOptions,
+                                      MakeAnchorOptions        makeAnchorOptions,
                                       ServerEndpointProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
@@ -175,7 +175,7 @@ public class EndpointHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
                                                         itAssetGUID,
                                                         endpointGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

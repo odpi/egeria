@@ -208,7 +208,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param validValueDefinitionGUID       unique identifier of the valid value definition
      * @param elementGUID           unique identifier of the implementation - probably an asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -216,12 +216,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkValidValueImplementation(String                              validValueDefinitionGUID,
                                              String                              elementGUID,
-                                             MetadataSourceOptions               metadataSourceOptions,
+                                             MakeAnchorOptions                   makeAnchorOptions,
                                              ValidValuesImplementationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkValidValueImplementation(connectorUserId, validValueDefinitionGUID, elementGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkValidValueImplementation(connectorUserId, validValueDefinitionGUID, elementGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -251,20 +251,20 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param elementGUID           unique identifier of the location
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkValidValuesAssignment(String                         elementGUID,
-                                          String                         validValueDefinitionGUID,
-                                          MetadataSourceOptions          metadataSourceOptions,
+    public void linkValidValuesAssignment(String                          elementGUID,
+                                          String                          validValueDefinitionGUID,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkValidValuesAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkValidValuesAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -293,7 +293,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param elementGUID           unique identifier of the location
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -301,12 +301,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkReferenceValueAssignment(String                             elementGUID,
                                              String                             validValueDefinitionGUID,
-                                             MetadataSourceOptions              metadataSourceOptions,
+                                             MakeAnchorOptions                  makeAnchorOptions,
                                              ReferenceValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkReferenceValueAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkReferenceValueAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -335,7 +335,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param validValueOneGUID          unique identifier of the first valid value
      * @param validValueTwoGUID          unique identifier of the second valid value
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -343,12 +343,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkAssociatedValidValues(String                          validValueOneGUID,
                                           String                          validValueTwoGUID,
-                                          MetadataSourceOptions           metadataSourceOptions,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           ValidValueAssociationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkAssociatedValidValues(connectorUserId, validValueOneGUID, validValueTwoGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkAssociatedValidValues(connectorUserId, validValueOneGUID, validValueTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -377,7 +377,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param validValueOneGUID          unique identifier of the first valid value
      * @param validValueTwoGUID          unique identifier of the second valid value
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -385,12 +385,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkConsistentValidValues(String                          validValueOneGUID,
                                           String                          validValueTwoGUID,
-                                          MetadataSourceOptions           metadataSourceOptions,
+                                          MakeAnchorOptions               makeAnchorOptions,
                                           ConsistentValidValuesProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkConsistentValidValues(connectorUserId, validValueOneGUID, validValueTwoGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkConsistentValidValues(connectorUserId, validValueOneGUID, validValueTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -419,7 +419,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param validValueOneGUID          unique identifier of the first valid value
      * @param validValueTwoGUID          unique identifier of the second valid value
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -427,12 +427,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkMappedValidValues(String                       validValueOneGUID,
                                       String                       validValueTwoGUID,
-                                      MetadataSourceOptions        metadataSourceOptions,
+                                      MakeAnchorOptions            makeAnchorOptions,
                                       ValidValuesMappingProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkMappedValidValues(connectorUserId, validValueOneGUID, validValueTwoGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkMappedValidValues(connectorUserId, validValueOneGUID, validValueTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -461,7 +461,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param valueValueSetGUID          unique identifier of the super team
      * @param valueValueMemberGUID            unique identifier of the valueValueMember
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -469,12 +469,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkValidValueMember(String                     valueValueSetGUID,
                                      String                     valueValueMemberGUID,
-                                     MetadataSourceOptions      metadataSourceOptions,
+                                     MakeAnchorOptions          makeAnchorOptions,
                                      ValidValueMemberProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkValidValueMember(connectorUserId, valueValueSetGUID, valueValueMemberGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkValidValueMember(connectorUserId, valueValueSetGUID, valueValueMemberGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -503,7 +503,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      *
      * @param referenceableGUID       unique identifier of the referenceable
      * @param validValueDefinitionGUID            unique identifier of the IT profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -511,12 +511,12 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      */
     public void linkSpecificationProperty(String                                    referenceableGUID,
                                           String                                    validValueDefinitionGUID,
-                                          MetadataSourceOptions                     metadataSourceOptions,
+                                          MakeAnchorOptions                         makeAnchorOptions,
                                           SpecificationPropertyAssignmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                    PropertyServerException,
                                                                                                                    UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkSpecificationProperty(connectorUserId, referenceableGUID, validValueDefinitionGUID, metadataSourceOptions, relationshipProperties);
+        validValueDefinitionHandler.linkSpecificationProperty(connectorUserId, referenceableGUID, validValueDefinitionGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

@@ -279,23 +279,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * Returns the identifier of the metadata repository.  This is the identifier used to register the
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
-     * This request has been deprecated because it does not work in a server without security (no userId)
-     * and to open up a secured server to allow requests without userIds is not a good idea.
-     *
-     * @return String  metadata collection id.
-     * @throws RepositoryErrorException  there is a problem communicating with the metadata repository.
-     */
-    @Deprecated
-    public String      getMetadataCollectionId() throws RepositoryErrorException
-    {
-        return metadataCollectionId;
-    }
-
-
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
      *
      * @param userId calling user
      * @return String  metadata collection id.

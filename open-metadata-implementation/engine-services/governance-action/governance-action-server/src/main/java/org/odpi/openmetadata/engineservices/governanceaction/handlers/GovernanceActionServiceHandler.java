@@ -132,7 +132,6 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               governanceConfiguration,
                                                                               governanceContextClient,
                                                                               governanceContextClient,
-                                                                              governanceContextClient,
                                                                               connectedAssetClient,
                                                                               governanceContextClient,
                                                                               governanceContextClient);

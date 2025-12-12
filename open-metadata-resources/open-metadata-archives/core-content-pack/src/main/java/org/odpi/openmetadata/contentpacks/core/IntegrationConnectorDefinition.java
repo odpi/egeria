@@ -300,10 +300,10 @@ public enum IntegrationConnectorDefinition
                                     "2eed7ad8-9189-4971-ba67-2de94efc7db3",
                                     "OMAG Server Platform Cataloguer",
                                     "Monitors the running OMAG Server Platform instances that are catalogued in the open metadata ecosystem and maintains the metadata that describes the servers and their configuration.",
-                                    null,
-                                    null,
-                                    null,
-                                    null,
+                                    "OMAGConnector",
+                                    SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                    new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                    "loading-bay/secrets/egeria-servers.omsecrets",
                                     ContentPackDefinition.EGERIA_CONTENT_PACK),
 
     OPEN_LINEAGE_API_PUBLISHER("2156bc98-973a-4859-908d-4ccc96f53cc5",
@@ -484,7 +484,7 @@ public enum IntegrationConnectorDefinition
                       "JacquardHarvester",
                       SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                       new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
-                      "loading-bay/secrets/jacquard.omsecrets",
+                      "loading-bay/secrets/egeria-servers.omsecrets",
                       ContentPackDefinition.PRODUCTS_CONTENT_PACK),
     ;
 

@@ -241,7 +241,7 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void deployITAsset(String                assetGUID,
                               String                destinationGUID,
-                              MetadataSourceOptions metadataSourceOptions,
+                              MakeAnchorOptions     metadataSourceOptions,
                               DeployedOnProperties  relationshipProperties) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
@@ -275,7 +275,7 @@ public class AssetClient extends ConnectorContextClientBase
      *
      * @param assetGUID       unique identifier of the asset
      * @param capabilityGUID           unique identifier of the destination asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -283,12 +283,12 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void linkSoftwareCapability(String                                assetGUID,
                                        String                                capabilityGUID,
-                                       MetadataSourceOptions                 metadataSourceOptions,
+                                       MakeAnchorOptions                     makeAnchorOptions,
                                        SupportedSoftwareCapabilityProperties relationshipProperties) throws InvalidParameterException,
                                                                                                             PropertyServerException,
                                                                                                             UserNotAuthorizedException
     {
-        assetHandler.linkSoftwareCapability(connectorUserId, assetGUID, capabilityGUID, metadataSourceOptions, relationshipProperties);
+        assetHandler.linkSoftwareCapability(connectorUserId, assetGUID, capabilityGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -325,7 +325,7 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void linkDataSetContent(String                   dataSetGUID,
                                    String                   dataContentAssetGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        metadataSourceOptions,
                                    DataSetContentProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -359,20 +359,20 @@ public class AssetClient extends ConnectorContextClientBase
      *
      * @param deployedAPIGUID          unique identifier of the super team
      * @param endpointGUID            unique identifier of the subteam
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAPIEndpoint(String                 deployedAPIGUID,
-                                String                 endpointGUID,
-                                MetadataSourceOptions  metadataSourceOptions,
+    public void linkAPIEndpoint(String                deployedAPIGUID,
+                                String                endpointGUID,
+                                MakeAnchorOptions     makeAnchorOptions,
                                 APIEndpointProperties relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
-        assetHandler.linkAPIEndpoint(connectorUserId, deployedAPIGUID, endpointGUID, metadataSourceOptions, relationshipProperties);
+        assetHandler.linkAPIEndpoint(connectorUserId, deployedAPIGUID, endpointGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -401,7 +401,7 @@ public class AssetClient extends ConnectorContextClientBase
      *
      * @param parentProcessGUID       unique identifier of the parent process
      * @param childProcessGUID            unique identifier of the child process
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -409,12 +409,12 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void linkProcessHierarchy(String                     parentProcessGUID,
                                      String                     childProcessGUID,
-                                     MetadataSourceOptions      metadataSourceOptions,
+                                     MakeAnchorOptions          makeAnchorOptions,
                                      ProcessHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        assetHandler.linkProcessHierarchy(connectorUserId, parentProcessGUID, childProcessGUID, metadataSourceOptions, relationshipProperties);
+        assetHandler.linkProcessHierarchy(connectorUserId, parentProcessGUID, childProcessGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -451,7 +451,7 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void linkNestedFiles(String                folderGUID,
                                 String                fileGUID,
-                                MetadataSourceOptions metadataSourceOptions,
+                                MakeAnchorOptions     metadataSourceOptions,
                                 NestedFileProperties relationshipProperties) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -494,7 +494,7 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void linkLinkedFiles(String                folderGUID,
                                 String                fileGUID,
-                                MetadataSourceOptions metadataSourceOptions,
+                                MakeAnchorOptions     metadataSourceOptions,
                                 NestedFileProperties  relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -528,7 +528,7 @@ public class AssetClient extends ConnectorContextClientBase
      *
      * @param parentFolderGUID               unique identifier of the parent folder
      * @param childFolderGUID         unique identifier of the associated child folder
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -536,12 +536,12 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public void linkFolderHierarchy(String                    parentFolderGUID,
                                     String                    childFolderGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     FolderHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        assetHandler.linkFolderHierarchy(connectorUserId, parentFolderGUID, childFolderGUID, metadataSourceOptions, relationshipProperties);
+        assetHandler.linkFolderHierarchy(connectorUserId, parentFolderGUID, childFolderGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -793,7 +793,7 @@ public class AssetClient extends ConnectorContextClientBase
      * Add an element to an integration connector's workload.
      *
      * @param integrationConnectorGUID        unique identifier of the integration connector.
-     * @param metadataSourceOptions options to control access to open metadata
+     * @param makeAnchorOptions options to control access to open metadata
      * @param catalogTargetProperties  properties describing the relationship characteristics.
      * @param elementGUID           unique identifier of the target element.
      * @return relationship GUID
@@ -803,7 +803,7 @@ public class AssetClient extends ConnectorContextClientBase
      */
     public String addCatalogTarget(String                  integrationConnectorGUID,
                                    String                  elementGUID,
-                                   MetadataSourceOptions   metadataSourceOptions,
+                                   MakeAnchorOptions       makeAnchorOptions,
                                    CatalogTargetProperties catalogTargetProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -811,7 +811,7 @@ public class AssetClient extends ConnectorContextClientBase
         return assetHandler.addCatalogTarget(connectorUserId,
                                              integrationConnectorGUID,
                                              elementGUID,
-                                             metadataSourceOptions,
+                                             makeAnchorOptions,
                                              catalogTargetProperties);
     }
 

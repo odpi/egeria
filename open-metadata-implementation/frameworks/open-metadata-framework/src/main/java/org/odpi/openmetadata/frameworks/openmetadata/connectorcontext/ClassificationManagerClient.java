@@ -1235,7 +1235,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param properties properties for the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1244,11 +1244,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     public void setupSemanticAssignment(String                       elementGUID,
                                         String                       glossaryTermGUID,
                                         SemanticAssignmentProperties properties,
-                                        MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+                                        MakeAnchorOptions            makeAnchorOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
-        stewardshipManagementHandler.setupSemanticAssignment(connectorUserId, elementGUID, glossaryTermGUID, properties, metadataSourceOptions);
+        stewardshipManagementHandler.setupSemanticAssignment(connectorUserId, elementGUID, glossaryTermGUID, properties, makeAnchorOptions);
     }
 
 
@@ -1278,20 +1278,20 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param elementGUID unique identifier of the metadata element to link
      * @param scopeGUID identifier of the governance definition to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addScopeToElement(String                elementGUID,
-                                  String                scopeGUID,
-                                  MetadataSourceOptions metadataSourceOptions,
-                                  ScopedByProperties    properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void addScopeToElement(String             elementGUID,
+                                  String             scopeGUID,
+                                  MakeAnchorOptions  makeAnchorOptions,
+                                  ScopedByProperties properties) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        stewardshipManagementHandler.addScopeToElement(connectorUserId, elementGUID, scopeGUID, metadataSourceOptions, properties);
+        stewardshipManagementHandler.addScopeToElement(connectorUserId, elementGUID, scopeGUID, makeAnchorOptions, properties);
     }
 
 
@@ -1321,7 +1321,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param elementGUID identifier of the governance definition to link
      * @param resourceGUID unique identifier of the metadata element to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1329,12 +1329,12 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      */
     public void addResourceListToElement(String                 elementGUID,
                                          String                 resourceGUID,
-                                         MetadataSourceOptions  metadataSourceOptions,
+                                         MakeAnchorOptions      makeAnchorOptions,
                                          ResourceListProperties properties) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        stewardshipManagementHandler.addResourceListToElement(connectorUserId, elementGUID, resourceGUID, metadataSourceOptions, properties);
+        stewardshipManagementHandler.addResourceListToElement(connectorUserId, elementGUID, resourceGUID, makeAnchorOptions, properties);
     }
 
 
@@ -1364,7 +1364,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param elementGUID identifier of the governance definition to link
      * @param moreInformationGUID unique identifier of the metadata element to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1372,12 +1372,12 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      */
     public void addMoreInformationToElement(String                    elementGUID,
                                             String                    moreInformationGUID,
-                                            MetadataSourceOptions     metadataSourceOptions,
+                                            MakeAnchorOptions         makeAnchorOptions,
                                             MoreInformationProperties properties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        stewardshipManagementHandler.addMoreInformationToElement(connectorUserId, elementGUID, moreInformationGUID, metadataSourceOptions, properties);
+        stewardshipManagementHandler.addMoreInformationToElement(connectorUserId, elementGUID, moreInformationGUID, makeAnchorOptions, properties);
     }
 
 
@@ -1407,7 +1407,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param elementGUID unique identifier of the metadata element to classify
      * @param properties details of the classification
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1415,11 +1415,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      */
     public void setConsolidatedDuplicateClassification(String                          elementGUID,
                                                        ConsolidatedDuplicateProperties properties,
-                                                       MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
-                                                                                                                     UserNotAuthorizedException,
-                                                                                                                     PropertyServerException
+                                                       MakeAnchorOptions               makeAnchorOptions) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
-        stewardshipManagementHandler.setConsolidatedDuplicateClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+        stewardshipManagementHandler.setConsolidatedDuplicateClassification(connectorUserId, elementGUID, properties, makeAnchorOptions);
     }
 
 
@@ -1448,24 +1448,24 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
      * @param sourceElementGUID unique identifier of one of the source elements
      * @param properties properties for the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void linkConsolidatedDuplicateToSourceElement(String                       elementGUID,
-                                                         String                       sourceElementGUID,
+    public void linkConsolidatedDuplicateToSourceElement(String                              elementGUID,
+                                                         String                              sourceElementGUID,
                                                          ConsolidatedDuplicateLinkProperties properties,
-                                                         MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+                                                         MakeAnchorOptions                   makeAnchorOptions) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         stewardshipManagementHandler.linkConsolidatedDuplicateToSourceElement(connectorUserId,
                                                                               elementGUID,
                                                                               sourceElementGUID,
                                                                               properties,
-                                                                              metadataSourceOptions);
+                                                                              makeAnchorOptions);
     }
 
 
@@ -1495,7 +1495,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param elementGUID unique identifier of the metadata element to classify
      * @param properties details of the classification
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1503,11 +1503,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      */
     public void setKnownDuplicateClassification(String                   elementGUID,
                                                 KnownDuplicateProperties properties,
-                                                MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+                                                MakeAnchorOptions        makeAnchorOptions) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        stewardshipManagementHandler.setKnownDuplicateClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+        stewardshipManagementHandler.setKnownDuplicateClassification(connectorUserId, elementGUID, properties, makeAnchorOptions);
     }
 
 
@@ -1537,7 +1537,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @param elementGUID unique identifier of the element
      * @param peerDuplicateGUID unique identifier of the peer duplicate
      * @param properties properties for the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1546,15 +1546,15 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     public void linkElementsAsPeerDuplicates(String                      elementGUID,
                                              String                      peerDuplicateGUID,
                                              PeerDuplicateLinkProperties properties,
-                                             MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                             MakeAnchorOptions           makeAnchorOptions) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         stewardshipManagementHandler.linkElementsAsPeerDuplicates(connectorUserId,
                                                                   elementGUID,
                                                                   peerDuplicateGUID,
                                                                   properties,
-                                                                  metadataSourceOptions);
+                                                                  makeAnchorOptions);
     }
 
 

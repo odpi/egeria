@@ -67,6 +67,8 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK);
+
 
         /*
          * Create the default integration group.

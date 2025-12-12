@@ -176,7 +176,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID     unique identifier of the element
      * @param templateGUID      unique identifier of the template
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -185,7 +185,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
     public void linkSourcedFrom(String                userId,
                                 String                elementGUID,
                                 String                templateGUID,
-                                MetadataSourceOptions metadataSourceOptions,
+                                MakeAnchorOptions     makeAnchorOptions,
                                 SourcedFromProperties relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -202,7 +202,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         templateGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -248,7 +248,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID     unique identifier of the element
      * @param templateGUID      unique identifier of the template
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -257,7 +257,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
     public void linkCatalogTemplate(String                    userId,
                                     String                    elementGUID,
                                     String                    templateGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     CatalogTemplateProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -274,7 +274,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         templateGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

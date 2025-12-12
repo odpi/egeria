@@ -157,7 +157,7 @@ public class ReferenceDataResource
                                                      @RequestBody (required = false)
                                                          NewRelationshipRequestBody requestBody)
     {
-        return restAPI.linkValidValuesAssignment(serverName, validValueDefinitionGUID, elementGUID, requestBody);
+        return restAPI.linkValidValueImplementation(serverName, validValueDefinitionGUID, elementGUID, requestBody);
     }
 
 

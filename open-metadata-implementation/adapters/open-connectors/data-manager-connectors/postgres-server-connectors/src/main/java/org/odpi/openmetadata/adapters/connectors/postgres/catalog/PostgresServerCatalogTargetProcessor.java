@@ -27,10 +27,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceablePro
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -497,7 +494,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
                 String relationshipGUID = integrationContext.getAssetClient().addCatalogTarget(friendshipConnectorGUID,
                                                                                                databaseGUID,
-                                                                                               integrationContext.getAssetClient().getMetadataSourceOptions(),
+                                                                                               new MakeAnchorOptions(integrationContext.getAssetClient().getMetadataSourceOptions()),
                                                                                                catalogTargetProperties);
 
                 auditLog.logMessage(methodName,

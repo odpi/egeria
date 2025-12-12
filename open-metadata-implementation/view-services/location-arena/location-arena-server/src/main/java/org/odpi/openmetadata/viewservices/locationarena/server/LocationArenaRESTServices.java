@@ -13,11 +13,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Adjace
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 
 
 /**
@@ -277,13 +275,10 @@ public class LocationArenaRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkPeerLocations(userId,
                                           locationOneGUID,
                                           locationTwoGUID,
-                                          metadataSourceOptions,
+                                          null,
                                           null);
             }
         }
@@ -403,13 +398,10 @@ public class LocationArenaRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkNestedLocation(userId,
                                            locationGUID,
                                            nestedLocationGUID,
-                                           metadataSourceOptions,
+                                           null,
                                            null);
             }
         }
@@ -529,13 +521,10 @@ public class LocationArenaRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkKnownLocation(userId,
                                            elementGUID,
                                            locationGUID,
-                                           metadataSourceOptions,
+                                           null,
                                            null);
             }
         }

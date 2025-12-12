@@ -284,6 +284,7 @@ public class RuntimeManagerRESTServices extends TokenController
                     omagServerPlatformConnector.setPlatformName(assetProperties.getResourceName());
                 }
 
+                omagServerPlatformConnector.setDelegatingUserId(userId);
                 omagServerPlatformConnector.start();
                 response.setElement(omagServerPlatformConnector.getPlatformReport());
                 omagServerPlatformConnector.disconnect();
@@ -500,6 +501,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 response.setElement(omagServerConnector.getServerReport());
                 omagServerConnector.disconnect();
@@ -561,6 +563,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 response.setSuccessMessage(omagServerConnector.activateServer());
                 omagServerConnector.disconnect();
@@ -616,6 +619,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.shutdownServer();
                 omagServerConnector.disconnect();
@@ -671,6 +675,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.shutdownAndUnregisterServer();
                 omagServerConnector.disconnect();
@@ -1230,6 +1235,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.addOpenMetadataArchiveFile(fileName);
                 omagServerConnector.disconnect();
@@ -1288,6 +1294,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.addOpenMetadataArchiveContent(openMetadataArchive);
                 omagServerConnector.disconnect();
@@ -1356,6 +1363,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof EngineHostConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.refreshEngineConfig(governanceEngineName);
                 omagServerConnector.disconnect();
@@ -1416,6 +1424,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof EngineHostConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.refreshEngineConfig();
                 omagServerConnector.disconnect();
@@ -1481,6 +1490,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 response.setProperties(omagServerConnector.getConfigurationProperties(connectorName));
                 omagServerConnector.disconnect();
@@ -1541,6 +1551,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.updateConfigurationProperties(requestBody.getConnectorName(),
                                                                   requestBody.getMergeUpdate(),
@@ -1605,6 +1616,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 if ((requestBody == null) || requestBody.getString() == null)
@@ -1675,6 +1687,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.updateConnectorConnection(connectorName, requestBody);
                 omagServerConnector.disconnect();
@@ -1735,6 +1748,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 if ((requestBody == null) || (requestBody.getName() == null))
@@ -1804,6 +1818,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 if ((requestBody == null) || (requestBody.getName() == null))
@@ -1876,6 +1891,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 omagServerConnector.refreshIntegrationGroupConfig(integrationGroupName);
@@ -1933,6 +1949,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 omagServerConnector.publishOpenLineageEvent(event);
@@ -1991,6 +2008,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 omagServerConnector.publishOpenLineageEvent(event);
@@ -2059,6 +2077,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 response.setFlag(omagServerConnector.connectToCohort(cohortName));
@@ -2120,6 +2139,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 response.setFlag(omagServerConnector.disconnectFromCohort(cohortName));
@@ -2180,6 +2200,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setDelegatingUserId(userId);
                 omagServerConnector.start();
 
                 response.setFlag(omagServerConnector.unregisterFromCohort(cohortName));

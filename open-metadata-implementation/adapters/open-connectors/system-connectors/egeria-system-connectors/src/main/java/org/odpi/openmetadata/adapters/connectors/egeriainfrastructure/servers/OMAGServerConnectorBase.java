@@ -32,6 +32,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
     private String   connectorName;
     private String   platformName = "OMAG Server Platform";
     private String   targetRootURL = null;
+    private String   delegatingUserId = null;
 
     protected EgeriaExtractor extractor = null;
 
@@ -85,6 +86,17 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
     public void setPlatformName(String platformName)
     {
         this.platformName = platformName;
+    }
+
+
+    /**
+     * Set up the delegating userId - needed for operational calls.
+     *
+     * @param delegatingUserId user id
+     */
+    public void setDelegatingUserId(String delegatingUserId)
+    {
+        this.delegatingUserId = delegatingUserId;
     }
 
 
@@ -144,7 +156,7 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
          */
         try
         {
-            extractor = new EgeriaExtractor(targetRootURL, platformName, serverName, secretsStoreConnectorMap, auditLog);
+            extractor = new EgeriaExtractor(targetRootURL, platformName, serverName, delegatingUserId, secretsStoreConnectorMap, auditLog);
         }
         catch (Exception error)
         {

@@ -174,20 +174,20 @@ public class ActorProfileClient extends ConnectorContextClientBase
      *
      * @param personOneGUID          unique identifier of the first person profile
      * @param personTwoGUID          unique identifier of the second person profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkPeerPerson(String                personOneGUID,
-                               String                personTwoGUID,
-                               MetadataSourceOptions metadataSourceOptions,
-                               PeerProperties        relationshipProperties) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public void linkPeerPerson(String            personOneGUID,
+                               String            personTwoGUID,
+                               MakeAnchorOptions makeAnchorOptions,
+                               PeerProperties    relationshipProperties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        actorProfileHandler.linkPeerPerson(connectorUserId, personOneGUID, personTwoGUID, metadataSourceOptions, relationshipProperties);
+        actorProfileHandler.linkPeerPerson(connectorUserId, personOneGUID, personTwoGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -216,7 +216,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      *
      * @param superTeamGUID          unique identifier of the super team
      * @param subteamGUID            unique identifier of the subteam
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -224,12 +224,12 @@ public class ActorProfileClient extends ConnectorContextClientBase
      */
     public void linkTeamStructure(String                  superTeamGUID,
                                   String                  subteamGUID,
-                                  MetadataSourceOptions   metadataSourceOptions,
+                                  MakeAnchorOptions       makeAnchorOptions,
                                   TeamStructureProperties relationshipProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        actorProfileHandler.linkTeamStructure(connectorUserId, superTeamGUID, subteamGUID, metadataSourceOptions, relationshipProperties);
+        actorProfileHandler.linkTeamStructure(connectorUserId, superTeamGUID, subteamGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -258,7 +258,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      *
      * @param assetGUID       unique identifier of the asset
      * @param itProfileGUID            unique identifier of the IT profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -266,12 +266,12 @@ public class ActorProfileClient extends ConnectorContextClientBase
      */
     public void linkAssetToProfile(String                            assetGUID,
                                    String                            itProfileGUID,
-                                   MetadataSourceOptions             metadataSourceOptions,
+                                   MakeAnchorOptions                 makeAnchorOptions,
                                    ITInfrastructureProfileProperties relationshipProperties) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
     {
-        actorProfileHandler.linkAssetToProfile(connectorUserId, assetGUID, itProfileGUID, metadataSourceOptions, relationshipProperties);
+        actorProfileHandler.linkAssetToProfile(connectorUserId, assetGUID, itProfileGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

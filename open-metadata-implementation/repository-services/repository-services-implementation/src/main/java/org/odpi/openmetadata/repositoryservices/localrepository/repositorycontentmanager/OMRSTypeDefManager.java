@@ -159,24 +159,4 @@ public interface OMRSTypeDefManager
     InstanceStatus getInitialStatus(String sourceName,
                                     String typeName,
                                     String methodName) throws TypeErrorException;
-
-
-    /**
-     * Return the URL string to use for direct access to the metadata instance.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param guid unique identifier for the instance.
-     * @return String URL with placeholder for variables such as userId.
-     */
-    String getEntityURL(String sourceName, String guid);
-
-
-    /**
-     * Return the URL string to use for direct access to the metadata instance.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param guid unique identifier for the instance.
-     * @return String URL with placeholder for variables such as userId.
-     */
-    String getRelationshipURL(String sourceName, String guid);
 }

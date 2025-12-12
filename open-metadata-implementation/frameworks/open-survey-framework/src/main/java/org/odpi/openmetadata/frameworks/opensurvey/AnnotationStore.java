@@ -145,7 +145,7 @@ public class AnnotationStore
                                                            OpenMetadataType.REPORT_ORIGINATOR.typeName,
                                                            engineActionGUID,
                                                            surveyReportGUID,
-                                                           newElementOptions,
+                                                           new MakeAnchorOptions(newElementOptions),
                                                            null);
         }
     }
@@ -599,7 +599,7 @@ public class AnnotationStore
                                                                      PropertyServerException
     {
 
-        NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
+        NewElementOptions newElementOptions = new NewElementOptions(this.getMakeAnchorOptions());
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(assetGUID);
@@ -622,7 +622,7 @@ public class AnnotationStore
                 annotationHandler.linkAnnotationToDescribedElement(userId,
                                                                    associatedElementGUID,
                                                                    annotationGUID,
-                                                                   newElementOptions,
+                                                                   new MakeAnchorOptions(newElementOptions),
                                                                    null);
             }
 
@@ -655,7 +655,7 @@ public class AnnotationStore
             annotationHandler.linkAnnotationToItsPredecessor(userId,
                                                              parentAnnotationGUID,
                                                              annotationGUID,
-                                                             getMetadataSourceOptions(),
+                                                             getMakeAnchorOptions(),
                                                              null);
         }
 
@@ -677,7 +677,7 @@ public class AnnotationStore
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        UpdateOptions updateOptions = new UpdateOptions(this.getMetadataSourceOptions());
+        UpdateOptions updateOptions = new UpdateOptions(this.getMakeAnchorOptions());
         updateOptions.setMergeUpdate(true);
 
         return annotationHandler.updateAnnotation(userId,
@@ -703,7 +703,7 @@ public class AnnotationStore
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        annotationHandler.linkRequestForActionTarget(userId, annotationGUID, elementGUID, getMetadataSourceOptions(), relationshipProperties);
+        annotationHandler.linkRequestForActionTarget(userId, annotationGUID, elementGUID, getMakeAnchorOptions(), relationshipProperties);
     }
 
 
@@ -721,7 +721,7 @@ public class AnnotationStore
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
     {
-        annotationHandler.detachRequestForActionTarget(userId, annotationGUID, elementGUID, new DeleteOptions(getMetadataSourceOptions()));
+        annotationHandler.detachRequestForActionTarget(userId, annotationGUID, elementGUID, new DeleteOptions(getMakeAnchorOptions()));
     }
 
 
@@ -737,7 +737,7 @@ public class AnnotationStore
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        DeleteOptions deleteOptions = new DeleteOptions(this.getMetadataSourceOptions());
+        DeleteOptions deleteOptions = new DeleteOptions(this.getMakeAnchorOptions());
 
         annotationHandler.deleteAnnotation(userId, annotationGUID, deleteOptions);
     }
@@ -788,17 +788,17 @@ public class AnnotationStore
      *
      * @return default values
      */
-    protected MetadataSourceOptions getMetadataSourceOptions()
+    protected MakeAnchorOptions getMakeAnchorOptions()
     {
-        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
 
-        metadataSourceOptions.setForLineage(forLineage);
-        metadataSourceOptions.setForDuplicateProcessing(forDuplicateProcessing);
-        metadataSourceOptions.setEffectiveTime(getEffectiveTime());
+        makeAnchorOptions.setForLineage(forLineage);
+        makeAnchorOptions.setForDuplicateProcessing(forDuplicateProcessing);
+        makeAnchorOptions.setEffectiveTime(getEffectiveTime());
 
-        metadataSourceOptions.setExternalSourceGUID(externalSourceGUID);
-        metadataSourceOptions.setExternalSourceName(externalSourceName);
+        makeAnchorOptions.setExternalSourceGUID(externalSourceGUID);
+        makeAnchorOptions.setExternalSourceName(externalSourceName);
 
-        return metadataSourceOptions;
+        return makeAnchorOptions;
     }
 }

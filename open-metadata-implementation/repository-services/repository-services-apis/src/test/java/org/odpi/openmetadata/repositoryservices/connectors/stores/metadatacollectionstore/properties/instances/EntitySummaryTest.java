@@ -29,7 +29,6 @@ public class EntitySummaryTest
     private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
     private String                 metadataCollectionId   = "TestHomeId";
     private String                 guid                   = "TestInstanceGUID";
-    private String                 instanceURL            = "TestInstanceURL";
     private List<Classification>   classifications        = new ArrayList<>();
 
 
@@ -63,7 +62,6 @@ public class EntitySummaryTest
         testObject.setInstanceProvenanceType(instanceProvenanceType);
         testObject.setMetadataCollectionId(metadataCollectionId);
         testObject.setGUID(guid);
-        testObject.setInstanceURL(instanceURL);
         testObject.setClassifications(classifications);
 
         return testObject;
@@ -88,7 +86,6 @@ public class EntitySummaryTest
         assertTrue(testObject.getInstanceProvenanceType().equals(instanceProvenanceType));
         assertTrue(testObject.getMetadataCollectionId().equals(metadataCollectionId));
         assertTrue(testObject.getGUID().equals(guid));
-        assertTrue(testObject.getInstanceURL().equals(instanceURL));
         assertTrue(testObject.getClassifications().equals(classifications));
     }
 
@@ -111,7 +108,6 @@ public class EntitySummaryTest
         assertTrue(testObject.getInstanceProvenanceType() == null);
         assertTrue(testObject.getMetadataCollectionId() == null);
         assertTrue(testObject.getGUID() == null);
-        assertTrue(testObject.getInstanceURL() == null);
         assertTrue(testObject.getClassifications() == null);
 
         testObject.setClassifications(new ArrayList<>());

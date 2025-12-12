@@ -178,7 +178,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param personRoleGUID       unique identifier of the person role
      * @param personProfileGUID            unique identifier of the person profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -187,7 +187,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
     public void linkPersonRoleToProfile(String                          userId,
                                         String                          personRoleGUID,
                                         String                          personProfileGUID,
-                                        MetadataSourceOptions           metadataSourceOptions,
+                                        MakeAnchorOptions               makeAnchorOptions,
                                         PersonRoleAppointmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException
@@ -204,7 +204,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                         personRoleGUID,
                                                         personProfileGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -249,7 +249,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param teamRoleGUID           unique identifier of the team role
      * @param teamProfileGUID        unique identifier of the team profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -258,7 +258,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
     public void linkTeamRoleToProfile(String                        userId,
                                       String                        teamRoleGUID,
                                       String                        teamProfileGUID,
-                                      MetadataSourceOptions         metadataSourceOptions,
+                                      MakeAnchorOptions             makeAnchorOptions,
                                       TeamRoleAppointmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
@@ -275,7 +275,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                         teamRoleGUID,
                                                         teamProfileGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -320,7 +320,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param itProfileRoleGUID       unique identifier of the IT profile role
      * @param itProfileGUID            unique identifier of the IT profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -329,7 +329,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
     public void linkITProfileRoleToProfile(String                             userId,
                                            String                             itProfileRoleGUID,
                                            String                             itProfileGUID,
-                                           MetadataSourceOptions              metadataSourceOptions,
+                                           MakeAnchorOptions                  makeAnchorOptions,
                                            ITProfileRoleAppointmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
@@ -346,7 +346,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                         itProfileRoleGUID,
                                                         itProfileGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

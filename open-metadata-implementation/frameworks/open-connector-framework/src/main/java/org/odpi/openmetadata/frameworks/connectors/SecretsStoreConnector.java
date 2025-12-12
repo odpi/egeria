@@ -110,6 +110,39 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
 
 
     /**
+     * Return the name of the configured secrets collection name.
+     *
+     * @return string name
+     */
+    public String getSecretsCollectionName()
+    {
+        return secretsCollectionName;
+    }
+
+
+    /**
+     * Return the location of the secrets store. (Endpoint network address.)
+     *
+     * @return string
+     */
+    public String getSecretsLocation()
+    {
+        return connectionBean.getEndpoint().getNetworkAddress();
+    }
+
+
+    /**
+     * Return the class name of this connector's provider.
+     *
+     * @return string
+     */
+    public String getSecretsProvider()
+    {
+        return connectionBean.getConnectorType().getConnectorProviderClassName();
+    }
+
+
+    /**
      * Request that the subclass refreshes its secrets.
      */
     protected abstract void refreshSecrets() throws ConnectorCheckedException;

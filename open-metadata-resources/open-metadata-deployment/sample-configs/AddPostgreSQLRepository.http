@@ -34,7 +34,7 @@ Content-Type: application/json
 {
     "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=repository_active_metadata_store",
     "databaseSchema": "repository_active_metadata_store",
-    "secretsStore": "~{defaultServersSecretsStore}~",
+    "secretsStore": "~{egeriaServersSecretsStore}~",
     "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 

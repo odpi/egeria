@@ -10,11 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AnnotationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -278,13 +275,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.attachAnnotationToReport(userId,
                                                  surveyReportGUID,
                                                  newAnnotationGUID,
-                                                 metadataSourceOptions,
+                                                 null,
                                                  null);
             }
         }
@@ -404,13 +398,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkAnnotationToDescribedElement(userId,
                                                          elementGUID,
                                                          annotationGUID,
-                                                         metadataSourceOptions,
+                                                         null,
                                                          null);
             }
         }
@@ -530,13 +521,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkAnnotationToItsPredecessor(userId,
                                                        previousAnnotationGUID,
                                                        newAnnotationGUID,
-                                                       metadataSourceOptions,
+                                                       null,
                                                        null);
             }
         }
@@ -656,13 +644,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkDiscoveredSchemaType(userId,
                                                  annotationGUID,
                                                  schemaTypeGUID,
-                                                 metadataSourceOptions,
+                                                 null,
                                                  null);
             }
         }
@@ -783,13 +768,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkResourceProfileData(userId,
                                                 annotationGUID,
                                                 assetGUID,
-                                                metadataSourceOptions,
+                                                null,
                                                 null);
             }
         }
@@ -910,13 +892,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkDataClassMatch(userId,
                                            annotationGUID,
                                            dataClassGUID,
-                                           metadataSourceOptions,
+                                           null,
                                            null);
             }
         }
@@ -1037,13 +1016,10 @@ public class DataDiscoveryRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkRequestForActionTarget(userId,
                                                    elementGUID,
                                                    annotationGUID,
-                                                   metadataSourceOptions,
+                                                   null,
                                                    null);
             }
         }
