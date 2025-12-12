@@ -60,6 +60,8 @@ public class APIPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         super.createGovernanceServices(ContentPackDefinition.APIS_CONTENT_PACK);
 
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.APIS_CONTENT_PACK);
+
         /*
          * Connect the governance engines to the governance services using the request types.
          */

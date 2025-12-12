@@ -151,7 +151,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param parentDataClassGUID    unique identifier of the parent data class
      * @param childDataClassGUID     unique identifier of the chile data class
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -160,7 +160,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
     public void linkNestedDataClass(String                         userId,
                                     String                         parentDataClassGUID,
                                     String                         childDataClassGUID,
-                                    MetadataSourceOptions          metadataSourceOptions,
+                                    MakeAnchorOptions              makeAnchorOptions,
                                     DataClassCompositionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
@@ -177,7 +177,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
                                                         parentDataClassGUID,
                                                         childDataClassGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -223,7 +223,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param parentDataClassGUID    unique identifier of the more generic data class
      * @param childDataClassGUID     unique identifier of the more specialized data class
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -232,7 +232,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
     public void linkSpecializedDataClass(String                       userId,
                                          String                       parentDataClassGUID,
                                          String                       childDataClassGUID,
-                                         MetadataSourceOptions        metadataSourceOptions,
+                                         MakeAnchorOptions            makeAnchorOptions,
                                          DataClassHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -249,7 +249,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
                                                         parentDataClassGUID,
                                                         childDataClassGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

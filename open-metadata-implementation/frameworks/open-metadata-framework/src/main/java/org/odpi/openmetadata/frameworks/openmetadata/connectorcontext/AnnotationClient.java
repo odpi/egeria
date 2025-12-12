@@ -172,7 +172,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      *
      * @param surveyReportGUID       unique identifier of the report
      * @param newAnnotationGUID           unique identifier of the  annotation
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -180,12 +180,12 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void attachAnnotationToReport(String                       surveyReportGUID,
                                          String                       newAnnotationGUID,
-                                         MetadataSourceOptions        metadataSourceOptions,
+                                         MakeAnchorOptions            makeAnchorOptions,
                                          ReportedAnnotationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        annotationHandler.attachAnnotationToReport(connectorUserId, surveyReportGUID, newAnnotationGUID, metadataSourceOptions, relationshipProperties);
+        annotationHandler.attachAnnotationToReport(connectorUserId, surveyReportGUID, newAnnotationGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -222,7 +222,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void linkAnnotationToDescribedElement(String                         elementGUID,
                                                  String                         annotationGUID,
-                                                 MetadataSourceOptions          metadataSourceOptions,
+                                                 MakeAnchorOptions              metadataSourceOptions,
                                                  AssociatedAnnotationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -256,7 +256,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      *
      * @param previousAnnotationGUID          unique identifier of the annotation from the previous run of the survey
      * @param newAnnotationGUID            unique identifier of the annotation from this run of the survey
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -264,12 +264,12 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void linkAnnotationToItsPredecessor(String                        previousAnnotationGUID,
                                                String                        newAnnotationGUID,
-                                               MetadataSourceOptions         metadataSourceOptions,
+                                               MakeAnchorOptions             makeAnchorOptions,
                                                AnnotationExtensionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                             PropertyServerException,
                                                                                                             UserNotAuthorizedException
     {
-        annotationHandler.linkAnnotationToItsPredecessor(connectorUserId, previousAnnotationGUID, newAnnotationGUID, metadataSourceOptions, relationshipProperties);
+        annotationHandler.linkAnnotationToItsPredecessor(connectorUserId, previousAnnotationGUID, newAnnotationGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -298,7 +298,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      *
      * @param annotationGUID       unique identifier of the annotation
      * @param schemaTypeGUID            unique identifier of the schema type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -306,12 +306,12 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void linkDiscoveredSchemaType(String                         annotationGUID,
                                          String                         schemaTypeGUID,
-                                         MetadataSourceOptions          metadataSourceOptions,
+                                         MakeAnchorOptions              makeAnchorOptions,
                                          DiscoveredSchemaTypeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException
     {
-        annotationHandler.linkDiscoveredSchemaType(connectorUserId, annotationGUID, schemaTypeGUID, metadataSourceOptions, relationshipProperties);
+        annotationHandler.linkDiscoveredSchemaType(connectorUserId, annotationGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -340,7 +340,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      *
      * @param annotationGUID               unique identifier of the annotation
      * @param assetGUID         unique identifier of the associated asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -348,12 +348,12 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void linkResourceProfileData(String                        annotationGUID,
                                         String                        assetGUID,
-                                        MetadataSourceOptions         metadataSourceOptions,
+                                        MakeAnchorOptions             makeAnchorOptions,
                                         ResourceProfileDataProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        annotationHandler.linkResourceProfileData(connectorUserId, annotationGUID, assetGUID, metadataSourceOptions, relationshipProperties);
+        annotationHandler.linkResourceProfileData(connectorUserId, annotationGUID, assetGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -382,7 +382,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      *
      * @param annotationGUID               unique identifier of the annotation
      * @param dataClassGUID         unique identifier of the associated data class
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -390,12 +390,12 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void linkDataClassMatch(String                   annotationGUID,
                                    String                   dataClassGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    DataClassMatchProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        annotationHandler.linkDataClassMatch(connectorUserId, annotationGUID, dataClassGUID, metadataSourceOptions, relationshipProperties);
+        annotationHandler.linkDataClassMatch(connectorUserId, annotationGUID, dataClassGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -424,7 +424,7 @@ public class AnnotationClient extends ConnectorContextClientBase
      *
      * @param annotationGUID               unique identifier of the annotation
      * @param elementGUID         unique identifier of the associated element
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -432,12 +432,12 @@ public class AnnotationClient extends ConnectorContextClientBase
      */
     public void linkRequestForActionTarget(String                           annotationGUID,
                                            String                           elementGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            RequestForActionTargetProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        annotationHandler.linkRequestForActionTarget(connectorUserId, annotationGUID, elementGUID, metadataSourceOptions, relationshipProperties);
+        annotationHandler.linkRequestForActionTarget(connectorUserId, annotationGUID, elementGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

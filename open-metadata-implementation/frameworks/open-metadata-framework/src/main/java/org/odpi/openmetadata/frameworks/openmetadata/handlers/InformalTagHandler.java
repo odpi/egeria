@@ -320,7 +320,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         tagGUID,
-                                                        metadataSourceOptions,
+                                                        new MakeAnchorOptions(metadataSourceOptions),
                                                         null);
     }
 

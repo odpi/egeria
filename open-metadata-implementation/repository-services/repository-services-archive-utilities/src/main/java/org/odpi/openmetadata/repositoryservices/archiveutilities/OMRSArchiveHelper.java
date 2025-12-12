@@ -1910,7 +1910,6 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         setInstanceAuditHeader(instanceHeader, type, status);
 
         instanceHeader.setGUID(guid);
-        instanceHeader.setInstanceURL(null);
     }
 
 

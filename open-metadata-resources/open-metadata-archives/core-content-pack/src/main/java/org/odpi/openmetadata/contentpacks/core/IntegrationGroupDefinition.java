@@ -83,9 +83,9 @@ public enum IntegrationGroupDefinition
     /**
      * Dynamic integration group supporting integration connectors extracting interesting information from the open metadata repositories that make useful digital products.
      */
-    AUTO_PRODUCT_MANAGER("bfb863f0-b552-4d6a-91d6-02d7988fcc9a",
-          "Egeria:IntegrationGroup:OpenMetadataDigitalProducts",
-          "OpenMetadataDigitalProductsIntegrationGroup",
+    AUTO_PRODUCT_MANAGER("4a99a249-8ec4-43a5-9157-4bff67619962",
+          "Egeria:IntegrationGroup:Jacquard",
+          "JacquardIntegrationGroup",
           "Dynamic integration group supporting integration connectors extracting interesting information from the open metadata repositories that make useful digital products.",
           ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 

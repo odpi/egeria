@@ -160,20 +160,20 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      *
      * @param elementGUID          unique identifier of the element
      * @param externalReferenceGUID          unique identifier of the external reference
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkExternalReference(String                     elementGUID,
-                                      String                     externalReferenceGUID,
-                                      MetadataSourceOptions      metadataSourceOptions,
+    public void linkExternalReference(String                          elementGUID,
+                                      String                          externalReferenceGUID,
+                                      MakeAnchorOptions               makeAnchorOptions,
                                       ExternalReferenceLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        externalReferenceHandler.linkExternalReference(connectorUserId, elementGUID, externalReferenceGUID, metadataSourceOptions, relationshipProperties);
+        externalReferenceHandler.linkExternalReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -202,7 +202,7 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      *
      * @param elementGUID          unique identifier of the first external reference
      * @param externalReferenceGUID          unique identifier of the second external reference
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -210,12 +210,12 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      */
     public void linkMediaReference(String                   elementGUID,
                                    String                   externalReferenceGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    MediaReferenceProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        externalReferenceHandler.linkMediaReference(connectorUserId, elementGUID, externalReferenceGUID, metadataSourceOptions, relationshipProperties);
+        externalReferenceHandler.linkMediaReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -244,7 +244,7 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      *
      * @param elementGUID       unique identifier of the element to connect
      * @param externalReferenceGUID            unique identifier of the external reference
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -252,12 +252,12 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      */
     public void linkCitedDocumentReference(String                      elementGUID,
                                            String                      externalReferenceGUID,
-                                           MetadataSourceOptions       metadataSourceOptions,
+                                           MakeAnchorOptions           makeAnchorOptions,
                                            CitedDocumentLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        externalReferenceHandler.linkCitedDocumentReference(connectorUserId, elementGUID, externalReferenceGUID, metadataSourceOptions, relationshipProperties);
+        externalReferenceHandler.linkCitedDocumentReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

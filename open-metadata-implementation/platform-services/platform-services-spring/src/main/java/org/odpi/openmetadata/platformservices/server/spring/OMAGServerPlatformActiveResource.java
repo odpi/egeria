@@ -14,9 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectorTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
@@ -74,9 +72,31 @@ public class OMAGServerPlatformActiveResource
 
                     )
                 })
-    public Date getPlatformStartTime()
+    public DateResponse getPlatformStartTime()
     {
         return platformAPI.getPlatformStartTime();
+    }
+
+
+
+    /**
+     * Retrieve the name of the organization running this platform.
+     *
+     * @return String description
+     */
+    @GetMapping(path = "/organization-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation( summary = "getServerPlatformOrganizationName",
+            description="Retrieve the name of the organization running this platform.",
+            responses = {
+                    @ApiResponse(responseCode = "200",description="OMAG Server Platform Owning Organization",
+                            content = @Content(mediaType ="application/json"))
+            })
+
+    public StringResponse getServerPlatformOrganizationName()
+    {
+        return platformAPI.getServerPlatformOrganizationName();
     }
 
 

@@ -39,8 +39,8 @@ Content-Type: application/json
   "localServerURL" : "~{egeriaEndpoint}~",
   "localServerUserId" : "simplenpa",
   "secretsStoreProvider" : "~{secretsStoreProvider}~",
-  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
   "maxPageSize" : 1000
 }
 
@@ -79,8 +79,8 @@ Content-Type: application/json
   "localServerURL" : "~{egeriaEndpoint}~",
   "localServerUserId" : "activenpa",
   "secretsStoreProvider" : "~{secretsStoreProvider}~",
-  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
   "maxPageSize" : 1000
 }
 
@@ -189,8 +189,8 @@ Content-Type: application/json
   "localServerURL" : "~{egeriaEndpoint}~",
   "localServerUserId" : "viewnpa",
   "secretsStoreProvider" : "~{secretsStoreProvider}~",
-  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
   "maxPageSize" : 1000
 }
 
@@ -207,8 +207,8 @@ Content-Type: application/json
   "omagserverName": "active-metadata-store",
   "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
   "secretsStoreProvider" : "~{secretsStoreProvider}~",
-  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
 }
 
 ###
@@ -227,8 +227,8 @@ Content-Type: application/json
   "localServerURL" : "~{egeriaEndpoint}~",
   "localServerUserId" : "enginenpa",
   "secretsStoreProvider" : "~{secretsStoreProvider}~",
-  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
   "maxPageSize" : 1000
 }
 
@@ -248,8 +248,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -259,8 +259,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -270,8 +270,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -281,8 +281,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -292,8 +292,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -303,8 +303,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -314,8 +314,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -325,8 +325,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -336,8 +336,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -347,8 +347,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -358,8 +358,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -369,8 +369,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -380,8 +380,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -391,8 +391,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -402,8 +402,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     },
     {
       "class": "EngineConfig",
@@ -413,8 +413,8 @@ Content-Type: application/json
       "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
       "omagserverName": "active-metadata-store",
       "secretsStoreProvider" : "~{secretsStoreProvider}~",
-      "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-      "secretsStoreCollection" : "~{defaultServersSecretsCollection}~"
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~"
     }
   ]
 
@@ -435,8 +435,8 @@ Content-Type: application/json
   "localServerURL" : "~{egeriaEndpoint}~",
   "localServerUserId" : "daemonnpa",
   "secretsStoreProvider" : "~{secretsStoreProvider}~",
-  "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-  "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+  "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+  "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
   "maxPageSize" : 1000
 }
 
@@ -453,17 +453,44 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Default"
+    },
+    {
+      "class": "IntegrationGroupConfig",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName" : "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+      "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Files"
+    },
+    {
+      "class": "IntegrationGroupConfig",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName" : "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+      "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenLineage"
+    },
+    {
+      "class": "IntegrationGroupConfig",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName" : "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+      "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Egeria"
     },
     {
         "class": "IntegrationGroupConfig",
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheAtlas"
     },
     {
@@ -471,8 +498,8 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheKafka"
     },
     {
@@ -480,8 +507,8 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenAPIs"
     },
     {
@@ -489,8 +516,8 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
     },
     {
@@ -498,8 +525,8 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:PostgreSQL"
     },
     {
@@ -507,8 +534,8 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
     },
     {
@@ -516,9 +543,9 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "secretsStoreProvider" : "~{secretsStoreProvider}~",
-        "secretsStoreLocation"  : "~{defaultServersSecretsStore}~",
-        "secretsStoreCollection" : "~{defaultServersSecretsCollection}~",
-        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataDigitalProducts"
+        "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+        "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Jacquard"
     }
 ]
 

@@ -190,7 +190,7 @@ public class UserIdentityClient extends ConnectorContextClientBase
      *
      * @param userIdentityGUID        unique identifier of the parent
      * @param profileGUID             unique identifier of the actor profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -198,12 +198,12 @@ public class UserIdentityClient extends ConnectorContextClientBase
      */
     public void linkIdentityToProfile(String                    userIdentityGUID,
                                       String                    profileGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
+                                      MakeAnchorOptions         makeAnchorOptions,
                                       ProfileIdentityProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        userIdentityHandler.linkIdentityToProfile(connectorUserId, userIdentityGUID, profileGUID, metadataSourceOptions, relationshipProperties);
+        userIdentityHandler.linkIdentityToProfile(connectorUserId, userIdentityGUID, profileGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

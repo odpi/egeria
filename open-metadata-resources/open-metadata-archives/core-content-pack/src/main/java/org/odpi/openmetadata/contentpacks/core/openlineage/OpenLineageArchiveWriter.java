@@ -38,6 +38,12 @@ public class OpenLineageArchiveWriter extends ContentPackBaseArchiveWriter
     public void getArchiveContent()
     {
         /*
+         * Add catalog templates
+         */
+        this.addSoftwareServerCatalogTemplates(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);
+
+        /*
          * Create Egeria's integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);

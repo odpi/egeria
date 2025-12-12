@@ -163,12 +163,12 @@ public class DataFieldClient extends ConnectorContextClientBase
      */
     public void linkNestedDataFields(String                    parentDataFieldGUID,
                                      String                    nestedDataFieldGUID,
-                                     MetadataSourceOptions     metadataSourceOptions,
+                                     MakeAnchorOptions         makeAnchorOptions,
                                      MemberDataFieldProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-        dataFieldHandler.linkNestedDataFields(connectorUserId, parentDataFieldGUID, nestedDataFieldGUID, metadataSourceOptions, relationshipProperties);
+        dataFieldHandler.linkNestedDataFields(connectorUserId, parentDataFieldGUID, nestedDataFieldGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

@@ -144,24 +144,24 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupAcceptedAnswer(String  userId,
-                                    String  questionCommentGUID,
-                                    String  answerCommentGUID,
-                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public void setupAcceptedAnswer(String            userId,
+                                    String            questionCommentGUID,
+                                    String            answerCommentGUID,
+                                    MakeAnchorOptions makeAnchorOptions) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                                         questionCommentGUID,
                                                         answerCommentGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         null);
     }
 

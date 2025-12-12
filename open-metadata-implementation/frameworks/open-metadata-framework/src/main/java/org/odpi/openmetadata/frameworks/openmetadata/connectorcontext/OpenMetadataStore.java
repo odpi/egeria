@@ -1606,7 +1606,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         return this.createRelatedElementsInStore(relationshipTypeName,
                                                  metadataElement1GUID,
                                                  metadataElement2GUID,
-                                                 this.getMetadataSourceOptions(),
+                                                 null,
                                                  this.getNewElementProperties(effectiveFrom,
                                                                               effectiveTo,
                                                                               properties));
@@ -1621,7 +1621,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param properties the properties of the relationship
      *
      * @return unique identifier of the new relationship
@@ -1634,7 +1634,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     public String createRelatedElementsInStore(String                relationshipTypeName,
                                                String                metadataElement1GUID,
                                                String                metadataElement2GUID,
-                                               MetadataSourceOptions metadataSourceOptions,
+                                               MakeAnchorOptions     makeAnchorOptions,
                                                NewElementProperties  properties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -1643,7 +1643,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                   relationshipTypeName,
                                                                                   metadataElement1GUID,
                                                                                   metadataElement2GUID,
-                                                                                  metadataSourceOptions,
+                                                                                  makeAnchorOptions,
                                                                                   properties);
 
         if ((relationshipGUID != null) && (parentContext.getIntegrationReportWriter() != null))

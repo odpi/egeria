@@ -146,7 +146,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param connectionGUID       unique identifier of the connection
      * @param connectorTypeGUID unique identifier of the connector type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -155,7 +155,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
     public void linkConnectionConnectorType(String                            userId,
                                             String                            connectionGUID,
                                             String                            connectorTypeGUID,
-                                            MetadataSourceOptions             metadataSourceOptions,
+                                            MakeAnchorOptions                 makeAnchorOptions,
                                             ConnectionConnectorTypeProperties relationshipProperties) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
@@ -172,7 +172,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                                         connectionGUID,
                                                         connectorTypeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -218,16 +218,16 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param connectionGUID          unique identifier of the connection
      * @param endpointGUID          unique identifier of the endpoint
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkConnectionEndpoint(String                       userId,
-                                       String                       connectionGUID,
-                                       String                       endpointGUID,
-                                       MetadataSourceOptions        metadataSourceOptions,
+    public void linkConnectionEndpoint(String                      userId,
+                                       String                      connectionGUID,
+                                       String                      endpointGUID,
+                                       MakeAnchorOptions           makeAnchorOptions,
                                        ConnectToEndpointProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
@@ -244,7 +244,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
                                                         connectionGUID,
                                                         endpointGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -289,7 +289,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param connectionGUID unique identifier of the virtual connection
      * @param embeddedConnectionGUID unique identifier of the embedded connection
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -298,10 +298,10 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
     public void linkEmbeddedConnection(String                       userId,
                                        String                       connectionGUID,
                                        String                       embeddedConnectionGUID,
-                                       MetadataSourceOptions        metadataSourceOptions,
+                                       MakeAnchorOptions            makeAnchorOptions,
                                        EmbeddedConnectionProperties relationshipProperties) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
     {
         final String methodName            = "linkEmbeddedConnection";
         final String end1GUIDParameterName = "connectionGUID";
@@ -315,7 +315,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
                                                         connectionGUID,
                                                         embeddedConnectionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -360,7 +360,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param assetGUID       unique identifier of the asset
      * @param connectionGUID            unique identifier of the connection
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -369,7 +369,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
     public void linkAssetToConnection(String                    userId,
                                       String                    assetGUID,
                                       String                    connectionGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
+                                      MakeAnchorOptions         makeAnchorOptions,
                                       AssetConnectionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -386,7 +386,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
                                                         assetGUID,
                                                         connectionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

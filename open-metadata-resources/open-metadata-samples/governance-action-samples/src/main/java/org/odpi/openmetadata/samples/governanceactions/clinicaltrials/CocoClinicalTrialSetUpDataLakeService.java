@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -693,7 +694,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
             governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
                                                                 volumeAssetGUID,
-                                                                governanceContext.getAssetClient().getMetadataSourceOptions(),
+                                                                new MakeAnchorOptions(governanceContext.getAssetClient().getMetadataSourceOptions()),
                                                                 catalogTargetProperties);
         }
     }

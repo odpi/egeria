@@ -175,7 +175,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @param governanceDefinitionOneGUID unique identifier of the first governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the second governance definition
      * @param relationshipTypeName name of the relationship to use
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -184,7 +184,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     public void linkPeerDefinitions(String                    governanceDefinitionOneGUID,
                                     String                    governanceDefinitionTwoGUID,
                                     String                    relationshipTypeName,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     PeerDefinitionProperties  relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -193,7 +193,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                         governanceDefinitionOneGUID,
                                                         governanceDefinitionTwoGUID,
                                                         relationshipTypeName,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipProperties);
     }
 
@@ -230,7 +230,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @param governanceDefinitionOneGUID unique identifier of the parent governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the child governance definition
      * @param relationshipTypeName name of the relationship to use
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -239,7 +239,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     public void attachSupportingDefinition(String                         governanceDefinitionOneGUID,
                                            String                         governanceDefinitionTwoGUID,
                                            String                         relationshipTypeName,
-                                           MetadataSourceOptions          metadataSourceOptions,
+                                           MakeAnchorOptions              makeAnchorOptions,
                                            SupportingDefinitionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -248,7 +248,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                governanceDefinitionOneGUID,
                                                                governanceDefinitionTwoGUID,
                                                                relationshipTypeName,
-                                                               metadataSourceOptions,
+                                                               makeAnchorOptions,
                                                                relationshipProperties);
 
     }
@@ -285,15 +285,15 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param elementGUID unique identifier of the metadata element to link
      * @param definitionGUID identifier of the governance definition to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addGovernanceDefinitionToElement(String                elementGUID,
-                                                 String                definitionGUID,
-                                                 MetadataSourceOptions metadataSourceOptions,
+    public void addGovernanceDefinitionToElement(String               elementGUID,
+                                                 String               definitionGUID,
+                                                 MakeAnchorOptions    makeAnchorOptions,
                                                  GovernedByProperties properties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
@@ -301,7 +301,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
         governanceDefinitionHandler.addGovernanceDefinitionToElement(connectorUserId,
                                                                      elementGUID,
                                                                      definitionGUID,
-                                                                     metadataSourceOptions,
+                                                                     makeAnchorOptions,
                                                                      properties);
     }
 
@@ -332,7 +332,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param scopeElementGUID            unique identifier of the element
      * @param actorGUID unique identifier of the actor
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -340,7 +340,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkAssignmentScope(String                    scopeElementGUID,
                                     String                    actorGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -348,7 +348,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
         governanceDefinitionHandler.linkAssignmentScope(connectorUserId,
                                                         actorGUID,
                                                         scopeElementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipProperties);
     }
 
@@ -378,7 +378,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param notificationTypeGUID            unique identifier of the notification type
      * @param elementGUID             unique identifier of the element to monitor
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -386,12 +386,12 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkMonitoredResource(String                      notificationTypeGUID,
                                       String                      elementGUID,
-                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MakeAnchorOptions           makeAnchorOptions,
                                       MonitoredResourceProperties relationshipProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
-        governanceDefinitionHandler.linkMonitoredResource(connectorUserId, notificationTypeGUID, elementGUID, metadataSourceOptions, relationshipProperties);
+        governanceDefinitionHandler.linkMonitoredResource(connectorUserId, notificationTypeGUID, elementGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -420,7 +420,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param notificationTypeGUID            unique identifier of the notification type
      * @param elementGUID             unique identifier of the element to monitor
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -428,12 +428,12 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkNotificationSubscriber(String                           notificationTypeGUID,
                                            String                           elementGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            NotificationSubscriberProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        governanceDefinitionHandler.linkNotificationSubscriber(connectorUserId, notificationTypeGUID, elementGUID, metadataSourceOptions, relationshipProperties);
+        governanceDefinitionHandler.linkNotificationSubscriber(connectorUserId, notificationTypeGUID, elementGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -463,7 +463,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param governanceMetricGUID            unique identifier of the metric
      * @param dataSourceGUID unique identifier of the asset
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -471,7 +471,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkGovernanceResults(String                      governanceMetricGUID,
                                       String                      dataSourceGUID,
-                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MakeAnchorOptions           makeAnchorOptions,
                                       GovernanceResultsProperties relationshipProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
@@ -479,7 +479,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
         governanceDefinitionHandler.linkGovernanceResults(connectorUserId,
                                                           dataSourceGUID,
                                                           governanceMetricGUID,
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           relationshipProperties);
     }
 
@@ -509,7 +509,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param governanceZoneGUID        unique identifier of the parent
      * @param nestedGovernanceZoneGUID             unique identifier of the actor profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -517,7 +517,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkGovernanceZones(String                  governanceZoneGUID,
                                     String                  nestedGovernanceZoneGUID,
-                                    MetadataSourceOptions   metadataSourceOptions,
+                                    MakeAnchorOptions       makeAnchorOptions,
                                     ZoneHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -525,7 +525,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
         governanceDefinitionHandler.linkGovernanceZones(connectorUserId,
                                                         governanceZoneGUID,
                                                         nestedGovernanceZoneGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipProperties);
     }
 
@@ -555,7 +555,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param subjectAreaGUID        unique identifier of the parent
      * @param nestedSubjectAreaGUID             unique identifier of the actor profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -563,7 +563,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkSubjectAreas(String                         subjectAreaGUID,
                                  String                         nestedSubjectAreaGUID,
-                                 MetadataSourceOptions          metadataSourceOptions,
+                                 MakeAnchorOptions              makeAnchorOptions,
                                  SubjectAreaHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -571,7 +571,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
         governanceDefinitionHandler.linkSubjectAreas(connectorUserId,
                                                      subjectAreaGUID,
                                                      nestedSubjectAreaGUID,
-                                                     metadataSourceOptions,
+                                                     makeAnchorOptions,
                                                      relationshipProperties);
     }
 
@@ -654,12 +654,12 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String licenseElement(String                elementGUID,
-                                 String                licenseTypeGUID,
-                                 MetadataSourceOptions metadataSourceOptions,
-                                 LicenseProperties     properties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public String licenseElement(String            elementGUID,
+                                 String            licenseTypeGUID,
+                                 MakeAnchorOptions metadataSourceOptions,
+                                 LicenseProperties properties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         return governanceDefinitionHandler.licenseElement(connectorUserId,
                                                           elementGUID,
@@ -713,7 +713,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param elementGUID unique identifier of the element
      * @param certificationTypeGUID unique identifier of the certification type
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param properties additional information, endorsements etc
      *
      * @return guid of certification relationship
@@ -723,7 +723,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public String certifyElement(String                  elementGUID,
                                  String                  certificationTypeGUID,
-                                 MetadataSourceOptions   metadataSourceOptions,
+                                 MakeAnchorOptions       makeAnchorOptions,
                                  CertificationProperties properties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -731,7 +731,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
         return governanceDefinitionHandler.certifyElement(connectorUserId,
                                                           elementGUID,
                                                           certificationTypeGUID,
-                                                          metadataSourceOptions,
+                                                          makeAnchorOptions,
                                                           properties);
     }
 
@@ -783,7 +783,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @param designGUID              unique identifier of the  governance definition or solution component etc
      * @param implementationGUID      unique identifier of the implementation
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -791,12 +791,12 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      */
     public void linkDesignToImplementation(String                  designGUID,
                                            String                  implementationGUID,
-                                           MetadataSourceOptions   metadataSourceOptions,
+                                           MakeAnchorOptions       makeAnchorOptions,
                                            ImplementedByProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        governanceDefinitionHandler.linkDesignToImplementation(connectorUserId, designGUID, implementationGUID, metadataSourceOptions, relationshipProperties);
+        governanceDefinitionHandler.linkDesignToImplementation(connectorUserId, designGUID, implementationGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -826,19 +826,19 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @param designGUID              unique identifier of the  governance definition or solution component etc
      * @param implementationResourceGUID      unique identifier of the implementation
      * @param relationshipProperties  additional properties for the relationship.
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkImplementationResource(String                           designGUID,
                                            String                           implementationResourceGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            ImplementationResourceProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
-        governanceDefinitionHandler.linkImplementationResource(connectorUserId, designGUID, implementationResourceGUID, metadataSourceOptions, relationshipProperties);
+        governanceDefinitionHandler.linkImplementationResource(connectorUserId, designGUID, implementationResourceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

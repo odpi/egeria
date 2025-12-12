@@ -187,7 +187,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param governanceDefinitionOneGUID unique identifier of the first governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the second governance definition
      * @param relationshipTypeName name of the relationship to use
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -197,7 +197,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                     String                    governanceDefinitionOneGUID,
                                     String                    governanceDefinitionTwoGUID,
                                     String                    relationshipTypeName,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     PeerDefinitionProperties  relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -214,7 +214,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         relationshipTypeName,
                                                         governanceDefinitionOneGUID,
                                                         governanceDefinitionTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -263,7 +263,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param governanceDefinitionOneGUID unique identifier of the parent governance definition
      * @param governanceDefinitionTwoGUID unique identifier of the child governance definition
      * @param relationshipTypeName name of the relationship to use
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -273,7 +273,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                            String                         governanceDefinitionOneGUID,
                                            String                         governanceDefinitionTwoGUID,
                                            String                         relationshipTypeName,
-                                           MetadataSourceOptions          metadataSourceOptions,
+                                           MakeAnchorOptions              makeAnchorOptions,
                                            SupportingDefinitionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -290,7 +290,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         relationshipTypeName,
                                                         governanceDefinitionOneGUID,
                                                         governanceDefinitionTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
 
     }
@@ -339,7 +339,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to link
      * @param definitionGUID identifier of the governance definition to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -348,7 +348,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void addGovernanceDefinitionToElement(String                userId,
                                                  String                elementGUID,
                                                  String                definitionGUID,
-                                                 MetadataSourceOptions metadataSourceOptions,
+                                                 MakeAnchorOptions     makeAnchorOptions,
                                                  GovernedByProperties  properties) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
@@ -357,7 +357,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         definitionGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -403,16 +403,16 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                        userId of user making request
      * @param scopeElementGUID            unique identifier of the element
      * @param actorGUID unique identifier of the actor
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAssignmentScope(String                   userId,
+    public void linkAssignmentScope(String                    userId,
                                     String                    scopeElementGUID,
                                     String                    actorGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -429,7 +429,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                         actorGUID,
                                                         scopeElementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -475,7 +475,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                        userId of user making request
      * @param notificationTypeGUID            unique identifier of the notification type
      * @param elementGUID             unique identifier of the element to monitor
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -484,7 +484,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkMonitoredResource(String                      userId,
                                       String                      notificationTypeGUID,
                                       String                      elementGUID,
-                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MakeAnchorOptions           makeAnchorOptions,
                                       MonitoredResourceProperties relationshipProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
@@ -501,7 +501,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
                                                         notificationTypeGUID,
                                                         elementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -547,7 +547,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                        userId of user making request
      * @param notificationTypeGUID            unique identifier of the notification type
      * @param elementGUID             unique identifier of the element to monitor
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -556,7 +556,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkNotificationSubscriber(String                           userId,
                                            String                           notificationTypeGUID,
                                            String                           elementGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            NotificationSubscriberProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
@@ -573,7 +573,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
                                                         notificationTypeGUID,
                                                         elementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -619,7 +619,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                        userId of user making request
      * @param governanceMetricGUID            unique identifier of the metric
      * @param dataSourceGUID unique identifier of the asset
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -628,7 +628,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkGovernanceResults(String                      userId,
                                       String                      governanceMetricGUID,
                                       String                      dataSourceGUID,
-                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MakeAnchorOptions           makeAnchorOptions,
                                       GovernanceResultsProperties relationshipProperties) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
@@ -645,7 +645,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
                                                         dataSourceGUID,
                                                         governanceMetricGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -691,7 +691,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param governanceZoneGUID        unique identifier of the parent
      * @param nestedGovernanceZoneGUID             unique identifier of the actor profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -700,7 +700,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkGovernanceZones(String                  userId,
                                     String                  governanceZoneGUID,
                                     String                  nestedGovernanceZoneGUID,
-                                    MetadataSourceOptions   metadataSourceOptions,
+                                    MakeAnchorOptions       makeAnchorOptions,
                                     ZoneHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -717,7 +717,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName,
                                                         governanceZoneGUID,
                                                         nestedGovernanceZoneGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -763,7 +763,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param subjectAreaGUID        unique identifier of the parent
      * @param nestedSubjectAreaGUID             unique identifier of the actor profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -772,7 +772,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkSubjectAreas(String                         userId,
                                  String                         subjectAreaGUID,
                                  String                         nestedSubjectAreaGUID,
-                                 MetadataSourceOptions          metadataSourceOptions,
+                                 MakeAnchorOptions              makeAnchorOptions,
                                  SubjectAreaHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -789,7 +789,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName,
                                                         subjectAreaGUID,
                                                         nestedSubjectAreaGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -887,7 +887,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param governanceActionGUID        unique identifier of the governance action
      * @param elementGUID             unique identifier of the target
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -896,7 +896,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkTargetForGovernanceAction(String                              userId,
                                               String                              governanceActionGUID,
                                               String                              elementGUID,
-                                              MetadataSourceOptions               metadataSourceOptions,
+                                              MakeAnchorOptions                   makeAnchorOptions,
                                               TargetForGovernanceActionProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
@@ -913,7 +913,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                         governanceActionGUID,
                                                         elementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -960,7 +960,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param governanceActionTypeGUID        unique identifier of the governance action type
      * @param governanceEngineGUID             unique identifier of the governance engine to call
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -969,7 +969,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkGovernanceActionExecutor(String                             userId,
                                              String                             governanceActionTypeGUID,
                                              String                             governanceEngineGUID,
-                                             MetadataSourceOptions              metadataSourceOptions,
+                                             MakeAnchorOptions                  makeAnchorOptions,
                                              GovernanceActionExecutorProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -986,7 +986,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
                                                         governanceActionTypeGUID,
                                                         governanceEngineGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1033,7 +1033,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param governanceActionProcessGUID        unique identifier of the governance action process
      * @param firstProcessStepGUID             unique identifier of the first step in the process
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1042,7 +1042,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkGovernanceActionProcessFlow(String                                userId,
                                                 String                                governanceActionProcessGUID,
                                                 String                                firstProcessStepGUID,
-                                                MetadataSourceOptions                 metadataSourceOptions,
+                                                MakeAnchorOptions                     makeAnchorOptions,
                                                 GovernanceActionProcessFlowProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                      PropertyServerException,
                                                                                                                      UserNotAuthorizedException
@@ -1059,7 +1059,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
                                                         governanceActionProcessGUID,
                                                         firstProcessStepGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1106,7 +1106,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param processStepGUID unique identifier of the element
      * @param nextProcessStepGUID unique identifier of the license type
      * @param properties   additional information, endorsements etc
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @return guid of license relationship
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1116,7 +1116,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public String linkNextProcessStep(String                                    userId,
                                       String                                    processStepGUID,
                                       String                                    nextProcessStepGUID,
-                                      MetadataSourceOptions                     metadataSourceOptions,
+                                      MakeAnchorOptions                         makeAnchorOptions,
                                       NextGovernanceActionProcessStepProperties properties) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
@@ -1125,7 +1125,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                                OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName,
                                                                processStepGUID,
                                                                nextProcessStepGUID,
-                                                               metadataSourceOptions,
+                                                               makeAnchorOptions,
                                                                relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -1183,26 +1183,26 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param elementGUID unique identifier of the element
      * @param licenseTypeGUID unique identifier of the license type
      * @param properties   additional information, endorsements etc
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @return guid of license relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String licenseElement(String                userId,
-                                 String                elementGUID,
-                                 String                licenseTypeGUID,
-                                 MetadataSourceOptions metadataSourceOptions,
-                                 LicenseProperties     properties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public String licenseElement(String            userId,
+                                 String            elementGUID,
+                                 String            licenseTypeGUID,
+                                 MakeAnchorOptions makeAnchorOptions,
+                                 LicenseProperties properties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         return openMetadataClient.createRelatedElementsInStore(userId,
                                                                OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
                                                                elementGUID,
                                                                licenseTypeGUID,
-                                                               metadataSourceOptions,
+                                                               makeAnchorOptions,
                                                                relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -1270,7 +1270,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public String certifyElement(String                  userId,
                                  String                  elementGUID,
                                  String                  certificationTypeGUID,
-                                 MetadataSourceOptions   metadataSourceOptions,
+                                 MakeAnchorOptions       metadataSourceOptions,
                                  CertificationProperties properties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1437,7 +1437,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param designGUID              unique identifier of the  governance definition or solution component etc
      * @param implementationGUID      unique identifier of the implementation
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1446,7 +1446,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkDesignToImplementation(String                  userId,
                                            String                  designGUID,
                                            String                  implementationGUID,
-                                           MetadataSourceOptions   metadataSourceOptions,
+                                           MakeAnchorOptions       makeAnchorOptions,
                                            ImplementedByProperties relationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
@@ -1463,7 +1463,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                                         designGUID,
                                                         implementationGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1510,7 +1510,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param designGUID              unique identifier of the  governance definition or solution component etc
      * @param implementationResourceGUID      unique identifier of the implementation
      * @param relationshipProperties  additional properties for the relationship.
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -1518,7 +1518,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public void linkImplementationResource(String                           userId,
                                            String                           designGUID,
                                            String                           implementationResourceGUID,
-                                           MetadataSourceOptions            metadataSourceOptions,
+                                           MakeAnchorOptions                makeAnchorOptions,
                                            ImplementationResourceProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
@@ -1535,7 +1535,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
                                                         designGUID,
                                                         implementationResourceGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

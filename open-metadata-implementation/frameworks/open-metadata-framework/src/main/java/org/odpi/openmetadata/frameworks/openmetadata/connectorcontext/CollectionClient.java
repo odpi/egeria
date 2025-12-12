@@ -267,7 +267,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param parentGUID  unique identifier of the element being described
      * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -275,12 +275,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void linkSolutionDesign(String                   parentGUID,
                                    String                   solutionBlueprintGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    SolutionDesignProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        collectionHandler.linkSolutionDesign(connectorUserId, parentGUID, solutionBlueprintGUID, metadataSourceOptions, relationshipProperties);
+        collectionHandler.linkSolutionDesign(connectorUserId, parentGUID, solutionBlueprintGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -310,7 +310,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param consumerDigitalProductGUID unique identifier of the digital product that has the dependency.
      * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
-     * @param metadataSourceOptions      options to control access to open metadata
+     * @param makeAnchorOptions      options to control access to open metadata
      * @param relationshipProperties     description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -318,12 +318,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void linkDigitalProductDependency(String                             consumerDigitalProductGUID,
                                              String                             consumedDigitalProductGUID,
-                                             MetadataSourceOptions              metadataSourceOptions,
+                                             MakeAnchorOptions                  makeAnchorOptions,
                                              DigitalProductDependencyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
     {
-        collectionHandler.linkDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, metadataSourceOptions, relationshipProperties);
+        collectionHandler.linkDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -352,7 +352,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param digitalSubscriberGUID   unique identifier of the subscriber (referenceable)
      * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
-     * @param metadataSourceOptions   options to control access to open metadata
+     * @param makeAnchorOptions   options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -360,12 +360,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void linkSubscriber(String                      digitalSubscriberGUID,
                                String                      digitalSubscriptionGUID,
-                               MetadataSourceOptions       metadataSourceOptions,
+                               MakeAnchorOptions           makeAnchorOptions,
                                DigitalSubscriberProperties relationshipProperties) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        collectionHandler.linkSubscriber(connectorUserId, digitalSubscriberGUID, digitalSubscriptionGUID, metadataSourceOptions, relationshipProperties);
+        collectionHandler.linkSubscriber(connectorUserId, digitalSubscriberGUID, digitalSubscriptionGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -394,7 +394,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param digitalProductGUID            unique identifier of the digital product
      * @param digitalProductManagerRoleGUID unique identifier of the product manager role
-     * @param metadataSourceOptions         options to control access to open metadata
+     * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -402,12 +402,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void linkProductManager(String                    digitalProductGUID,
                                    String                    digitalProductManagerRoleGUID,
-                                   MetadataSourceOptions     metadataSourceOptions,
+                                   MakeAnchorOptions         makeAnchorOptions,
                                    AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        collectionHandler.linkProductManager(connectorUserId, digitalProductGUID, digitalProductManagerRoleGUID, metadataSourceOptions, relationshipProperties);
+        collectionHandler.linkProductManager(connectorUserId, digitalProductGUID, digitalProductManagerRoleGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -436,7 +436,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param agreementGUID          unique identifier of the agreement
      * @param actorGUID              unique identifier of the actor
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @return unique identifier of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -445,12 +445,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public String linkAgreementActor(String                   agreementGUID,
                                      String                   actorGUID,
-                                     MetadataSourceOptions    metadataSourceOptions,
+                                     MakeAnchorOptions        makeAnchorOptions,
                                      AgreementActorProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        return collectionHandler.linkAgreementActor(connectorUserId, agreementGUID, actorGUID, metadataSourceOptions, relationshipProperties);
+        return collectionHandler.linkAgreementActor(connectorUserId, agreementGUID, actorGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -477,7 +477,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param agreementGUID          unique identifier of the agreement
      * @param agreementItemGUID      unique identifier of the agreement item
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -485,12 +485,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void linkAgreementItem(String                  agreementGUID,
                                   String                  agreementItemGUID,
-                                  MetadataSourceOptions   metadataSourceOptions,
+                                  MakeAnchorOptions       makeAnchorOptions,
                                   AgreementItemProperties relationshipProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        collectionHandler.linkAgreementItem(connectorUserId, agreementGUID, agreementItemGUID, metadataSourceOptions, relationshipProperties);
+        collectionHandler.linkAgreementItem(connectorUserId, agreementGUID, agreementItemGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -519,7 +519,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param agreementGUID          unique identifier of the agreement
      * @param externalReferenceGUID  unique identifier of the external reference describing the location of the contract
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -527,12 +527,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void linkContract(String                 agreementGUID,
                              String                 externalReferenceGUID,
-                             MetadataSourceOptions  metadataSourceOptions,
+                             MakeAnchorOptions      makeAnchorOptions,
                              ContractLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        collectionHandler.linkContract(connectorUserId, agreementGUID, externalReferenceGUID, metadataSourceOptions, relationshipProperties);
+        collectionHandler.linkContract(connectorUserId, agreementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -923,7 +923,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * Add an element to a collection.
      *
      * @param collectionGUID        unique identifier of the collection.
-     * @param metadataSourceOptions options to control access to open metadata
+     * @param makeAnchorOptions options to control access to open metadata
      * @param membershipProperties  properties describing the membership characteristics.
      * @param elementGUID           unique identifier of the element.
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -932,12 +932,12 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public void addToCollection(String                         collectionGUID,
                                 String                         elementGUID,
-                                MetadataSourceOptions          metadataSourceOptions,
+                                MakeAnchorOptions              makeAnchorOptions,
                                 CollectionMembershipProperties membershipProperties) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        collectionHandler.addToCollection(connectorUserId, collectionGUID, elementGUID, metadataSourceOptions, membershipProperties);
+        collectionHandler.addToCollection(connectorUserId, collectionGUID, elementGUID, makeAnchorOptions, membershipProperties);
     }
 
 

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -45,7 +46,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
      * @param elementTwoGUID unique identifier of the element at end two
      * @param relationshipTypeName lineage relationship name
      * @param properties   additional information, endorsements etc
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @return guid of lineage relationship
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -56,7 +57,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
                               String                        elementOneGUID,
                               String                        elementTwoGUID,
                               String                        relationshipTypeName,
-                              MetadataSourceOptions         metadataSourceOptions,
+                              MakeAnchorOptions             makeAnchorOptions,
                               LineageRelationshipProperties properties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -65,7 +66,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
                                                                relationshipTypeName,
                                                                elementOneGUID,
                                                                elementTwoGUID,
-                                                               metadataSourceOptions,
+                                                               makeAnchorOptions,
                                                                relationshipBuilder.getNewElementProperties(properties));
     }
 

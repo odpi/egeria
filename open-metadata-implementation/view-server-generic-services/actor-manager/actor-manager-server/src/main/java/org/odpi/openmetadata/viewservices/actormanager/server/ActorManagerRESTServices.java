@@ -11,15 +11,12 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -289,13 +286,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkAssetToProfile(userId,
                                            assetGUID,
                                            itProfileGUID,
-                                           metadataSourceOptions,
+                                           null,
                                            null);
             }
         }
@@ -755,10 +749,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkPersonRoleToProfile(String                  serverName,
-                                                String                  urlMarker,
-                                                String                  personRoleGUID,
-                                                String                  personProfileGUID,
+    public VoidResponse linkPersonRoleToProfile(String                     serverName,
+                                                String                     urlMarker,
+                                                String                     personRoleGUID,
+                                                String                     personProfileGUID,
                                                 NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkPersonRoleToProfile";
@@ -795,13 +789,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkPersonRoleToProfile(userId,
                                                 personRoleGUID,
                                                 personProfileGUID,
-                                                metadataSourceOptions,
+                                                null,
                                                 null);
             }
         }
@@ -917,13 +908,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkTeamRoleToProfile(userId,
                                               teamRoleGUID,
                                               teamProfileGUID,
-                                              metadataSourceOptions,
+                                              null,
                                               null);
             }
         }
@@ -1048,13 +1036,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkITProfileRoleToProfile(userId,
                                                    itProfileRoleGUID,
                                                    itProfileGUID,
-                                                   metadataSourceOptions,
+                                                   null,
                                                    null);
             }
         }
@@ -1557,13 +1542,10 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkIdentityToProfile(userId,
                                               userIdentityGUID,
                                               profileGUID,
-                                              metadataSourceOptions,
+                                              null,
                                               null);
             }
         }
@@ -1673,10 +1655,7 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.addSecurityGroupMembership(userId, userIdentityGUID, null, metadataSourceOptions);
+                handler.addSecurityGroupMembership(userId, userIdentityGUID, null, null);
             }
         }
         catch (Throwable error)
@@ -1736,10 +1715,7 @@ public class ActorManagerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.addSecurityGroupMembership(userId, userIdentityGUID, null, metadataSourceOptions);
+                handler.addSecurityGroupMembership(userId, userIdentityGUID, null, null);
             }
         }
         catch (Throwable error)

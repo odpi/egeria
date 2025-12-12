@@ -198,43 +198,17 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                      OpenMetadataType.ASSET.typeName,
                                                      null);
 
-                Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
-
-                secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsCollectionName);
-
-                String secretStoreEndpointGUID = this.addEndpoint(connectorGUID,
-                                                                  DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                                                  OpenMetadataType.ASSET.typeName,
-                                                                  null,
-                                                                  qualifiedName + ":SecretStoreEndpoint",
-                                                                  displayName + " secret store endpoint",
-                                                                  null,
-                                                                  secretsStoreFileName,
-                                                                  null,
-                                                                  null);
-
-                String secretsStoreConnectionGUID = this.addConnection(OpenMetadataType.CONNECTION.typeName,
-                                                                       qualifiedName + ":SecretsStoreConnection",
-                                                                       displayName + " secrets store connection",
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       null,
-                                                                       secretsStoreConfigurationProperties,
-                                                                       null,
-                                                                       secretsStoreConnectorTypeGUID,
-                                                                       secretStoreEndpointGUID,
-                                                                       connectorGUID,
-                                                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                                                       OpenMetadataType.ASSET.typeName,
-                                                                       null);
-
-                this.addEmbeddedConnection(connectionGUID,
-                                           0,
-                                           secretsStorePurpose,
-                                           null,
-                                           secretsStoreConnectionGUID);
+                addSecretsConnection(connectionGUID,
+                                     qualifiedName,
+                                     displayName,
+                                     connectorGUID,
+                                     DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                     OpenMetadataType.ASSET.typeName,
+                                     null,
+                                     secretsCollectionName,
+                                     secretsStorePurpose,
+                                     secretsStoreConnectorTypeGUID,
+                                     secretsStoreFileName);
             }
 
             if ((connectorGUID != null) && (connectionGUID != null))
@@ -252,6 +226,71 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         return null;
     }
 
+
+
+    /**
+     * Add a secrets store connection.
+     *
+     * @param parentConnectionGUID unique identifier of template
+     * @param anchorGUID unique identifier of anchor
+     * @param anchorTypeName type of anchor
+     * @param anchorDomainName domain of anchor
+     * @param anchorScopeGUID scope of anchor
+     * @param secretsCollectionName            name of collection of secrets to use in the secrets store
+     * @param secretsStorePurpose              type of authentication information provided by the secrets store
+     * @param secretsStoreConnectorTypeGUID    optional connector type for secrets store
+     * @param secretsStoreFileName             location of the secrets store
+     */
+    public void   addSecretsConnection(String parentConnectionGUID,
+                                       String parentQualifiedName,
+                                       String parentDisplayName,
+                                       String anchorGUID,
+                                       String anchorTypeName,
+                                       String anchorDomainName,
+                                       String anchorScopeGUID,
+                                       String secretsCollectionName,
+                                       String secretsStorePurpose,
+                                       String secretsStoreConnectorTypeGUID,
+                                       String secretsStoreFileName)
+    {
+        Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
+
+        secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsCollectionName);
+
+        String secretStoreEndpointGUID = this.addEndpoint(anchorGUID,
+                                                          anchorTypeName,
+                                                          anchorDomainName,
+                                                          anchorScopeGUID,
+                                                          parentQualifiedName + ":SecretStoreEndpoint",
+                                                          parentDisplayName + " secret store endpoint",
+                                                          null,
+                                                          secretsStoreFileName,
+                                                          null,
+                                                          null);
+
+        String secretsStoreConnectionGUID = this.addConnection(OpenMetadataType.CONNECTION.typeName,
+                                                               parentQualifiedName + ":SecretsStoreConnection",
+                                                               parentDisplayName + " secrets store connection",
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               secretsStoreConfigurationProperties,
+                                                               null,
+                                                               secretsStoreConnectorTypeGUID,
+                                                               secretStoreEndpointGUID,
+                                                               anchorGUID,
+                                                               anchorTypeName,
+                                                               anchorDomainName,
+                                                               anchorScopeGUID);
+
+        this.addEmbeddedConnection(parentConnectionGUID,
+                                   0,
+                                   secretsStorePurpose,
+                                   null,
+                                   secretsStoreConnectionGUID);
+    }
 
 
     /**

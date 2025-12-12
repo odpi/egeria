@@ -69,7 +69,6 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
     }
 
 
-
     /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration

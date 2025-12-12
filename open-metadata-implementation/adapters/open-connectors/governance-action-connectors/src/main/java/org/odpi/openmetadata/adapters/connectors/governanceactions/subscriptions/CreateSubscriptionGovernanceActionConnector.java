@@ -31,6 +31,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Notif
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -305,7 +306,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
                             collectionMembershipProperties.setMembershipType("nested-subscription");
 
-                            productClient.addToCollection(subscriptionGUID, childSubscriptionGUID, productClient.getMetadataSourceOptions(), collectionMembershipProperties);
+                            productClient.addToCollection(subscriptionGUID, childSubscriptionGUID, new MakeAnchorOptions(productClient.getMetadataSourceOptions()), collectionMembershipProperties);
                         }
                         else if (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.ASSET.typeName))
                         {
@@ -416,7 +417,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         collectionClient.linkAgreementActor(subscriptionGUID,
                                             subscriptionRequesterGUID,
-                                            collectionClient.getMetadataSourceOptions(),
+                                            new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                             agreementActorProperties);
 
         for (ActionTargetElement productOwner : productOwners)
@@ -427,7 +428,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
                 collectionClient.linkAgreementActor(subscriptionGUID,
                                                     productOwner.getActionTargetGUID(),
-                                                    collectionClient.getMetadataSourceOptions(),
+                                                    new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                     agreementActorProperties);
             }
         }
@@ -519,7 +520,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         classificationManagerClient.addResourceListToElement(subscriptionGUID,
                                                              cancelSubscriptionGUID,
-                                                             classificationManagerClient.getMetadataSourceOptions(),
+                                                             new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
                                                              resourceListProperties);
 
 
@@ -557,7 +558,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                 {
                     governanceDefinitionClient.addGovernanceDefinitionToElement(subscriptionGUID,
                                                                                 serviceLevelObjective.getActionTargetGUID(),
-                                                                                governanceDefinitionClient.getMetadataSourceOptions(),
+                                                                                new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
                                                                                 governedByProperties);
                 }
             }
@@ -635,7 +636,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         governanceDefinitionClient.linkNotificationSubscriber(notificationTypeGUID,
                                                               provisioningProcessGUID,
-                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
                                                               notificationSubscriberProperties);
 
 
@@ -650,13 +651,14 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         governanceDefinitionClient.linkDesignToImplementation(subscriptionGUID,
                                                               provisioningProcessGUID,
-                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
                                                               implementedByProperties);
 
         /*
          * Link the subscription to the destination asset,
          */
         CollectionClient collectionClient = governanceContext.getCollectionClient();
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(collectionClient.getMetadataSourceOptions());
 
         DigitalSubscriberProperties digitalSubscriberProperties = new DigitalSubscriberProperties();
 
@@ -664,10 +666,10 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         collectionClient.linkSubscriber(targetAssetGUID,
                                         subscriptionGUID,
-                                        collectionClient.getMetadataSourceOptions(),
+                                        makeAnchorOptions,
                                         digitalSubscriberProperties);
 
-        collectionClient.linkSubscriber(targetAssetGUID, subscriptionGUID, collectionClient.getMetadataSourceOptions(), null);
+        collectionClient.linkSubscriber(targetAssetGUID, subscriptionGUID, makeAnchorOptions, null);
 
         /*
          * Add the license to the destination data asset.
@@ -685,7 +687,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
                     governanceDefinitionClient.licenseElement(targetAssetGUID,
                                                               governanceDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
                                                               licenseProperties);
                 }
             }

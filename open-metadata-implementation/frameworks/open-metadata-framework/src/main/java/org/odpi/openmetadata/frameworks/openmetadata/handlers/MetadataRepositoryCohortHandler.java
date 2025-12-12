@@ -153,7 +153,7 @@ public class MetadataRepositoryCohortHandler extends OpenMetadataHandlerBase
      * @param userId                  userId of user making request
      * @param metadataRepositoryCohortGUID             unique identifier of the cohort
      * @param cohortMemberGUID            unique identifier of the member
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -162,7 +162,7 @@ public class MetadataRepositoryCohortHandler extends OpenMetadataHandlerBase
     public void linkCohortToMember(String                       userId,
                                    String                       metadataRepositoryCohortGUID,
                                    String                       cohortMemberGUID,
-                                   MetadataSourceOptions        metadataSourceOptions,
+                                   MakeAnchorOptions            makeAnchorOptions,
                                    MetadataCohortPeerProperties relationshipProperties) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
@@ -179,7 +179,7 @@ public class MetadataRepositoryCohortHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName,
                                                         cohortMemberGUID,
                                                         metadataRepositoryCohortGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

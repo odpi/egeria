@@ -65,12 +65,13 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
      * @param specificTypeName type name override
      */
     public SoftwareCapabilityClient(SoftwareCapabilityClient template,
-                                    String      specificTypeName)
+                                    String                   specificTypeName)
     {
         super(template);
 
         this.softwareCapabilityHandler = new SoftwareCapabilityHandler(template.softwareCapabilityHandler, specificTypeName);
     }
+
 
     /**
      * Create a new softwareCapability.
@@ -171,7 +172,7 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
      *
      * @param softwareCapabilityGUID       unique identifier of the softwareCapability
      * @param assetGUID           unique identifier of the destination softwareCapability
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -179,12 +180,12 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
      */
     public void addAssetUse(String                       softwareCapabilityGUID,
                             String                       assetGUID,
-                            MetadataSourceOptions        metadataSourceOptions,
+                            MakeAnchorOptions            makeAnchorOptions,
                             CapabilityAssetUseProperties relationshipProperties) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        softwareCapabilityHandler.addAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, metadataSourceOptions, relationshipProperties);
+        softwareCapabilityHandler.addAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

@@ -152,16 +152,16 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID          unique identifier of the element
      * @param externalReferenceGUID          unique identifier of the external reference
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkExternalReference(String                     userId,
-                                      String                     elementGUID,
-                                      String                     externalReferenceGUID,
-                                      MetadataSourceOptions      metadataSourceOptions,
+    public void linkExternalReference(String                          userId,
+                                      String                          elementGUID,
+                                      String                          externalReferenceGUID,
+                                      MakeAnchorOptions               makeAnchorOptions,
                                       ExternalReferenceLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -178,7 +178,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         externalReferenceGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -223,7 +223,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID          unique identifier of the first external reference
      * @param externalReferenceGUID          unique identifier of the second external reference
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -232,7 +232,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
     public void linkMediaReference(String                   userId,
                                    String                   elementGUID,
                                    String                   externalReferenceGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    MediaReferenceProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -249,7 +249,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         externalReferenceGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -294,7 +294,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param elementGUID       unique identifier of the element to connect
      * @param externalReferenceGUID            unique identifier of the external reference
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -303,7 +303,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
     public void linkCitedDocumentReference(String                      userId,
                                            String                      elementGUID,
                                            String                      externalReferenceGUID,
-                                           MetadataSourceOptions       metadataSourceOptions,
+                                           MakeAnchorOptions           makeAnchorOptions,
                                            CitedDocumentLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
@@ -320,7 +320,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         externalReferenceGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

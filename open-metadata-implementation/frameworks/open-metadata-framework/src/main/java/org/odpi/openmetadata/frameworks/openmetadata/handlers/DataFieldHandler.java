@@ -153,7 +153,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
     public void linkNestedDataFields(String                    userId,
                                      String                    parentDataFieldGUID,
                                      String                    nestedDataFieldGUID,
-                                     MetadataSourceOptions     metadataSourceOptions,
+                                     MakeAnchorOptions         makeAnchorOptions,
                                      MemberDataFieldProperties relationshipProperties) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
@@ -170,7 +170,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
                                                         parentDataFieldGUID,
                                                         nestedDataFieldGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

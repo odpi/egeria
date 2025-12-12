@@ -1093,7 +1093,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
                                                         validValue1GUID,
                                                         validValue2GUID,
-                                                        new MetadataSourceOptions(),
+                                                        null,
                                                         null);
     }
 }

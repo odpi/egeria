@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -973,7 +974,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
                                                             folderGUID,
-                                                            governanceContext.getAssetClient().getMetadataSourceOptions(),
+                                                            new MakeAnchorOptions(governanceContext.getAssetClient().getMetadataSourceOptions()),
                                                             catalogTargetProperties);
     }
 

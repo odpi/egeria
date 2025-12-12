@@ -10,7 +10,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -276,13 +275,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkValidValueImplementation(userId,
                                                      validValueDefinitionGUID,
                                                      elementGUID,
-                                                     metadataSourceOptions,
+                                                     null,
                                                      null);
             }
         }
@@ -402,13 +398,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkValidValuesAssignment(userId,
                                                   elementGUID,
                                                   validValueDefinitionGUID,
-                                                  metadataSourceOptions,
+                                                  null,
                                                   null);
             }
         }
@@ -529,13 +522,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkValidValuesAssignment(userId,
                                                   elementGUID,
                                                   validValueDefinitionGUID,
-                                                  metadataSourceOptions,
+                                                  null,
                                                   null);
             }
         }
@@ -655,13 +645,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkAssociatedValidValues(userId,
                                                   validValueDefinitionOneGUID,
                                                   validValueDefinitionTwoGUID,
-                                                  metadataSourceOptions,
+                                                  null,
                                                   null);
             }
         }
@@ -782,13 +769,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkConsistentValidValues(userId,
                                                   validValueDefinitionOneGUID,
                                                   validValueDefinitionTwoGUID,
-                                                  metadataSourceOptions,
+                                                  null,
                                                   null);
             }
         }
@@ -908,13 +892,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkMappedValidValues(userId,
                                               validValueDefinitionOneGUID,
                                               validValueDefinitionTwoGUID,
-                                              metadataSourceOptions,
+                                              null,
                                               null);
             }
         }
@@ -1034,13 +1015,10 @@ public class ReferenceDataRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkValidValueMember(userId,
                                              validValueDefinitionGUID,
                                              nestedValidValueDefinitionGUID,
-                                             metadataSourceOptions,
+                                             null,
                                              null);
             }
         }

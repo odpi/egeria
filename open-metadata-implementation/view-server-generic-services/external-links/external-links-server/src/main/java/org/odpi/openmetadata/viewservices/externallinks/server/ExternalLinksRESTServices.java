@@ -19,13 +19,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 
 
 /**
@@ -295,13 +293,10 @@ public class ExternalLinksRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkExternalReference(userId,
                                               elementGUID,
                                               externalReferenceGUID,
-                                              metadataSourceOptions,
+                                              null,
                                               null);
             }
         }
@@ -425,13 +420,10 @@ public class ExternalLinksRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkMediaReference(userId,
                                            elementGUID,
                                            externalReferenceGUID,
-                                           metadataSourceOptions,
+                                           null,
                                            null);
             }
         }
@@ -557,13 +549,10 @@ public class ExternalLinksRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkCitedDocumentReference(userId,
                                                    elementGUID,
                                                    externalReferenceGUID,
-                                                   metadataSourceOptions,
+                                                   null,
                                                    null);
             }
         }

@@ -199,7 +199,6 @@ public class RepositoryMapper extends BaseMapper
         fillInstanceAuditHeader(instanceHeader, instanceTableRow);
 
         instanceHeader.setGUID((super.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), instanceTableRow, true)));
-        instanceHeader.setInstanceURL((super.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_URL.getColumnName(), instanceTableRow, false)));
         instanceHeader.setReIdentifiedFromGUID((super.getStringPropertyFromColumn(RepositoryColumn.REIDENTIFIED_FROM_GUID.getColumnName(), instanceTableRow, false)));
     }
 
@@ -895,7 +894,6 @@ public class RepositoryMapper extends BaseMapper
                                                  versionEndTime,
                                                  instanceHeader);
 
-            super.setUpStringValueInRow(instanceTableRow, instanceHeader.getInstanceURL(), RepositoryColumn.INSTANCE_URL.getColumnName(), false);
             super.setUpStringValueInRow(instanceTableRow, instanceHeader.getInstanceLicense(), RepositoryColumn.INSTANCE_LICENCE.getColumnName(), false);
             super.setUpStringValueInRow(instanceTableRow, instanceHeader.getReIdentifiedFromGUID(), RepositoryColumn.REIDENTIFIED_FROM_GUID.getColumnName(), false);
         }

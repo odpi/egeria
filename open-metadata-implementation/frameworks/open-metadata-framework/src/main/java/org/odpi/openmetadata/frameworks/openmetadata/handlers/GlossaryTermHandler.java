@@ -227,17 +227,17 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void setupTermRelationship(String                   userId,
-                                      String                   relationshipTypeName,
-                                      String                   glossaryTermOneGUID,
-                                      String                   glossaryTermTwoGUID,
-                                      MetadataSourceOptions    metadataSourceOptions,
+    public void setupTermRelationship(String                             userId,
+                                      String                             relationshipTypeName,
+                                      String                             glossaryTermOneGUID,
+                                      String                             glossaryTermTwoGUID,
+                                      MakeAnchorOptions                  makeAnchorOptions,
                                       GlossaryTermRelationshipProperties relationshipProperties) throws InvalidParameterException,
                                                                                                         PropertyServerException,
                                                                                                         UserNotAuthorizedException
@@ -256,7 +256,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
                                                         relationshipTypeName,
                                                         glossaryTermOneGUID,
                                                         glossaryTermTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

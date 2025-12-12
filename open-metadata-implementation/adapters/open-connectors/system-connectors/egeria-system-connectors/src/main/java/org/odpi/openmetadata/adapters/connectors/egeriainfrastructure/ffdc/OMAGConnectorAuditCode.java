@@ -35,7 +35,7 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
      */
     EGERIA_CONNECTOR_START("OMAG-CONNECTORS-0002",
                            AuditLogRecordSeverityLevel.INFO,
-                           "The {0} Egeria Connector has been started and will call the platforms with userId {1}.  The monitored platforms are: {2}",
+                           "The {0} Egeria Connector has been started.  The monitored platforms are: {1}",
                            "The connector is designed to catalog details of Software Server Platforms that have the deployedImplementationType property set to 'OMAG Server Platform'.",
                            "No specific action is required.  This message is to confirm the start of the integration connector."),
 
@@ -75,6 +75,34 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                "The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id",
                "No metadata collection asset nor inventory catalog software capability is connected to the server.",
                "This is only ok if the server is a metadata access point."),
+
+    /**
+     * The {0} integration connector is refreshing the lineage of {1} server {2}
+     */
+    REFRESH_SERVER_LINEAGE("OMAG-CONNECTORS-0007",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The {0} integration connector is refreshing the lineage of {1} server {2}",
+                                "The connector has retrieved the connector for this server and is comparing the catalogued lineage relationships with the server's configuration",
+                                "Validate that there are no errors reported while these relationships are reviewed and updated."),
+
+    /**
+     * The {0} integration connector is unable to refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}
+     */
+    REFRESH_SERVER_LINEAGE_FAILED("OMAG-CONNECTORS-0008",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} integration connector is unable to refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}",
+                           "The connector hit a problem refreshing lineage relationships for the server. The exception describes the nature of the issue.",
+                           "Review the exception to determine the cause of the problem.  Correct it and the lineage will be updated on the next refresh."),
+
+
+    /**
+     * The {0} integration connector is unable to refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}
+     */
+    REFRESH_SERVER_LINEAGE_BAD_CONNECTOR("OMAG-CONNECTORS-0008",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector is unable to refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}",
+                                  "The connector hit a problem refreshing lineage relationships for the server because the resource connector associated with the server is no of the expected type.",
+                                  "Correct the connector type linked to the server's connection and the lineage will be updated on the next refresh."),
 
     ;
 

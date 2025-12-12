@@ -39,7 +39,13 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
     @Override
     public void getArchiveContent()
     {
-/*
+        /*
+         * Add catalog templates
+         */
+        this.addSoftwareServerCatalogTemplates(ContentPackDefinition.NANNY_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.NANNY_CONTENT_PACK);
+
+        /*
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.NANNY_CONTENT_PACK);

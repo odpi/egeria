@@ -282,7 +282,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             connectionHandler.linkConnectionConnectorType(userId,
                                                           connectionGUID,
                                                           connectorTypeGUID,
-                                                          newRelatedElementOptions,
+                                                          new MakeAnchorOptions(newRelatedElementOptions),
                                                           null);
 
             newRelatedElementOptions.setParentGUID(connectionGUID);
@@ -587,13 +587,15 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         if (toDoGUID != null)
         {
+            MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(newElementOptions);
+
             if (assignToActorGUID != null)
             {
                 openMetadataClient.createRelatedElementsInStore(userId,
                                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                 assignToActorGUID,
                                                                 toDoGUID,
-                                                                anchorOptions,
+                                                                makeAnchorOptions,
                                                                 relationshipBuilder.getNewElementProperties(new AssignmentScopeProperties()));
             }
 
@@ -603,7 +605,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                 actionSponsorGUID,
                                                                 toDoGUID,
-                                                                anchorOptions,
+                                                                makeAnchorOptions,
                                                                 new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                                                           OpenMetadataProperty.ASSIGNMENT_TYPE.name,
                                                                                                                           AssignmentType.SPONSOR.getName())));
@@ -623,7 +625,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                         OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                         toDoGUID,
                                                                         newActionTarget.getActionTargetGUID(),
-                                                                        anchorOptions,
+                                                                        makeAnchorOptions,
                                                                         relationshipBuilder.getNewElementProperties(actionTargetProperties));
                     }
                 }
@@ -682,7 +684,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                         actorGUID,
                                                         actionGUID,
-                                                        updateOptions,
+                                                        new MakeAnchorOptions(updateOptions),
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -791,7 +793,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param assetGUID       unique identifier of the asset
      * @param destinationGUID           unique identifier of the destination asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -800,7 +802,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void deployITAsset(String                userId,
                               String                assetGUID,
                               String                destinationGUID,
-                              MetadataSourceOptions metadataSourceOptions,
+                              MakeAnchorOptions     makeAnchorOptions,
                               DeployedOnProperties  relationshipProperties) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
@@ -817,7 +819,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
                                                         assetGUID,
                                                         destinationGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -864,7 +866,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param assetGUID       unique identifier of the asset
      * @param capabilityGUID           unique identifier of the destination asset
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -873,7 +875,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkSoftwareCapability(String                                userId,
                                        String                                assetGUID,
                                        String                                capabilityGUID,
-                                       MetadataSourceOptions                 metadataSourceOptions,
+                                       MakeAnchorOptions                     makeAnchorOptions,
                                        SupportedSoftwareCapabilityProperties relationshipProperties) throws InvalidParameterException,
                                                                                                             PropertyServerException,
                                                                                                             UserNotAuthorizedException
@@ -890,7 +892,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                         assetGUID,
                                                         capabilityGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -936,7 +938,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param dataSetGUID          unique identifier of the data set
      * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -945,7 +947,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkDataSetContent(String                   userId,
                                    String                   dataSetGUID,
                                    String                   dataContentAssetGUID,
-                                   MetadataSourceOptions    metadataSourceOptions,
+                                   MakeAnchorOptions        makeAnchorOptions,
                                    DataSetContentProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -962,7 +964,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
                                                         dataSetGUID,
                                                         dataContentAssetGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1006,7 +1008,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @param userId                userId of user making request.
      * @param integrationConnectorGUID        unique identifier of the integration connector.
-     * @param metadataSourceOptions options to control access to open metadata
+     * @param makeAnchorOptions options to control access to open metadata
      * @param catalogTargetProperties  properties describing the relationship characteristics.
      * @param elementGUID           unique identifier of the target element.
      * @return relationship GUID
@@ -1017,7 +1019,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public String addCatalogTarget(String                  userId,
                                    String                  integrationConnectorGUID,
                                    String                  elementGUID,
-                                   MetadataSourceOptions   metadataSourceOptions,
+                                   MakeAnchorOptions       makeAnchorOptions,
                                    CatalogTargetProperties catalogTargetProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -1034,7 +1036,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                integrationConnectorGUID,
                                                                elementGUID,
-                                                               metadataSourceOptions,
+                                                               makeAnchorOptions,
                                                                relationshipBuilder.getNewElementProperties(catalogTargetProperties));
     }
 
@@ -1191,7 +1193,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param deployedAPIGUID          unique identifier of the super team
      * @param endpointGUID            unique identifier of the subteam
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1200,7 +1202,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkAPIEndpoint(String                 userId,
                                 String                 deployedAPIGUID,
                                 String                 endpointGUID,
-                                MetadataSourceOptions  metadataSourceOptions,
+                                MakeAnchorOptions      makeAnchorOptions,
                                 APIEndpointProperties  relationshipProperties) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
@@ -1217,7 +1219,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName,
                                                         deployedAPIGUID,
                                                         endpointGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1262,7 +1264,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param parentProcessGUID       unique identifier of the parent process
      * @param childProcessGUID            unique identifier of the child process
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1271,7 +1273,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkProcessHierarchy(String                     userId,
                                      String                     parentProcessGUID,
                                      String                     childProcessGUID,
-                                     MetadataSourceOptions      metadataSourceOptions,
+                                     MakeAnchorOptions          makeAnchorOptions,
                                      ProcessHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -1288,7 +1290,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                         parentProcessGUID,
                                                         childProcessGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1333,7 +1335,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param folderGUID               unique identifier of the folder
      * @param fileGUID         unique identifier of the associated file
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1342,7 +1344,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkNestedFiles(String                userId,
                                 String                folderGUID,
                                 String                fileGUID,
-                                MetadataSourceOptions metadataSourceOptions,
+                                MakeAnchorOptions     makeAnchorOptions,
                                 NestedFileProperties  relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -1359,7 +1361,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                         folderGUID,
                                                         fileGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1405,7 +1407,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param folderGUID               unique identifier of the folder
      * @param fileGUID         unique identifier of the associated file
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1414,7 +1416,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkLinkedFiles(String                userId,
                                 String                folderGUID,
                                 String                fileGUID,
-                                MetadataSourceOptions metadataSourceOptions,
+                                MakeAnchorOptions     makeAnchorOptions,
                                 NestedFileProperties  relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -1431,7 +1433,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName,
                                                         folderGUID,
                                                         fileGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
@@ -1476,7 +1478,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param parentFolderGUID               unique identifier of the parent folder
      * @param childFolderGUID         unique identifier of the associated child folder
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1485,7 +1487,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public void linkFolderHierarchy(String                    userId,
                                     String                    parentFolderGUID,
                                     String                    childFolderGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     FolderHierarchyProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -1502,7 +1504,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName,
                                                         parentFolderGUID,
                                                         childFolderGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

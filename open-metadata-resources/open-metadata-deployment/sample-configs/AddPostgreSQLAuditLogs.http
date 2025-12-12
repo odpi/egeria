@@ -38,7 +38,7 @@ Content-Type: application/json
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
   "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsStore": "~{egeriaServersSecretsStore}~",
   "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
@@ -59,7 +59,7 @@ Content-Type: application/json
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
   "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsStore": "~{egeriaServersSecretsStore}~",
   "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
@@ -79,7 +79,7 @@ Content-Type: application/json
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
   "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsStore": "~{egeriaServersSecretsStore}~",
   "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
@@ -100,7 +100,7 @@ Content-Type: application/json
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
   "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsStore": "~{egeriaServersSecretsStore}~",
   "secretsCollectionName": "~{repositorySecretCollectionName}~"
 }
 
@@ -121,7 +121,7 @@ Content-Type: application/json
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
   "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
   "databaseSchema": "audit_logs",
-  "secretsStore": "~{defaultServersSecretsStore}~",
+  "secretsStore": "~{egeriaServersSecretsStore}~",
   "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
 }
 

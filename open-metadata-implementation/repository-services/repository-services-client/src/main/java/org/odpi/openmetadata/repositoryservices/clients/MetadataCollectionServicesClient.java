@@ -187,43 +187,6 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * Group 1: Confirm the identity of the metadata repository being called.
      */
 
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
-     *
-     * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     */
-    public String getMetadataCollectionId() throws RepositoryErrorException
-    {
-        final String methodName  = "getMetadataCollectionId";
-        final String operationSpecificURL = "metadata-collection-id";
-
-        MetadataCollectionIdResponse restResult;
-
-        try
-        {
-            restResult = restClient.callGetRESTCall(methodName,
-                                                    MetadataCollectionIdResponse.class,
-                                                    restURLRoot + rootServiceNameInURL + serviceURLMarker + operationSpecificURL);
-        }
-        catch (Exception error)
-        {
-           throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
-                                                                                                         repositoryName,
-                                                                                                         error.getClass().getSimpleName(),
-                                                                                                         error.getMessage()),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
-
-        this.detectAndThrowRepositoryErrorException(methodName, restResult);
-
-        return restResult.getMetadataCollectionId();
-    }
-
 
     /**
      * Returns the identifier of the metadata repository.  This is the identifier used to register the

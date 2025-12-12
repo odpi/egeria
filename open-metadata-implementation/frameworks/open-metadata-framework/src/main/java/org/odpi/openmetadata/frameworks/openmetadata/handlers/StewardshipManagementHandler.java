@@ -1945,7 +1945,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param properties properties for the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1955,15 +1955,15 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                         String                       elementGUID,
                                         String                       glossaryTermGUID,
                                         SemanticAssignmentProperties properties,
-                                        MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+                                        MakeAnchorOptions            makeAnchorOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         glossaryTermGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -2009,19 +2009,19 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to link
      * @param scopeGUID identifier of the governance definition to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void addScopeToElement(String                userId,
-                                  String                elementGUID,
-                                  String                scopeGUID,
-                                  MetadataSourceOptions metadataSourceOptions,
-                                  ScopedByProperties    properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void addScopeToElement(String             userId,
+                                  String             elementGUID,
+                                  String             scopeGUID,
+                                  MakeAnchorOptions  makeAnchorOptions,
+                                  ScopedByProperties properties) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName            = "addScopeToElement";
         final String end1GUIDParameterName = "elementGUID";
@@ -2035,7 +2035,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         scopeGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -2081,7 +2081,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param elementGUID identifier of the governance definition to link
      * @param resourceGUID unique identifier of the metadata element to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2090,7 +2090,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     public void addResourceListToElement(String                 userId,
                                          String                 elementGUID,
                                          String                 resourceGUID,
-                                         MetadataSourceOptions  metadataSourceOptions,
+                                         MakeAnchorOptions      makeAnchorOptions,
                                          ResourceListProperties properties) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -2099,7 +2099,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         resourceGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -2146,7 +2146,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param elementGUID identifier of the governance definition to link
      * @param moreInformationGUID unique identifier of the metadata element to link
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2155,7 +2155,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     public void addMoreInformationToElement(String                    userId,
                                             String                    elementGUID,
                                             String                    moreInformationGUID,
-                                            MetadataSourceOptions     metadataSourceOptions,
+                                            MakeAnchorOptions         makeAnchorOptions,
                                             MoreInformationProperties properties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
@@ -2164,7 +2164,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         moreInformationGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -2981,25 +2981,25 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID unique identifier of the element that was created with the values from a number of duplicate elements
      * @param sourceElementGUID unique identifier of one of the source elements
      * @param properties properties for the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void linkConsolidatedDuplicateToSourceElement(String                       userId,
-                                                         String                       elementGUID,
-                                                         String                       sourceElementGUID,
+    public void linkConsolidatedDuplicateToSourceElement(String                              userId,
+                                                         String                              elementGUID,
+                                                         String                              sourceElementGUID,
                                                          ConsolidatedDuplicateLinkProperties properties,
-                                                         MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
-                                                                                                                      UserNotAuthorizedException,
-                                                                                                                      PropertyServerException
+                                                         MakeAnchorOptions                   makeAnchorOptions) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName,
                                                         elementGUID,
                                                         sourceElementGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 
@@ -3098,25 +3098,25 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID unique identifier of the element
      * @param peerDuplicateGUID unique identifier of the peer duplicate
      * @param properties properties for the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void linkElementsAsPeerDuplicates(String                       userId,
-                                             String                       elementGUID,
-                                             String                       peerDuplicateGUID,
+    public void linkElementsAsPeerDuplicates(String                      userId,
+                                             String                      elementGUID,
+                                             String                      peerDuplicateGUID,
                                              PeerDuplicateLinkProperties properties,
-                                             MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                             MakeAnchorOptions           makeAnchorOptions) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.PEER_DUPLICATE_LINK.typeName,
                                                         elementGUID,
                                                         peerDuplicateGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
 

@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * BooleanResponse is the response structure used on OMAG REST API calls that return a boolean response.
+ * BooleanResponse is the response structure used on OMAG REST API calls that returns a boolean response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

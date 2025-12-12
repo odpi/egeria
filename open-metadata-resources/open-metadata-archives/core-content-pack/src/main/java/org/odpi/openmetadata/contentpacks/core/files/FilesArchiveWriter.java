@@ -89,6 +89,14 @@ public class FilesArchiveWriter extends ContentPackBaseArchiveWriter
                                        IntegrationGroupDefinition.FILES);
 
         /*
+         * Add catalog templates
+         */
+        this.addSoftwareServerCatalogTemplates(ContentPackDefinition.FILES_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.FILES_CONTENT_PACK);
+        this.addTabularDataSetCatalogTemplates(ContentPackDefinition.FILES_CONTENT_PACK);
+
+
+        /*
          * Create the default governance engines
          */
         super.createGovernanceEngines(ContentPackDefinition.FILES_CONTENT_PACK);

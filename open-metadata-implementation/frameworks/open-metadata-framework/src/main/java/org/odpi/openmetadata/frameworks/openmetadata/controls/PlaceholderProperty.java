@@ -136,7 +136,7 @@ public enum PlaceholderProperty
     SECRETS_STORE ("secretsStorePathName",
                         "The full path name to the secrets store file where the secrets collection for this server is located.",
                         DataType.STRING.getName(),
-                        "loading-bay/secrets/default.omsecrets"),
+                        "loading-bay/secrets/integration.omsecrets"),
 
 
     /**

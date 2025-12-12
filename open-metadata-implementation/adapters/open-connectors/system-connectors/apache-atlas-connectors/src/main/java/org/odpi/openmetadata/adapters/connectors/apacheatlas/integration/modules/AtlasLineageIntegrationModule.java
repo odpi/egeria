@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -172,7 +173,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                                             lineageClient.linkLineage(egeriaDataSetGUID,
                                                                       egeriaProcessGUID,
                                                                       OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                                      lineageClient.getMetadataSourceOptions(),
+                                                                      new MakeAnchorOptions(lineageClient.getMetadataSourceOptions()),
                                                                       null);
                                         }
                                     }
@@ -212,7 +213,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                                             lineageClient.linkLineage(egeriaProcessGUID,
                                                                       egeriaDataSetGUID,
                                                                       OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                                      lineageClient.getMetadataSourceOptions(),
+                                                                      new MakeAnchorOptions(lineageClient.getMetadataSourceOptions()),
                                                                       null);
                                         }
                                     }

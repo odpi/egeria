@@ -178,7 +178,7 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
      *
      * @param metadataRepositoryCohortGUID             unique identifier of the cohort
      * @param cohortMemberGUID            unique identifier of the member
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -186,12 +186,12 @@ public class MetadataRepositoryCohortClient extends ConnectorContextClientBase
      */
     public void linkCohortToMember(String                       metadataRepositoryCohortGUID,
                                    String                       cohortMemberGUID,
-                                   MetadataSourceOptions        metadataSourceOptions,
+                                   MakeAnchorOptions            makeAnchorOptions,
                                    MetadataCohortPeerProperties relationshipProperties) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        metadataRepositoryCohortHandler.linkCohortToMember(connectorUserId, metadataRepositoryCohortGUID, cohortMemberGUID, metadataSourceOptions, relationshipProperties);
+        metadataRepositoryCohortHandler.linkCohortToMember(connectorUserId, metadataRepositoryCohortGUID, cohortMemberGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

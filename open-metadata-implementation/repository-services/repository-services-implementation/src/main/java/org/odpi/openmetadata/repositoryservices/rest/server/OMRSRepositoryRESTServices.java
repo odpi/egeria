@@ -104,7 +104,6 @@ public class OMRSRepositoryRESTServices
     private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
     private static final RESTCallLogger                        restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(OMRSRepositoryRESTServices.class),
                                                                                                     instanceHandler.getServiceName());
-    private static final String                                anonymousUserId = "anon";
 
     private static final MessageFormatter messageFormatter = new MessageFormatter();
 
@@ -158,88 +157,6 @@ public class OMRSRepositoryRESTServices
     }
 
 
-    /**
-     * Return the URL for the requested instance.
-     *
-     * @param localServerName name of the local server that the requesting OMRS instance belongs to
-     * @param guid            unique identifier of the instance
-     * @return url
-     */
-    public static String getEntityURL(String localServerName, String... guid)
-    {
-        final String methodName = "getEntityURL";
-
-        if (localServerName != null)
-        {
-            try
-            {
-                OMRSRepositoryServicesInstance localServerInstance = instanceHandler.getInstance(anonymousUserId, localServerName, methodName);
-
-                if (localServerInstance != null)
-                {
-                    String localServerURL = localServerInstance.getLocalServerURL();
-
-                    if (localServerURL != null)
-                    {
-                        final String urlTemplate = "/instances/entity/{0}";
-
-                        MessageFormat mf = new MessageFormat(urlTemplate);
-
-                        return localServerURL + mf.format(guid);
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                /* return null */
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the URL for the requested instance.
-     *
-     * @param localServerName name of the local server that the requesting OMRS instance belongs to
-     * @param guid            unique identifier of the instance
-     * @return url
-     */
-    public static String getRelationshipURL(String localServerName, String... guid)
-    {
-        final String methodName = "getRelationshipURL";
-
-        if (localServerName != null)
-        {
-            try
-            {
-                OMRSRepositoryServicesInstance localServerInstance = instanceHandler.getInstance(anonymousUserId, localServerName, methodName);
-
-                if (localServerInstance != null)
-                {
-                    String localServerURL = localServerInstance.getLocalServerURL();
-
-                    if (localServerURL != null)
-                    {
-                        final String urlTemplate = "/instances/relationship/{0}";
-
-                        MessageFormat mf = new MessageFormat(urlTemplate);
-
-                        return localServerURL + mf.format(guid);
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                /* return null */
-            }
-        }
-
-        return null;
-    }
-
-
     private final boolean localRepository;
 
     /**
@@ -256,22 +173,6 @@ public class OMRSRepositoryRESTServices
     /* ======================================================================
      * Group 1: Confirm the identity of the metadata repository being called.
      */
-
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
-     *
-     * @param serverName unique identifier for requested server.
-     * @return String metadata collection id.
-     * or RepositoryErrorException there is a problem communicating with the metadata repository.
-     */
-    @Deprecated
-    @SuppressWarnings("deprecated")
-    public MetadataCollectionIdResponse getMetadataCollectionId(String serverName)
-    {
-        return this.getMetadataCollectionId(serverName, anonymousUserId);
-    }
 
 
     /**

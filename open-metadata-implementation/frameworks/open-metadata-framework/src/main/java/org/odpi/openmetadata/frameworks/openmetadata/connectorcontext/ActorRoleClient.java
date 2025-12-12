@@ -185,7 +185,7 @@ public class ActorRoleClient extends ConnectorContextClientBase
      *
      * @param personRoleGUID       unique identifier of the person role
      * @param personProfileGUID            unique identifier of the person profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -193,12 +193,12 @@ public class ActorRoleClient extends ConnectorContextClientBase
      */
     public void linkPersonRoleToProfile(String                          personRoleGUID,
                                         String                          personProfileGUID,
-                                        MetadataSourceOptions           metadataSourceOptions,
+                                        MakeAnchorOptions               makeAnchorOptions,
                                         PersonRoleAppointmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException
     {
-        actorRoleHandler.linkPersonRoleToProfile(connectorUserId, personRoleGUID, personProfileGUID, metadataSourceOptions, relationshipProperties);
+        actorRoleHandler.linkPersonRoleToProfile(connectorUserId, personRoleGUID, personProfileGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -227,7 +227,7 @@ public class ActorRoleClient extends ConnectorContextClientBase
      *
      * @param teamRoleGUID           unique identifier of the team role
      * @param teamProfileGUID        unique identifier of the team profile
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -235,12 +235,12 @@ public class ActorRoleClient extends ConnectorContextClientBase
      */
     public void linkTeamRoleToProfile(String                        teamRoleGUID,
                                       String                        teamProfileGUID,
-                                      MetadataSourceOptions         metadataSourceOptions,
+                                      MakeAnchorOptions             makeAnchorOptions,
                                       TeamRoleAppointmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
-        actorRoleHandler.linkTeamRoleToProfile(connectorUserId, teamRoleGUID, teamProfileGUID, metadataSourceOptions, relationshipProperties);
+        actorRoleHandler.linkTeamRoleToProfile(connectorUserId, teamRoleGUID, teamProfileGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -277,7 +277,7 @@ public class ActorRoleClient extends ConnectorContextClientBase
      */
     public void linkITProfileRoleToProfile(String                             itProfileRoleGUID,
                                            String                             itProfileGUID,
-                                           MetadataSourceOptions              metadataSourceOptions,
+                                           MakeAnchorOptions                  metadataSourceOptions,
                                            ITProfileRoleAppointmentProperties relationshipProperties) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException

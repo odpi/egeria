@@ -49,6 +49,7 @@ public class EgeriaExtractor
     private final String platformURLRoot;
     private final String platformName;
     private final String serverOfInterest;
+    private final String delegatingUserId;
 
     private final Map<String, SecretsStoreConnector> secretsStoreConnectorMap;
     private final AuditLog                           auditLog;
@@ -69,6 +70,7 @@ public class EgeriaExtractor
      * @param platformURLRoot platform URL root
      * @param platformName name of the platform
      * @param serverOfInterest optional server name
+     * @param delegatingUserId user that is calling the connector
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog logging destination
      * @throws InvalidParameterException invalid parameter
@@ -76,12 +78,14 @@ public class EgeriaExtractor
     public EgeriaExtractor(String                             platformURLRoot,
                            String                             platformName,
                            String                             serverOfInterest,
+                           String                             delegatingUserId,
                            Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
                            AuditLog                           auditLog) throws InvalidParameterException
     {
         this.platformURLRoot          = platformURLRoot;
         this.platformName             = platformName;
         this.serverOfInterest         = serverOfInterest;
+        this.delegatingUserId         = delegatingUserId;
         this.secretsStoreConnectorMap = secretsStoreConnectorMap;
         this.auditLog                 = auditLog;
 
@@ -852,7 +856,7 @@ public class EgeriaExtractor
                     {
                         LocalRepositoryServicesClient localRepositoryServicesClient = new LocalRepositoryServicesClient(serverName, platformURLRoot + "/servers/" + serverName, secretsStoreConnectorMap);
 
-                        metadataStoreProperties.setLocalMetadataCollectionId(localRepositoryServicesClient.getMetadataCollectionId());
+                        metadataStoreProperties.setLocalMetadataCollectionId(localRepositoryServicesClient.getMetadataCollectionId(delegatingUserId));
                     }
                 }
 

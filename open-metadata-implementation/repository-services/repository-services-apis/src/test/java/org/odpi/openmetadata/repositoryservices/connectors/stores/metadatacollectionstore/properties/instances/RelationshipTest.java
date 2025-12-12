@@ -27,7 +27,6 @@ public class RelationshipTest
     private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
     private String                 metadataCollectionId   = "TestHomeId";
     private String                 guid                   = "TestInstanceGUID";
-    private String                 instanceURL            = "TestInstanceURL";
     private InstanceProperties     relationshipProperties = new InstanceProperties();
     private String                 entityOnePropertyName  = "TestEntityOne";
     private EntityProxy            entityOneProxy         = new EntityProxy();
@@ -68,7 +67,6 @@ public class RelationshipTest
         testObject.setInstanceProvenanceType(instanceProvenanceType);
         testObject.setMetadataCollectionId(metadataCollectionId);
         testObject.setGUID(guid);
-        testObject.setInstanceURL(instanceURL);
         testObject.setProperties(relationshipProperties);
         testObject.setEntityOneProxy(entityOneProxy);
         testObject.setEntityTwoProxy(entityTwoProxy);
@@ -95,7 +93,6 @@ public class RelationshipTest
         assertTrue(testObject.getInstanceProvenanceType().equals(instanceProvenanceType));
         assertTrue(testObject.getMetadataCollectionId().equals(metadataCollectionId));
         assertTrue(testObject.getGUID().equals(guid));
-        assertTrue(testObject.getInstanceURL().equals(instanceURL));
         assertTrue(testObject.getProperties().equals(relationshipProperties));
         assertTrue(testObject.getEntityOneProxy().equals(entityOneProxy));
         assertTrue(testObject.getEntityTwoProxy().equals(entityTwoProxy));
@@ -120,7 +117,6 @@ public class RelationshipTest
         assertTrue(testObject.getInstanceProvenanceType() == null);
         assertTrue(testObject.getMetadataCollectionId() == null);
         assertTrue(testObject.getGUID() == null);
-        assertTrue(testObject.getInstanceURL() == null);
         assertTrue(testObject.getProperties() == null);
         assertTrue(testObject.getEntityOneProxy() == null);
         assertTrue(testObject.getEntityTwoProxy() == null);

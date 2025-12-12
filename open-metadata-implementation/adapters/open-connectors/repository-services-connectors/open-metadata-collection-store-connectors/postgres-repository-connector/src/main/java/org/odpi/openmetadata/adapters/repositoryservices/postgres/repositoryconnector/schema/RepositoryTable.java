@@ -55,7 +55,6 @@ public enum RepositoryTable implements PostgreSQLTable
                    RepositoryColumn.CREATE_TIME,
                    RepositoryColumn.UPDATE_TIME,
                    RepositoryColumn.STATUS_ON_DELETE,
-                   RepositoryColumn.INSTANCE_URL,
                    RepositoryColumn.INSTANCE_LICENCE,
                    RepositoryColumn.REIDENTIFIED_FROM_GUID}
     ),
@@ -89,7 +88,6 @@ public enum RepositoryTable implements PostgreSQLTable
                          RepositoryColumn.CREATE_TIME,
                          RepositoryColumn.UPDATE_TIME,
                          RepositoryColumn.STATUS_ON_DELETE,
-                         RepositoryColumn.INSTANCE_URL,
                          RepositoryColumn.INSTANCE_LICENCE,
                          RepositoryColumn.REIDENTIFIED_FROM_GUID}
     ),

@@ -14,7 +14,6 @@ import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.V
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -60,6 +59,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.Spec
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -446,7 +446,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             collectionClient.linkProductManager(productGUID,
                                                 productManagerGUID,
-                                                collectionClient.getMetadataSourceOptions(),
+                                                new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                 null);
         }
 
@@ -464,7 +464,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
             GovernedByProperties governedByProperties = new GovernedByProperties();
             governedByProperties.setLabel("subscriber's license");
             governedByProperties.setDescription("This is the license that a subscriber's asset will be given to access the product data.");
-            governanceDefinitionClient.addGovernanceDefinitionToElement(productGUID, licenseTypeGUID, governanceDefinitionClient.getMetadataSourceOptions(), governedByProperties);
+            governanceDefinitionClient.addGovernanceDefinitionToElement(productGUID, licenseTypeGUID, new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()), governedByProperties);
         }
 
         /*
@@ -477,7 +477,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             classificationManagerClient.addScopeToElement(communityNoteLogGUID,
                                                           productGUID,
-                                                          classificationManagerClient.getMetadataSourceOptions(),
+                                                          new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
                                                           null);
         }
 
@@ -513,7 +513,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             assetClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
                                          productAssetGUID,
-                                         assetClient.getMetadataSourceOptions(),
+                                         new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
                                          catalogTargetProperties);
         }
 
@@ -527,7 +527,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
                 collectionClient.addToCollection(products.get(productGroup.getQualifiedName()),
                                                  productGUID,
-                                                 collectionClient.getMetadataSourceOptions(),
+                                                 new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                  collectionMembershipProperties);
             }
         }
@@ -618,7 +618,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
                     dataStructureClient.linkMemberDataField(dataStructureGUID,
                                                             dataFieldGUID,
-                                                            dataStructureClient.getMetadataSourceOptions(),
+                                                            new MakeAnchorOptions(dataStructureClient.getMetadataSourceOptions()),
                                                             memberDataFieldProperties);
                 }
             }
@@ -637,7 +637,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
                     dataStructureClient.linkMemberDataField(dataStructureGUID,
                                                             dataFieldGUID,
-                                                            dataStructureClient.getMetadataSourceOptions(),
+                                                            new MakeAnchorOptions(dataStructureClient.getMetadataSourceOptions()),
                                                             memberDataFieldProperties);
                 }
             }
@@ -722,6 +722,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
          * The notification of changes to a subscription is managed via a notification type.
          */
         GovernanceDefinitionClient notificationTypeClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+        MakeAnchorOptions          makeAnchorOptions      = new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions());
 
         NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
 
@@ -753,7 +754,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         monitoredResourceProperties.setLabel("product asset");
         monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
 
-        notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, notificationTypeClient.getMetadataSourceOptions(), monitoredResourceProperties);
+        notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, makeAnchorOptions, monitoredResourceProperties);
 
         NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
 
@@ -762,7 +763,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
             notificationSubscriberProperties.setLabel("community notifications");
             notificationSubscriberProperties.setDescription("A note log collects the notifications from the notification watchdog manager: " + engineActionGUID);
 
-            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
+            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, makeAnchorOptions, notificationSubscriberProperties);
         }
 
         if (productManagerGUID != null)
@@ -770,7 +771,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
             notificationSubscriberProperties.setLabel("product manager notifications");
             notificationSubscriberProperties.setDescription("Notifications from the notification watchdog manager: " + engineActionGUID + " are sent to the product manager.");
 
-            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
+            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
         }
     }
 
@@ -898,7 +899,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
         classificationManagerClient.addResourceListToElement(productGUID,
                                                              governanceActionProcessGUID,
-                                                             classificationManagerClient.getMetadataSourceOptions(),
+                                                             new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
                                                              resourceListProperties);
     }
 
@@ -1052,7 +1053,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                  */
                 connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
                                                              secretsConnectorConnection.getConnectorType().getGUID(),
-                                                             connectionClient.getMetadataSourceOptions(),
+                                                             new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                              null);
 
                 auditLog.logMessage(methodName,
@@ -1097,7 +1098,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
              */
             connectionClient.linkConnectionConnectorType(connectionGUID,
                                                          connectorTypeGUID,
-                                                         connectionClient.getMetadataSourceOptions(),
+                                                         new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                          null);
 
             auditLog.logMessage(methodName,
@@ -1309,7 +1310,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
         solutionBlueprintClient.linkSolutionDesign(topLevelGUID,
                                                    solutionBlueprintGUID,
-                                                   solutionBlueprintClient.getMetadataSourceOptions(),
+                                                   new MakeAnchorOptions(solutionBlueprintClient.getMetadataSourceOptions()),
                                                    null);
 
         /*
@@ -1318,7 +1319,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         final String rootCollectionGUID = "dcec6ddb-317e-4c64-907e-be508ceba6d9";
         CollectionClient collectionClient = integrationContext.getCollectionClient();
 
-        collectionClient.addToCollection(rootCollectionGUID, topLevelGUID, collectionClient.getMetadataSourceOptions(), null);
+        collectionClient.addToCollection(rootCollectionGUID, topLevelGUID, new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()), null);
 
         /*
          * Link the governance definitions to the product catalog ...
@@ -1327,7 +1328,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
         classificationManagerClient.addMoreInformationToElement(topLevelGUID,
                                                                 governanceDefinitions.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
-                                                                classificationManagerClient.getMetadataSourceOptions(),
+                                                                new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
                                                                 null);
 
         /*
@@ -1889,6 +1890,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
          * by the governance team.
          */
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+        MakeAnchorOptions          makeAnchorOptions = new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions());
 
         PeerDefinitionProperties peerDefinitionProperties = new PeerDefinitionProperties();
 
@@ -1898,7 +1900,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         governanceDefinitionClient.linkPeerDefinitions(governanceDefinitionMap.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
                                                        governanceDefinitionMap.get(ProductGovernanceDefinition.ENABLE_DATA_SHARING.getQualifiedName()),
                                                        OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
-                                                       governanceDefinitionClient.getMetadataSourceOptions(),
+                                                       makeAnchorOptions,
                                                        peerDefinitionProperties);
 
         SupportingDefinitionProperties supportingDefinitionProperties = new SupportingDefinitionProperties();
@@ -1908,7 +1910,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         governanceDefinitionClient.attachSupportingDefinition(governanceDefinitionMap.get(ProductGovernanceDefinition.DATA_DRIVEN.getQualifiedName()),
                                                               governanceDefinitionMap.get(ProductGovernanceDefinition.ENABLE_DATA_SHARING.getQualifiedName()),
                                                               OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
-                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              makeAnchorOptions,
                                                               supportingDefinitionProperties);
 
         supportingDefinitionProperties.setRationale("Digital product catalogs create a platform for exchange or requirements, ideas, skills and, of course, data.  They demonstrate the focus that senior management is placing on data sharing.");
@@ -1916,7 +1918,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         governanceDefinitionClient.attachSupportingDefinition(governanceDefinitionMap.get(ProductGovernanceDefinition.DATA_DRIVEN.getQualifiedName()),
                                                               governanceDefinitionMap.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
                                                               OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
-                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              makeAnchorOptions,
                                                               supportingDefinitionProperties);
 
         /*
@@ -2161,7 +2163,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
                                                             qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
-                                                            solutionComponentClient.getMetadataSourceOptions(),
+                                                            new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
                                                             solutionLinkingWireProperties);
 
             auditLog.logMessage(methodName,
@@ -2185,7 +2187,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
             solutionComponentClient.linkSolutionComponentActor(productRoles.get(solutionComponentActor.getSolutionRole().getQualifiedName()),
                                                                qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
-                                                               solutionComponentClient.getMetadataSourceOptions(),
+                                                               new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
                                                                solutionComponentActorProperties);
 
             auditLog.logMessage(methodName,

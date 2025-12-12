@@ -39,7 +39,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_USER_ID.getPlaceholder(),
                                   new OMAGServerPlatformProvider().getConnectorType().getGUID(),
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_URL_ROOT.getPlaceholder(),
-                                  null,
+                                  getOMAGServerPlatformConfigProperties(),
                                   PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                   SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
                                   new YAMLSecretsStoreProvider().getConnectorType().getGUID(),

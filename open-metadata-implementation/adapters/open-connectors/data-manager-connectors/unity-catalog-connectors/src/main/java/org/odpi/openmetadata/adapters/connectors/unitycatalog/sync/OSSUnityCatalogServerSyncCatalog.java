@@ -26,6 +26,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBean
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -592,7 +593,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
                 String relationshipGUID = context.getAssetClient().addCatalogTarget(friendshipConnectorGUID,
                                                                                     ucServerGUID,
-                                                                                    context.getAssetClient().getMetadataSourceOptions(),
+                                                                                    new MakeAnchorOptions(context.getAssetClient().getMetadataSourceOptions()),
                                                                                     catalogTargetProperties);
 
                 auditLog.logMessage(methodName,

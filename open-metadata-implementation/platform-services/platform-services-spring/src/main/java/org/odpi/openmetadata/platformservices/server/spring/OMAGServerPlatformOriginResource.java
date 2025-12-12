@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -59,26 +58,5 @@ public class OMAGServerPlatformOriginResource
     public String getServerPlatformOrigin() throws UserNotAuthorizedException
     {
         return originAPI.getServerPlatformOrigin();
-    }
-
-
-    /**
-     * Retrieve the name of the organization running this platform.
-     *
-     * @return String description
-     */
-    @GetMapping(path = "/organization-name")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation( summary = "getServerPlatformOrganizationName",
-            description="Retrieve the name of the organization running this platform.",
-            responses = {
-                    @ApiResponse(responseCode = "200",description="OMAG Server Platform Owning Organization",
-                            content = @Content(mediaType ="text/plain"))
-            })
-
-    public String getServerPlatformOrganizationName() throws UserNotAuthorizedException
-    {
-        return originAPI.getServerPlatformOrganizationName();
     }
 }

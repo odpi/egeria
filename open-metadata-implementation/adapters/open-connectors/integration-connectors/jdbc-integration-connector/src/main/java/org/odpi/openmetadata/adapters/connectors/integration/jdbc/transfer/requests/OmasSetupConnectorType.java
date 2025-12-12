@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.Connection
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 
 import java.util.function.BiConsumer;
 
@@ -41,7 +42,7 @@ class OmasSetupConnectorType implements BiConsumer<String, String> {
         {
             ConnectionClient connectionClient = integrationContext.getConnectionClient();
 
-            connectionClient.linkConnectionConnectorType(connectionGuid, connectorTypeGuid, connectionClient.getMetadataSourceOptions(), null);
+            connectionClient.linkConnectionConnectorType(connectionGuid, connectorTypeGuid, new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()), null);
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {

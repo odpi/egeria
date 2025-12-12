@@ -18,6 +18,7 @@ import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 
 import java.util.Date;
 import java.util.Map;
@@ -110,15 +111,41 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    Date callDateGetRESTCall(String    methodName,
-                             String    urlTemplate,
-                             Object... params) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException
+    StringResponse callStringResponseGetRESTCall(String    methodName,
+                                                 String    urlTemplate,
+                                                 Object... params) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        Date restResult = this.callGetRESTCall(methodName, Date.class, urlTemplate, params);
+        StringResponse restResult = this.callGetRESTCall(methodName, StringResponse.class, urlTemplate, params);
 
-        //exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a String object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    DateResponse callDateGetRESTCall(String    methodName,
+                                     String    urlTemplate,
+                                     Object... params) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        DateResponse restResult = this.callGetRESTCall(methodName, DateResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
         return restResult;
     }

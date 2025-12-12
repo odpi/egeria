@@ -13,11 +13,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamStructureProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -93,13 +90,10 @@ public class PeopleOrganizerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkPeerPerson(userId,
                                        personOneGUID,
                                        personTwoGUID,
-                                       metadataSourceOptions,
+                                       null,
                                        null);
             }
         }
@@ -212,13 +206,10 @@ public class PeopleOrganizerRESTServices extends TokenController
             }
             else
             {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
                 handler.linkTeamStructure(userId,
                                           superTeamGUID,
                                           subteamGUID,
-                                          metadataSourceOptions,
+                                          null,
                                           null);
             }
         }

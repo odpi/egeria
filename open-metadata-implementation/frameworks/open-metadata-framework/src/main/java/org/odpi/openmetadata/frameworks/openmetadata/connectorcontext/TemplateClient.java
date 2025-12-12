@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.Catalo
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateSubstituteProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
@@ -143,7 +144,7 @@ public class TemplateClient extends ConnectorContextClientBase
      *
      * @param elementGUID          unique identifier of the agreement
      * @param templateGUID      unique identifier of the agreement item
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -151,12 +152,12 @@ public class TemplateClient extends ConnectorContextClientBase
      */
     public void linkSourcedFrom(String                elementGUID,
                                 String                templateGUID,
-                                MetadataSourceOptions metadataSourceOptions,
+                                MakeAnchorOptions     makeAnchorOptions,
                                 SourcedFromProperties relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
-        templateHandler.linkSourcedFrom(connectorUserId, elementGUID, templateGUID, metadataSourceOptions, relationshipProperties);
+        templateHandler.linkSourcedFrom(connectorUserId, elementGUID, templateGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
@@ -185,7 +186,7 @@ public class TemplateClient extends ConnectorContextClientBase
      *
      * @param elementGUID          unique identifier of the agreement
      * @param templateGUID      unique identifier of the agreement item
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -193,7 +194,7 @@ public class TemplateClient extends ConnectorContextClientBase
      */
     public void linkCatalogTemplate(String                    elementGUID,
                                     String                    templateGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
+                                    MakeAnchorOptions         makeAnchorOptions,
                                     CatalogTemplateProperties relationshipProperties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -201,7 +202,7 @@ public class TemplateClient extends ConnectorContextClientBase
         templateHandler.linkCatalogTemplate(connectorUserId,
                                             elementGUID,
                                             templateGUID,
-                                            metadataSourceOptions,
+                                            makeAnchorOptions,
                                             relationshipProperties);
     }
 

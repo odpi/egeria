@@ -57,7 +57,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @param userId          userId of user making request
      * @param peerOneGUID  unique identifier of the end one element in the relationship
      * @param peerTwoGUID  unique identifier of the end two element in the relationship
-     * @param metadataSourceOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param linkProperties   description of the relationship.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -67,7 +67,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
     public void linkPeersInInformationSupplyChain(String                               userId,
                                                   String                               peerOneGUID,
                                                   String                               peerTwoGUID,
-                                                  MetadataSourceOptions                metadataSourceOptions,
+                                                  MakeAnchorOptions                    makeAnchorOptions,
                                                   InformationSupplyChainLinkProperties linkProperties) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
@@ -84,7 +84,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
                                                         OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                         peerOneGUID,
                                                         peerTwoGUID,
-                                                        metadataSourceOptions,
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(linkProperties));
 
     }

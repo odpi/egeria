@@ -936,7 +936,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setType(repositoryContentManager.getInstanceType(sourceName, TypeDefCategory.ENTITY_DEF, typeName, methodName));
         entity.setStatus(repositoryContentManager.getInitialStatus(sourceName, typeName, methodName));
         entity.setCreatedBy(userName);
-        entity.setInstanceURL(repositoryContentManager.getEntityURL(sourceName, guid));
     }
 
 
@@ -1138,7 +1137,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                                       methodName));
         relationship.setStatus(repositoryContentManager.getInitialStatus(sourceName, typeName, methodName));
         relationship.setCreatedBy(userName);
-        relationship.setInstanceURL(repositoryContentManager.getRelationshipURL(sourceName, guid));
 
         return relationship;
     }
@@ -2381,7 +2379,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setType(repositoryContentManager.getInstanceType(sourceName, TypeDefCategory.ENTITY_DEF, typeName, methodName));
         entity.setStatus(repositoryContentManager.getInitialStatus(sourceName, typeName, methodName));
         entity.setCreatedBy(userName);
-        entity.setInstanceURL(repositoryContentManager.getEntityURL(sourceName, guid));
 
         return entity;
     }
@@ -3369,7 +3366,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right))
         {
             differences.check("GUID", left.getGUID(), right.getGUID());
-            differences.check("InstanceURL", left.getInstanceURL(), right.getInstanceURL());
         }
         else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH))
         {
@@ -3383,7 +3379,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                 sideWithValues = right;
             }
             differences.addOnlyOnOneSide(present, "GUID", sideWithValues.getGUID());
-            differences.addOnlyOnOneSide(present, "Type", sideWithValues.getInstanceURL());
         }
     }
 

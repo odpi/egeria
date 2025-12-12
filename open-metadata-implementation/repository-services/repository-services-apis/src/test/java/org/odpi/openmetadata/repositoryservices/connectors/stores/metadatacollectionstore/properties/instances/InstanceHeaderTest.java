@@ -27,7 +27,6 @@ public class InstanceHeaderTest
     private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
     private String                 metadataCollectionId   = "TestHomeId";
     private String                 guid                   = "TestInstanceGUID";
-    private String                 instanceURL            = "TestInstanceURL";
 
     /**
      * Return a filled in test object
@@ -49,7 +48,6 @@ public class InstanceHeaderTest
         testObject.setInstanceProvenanceType(instanceProvenanceType);
         testObject.setMetadataCollectionId(metadataCollectionId);
         testObject.setGUID(guid);
-        testObject.setInstanceURL(instanceURL);
 
         return testObject;
     }
@@ -73,7 +71,6 @@ public class InstanceHeaderTest
         assertTrue(testObject.getInstanceProvenanceType().equals(instanceProvenanceType));
         assertTrue(testObject.getMetadataCollectionId().equals(metadataCollectionId));
         assertTrue(testObject.getGUID().equals(guid));
-        assertTrue(testObject.getInstanceURL().equals(instanceURL));
     }
 
 
@@ -95,7 +92,6 @@ public class InstanceHeaderTest
         assertTrue(testObject.getInstanceProvenanceType() == null);
         assertTrue(testObject.getMetadataCollectionId() == null);
         assertTrue(testObject.getGUID() == null);
-        assertTrue(testObject.getInstanceURL() == null);
 
         InstanceHeader anotherTestObject = getTestObject();
 
