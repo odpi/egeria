@@ -242,6 +242,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                     templateDefinition.getSoftwareCapabilityType(),
                                                     templateDefinition.getSoftwareCapabilityName(),
                                                     templateDefinition.getServerName(),
+                                                    null,
                                                     templateDefinition.getElementVersionIdentifier(),
                                                     templateDefinition.getServerDescription(),
                                                     templateDefinition.getUserId(),
@@ -345,6 +346,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * @param softwareCapabilityType           type of the associated capability
      * @param softwareCapabilityName           name for the associated capability
      * @param serverName                       name for the server
+     * @param namespace                        namespace
      * @param serverVersionIdentifier          server version identifier
      * @param description                      description for the server
      * @param userId                           userId for the connection
@@ -367,6 +369,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                        DeployedImplementationTypeDefinition softwareCapabilityType,
                                                        String                               softwareCapabilityName,
                                                        String                               serverName,
+                                                       String                               namespace,
                                                        String                               serverVersionIdentifier,
                                                        String                               description,
                                                        String                               userId,
@@ -386,6 +389,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, serverName);
+        extendedProperties.put(OpenMetadataProperty.NAMESPACE.name, namespace);
 
         if (deployedImplementationType.getAssociatedClassification() != null)
         {
@@ -433,8 +437,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                      null,
                                                                      null,
                                                                      null,
-                                                                     null,
-                                                                     1);
+                                                                     null);
         }
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
@@ -703,8 +706,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                      null,
                                                                      null,
                                                                      null,
-                                                                     null,
-                                                                     1);
+                                                                     null);
         }
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());

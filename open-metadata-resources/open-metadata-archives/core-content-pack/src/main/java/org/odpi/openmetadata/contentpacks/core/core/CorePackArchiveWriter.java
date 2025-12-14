@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreP
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.*;
@@ -285,10 +284,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         addOpenMetadataEnumValidNames(OpenMetadataProperty.BYTE_ORDERING.name,
                                       ByteOrdering.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ByteOrdering.values())));
-
-        addOpenMetadataEnumValidNames( OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                      OperationalStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(OperationalStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataProperty.DELETE_METHOD.name,
                                       DeleteMethod.getOpenTypeName(),

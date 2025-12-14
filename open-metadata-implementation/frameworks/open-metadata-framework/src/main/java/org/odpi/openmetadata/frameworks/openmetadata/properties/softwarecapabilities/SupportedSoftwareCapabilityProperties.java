@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -28,7 +27,6 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
     private String            deployer             = null;
     private String            deployerTypeName     = null;
     private String            deployerPropertyName = null;
-    private OperationalStatus operationalStatus    = null;
 
 
     /**
@@ -56,7 +54,6 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
             deployer = template.getDeployer();
             deployerTypeName = template.getDeployerTypeName();
             deployerPropertyName = template.getDeployerPropertyName();
-            operationalStatus    = template.getOperationalStatus();
         }
     }
 
@@ -150,28 +147,6 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
 
 
     /**
-     * Return whether the capability is ready to use.
-     *
-     * @return operational status enum
-     */
-    public OperationalStatus getOperationalStatus()
-    {
-        return operationalStatus;
-    }
-
-
-    /**
-     * Set up whether the capability is ready to use.
-     *
-     * @param operationalStatus operational status enum
-     */
-    public void setOperationalStatus(OperationalStatus operationalStatus)
-    {
-        this.operationalStatus = operationalStatus;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -184,7 +159,6 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
                 ", deployer='" + deployer + '\'' +
                 ", deployerTypeName='" + deployerTypeName + '\'' +
                 ", deployerPropertyName='" + deployerPropertyName + '\'' +
-                ", operationalStatus=" + operationalStatus +
                 "} " + super.toString();
     }
 
@@ -214,8 +188,7 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
         return Objects.equals(deploymentTime, that.deploymentTime) &&
                        Objects.equals(deployer, that.deployer) &&
                        Objects.equals(deployerTypeName, that.deployerTypeName) &&
-                       Objects.equals(deployerPropertyName, that.deployerPropertyName) &&
-                       operationalStatus == that.operationalStatus;
+                       Objects.equals(deployerPropertyName, that.deployerPropertyName);
     }
 
 
@@ -227,6 +200,6 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, operationalStatus);
+        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName);
     }
 }

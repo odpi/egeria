@@ -340,6 +340,12 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     }
 
 
+    public String getNamespace()
+    {
+        return PlaceholderProperty.ORGANIZATION_NAME.getPlaceholder();
+    }
+
+
     /**
      * Return the server description.
      *

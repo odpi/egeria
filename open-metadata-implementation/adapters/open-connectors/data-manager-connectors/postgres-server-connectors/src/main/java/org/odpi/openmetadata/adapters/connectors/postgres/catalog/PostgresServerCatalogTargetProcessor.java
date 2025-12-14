@@ -17,7 +17,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -226,10 +225,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                      new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                                                 databaseServerQualifiedName + ":DBMS")),
-                                                                                     new NewElementProperties(propertyHelper.addEnumProperty(null,
-                                                                                                                     OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                                                                     OperationalStatus.getOpenTypeName(),
-                                                                                                                     OperationalStatus.ENABLED.getName())));
+                                                                                     null);
             }
         }
         catch (Exception exception)

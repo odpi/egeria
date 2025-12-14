@@ -22,7 +22,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
@@ -253,10 +252,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
                                                                                        governanceContext.getRequestParameters(),
                                                                                        serverGUID,
                                                                                        OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                       propertyHelper.addEnumProperty(null,
-                                                                                                                      OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                                                                      OperationalStatus.getOpenTypeName(),
-                                                                                                                      OperationalStatus.ENABLED.getName()),
+                                                                                       null,
                                                                                        true);
     }
 

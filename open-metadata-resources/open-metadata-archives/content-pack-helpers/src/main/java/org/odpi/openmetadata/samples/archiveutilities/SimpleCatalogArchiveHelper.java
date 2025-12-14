@@ -1018,15 +1018,13 @@ public class SimpleCatalogArchiveHelper
      * @param deployerTypeName type name of the element representing the deployer
      * @param deployerPropertyName property name used to identify the deployer
      * @param deployer identifier of the deployer
-     * @param deploymentStatus status of the deployment
      */
     public void addDeployedOnRelationship(String deployedElementQName,
                                           String deployedOnQName,
                                           Date   deploymentTime,
                                           String deployerTypeName,
                                           String deployerPropertyName,
-                                          String deployer,
-                                          int    deploymentStatus)
+                                          String deployer)
     {
         final String methodName = "addDeployedOnRelationship";
 
@@ -1036,13 +1034,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedElementId));
         EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedOnId));
 
-        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(OperationalStatus.getOpenTypeName(), deploymentStatus);
-
         InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPLOYMENT_TIME.name, deploymentTime, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_TYPE_NAME.name, deployerTypeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name, deployerPropertyName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER.name, deployer, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, OperationalStatus.getOpenTypeGUID(), OperationalStatus.getOpenTypeName(), statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
 
         this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName, this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_deployed_on_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
     }
@@ -7141,15 +7136,13 @@ public class SimpleCatalogArchiveHelper
      * @param deployerTypeName type name of the element representing the deployer
      * @param deployerPropertyName property name used to identify the deployer
      * @param deployer identifier of the deployer
-     * @param serverCapabilityStatus status of the deployment
      */
     public void addSupportedSoftwareCapabilityRelationship(String deployedElementQName,
                                                            String deployedOnQName,
                                                            Date   deploymentTime,
                                                            String deployerTypeName,
                                                            String deployerPropertyName,
-                                                           String deployer,
-                                                           int    serverCapabilityStatus)
+                                                           String deployer)
     {
         final String methodName = "addSupportedSoftwareCapabilityRelationship";
 
@@ -7159,13 +7152,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedOnId));
         EntityProxy end2 = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedElementId));
 
-        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(OperationalStatus.getOpenTypeName(), serverCapabilityStatus);
-
         InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPLOYMENT_TIME.name, deploymentTime, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_TYPE_NAME.name, deployerTypeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name, deployerPropertyName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER.name, deployer, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, OperationalStatus.getOpenTypeGUID(), OperationalStatus.getOpenTypeName(), statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
 
         this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
                                                                                this.idToGUIDMap.getGUID(deployedOnId + "_to_" + deployedElementId + "_supported_software_capability_relationship"),

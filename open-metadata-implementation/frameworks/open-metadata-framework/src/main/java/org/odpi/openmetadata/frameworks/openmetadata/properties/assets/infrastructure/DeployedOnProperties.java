@@ -5,12 +5,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastr
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,14 +28,12 @@ public class DeployedOnProperties extends RelationshipBeanProperties
     private static final String deployerProperty             = "deployer";
     private static final String deployerTypeNameProperty     = "deployerTypeName";
     private static final String deployerPropertyNameProperty = "deployerPropertyName";
-    private static final String deploymentStatusProperty     = "deploymentStatus";
 
 
     private Date              deploymentTime       = null;
     private String            deployer             = null;
     private String            deployerTypeName     = null;
     private String            deployerPropertyName = null;
-    private OperationalStatus operationalStatus    = null;
 
 
     /**
@@ -65,7 +61,6 @@ public class DeployedOnProperties extends RelationshipBeanProperties
             deployer = template.getDeployer();
             deployerTypeName = template.getDeployerTypeName();
             deployerPropertyName = template.getDeployerPropertyName();
-            operationalStatus    = template.getOperationalStatus();
         }
     }
 
@@ -92,60 +87,8 @@ public class DeployedOnProperties extends RelationshipBeanProperties
             deployer = properties.get(deployerProperty).toString();
             deployerTypeName = properties.get(deployerTypeNameProperty).toString();
             deployerPropertyName = properties.get(deployerPropertyNameProperty).toString();
-
-            operationalStatus = OperationalStatus.DISABLED;
-            int operationalStatus = (Integer)properties.get(deploymentStatusProperty);
-
-            if (operationalStatus == 1)
-            {
-                this.operationalStatus = OperationalStatus.ENABLED;
-            }
         }
     }
-
-
-    /**
-     * Turn the properties into a property map.
-     *
-     * @return property map.
-     */
-    public Map<String, Object> cloneToMap()
-    {
-        Map<String, Object> propertyMap = new HashMap<>();
-
-        if (deploymentTime != null)
-        {
-            propertyMap.put(deploymentTimeProperty, deploymentTime);
-        }
-
-        if (deployer != null)
-        {
-            propertyMap.put(deployerProperty, deployer);
-        }
-
-        if (deployerTypeName != null)
-        {
-            propertyMap.put(deployerTypeNameProperty, deployerTypeName);
-        }
-
-        if (deployerPropertyName != null)
-        {
-            propertyMap.put(deployerPropertyNameProperty, deployerPropertyName);
-        }
-
-        if (operationalStatus != null)
-        {
-            propertyMap.put(deploymentStatusProperty, operationalStatus.getOrdinal());
-        }
-
-        if (! propertyMap.isEmpty())
-        {
-            propertyMap = null;
-        }
-
-        return propertyMap;
-    }
-
 
 
     /**
@@ -237,28 +180,6 @@ public class DeployedOnProperties extends RelationshipBeanProperties
 
 
     /**
-     * Return whether the capability is ready to use.
-     *
-     * @return operational status enum
-     */
-    public OperationalStatus getOperationalStatus()
-    {
-        return operationalStatus;
-    }
-
-
-    /**
-     * Set up whether the capability is ready to use.
-     *
-     * @param operationalStatus operational status enum
-     */
-    public void setOperationalStatus(OperationalStatus operationalStatus)
-    {
-        this.operationalStatus = operationalStatus;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -269,7 +190,6 @@ public class DeployedOnProperties extends RelationshipBeanProperties
         return "DeployedOnProperties{" +
                        "deploymentTime=" + deploymentTime +
                        ", deployer='" + deployer + '\'' +
-                       ", deploymentStatus=" + operationalStatus +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -301,8 +221,7 @@ public class DeployedOnProperties extends RelationshipBeanProperties
         return Objects.equals(deploymentTime, that.deploymentTime) &&
                        Objects.equals(deployer, that.deployer) &&
                        Objects.equals(deployerTypeName, that.deployerTypeName) &&
-                       Objects.equals(deployerPropertyName, that.deployerPropertyName) &&
-                       operationalStatus == that.operationalStatus;
+                       Objects.equals(deployerPropertyName, that.deployerPropertyName);
     }
 
 
@@ -314,6 +233,6 @@ public class DeployedOnProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, operationalStatus);
+        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName);
     }
 }

@@ -11111,36 +11111,6 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from entity
      * @return enum
      */
-    OperationalStatus removeOperationalStatus(ElementProperties elementProperties)
-    {
-        final String methodName = "removeOperationalStatus";
-
-        if (elementProperties != null)
-        {
-            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
-                                                                         OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                         elementProperties,
-                                                                         methodName);
-
-            for (OperationalStatus operationalStatus : OperationalStatus.values())
-            {
-                if (operationalStatus.getName().equals(retrievedProperty))
-                {
-                    return operationalStatus;
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the property from the supplied element properties.
-     *
-     * @param elementProperties properties from entity
-     * @return enum
-     */
     CapabilityAssetUseType removeUseType(ElementProperties elementProperties)
     {
         final String methodName = "removeUseType";
@@ -12218,7 +12188,6 @@ public class OpenMetadataPropertyConverterBase
                 ((DeployedOnProperties)relationshipBeanProperties).setDeployer(this.removeDeployer(elementProperties));
                 ((DeployedOnProperties)relationshipBeanProperties).setDeployerTypeName(this.removeDeployerTypeName(elementProperties));
                 ((DeployedOnProperties)relationshipBeanProperties).setDeployerPropertyName(this.removeDeployerPropertyName(elementProperties));
-                ((DeployedOnProperties)relationshipBeanProperties).setOperationalStatus(this.removeOperationalStatus(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName))
             {
@@ -12880,7 +12849,6 @@ public class OpenMetadataPropertyConverterBase
                 ((SupportedSoftwareCapabilityProperties)relationshipBeanProperties).setDeployer(this.removeDeployer(elementProperties));
                 ((SupportedSoftwareCapabilityProperties)relationshipBeanProperties).setDeployerTypeName(this.removeDeployerTypeName(elementProperties));
                 ((SupportedSoftwareCapabilityProperties)relationshipBeanProperties).setDeployerPropertyName(this.removeDeployerPropertyName(elementProperties));
-                ((SupportedSoftwareCapabilityProperties)relationshipBeanProperties).setOperationalStatus(this.removeOperationalStatus(elementProperties));
                 ((SupportedSoftwareCapabilityProperties)relationshipBeanProperties).setDeploymentTime(this.removeDeploymentTime(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName))
