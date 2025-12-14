@@ -17,7 +17,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
-import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.net.URI;
 import java.net.URLEncoder;

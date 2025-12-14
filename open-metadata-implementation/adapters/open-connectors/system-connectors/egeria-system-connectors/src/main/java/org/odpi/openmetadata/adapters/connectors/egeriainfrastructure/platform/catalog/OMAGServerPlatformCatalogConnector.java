@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.
 
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties.*;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostConnector;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonConnector;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.ViewServerConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
@@ -23,7 +26,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaSolutionComponent;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -557,6 +559,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
      */
     private void checkServerLineage() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "checkServerLineage";
+
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
 
         int startFrom = 0;
@@ -591,13 +595,60 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
                                 OMAGServerConfig serverConfig = viewServerConnector.getResolvedOMAGServerConfig();
 
+                                viewServerConnector.disconnect();
+                            }
+                        }
+                        else if (EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType().equals(softwareServerProperties.getDeployedImplementationType()))
+                        {
+                            Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(softwareServer.getElementHeader().getGUID(), auditLog);
 
+                            if (connector instanceof IntegrationDaemonConnector integrationDaemonConnector)
+                            {
+                                integrationDaemonConnector.setDelegatingUserId(integrationContext.getMyUserId());
+                                integrationDaemonConnector.start();
+
+                                OMAGServerConfig serverConfig = integrationDaemonConnector.getResolvedOMAGServerConfig();
+
+                                integrationDaemonConnector.disconnect();
+                            }
+                        }
+                        else if (EgeriaDeployedImplementationType.ENGINE_HOST.getDeployedImplementationType().equals(softwareServerProperties.getDeployedImplementationType()))
+                        {
+                            Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(softwareServer.getElementHeader().getGUID(), auditLog);
+
+                            if (connector instanceof EngineHostConnector engineHostConnector)
+                            {
+                                engineHostConnector.setDelegatingUserId(integrationContext.getMyUserId());
+                                engineHostConnector.start();
+
+                                OMAGServerConfig serverConfig = engineHostConnector.getResolvedOMAGServerConfig();
+
+                                engineHostConnector.disconnect();
+                            }
+                        }
+                        else if (EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType().equals(softwareServerProperties.getDeployedImplementationType()))
+                        {
+                            Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(softwareServer.getElementHeader().getGUID(), auditLog);
+
+                            if (connector instanceof MetadataAccessServerConnector metadataAccessServerConnector)
+                            {
+                                metadataAccessServerConnector.setDelegatingUserId(integrationContext.getMyUserId());
+                                metadataAccessServerConnector.start();
+
+                                OMAGServerConfig serverConfig = metadataAccessServerConnector.getResolvedOMAGServerConfig();
+
+                                metadataAccessServerConnector.disconnect();
                             }
                         }
                     }
                     catch (Exception error)
                     {
-
+                        super.logExceptionRecord(methodName,
+                                                 OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  methodName,
+                                                                                                                  error.getMessage()),
+                                                 error);
                     }
                 }
             }
@@ -622,7 +673,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                           String serverName,
                                           String organizationName)
     {
-        if (organizationName == null)
+        if ((organizationName == null) || (organizationName.isBlank()) || ("null".equals(organizationName)))
         {
             return serverType + "::" + platformURLRoot + "::" + serverName;
         }
@@ -645,7 +696,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                         String serverName,
                                         String organizationName)
     {
-        if (organizationName == null)
+        if ((organizationName == null) || (organizationName.isBlank()) || ("null".equals(organizationName)))
         {
             return serverName + " on " + platformURLRoot;
         }
@@ -657,16 +708,16 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
 
     /**
-     * Construct the qualified name for a server.
+     * Construct the resource name for a server.
      *
      * @param organizationName owning organization
      * @param serverName unique name for the server.
      * @return composite qualified name
      */
     private String getServerResourceName(String serverName,
-                                        String organizationName)
+                                         String organizationName)
     {
-        if (organizationName == null)
+        if ((organizationName == null) || (organizationName.isBlank()) || ("null".equals(organizationName)))
         {
             return serverName;
         }
@@ -807,6 +858,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
         placeholderProperties.put(PlaceholderProperty.SECRETS_STORE.getName(), super.getSecretsLocation(SecretsStorePurpose.REST_BEARER_TOKEN.getName()));
         placeholderProperties.put(PlaceholderProperty.SECRETS_COLLECTION_NAME.getName(), super.getSecretsCollectionName(SecretsStorePurpose.REST_BEARER_TOKEN.getName()));
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
+        placeholderProperties.put(PlaceholderProperty.ORGANIZATION_NAME.getName(), null);
 
         String platformQualifiedName = EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType() + "::" + platformURLRoot;
 
@@ -888,6 +940,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
         softwareServerPlatformProperties.setDisplayName(platformProperties.getPlatformPublicProperties().getDisplayName());
         softwareServerPlatformProperties.setDescription(platformProperties.getPlatformPublicProperties().getDescription());
         softwareServerPlatformProperties.setURL(this.getURL(null));
+        softwareServerPlatformProperties.setNamespace(platformProperties.getPlatformOrganization());
         softwareServerPlatformProperties.setVersionIdentifier(platformProperties.getPlatformBuildProperties().getVersion());
         softwareServerPlatformProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
 
@@ -940,6 +993,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), platformProperties.getPlatformOrigin());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), omagServerProperties.getDescription());
         placeholderProperties.put(PlaceholderProperty.CONNECTION_USER_ID.getName(), null);
+        placeholderProperties.put(PlaceholderProperty.ORGANIZATION_NAME.getName(), omagServerProperties.getOrganizationName());
 
         String serverQualifiedName = this.getServerQualifiedName(platformProperties.getPlatformURLRoot(),
                                                                  omagServerProperties.getServerType(),
@@ -1106,8 +1160,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                                           omagServerProperties.getServerName(),
                                                                           omagServerProperties.getOrganizationName()));
         softwareServerProperties.setVersionIdentifier(platformProperties.getPlatformBuildProperties().getVersion());
-        softwareServerProperties.setResourceName(this.getServerResourceName(omagServerProperties.getServerName(),
-                                                                            omagServerProperties.getOrganizationName()));
+
+        softwareServerProperties.setNamespace(omagServerProperties.getOrganizationName());
         softwareServerProperties.setDeployedImplementationType(omagServerProperties.getServerType());
         softwareServerProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
         softwareServerProperties.setURL(this.getURL(omagServerProperties.getServerType()));
@@ -1218,11 +1272,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                     (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
                                     (!processedEngines.contains(governanceEngineSummary.getGovernanceEngineGUID())))
                             {
-                                SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
-
-                                supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
-
-                                assetClient.linkSoftwareCapability(serverGUID, governanceEngineSummary.getGovernanceEngineGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), supportedSoftwareCapabilityProperties);
+                                assetClient.linkSoftwareCapability(serverGUID, governanceEngineSummary.getGovernanceEngineGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), null);
 
                                 processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
                             }
@@ -1299,11 +1349,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                     (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
                                     (!processedGroups.contains(integrationGroupProperties.getIntegrationGroupGUID())))
                             {
-                                SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
-
-                                supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
-
-                                assetClient.linkSoftwareCapability(serverGUID, integrationGroupProperties.getIntegrationGroupGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), supportedSoftwareCapabilityProperties);
+                                assetClient.linkSoftwareCapability(serverGUID, integrationGroupProperties.getIntegrationGroupGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), null);
 
                                 processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
                             }

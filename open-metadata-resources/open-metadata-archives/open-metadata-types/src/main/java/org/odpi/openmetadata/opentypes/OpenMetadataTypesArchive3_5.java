@@ -223,8 +223,6 @@ public class OpenMetadataTypesArchive3_5
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_TYPE_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYER_PROPERTY_NAME));
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.OPERATIONAL_STATUS));
-
 
         relationshipDef.setPropertiesDefinition(properties);
 

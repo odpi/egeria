@@ -151,8 +151,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                              null,
                                                                              null,
                                                                              null,
-                                                                             null,
-                                                                             1);
+                                                                             null);
                 }
             }
 
@@ -171,8 +170,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                             null,
                                                             null,
                                                             null,
-                                                            null,
-                                                            1);
+                                                            null);
                 }
             }
 

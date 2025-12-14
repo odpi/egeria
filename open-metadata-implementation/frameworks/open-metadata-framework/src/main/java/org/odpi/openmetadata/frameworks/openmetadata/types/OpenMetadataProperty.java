@@ -1020,11 +1020,6 @@ public enum OpenMetadataProperty
                  "6cc366b8-b871-4b8f-a4dc-e41c06a025c8"),
 
     /**
-     * The operational status of the software server capability on this software server.
-     */
-    OPERATIONAL_STATUS("operationalStatus", DataType.STRING, OperationalStatus.getOpenTypeName(), "The operational status of the deployed infrastructure.", null, "30c86736-c31a-4f29-8451-0c849f730a0b"),
-
-    /**
      * Patch level of the software server capability.
      */
     PATCH_LEVEL("patchLevel", DataType.STRING, DataType.STRING.getName(), "Patch level of the software server capability.", "456", "574bea24-8dd6-407a-bed4-aaa432d10276"),

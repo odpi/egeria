@@ -1861,40 +1861,9 @@ public class OpenMetadataTypesArchive1_2
      */
     private void add0037SoftwareServerPlatforms()
     {
-        this.archiveBuilder.addEnumDef(getOperationalStatusEnum());
-
         this.archiveBuilder.addEntityDef(getSoftwareServerPlatformEntity());
     }
 
-    private EnumDef getOperationalStatusEnum()
-    {
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(OperationalStatus.getOpenTypeGUID(),
-                                                        OperationalStatus.getOpenTypeName(),
-                                                        OperationalStatus.getOpenTypeDescription(),
-                                                        OperationalStatus.getOpenTypeDescriptionGUID());
-
-        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef            elementDef;
-
-        for (OperationalStatus enumValue : OperationalStatus.values())
-        {
-            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
-                                                         enumValue.getName(),
-                                                         enumValue.getDescription(),
-                                                         enumValue.getDescriptionGUID());
-
-            elementDefs.add(elementDef);
-
-            if (enumValue.isDefault())
-            {
-                enumDef.setDefaultValue(elementDef);
-            }
-        }
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
 
     private EntityDef getSoftwareServerPlatformEntity()
     {

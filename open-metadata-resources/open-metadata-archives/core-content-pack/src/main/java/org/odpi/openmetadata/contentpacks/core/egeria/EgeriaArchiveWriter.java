@@ -219,6 +219,7 @@ public class EgeriaArchiveWriter extends ContentPackBaseArchiveWriter
                                                 templateDefinition.getSoftwareCapabilityType(),
                                                 templateDefinition.getSoftwareCapabilityName(),
                                                 templateDefinition.getServerName(),
+                                                templateDefinition.getNamespace(),
                                                 templateDefinition.getElementVersionIdentifier(),
                                                 templateDefinition.getServerDescription(),
                                                 templateDefinition.getUserId(),
@@ -341,8 +342,7 @@ public class EgeriaArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  null,
                                                                  null,
                                                                  null,
-                                                                 null,
-                                                                 1);
+                                                                 null);
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
