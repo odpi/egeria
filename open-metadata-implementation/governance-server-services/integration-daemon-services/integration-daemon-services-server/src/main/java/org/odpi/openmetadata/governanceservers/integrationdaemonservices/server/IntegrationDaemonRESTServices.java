@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
@@ -36,6 +36,56 @@ public class IntegrationDaemonRESTServices extends TokenController
     private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(IntegrationDaemonRESTServices.class),
                                                                       instanceHandler.getServiceName());
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
+
+
+
+    /**
+     * Validate the connector and return its connector type.
+     *
+     * @param serverName integration daemon server name
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
+     *
+     * @return connector report or
+     *  InvalidParameterException the connector provider class name is not a valid connector fo this service
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException there was a problem detected by the integration service
+     */
+    public ConnectorReportResponse validateConnector(String serverName,
+                                                     String connectorProviderClassName)
+    {
+        final String methodName = "validateConnector";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ConnectorReportResponse response = new ConnectorReportResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
+                                                                                IntegrationConnector.class,
+                                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
+            if (connectorReport != null)
+            {
+                response.setConnectorReport(connectorReport);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
     /**

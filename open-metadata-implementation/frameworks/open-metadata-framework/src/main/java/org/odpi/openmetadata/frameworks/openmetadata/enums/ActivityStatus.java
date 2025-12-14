@@ -229,20 +229,6 @@ public enum ActivityStatus implements OpenMetadataEnum
 
 
     /**
-     * Return the qualified name for this value.
-     *
-     * @return string
-     */
-    public String getQualifiedName()
-    {
-        return constructValidValueQualifiedName(ENUM_TYPE_NAME,
-                                                OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                                null,
-                                                name);
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style

@@ -36,7 +36,7 @@ public class RelationshipDefTest
     private final Map<String, String>           options                  = new HashMap<>();
     private final List<ExternalStandardMapping> externalStandardMappings = new ArrayList<>();
     private final List<InstanceStatus>          validInstanceStatusList  = new ArrayList<>();
-    private final InstanceStatus                initialStatus            = InstanceStatus.APPROVED;
+    private final InstanceStatus                initialStatus            = InstanceStatus.INVALID;
     private final List<TypeDefAttribute>        propertiesDefinition     = new ArrayList<>();
     private final ClassificationPropagationRule propagationRule          = ClassificationPropagationRule.TWO_TO_ONE;
     private final RelationshipEndDef            endDef1                  = new RelationshipEndDef();
@@ -62,7 +62,7 @@ public class RelationshipDefTest
         externalStandardMappings.add(mapping);
 
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.COMPLETE);
+        validInstanceStatusList.add(InstanceStatus.UNKNOWN);
 
         TypeDefAttribute attribute = new TypeDefAttribute();
         

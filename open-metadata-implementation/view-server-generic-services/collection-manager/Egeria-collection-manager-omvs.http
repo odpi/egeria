@@ -159,7 +159,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "Add collection type here",
+  "filter" : "Add category here",
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -172,7 +172,7 @@ Content-Type: application/json
 }
 
 ###
-# @name getCollectionsByCategory (restricted by classificationName and category name)
+# @name getCollectionsByCategory (restricted by classificationName and type name)
 # Returns the list of collections with a particular category.  This is an optional text field in the collection element.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-category
 Authorization: Bearer {{token}}
@@ -624,19 +624,21 @@ Content-Type: application/json
 
 ###
 # @name updateDigitalProductStatus
-# Update the status of the DigitalProduct collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{digitalProductGUID}}/update-status
+# Update the status of the DigitalProduct collection.  There are two statuses to consider.  The content status
+# describes the state of the product description.  The deploymentStatus covers the status of the technical work to
+# implement the product's digital resources.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalProductGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateStatusRequestBody",
-  "newStatus": "APPROVED",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "DigitalProductProperties",
+    "contentStatus": "APPROVED",
+    "deploymentStatus": "UNDER_DEVELOPMENT"
+  },
+  "mergeUpdate": true
 }
 
 ###
@@ -838,18 +840,17 @@ Content-Type: application/json
 ###
 # @name updateAgreementStatus
 # Update the status of the Agreement collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{agreementGUID}}/update-status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{agreementGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateStatusRequestBody",
-  "newStatus": "APPROVED",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "AgreementProperties",
+    "contentStatus": "APPROVED"
+  },
+  "mergeUpdate": true
 }
 
 ###
@@ -1089,18 +1090,17 @@ Content-Type: application/json
 ###
 # @name updateDigitalSubscriptionStatus
 # Update the status of the digital subscription collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{digitalSubscriptionGUID}}/update-status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalSubscriptionGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateStatusRequestBody",
-  "newStatus": "APPROVED",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "DigitalSubscriptionProperties",
+    "contentStatus": "ACTIVE"
+  },
+  "mergeUpdate": true
 }
 
 ###

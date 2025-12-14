@@ -526,25 +526,21 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
-###
-
-@solutionElementGUID=add guid here
 
 ###
-# @name updateSolutionElementStatus
-# Update the status of a solution blueprint, solution component or solution port.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/metadata-elements/{{solutionElementGUID}}/update-status
+# @name updateSolutionBlueprintStatus
+# Update the status of a solution blueprint.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateStatusRequestBody",
-  "newStatus" : "APPROVED",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "AuthoredReferenceableProperties",
+    "contentStatus": "ACTIVE"
+  },
+  "mergeUpdate": true
 }
 
 

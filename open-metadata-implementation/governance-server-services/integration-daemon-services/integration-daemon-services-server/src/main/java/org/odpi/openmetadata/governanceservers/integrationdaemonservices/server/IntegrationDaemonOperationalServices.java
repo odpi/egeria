@@ -6,8 +6,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationG
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.OIFContextManager;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
@@ -16,8 +16,6 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.In
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.GroupConfigurationRefreshThread;
-import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +37,6 @@ public class IntegrationDaemonOperationalServices
 
     private AuditLog                        auditLog                  = null;
     private IntegrationDaemonInstance       integrationDaemonInstance = null;
-    private final Map<String, ServerActiveStatus> serviceStatusMap          = new HashMap<>();
 
     private final List<GroupConfigurationRefreshThread> configurationRefreshThreads = new ArrayList<>();
 
@@ -69,11 +66,10 @@ public class IntegrationDaemonOperationalServices
      * @param dynamicConfiguration config properties for dynamic integration groups
      * @param auditLog destination for audit log messages.
      *
-     * @return activated services list
      * @throws OMAGConfigurationErrorException error in configuration preventing startup
      */
-    public List<String> initialize(List<IntegrationGroupConfig>   dynamicConfiguration,
-                                   AuditLog                       auditLog) throws OMAGConfigurationErrorException
+    public void initialize(List<IntegrationGroupConfig>   dynamicConfiguration,
+                           AuditLog                       auditLog) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
         final String             methodName = "initialize";
@@ -184,8 +180,6 @@ public class IntegrationDaemonOperationalServices
                                                                       daemonConnectorHandlers);
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
-
-            return new ArrayList<>(serviceStatusMap.keySet());
         }
         catch (InvalidParameterException error)
         {
@@ -203,29 +197,6 @@ public class IntegrationDaemonOperationalServices
                                                       methodName,
                                                       error);
         }
-    }
-
-
-    /**
-     * Return a summary of the status of this server and the services within it.
-     *
-     * @return server status
-     */
-    public List<OMAGServerServiceStatus> getServiceStatuses()
-    {
-        List<OMAGServerServiceStatus> serviceStatuses = new ArrayList<>();
-
-        for (String serviceName : serviceStatusMap.keySet())
-        {
-            OMAGServerServiceStatus serviceStatus = new OMAGServerServiceStatus();
-
-            serviceStatus.setServiceName(serviceName);
-            serviceStatus.setServiceStatus(serviceStatusMap.get(serviceName));
-
-            serviceStatuses.add(serviceStatus);
-        }
-
-        return serviceStatuses;
     }
 
 
@@ -324,11 +295,6 @@ public class IntegrationDaemonOperationalServices
 
         auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
-        for (String serviceName : serviceStatusMap.keySet())
-        {
-            serviceStatusMap.put(serviceName, ServerActiveStatus.STOPPING);
-        }
-
         for (GroupConfigurationRefreshThread groupConfigurationRefreshThread : configurationRefreshThreads)
         {
             groupConfigurationRefreshThread.stop();
@@ -337,11 +303,6 @@ public class IntegrationDaemonOperationalServices
         if (integrationDaemonInstance != null)
         {
             integrationDaemonInstance.shutdown();
-        }
-
-        for (String serviceName : serviceStatusMap.keySet())
-        {
-            serviceStatusMap.put(serviceName, ServerActiveStatus.INACTIVE);
         }
 
         auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));

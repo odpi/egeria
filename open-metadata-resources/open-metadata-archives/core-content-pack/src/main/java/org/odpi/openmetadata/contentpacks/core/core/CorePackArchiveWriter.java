@@ -334,6 +334,14 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       ActivityStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ActivityStatus.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.CONTENT_STATUS.name,
+                                      ContentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ContentStatus.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.DEPLOYMENT_STATUS.name,
+                                      DeploymentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(DeploymentStatus.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataProperty.ACTIVITY_TYPE.name,
                                       ActivityType.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ActivityType.values())));
@@ -701,7 +709,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  DataType.STRING.getName(),
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  openMetadataType.typeName,
-                                                                 null,
                                                                  openMetadataType.wikiURL,
                                                                  false,
                                                                  additionalProperties);

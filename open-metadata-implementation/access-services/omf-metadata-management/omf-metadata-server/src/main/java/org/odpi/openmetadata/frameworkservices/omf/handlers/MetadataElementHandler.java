@@ -1346,21 +1346,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             return switch (elementStatus)
                            {
                                case UNKNOWN -> InstanceStatus.UNKNOWN;
-                               case DRAFT -> InstanceStatus.DRAFT;
-                               case PREPARED -> InstanceStatus.PREPARED;
-                               case PROPOSED -> InstanceStatus.PROPOSED;
-                               case APPROVED -> InstanceStatus.APPROVED;
-                               case REJECTED -> InstanceStatus.REJECTED;
-                               case APPROVED_CONCEPT -> InstanceStatus.APPROVED_CONCEPT;
-                               case UNDER_DEVELOPMENT -> InstanceStatus.UNDER_DEVELOPMENT;
-                               case DEVELOPMENT_COMPLETE -> InstanceStatus.DEVELOPMENT_COMPLETE;
-                               case APPROVED_FOR_DEPLOYMENT -> InstanceStatus.APPROVED_FOR_DEPLOYMENT;
-                               case STANDBY -> InstanceStatus.STANDBY;
                                case ACTIVE -> InstanceStatus.ACTIVE;
-                               case FAILED -> InstanceStatus.FAILED;
-                               case DISABLED -> InstanceStatus.DISABLED;
-                               case COMPLETE -> InstanceStatus.COMPLETE;
-                               case DEPRECATED -> InstanceStatus.DEPRECATED;
+                               case INVALID -> InstanceStatus.INVALID;
                                case DELETED -> InstanceStatus.DELETED;
                                case OTHER -> InstanceStatus.OTHER;
                            };

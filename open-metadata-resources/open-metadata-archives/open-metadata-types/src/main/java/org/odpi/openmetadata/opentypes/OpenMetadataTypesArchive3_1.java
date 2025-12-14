@@ -366,7 +366,7 @@ public class OpenMetadataTypesArchive3_1
     private EntityDef getDataProcessingDescriptionEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
     }
 
 
@@ -380,7 +380,7 @@ public class OpenMetadataTypesArchive3_1
     private EntityDef getDataProcessingActionEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
     }
 
 

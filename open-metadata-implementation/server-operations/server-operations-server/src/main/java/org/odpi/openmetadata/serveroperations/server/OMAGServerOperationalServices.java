@@ -1331,15 +1331,16 @@ public class OMAGServerOperationalServices extends TokenController
                                                                configuration.getMaxPageSize());
 
             instance.setOperationalIntegrationDaemon(integrationDaemonOperationalServices);
-            List<String> integrationServices = integrationDaemonOperationalServices.initialize(configuration.getDynamicIntegrationGroupsConfig(),
-                                                                                               operationalRepositoryServices.getAuditLog(
-                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
-                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDevelopmentStatus(),
-                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
-                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
-                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
+            integrationDaemonOperationalServices.initialize(configuration.getDynamicIntegrationGroupsConfig(),
+                                                            operationalRepositoryServices.getAuditLog(
+                                                                    GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
+                                                                    GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDevelopmentStatus(),
+                                                                    GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
+                                                                    GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
+                                                                    GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
 
-            activatedServiceList.addAll(integrationServices);
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+
             activatedServiceList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
             instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }

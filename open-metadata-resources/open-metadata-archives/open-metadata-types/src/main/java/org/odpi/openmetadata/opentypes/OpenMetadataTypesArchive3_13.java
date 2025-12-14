@@ -217,19 +217,8 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getAgreementEntity()
     {
-        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.AGREEMENT,
-                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.AGREEMENT,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 

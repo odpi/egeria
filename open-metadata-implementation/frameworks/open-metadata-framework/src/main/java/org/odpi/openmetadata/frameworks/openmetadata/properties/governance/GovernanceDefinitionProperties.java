@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -15,22 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * GovernanceDefinitionProperties provides the base class for many of the definitions that define the data strategy
- * and governance program.  It includes many of the common fields:
- *
- * <ul>
- *     <li>Document id</li>
- *     <li>Title</li>
- *     <li>Summary</li>
- *     <li>Description</li>
- *     <li>Scope</li>
- *     <li>Domain identifier</li>
- *     <li>Status</li>
- *     <li>Priority</li>
- *     <li>Implications</li>
- *     <li>Outcomes</li>
- *     <li>Results</li>
- *     <li>AdditionalProperties</li>
- * </ul>
+ * and governance program.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,9 +29,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernancePolicyProperties.class, name = "GovernancePolicyProperties"),
                 @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
         })
-public class GovernanceDefinitionProperties extends ReferenceableProperties
+public class GovernanceDefinitionProperties extends AuthoredReferenceableProperties
 {
-    private String       userDefinedStatus = null;
     private String       summary          = null;
     private String       scope            = null;
     private String       usage            = null;
@@ -78,7 +62,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.userDefinedStatus = template.getUserDefinedStatus();
             this.summary           = template.getSummary();
             this.scope             = template.getScope();
             this.usage             = template.getUsage();
@@ -89,29 +72,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
             this.results           = template.getResults();
         }
     }
-
-
-    /**
-     * Return any user defined status beyond the standard element status values.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up  any user defined status beyond the standard element status values.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
 
 
     /**
@@ -307,8 +267,7 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceDefinitionProperties{" +
-                "userDefinedStatus='" + userDefinedStatus + '\'' +
-                ", summary='" + summary + '\'' +
+                "summary='" + summary + '\'' +
                 ", scope='" + scope + '\'' +
                 ", usage='" + usage + '\'' +
                 ", domainIdentifier=" + domainIdentifier +
@@ -334,7 +293,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
         if (!super.equals(objectToCompare)) return false;
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus)&&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(usage, that.usage) &&
@@ -353,6 +311,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, summary, scope, usage, domainIdentifier, importance, implications, outcomes, results);
+        return Objects.hash(super.hashCode(), summary, scope, usage, domainIdentifier, importance, implications, outcomes, results);
     }
 }

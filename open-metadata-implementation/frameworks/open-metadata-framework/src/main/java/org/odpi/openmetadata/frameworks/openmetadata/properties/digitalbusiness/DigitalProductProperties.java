@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -28,13 +29,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DigitalProductProperties extends CollectionProperties
 {
-    private String userDefinedStatus = null;
-    private String productName       = null;
-    private Date   introductionDate  = null;
-    private String maturity          = null;
-    private String serviceLife       = null;
-    private Date   nextVersionDate   = null;
-    private Date   withdrawDate      = null;
+    private DeploymentStatus deploymentStatus            = null;
+    private String           userDefinedDeploymentStatus = null;
+    private String           productName                 = null;
+    private Date             introductionDate            = null;
+    private String           maturity                    = null;
+    private String           serviceLife                 = null;
+    private Date             nextVersionDate             = null;
+    private Date             withdrawDate                = null;
 
 
     /**
@@ -58,36 +60,59 @@ public class DigitalProductProperties extends CollectionProperties
 
         if (template != null)
         {
-            userDefinedStatus = template.getUserDefinedStatus();
-            productName       = template.getProductName();
-            introductionDate  = template.getIntroductionDate();
-            maturity          = template.getMaturity();
-            serviceLife       = template.getServiceLife();
-            nextVersionDate   = template.getNextVersionDate();
-            withdrawDate      = template.getWithdrawDate();
+            deploymentStatus            = template.getDeploymentStatus();
+            userDefinedDeploymentStatus = template.getUserDefinedDeploymentStatus();
+            productName                 = template.getProductName();
+            introductionDate            = template.getIntroductionDate();
+            maturity                    = template.getMaturity();
+            serviceLife                 = template.getServiceLife();
+            nextVersionDate             = template.getNextVersionDate();
+            withdrawDate                = template.getWithdrawDate();
         }
     }
 
 
     /**
-     * Return the status of the product.
+     * Return the status of the content.
      *
-     * @return string
+     * @return status enum
      */
-    public String getUserDefinedStatus()
+    public DeploymentStatus getDeploymentStatus()
     {
-        return userDefinedStatus;
+        return deploymentStatus;
     }
 
 
     /**
-     * Set up the status of the product
+     * Set up the status of the content.
      *
-     * @param userDefinedStatus string
+     * @param deploymentStatus status enum
      */
-    public void setUserDefinedStatus(String userDefinedStatus)
+    public void setDeploymentStatus(DeploymentStatus deploymentStatus)
     {
-        this.userDefinedStatus = userDefinedStatus;
+        this.deploymentStatus = deploymentStatus;
+    }
+
+
+    /**
+     * Return additionally defined content statuses.
+     *
+     * @return string
+     */
+    public String getUserDefinedDeploymentStatus()
+    {
+        return userDefinedDeploymentStatus;
+    }
+
+
+    /**
+     * Set up additionally defined content statuses.
+     *
+     * @param userDefinedDeploymentStatus string
+     */
+    public void setUserDefinedDeploymentStatus(String userDefinedDeploymentStatus)
+    {
+        this.userDefinedDeploymentStatus = userDefinedDeploymentStatus;
     }
 
 
@@ -234,7 +259,8 @@ public class DigitalProductProperties extends CollectionProperties
     public String toString()
     {
         return "DigitalProductProperties{" +
-                "userDefinedStatus=" + userDefinedStatus +
+                "deploymentStatus=" + deploymentStatus +
+                ", userDefinedDeploymentStatus='" + userDefinedDeploymentStatus + '\'' +
                 ", productName='" + productName + '\'' +
                 ", introductionDate=" + introductionDate +
                 ", maturity='" + maturity + '\'' +
@@ -266,7 +292,8 @@ public class DigitalProductProperties extends CollectionProperties
         {
             return false;
         }
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
+        return deploymentStatus == that.deploymentStatus &&
+                Objects.equals(userDefinedDeploymentStatus, that.userDefinedDeploymentStatus) &&
                        Objects.equals(productName, that.productName) &&
                        Objects.equals(introductionDate, that.introductionDate) &&
                        Objects.equals(maturity, that.maturity) &&
@@ -284,7 +311,7 @@ public class DigitalProductProperties extends CollectionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, productName, introductionDate,
+        return Objects.hash(super.hashCode(), deploymentStatus, userDefinedDeploymentStatus, productName, introductionDate,
                             maturity, serviceLife, nextVersionDate, withdrawDate);
     }
 }

@@ -3,10 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,11 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = SchemaTypeProperties.class, name = "SchemaTypeProperties"),
         @JsonSubTypes.Type(value = SchemaAttributeProperties.class, name = "SchemaAttributeProperties")
               })
-public class SchemaElementProperties extends ReferenceableProperties
+public class SchemaElementProperties extends AuthoredReferenceableProperties
 {
-    private String userDefinedStatus = null;
-
-
     /**
      * Default constructor
      */
@@ -45,36 +40,9 @@ public class SchemaElementProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public SchemaElementProperties(SchemaElementProperties template)
+    public SchemaElementProperties(AuthoredReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            userDefinedStatus = template.getUserDefinedStatus();
-        }
-    }
-
-
-    /**
-     * What is the status of the element if element status is OTHER?
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set  the schema element userDefinedStatus.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -87,42 +55,6 @@ public class SchemaElementProperties extends ReferenceableProperties
     public String toString()
     {
         return "SchemaElementProperties{" +
-                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare)) return false;
-        SchemaElementProperties that = (SchemaElementProperties) objectToCompare;
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), userDefinedStatus);
     }
 }

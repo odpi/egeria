@@ -31,7 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ReportProperties extends DataSetProperties
 {
     private String purpose           = null;
-    private String author            = null;
     private Date   startTime         = null;
     private Date   completionTime    = null;
     private String completionMessage = null;
@@ -61,7 +60,6 @@ public class ReportProperties extends DataSetProperties
         if (template != null)
         {
             purpose           = template.getPurpose();
-            author            = template.getAuthor();
             startTime         = template.getStartTime();
             completionTime    = template.getCompletionTime();
             completionMessage = template.getCompletionMessage();
@@ -91,28 +89,6 @@ public class ReportProperties extends DataSetProperties
     public void setPurpose(String purpose)
     {
         this.purpose = purpose;
-    }
-
-
-    /**
-     * Return the name of the author - or generation engine that created the report.
-     *
-     * @return string name
-     */
-    public String getAuthor()
-    {
-        return author;
-    }
-
-
-    /**
-     * Set up the name of the author - or generation engine that created the report.
-     *
-     * @param author string name
-     */
-    public void setAuthor(String author)
-    {
-        this.author = author;
     }
 
 
@@ -261,7 +237,6 @@ public class ReportProperties extends DataSetProperties
     {
         return "ReportProperties{" +
                 "purpose='" + purpose + '\'' +
-                ", author='" + author + '\'' +
                 ", startTime=" + startTime +
                 ", completionTime=" + completionTime +
                 ", completionMessage='" + completionMessage + '\'' +
@@ -286,7 +261,6 @@ public class ReportProperties extends DataSetProperties
         if (!super.equals(objectToCompare)) return false;
         ReportProperties that = (ReportProperties) objectToCompare;
         return Objects.equals(purpose, that.purpose) &&
-                Objects.equals(author, that.author) &&
                 Objects.equals(startTime, that.startTime) &&
                 Objects.equals(completionTime, that.completionTime) &&
                 Objects.equals(completionMessage, that.completionMessage) &&
@@ -303,6 +277,6 @@ public class ReportProperties extends DataSetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), purpose, author, startTime, completionTime, completionMessage, createdTime, lastModifiedTime, lastModifier);
+        return Objects.hash(super.hashCode(), purpose, startTime, completionTime, completionMessage, createdTime, lastModifiedTime, lastModifier);
     }
 }

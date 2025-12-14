@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFieldProperties extends ReferenceableProperties
+public class DataFieldProperties extends AuthoredReferenceableProperties
 {
     private String            namespace         = null;
     private List<String>      aliases           = null;
@@ -35,7 +35,6 @@ public class DataFieldProperties extends ReferenceableProperties
     private int               precision         = 0;
     private boolean           orderedValues     = false;
     private DataItemSortOrder sortOrder         = null;
-    private String            userDefinedStatus = null;
 
 
     /**
@@ -71,7 +70,6 @@ public class DataFieldProperties extends ReferenceableProperties
             precision         = template.getPrecision();
             orderedValues     = template.getOrderedValues();
             sortOrder         = template.getSortOrder();
-            userDefinedStatus = template.getUserDefinedStatus();
         }
     }
 
@@ -141,28 +139,6 @@ public class DataFieldProperties extends ReferenceableProperties
     public void setNamePatterns(List<String> namePatterns)
     {
         this.namePatterns = namePatterns;
-    }
-
-
-    /**
-     * Return the status used when element status is OTHER.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status used when element status is OTHER.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -374,7 +350,6 @@ public class DataFieldProperties extends ReferenceableProperties
                 "namespace='" + namespace + '\'' +
                 ", aliases=" + aliases +
                 ", namePatterns=" + namePatterns +
-                ", userDefinedStatus=" + userDefinedStatus +
                 ", defaultValue='" + defaultValue + '\'' +
                 ", isNullable=" + isNullable +
                 ", dataType='" + dataType + '\'' +
@@ -401,8 +376,7 @@ public class DataFieldProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataFieldProperties that = (DataFieldProperties) objectToCompare;
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                isNullable == that.isNullable &&
+        return isNullable == that.isNullable &&
                 minimumLength == that.minimumLength && length == that.length && precision == that.precision &&
                 orderedValues == that.orderedValues &&
                 Objects.equals(namespace, that.namespace) && Objects.equals(aliases, that.aliases) &&
@@ -421,7 +395,7 @@ public class DataFieldProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), namespace, aliases, namePatterns, userDefinedStatus,
+        return Objects.hash(super.hashCode(), namespace, aliases, namePatterns,
                             defaultValue, isNullable, dataType, units,
                             minimumLength, length, precision, orderedValues, sortOrder);
     }

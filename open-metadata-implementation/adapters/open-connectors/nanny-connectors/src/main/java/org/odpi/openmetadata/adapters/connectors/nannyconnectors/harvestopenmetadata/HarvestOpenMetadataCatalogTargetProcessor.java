@@ -4458,7 +4458,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.COLLECTION_GUID, collectionElement.getElementGUID());
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRODUCT_STATUS, propertyHelper.getStringProperty(connectorName,
-                                                                                                                     OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                                                                                     OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS.name,
                                                                                                                      digitalProductProperties,
                                                                                                                      methodName));
 

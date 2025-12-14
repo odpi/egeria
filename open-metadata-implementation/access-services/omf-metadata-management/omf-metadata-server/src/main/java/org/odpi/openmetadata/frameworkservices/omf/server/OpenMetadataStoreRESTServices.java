@@ -3950,65 +3950,13 @@ public class OpenMetadataStoreRESTServices
                 {
                     return ElementStatus.UNKNOWN;
                 }
-                case DRAFT ->
-                {
-                    return ElementStatus.DRAFT;
-                }
-                case PREPARED ->
-                {
-                    return ElementStatus.PREPARED;
-                }
-                case PROPOSED ->
-                {
-                    return ElementStatus.PROPOSED;
-                }
-                case APPROVED ->
-                {
-                    return ElementStatus.APPROVED;
-                }
-                case REJECTED ->
-                {
-                    return ElementStatus.REJECTED;
-                }
-                case APPROVED_CONCEPT ->
-                {
-                    return ElementStatus.APPROVED_CONCEPT;
-                }
-                case UNDER_DEVELOPMENT ->
-                {
-                    return ElementStatus.UNDER_DEVELOPMENT;
-                }
-                case DEVELOPMENT_COMPLETE ->
-                {
-                    return ElementStatus.DEVELOPMENT_COMPLETE;
-                }
-                case APPROVED_FOR_DEPLOYMENT ->
-                {
-                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
-                }
-                case STANDBY ->
-                {
-                    return ElementStatus.STANDBY;
-                }
                 case ACTIVE ->
                 {
                     return ElementStatus.ACTIVE;
                 }
-                case FAILED ->
+                case INVALID ->
                 {
-                    return ElementStatus.FAILED;
-                }
-                case DISABLED ->
-                {
-                    return ElementStatus.DISABLED;
-                }
-                case COMPLETE ->
-                {
-                    return ElementStatus.COMPLETE;
-                }
-                case DEPRECATED ->
-                {
-                    return ElementStatus.DEPRECATED;
+                    return ElementStatus.INVALID;
                 }
                 case DELETED ->
                 {

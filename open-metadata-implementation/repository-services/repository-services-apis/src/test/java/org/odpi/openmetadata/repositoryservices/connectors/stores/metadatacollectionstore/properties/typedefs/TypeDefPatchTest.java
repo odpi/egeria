@@ -27,7 +27,7 @@ public class TypeDefPatchTest
     private Map<String, String>           typeDefOptions           = new HashMap<>();
     private List<ExternalStandardMapping> externalStandardMappings = new ArrayList<>();
     private List<InstanceStatus>          validInstanceStatusList  = new ArrayList<>();
-    private InstanceStatus                initialStatus            = InstanceStatus.APPROVED;
+    private InstanceStatus                initialStatus            = InstanceStatus.INVALID;
     private List<TypeDefLink>             validEntityDefs          = new ArrayList<>(); // ClassificationDefs
     private RelationshipEndDef            endDef1                  = new RelationshipEndDef(); // RelationshipDefs
     private RelationshipEndDef            endDef2                  = new RelationshipEndDef(); // RelationshipDefs
@@ -54,7 +54,7 @@ public class TypeDefPatchTest
         externalStandardMappings.add(mapping);
 
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.COMPLETE);
+        validInstanceStatusList.add(InstanceStatus.UNKNOWN);
 
 
 

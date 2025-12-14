@@ -48,6 +48,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1132,7 +1133,9 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
     /**
      * Integration Daemons and Engine Hosts are controlled by SoftwareCapability entities.  This method connects the
-     * server definitions to the configured software capabilities.
+     * server definitions to the configured software capabilities.  It is using calls to the live servers
+     * to extract the list of running capabilities so only make the calls if the servers are running.
+     *
      *
      * @param omagServerProperties properties from the live server
      * @param serverGUID unique identifier of the metadata element for the server
@@ -1145,162 +1148,165 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        /*
-         * Engine hosts are connected to governance engines.
-         */
-        if (omagServerProperties instanceof OMAGEngineHostProperties engineHostProperties)
+        if (omagServerProperties.getServerActiveStatus() == ServerActiveStatus.RUNNING)
         {
-            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
-
-            OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
-
-            List<String> processedEngines = new ArrayList<>();
-
-            if (serverElement != null)
+            /*
+             * Engine hosts are connected to governance engines.
+             */
+            if (omagServerProperties instanceof OMAGEngineHostProperties engineHostProperties)
             {
-                /*
-                 * First identify the server capabilities that are already connected to the server element
-                 * - that those that should not be connected to the server element because they are longer defined.
-                 */
-                if (serverElement.getCapabilities() != null)
+                AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+                OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+
+                List<String> processedEngines = new ArrayList<>();
+
+                if (serverElement != null)
                 {
-                    for (RelatedMetadataElementSummary softwareCapability : serverElement.getCapabilities())
+                    /*
+                     * First identify the server capabilities that are already connected to the server element
+                     * - that those that should not be connected to the server element because they are longer defined.
+                     */
+                    if (serverElement.getCapabilities() != null)
                     {
-                        /*
-                         * Ignore software capabilities that are not governance engines.
-                         */
-                        if ((softwareCapability != null) && (propertyHelper.isTypeOf(softwareCapability.getRelatedElement().getElementHeader(),
-                                                                                     OpenMetadataType.GOVERNANCE_ENGINE.typeName)))
+                        for (RelatedMetadataElementSummary softwareCapability : serverElement.getCapabilities())
                         {
                             /*
-                             * Loop through the running engines to see if it matches the linked governance engine.
+                             * Ignore software capabilities that are not governance engines.
                              */
-                            if (engineHostProperties.getGovernanceEngineSummaries() != null)
-                            {
-                                for (GovernanceEngineSummary governanceEngineSummary : engineHostProperties.getGovernanceEngineSummaries())
-                                {
-                                    if ((governanceEngineSummary != null) &&
-                                            (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
-                                            (governanceEngineSummary.getGovernanceEngineGUID().equals(softwareCapability.getRelatedElement().getElementHeader().getGUID())))
-                                    {
-                                        /*
-                                         * All is right - remember that this engine is processed.
-                                         */
-                                        processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
-                                    }
-                                }
-                            }
-
-                            if (! processedEngines.contains(softwareCapability.getRelatedElement().getElementHeader().getGUID()))
+                            if ((softwareCapability != null) && (propertyHelper.isTypeOf(softwareCapability.getRelatedElement().getElementHeader(),
+                                                                                         OpenMetadataType.GOVERNANCE_ENGINE.typeName)))
                             {
                                 /*
-                                 * The software capability is no longer running.
+                                 * Loop through the running engines to see if it matches the linked governance engine.
                                  */
-                                assetClient.detachSoftwareCapability(serverElement.getElementHeader().getGUID(), softwareCapability.getRelatedElement().getElementHeader().getGUID(), assetClient.getDeleteOptions(false));
+                                if (engineHostProperties.getGovernanceEngineSummaries() != null)
+                                {
+                                    for (GovernanceEngineSummary governanceEngineSummary : engineHostProperties.getGovernanceEngineSummaries())
+                                    {
+                                        if ((governanceEngineSummary != null) &&
+                                                (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
+                                                (governanceEngineSummary.getGovernanceEngineGUID().equals(softwareCapability.getRelatedElement().getElementHeader().getGUID())))
+                                        {
+                                            /*
+                                             * All is right - remember that this engine is processed.
+                                             */
+                                            processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
+                                        }
+                                    }
+                                }
+
+                                if (!processedEngines.contains(softwareCapability.getRelatedElement().getElementHeader().getGUID()))
+                                {
+                                    /*
+                                     * The software capability is no longer running.
+                                     */
+                                    assetClient.detachSoftwareCapability(serverElement.getElementHeader().getGUID(), softwareCapability.getRelatedElement().getElementHeader().getGUID(), assetClient.getDeleteOptions(false));
+                                }
                             }
                         }
                     }
-                }
 
-                /*
-                 * Attach the software capabilities that are missing from the server element.
-                 */
-                if (engineHostProperties.getGovernanceEngineSummaries() != null)
-                {
-                    for (GovernanceEngineSummary governanceEngineSummary : engineHostProperties.getGovernanceEngineSummaries())
+                    /*
+                     * Attach the software capabilities that are missing from the server element.
+                     */
+                    if (engineHostProperties.getGovernanceEngineSummaries() != null)
                     {
-                        if ((governanceEngineSummary != null) &&
-                                (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
-                                (! processedEngines.contains(governanceEngineSummary.getGovernanceEngineGUID())))
+                        for (GovernanceEngineSummary governanceEngineSummary : engineHostProperties.getGovernanceEngineSummaries())
                         {
-                            SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
+                            if ((governanceEngineSummary != null) &&
+                                    (governanceEngineSummary.getGovernanceEngineGUID() != null) &&
+                                    (!processedEngines.contains(governanceEngineSummary.getGovernanceEngineGUID())))
+                            {
+                                SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
 
-                            supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
+                                supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
 
-                            assetClient.linkSoftwareCapability(serverGUID, governanceEngineSummary.getGovernanceEngineGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), supportedSoftwareCapabilityProperties);
+                                assetClient.linkSoftwareCapability(serverGUID, governanceEngineSummary.getGovernanceEngineGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), supportedSoftwareCapabilityProperties);
 
-                            processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
+                                processedEngines.add(governanceEngineSummary.getGovernanceEngineGUID());
+                            }
                         }
                     }
                 }
             }
-        }
 
-        /*
-         * Integration Daemons are connected to integration groups.
-         */
-        else if (omagServerProperties instanceof OMAGIntegrationDaemonProperties omagIntegrationDaemonProperties)
-        {
-            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
-
-            OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
-
-            List<String> processedGroups = new ArrayList<>();
-
-            if (serverElement != null)
+            /*
+             * Integration Daemons are connected to integration groups.
+             */
+            else if (omagServerProperties instanceof OMAGIntegrationDaemonProperties omagIntegrationDaemonProperties)
             {
-                /*
-                 * First identify the server capabilities that are already connected to the server element
-                 * - that those that should not be connected to the server element because they are longer defined.
-                 */
-                if (serverElement.getCapabilities() != null)
+                AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+                OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+
+                List<String> processedGroups = new ArrayList<>();
+
+                if (serverElement != null)
                 {
-                    for (RelatedMetadataElementSummary softwareCapability : serverElement.getCapabilities())
+                    /*
+                     * First identify the server capabilities that are already connected to the server element
+                     * - that those that should not be connected to the server element because they are longer defined.
+                     */
+                    if (serverElement.getCapabilities() != null)
                     {
-                        /*
-                         * Ignore software capabilities that are not governance engines.
-                         */
-                        if ((softwareCapability != null) && (propertyHelper.isTypeOf(softwareCapability.getRelatedElement().getElementHeader(),
-                                                                                     OpenMetadataType.INTEGRATION_GROUP.typeName)))
+                        for (RelatedMetadataElementSummary softwareCapability : serverElement.getCapabilities())
                         {
                             /*
-                             * Loop through the running engines to see if it matches the linked governance engine.
+                             * Ignore software capabilities that are not governance engines.
                              */
-                            if (omagIntegrationDaemonProperties.getIntegrationGroups() != null)
-                            {
-                                for (OMAGIntegrationGroupProperties integrationGroupProperties : omagIntegrationDaemonProperties.getIntegrationGroups())
-                                {
-                                    if ((integrationGroupProperties != null) &&
-                                            (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
-                                            (integrationGroupProperties.getIntegrationGroupGUID().equals(softwareCapability.getRelatedElement().getElementHeader().getGUID())))
-                                    {
-                                        /*
-                                         * All is right - remember that this engine is processed.
-                                         */
-                                        processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
-                                    }
-                                }
-                            }
-
-                            if (! processedGroups.contains(softwareCapability.getRelatedElement().getElementHeader().getGUID()))
+                            if ((softwareCapability != null) && (propertyHelper.isTypeOf(softwareCapability.getRelatedElement().getElementHeader(),
+                                                                                         OpenMetadataType.INTEGRATION_GROUP.typeName)))
                             {
                                 /*
-                                 * The software capability is no longer running.
+                                 * Loop through the running engines to see if it matches the linked governance engine.
                                  */
-                                assetClient.detachSoftwareCapability(serverElement.getElementHeader().getGUID(), softwareCapability.getRelatedElement().getElementHeader().getGUID(), assetClient.getDeleteOptions(false));
+                                if (omagIntegrationDaemonProperties.getIntegrationGroups() != null)
+                                {
+                                    for (OMAGIntegrationGroupProperties integrationGroupProperties : omagIntegrationDaemonProperties.getIntegrationGroups())
+                                    {
+                                        if ((integrationGroupProperties != null) &&
+                                                (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
+                                                (integrationGroupProperties.getIntegrationGroupGUID().equals(softwareCapability.getRelatedElement().getElementHeader().getGUID())))
+                                        {
+                                            /*
+                                             * All is right - remember that this engine is processed.
+                                             */
+                                            processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
+                                        }
+                                    }
+                                }
+
+                                if (!processedGroups.contains(softwareCapability.getRelatedElement().getElementHeader().getGUID()))
+                                {
+                                    /*
+                                     * The software capability is no longer running.
+                                     */
+                                    assetClient.detachSoftwareCapability(serverElement.getElementHeader().getGUID(), softwareCapability.getRelatedElement().getElementHeader().getGUID(), assetClient.getDeleteOptions(false));
+                                }
                             }
                         }
                     }
-                }
 
-                /*
-                 * Attach the software capabilities that are missing from the server element.
-                 */
-                if (omagIntegrationDaemonProperties.getIntegrationGroups() != null)
-                {
-                    for (OMAGIntegrationGroupProperties integrationGroupProperties : omagIntegrationDaemonProperties.getIntegrationGroups())
+                    /*
+                     * Attach the software capabilities that are missing from the server element.
+                     */
+                    if (omagIntegrationDaemonProperties.getIntegrationGroups() != null)
                     {
-                        if ((integrationGroupProperties != null) &&
-                                (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
-                                (! processedGroups.contains(integrationGroupProperties.getIntegrationGroupGUID())))
+                        for (OMAGIntegrationGroupProperties integrationGroupProperties : omagIntegrationDaemonProperties.getIntegrationGroups())
                         {
-                            SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
+                            if ((integrationGroupProperties != null) &&
+                                    (integrationGroupProperties.getIntegrationGroupGUID() != null) &&
+                                    (!processedGroups.contains(integrationGroupProperties.getIntegrationGroupGUID())))
+                            {
+                                SupportedSoftwareCapabilityProperties supportedSoftwareCapabilityProperties = new SupportedSoftwareCapabilityProperties();
 
-                            supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
+                                supportedSoftwareCapabilityProperties.setOperationalStatus(OperationalStatus.ENABLED);
 
-                            assetClient.linkSoftwareCapability(serverGUID, integrationGroupProperties.getIntegrationGroupGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), supportedSoftwareCapabilityProperties);
+                                assetClient.linkSoftwareCapability(serverGUID, integrationGroupProperties.getIntegrationGroupGUID(), new MakeAnchorOptions(assetClient.getMetadataSourceOptions()), supportedSoftwareCapabilityProperties);
 
-                            processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
+                                processedGroups.add(integrationGroupProperties.getIntegrationGroupGUID());
+                            }
                         }
                     }
                 }

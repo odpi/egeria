@@ -3405,7 +3405,7 @@ public class SimpleCatalogArchiveHelper
      * @param technicalName technical name for the element
      * @param description description about the element
      * @param versionNumber version number for the element
-     * @param author author of the element
+     * @param authors author of the element
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
      *
@@ -3418,7 +3418,7 @@ public class SimpleCatalogArchiveHelper
                                  String               technicalName,
                                  String               description,
                                  String               versionNumber,
-                                 String               author,
+                                 List<String>         authors,
                                  Map<String, String>  additionalProperties,
                                  Map<String, Object>  extendedProperties)
     {
@@ -3447,7 +3447,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CANONICAL_NAME.name, technicalName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHOR.name, author, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -3474,7 +3474,7 @@ public class SimpleCatalogArchiveHelper
      * @param technicalName technical name for the element
      * @param description description about the element
      * @param versionNumber version number for the element
-     * @param author author of the element
+     * @param authors author of the element
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
      * @param classifications list of classifications (if any)
@@ -3489,7 +3489,7 @@ public class SimpleCatalogArchiveHelper
                                         String               technicalName,
                                         String               description,
                                         String               versionNumber,
-                                        String               author,
+                                        List<String>         authors,
                                         Map<String, String>  additionalProperties,
                                         Map<String, Object>  extendedProperties,
                                         List<Classification> classifications)
@@ -3524,7 +3524,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CANONICAL_NAME.name, technicalName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHOR.name, author, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -6633,7 +6633,6 @@ public class SimpleCatalogArchiveHelper
      * @param description description of the valid value
      * @param preferredValue preferredValue of the valid value
      * @param usage how is the valid value used
-     * @param userDefinedStatus is value active
      * @param url link to more info
      * @param isCaseSensitive is value case sensitive
      * @param additionalProperties any other properties.
@@ -6657,7 +6656,6 @@ public class SimpleCatalogArchiveHelper
                                 String              dataType,
                                 String              scope,
                                 String              preferredValue,
-                                String              userDefinedStatus,
                                 String              url,
                                 boolean             isCaseSensitive,
                                 Map<String, String> additionalProperties)
@@ -6688,7 +6686,6 @@ public class SimpleCatalogArchiveHelper
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_TYPE.name, dataType, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PREFERRED_VALUE.name, preferredValue, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USER_DEFINED_STATUS.name, userDefinedStatus, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, url, methodName);
             properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IS_CASE_SENSITIVE.name, isCaseSensitive, methodName);
             properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);

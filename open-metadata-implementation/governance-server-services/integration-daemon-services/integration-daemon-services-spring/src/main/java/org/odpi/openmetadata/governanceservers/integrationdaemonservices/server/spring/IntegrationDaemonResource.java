@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonRESTServices;
@@ -42,6 +39,35 @@ public class IntegrationDaemonResource
 {
     private final IntegrationDaemonRESTServices restAPI = new IntegrationDaemonRESTServices();
 
+
+    /**
+     * Validate the connector and return its connector type.  The engine service does not need to
+     * be running in the integration daemon in order for this call to be successful.  It only needs to be registered with the
+     * integration daemon.
+     *
+     * @param serverName integration daemon server name
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
+     *
+     * @return connector type or
+     *  InvalidParameterException the connector provider class name is not a valid connector fo this service
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException there was a problem detected by the integration service
+     */
+    @GetMapping(path = "/validate-connector/{connectorProviderClassName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="validateConnector",
+            description="Validate the connector and return its connector type.  The engine service does not need to" +
+                    " be running in the engine host in order for this call to be successful. " +
+                    " The engine service only needs to be registered with the engine host.",
+            externalDocs=@ExternalDocumentation(description="Governance Action Service",
+                    url="https://egeria-project.org/concepts/governance-action-service"))
+
+    public ConnectorReportResponse validateConnector(@PathVariable String serverName,
+                                                     @PathVariable String connectorProviderClassName)
+    {
+        return restAPI.validateConnector(serverName, connectorProviderClassName);
+    }
 
 
     /**

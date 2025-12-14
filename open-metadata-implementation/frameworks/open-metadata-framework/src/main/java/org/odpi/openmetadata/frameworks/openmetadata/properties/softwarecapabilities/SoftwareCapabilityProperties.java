@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -45,9 +46,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class SoftwareCapabilityProperties extends ReferenceableProperties
 {
-    private String deployedImplementationType = null;
-    private String patchLevel                 = null;
-    private String source                     = null;
+    private String           deployedImplementationType  = null;
+    private DeploymentStatus deploymentStatus            = null;
+    private String           userDefinedDeploymentStatus = null;
+    private String           patchLevel                  = null;
+    private String           source                      = null;
 
 
     /**
@@ -71,10 +74,56 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            deployedImplementationType = template.getProtocolVersion();
-            patchLevel                 = template.getPatchLevel();
-            source                     = template.getSource();
+            deployedImplementationType  = template.getDeployedImplementationType();
+            deploymentStatus            = template.getDeploymentStatus();
+            userDefinedDeploymentStatus = template.getUserDefinedDeploymentStatus();
+            patchLevel                  = template.getPatchLevel();
+            source                      = template.getSource();
         }
+    }
+
+
+    /**
+     * Return the status of the content.
+     *
+     * @return status enum
+     */
+    public DeploymentStatus getDeploymentStatus()
+    {
+        return deploymentStatus;
+    }
+
+
+    /**
+     * Set up the status of the content.
+     *
+     * @param deploymentStatus status enum
+     */
+    public void setDeploymentStatus(DeploymentStatus deploymentStatus)
+    {
+        this.deploymentStatus = deploymentStatus;
+    }
+
+
+    /**
+     * Return additionally defined content statuses.
+     *
+     * @return string
+     */
+    public String getUserDefinedDeploymentStatus()
+    {
+        return userDefinedDeploymentStatus;
+    }
+
+
+    /**
+     * Set up additionally defined content statuses.
+     *
+     * @param userDefinedDeploymentStatus string
+     */
+    public void setUserDefinedDeploymentStatus(String userDefinedDeploymentStatus)
+    {
+        this.userDefinedDeploymentStatus = userDefinedDeploymentStatus;
     }
 
 
@@ -83,7 +132,7 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
      *
      * @return string description
      */
-    public String getProtocolVersion()
+    public String getDeployedImplementationType()
     {
         return deployedImplementationType;
     }
@@ -92,11 +141,11 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     /**
      * Set up the description of the type of software capability this is.
      *
-     * @param protocolVersion string
+     * @param deployedImplementationType string
      */
-    public void setProtocolVersion(String protocolVersion)
+    public void setDeployedImplementationType(String deployedImplementationType)
     {
-        this.deployedImplementationType = protocolVersion;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -154,6 +203,8 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     {
         return "SoftwareCapabilityProperties{" +
                 "deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", deploymentStatus=" + deploymentStatus +
+                ", userDefinedDeploymentStatus='" + userDefinedDeploymentStatus + '\'' +
                 ", patchLevel='" + patchLevel + '\'' +
                 ", source='" + source + '\'' +
                 "} " + super.toString();
@@ -169,24 +220,16 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         SoftwareCapabilityProperties that = (SoftwareCapabilityProperties) objectToCompare;
-        return Objects.equals(getProtocolVersion(), that.getProtocolVersion()) &&
-                Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
-                Objects.equals(getSource(), that.getSource());
+        return Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
+                deploymentStatus == that.deploymentStatus &&
+                Objects.equals(userDefinedDeploymentStatus, that.userDefinedDeploymentStatus) &&
+                Objects.equals(patchLevel, that.patchLevel) &&
+                Objects.equals(source, that.source);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -196,6 +239,6 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getProtocolVersion(), getPatchLevel(), getSource());
+        return Objects.hash(super.hashCode(), deployedImplementationType, deploymentStatus, userDefinedDeploymentStatus, patchLevel, source);
     }
 }

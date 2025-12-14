@@ -204,7 +204,6 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                          null,
                                                          null,
-                                                         null,
                                                          false,
                                                          null);
 
@@ -292,7 +291,6 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                              dataType,
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              preferredValue,
-                                             null,
                                              null,
                                              false,
                                              additionalProperties);

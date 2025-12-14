@@ -554,33 +554,12 @@ public class OpenMetadataTypesArchive1_7
                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
 
         /*
-         * Set the statuses
-         */
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PREPARED);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.REJECTED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED_CONCEPT);
-        validInstanceStatusList.add(InstanceStatus.UNDER_DEVELOPMENT);
-        validInstanceStatusList.add(InstanceStatus.DEVELOPMENT_COMPLETE);
-        validInstanceStatusList.add(InstanceStatus.APPROVED_FOR_DEPLOYMENT);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DISABLED);
-        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
-        validInstanceStatusList.add(InstanceStatus.OTHER);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
-        entityDef.setInitialStatus(InstanceStatus.ACTIVE);
-
-        /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTRODUCTION_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MATURITY));
@@ -885,8 +864,8 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getSolutionComponentEntity()
     {
-        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.SOLUTION_COMPONENT,
-                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOLUTION_COMPONENT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName));
 
         /*
          * Build the attributes
@@ -1006,7 +985,7 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getSolutionPortEntity()
     {
-        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.SOLUTION_PORT,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOLUTION_PORT,
                                                                           this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName));
 
         /*
@@ -1191,8 +1170,8 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getSolutionBlueprintEntity()
     {
-        return archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.SOLUTION_BLUEPRINT,
-                                                           this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName));
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOLUTION_BLUEPRINT,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName));
     }
 
 

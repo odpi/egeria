@@ -26,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class AgreementProperties extends CollectionProperties
 {
-    private String userDefinedStatus = null;
-
     /**
      * Default constructor
      */
@@ -43,36 +41,9 @@ public class AgreementProperties extends CollectionProperties
      *
      * @param template object to copy
      */
-    public AgreementProperties(AgreementProperties template)
+    public AgreementProperties(CollectionProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            userDefinedStatus = template.getUserDefinedStatus();
-        }
-    }
-
-
-    /**
-     * Return the status of the agreement.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status of the agreement.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
     }
 
 
@@ -86,44 +57,6 @@ public class AgreementProperties extends CollectionProperties
     public String toString()
     {
         return "AgreementProperties{" +
-                "userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof AgreementProperties that))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return  Objects.equals(userDefinedStatus, that.userDefinedStatus);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), userDefinedStatus);
     }
 }

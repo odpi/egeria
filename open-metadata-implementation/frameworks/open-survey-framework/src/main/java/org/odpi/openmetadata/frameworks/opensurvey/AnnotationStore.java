@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -97,9 +98,9 @@ public class AnnotationStore
                                                       OpenMetadataProperty.DISPLAY_NAME.name,
                                                       reportDisplayName);
 
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.AUTHOR.name,
-                                                      userId);
+        properties = propertyHelper.addStringArrayProperty(properties,
+                                                           OpenMetadataProperty.AUTHORS.name,
+                                                           Collections.singletonList(userId));
 
         properties = propertyHelper.addStringProperty(properties,
                                                       OpenMetadataProperty.DESCRIPTION.name,

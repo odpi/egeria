@@ -618,6 +618,16 @@ public enum OpenMetadataProperty
     USER_DEFINED_ACTIVITY_STATUS("userDefinedActivityStatus", DataType.STRING, DataType.STRING.getName(), "Extend or replace the valid activity statuses with additional statuses controlled through valid metadata values.", null, "37c31c39-39f0-42f4-b256-698669390d5d"),
 
     /**
+     * Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.
+     */
+    USER_DEFINED_CONTENT_STATUS("userDefinedContentStatus", DataType.STRING, DataType.STRING.getName(), "Extend or replace the valid content statuses with additional statuses controlled through valid metadata values.", null, "099902e7-2c43-4b5d-b9f8-e921ebe22452"),
+
+    /**
+     * Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.
+     */
+    USER_DEFINED_DEPLOYMENT_STATUS("userDefinedDeploymentStatus", DataType.STRING, DataType.STRING.getName(), "Extend or replace the valid deployment statuses with additional statuses controlled through valid metadata values.", null, "9e7b6dea-f36a-4371-8acf-f00aef1db8dd"),
+
+    /**
      * Source of the regulation.
      */
     REGULATION_SOURCE("regulationSource", DataType.STRING, DataType.STRING.getName(), "Source of the regulation.", "European Union", "d90cffe0-d440-401e-befc-39aaddec46a4"),
@@ -1282,9 +1292,19 @@ public enum OpenMetadataProperty
     INCIDENT_STATUS("incidentStatus", DataType.STRING, IncidentReportStatus.getOpenTypeName(), IncidentReportStatus.getOpenTypeDescription(), IncidentReportStatus.VALIDATED.getName(), "36ce39eb-1389-493c-9a7a-5d52e7f16cda"),
 
     /**
-     * Defines the current execution status of an engine action.
+     * Defines the current execution status of a process.
      */
     ACTIVITY_STATUS("activityStatus", DataType.STRING, ActivityStatus.getOpenTypeName(), ActivityStatus.getOpenTypeDescription(), ActivityStatus.ACTIVATING.getName(), "c2d8fd79-0c16-4e01-888f-2ae7a9cdf11d"),
+
+    /**
+     * Defines the current status of the content of an authored referenceable.
+     */
+    CONTENT_STATUS("contentStatus", DataType.STRING, ContentStatus.getOpenTypeName(), ContentStatus.getOpenTypeDescription(), ContentStatus.ACTIVE.getName(), "c8e1b691-889d-467c-b551-df080cecf34f"),
+
+    /**
+     * Defines the current status of the content of an infrastructure element.
+     */
+    DEPLOYMENT_STATUS("deploymentStatus", DataType.STRING, DeploymentStatus.getOpenTypeName(), DeploymentStatus.getOpenTypeDescription(), DeploymentStatus.ACTIVE.getName(), "564a14c1-ff1b-45c7-a96c-caf632383e09"),
 
     /**
      * The name to identify the action target to the actor that processes it.
@@ -1941,11 +1961,6 @@ public enum OpenMetadataProperty
      * Version number of the protocol supported by the cohort registry.
      */
     PROTOCOL_VERSION("protocolVersion", DataType.STRING, DataType.STRING.getName(), "Version number of the protocol supported by the cohort registry.", null, "67fbbf35-ed67-4c50-b8d5-9eb03f6afbd5"),
-
-    /**
-     * Author of the resource.
-     */
-    AUTHOR("author", DataType.STRING, DataType.STRING.getName(), "Author of the resource.", null, "e121d939-cd79-49cb-aa3e-d05b99c64b8a"),
 
     /**
      * Report create time.

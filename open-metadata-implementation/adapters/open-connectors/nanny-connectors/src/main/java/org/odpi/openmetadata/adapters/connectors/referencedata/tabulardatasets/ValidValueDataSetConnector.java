@@ -383,9 +383,9 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
                     {
                         recordValues.add(validValueDefinitionProperties.getNamespace());
                     }
-                    else if (OpenMetadataProperty.USER_DEFINED_STATUS.name.equals(tabularColumnDescription.columnName()))
+                    else if (OpenMetadataProperty.USER_DEFINED_CONTENT_STATUS.name.equals(tabularColumnDescription.columnName()))
                     {
-                        recordValues.add(validValueDefinitionProperties.getUserDefinedStatus());
+                        recordValues.add(validValueDefinitionProperties.getUserDefinedContentStatus());
                     }
                     else if (OpenMetadataProperty.DATA_TYPE.name.equals(tabularColumnDescription.columnName()))
                     {
