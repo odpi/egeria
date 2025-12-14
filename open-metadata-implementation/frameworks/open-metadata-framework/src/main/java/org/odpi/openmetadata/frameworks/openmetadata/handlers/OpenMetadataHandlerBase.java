@@ -470,39 +470,6 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Update the properties of a solution blueprint, solution component or solution port.
-     *
-     * @param userId                userId of user making request.
-     * @param elementGUID   unique identifier of the solution element (returned from create)
-     * @param metadataSourceOptions options to control access to open metadata
-     * @param status                new status for the element.
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void updateElementStatus(String                userId,
-                                    String                elementGUID,
-                                    MetadataSourceOptions metadataSourceOptions,
-                                    ElementStatus         status) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
-    {
-        final String methodName = "updateElementStatus";
-        final String propertiesName    = "status";
-        final String guidParameterName = "elementGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(status, propertiesName, methodName);
-
-        openMetadataClient.updateMetadataElementStatusInStore(userId,
-                                                              elementGUID,
-                                                              metadataSourceOptions,
-                                                              status);
-    }
-
-
-    /**
      * Retrieve the context in which this component is used.
      *
      * @param userId               caller

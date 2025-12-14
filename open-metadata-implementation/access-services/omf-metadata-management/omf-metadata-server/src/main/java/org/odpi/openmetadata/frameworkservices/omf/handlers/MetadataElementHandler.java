@@ -2229,58 +2229,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param userId caller's userId
-     * @param externalSourceGUID      unique identifier of the software capability that owns this element
-     * @param externalSourceName      unique name of the software capability that owns this element
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param newElementStatus new status value - or null to leave as is
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public void updateMetadataElementStatusInStore(String        userId,
-                                                   String        externalSourceGUID,
-                                                   String        externalSourceName,
-                                                   String        metadataElementGUID,
-                                                   ElementStatus newElementStatus,
-                                                   boolean       forLineage,
-                                                   boolean       forDuplicateProcessing,
-                                                   Date          effectiveTime,
-                                                   String        methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        final String guidParameterName = "metadataElementGUID";
-        final String statusParameterName = "newElementStatus";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
-
-        super.updateBeanStatusInRepository(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           metadataElementGUID,
-                                           guidParameterName,
-                                           OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
-                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           this.getInstanceStatus(newElementStatus),
-                                           statusParameterName,
-                                           effectiveTime,
-                                           methodName);
-    }
-
-
-    /**
      * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
      *
      * @param userId caller's userId

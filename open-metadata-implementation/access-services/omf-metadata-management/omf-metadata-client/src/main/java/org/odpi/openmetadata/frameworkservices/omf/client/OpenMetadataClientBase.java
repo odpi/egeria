@@ -1497,48 +1497,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.  The effectivity dates control the visibility of the element
-     * through specific APIs.
-     *
-     * @param userId                 caller's userId
-     * @param metadataElementGUID    unique identifier of the metadata element to update
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param newElementStatus       new status value - or null to leave as is
-     *
-     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
-     */
-    @Override
-    public void updateMetadataElementStatusInStore(String                userId,
-                                                   String                metadataElementGUID,
-                                                   MetadataSourceOptions metadataSourceOptions,
-                                                   ElementStatus         newElementStatus) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
-    {
-        final String methodName        = "updateMetadataElementStatusInStore";
-        final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/{2}/update-status";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
-
-        UpdateStatusRequestBody requestBody = new UpdateStatusRequestBody(metadataSourceOptions);
-
-        requestBody.setNewStatus(newElementStatus);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        metadataElementGUID);
-    }
-
-
-    /**
      * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
      *
      * @param userId                 caller's userId
