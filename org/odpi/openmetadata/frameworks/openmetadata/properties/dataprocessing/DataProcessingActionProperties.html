@@ -75,7 +75,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
 <div class="inheritance"><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
 <div class="inheritance"><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
+<div class="inheritance"><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties</div>
+</div>
 </div>
 </div>
 </div>
@@ -83,7 +85,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataProcessingActionProperties</span>
-<span class="extends-implements">extends <a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></span></div>
+<span class="extends-implements">extends <a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></span></div>
 <div class="block">DataProcessingActionProperties describes some specific processing that is being performed on
  one or more data targets.</div>
 </section>
@@ -101,7 +103,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties)" class="member-name-link">DataProcessingActionProperties</a><wbr>(<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties)" class="member-name-link">DataProcessingActionProperties</a><wbr>(<a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor.</div>
 </div>
@@ -128,8 +130,11 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></h3>
+<code><a href="../AuthoredReferenceableProperties.html#equals(java.lang.Object)">equals</a>, <a href="../AuthoredReferenceableProperties.html#getAuthors()">getAuthors</a>, <a href="../AuthoredReferenceableProperties.html#getContentStatus()">getContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#getUserDefinedContentStatus()">getUserDefinedContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#hashCode()">hashCode</a>, <a href="../AuthoredReferenceableProperties.html#setAuthors(java.util.List)">setAuthors</a>, <a href="../AuthoredReferenceableProperties.html#setContentStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus)">setContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setUserDefinedContentStatus(java.lang.String)">setUserDefinedContentStatus</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
-<code><a href="../ReferenceableProperties.html#equals(java.lang.Object)">equals</a>, <a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getURL()">getURL</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#hashCode()">hashCode</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
+<code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getURL()">getURL</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
 <code><a href="../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -158,9 +163,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties)">
 <h3>DataProcessingActionProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DataProcessingActionProperties</span><wbr><span class="parameters">(<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DataProcessingActionProperties</span><wbr><span class="parameters">(<a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor.  Note, this is a deep copy</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -183,7 +188,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="../AuthoredReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
