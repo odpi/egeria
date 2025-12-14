@@ -55,77 +55,12 @@ public class InstanceStatusTest
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.PREPARED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.PROPOSED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.DRAFT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.APPROVED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.REJECTED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.APPROVED_CONCEPT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.UNDER_DEVELOPMENT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.DEVELOPMENT_COMPLETE;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.APPROVED_FOR_DEPLOYMENT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.STANDBY;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
         testValue = InstanceStatus.ACTIVE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.FAILED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.DISABLED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.COMPLETE;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceStatus.DEPRECATED;
+        testValue = InstanceStatus.INVALID;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -154,7 +89,7 @@ public class InstanceStatusTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(InstanceStatus.DEPRECATED);
+            jsonString = objectMapper.writeValueAsString(InstanceStatus.ACTIVE);
         }
         catch (Exception   exc)
         {
@@ -163,7 +98,7 @@ public class InstanceStatusTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.DEPRECATED);
+            assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.ACTIVE);
         }
         catch (Exception   exc)
         {
@@ -177,6 +112,6 @@ public class InstanceStatusTest
      */
     @Test public void testToString()
     {
-        assertTrue(InstanceStatus.PROPOSED.toString().contains("InstanceStatus"));
+        assertTrue(InstanceStatus.ACTIVE.toString().contains("InstanceStatus"));
     }
 }

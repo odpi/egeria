@@ -169,32 +169,6 @@ public class MetadataExpertResource
 
 
     /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param urlMarker  view service URL marker
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param requestBody new status values - use null to leave as is
-     *
-     * @return void or
-     *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
-     */
-    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-status")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    public VoidResponse updateMetadataElementStatusInStore(@PathVariable String                  serverName,
-                                                           @PathVariable String                  urlMarker,
-                                                           @PathVariable String                  metadataElementGUID,
-                                                           @RequestBody  UpdateStatusRequestBody requestBody)
-    {
-        return restAPI.updateMetadataElementStatusInStore(serverName, urlMarker, metadataElementGUID, requestBody);
-    }
-
-
-    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param serverName     name of server instance to route request to

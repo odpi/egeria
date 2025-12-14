@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionarie
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataClassProperties extends ReferenceableProperties
+public class DataClassProperties extends AuthoredReferenceableProperties
 {
     private List<String>        matchPropertyNames    = null;
     private String              namespace             = null;
@@ -41,7 +41,6 @@ public class DataClassProperties extends ReferenceableProperties
     private String              valueRangeTo          = null;
     private List<String>        sampleValues          = null;
     private List<String>        dataPatterns          = null;
-    private String              userDefinedStatus     = null;
 
 
     /**
@@ -81,7 +80,6 @@ public class DataClassProperties extends ReferenceableProperties
             valueRangeTo          = template.getValueRangeTo();
             sampleValues          = template.getSampleValues();
             dataPatterns          = template.getDataPatterns();
-            userDefinedStatus     = template.getUserDefinedStatus();
         }
     }
 
@@ -436,28 +434,6 @@ public class DataClassProperties extends ReferenceableProperties
 
 
     /**
-     * Return the status used when element status is OTHER.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status used when element status is OTHER.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -482,7 +458,6 @@ public class DataClassProperties extends ReferenceableProperties
                 ", valueRangeTo='" + valueRangeTo + '\'' +
                 ", sampleValues=" + sampleValues +
                 ", dataPatterns=" + dataPatterns +
-                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -503,7 +478,6 @@ public class DataClassProperties extends ReferenceableProperties
         return allowsDuplicateValues == that.allowsDuplicateValues &&
                 isNullable == that.isNullable &&
                 isCaseSensitive == that.isCaseSensitive &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 Objects.equals(matchPropertyNames, that.matchPropertyNames) &&
                 Objects.equals(namespace, that.namespace) &&
                 Objects.equals(matchThreshold, that.matchThreshold) &&
@@ -527,7 +501,7 @@ public class DataClassProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), matchPropertyNames, namespace, userDefinedStatus,
+        return Objects.hash(super.hashCode(), matchPropertyNames, namespace,
                             matchThreshold, specification, specificationDetails, dataType, allowsDuplicateValues,
                             isCaseSensitive, isNullable, defaultValue, averageValue, valueList, valueRangeFrom,
                             valueRangeTo, sampleValues, dataPatterns);

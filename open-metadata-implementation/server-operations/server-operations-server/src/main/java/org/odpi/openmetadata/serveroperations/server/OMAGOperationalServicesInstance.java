@@ -109,16 +109,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
             serviceStatuses.add(serviceStatus);
         }
 
-        if (operationalIntegrationDaemon != null)
-        {
-            List<OMAGServerServiceStatus> integrationServices = operationalIntegrationDaemon.getServiceStatuses();
-
-            if (integrationServices != null)
-            {
-                serviceStatuses.addAll(integrationServices);
-            }
-        }
-
         if (operationalEngineHost != null)
         {
             List<OMAGServerServiceStatus> engineServices = operationalEngineHost.getServiceStatuses();

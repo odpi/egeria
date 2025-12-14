@@ -36,7 +36,7 @@ public class EntityDefTest
     protected Map<String, String>           options                  = new HashMap<>();
     protected List<ExternalStandardMapping> externalStandardMappings = new ArrayList<>();
     protected List<InstanceStatus>          validInstanceStatusList  = new ArrayList<>();
-    protected InstanceStatus                initialStatus            = InstanceStatus.APPROVED;
+    protected InstanceStatus                initialStatus            = InstanceStatus.INVALID;
     protected List<TypeDefAttribute>        propertiesDefinition     = new ArrayList<>();
 
 
@@ -59,7 +59,7 @@ public class EntityDefTest
         externalStandardMappings.add(mapping);
 
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.COMPLETE);
+        validInstanceStatusList.add(InstanceStatus.UNKNOWN);
 
         TypeDefAttribute attribute = new TypeDefAttribute();
         

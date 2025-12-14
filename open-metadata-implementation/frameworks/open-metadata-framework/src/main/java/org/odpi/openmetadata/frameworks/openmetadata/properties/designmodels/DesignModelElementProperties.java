@@ -3,19 +3,18 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DesignModel describes a collection of design model elements that make up a model of a design.
+ * DesignModelElement describes an element in a design.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,10 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SolutionComponentProperties.class, name = "SolutionComponentProperties"),
                 @JsonSubTypes.Type(value = SolutionPortProperties.class, name = "SolutionPortProperties"),
         })
-public class DesignModelElementProperties extends ReferenceableProperties
+public class DesignModelElementProperties extends AuthoredReferenceableProperties
 {
-    private String       userDefinedStatus = null;
-    private List<String> authors           = null;
     private String       canonicalName     = null;
 
     /**
@@ -56,55 +53,9 @@ public class DesignModelElementProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.userDefinedStatus = template.getUserDefinedStatus();
-            this.authors = template.getAuthors();
             this.canonicalName = template.getCanonicalName();
         }
     }
-
-
-    /**
-     * Return the status of the element.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status of the element
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
-     * Return the list of authors for this design.
-     *
-     * @return list
-     */
-    public List<String> getAuthors()
-    {
-        return authors;
-    }
-
-    /**
-     * Set up the list of authors for this design.
-     *
-     * @param authors list
-     */
-    public void setAuthors(List<String> authors)
-    {
-        this.authors = authors;
-    }
-
 
     /**
      * Return the canonical name used to generate technically compliant names in different implementation
@@ -130,7 +81,6 @@ public class DesignModelElementProperties extends ReferenceableProperties
     }
 
 
-
     /**
      * JSON-style toString
      *
@@ -140,9 +90,7 @@ public class DesignModelElementProperties extends ReferenceableProperties
     public String toString()
     {
         return "DesignModelElementProperties{" +
-                "userDefinedStatus='" + userDefinedStatus + '\'' +
-                ", authors=" + authors +
-                ", canonicalName='" + canonicalName + '\'' +
+                "canonicalName='" + canonicalName + '\'' +
                 "} " + super.toString();
     }
 
@@ -168,9 +116,7 @@ public class DesignModelElementProperties extends ReferenceableProperties
         {
             return false;
         }
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(canonicalName, that.canonicalName) &&
-                Objects.equals(authors, that.authors);
+        return Objects.equals(canonicalName, that.canonicalName);
     }
 
 
@@ -182,6 +128,6 @@ public class DesignModelElementProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, canonicalName, authors);
+        return Objects.hash(super.hashCode(), canonicalName);
     }
 }

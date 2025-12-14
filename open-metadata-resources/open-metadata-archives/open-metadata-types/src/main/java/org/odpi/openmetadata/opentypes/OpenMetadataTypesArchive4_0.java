@@ -201,7 +201,6 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AUTHOR));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CREATED_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_MODIFIED_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_MODIFIER));

@@ -303,15 +303,14 @@ public class OpenMetadataTypesArchive5_3
 
     private EntityDef getDataStructureEntity()
     {
-        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.DATA_STRUCTURE,
-                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_STRUCTURE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERNS));
 
@@ -322,8 +321,8 @@ public class OpenMetadataTypesArchive5_3
 
     private EntityDef getDataFieldEntity()
     {
-        EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.DATA_FIELD,
-                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FIELD,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
@@ -333,8 +332,6 @@ public class OpenMetadataTypesArchive5_3
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAMESPACE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALIASES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME_PATTERNS));
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_NULLABLE));

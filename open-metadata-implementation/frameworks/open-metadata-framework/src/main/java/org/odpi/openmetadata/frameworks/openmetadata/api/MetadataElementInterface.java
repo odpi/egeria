@@ -537,26 +537,6 @@ public interface MetadataElementInterface
 
 
     /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param userId caller's userId
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param newElementStatus new status value - or null to leave as is
-     *
-     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    void updateMetadataElementStatusInStore(String                userId,
-                                            String                metadataElementGUID,
-                                            MetadataSourceOptions metadataSourceOptions,
-                                            ElementStatus         newElementStatus) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException;
-
-    /**
      * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
      *
      * @param userId                 caller's userId

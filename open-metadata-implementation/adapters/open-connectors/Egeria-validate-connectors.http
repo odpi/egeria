@@ -5,63 +5,83 @@
 @baseURL=https://localhost:9443
 @integrationDaemon=integration-daemon
 @engineHost=engine-host
-@userId=garygeeke
+@user=garygeeke
 @javaClassName=add name of connector provider class (include full package name but not '.class')
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "{{user}}",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+
+###
 # @name Get Connector Type (for any connector)
-GET {{baseURL}}/open-metadata/platform-services/users/{{userId}}/server-platform/connector-types/{{javaClassName}}
+GET {{baseURL}}/open-metadata/platform-services/server-platform/connector-types/{{javaClassName}}
+Authorization: Bearer {{token}}
 
 
 ###
-# Catalog Integration Connectors
+# Integration Connectors
 
 ###
 # @name Validate Apache Atlas Integration Connector
-GET {{baseURL}}/servers/{{integrationDaemon}}/open-metadata/integration-services/catalog-integrator/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider
-
-
-###
-# Infrastructure Integration Connectors
+GET {{baseURL}}/servers/{{integrationDaemon}}/open-metadata/integration-daemon/validate-connector/org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate PostgreSQL Server Integration Connector
-GET {{baseURL}}/servers/{{integrationDaemon}}/open-metadata/integration-services/infrastructure-integrator/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider
-
-
-###
-# Governance Action Services
+GET {{baseURL}}/servers/{{integrationDaemon}}/open-metadata/integration-daemon/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate File Provisioning Governance Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/governance-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/governance-action/validate-connector/org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider
+Authorization: Bearer {{token}}
 
 
 ###
 # Survey Action Services
 ###
 # @name Validate Folder Survey Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate File Survey Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate CSV File Survey Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate Apache Atlas Survey Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/validate-connector/org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate PostgeSQL Server Survey Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider
+Authorization: Bearer {{token}}
 
 ###
 # @name Validate PostgeSQL Database Survey Action Connector
-GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider
+Authorization: Bearer {{token}}
 
 
 

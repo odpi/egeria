@@ -98,7 +98,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                FacilityTypeDefinition.validValueSetScope,
                                                                null,
                                                                null,
-                                                               null,
                                                                false,
                                                                null);
 
@@ -125,7 +124,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                             DataType.STRING.getName(),
                                             FacilityTypeDefinition.validValueSetScope,
                                             facilityTypeDefinition.getPreferredValue(),
-                                            null,
                                             null,
                                             false,
                                             null);

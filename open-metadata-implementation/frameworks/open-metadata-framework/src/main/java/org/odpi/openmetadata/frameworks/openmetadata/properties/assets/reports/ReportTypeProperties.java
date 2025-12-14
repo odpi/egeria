@@ -24,7 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ReportTypeProperties extends DataAssetProperties
 {
     private String purpose           = null;
-    private String author           = null;
     private Date   createdTime      = null;
     private Date   lastModifiedTime = null;
     private String lastModifier      = null;
@@ -51,7 +50,6 @@ public class ReportTypeProperties extends DataAssetProperties
         if (template != null)
         {
             purpose          = template.getPurpose();
-            author           = template.getAuthor();
             createdTime      = template.getCreatedTime();
             lastModifiedTime = template.getLastModifiedTime();
             lastModifier     = template.getLastModifier();
@@ -78,28 +76,6 @@ public class ReportTypeProperties extends DataAssetProperties
     public void setPurpose(String purpose)
     {
         this.purpose = purpose;
-    }
-
-
-    /**
-     * Return the name of the author - or generation engine that created the report.
-     *
-     * @return string name
-     */
-    public String getAuthor()
-    {
-        return author;
-    }
-
-
-    /**
-     * Set up the name of the author - or generation engine that created the report.
-     *
-     * @param author string name
-     */
-    public void setAuthor(String author)
-    {
-        this.author = author;
     }
 
 
@@ -179,7 +155,6 @@ public class ReportTypeProperties extends DataAssetProperties
     {
         return "ReportTypeProperties{" +
                 "purpose='" + purpose + '\'' +
-                ", author='" + author + '\'' +
                 ", createTime=" + createdTime +
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", lastModifier='" + lastModifier + '\'' +
@@ -201,7 +176,7 @@ public class ReportTypeProperties extends DataAssetProperties
         if (!super.equals(objectToCompare)) return false;
         ReportTypeProperties that = (ReportTypeProperties) objectToCompare;
         return Objects.equals(purpose, that.purpose) &&
-                Objects.equals(author, that.author) &&
+
                 Objects.equals(createdTime, that.createdTime) &&
                 Objects.equals(lastModifiedTime, that.lastModifiedTime) &&
                 Objects.equals(lastModifier, that.lastModifier);
@@ -215,7 +190,6 @@ public class ReportTypeProperties extends DataAssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), purpose, author,
-                            createdTime, lastModifiedTime, lastModifier);
+        return Objects.hash(super.hashCode(), purpose, createdTime, lastModifiedTime, lastModifier);
     }
 }

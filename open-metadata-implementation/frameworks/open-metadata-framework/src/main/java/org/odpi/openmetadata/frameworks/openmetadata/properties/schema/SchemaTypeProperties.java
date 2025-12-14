@@ -31,7 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class SchemaTypeProperties extends SchemaElementProperties
 {
-    private String author            = null;
     private String usage            = null;
     private String encodingStandard = null;
     private String namespace        = null;
@@ -64,7 +63,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            author            = template.getAuthor();
             usage             = template.getUsage();
             encodingStandard  = template.getEncodingStandard();
             namespace         = template.getNamespace();
@@ -72,25 +70,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
             formulaType       = template.getFormulaType();
             queries           = template.getQueries();
         }
-    }
-
-
-    /**
-     * Return the name of the author of the schema element.  Null means the author is unknown.
-     *
-     * @return String author name
-     */
-    public String getAuthor() { return author; }
-
-
-    /**
-     * Set up the name of the author of the schema element.  Null means the author is unknown.
-     *
-     * @param author String author name
-     */
-    public void setAuthor(String author)
-    {
-        this.author = author;
     }
 
 
@@ -231,8 +210,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaTypeProperties{" +
-                "author='" + author + '\'' +
-                ", usage='" + usage + '\'' +
+                "usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
                 ", formula='" + formula + '\'' +
@@ -264,8 +242,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
             return false;
         }
         SchemaTypeProperties that = (SchemaTypeProperties) objectToCompare;
-        return Objects.equals(author, that.author) &&
-                Objects.equals(usage, that.usage) &&
+        return Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(namespace, that.namespace) &&
                 Objects.equals(formula, that.formula) &&
@@ -282,6 +259,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), author, usage, encodingStandard, namespace, formula, formulaType, queries);
+        return Objects.hash(super.hashCode(), usage, encodingStandard, namespace, formula, formulaType, queries);
     }
 }

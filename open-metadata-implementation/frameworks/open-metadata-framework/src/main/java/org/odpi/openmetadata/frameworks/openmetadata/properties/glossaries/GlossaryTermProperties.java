@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -22,14 +22,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermProperties extends ReferenceableProperties
+public class GlossaryTermProperties extends AuthoredReferenceableProperties
 {
     private List<String> aliases           = null;
     private String       summary           = null;
     private String       examples          = null;
     private String       abbreviation      = null;
     private String       usage             = null;
-    private String       userDefinedStatus = null;
 
 
 
@@ -54,7 +53,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            userDefinedStatus = template.getUserDefinedStatus();
             aliases           = template.getAliases();
             summary           = template.getSummary();
             examples          = template.getExamples();
@@ -175,28 +173,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
 
 
     /**
-     * Return any user defined status beyond the standard element status values.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up  any user defined status beyond the standard element status values.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -205,8 +181,7 @@ public class GlossaryTermProperties extends ReferenceableProperties
     public String toString()
     {
         return "GlossaryTermProperties{" +
-                "userDefinedStatus='" + userDefinedStatus + '\'' +
-                ", aliases=" + aliases +
+                "aliases=" + aliases +
                 ", summary='" + summary + '\'' +
                 ", examples='" + examples + '\'' +
                 ", abbreviation='" + abbreviation + '\'' +
@@ -232,8 +207,7 @@ public class GlossaryTermProperties extends ReferenceableProperties
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(examples, that.examples) &&
                 Objects.equals(abbreviation, that.abbreviation) &&
-                Objects.equals(usage, that.usage) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus);
+                Objects.equals(usage, that.usage);
     }
 
     /**
@@ -244,6 +218,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, aliases, summary, examples, abbreviation, usage);
+        return Objects.hash(super.hashCode(), aliases, summary, examples, abbreviation, usage);
     }
 }

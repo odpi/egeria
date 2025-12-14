@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -26,14 +26,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SpecificationPropertyValueProperties.class, name = "SpecificationPropertyValueProperties"),
                 @JsonSubTypes.Type(value = ValidMetadataValueProperties.class, name = "ValidMetadataValue"),
         })
-public class ValidValueDefinitionProperties extends ReferenceableProperties
+public class ValidValueDefinitionProperties extends AuthoredReferenceableProperties
 {
     private String  namespace         = null;
     private String  usage             = null;
     private String  scope             = null;
     private String  preferredValue    = null;
     private String  dataType          = null;
-    private String  userDefinedStatus = null;
     private boolean isCaseSensitive   = false;
 
 
@@ -63,7 +62,6 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
             scope             = template.getScope();
             preferredValue    = template.getPreferredValue();
             dataType          = template.getDataType();
-            userDefinedStatus = template.getUserDefinedStatus();
             isCaseSensitive   = template.getIsCaseSensitive();
         }
     }
@@ -179,27 +177,6 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
     }
 
 
-    /**
-     * Is the valid value deprecated?
-     *
-     * @return string status
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set whether the valid value is userDefinedStatus or not.  Default is false.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
 
     /**
      * Return whether this valid value is case-sensitive, or will match irrespective of case.
@@ -236,7 +213,6 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
                 ", scope='" + scope + '\'' +
                 ", preferredValue='" + preferredValue + '\'' +
                 ", dataType='" + dataType + '\'' +
-                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 ", isCaseSensitive=" + isCaseSensitive +
                 "} " + super.toString();
     }
@@ -266,7 +242,6 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
         ValidValueDefinitionProperties that = (ValidValueDefinitionProperties) objectToCompare;
         return Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 Objects.equals(isCaseSensitive, that.isCaseSensitive) &&
                 Objects.equals(preferredValue, that.preferredValue) &&
                 Objects.equals(dataType, that.dataType);
@@ -281,6 +256,6 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), usage, scope, preferredValue, dataType, userDefinedStatus, isCaseSensitive);
+        return Objects.hash(super.hashCode(), usage, scope, preferredValue, dataType, isCaseSensitive);
     }
 }

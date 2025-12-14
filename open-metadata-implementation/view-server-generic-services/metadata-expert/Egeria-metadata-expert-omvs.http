@@ -173,25 +173,6 @@ Content-Type: application/json
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
-###
-# @name updateMetadataElementStatusInStore
-# Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-# assigned when it was created.
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/update-status
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UpdateStatusRequestBody",
-  "externalSourceGUID" :  "",
-  "externalSourceName" : "",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "newStatus" : "ACTIVE"
-}
-
 
 ###
 # @name updateMetadataElementEffectivityInStore

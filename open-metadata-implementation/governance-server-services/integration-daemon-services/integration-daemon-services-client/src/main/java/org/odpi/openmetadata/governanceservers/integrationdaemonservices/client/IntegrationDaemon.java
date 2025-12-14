@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
@@ -81,6 +83,34 @@ public class IntegrationDaemon
         this.restClient = new IntegrationDaemonServicesRESTClient(serverName, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
     }
 
+    /**
+     * Validate the connector and return its connector type.
+     *
+     * @param connectorProviderClassName name of a specific connector or null for all connectors
+     *
+     * @return connector type and other capabilities for this connector
+     *
+     * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration service
+     */
+    public ConnectorReport validateConnector(String connectorProviderClassName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String   methodName = "validateConnector";
+        final String   nameParameter = "connectorProviderClassName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/governance-action/validate-connector";
+
+        invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
+
+        ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
+                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                          serverName,
+                                                                                          connectorProviderClassName);
+
+        return restResult.getConnectorReport();
+    }
 
     /**
      * Retrieve the configuration properties of the named connector.

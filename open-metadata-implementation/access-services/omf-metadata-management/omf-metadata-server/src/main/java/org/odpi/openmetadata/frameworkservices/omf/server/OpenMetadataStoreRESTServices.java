@@ -2631,65 +2631,6 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param userId caller's userId
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param requestBody new status values - use null to leave as is
-     *
-     * @return void or
-     *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
-     */
-    public VoidResponse updateMetadataElementStatusInStore(String                  serverName,
-                                                           String                  userId,
-                                                           String                  metadataElementGUID,
-                                                           UpdateStatusRequestBody requestBody)
-    {
-        final String methodName = "updateMetadataElementStatusInStore";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        AuditLog auditLog = null;
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-
-                handler.updateMetadataElementStatusInStore(userId,
-                                                           requestBody.getExternalSourceGUID(),
-                                                           requestBody.getExternalSourceName(),
-                                                           metadataElementGUID,
-                                                           requestBody.getNewStatus(),
-                                                           requestBody.getForLineage(),
-                                                           requestBody.getForDuplicateProcessing(),
-                                                           requestBody.getEffectiveTime(),
-                                                           methodName);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
      *
      * @param serverName     name of server instance to route request to
@@ -3950,65 +3891,13 @@ public class OpenMetadataStoreRESTServices
                 {
                     return ElementStatus.UNKNOWN;
                 }
-                case DRAFT ->
-                {
-                    return ElementStatus.DRAFT;
-                }
-                case PREPARED ->
-                {
-                    return ElementStatus.PREPARED;
-                }
-                case PROPOSED ->
-                {
-                    return ElementStatus.PROPOSED;
-                }
-                case APPROVED ->
-                {
-                    return ElementStatus.APPROVED;
-                }
-                case REJECTED ->
-                {
-                    return ElementStatus.REJECTED;
-                }
-                case APPROVED_CONCEPT ->
-                {
-                    return ElementStatus.APPROVED_CONCEPT;
-                }
-                case UNDER_DEVELOPMENT ->
-                {
-                    return ElementStatus.UNDER_DEVELOPMENT;
-                }
-                case DEVELOPMENT_COMPLETE ->
-                {
-                    return ElementStatus.DEVELOPMENT_COMPLETE;
-                }
-                case APPROVED_FOR_DEPLOYMENT ->
-                {
-                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
-                }
-                case STANDBY ->
-                {
-                    return ElementStatus.STANDBY;
-                }
                 case ACTIVE ->
                 {
                     return ElementStatus.ACTIVE;
                 }
-                case FAILED ->
+                case INVALID ->
                 {
-                    return ElementStatus.FAILED;
-                }
-                case DISABLED ->
-                {
-                    return ElementStatus.DISABLED;
-                }
-                case COMPLETE ->
-                {
-                    return ElementStatus.COMPLETE;
-                }
-                case DEPRECATED ->
-                {
-                    return ElementStatus.DEPRECATED;
+                    return ElementStatus.INVALID;
                 }
                 case DELETED ->
                 {

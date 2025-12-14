@@ -60,6 +60,7 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "GovernanceDefinitionProperties",
+    "contentStatus" : "DRAFT",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -521,6 +522,7 @@ Content-Type: application/json
   "class" : "UpdateElementRequestBody",
   "properties": {
     "class" : "GovernanceDefinitionProperties",
+    "contentStatus" : "ACTIVE",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -549,18 +551,17 @@ Content-Type: application/json
 ###
 # @name updateGovernanceDefinitionStatus
 # Update the status of a governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/metadata-elements/{{governanceDefinitionGUID}}/update-status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateStatusRequestBody",
-  "newStatus": "ACTIVE",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "GovernanceDefinitionProperties",
+    "contentStatus": "ACTIVE"
+  },
+  "mergeUpdate": true
 }
 
 ###

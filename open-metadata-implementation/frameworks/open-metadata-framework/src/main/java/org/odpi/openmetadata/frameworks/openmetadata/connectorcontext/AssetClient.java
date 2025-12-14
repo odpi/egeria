@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -200,31 +199,6 @@ public class AssetClient extends ConnectorContextClientBase
         }
 
         return updateOccurred;
-    }
-
-
-    /**
-     * Update the properties of a solution blueprint, solution component or solution port.
-     *
-     * @param assetGUID   unique identifier of the solution element (returned from create)
-     * @param metadataSourceOptions options to control access to open metadata
-     * @param status                new status for the element.
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void updateElementStatus(String                assetGUID,
-                                    MetadataSourceOptions metadataSourceOptions,
-                                    ElementStatus         status) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
-    {
-        assetHandler.updateElementStatus(connectorUserId, assetGUID, metadataSourceOptions, status);
-
-        if (parentContext.getIntegrationReportWriter() != null)
-        {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(assetGUID);
-        }
     }
 
 

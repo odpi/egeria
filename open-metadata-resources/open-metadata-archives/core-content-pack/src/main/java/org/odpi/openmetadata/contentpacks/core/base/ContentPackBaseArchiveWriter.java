@@ -1315,7 +1315,6 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                  DataType.STRING.getName(),
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  deployedImplementationType,
-                                                                 null,
                                                                  wikiLink,
                                                                  false,
                                                                  additionalProperties);

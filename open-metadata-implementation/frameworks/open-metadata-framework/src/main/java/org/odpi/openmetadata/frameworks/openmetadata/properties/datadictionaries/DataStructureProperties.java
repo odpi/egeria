@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionarie
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -20,11 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataStructureProperties extends ReferenceableProperties
+public class DataStructureProperties extends AuthoredReferenceableProperties
 {
     private String       namespace         = null;
     private List<String> namePatterns      = null;
-    private String       userDefinedStatus = null;
 
 
 
@@ -51,7 +50,6 @@ public class DataStructureProperties extends ReferenceableProperties
         {
             namespace         = template.getNamespace();
             namePatterns      = template.getNamePatterns();
-            userDefinedStatus = template.getUserDefinedStatus();
         }
     }
 
@@ -103,28 +101,6 @@ public class DataStructureProperties extends ReferenceableProperties
 
 
     /**
-     * Return the status used when element status is OTHER.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status used when element status is OTHER.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -135,7 +111,6 @@ public class DataStructureProperties extends ReferenceableProperties
         return "DataStructureProperties{" +
                 "namespace='" + namespace + '\'' +
                 ", namePatterns=" + namePatterns +
-                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -153,8 +128,7 @@ public class DataStructureProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataStructureProperties that = (DataStructureProperties) objectToCompare;
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(namespace, that.namespace) &&
+        return Objects.equals(namespace, that.namespace) &&
                 Objects.equals(namePatterns, that.namePatterns);
     }
 
@@ -166,6 +140,6 @@ public class DataStructureProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), namespace, namePatterns, userDefinedStatus);
+        return Objects.hash(super.hashCode(), namespace, namePatterns);
     }
 }

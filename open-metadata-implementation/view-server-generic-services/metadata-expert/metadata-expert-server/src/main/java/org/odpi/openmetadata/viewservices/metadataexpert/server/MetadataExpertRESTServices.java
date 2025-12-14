@@ -9,12 +9,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 
 
 /**
@@ -304,64 +302,6 @@ public class MetadataExpertRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-    /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param urlMarker  view service URL marker
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param requestBody new status values - use null to leave as is
-     *
-     * @return void or
-     *  InvalidParameterException either the unique identifier or the status are invalid in some way
-     *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
-     */
-    public VoidResponse updateMetadataElementStatusInStore(String                  serverName,
-                                                           String                  urlMarker,
-                                                           String                  metadataElementGUID,
-                                                           UpdateStatusRequestBody requestBody)
-    {
-        final String methodName = "updateMetadataElementStatusInStore";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
-
-            if (requestBody != null)
-            {
-                handler.updateMetadataElementStatusInStore(userId,
-                                                           metadataElementGUID,
-                                                           requestBody,
-                                                           requestBody.getNewStatus());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
 
 
     /**

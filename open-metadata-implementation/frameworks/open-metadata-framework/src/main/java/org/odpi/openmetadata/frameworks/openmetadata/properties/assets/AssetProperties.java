@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ITInfrastructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -26,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataAssetProperties.class, name = "DataAssetProperties"),
         @JsonSubTypes.Type(value = ProcessProperties.class, name = "ProcessProperties"),
-        @JsonSubTypes.Type(value = ITInfrastructureProperties.class, name = "ITInfrastructureProperties"),
+        @JsonSubTypes.Type(value = InfrastructureProperties.class, name = "InfrastructureProperties"),
 })
 public class AssetProperties extends ReferenceableProperties
 {
@@ -34,8 +33,6 @@ public class AssetProperties extends ReferenceableProperties
     private String namespace                  = null;
     private String deployedImplementationType = null;
     private String source                     = null;
-    private String userDefinedStatus          = null;
-
 
     /**
      * Default constructor
@@ -62,7 +59,6 @@ public class AssetProperties extends ReferenceableProperties
             namespace                  = template.getNamespace();
             deployedImplementationType = template.getDeployedImplementationType();
             source                     = template.getSource();
-            userDefinedStatus          = template.getUserDefinedStatus();
         }
     }
 
@@ -154,29 +150,6 @@ public class AssetProperties extends ReferenceableProperties
     }
 
 
-
-    /**
-     * Return the status used when element status is OTHER.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status used when element status is OTHER.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -190,7 +163,6 @@ public class AssetProperties extends ReferenceableProperties
                 ", namespace='" + namespace + '\'' +
                 ", deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", source='" + source + '\'' +
-                ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -211,7 +183,6 @@ public class AssetProperties extends ReferenceableProperties
         return Objects.equals(namespace, that.namespace) &&
                 Objects.equals(resourceName, that.resourceName) &&
                 Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 Objects.equals(source, that.source);
     }
 
@@ -223,6 +194,6 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), namespace, resourceName, deployedImplementationType, source, userDefinedStatus);
+        return Objects.hash(super.hashCode(), namespace, resourceName, deployedImplementationType, source);
     }
 }

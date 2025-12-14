@@ -546,9 +546,6 @@ public class OpenMetadataClassificationBuilder
                                                                      OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
                                                                      typeEmbeddedAttributeProperties.getSchemaTypeName());
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.USER_DEFINED_STATUS.name,
-                                                                     typeEmbeddedAttributeProperties.getUserDefinedStatus());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                      typeEmbeddedAttributeProperties.getQualifiedName());
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -563,9 +560,6 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.CATEGORY.name,
                                                                      typeEmbeddedAttributeProperties.getCategory());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.AUTHOR.name,
-                                                                     typeEmbeddedAttributeProperties.getAuthor());
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.USAGE.name,
                                                                      typeEmbeddedAttributeProperties.getUsage());

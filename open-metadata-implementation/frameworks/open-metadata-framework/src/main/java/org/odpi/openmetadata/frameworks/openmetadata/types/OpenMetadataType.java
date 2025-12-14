@@ -136,6 +136,17 @@ public enum OpenMetadataType
 
 
     /**
+     * An open metadata entity that has lifecycle states to support an authoring workflow..
+     */
+    AUTHORED_REFERENCEABLE("136c2bef-29bd-4f1d-b320-7ef679bbb99d",
+                  "AuthoredReferenceable",
+                  OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
+                  "97ed3470-dfaa-449c-b205-c22e203512b6",
+                  "An open metadata entity that has lifecycle states to support an authoring workflow.",
+                  AuthoredReferenceableProperties.class),
+
+
+    /**
      * The description of an asset that needs to be catalogued and governed.
      */
     ASSET("896d14c2-7522-4f6c-8519-757711943fe6",

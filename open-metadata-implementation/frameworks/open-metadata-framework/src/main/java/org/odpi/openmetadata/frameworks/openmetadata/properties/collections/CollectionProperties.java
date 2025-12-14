@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDictionaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties;
@@ -50,7 +51,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SoftwareArchiveProperties.class, name = "SoftwareArchiveProperties"),
                 @JsonSubTypes.Type(value = WorkItemListProperties.class, name = "WorkItemListProperties"),
         })
-public class CollectionProperties extends ReferenceableProperties
+public class CollectionProperties extends AuthoredReferenceableProperties
 {
     /**
      * Default constructor
@@ -59,6 +60,16 @@ public class CollectionProperties extends ReferenceableProperties
     {
         super();
         super.setTypeName(OpenMetadataType.COLLECTION.typeName);
+    }
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public CollectionProperties(AuthoredReferenceableProperties template)
+    {
+        super(template);
     }
 
 

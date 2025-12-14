@@ -35,6 +35,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.odpi.openmetadata.serveroperations.client.ServerOperationsClient;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
@@ -787,49 +788,55 @@ public class EgeriaExtractor
 
             if (serverTypeClassification == ServerTypeClassification.INTEGRATION_DAEMON)
             {
-                IntegrationDaemon integrationDaemonClient = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
-
                 OMAGIntegrationDaemonProperties integrationDaemon = new OMAGIntegrationDaemonProperties();
 
-                IntegrationDaemonStatus integrationDaemonStatus = integrationDaemonClient.getIntegrationDaemonStatus();
-
-                if (integrationDaemonStatus != null)
+                if (this.isServerRunning(serverName))
                 {
-                    if (integrationDaemonStatus.getIntegrationGroupSummaries() != null)
+                    IntegrationDaemon integrationDaemonClient = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+
+                    IntegrationDaemonStatus integrationDaemonStatus = integrationDaemonClient.getIntegrationDaemonStatus();
+
+                    if (integrationDaemonStatus != null)
                     {
-
-                        List<OMAGIntegrationGroupProperties> integrationGroups = new ArrayList<>();
-
-                        for (IntegrationGroupSummary integrationGroupSummary : integrationDaemonStatus.getIntegrationGroupSummaries())
+                        if (integrationDaemonStatus.getIntegrationGroupSummaries() != null)
                         {
-                            if (integrationGroupSummary != null)
+
+                            List<OMAGIntegrationGroupProperties> integrationGroups = new ArrayList<>();
+
+                            for (IntegrationGroupSummary integrationGroupSummary : integrationDaemonStatus.getIntegrationGroupSummaries())
                             {
-                                OMAGIntegrationGroupProperties integrationGroupProperties = new OMAGIntegrationGroupProperties();
+                                if (integrationGroupSummary != null)
+                                {
+                                    OMAGIntegrationGroupProperties integrationGroupProperties = new OMAGIntegrationGroupProperties();
 
-                                integrationGroupProperties.setIntegrationGroupName(integrationGroupSummary.getIntegrationGroupName());
-                                integrationGroupProperties.setIntegrationGroupGUID(integrationGroupSummary.getIntegrationGroupGUID());
-                                integrationGroupProperties.setIntegrationGroupDescription(integrationGroupSummary.getIntegrationGroupDescription());
-                                integrationGroupProperties.setIntegrationGroupStatus(integrationGroupSummary.getIntegrationGroupStatus());
+                                    integrationGroupProperties.setIntegrationGroupName(integrationGroupSummary.getIntegrationGroupName());
+                                    integrationGroupProperties.setIntegrationGroupGUID(integrationGroupSummary.getIntegrationGroupGUID());
+                                    integrationGroupProperties.setIntegrationGroupDescription(integrationGroupSummary.getIntegrationGroupDescription());
+                                    integrationGroupProperties.setIntegrationGroupStatus(integrationGroupSummary.getIntegrationGroupStatus());
 
-                                integrationGroups.add(integrationGroupProperties);
+                                    integrationGroups.add(integrationGroupProperties);
+                                }
                             }
+
+                            integrationDaemon.setIntegrationGroups(integrationGroups);
                         }
 
-                        integrationDaemon.setIntegrationGroups(integrationGroups);
+                        integrationDaemon.setIntegrationConnectorReports(integrationDaemonStatus.getIntegrationConnectorReports());
                     }
-
-                    integrationDaemon.setIntegrationConnectorReports(integrationDaemonStatus.getIntegrationConnectorReports());
                 }
 
                 serverProperties = integrationDaemon;
             }
             else if (serverTypeClassification == ServerTypeClassification.ENGINE_HOST)
             {
-                EngineHostClient engineHostClient = new EngineHostClient(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
-
                 OMAGEngineHostProperties engineHost = new OMAGEngineHostProperties();
 
-                engineHost.setGovernanceEngineSummaries(engineHostClient.getGovernanceEngineSummaries());
+                if (this.isServerRunning(serverName))
+                {
+                    EngineHostClient engineHostClient = new EngineHostClient(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+
+                    engineHost.setGovernanceEngineSummaries(engineHostClient.getGovernanceEngineSummaries());
+                }
 
                 serverProperties = engineHost;
             }
@@ -854,9 +861,12 @@ public class EgeriaExtractor
                      */
                     if (metadataStoreProperties.getLocalMetadataCollectionId() == null)
                     {
-                        LocalRepositoryServicesClient localRepositoryServicesClient = new LocalRepositoryServicesClient(serverName, platformURLRoot + "/servers/" + serverName, secretsStoreConnectorMap);
+                        if (isServerRunning(serverName))
+                        {
+                            LocalRepositoryServicesClient localRepositoryServicesClient = new LocalRepositoryServicesClient(serverName, platformURLRoot + "/servers/" + serverName, secretsStoreConnectorMap);
 
-                        metadataStoreProperties.setLocalMetadataCollectionId(localRepositoryServicesClient.getMetadataCollectionId(delegatingUserId));
+                            metadataStoreProperties.setLocalMetadataCollectionId(localRepositoryServicesClient.getMetadataCollectionId(delegatingUserId));
+                        }
                     }
                 }
 
@@ -934,6 +944,35 @@ public class EgeriaExtractor
         {
             // nothing to do - simply that the server is not running
         }
+    }
+
+
+    /**
+     * Determine if the server is running.  This is needed before certain calls will work.  It is particularly
+     * tricky around platform start up because this connector can be refreshed before its integration daemon
+     * server is properly running. This does not matter for connectors that are monitoring other types of systems.
+     * But for this connector we need to be cautious.
+     *
+     * @param serverName omag server name
+     * @return boolean
+     */
+    private boolean isServerRunning(String serverName)
+    {
+        try
+        {
+            ServerServicesStatus activeServerStatus = platformServicesClient.getActiveServerStatus(serverName);
+
+            if ((activeServerStatus != null) && (activeServerStatus.getServerActiveStatus() == ServerActiveStatus.RUNNING))
+            {
+                return true;
+            }
+        }
+        catch (Exception serverNotRunningException)
+        {
+            // nothing to do - simply that the server is not running
+        }
+
+        return false;
     }
 
 
@@ -1287,7 +1326,8 @@ public class EgeriaExtractor
     }
 
     /**
-     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * Pass an open lineage event to the integration service.
+     * It will pass it on to the integration connectors that have registered a
      * listener for open lineage events.
      *
      * @param event open lineage event to publish.
@@ -1300,6 +1340,8 @@ public class EgeriaExtractor
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        assert integrationDaemonClient != null;
+
         integrationDaemonClient.publishOpenLineageEvent(event);
     }
 

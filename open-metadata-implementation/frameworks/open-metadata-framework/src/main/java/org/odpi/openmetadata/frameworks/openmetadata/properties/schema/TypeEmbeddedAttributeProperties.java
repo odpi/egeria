@@ -29,8 +29,6 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
     private String              versionIdentifier    = null;
     private String              category             = null;
     private Map<String, String> additionalProperties = null;
-    private String              userDefinedStatus    = null;
-    private String              author               = null;
     private String              usage                = null;
     private String              encodingStandard     = null;
     private String              namespace            = null;
@@ -68,8 +66,6 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
             versionIdentifier    = template.getVersionIdentifier();
             category             = template.getCategory();
             additionalProperties = template.getAdditionalProperties();
-            userDefinedStatus    = template.getUserDefinedStatus();
-            author               = template.getAuthor();
             usage                = template.getUsage();
             encodingStandard     = template.getEncodingStandard();
             namespace            = template.getNamespace();
@@ -240,47 +236,6 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
 
 
     /**
-     * What is the status of the element if element status is OTHER?
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set  the schema element userDefinedStatus.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
-     * Return the name of the author of the schema element.  Null means the author is unknown.
-     *
-     * @return String author name
-     */
-    public String getAuthor() { return author; }
-
-
-    /**
-     * Set up the name of the author of the schema element.  Null means the author is unknown.
-     *
-     * @param author String author name
-     */
-    public void setAuthor(String author)
-    {
-        this.author = author;
-    }
-
-
-    /**
      * Return the usage guidance for this schema element. Null means no guidance available.
      *
      * @return String usage guidance
@@ -415,8 +370,6 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
                 ", versionIdentifier='" + versionIdentifier + '\'' +
                 ", category='" + category + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", userDefinedStatus='" + userDefinedStatus + '\'' +
-                ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
@@ -446,9 +399,7 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
                 Objects.equals(description, that.description) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(category, that.category) &&
-                Objects.equals(additionalProperties, that.additionalProperties)
-                && Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(author, that.author) &&
+                Objects.equals(additionalProperties, that.additionalProperties) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(namespace, that.namespace) &&
@@ -466,6 +417,6 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), schemaTypeName, qualifiedName, displayName, description, versionIdentifier, category, additionalProperties, userDefinedStatus, author, usage, encodingStandard, namespace, dataType, defaultValue, fixedValue);
+        return Objects.hash(super.hashCode(), schemaTypeName, qualifiedName, displayName, description, versionIdentifier, category, additionalProperties, usage, encodingStandard, namespace, dataType, defaultValue, fixedValue);
     }
 }

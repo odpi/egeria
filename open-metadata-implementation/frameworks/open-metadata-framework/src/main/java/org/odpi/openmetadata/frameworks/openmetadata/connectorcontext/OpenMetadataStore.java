@@ -1236,58 +1236,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param newElementStatus new status value - or null to leave as is
-     *
-     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public void updateMetadataElementStatusInStore(String        metadataElementGUID,
-                                                   ElementStatus newElementStatus) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        this.updateMetadataElementStatusInStore(metadataElementGUID,
-                                                this.getMetadataSourceOptions(),
-                                                newElementStatus);
-    }
-
-
-    /**
-     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.
-     *
-     * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param newElementStatus new status value - or null to leave as is
-     *
-     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public void updateMetadataElementStatusInStore(String                metadataElementGUID,
-                                                   MetadataSourceOptions metadataSourceOptions,
-                                                   ElementStatus         newElementStatus) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
-    {
-        openMetadataClient.updateMetadataElementStatusInStore(connectorUserId,
-                                                              metadataElementGUID,
-                                                              metadataSourceOptions,
-                                                              newElementStatus);
-
-        if (parentContext.getIntegrationReportWriter() != null)
-        {
-            parentContext.getIntegrationReportWriter().reportElementUpdate(metadataElementGUID);
-        }
-    }
-
-
-    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
