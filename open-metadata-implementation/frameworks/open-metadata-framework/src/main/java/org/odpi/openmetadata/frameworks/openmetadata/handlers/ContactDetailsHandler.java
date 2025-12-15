@@ -96,7 +96,7 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
     public String createContactDetailsFromTemplate(String                     userId,
                                                    TemplateOptions            templateOptions,
                                                    String                     templateGUID,
-                                                   ElementProperties          replacementProperties,
+                                                   EntityProperties           replacementProperties,
                                                    Map<String, String>        placeholderProperties,
                                                    RelationshipBeanProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                    UserNotAuthorizedException,

@@ -6,9 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.search;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,9 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NewElementOptions extends NewLinkedElementOptions
 {
-    private ElementStatus initialStatus = ElementStatus.ACTIVE;
-
-
     /**
      * Default constructor
      */
@@ -38,30 +32,9 @@ public class NewElementOptions extends NewLinkedElementOptions
      *
      * @param template object to copy
      */
-    public NewElementOptions(NewElementOptions template)
+    public NewElementOptions(NewLinkedElementOptions template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.initialStatus = template.getInitialStatus();
-        }
-    }
-
-
-    /**
-     * Copy/clone constructor
-     *
-     * @param initialStatus object to copy
-     */
-    public NewElementOptions(ElementStatus initialStatus)
-    {
-        super();
-
-        if (initialStatus != null)
-        {
-            this.initialStatus = initialStatus;
-        }
     }
 
 
@@ -88,28 +61,6 @@ public class NewElementOptions extends NewLinkedElementOptions
 
 
     /**
-     * Return the initial status of the solution element.
-     *
-     * @return instance status
-     */
-    public ElementStatus getInitialStatus()
-    {
-        return initialStatus;
-    }
-
-
-    /**
-     * Set up the initial status of the solution element.
-     *
-     * @param initialStatus instance status
-     */
-    public void setInitialStatus(ElementStatus initialStatus)
-    {
-        this.initialStatus = initialStatus;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -118,44 +69,6 @@ public class NewElementOptions extends NewLinkedElementOptions
     public String toString()
     {
         return "NewElementOptions{" +
-                "initialStatus=" + initialStatus +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof NewElementOptions that))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return initialStatus == that.initialStatus;
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), initialStatus);
     }
 }

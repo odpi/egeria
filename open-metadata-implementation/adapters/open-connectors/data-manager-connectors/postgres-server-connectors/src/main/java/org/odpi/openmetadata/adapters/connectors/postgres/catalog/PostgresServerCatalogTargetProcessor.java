@@ -16,7 +16,6 @@ import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -211,7 +210,6 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
                 NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-                newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
                 newElementOptions.setAnchorGUID(databaseServerGUID);
                 newElementOptions.setIsOwnAnchor(false);
                 newElementOptions.setAnchorScopeGUID(null);

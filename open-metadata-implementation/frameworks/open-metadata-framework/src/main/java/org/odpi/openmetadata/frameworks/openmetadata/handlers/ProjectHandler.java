@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
@@ -122,7 +123,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
     public String createProjectFromTemplate(String                 userId,
                                             TemplateOptions        templateOptions,
                                             String                 templateGUID,
-                                            ElementProperties      replacementProperties,
+                                            EntityProperties       replacementProperties,
                                             Map<String, String>    placeholderProperties,
                                             RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,

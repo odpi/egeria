@@ -16,7 +16,6 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
@@ -279,7 +278,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        null,
                                                        folderAssetTypeName,
                                                        extendedProperties,
-                                                       InstanceStatus.ACTIVE,
                                                        true,
                                                        null,
                                                        null,

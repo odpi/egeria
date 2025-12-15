@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.ConnectorActivityReportClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
@@ -1848,7 +1847,6 @@ public class ConnectorContextBase
                                                                                               additionalRequestParameters);
 
                 String processStep1GUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
-                                                                                         ElementStatus.ACTIVE,
                                                                                          null,
                                                                                          processGUID,
                                                                                          false,
@@ -1956,7 +1954,6 @@ public class ConnectorContextBase
                                                              processDescription);
 
         return openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                              ElementStatus.ACTIVE,
                                                               null,
                                                               anchorGUID,
                                                               (anchorGUID == null),

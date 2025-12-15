@@ -52,7 +52,6 @@ Content-Type: application/json
   "externalSourceGUID" : "",
   "externalSourceName" : "",
   "typeName" : "",
-  "initialStatus" : "ACTIVE",
   "initialClassifications" : {},
   "anchorGUID" : "",
   "isOwnAnchor" : false,

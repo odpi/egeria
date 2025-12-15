@@ -6,8 +6,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 
 import java.util.Map;
@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TemplateRequestBody extends TemplateOptions
 {
     private String                 templateGUID                 = null;
-    private ElementProperties      replacementProperties        = null;
+    private EntityProperties       replacementProperties        = null;
     private Map<String, String>    placeholderPropertyValues    = null;
     private RelationshipProperties parentRelationshipProperties = null;
 
@@ -75,7 +75,7 @@ public class TemplateRequestBody extends TemplateOptions
      *
      * @return list of properties
      */
-    public ElementProperties getReplacementProperties()
+    public EntityProperties getReplacementProperties()
     {
         return replacementProperties;
     }
@@ -86,7 +86,7 @@ public class TemplateRequestBody extends TemplateOptions
      *
      * @param replacementProperties list of properties
      */
-    public void setReplacementProperties(ElementProperties replacementProperties)
+    public void setReplacementProperties(EntityProperties replacementProperties)
     {
         this.replacementProperties = replacementProperties;
     }

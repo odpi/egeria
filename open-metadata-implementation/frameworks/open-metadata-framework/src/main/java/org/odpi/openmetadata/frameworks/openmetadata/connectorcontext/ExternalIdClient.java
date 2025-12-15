@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.ExternalIdHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
@@ -157,7 +158,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      */
     public String createExternalIdFromTemplate(TemplateOptions        templateOptions,
                                                String                 templateGUID,
-                                               ElementProperties      replacementProperties,
+                                               EntityProperties       replacementProperties,
                                                Map<String, String>    placeholderProperties,
                                                RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,

@@ -2011,7 +2011,6 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
          * Each governance definition is created as independent elements, and they are not linked together (yet)
          */
         NewElementOptions newElementOptions = new NewElementOptions(governanceDefinitionClient.getMetadataSourceOptions());
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setIsOwnAnchor(true);
 
         String governanceDefinitionGUID =  governanceDefinitionClient.createGovernanceDefinition(newElementOptions,

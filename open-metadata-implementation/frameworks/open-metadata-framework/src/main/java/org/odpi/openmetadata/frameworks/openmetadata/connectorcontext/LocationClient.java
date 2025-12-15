@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.LocationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
@@ -106,10 +107,10 @@ public class LocationClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createLocationFromTemplate(TemplateOptions templateOptions,
-                                             String templateGUID,
-                                             ElementProperties replacementProperties,
-                                             Map<String, String> placeholderProperties,
+    public String createLocationFromTemplate(TemplateOptions        templateOptions,
+                                             String                 templateGUID,
+                                             EntityProperties       replacementProperties,
+                                             Map<String, String>    placeholderProperties,
                                              RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException

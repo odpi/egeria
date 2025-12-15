@@ -431,7 +431,6 @@ Content-Type: application/json
 # Full body
 # {
 #   "typeName" : "",
-#   "initialStatus" : "",
 #   "initialClassifications" : {},
 #   "anchorGUID" : "",
 #   "isOwnAnchor" : "",

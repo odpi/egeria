@@ -11,8 +11,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITInfrastructureProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -110,8 +114,6 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param templateOptions details of the element to create
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
-     * @param allowRetrieve  whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
-     * qualified name (default is false).
      * @param replacementProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
      *                              template element - and their anchored elements, which are also copied as part of this operation.
@@ -123,8 +125,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      */
     public String createActorProfileFromTemplate(TemplateOptions        templateOptions,
                                                  String                 templateGUID,
-                                                 boolean                allowRetrieve,
-                                                 ElementProperties      replacementProperties,
+                                                 EntityProperties       replacementProperties,
                                                  Map<String, String>    placeholderProperties,
                                                  RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,

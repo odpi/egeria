@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetLineageGraphMermaidGraphBuilder;
@@ -574,7 +573,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
         {
             parentRelationshipProperties = relationshipBuilder.getNewElementProperties(new ActionRequesterProperties());
 
-            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
             newElementOptions.setParentGUID(originatorGUID);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }
@@ -741,7 +739,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public String createAssetFromTemplate(String                 userId,
                                           TemplateOptions        templateOptions,
                                           String                 templateGUID,
-                                          ElementProperties      replacementProperties,
+                                          EntityProperties       replacementProperties,
                                           Map<String, String>    placeholderProperties,
                                           RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,

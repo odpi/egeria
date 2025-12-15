@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -779,7 +778,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * effectivity dates.
      *
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param properties properties of the new metadata element
      *
      * @return unique identifier of the new metadata element
@@ -789,14 +787,11 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String createMetadataElementInStore(String               metadataElementTypeName,
-                                               ElementStatus        initialStatus,
                                                NewElementProperties properties) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
         NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
-
-        newElementOptions.setInitialStatus(initialStatus);
 
         return openMetadataClient.createMetadataElementInStore(connectorUserId,
                                                                metadataElementTypeName,
@@ -814,7 +809,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * effectivity dates.
      *
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
@@ -826,7 +820,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String createMetadataElementInStore(String            metadataElementTypeName,
-                                               ElementStatus     initialStatus,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
                                                ElementProperties properties) throws InvalidParameterException,
@@ -834,8 +827,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                                       PropertyServerException
     {
         NewElementOptions    newElementOptions    = new NewElementOptions(getMetadataSourceOptions());
-
-        newElementOptions.setInitialStatus(initialStatus);
 
         NewElementProperties newElementProperties = new NewElementProperties(properties);
         newElementProperties.setEffectiveFrom(effectiveFrom);
@@ -857,7 +848,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * effectivity dates.
      *
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
@@ -878,7 +868,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String createMetadataElementInStore(String                            metadataElementTypeName,
-                                               ElementStatus                     initialStatus,
                                                Map<String, NewElementProperties> initialClassifications,
                                                String                            anchorGUID,
                                                boolean                           isOwnAnchor,
@@ -893,7 +882,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
     {
         NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
 
-        newElementOptions.setInitialStatus(initialStatus);
         newElementOptions.setAnchorGUID(anchorGUID);
         newElementOptions.setIsOwnAnchor(isOwnAnchor);
         newElementOptions.setAnchorScopeGUID(anchorScopeGUID);

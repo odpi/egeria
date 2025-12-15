@@ -573,8 +573,7 @@ Content-Type: application/json
       "dataSpecCount" : "2",
       "templateCount" : "0"
     }
-  },
-  "initialStatus" : "OTHER"
+  }
 }
 
 > {% client.global.set("ctDataSharingAgreementGUID", response.body.guid); %}

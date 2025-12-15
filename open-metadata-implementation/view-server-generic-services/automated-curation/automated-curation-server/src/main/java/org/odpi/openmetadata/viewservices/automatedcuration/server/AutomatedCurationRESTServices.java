@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
@@ -36,6 +37,7 @@ public class AutomatedCurationRESTServices extends TokenController
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
 
+    private final OpenMetadataElementBuilder      entityBuilder = new OpenMetadataElementBuilder();
     private final OpenMetadataRelationshipBuilder relationshipBuilder = new OpenMetadataRelationshipBuilder();
 
     /**
@@ -400,7 +402,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                requestBody.getMetadataElementSubtypeName(),
                                                                                requestBody,
                                                                                requestBody.getTemplateGUID(),
-                                                                               requestBody.getReplacementProperties(),
+                                                                               entityBuilder.getElementProperties(requestBody.getReplacementProperties()),
                                                                                requestBody.getPlaceholderPropertyValues(),
                                                                                relationshipBuilder.getNewElementProperties(requestBody.getParentRelationshipProperties())));
             }

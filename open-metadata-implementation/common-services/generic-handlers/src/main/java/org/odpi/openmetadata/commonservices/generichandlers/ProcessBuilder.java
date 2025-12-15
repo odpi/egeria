@@ -83,7 +83,6 @@ public class ProcessBuilder extends AssetBuilder
               typeGUID,
               typeName,
               null,
-              InstanceStatus.ACTIVE,
               repositoryHelper,
               serviceName,
               serverName);
@@ -133,7 +132,6 @@ public class ProcessBuilder extends AssetBuilder
               typeGUID,
               typeName,
               null,
-              InstanceStatus.ACTIVE,
               repositoryHelper,
               serviceName,
               serverName);

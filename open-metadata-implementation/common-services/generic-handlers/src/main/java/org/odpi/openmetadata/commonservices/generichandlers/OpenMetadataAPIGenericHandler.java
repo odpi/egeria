@@ -2238,7 +2238,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                  entityTypeName,
                                  propertyBuilder.getInstanceProperties(methodName),
                                  propertyBuilder.getEntityClassifications(),
-                                 propertyBuilder.getInstanceStatus(),
+                                 InstanceStatus.ACTIVE,
                                  effectiveTime,
                                  methodName);
 
@@ -2249,7 +2249,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                            externalSourceName,
                                                            propertyBuilder.getInstanceProperties(methodName),
                                                            propertyBuilder.getEntityClassifications(),
-                                                           propertyBuilder.getInstanceStatus(),
+                                                           InstanceStatus.ACTIVE,
                                                            methodName);
 
 

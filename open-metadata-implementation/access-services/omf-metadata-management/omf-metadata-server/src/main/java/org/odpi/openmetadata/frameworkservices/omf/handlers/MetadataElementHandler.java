@@ -1586,7 +1586,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
@@ -1613,7 +1612,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                String                            externalSourceGUID,
                                                String                            externalSourceName,
                                                String                            metadataElementTypeName,
-                                               ElementStatus                     initialStatus,
                                                Map<String, NewElementProperties> initialClassifications,
                                                String                            anchorGUID,
                                                boolean                           isOwnAnchor,
@@ -1673,7 +1671,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             builder = new MetadataElementBuilder(metadataElementTypeGUID,
                                                  metadataElementTypeName,
                                                  getElementPropertiesAsOMRSMap(properties),
-                                                 this.getInstanceStatus(initialStatus),
                                                  properties.getEffectiveFrom(),
                                                  properties.getEffectiveTo(),
                                                  repositoryHelper,
@@ -1685,7 +1682,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             builder = new MetadataElementBuilder(metadataElementTypeGUID,
                                                  metadataElementTypeName,
                                                  null,
-                                                 this.getInstanceStatus(initialStatus),
                                                  null,
                                                  null,
                                                  repositoryHelper,
@@ -2011,7 +2007,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         MetadataElementBuilder builder = new MetadataElementBuilder(metadataElementTypeGUID,
                                                                     metadataElementTypeName,
                                                                     getElementPropertiesAsOMRSMap(templateProperties),
-                                                                    null,
                                                                     effectiveFrom,
                                                                     effectiveTo,
                                                                     repositoryHelper,

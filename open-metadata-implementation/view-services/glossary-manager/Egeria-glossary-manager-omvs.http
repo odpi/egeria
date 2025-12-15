@@ -52,8 +52,7 @@ Content-Type: application/json
                "propertyName1" : "xxxx",
                "propertyName2" : "xxxx" 
             }
-		},
-    "initialStatus" : "DRAFT"
+		}
 }
 
 ###

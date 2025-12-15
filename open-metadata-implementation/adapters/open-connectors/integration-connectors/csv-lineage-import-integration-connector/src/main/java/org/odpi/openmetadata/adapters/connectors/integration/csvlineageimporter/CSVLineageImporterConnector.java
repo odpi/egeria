@@ -223,7 +223,6 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
                                                                                        qualifiedName);
 
                 return openMetadataStore.createMetadataElementInStore(openMetadataType,
-                                                                      ElementStatus.ACTIVE,
                                                                       null,
                                                                       null,
                                                                       elementProperties);

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -134,7 +135,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public String createGovernanceDefinitionFromTemplate(String                 userId,
                                                          TemplateOptions        templateOptions,
                                                          String                 templateGUID,
-                                                         ElementProperties      replacementProperties,
+                                                         EntityProperties       replacementProperties,
                                                          Map<String, String>    placeholderProperties,
                                                          RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                      UserNotAuthorizedException,

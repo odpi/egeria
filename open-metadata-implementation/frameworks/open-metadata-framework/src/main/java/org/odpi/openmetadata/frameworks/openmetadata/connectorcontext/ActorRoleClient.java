@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileRoleAppointmentProperties;
@@ -120,8 +121,6 @@ public class ActorRoleClient extends ConnectorContextClientBase
      * @param templateOptions details of the element to create
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
-     * @param allowRetrieve  whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
-     * qualified name (default is false).
      * @param replacementProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
      *                              template element - and their anchored elements, which are also copied as part of this operation.
@@ -134,8 +133,7 @@ public class ActorRoleClient extends ConnectorContextClientBase
      */
     public String createActorRoleFromTemplate(TemplateOptions        templateOptions,
                                               String                 templateGUID,
-                                              boolean                allowRetrieve,
-                                              ElementProperties      replacementProperties,
+                                              EntityProperties       replacementProperties,
                                               Map<String, String>    placeholderProperties,
                                               RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,

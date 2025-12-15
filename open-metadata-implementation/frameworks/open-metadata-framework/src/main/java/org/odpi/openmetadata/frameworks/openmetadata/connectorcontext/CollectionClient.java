@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
@@ -129,7 +130,7 @@ public class CollectionClient extends ConnectorContextClientBase
      */
     public String createCollectionFromTemplate(TemplateOptions        templateOptions,
                                                String                 templateGUID,
-                                               ElementProperties      replacementProperties,
+                                               EntityProperties       replacementProperties,
                                                Map<String, String>    placeholderProperties,
                                                RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,

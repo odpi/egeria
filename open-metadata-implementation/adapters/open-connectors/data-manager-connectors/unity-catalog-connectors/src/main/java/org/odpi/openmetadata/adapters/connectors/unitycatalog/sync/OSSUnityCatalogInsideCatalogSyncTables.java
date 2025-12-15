@@ -6,26 +6,29 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ColumnInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.TableInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.iterator.*;
+import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
+import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
+import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
+import org.odpi.openmetadata.frameworks.integration.iterator.RelatedElementsIterator;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.VirtualRelationalTableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -610,8 +613,6 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         newElementOptions.setExternalSourceGUID(catalogGUID);
         newElementOptions.setExternalSourceName(metadataCollectionQualifiedName);
-
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         newElementOptions.setAnchorGUID(tableGUID);
         newElementOptions.setIsOwnAnchor(false);

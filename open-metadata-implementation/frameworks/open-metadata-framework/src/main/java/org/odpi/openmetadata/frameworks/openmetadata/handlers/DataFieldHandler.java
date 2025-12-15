@@ -94,7 +94,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
     public String createDataFieldFromTemplate(String                 userId,
                                               TemplateOptions        templateOptions,
                                               String                 templateGUID,
-                                              ElementProperties      replacementProperties,
+                                              EntityProperties       replacementProperties,
                                               Map<String, String>    placeholderProperties,
                                               RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,

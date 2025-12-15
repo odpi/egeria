@@ -8,10 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
@@ -100,7 +97,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     public String createSolutionComponentFromTemplate(String                 userId,
                                                       TemplateOptions        templateOptions,
                                                       String                 templateGUID,
-                                                      ElementProperties      replacementProperties,
+                                                      EntityProperties       replacementProperties,
                                                       Map<String, String>    placeholderProperties,
                                                       RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                   UserNotAuthorizedException,

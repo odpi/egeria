@@ -33,7 +33,6 @@ public class OpenMetadataAPIGenericBuilder
     protected String                      typeGUID;
     protected String                      typeName;
 
-    protected InstanceStatus              instanceStatus;
     private   Date                        effectiveFrom;
     private   Date                        effectiveTo;
     protected List<Classification>        existingClassifications;
@@ -61,7 +60,6 @@ public class OpenMetadataAPIGenericBuilder
              typeName,
              null,
              null,
-             null,
              repositoryHelper,
              serviceName,
              serverName);
@@ -74,7 +72,6 @@ public class OpenMetadataAPIGenericBuilder
      * @param typeGUID type GUID to use for the entity
      * @param typeName type name to use for the entity
      * @param extendedProperties properties for the sub ype (if any)
-     * @param instanceStatus status to use on the request
      * @param existingClassifications classifications that are currently stored
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
@@ -83,7 +80,6 @@ public class OpenMetadataAPIGenericBuilder
     protected OpenMetadataAPIGenericBuilder(String               typeGUID,
                                             String               typeName,
                                             Map<String, Object>  extendedProperties,
-                                            InstanceStatus       instanceStatus,
                                             List<Classification> existingClassifications,
                                             OMRSRepositoryHelper repositoryHelper,
                                             String               serviceName,
@@ -92,7 +88,6 @@ public class OpenMetadataAPIGenericBuilder
         this(typeGUID,
              typeName,
              extendedProperties,
-             instanceStatus,
              null,
              null,
              existingClassifications,
@@ -108,7 +103,6 @@ public class OpenMetadataAPIGenericBuilder
      * @param typeGUID type GUID to use for the entity
      * @param typeName type name to use for the entity
      * @param extendedProperties properties for the subtype (if any)
-     * @param instanceStatus status to use on the request
      * @param effectiveFrom date to make the element active in the governance program (null for now)
      * @param effectiveTo date to remove the element from the governance program (null = until deleted)
      * @param existingClassifications classifications that are currently stored
@@ -119,7 +113,6 @@ public class OpenMetadataAPIGenericBuilder
     protected OpenMetadataAPIGenericBuilder(String               typeGUID,
                                             String               typeName,
                                             Map<String, Object>  extendedProperties,
-                                            InstanceStatus       instanceStatus,
                                             Date                 effectiveFrom,
                                             Date                 effectiveTo,
                                             List<Classification> existingClassifications,
@@ -133,7 +126,6 @@ public class OpenMetadataAPIGenericBuilder
         this.typeGUID                = typeGUID;
         this.typeName                = typeName;
         this.extendedProperties      = extendedProperties;
-        this.instanceStatus          = instanceStatus;
         this.effectiveFrom           = effectiveFrom;
         this.effectiveTo             = effectiveTo;
         this.existingClassifications = existingClassifications;
@@ -823,17 +815,6 @@ public class OpenMetadataAPIGenericBuilder
     public String getTypeGUID()
     {
         return typeGUID;
-    }
-
-
-    /**
-     * Return the status that this entity should be created with.
-     *
-     * @return instance status enum
-     */
-    public InstanceStatus getInstanceStatus()
-    {
-        return instanceStatus;
     }
 
 

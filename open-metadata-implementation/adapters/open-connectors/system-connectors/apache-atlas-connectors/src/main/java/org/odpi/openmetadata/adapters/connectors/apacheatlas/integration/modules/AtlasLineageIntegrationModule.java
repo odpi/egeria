@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.LineageClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
@@ -379,7 +378,6 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                 NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
 
                 newElementOptions.setIsOwnAnchor(true);
-                newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
                 String egeriaProcessGUID = assetClient.createAsset(newElementOptions,
                                                                    null,

@@ -283,7 +283,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
     public String createCollectionFromTemplate(String                 userId,
                                                TemplateOptions        templateOptions,
                                                String                 templateGUID,
-                                               ElementProperties      replacementProperties,
+                                               EntityProperties       replacementProperties,
                                                Map<String, String>    placeholderProperties,
                                                RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,

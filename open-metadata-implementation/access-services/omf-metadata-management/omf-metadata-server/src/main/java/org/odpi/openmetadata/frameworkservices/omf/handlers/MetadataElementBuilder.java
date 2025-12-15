@@ -28,7 +28,6 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
      * @param metadataElementTypeGUID type identifier
      * @param metadataElementTypeName type name
      * @param propertyMap map of property names to values
-     * @param initialStatus initial status of the element
      * @param effectiveFrom date to make the element active in the governance program (null for now)
      * @param effectiveTo date to remove the element from the governance program (null = until deleted)
      * @param repositoryHelper helper methods
@@ -38,7 +37,6 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
     MetadataElementBuilder(String                             metadataElementTypeGUID,
                            String                             metadataElementTypeName,
                            Map<String, InstancePropertyValue> propertyMap,
-                           InstanceStatus                     initialStatus,
                            Date                               effectiveFrom,
                            Date                               effectiveTo,
                            OMRSRepositoryHelper               repositoryHelper,
@@ -48,7 +46,6 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
         super(metadataElementTypeGUID,
               metadataElementTypeName,
               null,
-              initialStatus,
               effectiveFrom,
               effectiveTo,
               null,
