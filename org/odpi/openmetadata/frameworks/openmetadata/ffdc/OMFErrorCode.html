@@ -234,41 +234,45 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-400-022 - The search string passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_TEXT" class="member-name-link">NULL_TEXT</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NULL_TEMPLATE_INSERTS" class="member-name-link">NULL_TEMPLATE_INSERTS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-400-013 - The objects passed on the replacement attributes and placeholder properties of the {0} operation are both null; the template has no new values to map</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_TEXT" class="member-name-link">NULL_TEXT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-400-021 - The text field value passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-400-020 - The user identifier (user id) passed on the {0} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-500-008 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; the expected class name is: {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_CONVERTER_EXCEPTION" class="member-name-link">UNEXPECTED_CONVERTER_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_CONVERTER_EXCEPTION" class="member-name-link">UNEXPECTED_CONVERTER_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-500-025 - The Design Model OMAS has received an unexpected {0} exception while formatting a response during method {1}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-500-001 - Unexpected {0} exception in service {1} detected by method {2}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-400-003 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#VALID_METADATA_MISSING" class="member-name-link">VALID_METADATA_MISSING</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_MISSING" class="member-name-link">VALID_METADATA_MISSING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-400-011 - The valid metadata value {0} for property {1} is not found</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_FOR_ELEMENT" class="member-name-link">WRONG_TYPE_FOR_ELEMENT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_FOR_ELEMENT" class="member-name-link">WRONG_TYPE_FOR_ELEMENT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-400-026 - The {0} element is of type {1} rather than the expected type of {2}</div>
 </div>
 </div>
@@ -413,6 +417,13 @@ the order they are declared.</div>
 <h3>INVALID_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_GUID</span></div>
 <div class="block">OPEN-METADATA-400-012 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_TEMPLATE_INSERTS">
+<h3>NULL_TEMPLATE_INSERTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFErrorCode</a></span>&nbsp;<span class="element-name">NULL_TEMPLATE_INSERTS</span></div>
+<div class="block">OPEN-METADATA-400-013 - The objects passed on the replacement attributes and placeholder properties of the {0} operation are both null; the template has no new values to map</div>
 </section>
 </li>
 <li>
