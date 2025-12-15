@@ -297,17 +297,27 @@ public class OpenMetadataHandlerBase
     protected String createElementFromTemplate(String                 userId,
                                                TemplateOptions        templateOptions,
                                                String                 templateGUID,
-                                               ElementProperties      replacementProperties,
+                                               EntityProperties       replacementProperties,
                                                Map<String, String>    placeholderProperties,
                                                RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
+        final String methodName = "createElementFromTemplate";
+
+        if ((replacementProperties == null) && ((placeholderProperties == null) || (placeholderProperties.isEmpty())))
+        {
+            throw new InvalidParameterException(OMFErrorCode.NULL_TEMPLATE_INSERTS.getMessageDefinition(metadataElementTypeName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "replacementAttributes/placeholderProperties");
+        }
+
         return openMetadataClient.createMetadataElementFromTemplate(userId,
                                                                     metadataElementTypeName,
                                                                     templateOptions,
                                                                     templateGUID,
-                                                                    replacementProperties,
+                                                                    elementBuilder.getElementProperties(replacementProperties),
                                                                     placeholderProperties,
                                                                     relationshipBuilder.getNewElementProperties(parentRelationshipProperties));
     }

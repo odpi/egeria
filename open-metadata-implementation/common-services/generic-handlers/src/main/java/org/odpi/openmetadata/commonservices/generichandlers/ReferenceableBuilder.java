@@ -195,44 +195,6 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
               typeName,
               extendedProperties,
               null,
-              null,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.qualifiedName        = qualifiedName;
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Constructor for templated entities.
-     *
-     * @param qualifiedName        unique name
-     * @param additionalProperties name value pairs for values that are not formally defined in the type system
-     * @param typeName             type name to use for the entity
-     * @param typeId               type GUID to use for the entity
-     * @param extendedProperties   properties from the subtype
-     * @param instanceStatus       initial instance status for the entity
-     * @param repositoryHelper     helper methods
-     * @param serviceName          name of this OMAS
-     * @param serverName           name of local server
-     */
-    protected ReferenceableBuilder(String               qualifiedName,
-                                   Map<String, String>  additionalProperties,
-                                   String               typeId,
-                                   String               typeName,
-                                   Map<String, Object>  extendedProperties,
-                                   InstanceStatus       instanceStatus,
-                                   OMRSRepositoryHelper repositoryHelper,
-                                   String               serviceName,
-                                   String               serverName)
-    {
-        super(typeId,
-              typeName,
-              extendedProperties,
-              instanceStatus,
-              null,
               repositoryHelper,
               serviceName,
               serverName);

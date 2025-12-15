@@ -1097,7 +1097,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * @param entityTypeGUID unique identifier (guid) for the new entity's type.
      * @param initialProperties initial list of properties for the new entity null means no properties.
      * @param initialClassifications initial list of classifications for the new entity null means no classifications.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param initialStatus initial status typically ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
     protected void  validateUserForEntityCreate(String                     userId,
@@ -1472,7 +1472,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * @param initialProperties initial list of properties for the new entity null means no properties.
      * @param entityOneSummary the unique identifier of one of the entities that the relationship is connecting together.
      * @param entityTwoSummary the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param initialStatus initial status typically ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
     protected void  validateUserForRelationshipCreate(String               userId,

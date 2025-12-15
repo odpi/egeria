@@ -543,10 +543,7 @@ Content-Type: application/json
 # @name createDigitalProduct
 # Create a new collection that represents a digital product.
 # Note: the three dates: introductionDate, nextVersionDate and withdrawDate must be valid dates if specified,
-# otherwise you will get a 400 error response.
-# The valid values for initialStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED, APPROVED_CONCEPT,
-# UNDER_DEVELOPMENT, DEVELOPMENT_COMPLETE, APPROVED_FOR_DEPLOYMENT, ACTIVE, DISABLED, DEPRECATED,
-# OTHER.  If useing OTHER, set the userDefinedStatus with the status value you want.
+# otherwise you will get a 400 error response
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -581,8 +578,7 @@ Content-Type: application/json
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "initialStatus" : "ACTIVE"
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -738,8 +734,6 @@ Content-Type: application/json
 ###
 # @name createAgreement
 # Create a new collection that represents an agreement.
-# The valid values for initialStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED
-# ACTIVE, DEPRECATED, OTHER.  If useing OTHER, set the userDefinedStatus with the status value you want.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -766,8 +760,7 @@ Content-Type: application/json
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "initialStatus" : "ACTIVE"
+  "forDuplicateProcessing" : false
 }
 
 
@@ -799,7 +792,6 @@ Content-Type: application/json
       "property2Name" : "property2Value"
     }
   },
-  "initialStatus" : "ACTIVE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1015,8 +1007,6 @@ Content-Type: application/json
 ###
 # @name createDigitalSubscription
 # Create a new collection that represents a type of agreement called a DigitalSubscription.
-# The valid values for initialStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED
-# ACTIVE, DEPRECATED, OTHER.  If useing OTHER, set the userDefinedStatus with the status value you want.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -1049,8 +1039,7 @@ Content-Type: application/json
    "externalSourceName": "add qualified name here",
    "effectiveTime" : "{{$isoTimestamp}}",
    "forLineage" : false,
-   "forDuplicateProcessing" : false,
-   "initialStatus" : "ACTIVE"
+   "forDuplicateProcessing" : false
 }
 
 ###

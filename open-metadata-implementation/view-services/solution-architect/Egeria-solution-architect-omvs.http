@@ -402,10 +402,7 @@ Content-Type: application/json
 
 ###
 # @name createSolutionBlueprint
-# Create a solution blueprint - initialStatus which can be DRAFT, PREPARED, PROPPOSED,
-# APPROVED, REJECTED, ACTIVE, DISABLED, DEPRECATED, OTHER.  The default is ACTIVE.
-# If OTHER is used, set userDefinedStatus.
-# The status can be updated using updateSolutionElementStatus
+# Create a solution blueprint
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -444,8 +441,7 @@ Content-Type: application/json
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "initialStatus" : "ACTIVE"
+  "forDuplicateProcessing" : false
 }
 
 
@@ -941,9 +937,7 @@ Content-Type: application/json
 
 ###
 # @name createSolutionComponent
-# Create a solution component with a lifecycle - set initialStatus which can be DRAFT, PREPARED, PROPPOSED,
-# APPROVED, REJECTED, ACTIVE, DISABLED, DEPRECATED, OTHER. Default is ACTIVE. If OTHER is used, set userDefinedStatus.
-# The status can be updated using updateSolutionElementStatus
+# Create a solution component
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -984,8 +978,7 @@ Content-Type: application/json
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "initialStatus": "ACTIVE"
+  "forDuplicateProcessing" : false
 }
 
 

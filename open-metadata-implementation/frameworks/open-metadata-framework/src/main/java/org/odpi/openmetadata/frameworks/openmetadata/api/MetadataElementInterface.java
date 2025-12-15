@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.api;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
@@ -406,7 +405,6 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param properties properties of the new metadata element
      *
      * @return unique identifier of the new metadata element
@@ -417,7 +415,6 @@ public interface MetadataElementInterface
      */
     String createMetadataElementInStore(String               userId,
                                         String               metadataElementTypeName,
-                                        ElementStatus        initialStatus,
                                         NewElementProperties properties) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;
@@ -433,7 +430,6 @@ public interface MetadataElementInterface
      * @param externalSourceGUID      unique identifier of the software capability that owns this collection
      * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param properties properties of the new metadata element
      *
      * @return unique identifier of the new metadata element
@@ -446,7 +442,6 @@ public interface MetadataElementInterface
                                         String               externalSourceGUID,
                                         String               externalSourceName,
                                         String               metadataElementTypeName,
-                                        ElementStatus        initialStatus,
                                         NewElementProperties properties) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;

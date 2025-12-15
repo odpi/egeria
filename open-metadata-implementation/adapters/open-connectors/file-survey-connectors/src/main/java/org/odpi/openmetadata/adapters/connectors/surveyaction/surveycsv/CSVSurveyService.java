@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -439,7 +438,6 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                                                    assetProperties.getQualifiedName() + "_rootSchemaType");
 
             String schemaTypeGUID = openMetadataStore.createMetadataElementInStore(schemaType,
-                                                                                   ElementStatus.ACTIVE,
                                                                                    new NewElementProperties(elementProperties));
             if (schemaTypeGUID != null)
             {
@@ -506,7 +504,6 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
             NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
             newElementOptions.setAnchorGUID(assetElement.getElementHeader().getGUID());
             newElementOptions.setIsOwnAnchor(false);
             newElementOptions.setAnchorScopeGUID(null);

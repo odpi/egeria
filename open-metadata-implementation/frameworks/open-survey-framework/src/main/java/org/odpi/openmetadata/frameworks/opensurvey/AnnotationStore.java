@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.opensurvey;
 
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -124,7 +123,6 @@ public class AnnotationStore
         newElementOptions.setExternalSourceGUID(externalSourceGUID);
         newElementOptions.setExternalSourceName(externalSourceName);
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(assetGUID);
         newElementOptions.setIsOwnAnchor(false);
 
@@ -595,14 +593,13 @@ public class AnnotationStore
      * @throws PropertyServerException    there was a problem adding the annotation to the annotation store.
      */
     public String addAnnotation(AnnotationProperties annotationProperties,
-                                String associatedElementGUID) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+                                String               associatedElementGUID) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
 
         NewElementOptions newElementOptions = new NewElementOptions(this.getMakeAnchorOptions());
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(assetGUID);
         newElementOptions.setIsOwnAnchor(false);
 

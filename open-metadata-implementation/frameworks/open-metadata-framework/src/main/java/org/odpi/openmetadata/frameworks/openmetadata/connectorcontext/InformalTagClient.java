@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformalTagHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -103,7 +104,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      */
     public String createInformalTagFromTemplate(TemplateOptions        templateOptions,
                                                 String                 templateGUID,
-                                                ElementProperties      replacementProperties,
+                                                EntityProperties       replacementProperties,
                                                 Map<String, String>    placeholderProperties,
                                                 RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                             UserNotAuthorizedException,

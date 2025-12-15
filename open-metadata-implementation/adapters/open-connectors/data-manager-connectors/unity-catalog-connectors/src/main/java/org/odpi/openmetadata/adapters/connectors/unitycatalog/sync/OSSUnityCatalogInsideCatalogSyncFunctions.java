@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.integration.iterator.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
@@ -528,8 +527,6 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
          */
 
         NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
-
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         newElementOptions.setAnchorGUID(functionGUID);
         newElementOptions.setIsOwnAnchor(false);

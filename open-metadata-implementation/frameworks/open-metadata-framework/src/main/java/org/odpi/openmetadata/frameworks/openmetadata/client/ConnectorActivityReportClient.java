@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.client;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.ConnectorActivityReportConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -83,7 +82,6 @@ public class ConnectorActivityReportClient
 
         NewElementOptions newElementOptions = new NewElementOptions();
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setAnchorGUID(elementGUID);
         newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setAnchorScopeGUID(null);

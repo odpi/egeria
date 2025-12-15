@@ -129,6 +129,14 @@ public enum OMFErrorCode implements ExceptionMessageSet
               "Correct the code in the caller to provide the correct guid.  GUIDs are of this form '1a27f402-4638-4002-8e5c-74143661ebb4'."),
 
     /**
+     * OPEN-METADATA-400-013 - The objects passed on the replacement attributes and placeholder properties of the {0} operation are both null; the template has no new values to map
+     */
+    NULL_TEMPLATE_INSERTS(400, "OPEN-METADATA-400-013",
+                "The objects passed on the replacement attributes and placeholder properties of the {0} operation are both null; the template has no new values to map",
+                "The system is unable to process the request without some additional values.",
+                "Correct the code in the caller to provide either replacement attributes and/or placeholder properties."),
+
+    /**
      * OPEN-METADATA-400-020 - The user identifier (user id) passed on the {0} operation is null
      */
     NULL_USER_ID(400, "OPEN-METADATA-400-020",

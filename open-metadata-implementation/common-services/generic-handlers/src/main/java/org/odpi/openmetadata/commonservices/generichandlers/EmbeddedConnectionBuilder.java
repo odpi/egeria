@@ -41,7 +41,6 @@ public class EmbeddedConnectionBuilder extends OpenMetadataAPIGenericBuilder
         super(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
               OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
               null,
-              InstanceStatus.ACTIVE,
               null,
               repositoryHelper,
               serviceName,

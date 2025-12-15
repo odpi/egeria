@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
@@ -1348,7 +1347,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      */
     @Override
     public String createMetadataElementInStore(String                            userId,
-                                               String metadataElementTypeName,
+                                               String                             metadataElementTypeName,
                                                NewElementOptions                 newElementOptions,
                                                Map<String, NewElementProperties> initialClassifications,
                                                NewElementProperties              properties,
@@ -2221,7 +2220,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setIsOwnAnchor(true);
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentGUID(originatorGUID);
@@ -2404,8 +2402,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-
         if (actionSourceGUID != null)
         {
             newElementOptions.setIsOwnAnchor(false);
@@ -2543,7 +2539,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
          */
         NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setIsOwnAnchor(true);
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentGUID(assignToGUID);
@@ -2688,7 +2683,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
             properties = propertyHelper.addStringMapProperty(properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, contextEventProperties.getAdditionalProperties());
 
             NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
-            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
             newElementOptions.setAnchorGUID(anchorGUID);
             newElementOptions.setIsOwnAnchor((anchorGUID == null));
 

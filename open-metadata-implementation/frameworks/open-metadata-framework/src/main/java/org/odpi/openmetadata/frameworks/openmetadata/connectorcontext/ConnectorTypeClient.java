@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -105,7 +106,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
      */
     public String createConnectorTypeFromTemplate(TemplateOptions        templateOptions,
                                                   String                 templateGUID,
-                                                  ElementProperties      replacementProperties,
+                                                  EntityProperties       replacementProperties,
                                                   Map<String, String>    placeholderProperties,
                                                   RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,

@@ -9,15 +9,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITInfrastructureProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamStructureProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -126,7 +122,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
     public String createActorProfileFromTemplate(String                 userId,
                                                  TemplateOptions        templateOptions,
                                                  String                 templateGUID,
-                                                 ElementProperties      replacementProperties,
+                                                 EntityProperties       replacementProperties,
                                                  Map<String, String>    placeholderProperties,
                                                  RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
@@ -170,78 +166,6 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
                                    updateOptions,
                                    properties,
                                    methodName);
-    }
-
-
-    /**
-     * Attach a profile to a location.
-     *
-     * @param userId                 userId of user making request
-     * @param actorProfileGUID       unique identifier of the actor profile
-     * @param locationGUID           unique identifier of the location
-     * @param makeAnchorOptions  options to control access to open metadata
-     * @param relationshipProperties description of the relationship.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void linkLocationToProfile(String                  userId,
-                                      String                  actorProfileGUID,
-                                      String                  locationGUID,
-                                      MakeAnchorOptions       makeAnchorOptions,
-                                      KnownLocationProperties relationshipProperties) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
-    {
-        final String methodName            = "linkLocationToProfile";
-        final String end1GUIDParameterName = "actorProfileGUID";
-        final String end2GUIDParameterName = "locationGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(actorProfileGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
-
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
-                                                        actorProfileGUID,
-                                                        locationGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
-    }
-
-
-    /**
-     * Detach an actor profile from a location.
-     *
-     * @param userId                 userId of user making request.
-     * @param actorProfileGUID       unique identifier of the actor profile
-     * @param locationGUID           unique identifier of the location
-     * @param deleteOptions  options to control access to open metadata
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void detachLocationFromProfile(String        userId,
-                                          String        actorProfileGUID,
-                                          String        locationGUID,
-                                          DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
-    {
-        final String methodName = "detachLocationFromProfile";
-
-        final String end1GUIDParameterName = "actorProfileGUID";
-        final String end2GUIDParameterName = "locationGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(actorProfileGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
-
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
-                                                        locationGUID,
-                                                        actorProfileGUID,
-                                                        deleteOptions);
     }
 
 

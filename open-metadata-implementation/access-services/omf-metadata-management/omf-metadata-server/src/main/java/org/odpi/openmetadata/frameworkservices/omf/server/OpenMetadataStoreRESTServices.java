@@ -2470,7 +2470,6 @@ public class OpenMetadataStoreRESTServices
                                                                       requestBody.getExternalSourceGUID(),
                                                                       requestBody.getExternalSourceName(),
                                                                       requestBody.getTypeName(),
-                                                                      requestBody.getInitialStatus(),
                                                                       requestBody.getInitialClassifications(),
                                                                       requestBody.getAnchorGUID(),
                                                                       requestBody.getIsOwnAnchor(),

@@ -96,7 +96,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
-     * @param instanceStatus initial status of the Asset in the metadata repository
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -120,7 +119,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            Map<String, String>  additionalProperties,
                                            String               typeName,
                                            Map<String, Object>  extendedProperties,
-                                           InstanceStatus       instanceStatus,
                                            Date                 effectiveFrom,
                                            Date                 effectiveTo,
                                            Date                 effectiveTime,
@@ -151,7 +149,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 assetTypeId,
                                                 assetTypeName,
                                                 extendedProperties,
-                                                instanceStatus,
                                                 repositoryHelper,
                                                 serviceName,
                                                 serverName);
@@ -188,7 +185,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param assetTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
-     * @param instanceStatus initial status of the Asset in the metadata repository
      * @param anchorEndpointToAsset set to true if the network address is unique for the asset and should not be reused. False if this is an endpoint
      *                              that is relevant for multiple assets.
      * @param configurationProperties configuration properties for the connection
@@ -222,7 +218,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                              Map<String, String> additionalProperties,
                                              String              assetTypeName,
                                              Map<String, Object> extendedProperties,
-                                             InstanceStatus      instanceStatus,
                                              boolean             anchorEndpointToAsset,
                                              Map<String, Object> configurationProperties,
                                              String              connectorProviderClassName,
@@ -250,7 +245,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         additionalProperties,
                                                         assetTypeName,
                                                         extendedProperties,
-                                                        instanceStatus,
                                                         effectiveFrom,
                                                         effectiveTo,
                                                         effectiveTime,

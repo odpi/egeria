@@ -115,58 +115,6 @@ public class AssetBuilder extends ReferenceableBuilder
 
 
     /**
-     * Constructor supporting all entity properties. (Classifications are added separately.)
-     *
-     * @param qualifiedName unique name
-     * @param name new value for the name
-     * @param resourceName the full name from the resource
-     * @param versionIdentifier new value for the versionIdentifier
-     * @param technicalDescription new description for the asset
-     * @param deployedImplementationType technology type
-     * @param additionalProperties additional properties
-     * @param typeGUID unique identifier for the type of this asset
-     * @param typeName unique name for the type of this asset
-     * @param extendedProperties  properties from the subtype
-     * @param initialStatus status used to create the asset
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    protected AssetBuilder(String               qualifiedName,
-                           String               name,
-                           String               resourceName,
-                           String               versionIdentifier,
-                           String               technicalDescription,
-                           String               deployedImplementationType,
-                           Map<String, String>  additionalProperties,
-                           String               typeGUID,
-                           String               typeName,
-                           Map<String, Object>  extendedProperties,
-                           InstanceStatus       initialStatus,
-                           OMRSRepositoryHelper repositoryHelper,
-                           String               serviceName,
-                           String               serverName)
-    {
-        super(qualifiedName,
-              additionalProperties,
-              typeGUID,
-              typeName,
-              extendedProperties,
-              initialStatus,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.name                       = name;
-        this.resourceName               = resourceName;
-        this.versionIdentifier          = versionIdentifier;
-        this.technicalDescription       = technicalDescription;
-        this.deployedImplementationType = deployedImplementationType;
-    }
-
-
-
-    /**
      * Set up the AssetOwnership classification for this entity.
      * This method overrides an previously defined AssetOwnership classification for this entity.
      *

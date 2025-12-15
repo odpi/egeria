@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
@@ -775,7 +774,6 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
             if (topLevelProcessTemplateQualifiedName == null)
             {
                 topLevelProcessGUID = governanceContext.createProcess(topLevelProcessTypeName,
-                                                                      ElementStatus.ACTIVE,
                                                                       topLevelProcessName,
                                                                       topLevelProcessName,
                                                                       null);
@@ -783,7 +781,6 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
             else
             {
                 topLevelProcessGUID = governanceContext.createProcessFromTemplate(topLevelProcessTemplateQualifiedName,
-                                                                                  ElementStatus.ACTIVE,
                                                                                   topLevelProcessName,
                                                                                   topLevelProcessName,
                                                                                   null);
@@ -800,7 +797,6 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
              * A child process is created for each provisioning job.
              */
             processGUID = governanceContext.createChildProcess(childProcessTypeName,
-                                                               ElementStatus.ACTIVE,
                                                                topLevelProcessName + connectorInstanceId,
                                                                topLevelProcessName,
                                                                null,
@@ -934,7 +930,6 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         else // no template
         {
             newFileGUID = metadataStore.createMetadataElementInStore(assetTypeName,
-                                                                     ElementStatus.ACTIVE,
                                                                      null,
                                                                      null,
                                                                      true,

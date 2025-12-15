@@ -5,15 +5,11 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -77,10 +73,6 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
         propertyHelper.validateMandatoryName(properties.getDisplayName(), nameParameterName, methodName);
 
-        NewElementOptions newElementOptions = new NewElementOptions(requestedNewElementOptions);
-
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-
         return openMetadataClient.createMetadataElementInStore(userId,
                                                                OpenMetadataType.INFORMAL_TAG.typeName,
                                                                requestedNewElementOptions,
@@ -110,7 +102,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
     public String createTagFromTemplate(String                 userId,
                                         TemplateOptions        templateOptions,
                                         String                 templateGUID,
-                                        ElementProperties      replacementProperties,
+                                        EntityProperties       replacementProperties,
                                         Map<String, String>    placeholderProperties,
                                         RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
@@ -141,7 +142,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
     public String createContributionRecordFromTemplate(String                 userId,
                                                        TemplateOptions        templateOptions,
                                                        String                 templateGUID,
-                                                       ElementProperties      replacementProperties,
+                                                       EntityProperties       replacementProperties,
                                                        Map<String, String>    placeholderProperties,
                                                        RelationshipBeanProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                        UserNotAuthorizedException,

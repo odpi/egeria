@@ -443,7 +443,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                      templateEntity.getType().getTypeDefName(),
                                      newEntityProperties,
                                      propertyBuilder.getEntityClassifications(),
-                                     propertyBuilder.getInstanceStatus(),
+                                     InstanceStatus.ACTIVE,
                                      effectiveTime,
                                      methodName);
 
@@ -498,7 +498,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                   externalSourceName,
                                                                   propertyBuilder.getInstanceProperties(methodName),
                                                                   newClassifications,
-                                                                  propertyBuilder.getInstanceStatus(),
+                                                                  InstanceStatus.ACTIVE,
                                                                   methodName);
 
 
@@ -784,7 +784,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                    nextTemplateEntityTypeGUID,
                                                                    nextTemplateEntityTypeName,
                                                                    null,
-                                                                   nextTemplateEntity.getStatus(),
                                                                    repositoryHelper,
                                                                    serviceName,
                                                                    serverName);
@@ -794,7 +793,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                 builder = new OpenMetadataAPIGenericBuilder(nextTemplateEntityTypeGUID,
                                                                             nextTemplateEntityTypeName,
                                                                             null,
-                                                                            nextTemplateEntity.getStatus(),
                                                                             null,
                                                                             repositoryHelper,
                                                                             serviceName,

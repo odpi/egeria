@@ -1189,7 +1189,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @param userId caller's userId
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param properties properties of the new metadata element
      *
      * @return unique identifier of the new metadata element
@@ -1201,18 +1200,13 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
     @Override
     public String createMetadataElementInStore(String               userId,
                                                String               metadataElementTypeName,
-                                               ElementStatus        initialStatus,
                                                NewElementProperties properties) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        NewElementOptions newElementOptions = new NewElementOptions();
-
-        newElementOptions.setInitialStatus(initialStatus);
-
         return this.createMetadataElementInStore(userId,
                                                  metadataElementTypeName,
-                                                 newElementOptions,
+                                                 null,
                                                  null,
                                                  properties,
                                                  null);
@@ -1229,7 +1223,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param externalSourceGUID      unique identifier of the software capability that owns this collection
      * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementTypeName type name of the new metadata element
-     * @param initialStatus initial status of the metadata element
      * @param properties properties of the new metadata element
      *
      * @return unique identifier of the new metadata element
@@ -1243,7 +1236,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                String               externalSourceGUID,
                                                String               externalSourceName,
                                                String               metadataElementTypeName,
-                                               ElementStatus        initialStatus,
                                                NewElementProperties properties) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -1252,7 +1244,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
         newElementOptions.setExternalSourceGUID(externalSourceGUID);
         newElementOptions.setExternalSourceName(externalSourceName);
-        newElementOptions.setInitialStatus(initialStatus);
 
         return this.createMetadataElementInStore(userId,
                                                  metadataElementTypeName,

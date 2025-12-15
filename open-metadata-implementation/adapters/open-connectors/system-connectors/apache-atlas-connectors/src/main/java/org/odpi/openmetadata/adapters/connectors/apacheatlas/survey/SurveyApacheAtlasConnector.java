@@ -769,7 +769,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                     NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-                    newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
                     newElementOptions.setAnchorGUID(assetGUID);
                     newElementOptions.setIsOwnAnchor(false);
                     newElementOptions.setParentGUID(assetGUID);
@@ -1065,7 +1064,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                     NewElementOptions newElementOptions = new NewElementOptions();
 
-                    newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
                     newElementOptions.setAnchorGUID(assetUniverse.getElementHeader().getGUID());
                     newElementOptions.setIsOwnAnchor(false);
 
@@ -1190,8 +1188,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                    new NewElementProperties(classificationProperties));
 
         NewElementOptions newElementOptions = new NewElementOptions();
-
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         newElementOptions.setAnchorGUID(anchorGUID);
         newElementOptions.setIsOwnAnchor(false);

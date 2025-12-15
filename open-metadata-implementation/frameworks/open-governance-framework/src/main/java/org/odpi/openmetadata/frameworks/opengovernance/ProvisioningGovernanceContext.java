@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 
 
@@ -131,7 +130,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * Create a new process to represent the processing of this governance action process.
      *
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
@@ -143,7 +141,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     String createProcess(String        processTypeName,
-                         ElementStatus initialStatus,
                          String        qualifiedName,
                          String        name,
                          String        description) throws InvalidParameterException,
@@ -155,7 +152,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * Create a new process to represent the processing of this governance action process.
      *
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param versionIdentifier version of the resource
@@ -170,7 +166,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     String createProcess(String            processTypeName,
-                         ElementStatus     initialStatus,
                          String            qualifiedName,
                          String            name,
                          String            versionIdentifier,
@@ -186,7 +181,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @param templateGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
@@ -198,7 +192,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     String createProcessFromTemplate(String        templateGUID,
-                                     ElementStatus initialStatus,
                                      String        qualifiedName,
                                      String        name,
                                      String        description) throws InvalidParameterException,
@@ -211,7 +204,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      *
      * @param templateGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param versionIdentifier version of the resource
@@ -226,7 +218,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     String createProcessFromTemplate(String            templateGUID,
-                                     ElementStatus     initialStatus,
                                      String            qualifiedName,
                                      String            name,
                                      String            versionIdentifier,
@@ -240,7 +231,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
     /**
      * Create a process that represents the processing instance of this governance action.
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
@@ -254,7 +244,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     String createChildProcess(String        processTypeName,
-                              ElementStatus initialStatus,
                               String        qualifiedName,
                               String        name,
                               String        description,
@@ -266,7 +255,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
     /**
      * Create a process that represents the processing instance of this governance action.
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param versionIdentifier version of the resource
@@ -283,7 +271,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     String createChildProcess(String            processTypeName,
-                              ElementStatus     initialStatus,
                               String            qualifiedName,
                               String            name,
                               String            versionIdentifier,
@@ -332,8 +319,8 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      */
     String createLineageRelationship(String sourceElementGUID,
                                      String targetElementGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**

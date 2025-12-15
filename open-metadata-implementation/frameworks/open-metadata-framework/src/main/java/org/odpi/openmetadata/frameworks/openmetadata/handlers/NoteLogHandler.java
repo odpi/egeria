@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -69,8 +68,6 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
                                                                                                  PropertyServerException
     {
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
-
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         if (elementGUID != null)
         {
@@ -147,7 +144,7 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
     public String createNoteLogFromTemplate(String                 userId,
                                             TemplateOptions        templateOptions,
                                             String                 templateGUID,
-                                            ElementProperties      replacementProperties,
+                                            EntityProperties       replacementProperties,
                                             Map<String, String>    placeholderProperties,
                                             RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,

@@ -22,6 +22,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -352,7 +354,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         ucCatalogGUID = assetClient.createAssetFromTemplate(templateOptions,
                                                             templateGUID,
-                                                            this.getElementProperties(qualifiedName, catalogInfo),
+                                                            this.getReplacementProperties(qualifiedName, catalogInfo),
                                                             this.getPlaceholderProperties(catalogInfo),
                                                             relationshipProperties);
 
@@ -501,6 +503,28 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      *
      * @return element properties suitable for create or update
      */
+    private ReferenceableProperties getReplacementProperties(CatalogInfo info)
+    {
+        DatabaseProperties catalogProperties = new DatabaseProperties();
+
+        catalogProperties.setDisplayName(info.getName());
+        catalogProperties.setDescription(info.getComment());
+        catalogProperties.setDeployedImplementationType(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
+
+        // catalogProperties.setAdditionalProperties(info.getProperties());
+
+        return catalogProperties;
+    }
+
+
+
+    /**
+     * Set up the element properties for an asset from the info object.
+     *
+     * @param info  information extracted from UC
+     *
+     * @return element properties suitable for create or update
+     */
     private ElementProperties getElementProperties(CatalogInfo info)
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
@@ -532,14 +556,12 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      *
      * @return element properties suitable for create or update
      */
-    private ElementProperties getElementProperties(String      qualifiedName,
-                                                   CatalogInfo info)
+    private EntityProperties getReplacementProperties(String      qualifiedName,
+                                                      CatalogInfo info)
     {
-        ElementProperties elementProperties = this.getElementProperties(info);
+        ReferenceableProperties elementProperties = this.getReplacementProperties(info);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                             qualifiedName);
+        elementProperties.setQualifiedName(qualifiedName);
 
         return elementProperties;
     }

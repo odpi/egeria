@@ -509,7 +509,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         return openMetadataClient.createMetadataElementInStore(userId,
                                                                assetTypeName,
-                                                               ElementStatus.ACTIVE,
                                                                new NewElementProperties(properties));
     }
 
@@ -546,7 +545,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         return openMetadataClient.createMetadataElementInStore(userId,
                                                                assetTypeName,
-                                                               ElementStatus.ACTIVE,
                                                                new NewElementProperties(properties));
     }
 
@@ -657,7 +655,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * Create a new process to represent the processing of this governance action process.
      *
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
@@ -670,7 +667,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      */
     @Override
     public String createProcess(String        processTypeName,
-                                ElementStatus initialStatus,
                                 String        qualifiedName,
                                 String        name,
                                 String        description) throws InvalidParameterException,
@@ -683,7 +679,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         return openMetadataClient.createMetadataElementInStore(userId,
                                                                processTypeName,
-                                                               initialStatus,
                                                                new NewElementProperties(properties));
     }
 
@@ -692,7 +687,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * Create a new process to represent the processing of this governance action process.
      *
      * @param processTypeName    the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus      status value of the process
      * @param qualifiedName      the unique name of the new process
      * @param name               the technical display name of the process
      * @param versionIdentifier  version of the resource
@@ -708,7 +702,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      */
     @Override
     public String createProcess(String            processTypeName,
-                                ElementStatus     initialStatus,
                                 String            qualifiedName,
                                 String            name,
                                 String            versionIdentifier,
@@ -726,7 +719,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         return openMetadataClient.createMetadataElementInStore(userId,
                                                                processTypeName,
-                                                               initialStatus,
                                                                new NewElementProperties(properties));
     }
 
@@ -736,7 +728,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @param templateGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
@@ -749,7 +740,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      */
     @Override
     public String createProcessFromTemplate(String        templateGUID,
-                                            ElementStatus initialStatus,
                                             String        qualifiedName,
                                             String        name,
                                             String        description) throws InvalidParameterException,
@@ -779,7 +769,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @param templateGUID       the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                           schema, connection etc)
-     * @param initialStatus      status value of the process
      * @param qualifiedName      the unique name of the new process
      * @param name               the technical display name of the process
      * @param versionIdentifier  version of the resource
@@ -795,7 +784,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      */
     @Override
     public String createProcessFromTemplate(String            templateGUID,
-                                            ElementStatus     initialStatus,
                                             String            qualifiedName,
                                             String            name,
                                             String            versionIdentifier,
@@ -828,7 +816,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     /**
      * Create a process that represents the processing instance of this governance action.
      * @param processTypeName the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
@@ -843,7 +830,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      */
     @Override
     public String createChildProcess(String        processTypeName,
-                                     ElementStatus initialStatus,
                                      String        qualifiedName,
                                      String        name,
                                      String        description,
@@ -862,7 +848,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-        newElementOptions.setInitialStatus(initialStatus);
         newElementOptions.setForLineage(true);
         newElementOptions.setAnchorGUID(parentGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -884,7 +869,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * Create a process that represents the processing instance of this governance action.
      *
      * @param processTypeName    the type name of the process.  This is the name of an open metadata type that inherits from "Process".
-     * @param initialStatus      status value of the process
      * @param qualifiedName      the unique name of the new process
      * @param name               the technical display name of the process
      * @param versionIdentifier  version of the resource
@@ -902,7 +886,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      */
     @Override
     public String createChildProcess(String             processTypeName,
-                                     ElementStatus      initialStatus,
                                      String             qualifiedName,
                                      String             name,
                                      String             versionIdentifier,
@@ -926,7 +909,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-        newElementOptions.setInitialStatus(initialStatus);
         newElementOptions.setForLineage(true);
         newElementOptions.setAnchorGUID(parentGUID);
         newElementOptions.setIsOwnAnchor(false);
@@ -981,7 +963,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
         NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setForLineage(true);
         newElementOptions.setAnchorGUID(processGUID);
         newElementOptions.setIsOwnAnchor(false);

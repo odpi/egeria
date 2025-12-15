@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElem
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -376,7 +375,6 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                       DeployedImplementationType.AIRFLOW_DAG.getDeployedImplementationType());
 
         return governanceContext.getOpenMetadataStore().createMetadataElementInStore(DeployedImplementationType.AIRFLOW_DAG.getAssociatedTypeName(),
-                                                                                     ElementStatus.ACTIVE,
                                                                                      null,
                                                                                      null,
                                                                                      true,
