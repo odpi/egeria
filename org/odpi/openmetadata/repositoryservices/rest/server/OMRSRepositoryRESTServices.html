@@ -545,24 +545,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return all historical versions of an entity within the bounds of the provided timestamps.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityNeighborhood(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.repositoryservices.rest.properties.EntityNeighborhoodFindRequest)" class="member-name-link">getEntityNeighborhood</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- int&nbsp;level,
- <a href="../properties/EntityNeighborhoodFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityNeighborhoodFindRequest</a>&nbsp;findRequestParameters)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the entities and relationships that radiate out from the supplied entity GUID.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityNeighborhoodHistory(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.repositoryservices.rest.properties.EntityNeighborhoodHistoricalFindRequest)" class="member-name-link">getEntityNeighborhoodHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- int&nbsp;level,
- <a href="../properties/EntityNeighborhoodHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityNeighborhoodHistoricalFindRequest</a>&nbsp;findRequestParameters)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the entities and relationships that radiate out from the supplied entity GUID.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntitySummaryResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntitySummaryResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntitySummary(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getEntitySummary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -585,47 +567,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve any locally homed classifications assigned to the requested entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkingEntities(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIFindRequest)" class="member-name-link">getLinkingEntities</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endEntityGUID,
- <a href="../properties/OMRSAPIFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIFindRequest</a>&nbsp;findRequestParameters)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return all the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkingEntitiesHistory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIHistoricalFindRequest)" class="member-name-link">getLinkingEntitiesHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endEntityGUID,
- <a href="../properties/OMRSAPIHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIHistoricalFindRequest</a>&nbsp;findRequestParameters)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return all the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/MetadataCollectionIdResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">MetadataCollectionIdResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataCollectionId(java.lang.String,java.lang.String)" class="member-name-link">getMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the identifier of the metadata repository.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntities(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.RelatedEntitiesFindRequest)" class="member-name-link">getRelatedEntities</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="../properties/RelatedEntitiesFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelatedEntitiesFindRequest</a>&nbsp;findRequestParameters)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
- indirectly to the entity identified by startEntityGUID.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntitiesHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.RelatedEntitiesHistoricalFindRequest)" class="member-name-link">getRelatedEntitiesHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="../properties/RelatedEntitiesHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelatedEntitiesHistoricalFindRequest</a>&nbsp;findRequestParameters)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
- indirectly to the entity identified by startEntityGUID.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationship(java.lang.String,java.lang.String)" class="member-name-link">getRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -954,29 +900,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update selected properties in an entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/EntityDetailResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityDetailResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEntityStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)" class="member-name-link">updateEntityStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;newStatus)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the status for a specific entity.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipProperties(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.InstancePropertiesRequest)" class="member-name-link">updateRelationshipProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipProperties(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.InstancePropertiesRequest)" class="member-name-link">updateRelationshipProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="../properties/InstancePropertiesRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstancePropertiesRequest</a>&nbsp;propertiesRequestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties of a specific relationship.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelationshipStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)" class="member-name-link">updateRelationshipStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;newStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the status of a specific relationship.</div>
+<div class="block">Update the properties of a specific relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">TypeDefResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateTypeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)" class="member-name-link">updateTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -2379,198 +2309,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getLinkingEntities(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIFindRequest)">
-<h3>getLinkingEntities</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></span>&nbsp;<span class="element-name">getLinkingEntities</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endEntityGUID,
- <a href="../properties/OMRSAPIFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIFindRequest</a>&nbsp;findRequestParameters)</span></div>
-<div class="block">Return all the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>startEntityGUID</code> - The entity that is used to anchor the query.</dd>
-<dd><code>endEntityGUID</code> - the other entity that defines the scope of the query.</dd>
-<dd><code>findRequestParameters</code> - find parameters used to limit the returned results.</dd>
-<dt>Returns:</dt>
-<dd>InstanceGraphResponse:
- the sub-graph that represents the returned linked entities and their relationships or
- InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
-                                   is not found in the metadata collection or
- PropertyErrorException there is a problem with one of the other parameters or
- FunctionNotSupportedException the repository does not support asOfTime parameter or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLinkingEntitiesHistory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIHistoricalFindRequest)">
-<h3>getLinkingEntitiesHistory</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></span>&nbsp;<span class="element-name">getLinkingEntitiesHistory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endEntityGUID,
- <a href="../properties/OMRSAPIHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIHistoricalFindRequest</a>&nbsp;findRequestParameters)</span></div>
-<div class="block">Return all the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>startEntityGUID</code> - The entity that is used to anchor the query.</dd>
-<dd><code>endEntityGUID</code> - the other entity that defines the scope of the query.</dd>
-<dd><code>findRequestParameters</code> - find parameters used to limit the returned results.</dd>
-<dt>Returns:</dt>
-<dd>InstanceGraphResponse:
- the sub-graph that represents the returned linked entities and their relationships or
- InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
-                                   is not found in the metadata collection or
- PropertyErrorException there is a problem with one of the other parameters or
- FunctionNotSupportedException the repository does not support asOfTime parameter or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEntityNeighborhood(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.repositoryservices.rest.properties.EntityNeighborhoodFindRequest)">
-<h3>getEntityNeighborhood</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></span>&nbsp;<span class="element-name">getEntityNeighborhood</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- int&nbsp;level,
- <a href="../properties/EntityNeighborhoodFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityNeighborhoodFindRequest</a>&nbsp;findRequestParameters)</span></div>
-<div class="block">Return the entities and relationships that radiate out from the supplied entity GUID.
- The results are scoped both the instance type guids and the level.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>entityGUID</code> - the starting point of the query.</dd>
-<dd><code>findRequestParameters</code> - find parameters used to limit the returned results.</dd>
-<dd><code>level</code> - the number of the relationships out from the starting entity that the query will traverse to
-              gather results.</dd>
-<dt>Returns:</dt>
-<dd>InstanceGraphResponse
- the sub-graph that represents the returned linked entities and their relationships or
- InvalidParameterException one of the parameters is invalid or null or
- TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
- PropertyErrorException there is a problem with one of the other parameters or
- FunctionNotSupportedException the repository does not support asOfTime parameter or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEntityNeighborhoodHistory(java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.repositoryservices.rest.properties.EntityNeighborhoodHistoricalFindRequest)">
-<h3>getEntityNeighborhoodHistory</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/InstanceGraphResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">InstanceGraphResponse</a></span>&nbsp;<span class="element-name">getEntityNeighborhoodHistory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- int&nbsp;level,
- <a href="../properties/EntityNeighborhoodHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityNeighborhoodHistoricalFindRequest</a>&nbsp;findRequestParameters)</span></div>
-<div class="block">Return the entities and relationships that radiate out from the supplied entity GUID.
- The results are scoped both the instance type guids and the level.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>entityGUID</code> - the starting point of the query.</dd>
-<dd><code>level</code> - the number of the relationships out from the starting entity that the query will traverse to
-              gather results.</dd>
-<dd><code>findRequestParameters</code> - find parameters used to limit the returned results.</dd>
-<dt>Returns:</dt>
-<dd>InstanceGraphResponse
- the sub-graph that represents the returned linked entities and their relationships or
- InvalidParameterException one of the parameters is invalid or null or
- TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
- PropertyErrorException there is a problem with one of the other parameters or
- FunctionNotSupportedException the repository does not support asOfTime parameter or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getRelatedEntities(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.RelatedEntitiesFindRequest)">
-<h3>getRelatedEntities</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></span>&nbsp;<span class="element-name">getRelatedEntities</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="../properties/RelatedEntitiesFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelatedEntitiesFindRequest</a>&nbsp;findRequestParameters)</span></div>
-<div class="block">Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
- indirectly to the entity identified by startEntityGUID.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>startEntityGUID</code> - unique identifier of the starting entity.</dd>
-<dd><code>findRequestParameters</code> - find parameters used to limit the returned results.</dd>
-<dt>Returns:</dt>
-<dd>EntityListResponse:
- list of entities either directly or indirectly connected to the start entity or
- InvalidParameterException one of the parameters is invalid or null or
- TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- TypeErrorException the requested type is not known, or not supported in the metadata repository
-                              hosting the metadata collection or
- EntityNotKnownException the entity identified by the startEntityGUID
-                                   is not found in the metadata collection or
- PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-                                  entity or
- PagingErrorException the paging/sequencing parameters are set up incorrectly or
- FunctionNotSupportedException the repository does not support asOfTime parameter or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getRelatedEntitiesHistory(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.RelatedEntitiesHistoricalFindRequest)">
-<h3>getRelatedEntitiesHistory</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/EntityListResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityListResponse</a></span>&nbsp;<span class="element-name">getRelatedEntitiesHistory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startEntityGUID,
- <a href="../properties/RelatedEntitiesHistoricalFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelatedEntitiesHistoricalFindRequest</a>&nbsp;findRequestParameters)</span></div>
-<div class="block">Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
- indirectly to the entity identified by startEntityGUID.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>startEntityGUID</code> - unique identifier of the starting entity.</dd>
-<dd><code>findRequestParameters</code> - find parameters used to limit the returned results.</dd>
-<dt>Returns:</dt>
-<dd>EntityListResponse:
- list of entities either directly or indirectly connected to the start entity or
- InvalidParameterException one of the parameters is invalid or null or
- TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- TypeErrorException the requested type is not known, or not supported in the metadata repository
-                              hosting the metadata collection or
- EntityNotKnownException the entity identified by the startEntityGUID
-                                   is not found in the metadata collection or
- PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-                                  entity or
- PagingErrorException the paging/sequencing parameters are set up incorrectly or
- FunctionNotSupportedException the repository does not support asOfTime parameter or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="addEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.rest.properties.EntityCreateRequest)">
 <h3>addEntity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/EntityDetailResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityDetailResponse</a></span>&nbsp;<span class="element-name">addEntity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -2665,34 +2403,6 @@ loadScripts(document, 'script');</script>
  StatusNotSupportedException the metadata repository hosting the metadata collection does not support
                                      the requested status or
  FunctionNotSupportedException the repository does not support entity proxies as first class elements or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateEntityStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">
-<h3>updateEntityStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/EntityDetailResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">EntityDetailResponse</a></span>&nbsp;<span class="element-name">updateEntityStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;newStatus)</span></div>
-<div class="block">Update the status for a specific entity.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>entityGUID</code> - unique identifier (guid) for the requested entity.</dd>
-<dd><code>newStatus</code> - new InstanceStatus for the entity.</dd>
-<dt>Returns:</dt>
-<dd>EntityDetailResponse:
- EntityDetail showing the current entity header, properties and classifications or
- InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
- StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-                                      the requested status or
- FunctionNotSupportedException the repository does not support maintenance of metadata.
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -3128,34 +2838,6 @@ loadScripts(document, 'script');</script>
  EntityNotKnownException one of the requested entities is not known in the metadata collection or
  StatusNotSupportedException the metadata repository hosting the metadata collection does not support
                                      the requested status or
- UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="updateRelationshipStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">
-<h3>updateRelationshipStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RelationshipResponse.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">RelationshipResponse</a></span>&nbsp;<span class="element-name">updateRelationshipStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;newStatus)</span></div>
-<div class="block">Update the status of a specific relationship.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
-<dd><code>userId</code> - unique identifier for requesting user.</dd>
-<dd><code>relationshipGUID</code> - String unique identifier (guid) for the relationship.</dd>
-<dd><code>newStatus</code> - new InstanceStatus for the relationship.</dd>
-<dt>Returns:</dt>
-<dd>RelationshipResponse:
- Resulting relationship structure with the new status set or
- InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
-                                  the metadata collection is stored or
- RelationshipNotKnownException the requested relationship is not known in the metadata collection or
- StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-                                     the requested status or
- FunctionNotSupportedException the repository does not support maintenance of metadata.
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>

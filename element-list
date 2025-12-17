@@ -189,7 +189,6 @@ org.odpi.openmetadata.conformance.tests.performance.classify
 org.odpi.openmetadata.conformance.tests.performance.create
 org.odpi.openmetadata.conformance.tests.performance.delete
 org.odpi.openmetadata.conformance.tests.performance.environment
-org.odpi.openmetadata.conformance.tests.performance.graph
 org.odpi.openmetadata.conformance.tests.performance.purge
 org.odpi.openmetadata.conformance.tests.performance.rehome
 org.odpi.openmetadata.conformance.tests.performance.reidentify
