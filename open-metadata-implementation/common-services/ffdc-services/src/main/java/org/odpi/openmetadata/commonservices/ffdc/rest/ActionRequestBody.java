@@ -5,11 +5,13 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.AnchorOptions;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,11 +26,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ActionRequestBody extends AnchorOptions
 {
-    private List<NewActionTarget> newActionTargets = null;
-    private ActionProperties      properties       = null;
-    private String                originatorGUID   = null;
-    private String                actionSponsorGUID = null;
-    private String                assignToActorGUID = null;
+    private Map<String, ClassificationProperties> initialClassifications = null;
+    private List<NewActionTarget>                 newActionTargets       = null;
+    private ActionProperties                      properties             = null;
+    private String                                originatorGUID         = null;
+    private String                                actionSponsorGUID      = null;
+    private String                                assignToActorGUID      = null;
 
 
     /**
@@ -51,12 +54,35 @@ public class ActionRequestBody extends AnchorOptions
 
         if (template != null)
         {
-            this.newActionTargets  = template.getNewActionTargets();
-            this.properties        = template.getProperties();
-            this.originatorGUID    = template.getOriginatorGUID();
-            this.actionSponsorGUID = template.getActionSponsorGUID();
-            this.assignToActorGUID = template.getAssignToActorGUID();
+            this.initialClassifications = template.getInitialClassifications();
+            this.newActionTargets       = template.getNewActionTargets();
+            this.properties             = template.getProperties();
+            this.originatorGUID         = template.getOriginatorGUID();
+            this.actionSponsorGUID      = template.getActionSponsorGUID();
+            this.assignToActorGUID      = template.getAssignToActorGUID();
         }
+    }
+
+
+    /**
+     * Return the map of classification names to classification properties to include in the entity creation request.
+     *
+     * @return map
+     */
+    public Map<String, ClassificationProperties> getInitialClassifications()
+    {
+        return initialClassifications;
+    }
+
+
+    /**
+     * Set up map of classification names to classification properties to include in the entity creation request.
+     *
+     * @param initialClassifications map
+     */
+    public void setInitialClassifications(Map<String, ClassificationProperties> initialClassifications)
+    {
+        this.initialClassifications = initialClassifications;
     }
 
 
@@ -180,6 +206,7 @@ public class ActionRequestBody extends AnchorOptions
     {
         return "ActionRequestBody{" +
                 "newActionTargetProperties=" + newActionTargets +
+                ", initialClassifications=" + initialClassifications +
                 ", properties=" + properties +
                 ", originatorGUID='" + originatorGUID + '\'' +
                 ", actionSponsorGUID='" + actionSponsorGUID + '\'' +
@@ -206,9 +233,14 @@ public class ActionRequestBody extends AnchorOptions
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ActionRequestBody that = (ActionRequestBody) objectToCompare;
         return Objects.equals(newActionTargets, that.newActionTargets) &&
-                       Objects.equals(properties, that.properties) &&
+                Objects.equals(initialClassifications, that.initialClassifications) &&
+                Objects.equals(properties, that.properties) &&
                 Objects.equals(originatorGUID, that.originatorGUID) &&
                 Objects.equals(actionSponsorGUID, that.actionSponsorGUID) &&
                 Objects.equals(assignToActorGUID, that.assignToActorGUID);
@@ -223,6 +255,6 @@ public class ActionRequestBody extends AnchorOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(newActionTargets, properties, originatorGUID, actionSponsorGUID, assignToActorGUID);
+        return Objects.hash(super.hashCode(), initialClassifications, newActionTargets, properties, originatorGUID, actionSponsorGUID, assignToActorGUID);
     }
 }

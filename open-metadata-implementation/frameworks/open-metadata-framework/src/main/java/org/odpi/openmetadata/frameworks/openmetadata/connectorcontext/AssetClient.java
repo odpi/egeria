@@ -11,10 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
@@ -22,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -110,6 +108,35 @@ public class AssetClient extends ConnectorContextClientBase
         }
 
         return assetGUID;
+    }
+
+
+    /**
+     * Create a new action and link it to the supplied role and targets (if applicable).
+     *
+     * @param originatorGUID            optional originator element (such as a person or Governance Service)
+     * @param actionSponsorGUID         optional element that maintains the action on their list
+     * @param assignToActorGUID         optional actor to assign the action to
+     * @param anchorOptions             how should the new action be anchored?
+     * @param initialClassifications    map of classifications to add to the new action
+     * @param newActionTargets optional list of elements that the action is to target
+     * @param properties                properties of the  action
+     * @return unique identifier of the action
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public String createAction(String                                originatorGUID,
+                               String                                actionSponsorGUID,
+                               String                                assignToActorGUID,
+                               AnchorOptions                         anchorOptions,
+                               Map<String, ClassificationProperties> initialClassifications,
+                               List<NewActionTarget>                 newActionTargets,
+                               ActionProperties                      properties) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        return assetHandler.createAction(connectorUserId, originatorGUID, actionSponsorGUID, assignToActorGUID, anchorOptions, initialClassifications, newActionTargets, properties);
     }
 
 

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataRelationshipResponse;
@@ -327,6 +328,61 @@ public class AssetMakerRESTServices extends TokenController
 
 
     /**
+     * Retrieve the processes that match the category name and status.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public OpenMetadataRootElementsResponse getProcessesByCategory(String                          serverName,
+                                                                   String                          urlMarker,
+                                                                   ActivityStatusFilterRequestBody requestBody)
+    {
+        final String methodName = "getProcessesByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getProcessesByCategory(userId,
+                                                                    requestBody.getFilter(),
+                                                                    requestBody.getActivityStatus(),
+                                                                    requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Retrieve the list of asset metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
@@ -421,6 +477,65 @@ public class AssetMakerRESTServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the processes that match the search string.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public OpenMetadataRootElementsResponse findProcesses(String                     serverName,
+                                                          String                     urlMarker,
+                                                          ActivityStatusSearchString requestBody)
+    {
+        final String methodName = "findProcesses";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findProcesses(userId,
+                                                           requestBody.getSearchString(),
+                                                           requestBody.getActivityStatus(),
+                                                           requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findProcesses(userId,
+                                                           null,
+                                                           null,
+                                                           null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
         return response;
     }
 
@@ -779,6 +894,470 @@ public class AssetMakerRESTServices extends TokenController
 
         return response;
     }
+
+    /* =====================================================================================================================
+     * Actions are special types of processes
+     */
+
+    /**
+     * Create a new action and link it to the supplied role and targets (if applicable).
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties of the to do action
+     *
+     * @return unique identifier of the to do or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public GUIDResponse createAction(String            serverName,
+                                     String            urlMarker,
+                                     ActionRequestBody requestBody)
+    {
+        final String methodName = "createAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createAction(userId,
+                                                      requestBody.getOriginatorGUID(),
+                                                      requestBody.getActionSponsorGUID(),
+                                                      requestBody.getAssignToActorGUID(),
+                                                      requestBody,
+                                                      requestBody.getInitialClassifications(),
+                                                      requestBody.getNewActionTargets(),
+                                                      requestBody.getProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Add an element to an action's workload.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param requestBody properties for the relationship.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the catalog target definition.
+     */
+    public GUIDResponse addActionTarget(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     actionGUID,
+                                        String                     metadataElementGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "addActionTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof  ActionTargetProperties actionTargetProperties)
+                {
+                    response.setGUID(handler.addActionTarget(userId,
+                                                              actionGUID,
+                                                              metadataElementGUID,
+                                                              requestBody,
+                                                              actionTargetProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ActionTargetProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the properties associated with an Action Target.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionTargetGUID               unique identifier of the action target relationship
+     * @param requestBody properties to change
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public VoidResponse updateActionTargetProperties(String                        serverName,
+                                                     String                        urlMarker,
+                                                     String                        actionTargetGUID,
+                                                     UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateActionTargetProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ActionTargetProperties actionTargetProperties)
+                {
+                    handler.updateActionTargetProperties(userId, actionTargetGUID, requestBody, actionTargetProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ActionTargetProperties.class.getName(), methodName);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve a specific action target associated with an action.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param requestBody describes ho the results should be returned
+     *
+     * @return details of the governance service and the asset types it is registered for or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    public OpenMetadataRelationshipResponse getActionTarget(String         serverName,
+                                                            String         urlMarker,
+                                                            String         relationshipGUID,
+                                                            GetRequestBody requestBody)
+    {
+        final String methodName = "getActionTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRelationshipResponse response = new OpenMetadataRelationshipResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElement(handler.getActionTarget(userId, relationshipGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the details of the metadata elements identified as action targets with an action.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param requestBody describes how results are to be returned
+     *
+     * @return list of unique identifiers or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    public OpenMetadataRootElementsResponse getActionTargets(String             serverName,
+                                                             String             urlMarker,
+                                                             String             integrationConnectorGUID,
+                                                             ResultsRequestBody requestBody)
+    {
+        final String methodName = "getActionTargets";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElements(handler.getActionTargets(userId, integrationConnectorGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the actions that are chained off of an action target element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element to start with
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public OpenMetadataRootElementsResponse getActionsForActionTarget(String                    serverName,
+                                                                      String                    urlMarker,
+                                                                      String                    elementGUID,
+                                                                      ActivityStatusRequestBody requestBody)
+    {
+        final String methodName = "getActionsForActionTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getActionsForActionTarget(userId,
+                                                                       elementGUID,
+                                                                       requestBody.getActivityStatus(),
+                                                                       requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getActionsForActionTarget(userId,
+                                                                       elementGUID,
+                                                                       null,
+                                                                       requestBody));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the actions that are chained off of a sponsoring element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element to start with
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public OpenMetadataRootElementsResponse getActionsForSponsor(String                    serverName,
+                                                                 String                    urlMarker,
+                                                                 String                    elementGUID,
+                                                                 ActivityStatusRequestBody requestBody)
+    {
+        final String methodName = "getActionsForSponsor";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getActionsForSponsor(userId,
+                                                                  elementGUID,
+                                                                  requestBody.getActivityStatus(),
+                                                                  requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getActionsForSponsor(userId,
+                                                                  elementGUID,
+                                                                  null,
+                                                                  requestBody));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the "Actions" for a particular actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actorGUID unique identifier of the role
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public OpenMetadataRootElementsResponse getAssignedActions(String                    serverName,
+                                                               String                    urlMarker,
+                                                               String                    actorGUID,
+                                                               ActivityStatusRequestBody requestBody)
+    {
+        final String methodName = "getAssignedActions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getAssignedActions(userId,
+                                                                actorGUID,
+                                                                requestBody.getActivityStatus(),
+                                                                requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getAssignedActions(userId,
+                                                                actorGUID,
+                                                                null,
+                                                                requestBody));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /* =====================================================================================================================

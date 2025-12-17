@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ###
 # @name createActorProfile
-# Create a actor profile.
+# Create an actor profile.
 #
 # Request body provides             properties for the actor profile.
 #
@@ -88,7 +88,7 @@ Content-Type: application/json
 
 ###
 # @name createActorProfileFromTemplate
-# Create a new metadata element to represent a actor profile using an existing metadata element as a template.
+# Create a new metadata element to represent an actor profile using an existing metadata element as a template.
 # The template defines additional classifications and relationships that should be added to the new element.
 #
 # Request body provides properties that override the template
@@ -144,7 +144,7 @@ Content-Type: application/json
 
 ###
 # @name updateActorProfile
-# Update the properties of a actor profile.
+# Update the properties of an actor profile.
 #
 # @param actorProfileGUID unique identifier of the actor profile (returned from create)
 # Request body provides     properties for the new element.
@@ -251,7 +251,7 @@ Content-Type: application/json
 
 ###
 # @name deleteActorProfile
-# Delete a actor profile.
+# Delete an actor profile.
 #
 # @param actorProfileGUID  unique identifier of the element to delete
 # Request body provides  description of the relationship.
@@ -363,10 +363,14 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Work with Actor Role
+# https://egeria-project.org/concepts/actor-role
 
 ###
 # @name createActorRole
-# Create a actor role.
+# Create an actor role.
 #
 # Request body provides             properties for the actor role.
 #
@@ -425,7 +429,7 @@ Content-Type: application/json
 
 ###
 # @name createActorRoleFromTemplate
-# Create a new metadata element to represent a actor role using an existing metadata element as a template.
+# Create a new metadata element to represent an actor role using an existing metadata element as a template.
 # The template defines additional classifications and relationships that should be added to the new element.
 #
 # Request body provides properties that override the template
@@ -481,7 +485,7 @@ Content-Type: application/json
 
 ###
 # @name updateActorRole
-# Update the properties of a actor role.
+# Update the properties of an actor role.
 #
 # @param actorRoleGUID unique identifier of the actor role (returned from create)
 # Request body provides     properties for the new element.
@@ -720,7 +724,7 @@ Content-Type: application/json
 
 ###
 # @name deleteActorRole
-# Delete a actor role.
+# Delete an actor role.
 #
 # @param actorRoleGUID  unique identifier of the element to delete
 # Request body provides  description of the relationship.
@@ -836,6 +840,10 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Work with User Identities
+# https://egeria-project.org/concepts/user-identity
 ###
 
 @userIdentityGUID=add guid here
@@ -1267,6 +1275,354 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Work with Contact Details
+# https://egeria-project.org/concepts/contact-method
+
+###
+
+@elementGUID=add guid here
+@contactDetailsGUID=add guid here
+
+###
+# @name createContactDetails
+# Create a contact details element.
+#
+# Request body provides             properties for the contact details.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ContactDetailsProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "contactType" : "add contact type",
+    "contactMethodService" : "",
+    "contactMethodValue" : "",
+    "contactMethodType" : "EMAIL",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name createContactDetailsFromTemplate
+# Create a new metadata element to represent a contact details using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class" : "ContactDetailsProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "contactType" : "add contact type",
+    "contactMethodService" : "",
+    "contactMethodValue" : "",
+    "contactMethodType" : "EMAIL"
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateContactDetails
+# Update the properties of a contact details.
+#
+# @param contactDetailsGUID unique identifier of the contact details (returned from create)
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "ContactDetailsProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "contactType" : "add contact type",
+    "contactMethodService" : "",
+    "contactMethodValue" : "",
+    "contactMethodType" : "EMAIL",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkAssetToProfile
+# Attach an asset to an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "RelationshipProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssetFromProfile
+# Detach an asset from an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteContactDetails
+# Delete a contact details.
+#
+# @param contactDetailsGUID  unique identifier of the element to delete
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadeDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getContactDetailsByName
+# Returns the list of contact details with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findContactDetails
+# Retrieve the list of contact details metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getContactDetailsByGUID
+# Return the properties of a specific contact details.
+#
+# @param contactDetailsGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
 ###
 
@@ -1277,7 +1633,7 @@ Content-Type: application/json
 # @name linkAssignmentScope
 # Attach an actor to an element that describes its scope. Request body is optional.
 # https://egeria-project.org/concepts/actor/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1300,7 +1656,7 @@ Content-Type: application/json
 # @name detachAssignmentScope
 # Detach an actor from the element that describes its scope. Request body is optional.
 # https://egeria-project.org/concepts/actor/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

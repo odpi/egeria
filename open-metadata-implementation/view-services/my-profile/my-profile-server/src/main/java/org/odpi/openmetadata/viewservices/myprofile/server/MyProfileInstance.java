@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
@@ -21,7 +20,6 @@ public class MyProfileInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.MY_PROFILE;
 
     private final ActorProfileHandler actorProfileHandler;
-    private final AssetHandler   assetHandler;
 
 
     /**
@@ -68,11 +66,6 @@ public class MyProfileInstance extends OMVSServiceInstance
                                                       auditLog,
                                                       myDescription.getViewServiceFullName(),
                                                       openMetadataClient);
-
-        assetHandler = new AssetHandler(serverName,
-                                        auditLog,
-                                        myDescription.getViewServiceFullName(),
-                                        openMetadataClient);
     }
 
 
@@ -84,16 +77,5 @@ public class MyProfileInstance extends OMVSServiceInstance
     public ActorProfileHandler getActorProfileHandler()
     {
         return actorProfileHandler;
-    }
-
-
-    /**
-     * Return the asset handler.
-     *
-     * @return client
-     */
-    public AssetHandler getAssetHandler()
-    {
-        return assetHandler;
     }
 }

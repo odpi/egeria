@@ -526,14 +526,15 @@ public class AssetHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
-     * Create a new  action and link it to the supplied role and targets (if applicable).
+     * Create a new action and link it to the supplied role and targets (if applicable).
      *
      * @param userId                    calling user
      * @param originatorGUID            optional originator element (such as a person or Governance Service)
      * @param actionSponsorGUID         optional element that maintains the action on their list
      * @param assignToActorGUID         optional actor to assign the action to
+     * @param anchorOptions             how should the new action be anchored?
+     * @param initialClassifications    map of classifications to add to the new action
      * @param newActionTargets optional list of elements that the action is to target
      * @param properties                properties of the  action
      * @return unique identifier of the action
@@ -544,9 +545,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public String createAction(String                            userId,
                                String                            originatorGUID,
                                String                            actionSponsorGUID,
-                               String                            assignToActorGUID,
-                               AnchorOptions                     anchorOptions,
-                               Map<String, NewElementProperties> initialClassifications,
+                               String                               assignToActorGUID,
+                               AnchorOptions                         anchorOptions,
+                               Map<String, ClassificationProperties> initialClassifications,
                                List<NewActionTarget>             newActionTargets,
                                ActionProperties                  properties) throws InvalidParameterException,
                                                                                     PropertyServerException,
@@ -576,14 +577,15 @@ public class AssetHandler extends OpenMetadataHandlerBase
             newElementOptions.setParentGUID(originatorGUID);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }
-        String toDoGUID = openMetadataClient.createMetadataElementInStore(userId,
-                                                                          metadataElementTypeName,
-                                                                          newElementOptions,
-                                                                          initialClassifications,
-                                                                          elementBuilder.getNewElementProperties(properties),
-                                                                          parentRelationshipProperties);
 
-        if (toDoGUID != null)
+        String actionGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                            metadataElementTypeName,
+                                                                            newElementOptions,
+                                                                            classificationBuilder.getInitialClassifications(initialClassifications),
+                                                                            elementBuilder.getNewElementProperties(properties),
+                                                                            parentRelationshipProperties);
+
+        if (actionGUID != null)
         {
             MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(newElementOptions);
 
@@ -592,7 +594,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 openMetadataClient.createRelatedElementsInStore(userId,
                                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                 assignToActorGUID,
-                                                                toDoGUID,
+                                                                actionGUID,
                                                                 makeAnchorOptions,
                                                                 relationshipBuilder.getNewElementProperties(new AssignmentScopeProperties()));
             }
@@ -602,7 +604,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 openMetadataClient.createRelatedElementsInStore(userId,
                                                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                 actionSponsorGUID,
-                                                                toDoGUID,
+                                                                actionGUID,
                                                                 makeAnchorOptions,
                                                                 new NewElementProperties(propertyHelper.addStringProperty(null,
                                                                                                                           OpenMetadataProperty.ASSIGNMENT_TYPE.name,
@@ -621,7 +623,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
                         openMetadataClient.createRelatedElementsInStore(userId,
                                                                         OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                                        toDoGUID,
+                                                                        actionGUID,
                                                                         newActionTarget.getActionTargetGUID(),
                                                                         makeAnchorOptions,
                                                                         relationshipBuilder.getNewElementProperties(actionTargetProperties));
@@ -630,92 +632,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
             }
         }
 
-        return toDoGUID;
+        return actionGUID;
     }
 
-    
-    /**
-     * Assign an action to a new actor.
-     *
-     * @param userId    calling user
-     * @param actionGUID  unique identifier of the action
-     * @param actorGUID actor to assign the action to
-     * @param updateOptions  options to control access to open metadata
-     * @param relationshipProperties the properties of the relationship
-     * @throws InvalidParameterException  a parameter is invalid
-     * @throws PropertyServerException    the server is not available
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    public void reassignAction(String                    userId,
-                               String                    actionGUID,
-                               String                    actorGUID,
-                               UpdateOptions             updateOptions,
-                               AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
-    {
-        final String methodName              = "reassignAction";
-        final String toDoGUIDParameterName   = "actionGUID";
-        final String parentGUIDParameterName = "actorGUID";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(actionGUID, toDoGUIDParameterName, methodName);
-        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
-
-        RelatedMetadataElementList assignedActors = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                  actionGUID,
-                                                                                                  2,
-                                                                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                                                  new QueryOptions(updateOptions));
-
-        if ((assignedActors != null) && (assignedActors.getElementList() != null))
-        {
-            for (RelatedMetadataElement assignedActor : assignedActors.getElementList())
-            {
-                openMetadataClient.deleteRelationshipInStore(userId,
-                                                             assignedActor.getRelationshipGUID(),
-                                                             new DeleteOptions(updateOptions));
-            }
-        }
-
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                        actorGUID,
-                                                        actionGUID,
-                                                        new MakeAnchorOptions(updateOptions),
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
-    }
-
-
-    /**
-     * Update the properties associated with an Action Target.
-     *
-     * @param userId                 calling user
-     * @param actionTargetGUID       unique identifier of the action target relationship
-     * @param updateOptions provides a structure for the additional options when updating an element.
-     * @param actionTargetProperties properties to change
-     * @throws InvalidParameterException  a parameter is invalid
-     * @throws PropertyServerException    the server is not available
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    public void updateActionTargetProperties(String                 userId,
-                                             String                 actionTargetGUID,
-                                             UpdateOptions          updateOptions,
-                                             ActionTargetProperties actionTargetProperties) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
-    {
-        final String methodName     = "updateActionTargetProperties";
-        final String propertiesName = "actionTargetProperties";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateObject(actionTargetProperties, propertiesName, methodName);
-
-        openMetadataClient.updateRelationshipInStore(userId,
-                                                     actionTargetGUID,
-                                                     updateOptions,
-                                                     relationshipBuilder.getNewElementProperties(actionTargetProperties));
-    }
 
 
     /**
@@ -751,6 +670,139 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                replacementProperties,
                                                placeholderProperties,
                                                parentRelationshipProperties);
+    }
+
+
+
+    /**
+     * Add an element to an action's workload.
+     *
+     * @param userId                userId of user making request.
+     * @param actionGUID        unique identifier of the integration connector.
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param actionTargetProperties  properties describing the relationship characteristics.
+     * @param elementGUID           unique identifier of the target element.
+     * @return relationship GUID
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addActionTarget(String                  userId,
+                                   String                 actionGUID,
+                                   String                 elementGUID,
+                                   MakeAnchorOptions      makeAnchorOptions,
+                                   ActionTargetProperties actionTargetProperties) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName               = "addActionTarget";
+        final String assetGUIDParameterName   = "actionGUID";
+        final String elementGUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, assetGUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                               actionGUID,
+                                                               elementGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(actionTargetProperties));
+    }
+
+
+    /**
+     * Update the properties associated with an Action Target.
+     *
+     * @param userId                 calling user
+     * @param actionTargetGUID       unique identifier of the action target relationship
+     * @param updateOptions provides a structure for the additional options when updating an element.
+     * @param actionTargetProperties properties to change
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void updateActionTargetProperties(String                 userId,
+                                             String                 actionTargetGUID,
+                                             UpdateOptions          updateOptions,
+                                             ActionTargetProperties actionTargetProperties) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName     = "updateActionTargetProperties";
+        final String propertiesName = "actionTargetProperties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateObject(actionTargetProperties, propertiesName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     actionTargetGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getNewElementProperties(actionTargetProperties));
+    }
+
+
+    /**
+     * Retrieve a specific action target associated with an action.
+     *
+     * @param userId identifier of calling user.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param getOptions options to control the retrieve
+     *
+     * @return details of the integration connector and the elements it is to catalog
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the integration connector definition.
+     */
+    public OpenMetadataRelationship getActionTarget(String     userId,
+                                                    String     relationshipGUID,
+                                                    GetOptions getOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                = "getActionTarget";
+        final String relationshipGUIDParameter = "relationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(relationshipGUID, relationshipGUIDParameter, methodName);
+
+        return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, getOptions);
+    }
+
+
+    /**
+     * Return a list of elements that are target elements for an action.
+     *
+     * @param userId         userId of user making request.
+     * @param actionGUID unique identifier of the integration connector.
+     * @param queryOptions   options for query
+     * @return list of member details
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getActionTargets(String       userId,
+                                                          String       actionGUID,
+                                                          QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName             = "getActionTargets";
+        final String assetGUIDParameterName = "actionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, assetGUIDParameterName, methodName);
+        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
+
+        return super.getRelatedRootElements(userId,
+                                            actionGUID,
+                                            assetGUIDParameterName,
+                                            1,
+                                            OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            queryOptions,
+                                            methodName);
     }
 
 
@@ -1721,7 +1773,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                   elementGUID,
                                   guidParameterName,
                                   activityStatus,
-                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                  OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
                                   1,
                                   queryOptions,
                                   methodName);

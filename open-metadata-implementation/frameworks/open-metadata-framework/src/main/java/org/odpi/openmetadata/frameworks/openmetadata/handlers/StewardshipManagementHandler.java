@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataElementS
 import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.RelatedMetadataElementSummaryConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -2071,6 +2072,130 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                         elementGUID,
                                                         scopeGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Assign an action to an actor.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void assignAction(String                    userId,
+                             String                    actionGUID,
+                             String                    actorGUID,
+                             MakeAnchorOptions         makeAnchorOptions,
+                             AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName              = "assignAction";
+        final String actionGUIDParameterName   = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, actionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Assign an action to a new actor - removing all other assignees.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param updateOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void reassignAction(String                    userId,
+                               String                    actionGUID,
+                               String                    actorGUID,
+                               UpdateOptions             updateOptions,
+                               AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName              = "reassignAction";
+        final String actionGUIDParameterName   = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, actionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        RelatedMetadataElementList assignedActors = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                  actionGUID,
+                                                                                                  2,
+                                                                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                                                  new QueryOptions(updateOptions));
+
+        if ((assignedActors != null) && (assignedActors.getElementList() != null))
+        {
+            for (RelatedMetadataElement assignedActor : assignedActors.getElementList())
+            {
+                openMetadataClient.deleteRelationshipInStore(userId,
+                                                             assignedActor.getRelationshipGUID(),
+                                                             new DeleteOptions(updateOptions));
+            }
+        }
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
+                                                        new MakeAnchorOptions(updateOptions),
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove an action from an actor.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void unassignAction(String        userId,
+                               String        actionGUID,
+                               String        actorGUID,
+                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName              = "unassignAction";
+        final String actionGUIDParameterName = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, actionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
                                                         deleteOptions);
     }
 

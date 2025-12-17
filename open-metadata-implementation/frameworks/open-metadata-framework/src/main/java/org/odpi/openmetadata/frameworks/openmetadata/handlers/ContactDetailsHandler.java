@@ -93,12 +93,12 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createContactDetailsFromTemplate(String                     userId,
-                                                   TemplateOptions            templateOptions,
-                                                   String                     templateGUID,
-                                                   EntityProperties           replacementProperties,
-                                                   Map<String, String>        placeholderProperties,
-                                                   RelationshipBeanProperties parentRelationshipProperties) throws InvalidParameterException,
+    public String createContactDetailsFromTemplate(String                 userId,
+                                                   TemplateOptions        templateOptions,
+                                                   String                 templateGUID,
+                                                   EntityProperties       replacementProperties,
+                                                   Map<String, String>    placeholderProperties,
+                                                   RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                    UserNotAuthorizedException,
                                                                                                                    PropertyServerException
     {
@@ -146,7 +146,7 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * Attach an element to its contact details.
      *
      * @param userId                 userId of user making request
-     * @param elementGUID       unique identifier of the contact method
+     * @param elementGUID       unique identifier of the parent element
      * @param contactDetailsGUID           unique identifier of the contactDetails
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
@@ -183,7 +183,7 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * Detach an element from its contact details.
      *
      * @param userId                 userId of user making request.
-     * @param elementGUID            unique identifier of the contact method
+     * @param elementGUID            unique identifier of the parent element
      * @param contactDetailsGUID       unique identifier of the contact details element
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.

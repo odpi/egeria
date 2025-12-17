@@ -1161,6 +1161,292 @@ public class ActorManagerResource
 
 
     /**
+     * Create a contact details.
+     *
+     * @param serverName                 name of called server.
+     * @param urlMarker  view service URL marker
+     * @param requestBody             properties for the contact details.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/contact-details")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createContactDetails",
+            description="Create a contact details.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public GUIDResponse createContactDetails(@PathVariable
+                                            String                               serverName,
+                                             @PathVariable String             urlMarker,
+                                             @RequestBody (required = false)
+                                            NewElementRequestBody requestBody)
+    {
+        return restAPI.createContactDetails(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a contact details using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param urlMarker  view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/contact-details/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createContactDetailsFromTemplate",
+            description="Create a new metadata element to represent a contact details using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public GUIDResponse createContactDetailsFromTemplate(@PathVariable
+                                                        String              serverName,
+                                                         @PathVariable String             urlMarker,
+                                                         @RequestBody (required = false)
+                                                        TemplateRequestBody requestBody)
+    {
+        return restAPI.createContactDetailsFromTemplate(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a contact details.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param contactDetailsGUID unique identifier of the contact details (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return boolean or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/contact-details/{contactDetailsGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateContactDetails",
+            description="Update the properties of a contact details.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public BooleanResponse updateContactDetails(@PathVariable
+                                               String                                  serverName,
+                                                @PathVariable String             urlMarker,
+                                                @PathVariable
+                                               String                                  contactDetailsGUID,
+                                               @RequestBody (required = false)
+                                               UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateContactDetails(serverName, urlMarker, contactDetailsGUID, requestBody);
+    }
+
+
+    /**
+     * Attach an element to its contact details.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the parent element
+     * @param contactDetailsGUID      unique identifier of the contact details
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/contact-details/{contactDetailsGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkContactDetails",
+            description="Attach an element to its contact details.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public VoidResponse linkContactDetails(@PathVariable String                  serverName,
+                                            @PathVariable String             urlMarker,
+                                           @PathVariable String                  elementGUID,
+                                            @PathVariable String                  contactDetailsGUID,
+                                            @RequestBody (required = false)
+                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkContactDetails(serverName, urlMarker, elementGUID, contactDetailsGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an element from its contact details.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the parent element
+     * @param contactDetailsGUID      unique identifier of the contact details
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/contact-details/{contactDetailsGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachContactDetails",
+            description="Detach an element from its contact details.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public VoidResponse detachContactDetails(@PathVariable
+                                              String                    serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable String                  elementGUID,
+                                              @PathVariable String                  contactDetailsGUID,
+                                              @RequestBody (required = false)
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachContactDetails(serverName, urlMarker, elementGUID, contactDetailsGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a contact details.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param contactDetailsGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/contact-details/{contactDetailsGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteContactDetails",
+            description="Delete a contact details.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public VoidResponse deleteContactDetails(@PathVariable
+                                            String                    serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable
+                                            String                    contactDetailsGUID,
+                                            @RequestBody (required = false)
+                                            DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteContactDetails(serverName, urlMarker, contactDetailsGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of contact details with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/contact-details/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getContactDetailsByName",
+            description="Returns the list of contact details with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public OpenMetadataRootElementsResponse getContactDetailsByName(@PathVariable
+                                                                    String            serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @RequestBody (required = false)
+                                                                    FilterRequestBody requestBody)
+    {
+        return restAPI.getContactDetailsByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of contact details metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/contact-details/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findContactDetails",
+            description="Retrieve the list of contact details metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public OpenMetadataRootElementsResponse findContactDetails(@PathVariable
+                                                               String                  serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @RequestBody (required = false)
+                                                               SearchStringRequestBody requestBody)
+    {
+        return restAPI.findContactDetails(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific contact details.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param contactDetailsGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/contact-details/{contactDetailsGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getContactDetailsByGUID",
+            description="Return the properties of a specific contact details.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/contact-method"))
+
+    public OpenMetadataRootElementResponse getContactDetailsByGUID(@PathVariable String             serverName,
+                                                                   @PathVariable String             urlMarker,
+                                                                   @PathVariable
+                                                                  String             contactDetailsGUID,
+                                                                  @RequestBody (required = false)
+                                                                  GetRequestBody requestBody)
+    {
+        return restAPI.getContactDetailsByGUID(serverName, urlMarker, contactDetailsGUID, requestBody);
+    }
+
+
+    /**
      * Attach an actor to an element that describes its scope.
      *
      * @param serverName         name of called server

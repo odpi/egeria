@@ -291,13 +291,13 @@ public enum OpenMetadataType
                                   ActionRequesterProperties.class),
 
     /**
-     * Identifies the cause that requires the action to be completed.
+     * Identifies the cause/sponsor that requires the action to be performed.
      */
     ACTIONS_RELATIONSHIP("aba0e7e5-c3c6-40ad-8a46-fc4793d76906",
                          "Actions",
                          OpenMetadataWikiPages.MODEL_0013_ACTIONS,
                          "91071319-9737-423b-8e26-6e133e082045",
-                         "Identifies the cause that requires the action to be completed.",
+                         "Identifies the cause/sponsor that requires the action to be performed.",
                          ActionsProperties.class),
 
 
