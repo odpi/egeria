@@ -196,30 +196,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
                                             RepositoryConformanceProfile.DYNAMIC_TYPES),
 
     /**
-     * The technology under test supports the ability to query metadata instances that radiate from a specific entity instance through multiple hops.
-     */
-    ENTITY_NEIGHBORHOOD                    (23, "Entity neighborhood",
-                                            "The technology under test supports the ability to query metadata instances that radiate from a specific entity instance through multiple hops.",
-                                            "https://egeria-project.org/guides/cts/repository-profiles/graph-queries/#entity-neighborhood",
-                                            RepositoryConformanceProfile.GRAPH_QUERIES),
-
-    /**
-     * The technology under test supports the ability to query the entity instances that are connected to a specific entity instance.
-     */
-    CONNECTED_ENTITIES                     (24, "Connected entities",
-                                            "The technology under test supports the ability to query the entity instances that are connected to a specific entity instance.",
-                                            "https://egeria-project.org/guides/cts/repository-profiles/graph-queries/#connected-entities",
-                                            RepositoryConformanceProfile.GRAPH_QUERIES),
-
-    /**
-     * The technology under test supports the ability to locate the metadata instances that connect two entity instances together.
-     */
-    LINKED_ENTITIES                        (25, "Linked entities",
-                                            "The technology under test supports the ability to locate the metadata instances that connect two entity instances together.",
-                                            "https://egeria-project.org/guides/cts/repository-profiles/graph-queries/#linked-entities",
-                                            RepositoryConformanceProfile.GRAPH_QUERIES),
-
-    /**
      * The technology under test supports the point in time search and retrieval of metadata instances from its repository based on specific property values.
      */
     HISTORICAL_PROPERTY_SEARCH             (26, "Historical property queries",

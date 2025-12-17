@@ -129,28 +129,6 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
 
 
     /**
-     * Update the status for a specific entity.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the requested entity.
-     * @param newStatus new InstanceStatus for the entity.
-     * @return EntityDetail showing the current entity header, properties and classifications.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     */
-    @Override
-    public EntityDetail updateEntityStatus(String           userId,
-                                           String           entityGUID,
-                                           InstanceStatus   newStatus) throws FunctionNotSupportedException
-    {
-        final String  methodName               = "updateEntityStatus";
-
-        super.reportUnsupportedOptionalFunction(methodName);
-
-        return null;
-    }
-
-
-    /**
      * Update selected properties in an entity.
      *
      * @param userId unique identifier for requesting user.
@@ -635,49 +613,6 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                                 InstanceStatus       initialStatus) throws FunctionNotSupportedException
     {
         final String methodName = "addExternalRelationship";
-
-        super.reportUnsupportedOptionalFunction(methodName);
-
-        return null;
-    }
-
-
-    /**
-     * Update the status of a specific relationship.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param newStatus new InstanceStatus for the relationship.
-     * @return Resulting relationship structure with the new status set.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     */
-    @Override
-    public Relationship updateRelationshipStatus(String           userId,
-                                                 String           relationshipGUID,
-                                                 InstanceStatus   newStatus) throws FunctionNotSupportedException
-    {
-        final String  methodName          = "updateRelationshipStatus";
-        super.reportUnsupportedOptionalFunction(methodName);
-
-        return null;
-    }
-
-
-    /**
-     * Update the properties of a specific relationship.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param properties list of the properties to update.
-     * @return Resulting relationship structure with the new properties set.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     */
-    @Override
-    public Relationship updateRelationshipProperties(String               userId,
-                                                     String               relationshipGUID,
-                                                     InstanceProperties   properties) throws FunctionNotSupportedException
-    {
-        final String  methodName = "updateRelationshipProperties";
 
         super.reportUnsupportedOptionalFunction(methodName);
 

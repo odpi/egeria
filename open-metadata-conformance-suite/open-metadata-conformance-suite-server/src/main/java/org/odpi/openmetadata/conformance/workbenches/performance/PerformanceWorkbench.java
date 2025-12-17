@@ -10,8 +10,6 @@ import org.odpi.openmetadata.conformance.tests.performance.create.TestRelationsh
 import org.odpi.openmetadata.conformance.tests.performance.delete.TestEntityDelete;
 import org.odpi.openmetadata.conformance.tests.performance.delete.TestRelationshipDelete;
 import org.odpi.openmetadata.conformance.tests.performance.environment.TestEnvironment;
-import org.odpi.openmetadata.conformance.tests.performance.graph.TestGraphHistoryQueries;
-import org.odpi.openmetadata.conformance.tests.performance.graph.TestGraphQueries;
 import org.odpi.openmetadata.conformance.tests.performance.purge.*;
 import org.odpi.openmetadata.conformance.tests.performance.rehome.TestEntityReHome;
 import org.odpi.openmetadata.conformance.tests.performance.rehome.TestRelationshipReHome;
@@ -307,21 +305,6 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
             {
                 TestRelationshipHistorySearch testRelationshipHistorySearch = new TestRelationshipHistorySearch(workPad, relationshipDef, priorToInstanceUpdates);
                 testRelationshipHistorySearch.executeTest();
-            }
-        }
-
-        // 18-19. Graph query instances
-        for (EntityDef entityDef : entityDefs.values())
-        {
-            if (!profilesToSkip.contains(PerformanceProfile.GRAPH_QUERIES.getProfileName()))
-            {
-                TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, entityDef);
-                testGraphQueries.executeTest();
-            }
-            if (!profilesToSkip.contains(PerformanceProfile.GRAPH_HISTORY_QUERIES.getProfileName()))
-            {
-                TestGraphHistoryQueries testGraphHistoryQueries = new TestGraphHistoryQueries(workPad, entityDef, priorToInstanceUpdates);
-                testGraphHistoryQueries.executeTest();
             }
         }
 

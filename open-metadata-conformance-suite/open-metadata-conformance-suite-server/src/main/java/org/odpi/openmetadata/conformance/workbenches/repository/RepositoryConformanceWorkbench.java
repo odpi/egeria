@@ -487,17 +487,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              */
             TestFindTypeDefByExternalId testFindTypeDefByExternalId = new TestFindTypeDefByExternalId(workPad, typeDefs);
             testFindTypeDefByExternalId.executeTest();
-
-
-            /*
-             * Perform graph query tests on a set of types that the repository under test supports.
-             * Start with the set of supported relationships and explores to create a graph from types that the repository supports.
-             */
-            if (relationshipDefs != null)
-            {
-                TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, relationshipDefs, entityDefs);
-                testGraphQueries.executeTest();
-            }
         }
     }
 

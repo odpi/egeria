@@ -11,7 +11,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -526,7 +525,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Validate that the reference copy can be retrieved from the TUT and that the retrieved reference copy 'matches' what was saved.
          */
 
-        Relationship retrievedReferenceCopy = null;
+        Relationship retrievedReferenceCopy;
         long start;
         long elapsedTime;
         try
@@ -567,66 +566,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                         testTypeName + assertionMsg3,
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
-
-
-        /*
-         * If the relationship def has any valid status values (including DELETED), attempt
-         * to modify the status of the retrieved reference copy - this should fail
-         */
-        for (InstanceStatus validInstanceStatus : relationshipDef.getValidInstanceStatusList())
-        {
-            try
-            {
-                start = System.currentTimeMillis();
-                Relationship updatedRelationship = metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), validInstanceStatus);
-                elapsedTime = System.currentTimeMillis() - start;
-
-                assertCondition((false),
-                                assertion4,
-                                testTypeName + assertionMsg4,
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
-                                "updateRelationshipStatus-negative",
-                                elapsedTime);
-
-            }
-            catch (InvalidParameterException e)
-            {
-                /*
-                 * We are not expecting the status update to work - it should have thrown an InvalidParameterException
-                 */
-                elapsedTime = System.currentTimeMillis() - start;
-                assertCondition((true),
-                                assertion4,
-                                testTypeName + assertionMsg4,
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
-                                "updateRelationshipStatus-negative",
-                                elapsedTime);
-            }
-            catch (AssertionFailureException exception)
-            {
-                /*
-                 * Re throw this exception, so it is not masked by Exception (below).
-                 */
-                throw exception;
-            }
-            catch (Exception exc)
-            {
-                /*
-                 * We are not expecting any exceptions from this method call. Log and fail the test.
-                 */
-                String methodName = "updateRelationshipStatus";
-                String operationDescription = "update the status of a relationship of type " + relationshipDef.getName();
-                Map<String, String> parameters = new HashMap<>();
-                parameters.put("relationshipGUID", retrievedReferenceCopy.getGUID());
-                parameters.put("newStatus", validInstanceStatus.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                throw new Exception(msg, exc);
-            }
-        }
 
         /*
          * Attempt to modify one or more property of the retrieved reference copy. This is illegal so it should fail.

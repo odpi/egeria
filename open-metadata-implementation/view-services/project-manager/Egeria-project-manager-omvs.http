@@ -118,13 +118,13 @@ Content-Type: application/json
 ###
 # @name getProjectByGUID
 # Return the properties of a specific project.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}
 Authorization: Bearer {{token}}
 
 ###
 # @name getProjectGraph
 # Returns the graph of related projects and resources starting with a supplied project guid..
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/graph
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/graph
 Authorization: Bearer {{token}}
 
 ###

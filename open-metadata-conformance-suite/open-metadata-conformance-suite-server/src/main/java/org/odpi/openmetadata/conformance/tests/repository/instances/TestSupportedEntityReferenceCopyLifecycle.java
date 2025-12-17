@@ -47,8 +47,6 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
     private static final String assertionMsg4  = " reference entity matches the entity that was saved.";
     private static final String assertion5     = testCaseId + "-05";
     private static final String assertionMsg5  = " reference entity has no relationships.";
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " reference entity status cannot be updated.";
     private static final String assertion7     = testCaseId + "-07";
     private static final String assertionMsg7  = " reference entity properties cannot be updated.";
     private static final String assertion8     = testCaseId + "-08";
@@ -444,72 +442,8 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
 
         /*
-         * If the entity def has any valid status values (including DELETED), attempt
-         * to modify the status of the retrieved reference copy - this should fail
-         */
-
-        for (InstanceStatus validInstanceStatus : entityDef.getValidInstanceStatusList()) {
-
-            long start = System.currentTimeMillis();
-            try
-            {
-                EntityDetail updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), validInstanceStatus);
-                elapsedTime = System.currentTimeMillis() - start;
-
-                assertCondition((false),
-                                assertion6,
-                                testTypeName + assertionMsg6,
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
-                                "updateEntityStatus-negative",
-                                elapsedTime);
-
-            }
-            catch (InvalidParameterException e)
-            {
-                /*
-                 * We are not expecting the status update to work - it should have thrown an InvalidParameterException
-                 */
-                elapsedTime = System.currentTimeMillis() - start;
-                assertCondition((true),
-                                assertion6,
-                                testTypeName + assertionMsg6,
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
-                                "updateEntityStatus-negative",
-                                elapsedTime);
-            }
-            catch (AssertionFailureException exception)
-            {
-                /*
-                 * Re throw this exception, so it is not masked by Exception (below).
-                 */
-                throw exception;
-            }
-            catch (Exception exc)
-            {
-                /*
-                 * We are not expecting any exceptions from this method call. Log and fail the test.
-                 */
-                String methodName = "updateEntityStatus";
-                String operationDescription = "update the status of an entity of type " + entityDef.getName();
-                Map<String, String> parameters = new HashMap<>();
-                if (retrievedReferenceCopy != null) {
-                    parameters.put("entityGUID", retrievedReferenceCopy.getGUID());
-                }
-                parameters.put("newStatus", validInstanceStatus.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                throw new Exception(msg, exc);
-            }
-
-        }
-
-
-        /*
          * Attempt to modify one or more property of the retrieved reference copy. This is illegal so it should fail.
          */
-
 
         if (retrievedReferenceCopy != null && (retrievedReferenceCopy.getProperties() != null) &&
                 (retrievedReferenceCopy.getProperties().getInstanceProperties() != null) &&

@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -63,8 +62,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String assertion8     = testCaseId + "-08";
     private static final String assertionMsg8  = " repository supports delete of entity proxy of type ";
 
-    private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = " entity proxy status cannot be updated ";
 
     private static final String assertion10     = testCaseId + "-10";
     private static final String assertionMsg10  = " entity proxy properties cannot be updated ";
@@ -828,68 +825,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          *
          * It SHOULD NOT be possible to perform any of the following operations.
          */
-
-        /*
-         * If the entity def has any valid status values (including DELETED), attempt
-         * to modify the status of the entity proxy - this should fail
-         */
-
-        for (InstanceStatus validInstanceStatus : end1Type.getValidInstanceStatusList())
-        {
-            try
-            {
-                start = System.currentTimeMillis();
-                EntityDetail updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), entity1.getGUID(), validInstanceStatus);
-                elapsedTime = System.currentTimeMillis() - start;
-
-                assertCondition((false),
-                                assertion9,
-                                testTypeName + assertionMsg9,
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
-                                "updateEntityStatus-negative",
-                                elapsedTime);
-
-            }
-            catch (InvalidParameterException e)
-            {
-                /*
-                 * We are not expecting the status update to work - it should have thrown an InvalidParameterException
-                 */
-                elapsedTime = System.currentTimeMillis() - start;
-                assertCondition((true),
-                                assertion9,
-                                testTypeName + assertionMsg9,
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
-                                "updateEntityStatus-negative",
-                                elapsedTime);
-
-            }
-            catch (AssertionFailureException exception)
-            {
-                /*
-                 * Re throw this exception, so it is not masked by Exception (below).
-                 */
-                throw exception;
-            }
-            catch (Exception exc)
-            {
-                /*
-                 * We are not expecting any exceptions from this method call. Log and fail the test.
-                 */
-
-                String methodName = "updateEntityStatus";
-                String operationDescription = "update the status of an entity of type " + end1Type.getName();
-                Map<String, String> parameters = new HashMap<>();
-                parameters.put("entityGUID", entity1.getGUID());
-                parameters.put("newStatus", validInstanceStatus.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                throw new Exception(msg, exc);
-
-            }
-        }
 
         /*
          * Attempt to modify one or more property of the entity proxy. This is illegal so it should fail.
