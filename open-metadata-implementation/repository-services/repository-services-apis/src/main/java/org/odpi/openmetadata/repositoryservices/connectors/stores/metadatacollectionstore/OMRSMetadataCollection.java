@@ -126,26 +126,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
     private static final Logger log = LoggerFactory.getLogger(OMRSMetadataCollection.class);
 
-    /**
-     * Constructor to save the metadata collection id.
-     *
-     * @param metadataCollectionId unique identifier for the metadata collection
-     */
-    @Deprecated
-    public OMRSMetadataCollection(String  metadataCollectionId)
-    {
-        this.metadataCollectionId = metadataCollectionId;
-
-        if (metadataCollectionId == null)
-        {
-            String            actionDescription = "OMRS Metadata Collection Constructor";
-
-            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(defaultRepositoryName),
-                                              this.getClass().getName(),
-                                              actionDescription);
-
-        }
-    }
 
 
     /**
@@ -1441,135 +1421,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                                    UserNotAuthorizedException;
 
 
-    /**
-     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param startEntityGUID The entity that is used to anchor the query.
-     * @param endEntityGUID the other entity that defines the scope of the query.
-     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values except DELETED.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
-     *                                   is not found in the metadata collection.
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public abstract InstanceGraph getLinkingEntities(String                    userId,
-                                                     String                    startEntityGUID,
-                                                     String                    endEntityGUID,
-                                                     List<InstanceStatus>      limitResultsByStatus,
-                                                     Date                      asOfTime) throws InvalidParameterException,
-                                                                                                RepositoryErrorException,
-                                                                                                EntityNotKnownException,
-                                                                                                PropertyErrorException,
-                                                                                                FunctionNotSupportedException,
-                                                                                                UserNotAuthorizedException;
-
-
-    /**
-     * Return the entities and relationships that radiate out from the supplied entity GUID.
-     * The results are scoped both the instance type guids and the level.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID the starting point of the query.
-     * @param entityTypeGUIDs list of entity types to include in the query results.  Null means include
-     *                          all entities found, irrespective of their type.
-     * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
-     *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values except DELETED.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param level the number of the relationships out from the starting entity that the query will traverse to
-     *              gather results.
-     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws TypeErrorException one of the type guids passed on the request is not known by the
-     *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection.
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public abstract InstanceGraph getEntityNeighborhood(String               userId,
-                                                        String               entityGUID,
-                                                        List<String>         entityTypeGUIDs,
-                                                        List<String>         relationshipTypeGUIDs,
-                                                        List<InstanceStatus> limitResultsByStatus,
-                                                        List<String>         limitResultsByClassification,
-                                                        Date                 asOfTime,
-                                                        int                  level) throws InvalidParameterException,
-                                                                                           TypeErrorException,
-                                                                                           RepositoryErrorException,
-                                                                                           EntityNotKnownException,
-                                                                                           PropertyErrorException,
-                                                                                           FunctionNotSupportedException,
-                                                                                           UserNotAuthorizedException;
-
-
-    /**
-     * Return the list of entities that are of the types listed in entityTypeGUIDs and are connected, either directly or
-     * indirectly to the entity identified by startEntityGUID.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param startEntityGUID unique identifier of the starting entity.
-     * @param entityTypeGUIDs list of guids for types to search for.  Null means any type.
-     * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
-     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values except DELETED.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @return list of entities either directly or indirectly connected to the start entity
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws TypeErrorException one of the type guid passed on the request is not known by the
-     *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the startEntityGUID
-     *                                   is not found in the metadata collection.
-     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public abstract List<EntityDetail> getRelatedEntities(String                    userId,
-                                                          String                    startEntityGUID,
-                                                          List<String>              entityTypeGUIDs,
-                                                          int                       fromEntityElement,
-                                                          List<InstanceStatus>      limitResultsByStatus,
-                                                          List<String>              limitResultsByClassification,
-                                                          Date                      asOfTime,
-                                                          String                    sequencingProperty,
-                                                          SequencingOrder           sequencingOrder,
-                                                          int                       pageSize) throws InvalidParameterException,
-                                                                                                     TypeErrorException,
-                                                                                                     RepositoryErrorException,
-                                                                                                     EntityNotKnownException,
-                                                                                                     PropertyErrorException,
-                                                                                                     PagingErrorException,
-                                                                                                     FunctionNotSupportedException,
-                                                                                                     UserNotAuthorizedException;
-
 
     /* ======================================================
      * Group 4: Maintaining entity and relationship instances
@@ -1685,31 +1536,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                          RepositoryErrorException,
                                                                          FunctionNotSupportedException,
                                                                          UserNotAuthorizedException;
-
-
-    /**
-     * Update the status for a specific entity.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the requested entity.
-     * @param newStatus new InstanceStatus for the entity.
-     * @return EntityDetail showing the current entity header, properties and classifications.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws StatusNotSupportedException invalid status for instance.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     */
-    public abstract EntityDetail updateEntityStatus(String           userId,
-                                                    String           entityGUID,
-                                                    InstanceStatus   newStatus) throws InvalidParameterException,
-                                                                                       RepositoryErrorException,
-                                                                                       EntityNotKnownException,
-                                                                                       StatusNotSupportedException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       FunctionNotSupportedException;
 
 
     /**
@@ -2217,31 +2043,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Update the status of a specific relationship.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param newStatus new InstanceStatus for the relationship.
-     * @return Resulting relationship structure with the new status set.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
-     * @throws StatusNotSupportedException invalid status for instance.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     */
-    public abstract Relationship updateRelationshipStatus(String           userId,
-                                                          String           relationshipGUID,
-                                                          InstanceStatus   newStatus) throws InvalidParameterException,
-                                                                                             RepositoryErrorException,
-                                                                                             RelationshipNotKnownException,
-                                                                                             StatusNotSupportedException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             FunctionNotSupportedException;
-
-
-    /**
      * Update the properties of a specific relationship.
      *
      * @param userId unique identifier for requesting user.
@@ -2466,54 +2267,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                            FunctionNotSupportedException,
                                                                                            UserNotAuthorizedException
     {
-        EntityDetail updatedEntity = this.reHomeEntity(userId,
-                                                       entityGUID,
-                                                       typeDefGUID,
-                                                       typeDefName,
-                                                       homeMetadataCollectionId,
-                                                       newHomeMetadataCollectionId);
-
-        if (updatedEntity != null)
-        {
-            updatedEntity.setMetadataCollectionName(newHomeMetadataCollectionName);
-        }
-
-        return updatedEntity;
-    }
-
-
-    /**
-     * Change the home of an existing entity.  This action is taken for example, if the original home repository
-     * becomes permanently unavailable, or if the user community updating this entity move to working
-     * from a different repository in the open metadata repository cohort.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID the unique identifier for the entity to change.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
-     * @param homeMetadataCollectionId the existing identifier for this entity's home.
-     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
-     * @return entity new values for this entity, including the new home information.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    @SuppressWarnings(value = "unused")
-    public  EntityDetail reHomeEntity(String         userId,
-                                      String         entityGUID,
-                                      String         typeDefGUID,
-                                      String         typeDefName,
-                                      String         homeMetadataCollectionId,
-                                      String         newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                         RepositoryErrorException,
-                                                                                         EntityNotKnownException,
-                                                                                         FunctionNotSupportedException,
-                                                                                         UserNotAuthorizedException
-    {
         final String  methodName = "reHomeEntity";
 
         throw new RepositoryErrorException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
@@ -2620,55 +2373,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                           FunctionNotSupportedException,
                                                                                           UserNotAuthorizedException
     {
-        Relationship updatedRelationship = this.reHomeRelationship(userId,
-                                                                   relationshipGUID,
-                                                                   typeDefGUID,
-                                                                   typeDefName,
-                                                                   homeMetadataCollectionId,
-                                                                   newHomeMetadataCollectionId);
-
-        if (updatedRelationship != null)
-        {
-            updatedRelationship.setMetadataCollectionName(newHomeMetadataCollectionName);
-        }
-
-        return updatedRelationship;
-    }
-
-
-    /**
-     * Change the home of an existing relationship.  This action is taken for example, if the original home repository
-     * becomes permanently unavailable, or if the user community updating this relationship move to working
-     * from a different repository in the open metadata repository cohort.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
-     * @param homeMetadataCollectionId the existing identifier for this relationship's home.
-     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
-     * @return relationship new values for this relationship, including the new home information.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
-     *                                         metadata collection.
-     * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Deprecated
-    @SuppressWarnings(value = "unused")
-    public  Relationship reHomeRelationship(String   userId,
-                                            String   relationshipGUID,
-                                            String   typeDefGUID,
-                                            String   typeDefName,
-                                            String   homeMetadataCollectionId,
-                                            String   newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                         RepositoryErrorException,
-                                                                                         RelationshipNotKnownException,
-                                                                                         FunctionNotSupportedException,
-                                                                                         UserNotAuthorizedException
-    {
         final String  methodName = "reHomeRelationship";
 
         throw new RepositoryErrorException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
@@ -2677,7 +2381,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                            this.getClass().getName(),
                                            methodName);
     }
-
 
 
     /* ======================================================================

@@ -55,13 +55,6 @@ public enum RepositoryConformanceProfile implements Serializable
                                         "https://egeria-project.org/guides/cts/repository-profiles/dynamic-types",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
-    /**
-     * The technology under test supports graph-like queries that return collections of metadata instances.
-     */
-    GRAPH_QUERIES                  (4,  "Graph queries",
-                                        "The technology under test supports graph-like queries that return collections of metadata instances.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/graph-queries",
-                                        OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
      * The technology under test supports search for the state of the metadata instances at a specific time in the past.

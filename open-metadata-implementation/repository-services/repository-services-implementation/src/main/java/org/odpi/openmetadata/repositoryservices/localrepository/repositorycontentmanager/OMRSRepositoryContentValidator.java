@@ -2868,41 +2868,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Validates an instance status where null is not allowed.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param instanceStatusParameterName name of the initial status parameter
-     * @param instanceStatus initial status value
-     * @param typeDef type of the instance
-     * @param methodName method called
-     * @throws StatusNotSupportedException the initial status is invalid for this type
-     * @throws InvalidParameterException invalid parameter
-     */
-    @Override
-    public void validateNewStatus(String         sourceName,
-                                  String         instanceStatusParameterName,
-                                  InstanceStatus instanceStatus,
-                                  TypeDef        typeDef,
-                                  String         methodName) throws StatusNotSupportedException,
-                                                                    InvalidParameterException
-    {
-        if (instanceStatus != null)
-        {
-           this.validateInstanceStatus(sourceName, instanceStatusParameterName, instanceStatus, typeDef, methodName);
-        }
-        else
-        {
-            throw new InvalidParameterException(OMRSErrorCode.NULL_INSTANCE_STATUS.getMessageDefinition(instanceStatusParameterName,
-                                                                                                        methodName,
-                                                                                                        sourceName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                instanceStatusParameterName);
-        }
-    }
-
-
-    /**
      * Verify that an instance is not already deleted since the repository is processing a delete request,
      * and it does not want to look stupid.
      *
@@ -3537,35 +3502,30 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     /**
      * Return a boolean indicating whether the supplied entity is classified with the supplied classification.
      *
+     * @param sourceName source of the request (used for logging)
      * @param requiredClassification required classification; null means that there are no specific
      *                               classification requirements and so results in a true response.
      * @param entity entity to test.
      * @return boolean result
      */
-    private boolean verifyEntityIsClassified(String        requiredClassification,
+    private boolean verifyEntityIsClassified(String        sourceName,
+                                             String        requiredClassification,
                                              EntitySummary entity)
     {
-        if (requiredClassification != null)
+        final String localMethodName = "verifyEntityIsClassified";
+
+        List<Classification> entityClassifications = entity.getClassifications();
+        if (entityClassifications != null)
         {
-            List<Classification> entityClassifications = entity.getClassifications();
-            if (entityClassifications != null)
+            for (Classification entityClassification : entityClassifications)
             {
-                for (Classification entityClassification : entityClassifications)
+                if (entityClassification != null)
                 {
-                    if (entityClassification != null)
-                    {
-                        if (requiredClassification.equals(entityClassification.getName()))
-                        {
-                            return true;
-                        }
-                    }
+                    return this.isATypeOf(sourceName, entityClassification, requiredClassification, localMethodName);
                 }
             }
         }
-        else
-        {
-            return true;
-        }
+
         return false;
     }
 
@@ -3574,35 +3534,26 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Return a boolean indicating whether the supplied entity is classified with one or more of the supplied
      * classifications.
      *
+     * @param sourceName source of the request (used for logging)
      * @param requiredClassifications list of required classification null means that there are no specific
      *                                classification requirements and so results in a true response.
      * @param entity entity to test.
      * @return boolean result
      */
     @Override
-    public boolean verifyEntityIsClassified(List<String> requiredClassifications,
+    public boolean verifyEntityIsClassified(String        sourceName,
+                                            List<String>  requiredClassifications,
                                             EntitySummary entity)
     {
         if (requiredClassifications != null)
         {
-            List<Classification> entityClassifications = entity.getClassifications();
-
-            if (entityClassifications != null)
+            for (String requiredClassification : requiredClassifications)
             {
-                for (String requiredClassification : requiredClassifications)
+                if (requiredClassification != null)
                 {
-                    if (requiredClassification != null)
+                    if (verifyEntityIsClassified(sourceName, requiredClassification, entity))
                     {
-                        for (Classification entityClassification : entityClassifications)
-                        {
-                            if (entityClassification != null)
-                            {
-                                if (requiredClassification.equals(entityClassification.getName()))
-                                {
-                                    return true;
-                                }
-                            }
-                        }
+                        return true;
                     }
                 }
             }
@@ -4200,10 +4151,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                         InstanceProperties  instanceProperties) throws InvalidParameterException
     {
         final String methodName = "verifyMatchingInstancePropertyValues";
-        if (matchProperties == null)
+
+        if ((matchProperties == null) || (matchProperties.getConditions() == null))
         {
             return true;
         }
+
         List<PropertyCondition> conditions = matchProperties.getConditions();
         int conditionMatchCount = 0;
         for (PropertyCondition condition : conditions)
@@ -4483,39 +4436,52 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * {@inheritDoc}
      */
     @Override
-    public boolean verifyMatchingClassifications(SearchClassifications matchClassifications,
+    public boolean verifyMatchingClassifications(String                sourceName,
+                                                 SearchClassifications matchClassifications,
                                                  EntitySummary         entity) throws InvalidParameterException
     {
+        final String localMethodName = "verifyMatchingClassifications";
+
         if (matchClassifications == null)
         {
             return true;
         }
+
         List<ClassificationCondition> conditions = matchClassifications.getConditions();
         if (conditions == null)
         {
             return true;
         }
+
         int matchingClassificationCount = 0;
-        List<Classification> classifications = entity.getClassifications();
         for (ClassificationCondition condition : conditions)
         {
-            String classificationName = condition.getName();
-            if (classificationName != null)
+            String conditionClassificationName = condition.getName();
+
+            /*
+             * Only attempt to match if a classification name has been provided: if not, we cannot match against
+             * the requested classification (as no definition of a classification has been provided that we should
+             * attempt to match against)
+             */
+            if (conditionClassificationName != null)
             {
-                // Only attempt to match if a classification name has been provided: if not, we cannot match against
-                // the requested classification (as no definition of a classification has been provided that we should
-                // attempt to match against)
-                boolean isClassified = verifyEntityIsClassified(classificationName, entity);
-                SearchProperties properties = condition.getMatchProperties();
+                SearchProperties searchProperties = condition.getMatchProperties();
                 boolean classificationMatches = false;
-                for (Classification classification : classifications)
+                if (entity.getClassifications() != null)
                 {
-                    if (classificationName.equals(classification.getName()))
+                    for (Classification classification : entity.getClassifications())
                     {
-                        classificationMatches = verifyMatchingInstancePropertyValues(properties, null, classification, classification.getProperties());
+                        if (this.isATypeOf(sourceName, classification, conditionClassificationName, localMethodName))
+                        {
+                            classificationMatches = verifyMatchingInstancePropertyValues(searchProperties, null, classification, classification.getProperties());
+                        }
                     }
                 }
-                matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;
+
+                if (classificationMatches)
+                {
+                    matchingClassificationCount ++;
+                }
             }
         }
         // TODO: we may want to move this into the loop above to short-circuit (for performance)

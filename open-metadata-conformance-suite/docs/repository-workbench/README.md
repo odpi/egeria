@@ -47,8 +47,6 @@ The technology under test supports requests to create, update and purge metadata
 The technology under test supports effectivity dating properties.
 * **[Dynamic types](profiles/dynamic-types)** -                                                                                                                
 The technology under test supports changes to the list of its supported types while it is running.
-* **[Graph queries](profiles/graph-queries)** -                                                                                                                
-The technology under test supports graph-like queries that return collections of metadata instances.
 * **[Historical search](profiles/historical-search)** -                                                                                                            
 The technology under test supports search for the state of the metadata instances at a specific time in the past.
 * **[Entity proxies](profiles/entity-proxies)** -                                                                                                               

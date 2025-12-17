@@ -569,100 +569,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             throw new Exception(msg, exc);
         }
 
-        /*
-         * Update entity status
-         */
-        long nextVersion = newEntity.getVersion() + 1;
 
-        for (InstanceStatus validInstanceStatus : entityDef.getValidInstanceStatusList())
-        {
-            if (validInstanceStatus != InstanceStatus.DELETED)
-            {
-                EntityDetail updatedEntity;
-                try
-                {
-                    start = System.currentTimeMillis();
-                    updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), newEntity.getGUID(), validInstanceStatus);
-                    elapsedTime = System.currentTimeMillis() - start;
-                }
-                catch (Exception exc)
-                {
-                    /*
-                     * We are not expecting any exceptions from this method call. Log and fail the test.
-                     */
-                    String methodName = "updateEntityStatus";
-                    String operationDescription = "update the status of an entity of type " + entityDef.getName();
-                    Map<String, String> parameters = new HashMap<>();
-                    parameters.put("entityGUID", newEntity.getGUID());
-                    parameters.put("newStatus", validInstanceStatus.toString());
-                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                    throw new Exception(msg, exc);
-                }
-
-                assertCondition((updatedEntity != null),
-                                assertion13,
-                                testTypeName + assertionMsg13,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
-                                "updateEntityStatus",
-                                elapsedTime);
-
-                assertCondition((updatedEntity.getStatus() == validInstanceStatus),
-                                assertion14,
-                                testTypeName + assertionMsg14 + validInstanceStatus.getName(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
-
-                assertCondition((updatedEntity.getVersion() >= nextVersion),
-                                assertion15,
-                                testTypeName + assertionMsg15 + nextVersion,
-                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
-
-                nextVersion = updatedEntity.getVersion() + 1;
-            }
-        }
-
-        start = System.currentTimeMillis();
-        try
-        {
-            metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), newEntity.getGUID(), InstanceStatus.DELETED);
-            elapsedTime = System.currentTimeMillis() - start;
-            verifyCondition((false),
-                            assertion16,
-                            testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
-                            "updateEntityStatus-negative",
-                            elapsedTime);
-        }
-        catch (StatusNotSupportedException exception)
-        {
-            elapsedTime = System.currentTimeMillis() - start;
-            verifyCondition((true),
-                            assertion16,
-                            testTypeName + assertionMsg16,
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
-                            "updateEntityStatus-negative",
-                            elapsedTime);
-        }
-        catch (Exception exc)
-        {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-
-            String methodName = "updateEntityStatus";
-            String operationDescription = "update the status of an entity of type " + entityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("entityGUID", newEntity.getGUID());
-            parameters.put("newStatus", InstanceStatus.DELETED.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-        }
 
 
         /*============
@@ -670,6 +577,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
          * mandatory (based on their cardinality) then provide them - in order to exercise the connector more fully.
          * All optional properties are removed.
          */
+        long nextVersion = newEntity.getVersion();
 
         if ((newEntity.getProperties() != null) &&
                 (newEntity.getProperties().getInstanceProperties() != null) &&

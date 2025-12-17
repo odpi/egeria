@@ -22,7 +22,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,14 +65,6 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
     private static final String assertionMsg9  = " new relationship is known.";
     private static final String assertion10    = testCaseId + "-10";
     private static final String assertionMsg10 = " new relationship retrieved.";
-    private static final String assertion11    = testCaseId + "-11";
-    private static final String assertionMsg11 = " relationship status updated.";
-    private static final String assertion12    = testCaseId + "-12";
-    private static final String assertionMsg12 = " relationship new status is ";
-    private static final String assertion13    = testCaseId + "-13";
-    private static final String assertionMsg13 = " relationship with new status version number is ";
-    private static final String assertion14    = testCaseId + "-14";
-    private static final String assertionMsg14 = " relationship can not be set to DELETED status.";
     private static final String assertion15    = testCaseId + "-15";
     private static final String assertionMsg15 = " relationship properties cleared to min.";
     private static final String assertion16    = testCaseId + "-16";
@@ -588,109 +579,13 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             throw new Exception(msg, exc);
         }
 
-        /*===================
-         * Update relationship status
-         */
-        long nextVersion = newRelationship.getVersion() + 1;
-
-        for (InstanceStatus validInstanceStatus : relationshipDef.getValidInstanceStatusList())
-        {
-            if (validInstanceStatus != InstanceStatus.DELETED)
-            {
-                Relationship updatedRelationship;
-                try
-                {
-                    start = System.currentTimeMillis();
-                    updatedRelationship = metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), newRelationship.getGUID(), validInstanceStatus);
-                    elapsedTime = System.currentTimeMillis() - start;
-                }
-                catch (Exception exc)
-                {
-                    /*
-                     * We are not expecting any exceptions from this method call. Log and fail the test.
-                     */
-
-                    String methodName = "updateRelationshipStatus";
-                    String operationDescription = "update the status of a relationship of type " + relationshipDef.getName();
-                    Map<String, String> parameters = new HashMap<>();
-                    parameters.put("relationshipGUID", newRelationship.getGUID());
-                    parameters.put("newStatus", validInstanceStatus.toString());
-                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                    throw new Exception(msg, exc);
-                }
-
-
-                assertCondition((updatedRelationship != null),
-                                assertion11,
-                                testTypeName + assertionMsg11,
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
-                                "updateRelationshipStatus",
-                                elapsedTime);
-
-                assertCondition((updatedRelationship.getStatus() == validInstanceStatus),
-                                assertion12,
-                                testTypeName + assertionMsg12 + validInstanceStatus.getName(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
-
-                assertCondition((updatedRelationship.getVersion() >= nextVersion),
-                                assertion13,
-                                testTypeName + assertionMsg13 + nextVersion,
-                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
-
-                nextVersion = updatedRelationship.getVersion() + 1;
-            }
-        }
-
-        try
-        {
-            start = System.currentTimeMillis();
-            metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), newRelationship.getGUID(), InstanceStatus.DELETED);
-            elapsedTime = System.currentTimeMillis() - start;
-
-            verifyCondition((false),
-                            assertion14,
-                            testTypeName + assertionMsg14,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
-                            "updateRelationshipStatus-negative",
-                            elapsedTime);
-
-        }
-        catch (StatusNotSupportedException exception)
-        {
-            elapsedTime = System.currentTimeMillis() - start;
-            verifyCondition((true),
-                            assertion14,
-                            testTypeName + assertionMsg14,
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
-                            "updateRelationshipStatus-negative",
-                            elapsedTime);
-        }
-        catch (Exception exc)
-        {
-            /*
-             * We are not expecting any other exceptions from this method call. Log and fail the test.
-             */
-            String methodName = "updateRelationshipStatus";
-            String operationDescription = "update the status of a relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("relationshipGUID", newRelationship.getGUID());
-            parameters.put("newStatus", InstanceStatus.DELETED.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-            throw new Exception(msg, exc);
-        }
-
         /*=======================
          * Modify the relationship such that it has the minimum set of properties possible. If any properties are defined as
          * mandatory (based on their cardinality) then provide them - in order to exercise the connector more fully.
          * All optional properties are removed.
          */
+        long nextVersion = newRelationship.getVersion();
+
         if ((newRelationship.getProperties() != null) &&
                     (newRelationship.getProperties().getInstanceProperties() != null) &&
                     (!newRelationship.getProperties().getInstanceProperties().isEmpty()))

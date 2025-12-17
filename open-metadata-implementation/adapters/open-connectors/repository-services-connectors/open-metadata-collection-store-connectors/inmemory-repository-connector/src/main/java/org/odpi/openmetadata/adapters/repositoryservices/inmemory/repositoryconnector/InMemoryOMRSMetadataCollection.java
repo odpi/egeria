@@ -428,7 +428,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
-                    (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
+                    (repositoryValidator.verifyEntityIsClassified(repositoryName, limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                                                               entity,
                                                                               entity.getProperties(),
@@ -525,7 +525,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
-                    (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
+                    (repositoryValidator.verifyMatchingClassifications(repositoryName, matchClassifications, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, entity.getGUID(), entity, entity.getProperties())))
                 {
                     foundEntities.add(entity);
@@ -626,7 +626,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
-                    (repositoryValidator.verifyEntityIsClassified(classificationList, entity)))
+                    (repositoryValidator.verifyEntityIsClassified(repositoryName, classificationList, entity)))
                 {
                     List<Classification>   entityClassifications = entity.getClassifications();
 
@@ -747,11 +747,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
-                    (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
+                    (repositoryValidator.verifyEntityIsClassified(repositoryName, limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
-                                                                                    entity.getProperties(),
-                                                                                    searchCriteria,
-                                                                                    methodName)))
+                                                                                     entity.getProperties(),
+                                                                                     searchCriteria,
+                                                                                     methodName)))
                 {
                     foundEntities.add(entity);
                 }
@@ -1249,116 +1249,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
     }
 
 
-    /**
-     * Return the entities and relationships that radiate out from the supplied entity GUID.
-     * The results are scoped both the instance type guids and the level.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID the starting point of the query.
-     * @param entityTypeGUIDs list of entity types to include in the query results.  Null means include
-     *                          all entities found, irrespective of their type.
-     * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
-     *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values except DELETED.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param level the number of the relationships out from the starting entity that the query will traverse to
-     *              gather results.
-     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeErrorException one or more of the type guids passed on the request is not known by the
-     *                              metadata collection.
-     * @throws EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection.
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Override
-    public  InstanceGraph getEntityNeighborhood(String               userId,
-                                                String               entityGUID,
-                                                List<String>         entityTypeGUIDs,
-                                                List<String>         relationshipTypeGUIDs,
-                                                List<InstanceStatus> limitResultsByStatus,
-                                                List<String>         limitResultsByClassification,
-                                                Date                 asOfTime,
-                                                int                  level) throws InvalidParameterException,
-                                                                                   RepositoryErrorException,
-                                                                                   EntityNotKnownException,
-                                                                                   TypeErrorException,
-                                                                                   PropertyErrorException,
-                                                                                   UserNotAuthorizedException
-    {
-        final String methodName                                  = "getEntityNeighborhood";
-        final String entityGUIDParameterName                     = "entityGUID";
-        final String entityTypeGUIDParameterName                 = "entityTypeGUIDs";
-        final String relationshipTypeGUIDParameterName           = "relationshipTypeGUIDs";
-        final String limitedResultsByClassificationParameterName = "limitResultsByClassification";
-        final String asOfTimeParameter                           = "asOfTime";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-
-        if (entityTypeGUIDs != null)
-        {
-            for (String guid : entityTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, entityTypeGUIDParameterName, guid, methodName);
-            }
-        }
-
-        if (relationshipTypeGUIDs != null)
-        {
-            for (String guid : relationshipTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, relationshipTypeGUIDParameterName, guid, methodName);
-            }
-        }
-
-        if (limitResultsByClassification != null)
-        {
-            for (String classificationName : limitResultsByClassification)
-            {
-                repositoryValidator.validateClassificationName(repositoryName,
-                                                               limitedResultsByClassificationParameterName,
-                                                               classificationName,
-                                                               methodName);
-            }
-        }
-
-        /*
-         * Time warp the stores
-         */
-        Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
-        Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
-
-        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper,
-                                                                                                  repositoryName,
-                                                                                                  repositoryValidator,
-                                                                                                  entityStore,
-                                                                                                  relationshipStore,
-                                                                                                  entityGUID,
-                                                                                                  entityTypeGUIDs,
-                                                                                                  relationshipTypeGUIDs,
-                                                                                                  limitResultsByStatus,
-                                                                                                  limitResultsByClassification,
-                                                                                                  level);
-
-
-        return inMemoryEntityNeighbourhood.createInstanceGraph();
-    }
-
-
     /* ======================================================
      * Group 4: Maintaining entity and relationship instances
      */
@@ -1547,70 +1437,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validation complete
          */
         repositoryStore.addEntityProxyToStore(entityProxy);
-    }
-
-
-    /**
-     * Update the status for a specific entity.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the requested entity.
-     * @param newStatus new InstanceStatus for the entity.
-     * @return EntityDetail showing the current entity header, properties and classifications.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws StatusNotSupportedException invalid status for instance.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Override
-    public EntityDetail updateEntityStatus(String           userId,
-                                           String           entityGUID,
-                                           InstanceStatus   newStatus) throws InvalidParameterException,
-                                                                              RepositoryErrorException,
-                                                                              EntityNotKnownException,
-                                                                              StatusNotSupportedException,
-                                                                              UserNotAuthorizedException,
-                                                                              FunctionNotSupportedException
-    {
-        final String  methodName               = "updateEntityStatus";
-        final String  statusParameterName      = "newStatus";
-
-        /*
-         * Validate parameters
-         */
-        this.updateInstanceStatusParameterValidation(userId, entityGUID, newStatus, methodName);
-
-        /*
-         * Locate entity
-         */
-        EntityDetail  entity  = repositoryStore.getEntity(entityGUID);
-
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
-
-        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entity, methodName);
-
-        repositoryValidator.validateInstanceType(repositoryName, entity);
-
-        TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
-
-        repositoryValidator.validateNewStatus(repositoryName, statusParameterName, newStatus, typeDef, methodName);
-
-        /*
-         * Validation complete - ok to make changes
-         */
-        EntityDetail   updatedEntity = new EntityDetail(entity);
-
-        updatedEntity.setStatus(newStatus);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
-        repositoryStore.updateEntityInStore(updatedEntity);
-
-        return repositoryStore.getEntity(entityGUID);
     }
 
 
@@ -3137,70 +2963,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         return relationship;
     }
 
-
-    /**
-     * Update the status of a specific relationship.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param newStatus new InstanceStatus for the relationship.
-     * @return Resulting relationship structure with the new status set.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
-     * @throws StatusNotSupportedException invalid status for instance.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Override
-    public Relationship updateRelationshipStatus(String           userId,
-                                                 String           relationshipGUID,
-                                                 InstanceStatus   newStatus) throws InvalidParameterException,
-                                                                                    RepositoryErrorException,
-                                                                                    RelationshipNotKnownException,
-                                                                                    StatusNotSupportedException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    FunctionNotSupportedException
-    {
-        final String  methodName          = "updateRelationshipStatus";
-        final String  statusParameterName = "newStatus";
-
-        /*
-         * Validate parameters
-         */
-        this.updateInstanceStatusParameterValidation(userId, relationshipGUID, newStatus, methodName);
-
-        /*
-         * Locate relationship
-         */
-        Relationship  relationship = this.getRelationship(userId, relationshipGUID);
-
-        repositoryValidator.validateRelationshipCanBeUpdated(repositoryName, metadataCollectionId, relationship, methodName);
-
-        repositoryValidator.validateInstanceType(repositoryName, relationship);
-
-        TypeDef typeDef = super.getTypeDefForInstance(relationship, methodName);
-
-        repositoryValidator.validateNewStatus(repositoryName,
-                                              statusParameterName,
-                                              newStatus,
-                                              typeDef,
-                                              methodName);
-
-        /*
-         * Validation complete - ok to make changes
-         */
-        Relationship   updatedRelationship = new Relationship(relationship);
-
-        updatedRelationship.setStatus(newStatus);
-
-        updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
-
-        repositoryStore.updateRelationshipInStore(updatedRelationship);
-
-        return repositoryStore.getRelationship(relationshipGUID);
-    }
 
 
     /**

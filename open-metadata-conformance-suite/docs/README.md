@@ -38,7 +38,7 @@ etc](https://egeria-project.org/guides/admin/servers).  Before starting the CTS 
 configure the repository workbench within it by POSTing to:
 
 ```
-POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+POST https://localhost:9443/open-metadata/admin-services/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
 ```
 
 with a repository workbench configuration like the following:
@@ -100,7 +100,6 @@ Summary of profile results:
 ... Reference copies: CONFORMANT_FULL_SUPPORT
 ... Metadata maintenance: CONFORMANT_FULL_SUPPORT
 ... Dynamic types: UNKNOWN_STATUS
-... Graph queries: CONFORMANT_FULL_SUPPORT
 ... Historical search: CONFORMANT_FULL_SUPPORT
 ... Entity proxies: CONFORMANT_FULL_SUPPORT
 ... Soft-delete and restore: CONFORMANT_FULL_SUPPORT
@@ -139,7 +138,6 @@ Summary of profile results:
 ... Reference copies: CONFORMANT_FULL_SUPPORT
 ... Metadata maintenance: CONFORMANT_FULL_SUPPORT
 ... Dynamic types: UNKNOWN_STATUS
-... Graph queries: CONFORMANT_FULL_SUPPORT
 ... Historical search: CONFORMANT_FULL_SUPPORT
 ... Entity proxies: CONFORMANT_FULL_SUPPORT
 ... Soft-delete and restore: CONFORMANT_FULL_SUPPORT

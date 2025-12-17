@@ -1167,25 +1167,6 @@ public interface OMRSRepositoryValidator
 
 
     /**
-     * Validates an instance status where null is not allowed.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param instanceStatusParameterName  name of the initial status parameter
-     * @param instanceStatus  initial status value
-     * @param typeDef  type of the instance
-     * @param methodName  method called
-     * @throws StatusNotSupportedException  the initial status is invalid for this type
-     * @throws InvalidParameterException  invalid parameter
-     */
-    void validateNewStatus(String         sourceName,
-                           String         instanceStatusParameterName,
-                           InstanceStatus instanceStatus,
-                           TypeDef        typeDef,
-                           String         methodName) throws StatusNotSupportedException,
-                                                             InvalidParameterException;
-
-
-    /**
      * Verify that an instance is not already deleted since the repository is processing a delete request
      * and it does not want to look stupid.
      *
@@ -1340,12 +1321,14 @@ public interface OMRSRepositoryValidator
      * Return a boolean indicating whether the supplied entity is classified with one or more of the supplied
      * classifications.
      *
+     * @param sourceName  source of the request (used for logging)
      * @param requiredClassifications  list of required classification null means that there are no specific
      *                                classification requirements and so results in a true response.
      * @param entity  entity to test.
      * @return boolean result
      */
-    boolean verifyEntityIsClassified(List<String>  requiredClassifications,
+    boolean verifyEntityIsClassified(String        sourceName,
+                                     List<String>  requiredClassifications,
                                      EntitySummary entity);
 
 
@@ -1423,12 +1406,14 @@ public interface OMRSRepositoryValidator
     /**
      * Determine if the instance properties match the classification-based conditions.
      *
+     * @param sourceName  source of the request (used for logging)
      * @param matchClassifications  the classification-based conditions to match.
      * @param entity  the entity instance.
      * @return boolean flag indicating whether the classifications match
      * @throws InvalidParameterException invalid search criteria
      */
-    boolean verifyMatchingClassifications(SearchClassifications matchClassifications,
+    boolean verifyMatchingClassifications(String                sourceName,
+                                          SearchClassifications matchClassifications,
                                           EntitySummary         entity) throws InvalidParameterException;
 
 

@@ -17,8 +17,6 @@ The technology under test is able to store reference copies of metadata from oth
 The technology under test supports requests to create, update and purge metadata instances.
 * **[Dynamic types](dynamic-types)** -                                                                                                                
 The technology under test supports changes to the list of its supported types while it is running.
-* **[Graph queries](graph-queries)** -                                                                                                                
-The technology under test supports graph-like queries that return collections of metadata instances.
 * **[Historical search](historical-search)** -                                                                                                            
 The technology under test supports search for the state of the metadata instances at a specific time in the past.
 * **[Entity proxies](entity-proxies)** -                                                                                                               
