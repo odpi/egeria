@@ -9,10 +9,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
 
 import java.util.List;
 
@@ -28,6 +25,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
     private final ViewServiceClientMap<ActorProfileHandler>         actorProfileHandlerMap;
     private final ViewServiceClientMap<ActorRoleHandler>            actorRoleHandlerMap;
     private final ViewServiceClientMap<UserIdentityHandler>         userIdentityHandlerMap;
+    private final ViewServiceClientMap<ContactDetailsHandler>       contactDetailsHandlerMap;
     private final ViewServiceClientMap<GovernanceDefinitionHandler> governanceDefinitionClientMap;
 
 
@@ -58,27 +56,34 @@ public class ActorManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        actorProfileHandlerMap = new ViewServiceClientMap<>(ActorProfileHandler.class,
+        this.actorProfileHandlerMap = new ViewServiceClientMap<>(ActorProfileHandler.class,
                                                             serverName,
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
                                                             myDescription.getViewServiceURLMarker(),
                                                             maxPageSize);
-        actorRoleHandlerMap = new ViewServiceClientMap<>(ActorRoleHandler.class,
+        this.actorRoleHandlerMap = new ViewServiceClientMap<>(ActorRoleHandler.class,
                                                          serverName,
                                                          auditLog,
                                                          activeViewServices,
                                                          myDescription.getViewServiceFullName(),
                                                          myDescription.getViewServiceURLMarker(),
                                                          maxPageSize);
-        userIdentityHandlerMap = new ViewServiceClientMap<>(UserIdentityHandler.class,
+        this.userIdentityHandlerMap = new ViewServiceClientMap<>(UserIdentityHandler.class,
                                                             serverName,
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
                                                             myDescription.getViewServiceURLMarker(),
                                                             maxPageSize);
+        this.contactDetailsHandlerMap = new ViewServiceClientMap<>(ContactDetailsHandler.class,
+                                                                 serverName,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
+                                                                 maxPageSize);
         this.governanceDefinitionClientMap = new ViewServiceClientMap<>(GovernanceDefinitionHandler.class,
                                                                         serverName,
                                                                         auditLog,
@@ -125,6 +130,22 @@ public class ActorManagerInstance extends OMVSServiceInstance
     }
 
 
+    /**
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
+     * actor role artifacts.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public ContactDetailsHandler getContactDetailsHandler(String urlMarker,
+                                                          String methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException
+    {
+        return contactDetailsHandlerMap.getClient(urlMarker, methodName);
+    }
 
 
     /**

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -1592,7 +1593,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeScopeFromElement(String                        serverName,
-                                               String                   urlMarker,
+                                               String                        urlMarker,
                                                String                        elementGUID,
                                                String                        scopeGUID,
                                                DeleteRelationshipRequestBody requestBody)
@@ -1624,6 +1625,175 @@ public class ClassificationManagerRESTServices extends TokenController
         return response;
     }
 
+
+
+    /**
+     * Assign an action to a new actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the to do
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public VoidResponse assignAction(String                     serverName,
+                                     String                     urlMarker,
+                                     String                     actionGUID,
+                                     String                     actorGUID,
+                                     NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "assignAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+            {
+                handler.assignAction(userId, actionGUID, actorGUID, requestBody, assignmentScopeProperties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.assignAction(userId, actionGUID, actorGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Assign an action to a new actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the to do
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public VoidResponse reassignAction(String                        serverName,
+                                       String                        urlMarker,
+                                       String                        actionGUID,
+                                       String                        actorGUID,
+                                       UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "reassignAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+            {
+                handler.reassignAction(userId, actionGUID, actorGUID, requestBody, assignmentScopeProperties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.reassignAction(userId, actionGUID, actorGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove an action from an actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the to do
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public VoidResponse unassignAction(String                        serverName,
+                                       String                        urlMarker,
+                                       String                        actionGUID,
+                                       String                        actorGUID,
+                                       DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "unassignAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.unassignAction(userId, actionGUID, actorGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
     /**

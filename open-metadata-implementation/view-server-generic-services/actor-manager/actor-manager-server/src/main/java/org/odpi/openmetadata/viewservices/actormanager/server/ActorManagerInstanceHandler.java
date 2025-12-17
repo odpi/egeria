@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.actormanager.server;
 
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -55,6 +52,36 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getActorProfileHandler(urlMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns an Open Metadata Store client.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public ContactDetailsHandler getContactDetailsHandler(String userId,
+                                                          String serverName,
+                                                          String urlMarker,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        ActorManagerInstance instance = (ActorManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getContactDetailsHandler(urlMarker, serviceOperationName);
         }
 
         return null;

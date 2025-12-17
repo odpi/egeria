@@ -63,7 +63,7 @@ Content-Type: application/json
 # group: Glossaries
 # @name Create a copy of a glossary term
 # Add the returned guid as adGlossaryTerm1GUID variable.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{{glossaryGUID}}/terms/from-template/{{glossaryTermGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/from-template/{{glossaryTermGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

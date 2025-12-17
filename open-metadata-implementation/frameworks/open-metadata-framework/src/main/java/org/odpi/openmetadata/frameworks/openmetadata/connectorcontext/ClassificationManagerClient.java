@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagem
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -1313,6 +1314,69 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
                                                                            PropertyServerException
     {
         stewardshipManagementHandler.removeScopeFromElement(connectorUserId, elementGUID, scopeGUID, deleteOptions);
+    }
+
+    /**
+     * Assign an action to an actor.
+     *
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void assignAction(String                    actionGUID,
+                             String                    actorGUID,
+                             MakeAnchorOptions         makeAnchorOptions,
+                             AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.assignAction(connectorUserId, actionGUID, actorGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Assign an action to a new actor - removing all other assignees.
+     *
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param updateOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void reassignAction(String                    actionGUID,
+                               String                    actorGUID,
+                               UpdateOptions             updateOptions,
+                               AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.reassignAction(connectorUserId, actionGUID, actorGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove an action from an actor.
+     *
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void unassignAction(String        actionGUID,
+                               String        actorGUID,
+                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.unassignAction(connectorUserId, actionGUID, actorGUID, deleteOptions);
     }
 
 
