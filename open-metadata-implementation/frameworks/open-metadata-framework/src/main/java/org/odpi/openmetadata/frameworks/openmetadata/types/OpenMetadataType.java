@@ -5951,7 +5951,8 @@ public enum OpenMetadataType
                                         "BusinessSignificant",
                                         OpenMetadataWikiPages.MODEL_0760_BUSINESS_LINEAGE,
                                         "a2699e90-eaa2-42aa-84a9-081b33e0ea70",
-                                        "A referenceable item that is meaningful to business users."),
+                                        "A referenceable item that is meaningful to business users.",
+                                        BusinessSignificantProperties.class),
 
     /**
      * A lineage stitching link between two equivalent elements.

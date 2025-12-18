@@ -260,7 +260,4 @@ public class SubjectAreaRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-
 }

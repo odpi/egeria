@@ -64,4 +64,29 @@ public class MyProfileResource
     {
         return restAPI.getMyProfile(serverName);
     }
+
+
+    /**
+     * Add the profile for this user.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addMyProfile",
+            description="Add the personal profile of the logged on user (details of the user is extracted from the bearer token).",
+            externalDocs=@ExternalDocumentation(description="Personal Profiles",
+                    url="https://egeria-project.org/concepts/personal-profile"))
+
+    public GUIDResponse addMyProfile(@PathVariable String serverName,
+                                     @RequestBody (required = false) NewElementRequestBody requestBody)
+    {
+        return restAPI.addMyProfile(serverName, requestBody);
+    }
 }

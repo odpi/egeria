@@ -384,6 +384,29 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Returns the named user identity.
+     *
+     * @param userId                 userId of user making request
+     * @param name                   name of the element to return - match is full text match in qualifiedName or name
+     * @param getOptions multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElement getUserIdentityByUserId(String     userId,
+                                                           String     name,
+                                                           GetOptions getOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "getUserIdentitiesByUserId";
+
+        return super.getRootElementsByUniqueName(userId, name, OpenMetadataProperty.USER_ID.name, getOptions, methodName);
+    }
+
+
+    /**
      * Return the properties of a specific user identity.
      *
      * @param userId                 userId of user making request

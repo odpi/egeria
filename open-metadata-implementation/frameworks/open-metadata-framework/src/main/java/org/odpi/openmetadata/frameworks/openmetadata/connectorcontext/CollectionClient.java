@@ -557,6 +557,127 @@ public class CollectionClient extends ConnectorContextClientBase
     }
 
 
+    /**
+     * Link dependent business capabilities.
+     *
+     * @param supportedBusinessCapabilityGUID          unique identifier of the business capability that is dependent on another
+     * @param supportingBusinessCapabilityGUID  unique identifier of the business capability that is supporting
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkBusinessCapabilityDependency(String                                 supportedBusinessCapabilityGUID,
+                                                 String                                 supportingBusinessCapabilityGUID,
+                                                 MakeAnchorOptions                      makeAnchorOptions,
+                                                 BusinessCapabilityDependencyProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                       PropertyServerException,
+                                                                                                                       UserNotAuthorizedException
+    {
+        collectionHandler.linkBusinessCapabilityDependency(connectorUserId, supportedBusinessCapabilityGUID, supportingBusinessCapabilityGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach dependent business capabilities.
+     *
+     * @param supportedBusinessCapabilityGUID          unique identifier of the business capability that is dependent on another
+     * @param supportingBusinessCapabilityGUID  unique identifier of the business capability that is supporting
+     * @param deleteOptions         options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachBusinessCapabilityDependency(String        supportedBusinessCapabilityGUID,
+                                                   String        supportingBusinessCapabilityGUID,
+                                                   DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        collectionHandler.detachBusinessCapabilityDependency(connectorUserId, supportedBusinessCapabilityGUID, supportingBusinessCapabilityGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a business capability to an element that provides digital support.
+     *
+     * @param businessCapabilityGUID          unique identifier of the business capability
+     * @param elementGUID  unique identifier of the element
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDigitalSupport(String                   businessCapabilityGUID,
+                                   String                   elementGUID,
+                                   MakeAnchorOptions        makeAnchorOptions,
+                                   DigitalSupportProperties relationshipProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        collectionHandler.linkDigitalSupport(connectorUserId, businessCapabilityGUID, elementGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a business capability from an element that provides digital support.
+     *
+     * @param businessCapabilityGUID          unique identifier of the business capability
+     * @param elementGUID  unique identifier of the element
+     * @param deleteOptions         options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDigitalSupport(String        businessCapabilityGUID,
+                                     String        elementGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        collectionHandler.detachDigitalSupport(connectorUserId, businessCapabilityGUID, elementGUID, deleteOptions);
+    }
+
+
+    /**
+     * Classify an element to indicate that it is significant to a particular business capability.
+     *
+     * @param elementGUID    unique identifier of the element.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setBusinessSignificant(String                        elementGUID,
+                                       BusinessSignificantProperties properties,
+                                       MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        collectionHandler.setBusinessSignificant(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the business significant classification from the element.
+     *
+     * @param elementGUID    unique identifier of the element.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearBusinessSignificance(String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        collectionHandler.clearBusinessSignificance(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
 
     /**
      * Classify the collection to indicate that it is an editing collection - this means it is

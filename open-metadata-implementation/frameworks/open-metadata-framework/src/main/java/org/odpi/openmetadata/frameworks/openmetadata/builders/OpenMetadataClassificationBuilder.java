@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.EditingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ScopingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessSignificantProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudPlatformProperties;
@@ -148,6 +149,20 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
                                                                      anchorsProperties.getAnchorScopeGUID());
+            }
+            else if (properties instanceof BusinessSignificantProperties businessSignificantProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     businessSignificantProperties.getDescription());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.SCOPE.name,
+                                                                     businessSignificantProperties.getScope());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.BUSINESS_CAPABILITY.name,
+                                                                     businessSignificantProperties.getBusinessCapability());
             }
             else if (properties instanceof CalculatedValueProperties calculatedValueProperties)
             {

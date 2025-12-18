@@ -803,6 +803,7 @@ Content-Type: application/json
   "relationshipsPageSize": 100,
   "skipClassifiedElements": [],
   "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
