@@ -1791,6 +1791,59 @@ public class OpenMetadataHandlerBase
     }
 
 
+
+    /**
+     * Returns the named element.
+     *
+     * @param userId                   userId of user making request
+     * @param name                     name of the element to return - match is full text match in qualifiedName or name
+     * @param propertyName            property name to consider
+     * @param suppliedGetOptions            multiple options to control the query
+     * @param methodName               calling method
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElement getRootElementsByUniqueName(String     userId,
+                                                               String     name,
+                                                               String     propertyName,
+                                                               GetOptions suppliedGetOptions,
+                                                               String     methodName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String nameParameterName = "name";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
+
+        String uniqueName = OpenMetadataProperty.QUALIFIED_NAME.name;
+
+        if (propertyName != null)
+        {
+            uniqueName = propertyName;
+        }
+
+        GetOptions getOptions = new GetOptions(suppliedGetOptions);
+
+        if (getOptions.getMetadataElementTypeName() == null)
+        {
+            getOptions.setMetadataElementTypeName(metadataElementTypeName);
+        }
+
+        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                                                    name,
+                                                                                                    uniqueName,
+                                                                                                    getOptions);
+
+        return convertRootElement(userId,
+                                  openMetadataElement,
+                                  new QueryOptions(getOptions),
+                                  methodName);
+    }
+
+
     /**
      * Return the properties of a specific governance definition.
      *

@@ -19,5 +19,139 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 
+###
+# =====================================================================================================================
+# Work with Notification Types
+# https://egeria-project.org/concepts/notification-type
 
+@businessCapabilityGUID=add guid here
+@supportingBusinessCapabilityGUID=add guid here
+@elementGUID=add guid here
+
+###
+# @name linkBusinessCapabilityDependency
+# Link dependent business capabilities.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/business-capabilities/{{businessCapabilityGUID}}/dependencies/{{supportingBusinessCapabilityGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "BusinessCapabilityDependencyProperties",
+    "label" : "",
+    "description" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachBusinessCapabilityDependency
+# Detach dependent business capabilities.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/business-capabilities/{{businessCapabilityGUID}}/dependencies/{{supportingBusinessCapabilityGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkDigitalSupport
+# Attach a business capability to an element that provides digital support.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/business-capabilities/{{businessCapabilityGUID}}/digital-support/{{elementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DigitalSupportProperties",
+    "label" : "",
+    "description" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachDigitalSupport
+# Detach a business capability definition from a hierarchical relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/business-capabilities/{{businessCapabilityGUID}}/digital-support/{{elementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+###
+# =====================================================================================================================
+# Work with business significant classifications
+# Identifies elements that are significant to the business - particularly a business capability
+
+###
+# @name setBusinessSignificant
+# Classify an element to indicate that it is significant to a particular business capability.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/elements/{{elementGUID}}/business-significant
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "BusinessSignificantProperties",
+       "subjectAreaName" : "Add subject area identifier here"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearBusinessSignificance
+# Remove the business significant classification from the element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/elements/{{elementGUID}}/business-significant/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
 

@@ -11319,6 +11319,14 @@ public class OpenMetadataPropertyConverterBase
                 ((AnchorsProperties)beanProperties).setAnchorDomainName(this.removeAnchorDomainName(elementProperties));
                 ((AnchorsProperties)beanProperties).setAnchorScopeGUID(this.removeAnchorScopeGUID(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName))
+            {
+                beanProperties = new BusinessSignificantProperties();
+
+                ((BusinessSignificantProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
+                ((BusinessSignificantProperties)beanProperties).setScope(this.removeScope(elementProperties));
+                ((BusinessSignificantProperties)beanProperties).setBusinessCapability(this.removeBusinessCapability(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName))
             {
                 beanProperties = new CalculatedValueProperties();
@@ -12215,6 +12223,10 @@ public class OpenMetadataPropertyConverterBase
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DIGITAL_SUPPORT_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new DigitalSupportProperties();
+
+                ((DigitalSupportProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((DigitalSupportProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DISCOVERED_SCHEMA_TYPE_RELATIONSHIP.typeName))
             {

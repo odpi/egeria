@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
@@ -18,6 +19,7 @@ public class DigitalBusinessInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.DIGITAL_BUSINESS;
 
+    private final CollectionHandler collectionHandler;
 
 
     /**
@@ -59,7 +61,21 @@ public class DigitalBusinessInstance extends OMVSServiceInstance
                                                                                   localServerSecretsStoreCollection,
                                                                                   maxPageSize,
                                                                                   auditLog);
+
+        collectionHandler = new CollectionHandler(serverName,
+                                                  auditLog,
+                                                  myDescription.getViewServiceFullName(),
+                                                  openMetadataClient);
     }
 
 
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public CollectionHandler getCollectionHandler()
+    {
+        return collectionHandler;
+    }
 }

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.Publ
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.RequestResponseInterfaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessSignificantProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
@@ -51,6 +52,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AbstractConceptProperties.class, name = "AbstractConceptProperties"),
                 @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
                 @JsonSubTypes.Type(value = AnchorsProperties.class, name = "AnchorsProperties"),
+                @JsonSubTypes.Type(value = BusinessSignificantProperties.class, name = "BusinessSignificantProperties"),
                 @JsonSubTypes.Type(value = CalculatedValueProperties.class, name = "CalculatedValueProperties"),
                 @JsonSubTypes.Type(value = CampaignProperties.class, name = "CampaignProperties"),
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),

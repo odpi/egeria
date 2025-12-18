@@ -975,6 +975,213 @@ public class CollectionHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Link dependent business capabilities.
+     *
+     * @param userId                 userId of user making request
+     * @param businessCapabilityGUID          unique identifier of the business capability that is dependent on another
+     * @param supportingBusinessCapabilityGUID  unique identifier of the business capability that is supporting
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkBusinessCapabilityDependency(String                                 userId,
+                                                 String                                 businessCapabilityGUID,
+                                                 String                                 supportingBusinessCapabilityGUID,
+                                                 MakeAnchorOptions                      metadataSourceOptions,
+                                                 BusinessCapabilityDependencyProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName            = "linkBusinessCapabilityDependency";
+        final String end1GUIDParameterName = "businessCapabilityGUID";
+        final String end2GUIDParameterName = "supportingBusinessCapabilityGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(businessCapabilityGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(supportingBusinessCapabilityGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP.typeName,
+                                                        businessCapabilityGUID,
+                                                        supportingBusinessCapabilityGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach dependent business capabilities.
+     *
+     * @param userId                userId of user making request.
+     * @param businessCapabilityGUID          unique identifier of the business capability that is dependent on another
+     * @param supportingBusinessCapabilityGUID  unique identifier of the business capability that is supporting
+     * @param deleteOptions         options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachBusinessCapabilityDependency(String        userId,
+                                                   String        businessCapabilityGUID,
+                                                   String        supportingBusinessCapabilityGUID,
+                                                   DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "detachBusinessCapabilityDependency";
+
+        final String end1GUIDParameterName = "businessCapabilityGUID";
+        final String end2GUIDParameterName = "supportingBusinessCapabilityGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(businessCapabilityGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(supportingBusinessCapabilityGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP.typeName,
+                                                        businessCapabilityGUID,
+                                                        supportingBusinessCapabilityGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a business capability to an element that provides digital support.
+     *
+     * @param userId                 userId of user making request
+     * @param businessCapabilityGUID          unique identifier of the business capability
+     * @param elementGUID  unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDigitalSupport(String                   userId,
+                                   String                   businessCapabilityGUID,
+                                   String                   elementGUID,
+                                   MakeAnchorOptions        metadataSourceOptions,
+                                   DigitalSupportProperties relationshipProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName            = "linkDigitalSupport";
+        final String end1GUIDParameterName = "businessCapabilityGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(businessCapabilityGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DIGITAL_SUPPORT_RELATIONSHIP.typeName,
+                                                        businessCapabilityGUID,
+                                                        elementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a business capability from an element that provides digital support.
+     *
+     * @param userId                userId of user making request.
+     * @param businessCapabilityGUID          unique identifier of the business capability
+     * @param elementGUID  unique identifier of the element
+     * @param deleteOptions         options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDigitalSupport(String        userId,
+                                     String        businessCapabilityGUID,
+                                     String        elementGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "detachDigitalSupport";
+
+        final String end1GUIDParameterName = "businessCapabilityGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(businessCapabilityGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DIGITAL_SUPPORT_RELATIONSHIP.typeName,
+                                                        businessCapabilityGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Classify an element to indicate that it is significant to a particular business capability.
+     *
+     * @param userId                 userId of user making request.
+     * @param elementGUID    unique identifier of the element.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setBusinessSignificant(String                        userId,
+                                       String                        elementGUID,
+                                       BusinessSignificantProperties properties,
+                                       MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "setBusinessSignificant";
+        final String guidParameterName = "elementGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the business significant classification from the element.
+     *
+     * @param userId                 userId of user making request.
+     * @param elementGUID    unique identifier of the element.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearBusinessSignificance(String                userId,
+                                          String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "clearBusinessSignificance";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
      * Classify the collection to indicate that it is an editing collection - this means it is
      * a collection of element copies that will eventually be merged back into .
      *
@@ -1036,7 +1243,6 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                             OpenMetadataType.EDITING_COLLECTION_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
-
 
 
     /**

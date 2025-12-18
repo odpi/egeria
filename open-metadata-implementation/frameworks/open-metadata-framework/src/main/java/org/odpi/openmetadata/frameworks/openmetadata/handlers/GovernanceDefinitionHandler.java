@@ -471,7 +471,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach monitored resource to a notification type.
+     * Attach a monitored resource to a notification type.
      *
      * @param userId                        userId of user making request
      * @param notificationTypeGUID            unique identifier of the notification type
@@ -547,7 +547,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @param userId                        userId of user making request
      * @param notificationTypeGUID            unique identifier of the notification type
-     * @param elementGUID             unique identifier of the element to monitor
+     * @param elementGUID             unique identifier of the subscriber element
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -584,7 +584,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @param userId                      userId of user making request.
      * @param notificationTypeGUID            unique identifier of the notification type
-     * @param elementGUID             unique identifier of the element to monitor
+     * @param elementGUID             unique identifier of the subscriber element
      * @param deleteOptions               options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).

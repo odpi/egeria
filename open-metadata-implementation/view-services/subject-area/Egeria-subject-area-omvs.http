@@ -1,4 +1,6 @@
 # Egeria-subject-area-view-service
+# Manage the definition of a subject area
+# Subject Areas: https://egeria-project.org/concepts/subject-area/
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -21,7 +23,7 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Subject Area Definitions
+# Work with Subject Area Definitions - with governance officer
 # https://egeria-project.org/concepts/subject-area
 
 @subjectAreaGUID=add guid here
@@ -29,7 +31,7 @@ Content-Type: application/json
 @nestedSubjectAreaGUID=add guid here
 
 ###
-# @name createSubjectArea
+# @name createSubjectArea (governance officer)
 # Create a subject area.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions
 Authorization: Bearer {{token}}
@@ -37,11 +39,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -72,11 +69,16 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
-# @name createSubjectAreaFromTemplate
+# @name createSubjectAreaFromTemplate (governance officer)
 # Create a new metadata element to represent a subject area using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/from-template
 Authorization: Bearer {{token}}
@@ -84,11 +86,6 @@ Content-Type: application/json
 
 {
   "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -118,14 +115,19 @@ Content-Type: application/json
   "placeholderPropertyValues":  {
     "placeholder1" : "propertyValue1",
     "placeholder2" : "propertyValue2"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
-# @name updateSubjectArea
+# @name updateSubjectArea (governance officer)
 # Update the properties of a subject area.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{subjectAreaGUID}}/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -187,7 +189,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -197,14 +199,14 @@ Content-Type: application/json
 
 
 ###
-# @name deleteSubjectArea
+# @name deleteSubjectArea (governance officer)
 # Delete a subject area. Request body is optional.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -214,7 +216,7 @@ Content-Type: application/json
 
 
 ###
-# @name findAllSubjectAreas
+# @name findAllSubjectAreas (governance officer)
 # Retrieve the list of subject area metadata elements that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
@@ -222,15 +224,14 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "startsWith" : false,
-  "endsWith" : false,
-  "ignoreCase" : true,
+  "metadataElementTypeName": "SubjectAreaDefinition",
   "startFrom" : 0,
   "pageSize": 10
 }
 
+
 ###
-# @name findAllSubjectAreas - with full request body
+# @name findAllSubjectAreas - with full request body (governance officer)
 # Retrieve the list of subject area metadata elements that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
@@ -238,11 +239,19 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "metadataElementSubtypeNames": [],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
   "startFrom" : 0,
   "pageSize": 10,
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -254,14 +263,15 @@ Content-Type: application/json
 
 
 ###
-# @name findSubjectAreas
+# @name findSubjectAreas (governance officer)
 # Retrieve the list of subject area metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/sgovernance-definitions/by-search-string
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "SubjectAreaDefinition",
   "searchString" : "Add value here",
   "startsWith" : false,
   "endsWith" : false,
@@ -272,7 +282,7 @@ Content-Type: application/json
 
 
 ###
-# @name findSubjectAreas - with full request body
+# @name findSubjectAreas - with full request body (governance officer)
 # Retrieve the list of subject area metadata elements that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
@@ -281,11 +291,19 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Add value here",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "metadataElementSubtypeNames": [],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
   "startFrom" : 0,
   "pageSize": 10,
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -297,7 +315,7 @@ Content-Type: application/json
 
 ###
 
-# @name getSubjectAreasByName
+# @name getSubjectAreasByName (governance officer)
 # Returns the list of subject areas with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name
 Authorization: Bearer {{token}}
@@ -311,7 +329,7 @@ Content-Type: application/json
 
 ###
 
-# @name getSubjectAreasByName - with full request body
+# @name getSubjectAreasByName - with full request body (governance officer)
 # Returns the list of subject areas with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name
 Authorization: Bearer {{token}}
@@ -319,37 +337,52 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-   "filter" : "Add name here",
-   "metadataElementTypeName": "SubjectAreaDefinition",
-   "startFrom": 0,
-   "pageSize": 10,
-   "asOfTime" : "{{$isoTimestamp}}",
-   "effectiveTime" : "{{$isoTimestamp}}",
-   "forLineage" : false,
-   "forDuplicateProcessing" : false,
-   "limitResultsByStatus" : ["ACTIVE"],
-   "sequencingOrder" : "PROPERTY_ASCENDING",
-   "sequencingProperty" : "qualifiedName"
-
+  "filter" : "Add name here",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "metadataElementSubtypeNames": [],
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
-# @name getSubjectAreaByGUID
+# @name getSubjectAreaByGUID (governance officer)
 # Return the properties of a specific subject area.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{subjectAreaGUID}}/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-# @name getSubjectAreaByGUID - with request body
+# @name getSubjectAreaByGUID - with request body (governance officer)
 # Return the properties of a specific subject area.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{subjectAreaGUID}}/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "GetRequestBody",
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -357,23 +390,24 @@ Content-Type: application/json
 }
 
 ###
+# =====================================================================================================================
+# Work with subject area classifications
+# The subject area definitions are associated with the elements that are a part of the subject area using the
+# SubjectArea classification
 
 @elementGUID=add guid here
 
 ###
 # @name addElementToSubjectArea
 # Classify the element to assert that the definitions it represents are part of a subject area definition.
-#
-# Subject Areas: https://egeria-project.org/types/4/0425-Subject-Areas/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/subject-area-member
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/elements/{{elementGUID}}/subject-area-member
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
    "properties" : {
-       "class" : "SubjectAreaMemberProperties",
+       "class" : "SubjectAreaProperties",
        "subjectAreaName" : "Add subject area identifier here"
    },
    "externalSourceGUID": "Add guid here",
@@ -387,22 +421,17 @@ Content-Type: application/json
 ###
 # @name removeElementFromSubjectArea
 # Remove the subject area designation from the identified element.
-#
-# Subject Areas: https://egeria-project.org/types/4/0425-Subject-Areas/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/subject-area-member/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/elements/{{elementGUID}}/subject-area-member/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
-
-###
 
 ###

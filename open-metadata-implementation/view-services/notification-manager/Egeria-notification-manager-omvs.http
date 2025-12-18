@@ -1,4 +1,5 @@
 # Egeria-notification-manager-view-service
+## Sets up the definitions of the resources to monitor and the subscribers to receive notifications from.
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -17,6 +18,99 @@ Content-Type: application/json
 }
 
 > {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Notification Types
+# https://egeria-project.org/concepts/notification-type
+
+@notificationTypeGUID=add guid here
+@monitoredResourceGUID=add guid here
+@subscriberGUID=add guid here
+
+###
+# @name linkMonitoredResource
+# Attach a monitored resource to a notification type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/notification-manager/notification-types/{{notificationTypeGUID}}/monitored-resources/{{monitoredResourceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "MonitoredResourceProperties",
+    "label" : "",
+    "description" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachMonitoredResource
+# Detach a monitored resource from a notification type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/notification-manager/notification-types/{{notificationTypeGUID}}/monitored-resources/{{monitoredResourceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkNotificationSubscriber
+# Attach a subscriber to a notification type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/notification-manager/notification-types/{{notificationTypeGUID}}/notification-subscribers/{{subscriberGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "MonitoredResourceProperties",
+    "label" : "",
+    "description" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachNotificationSubscriber
+# Detach a subscriber from a notification type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/notification-manager/notification-types/{{notificationTypeGUID}}/notification-subscribers/{{subscriberGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
 
 

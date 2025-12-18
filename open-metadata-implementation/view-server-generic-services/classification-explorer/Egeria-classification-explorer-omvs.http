@@ -53,7 +53,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "returnSpecificLevel" : true,
@@ -77,7 +77,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "returnSpecificLevel" : true,
@@ -100,7 +100,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "returnSpecificLevel" : true,
@@ -124,7 +124,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "returnSpecificLevel" : true,
@@ -148,7 +148,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "returnSpecificLevel" : true,
@@ -172,7 +172,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "securityLabels" : [ "???" ],
@@ -202,7 +202,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -225,7 +225,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -247,7 +247,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "organizationGUID" : "????",
@@ -277,7 +277,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "expression" : "????",
@@ -308,7 +308,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
     "expression" : "????",
@@ -342,7 +342,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -363,7 +363,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -385,7 +385,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -407,7 +407,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -432,7 +432,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -453,7 +453,7 @@ Content-Type: application/json
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -479,7 +479,7 @@ Content-Type: application/json
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -500,7 +500,7 @@ Content-Type: application/json
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -526,7 +526,7 @@ Content-Type: application/json
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
@@ -547,7 +547,7 @@ Content-Type: application/json
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
 }

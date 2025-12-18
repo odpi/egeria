@@ -6,10 +6,22 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.OpenMetadataRootElementResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
+import org.odpi.openmetadata.viewservices.myprofile.ffdc.MyProfileErrorCode;
 import org.slf4j.LoggerFactory;
 
 
@@ -62,6 +74,111 @@ public class MyProfileRESTServices extends TokenController
             ActorProfileHandler client = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
 
             response.setElement(client.getActorProfileByUserId(userId, userId, null));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add the profile for this user.
+     *
+     * @param serverName name of the server instances for this request
+     * @param requestBody properties for the profile
+     *
+     * @return profile response object or null or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse addMyProfile(String                serverName,
+                                     NewElementRequestBody requestBody)
+    {
+        final String methodName = "addMyProfile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ActorProfileHandler actorProfileHandler = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            OpenMetadataRootElement actorProfile = actorProfileHandler.getActorProfileByUserId(userId, userId, null);
+
+            if (actorProfile != null)
+            {
+                throw new InvalidParameterException(MyProfileErrorCode.PROFILE_ALREADY_EXISTS.getMessageDefinition(userId),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    OpenMetadataProperty.USER_ID.name);
+            }
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ActorProfileProperties actorProfileProperties)
+                {
+                    UserIdentityHandler userIdentityHandler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+
+                    String profileGUID = actorProfileHandler.createActorProfile(userId,
+                                                                                requestBody,
+                                                                                requestBody.getInitialClassifications(),
+                                                                                actorProfileProperties,
+                                                                                requestBody.getParentRelationshipProperties());
+
+                    OpenMetadataRootElement userIdentity = userIdentityHandler.getUserIdentityByUserId(userId, userId, null);
+
+                    if (userIdentity == null)
+                    {
+                        UserIdentityProperties userIdentityProperties = new UserIdentityProperties();
+
+                        userIdentityProperties.setQualifiedName(actorProfileProperties.getQualifiedName() + "_userId");
+                        userIdentityProperties.setUserId(userId);
+
+                        NewElementOptions newElementOptions = new NewElementOptions(requestBody);
+
+                        newElementOptions.setAnchorGUID(profileGUID);
+                        newElementOptions.setParentAtEnd1(true);
+                        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName);
+
+                        userIdentityHandler.createUserIdentity(userId, newElementOptions, null, userIdentityProperties, null);
+
+                        response.setGUID(profileGUID);
+                    }
+                    else
+                    {
+                        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(requestBody);
+
+                        makeAnchorOptions.setMakeAnchor(true);
+
+                        userIdentityHandler.linkIdentityToProfile(userId,
+                                                                  userIdentity.getElementHeader().getGUID(),
+                                                                  profileGUID,
+                                                                  makeAnchorOptions,
+                                                                  null);
+                    }
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ActorProfileProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {
