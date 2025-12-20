@@ -400,7 +400,7 @@ public enum GovernanceServiceDefinition
     /**
      * A Watchdog Action Service that listens for changes to open metadata and awards karma points to the user making the change.
      */
-    KARMA_POINT_AWARDS("8b1285e4-bad3-416d-9f53-14f24b584ddf",
+    KARMA_POINT_AWARDS("1263739c-2c47-429b-be0d-4dec8e2765cbf",
                           "karma-points-awards-governance-service",
                           "A Watchdog Action Service that listens for changes to open metadata and awards karma points to the user making the change.",
                           new KarmaPointAwardsServiceProvider(),

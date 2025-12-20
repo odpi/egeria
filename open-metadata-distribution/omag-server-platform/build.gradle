@@ -194,6 +194,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:organization-insights').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }

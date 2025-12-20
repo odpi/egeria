@@ -30,6 +30,12 @@ public enum GovernanceActionTypeDefinition
                           "e1f5aa39-41d0-4894-aa6d-407fe1189fcd"),
 
     /**
+     * award-karma-points
+     */
+    AWARD_KARMA_POINTS("award-karma-points",
+                          "de681791-d978-4d5a-9828-6e19025e3a17"),
+
+    /**
      * provision-tabular-data-set
      */
     PROVISION_TABULAR("provision-tabular-data-set",

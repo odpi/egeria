@@ -4,20 +4,19 @@ package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
-import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 
@@ -2006,5 +2005,61 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
+    }
+
+
+    /**
+     * Create an engine action in REQUESTED state in the metadata store with all the relationships, so it is ready to execute.
+     * Nothing will happen until it moves to APPROVED state.
+     *
+     * @param qualifiedName unique name to give this governance action
+     * @param domainIdentifier governance domain associated with this action (0=ALL)
+     * @param displayName display name for this action
+     * @param description description for this action
+     * @param startTime when should this start?
+     * @param activityStatus status the the engine action should start in
+     * @param governanceEngineGUID guid of the governance engine that should execute the request
+     * @param governanceEngineName name of the governance engine that should execute the request
+     * @param requesterUserId userId of the original requester
+     * @param requestType request type to identify the governance service to run
+     * @param requestParameters properties to pass to the governance service
+     */
+    public void addEngineAction(String                qualifiedName,
+                                int                   domainIdentifier,
+                                String                displayName,
+                                String                description,
+                                Date                  startTime,
+                                ActivityStatus        activityStatus,
+                                String                governanceEngineGUID,
+                                String                governanceEngineName,
+                                String                requesterUserId,
+                                String                requestType,
+                                Map<String, String>   requestParameters)
+    {
+        final String methodName = "addEngineAction";
+
+        String actionTypeName = OpenMetadataType.ENGINE_ACTION.typeName;
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.START_TIME.name, startTime, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name, governanceEngineGUID, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.EXECUTOR_ENGINE_NAME.name, governanceEngineName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUESTER_USER_ID.name, requesterUserId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_TYPE.name, requestType, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTIVITY_STATUS.name, ActivityStatus.getOpenTypeGUID(), ActivityStatus.getOpenTypeName(), activityStatus.getOrdinal(), activityStatus.getName(), activityStatus.getDescription(), methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
+
+        List<Classification> entityClassifications = new ArrayList<>();
+
+        entityClassifications.add(this.getAnchorClassification(null, actionTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        archiveBuilder.addEntity(archiveHelper.getEntityDetail(actionTypeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               entityClassifications));
     }
 }

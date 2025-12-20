@@ -1646,77 +1646,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Review the contents of an instance graph returned from the real repository and set up the local provenance
-     * information if necessary.
-     *
-     * @param instanceGraph graph from real repository
-     * @return validated graph
-     */
-    private InstanceGraph  setLocalProvenanceInGraph(InstanceGraph   instanceGraph)
-    {
-        /*
-         * Always return a graph, even if empty
-         */
-        InstanceGraph  resultGraph = new InstanceGraph();
-
-        if (instanceGraph != null)
-        {
-            resultGraph.setEntities(setLocalProvenanceInEntityList(instanceGraph.getEntities()));
-            resultGraph.setRelationships(setLocalProvenanceInRelationshipList(instanceGraph.getRelationships()));
-        }
-
-        return resultGraph;
-    }
-
-
-    /**
-     * Review the contents of an instance graph returned from the real repository and set up the local provenance
-     * information if necessary.
-     *
-     * @param userId calling userId
-     * @param instanceGraph graph from real repository
-     * @return validated graph
-     * @throws UserNotAuthorizedException not able to retrieve types
-     */
-    private InstanceGraph  securityVerifyReadGraph(String          userId,
-                                                   InstanceGraph   instanceGraph) throws UserNotAuthorizedException
-    {
-        InstanceGraph              resultGraph = new InstanceGraph();
-
-        if (instanceGraph != null)
-        {
-            UserNotAuthorizedException savedException = null;
-
-            try
-            {
-                resultGraph.setEntities(securityVerifyReadEntityList(userId, instanceGraph.getEntities()));
-            } catch (UserNotAuthorizedException error)
-            {
-                savedException = error;
-            }
-
-            try
-            {
-                resultGraph.setRelationships(securityVerifyReadRelationshipList(userId, instanceGraph.getRelationships()));
-            } catch (UserNotAuthorizedException error)
-            {
-                savedException = error;
-            }
-
-            if ((resultGraph.getEntities() == null) && (resultGraph.getRelationships() == null))
-            {
-                if (savedException != null)
-                {
-                    throw savedException;
-                }
-            }
-
-        }
-        return resultGraph;
-    }
-
-
-    /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      * Notice that entities in DELETED state are returned by this call.
      *
@@ -3229,7 +3158,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     return;
                 }
             }
-            else if (entityDetail.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE)
+            else if ((entityDetail.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE) ||
+                     (entityDetail.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK))
             {
                 if (metadataCollectionId.equals(entityDetail.getReplicatedBy()))
                 {
@@ -3338,7 +3268,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     return relationship;
                 }
             }
-            else if (relationship.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE)
+            else if ((relationship.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE) ||
+                     (relationship.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK))
             {
                 if (metadataCollectionId.equals(relationship.getReplicatedBy()))
                 {

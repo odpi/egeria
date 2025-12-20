@@ -29,9 +29,9 @@ import java.util.UUID;
  */
 public abstract class ConnectorProviderBase extends ConnectorProvider implements AuditLoggingComponent
 {
-    private String               connectorClassName            = null;
-    protected List<String>       connectorInterfaces           = new ArrayList<>();
-    private ComponentDescription connectorComponentDescription = null;
+    protected String               connectorClassName            = null;
+    protected List<String>         connectorInterfaces           = new ArrayList<>();
+    protected ComponentDescription connectorComponentDescription = null;
 
     protected AuditLog      auditLog            = null;
     protected ConnectorType connectorTypeBean   = null;

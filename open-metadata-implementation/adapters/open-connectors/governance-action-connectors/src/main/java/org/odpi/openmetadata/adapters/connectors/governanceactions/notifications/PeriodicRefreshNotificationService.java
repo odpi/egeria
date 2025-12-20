@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.notification
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericWatchdogGuard;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -19,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Notif
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openwatchdog.GenericWatchdogActionListener;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,12 +109,12 @@ public class PeriodicRefreshNotificationService extends WatchdogActionServiceCon
                         try
                         {
                             List<String> outputGuards = new ArrayList<>();
-                            outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
+                            outputGuards.add(WatchdogActionGuard.MONITORING_COMPLETED.getName());
 
                             AuditLogMessageDefinition completionMessage = GovernanceActionConnectorsAuditCode.SERVICE_COMPLETED_SUCCESSFULLY.getMessageDefinition(watchdogActionServiceName);
                             auditLog.logMessage(methodName, completionMessage);
 
-                            watchdogContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(),
+                            watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_COMPLETED.getCompletionStatus(),
                                                                    outputGuards,
                                                                    null,
                                                                    null,
@@ -145,7 +145,7 @@ public class PeriodicRefreshNotificationService extends WatchdogActionServiceCon
             {
                 List<String> outputGuards = new ArrayList<>();
 
-                outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
+                outputGuards.add(WatchdogActionGuard.MONITORING_FAILED.getName());
 
                 AuditLogMessageDefinition completionMessage = GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
                                                                                                                                             error.getClass().getName(),
@@ -153,7 +153,7 @@ public class PeriodicRefreshNotificationService extends WatchdogActionServiceCon
                                                                                                                                             error.getMessage());
                 auditLog.logException(methodName, completionMessage, error);
 
-                watchdogContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(),
+                watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_FAILED.getCompletionStatus(),
                                                        outputGuards,
                                                        null,
                                                        null,
@@ -240,7 +240,7 @@ public class PeriodicRefreshNotificationService extends WatchdogActionServiceCon
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
+                    outputGuards.add(WatchdogActionGuard.MONITORING_FAILED.getName());
 
                     AuditLogMessageDefinition completionMessage = GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
                                                                                                                                                 error.getClass().getName(),
@@ -248,7 +248,7 @@ public class PeriodicRefreshNotificationService extends WatchdogActionServiceCon
                                                                                                                                                 error.getMessage());
                     auditLog.logException(methodName, completionMessage, error);
 
-                    watchdogContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(),
+                    watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_FAILED.getCompletionStatus(),
                                                            outputGuards,
                                                            null,
                                                            null,

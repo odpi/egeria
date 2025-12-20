@@ -3870,6 +3870,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                             auditLog,
                                                             methodName);
 
+        TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, instanceParameterName, entity.getType().getTypeDefGUID(), methodName);
+
+        repositoryValidator.validatePropertiesForType(repositoryName,
+                                                      instanceParameterName,
+                                                      typeDef,
+                                                      entity.getProperties(),
+                                                      methodName);
+
         repositoryStore.addEntityToStore(entity);
     }
 
@@ -4199,6 +4207,25 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validate parameters
          */
         super.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+
+        /*
+         * validate repository and instance
+         */
+        parentConnector.validateRepositoryIsActive(methodName);
+        repositoryValidator.validateReferenceInstanceHeader(repositoryName,
+                                                            metadataCollectionId,
+                                                            instanceParameterName,
+                                                            relationship,
+                                                            auditLog,
+                                                            methodName);
+
+        TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, instanceParameterName, relationship.getType().getTypeDefGUID(), methodName);
+
+        repositoryValidator.validatePropertiesForType(repositoryName,
+                                                      instanceParameterName,
+                                                      typeDef,
+                                                      relationship.getProperties(),
+                                                      methodName);
 
         repositoryStore.addEntityProxyToStore(relationship.getEntityOneProxy());
         repositoryStore.addEntityProxyToStore(relationship.getEntityTwoProxy());

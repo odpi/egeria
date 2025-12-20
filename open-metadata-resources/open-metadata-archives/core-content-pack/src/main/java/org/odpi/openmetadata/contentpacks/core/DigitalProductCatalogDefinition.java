@@ -6,7 +6,7 @@ package org.odpi.openmetadata.contentpacks.core;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
- * Describes the integration groups in the core content packs.
+ * Describes the digital product catalogs in the core content packs.
  */
 public enum DigitalProductCatalogDefinition
 {

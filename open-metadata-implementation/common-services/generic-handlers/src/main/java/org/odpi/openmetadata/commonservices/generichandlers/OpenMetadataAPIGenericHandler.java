@@ -7530,7 +7530,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                                                 name,
                                                                                                                 duplicateEntities.toString(),
                                                                                                                 methodName,
-                                                                                                                nameParameterName,
+                                                                                                                namePropertyName,
                                                                                                                 serverName),
                                           this.getClass().getName(),
                                           methodName);
@@ -7667,7 +7667,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                                                 name,
                                                                                                                 duplicateEntities.toString(),
                                                                                                                 methodName,
-                                                                                                                nameParameterName,
+                                                                                                                namePropertyName,
                                                                                                                 serverName),
                                           this.getClass().getName(),
                                           methodName);

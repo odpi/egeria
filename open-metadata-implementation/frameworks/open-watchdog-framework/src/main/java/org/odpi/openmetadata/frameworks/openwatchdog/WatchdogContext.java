@@ -101,7 +101,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchdogEve
                            OpenMetadataClient            openMetadataClient,
                            OpenGovernanceClient          openGovernanceClient,
                            GovernanceCompletionInterface governanceCompletionClient,
-                           WatchdogEventInterface watchdogEventClient,
+                           WatchdogEventInterface        watchdogEventClient,
                            AuditLog                      auditLog,
                            int                           maxPageSize,
                            DeleteMethod                  deleteMethod,
