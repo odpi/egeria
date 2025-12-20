@@ -30,7 +30,26 @@ public enum OrgInsightAuditCode implements AuditLogMessageSet
                          "The connector is unable to process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
+    /**
+     * ORGANIZATION-INSIGHTS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.
+     * The exception's message is: {2}
+     */
+    UNABLE_TO_SET_COMPLETION_STATUS("ORGANIZATION-INSIGHTS-0016",
+                                    AuditLogRecordSeverityLevel.INFO,
+                                    "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
+                                    "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
+                                    "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error."),
 
+    /**
+     * ORGANIZATION-INSIGHTS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the
+     * governance context.  The exception's message is: {2}
+     */
+    UNABLE_TO_REGISTER_LISTENER("ORGANIZATION-INSIGHTS-0017",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
+                                "The governance action service throws a GovernanceServiceException.",
+                                "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
+                                        "and follow its instructions."),
     ;
 
     private final String                     logMessageId;

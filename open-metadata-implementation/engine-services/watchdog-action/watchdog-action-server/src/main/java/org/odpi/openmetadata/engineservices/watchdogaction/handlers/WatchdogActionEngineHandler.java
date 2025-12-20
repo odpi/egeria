@@ -39,6 +39,7 @@ import java.util.Map;
 public class WatchdogActionEngineHandler extends GovernanceEngineHandler implements WatchdogEventSupportingEngine
 {
     private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
+    private final GovernanceContextClient   governanceContextClient; /* Initialized in constructor */
 
     private final OpenMetadataClient        openMetadataClient; /* Initialized in constructor */
 
@@ -78,6 +79,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
 
         this.openMetadataClient        = openMetadataClient;
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
+        this.governanceContextClient   = governanceContextClient;
 
         governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
     }
@@ -131,49 +133,29 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
 
         if (governanceServiceCache != null)
         {
+            String notificationTypeGUID = null;
+
             if ((actionTargetElements != null) && (! actionTargetElements.isEmpty()))
             {
-                String notificationTypeGUID = getNotificationTypeGUIDFromActionTargets(actionTargetElements,
-                                                                                       governanceServiceCache.getGovernanceServiceName(),
-                                                                                       governanceRequestType,
-                                                                                       engineActionGUID);
+                notificationTypeGUID = getNotificationTypeGUIDFromActionTargets(actionTargetElements,
+                                                                                governanceServiceCache.getGovernanceServiceName(),
+                                                                                governanceRequestType,
+                                                                                engineActionGUID);
 
-                if (notificationTypeGUID != null)
-                {
-                    WatchdogActionServiceHandler watchdogActionServiceHandler = this.getWatchdogActionServiceHandler(notificationTypeGUID,
-                                                                                                                     governanceRequestType,
-                                                                                                                     requestParameters,
-                                                                                                                     actionTargetElements,
-                                                                                                                     engineActionGUID,
-                                                                                                                     requesterUserId,
-                                                                                                                     requestedStartDate,
-                                                                                                                     governanceServiceCache);
-
-                    super.startServiceExecutionThread(engineActionGUID,
-                                                      watchdogActionServiceHandler,
-                                                      governanceServiceCache.getGovernanceServiceName() + notificationTypeGUID + new Date());
-                }
-                else
-                {
-                    final String guidParameterName = "notificationTypeGUID";
-
-                    throw new InvalidParameterException(WatchdogActionErrorCode.NO_TARGET_NOTIFICATION_TYPE.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
-                                                                                                                                 governanceRequestType,
-                                                                                                                                 engineActionGUID),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        guidParameterName);
-                }
             }
-            else
-            {
-                throw new InvalidParameterException(WatchdogActionErrorCode.NO_TARGET_NOTIFICATION_TYPE.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
-                                                                                                                             governanceRequestType,
-                                                                                                                             engineActionGUID),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    "assetGUID");
-            }
+
+            WatchdogActionServiceHandler watchdogActionServiceHandler = this.getWatchdogActionServiceHandler(notificationTypeGUID,
+                                                                                                             governanceRequestType,
+                                                                                                             requestParameters,
+                                                                                                             actionTargetElements,
+                                                                                                             engineActionGUID,
+                                                                                                             requesterUserId,
+                                                                                                             requestedStartDate,
+                                                                                                             governanceServiceCache);
+
+            super.startServiceExecutionThread(engineActionGUID,
+                                              watchdogActionServiceHandler,
+                                              governanceServiceCache.getGovernanceServiceName() + notificationTypeGUID + new Date());
         }
         else
         {
@@ -318,7 +300,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
                                                               openMetadataClient,
                                                               engineActionClient,
                                                               engineActionClient,
-                                                              engineActionClient,
+                                                              governanceContextClient,
                                                               auditLog,
                                                               maxPageSize,
                                                               governanceServiceCache.getDeleteMethod(),

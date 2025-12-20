@@ -1549,6 +1549,34 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
 
     /**
+     * Loop through the engine action definitions creating the specified engine action.
+     */
+    protected void addEngineActions(ContentPackDefinition contentPackDefinition)
+    {
+        for (EngineActionDefinition actionDefinition : EngineActionDefinition.values())
+        {
+            if (contentPackDefinition.equals(actionDefinition.getContentPackDefinition()))
+            {
+                archiveHelper.setGUID(actionDefinition.getQualifiedName(),
+                                      actionDefinition.getGUID());
+
+                archiveHelper.addEngineAction(actionDefinition.getQualifiedName(),
+                                              actionDefinition.getDomainIdentifier(),
+                                              actionDefinition.getDisplayName(),
+                                              actionDefinition.getDescription(),
+                                              new Date(),
+                                              actionDefinition.getActivityStatus(),
+                                              actionDefinition.getGovernanceEngineGUID(),
+                                              actionDefinition.getGovernanceEngineName(),
+                                              actionDefinition.getRequesterUserId(),
+                                              actionDefinition.getRequestType(),
+                                              actionDefinition.getRequestParameters());
+            }
+        }
+    }
+
+
+    /**
      * Create the default governance engines
      *
      * @param contentPackDefinition content pack being processed

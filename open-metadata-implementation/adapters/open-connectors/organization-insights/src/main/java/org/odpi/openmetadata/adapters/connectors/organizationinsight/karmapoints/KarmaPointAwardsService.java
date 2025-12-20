@@ -4,21 +4,30 @@
 package org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints;
 
 import org.odpi.openmetadata.adapters.connectors.organizationinsight.ffdc.OrgInsightAuditCode;
+import org.odpi.openmetadata.adapters.connectors.organizationinsight.ffdc.OrgInsightErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ActorProfileClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ContributionRecordClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openwatchdog.GenericWatchdogActionListener;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,9 +39,85 @@ import java.util.Map;
  */
 public class KarmaPointAwardsService extends WatchdogActionServiceConnector
 {
+    private final GenericWatchdogActionListener listener = new GenericWatchdogActionListener(this);
+
     private final UserToContributionRecordMap userToContributionRecordMap = new UserToContributionRecordMap();
 
     private static final Logger log = LoggerFactory.getLogger(KarmaPointAwardsService.class);
+
+    /**
+     * Indicates that the watchdog action service is completely configured and can begin processing.
+     * This is where the function of the watchdog action service is implemented.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() in your version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the watchdog action service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
+     */
+    @Override
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
+        super.start();
+
+        final String methodName = "start";
+
+        try
+        {
+            watchdogContext.registerListener(listener,
+                                             null,
+                                             null,
+                                             null);
+        }
+        catch (Exception error)
+        {
+            try
+            {
+                List<String> outputGuards = new ArrayList<>();
+
+                outputGuards.add(WatchdogActionGuard.MONITORING_FAILED.getName());
+
+                AuditLogMessageDefinition completionMessage = OrgInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            methodName,
+                                                                                                                            error.getMessage());
+                auditLog.logException(methodName, completionMessage, error);
+
+                watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_FAILED.getCompletionStatus(),
+                                                       outputGuards,
+                                                       null,
+                                                       null,
+                                                       completionMessage);
+            }
+            catch (Exception nestedError)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          OrgInsightAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                   nestedError.getClass().getName(),
+                                                                                                                   nestedError.getMessage()),
+                                          nestedError);
+                }
+            }
+
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OrgInsightAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
+                                      error);
+            }
+
+            throw new GovernanceServiceException(OrgInsightErrorCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                                                 error.getClass().getName(),
+                                                 methodName,
+                                                 error);
+        }
+    }
+
 
     /**
      * This method is called each time a requested event is received from the open metadata repositories.

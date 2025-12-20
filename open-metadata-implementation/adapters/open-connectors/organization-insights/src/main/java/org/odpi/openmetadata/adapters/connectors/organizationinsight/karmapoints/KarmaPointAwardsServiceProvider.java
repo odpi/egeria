@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceProvider;
 import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
-import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionTarget;
 
 
 /**
@@ -28,25 +27,20 @@ public class KarmaPointAwardsServiceProvider extends WatchdogActionServiceProvid
     private static final String connectorTypeDescription   = "A Watchdog Action Service that detects changes to elements, identifies the user who is performing the update and awards them a karma point for their contribution.";
     private static final String connectorWikiPage          = "https://egeria-project.org/connectors/watchdog/karma-point-awards-service/";
 
-    /*
-     * This is the name of the connector that this provider will create
-     */
-    private static final String connectorClassName = KarmaPointAwardsService.class.getName();
 
 
     public KarmaPointAwardsServiceProvider()
     {
         super();
-        super.setConnectorClassName(connectorClassName);
+        super.connectorClassName = KarmaPointAwardsService.class.getName();
 
-        supportedRequestTypes = null;
-        supportedRequestParameters = null;
-        supportedActionTargetTypes = WatchdogActionTarget.getNotificationActionTargetTypes();
-        producedGuards = WatchdogActionGuard.getSimpleWatchdogGuardTypes();
-
-        super.setConnectorClassName(connectorClassName);
+        super.supportedRequestTypes = null;
+        super.supportedRequestParameters = null;
+        super.supportedActionTargetTypes = null;
+        super.producedGuards = WatchdogActionGuard.getSimpleWatchdogGuardTypes();
 
         ConnectorType connectorType = new ConnectorType();
+
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorTypeQualifiedName);
         connectorType.setDisplayName(connectorTypeDisplayName);
@@ -69,6 +63,6 @@ public class KarmaPointAwardsServiceProvider extends WatchdogActionServiceProvid
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
-        super.setConnectorComponentDescription(componentDescription);
+        super.connectorComponentDescription = componentDescription;
     }
 }

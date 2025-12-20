@@ -1411,7 +1411,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Nothing will happen until it moves to APPROVED state.
      *
      * @param userId caller's userId
-     * @param qualifiedName unique identifier to give this governance action
+     * @param qualifiedName unique name to give this engine action
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
@@ -2204,13 +2204,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           serverName);
 
                     /*
-                     * The provenance from the engine acton is used on this request so that engine actions from
+                     * The provenance from the engine action is used on this request so that engine actions from
                      * archives can be claimed.
                      */
                     updateBeanInRepository(userId,
                                            entity.getMetadataCollectionId(),
                                            entity.getMetadataCollectionName(),
-                                           engineActionGUID,
+                                           entity,
                                            guidParameterName,
                                            OpenMetadataType.ENGINE_ACTION.typeGUID,
                                            OpenMetadataType.ENGINE_ACTION.typeName,

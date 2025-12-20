@@ -488,10 +488,14 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateMandatoryName(requiredUserId, nameParameterName, methodName);
 
+        GetOptions userIdGetOptions = new GetOptions(getOptions);
+
+        userIdGetOptions.setMetadataElementTypeName(OpenMetadataType.USER_IDENTITY.typeName);
+
         OpenMetadataElement userIdentityElement = openMetadataClient.getMetadataElementByUniqueName(userId,
                                                                                                     requiredUserId,
                                                                                                     OpenMetadataProperty.USER_ID.name,
-                                                                                                    getOptions);
+                                                                                                    userIdGetOptions);
 
         if (userIdentityElement != null)
         {

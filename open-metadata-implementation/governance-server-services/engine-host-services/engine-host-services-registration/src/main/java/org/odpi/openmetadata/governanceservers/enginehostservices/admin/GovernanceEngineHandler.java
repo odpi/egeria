@@ -16,7 +16,6 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHos
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
-import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
 
 import java.util.*;
 
@@ -213,6 +212,7 @@ public abstract class GovernanceEngineHandler
             this.governanceEngineProperties = governanceEngineElement.getProperties();
 
             refreshAllServiceConfig();
+            startMissedEngineActions();
         }
     }
 

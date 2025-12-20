@@ -51,7 +51,7 @@ public class OrganizationInsightArchiveWriter extends ContentPackBaseArchiveWrit
         /*
          * Create the engine actions that will drive the ongoing creation of insight.
          */
-        //super.createEngineActions(ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK);
+        super.addEngineActions(ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK);
 
         /*
          * Define the solution components for this solution.
