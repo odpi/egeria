@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NewExternalIdRequestBody extends MetadataSourceOptions
 {
-    private ExternalIdProperties                  properties             = null;
+    private ExternalIdProperties                  properties                   = null;
     private Map<String, ClassificationProperties> initialClassifications       = null;
     private ExternalIdLinkProperties              parentRelationshipProperties = null;
 

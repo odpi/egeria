@@ -23,6 +23,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ACTOR_MANAGER;
 
     private final ViewServiceClientMap<ActorProfileHandler>         actorProfileHandlerMap;
+    private final ViewServiceClientMap<ContributionRecordHandler>   contributionRecordHandlerMap;
     private final ViewServiceClientMap<ActorRoleHandler>            actorRoleHandlerMap;
     private final ViewServiceClientMap<UserIdentityHandler>         userIdentityHandlerMap;
     private final ViewServiceClientMap<ContactDetailsHandler>       contactDetailsHandlerMap;
@@ -63,13 +64,20 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                             myDescription.getViewServiceFullName(),
                                                             myDescription.getViewServiceURLMarker(),
                                                             maxPageSize);
+        this.contributionRecordHandlerMap = new ViewServiceClientMap<>(ContributionRecordHandler.class,
+                                                                       serverName,
+                                                                       auditLog,
+                                                                       activeViewServices,
+                                                                       myDescription.getViewServiceFullName(),
+                                                                       myDescription.getViewServiceURLMarker(),
+                                                                       maxPageSize);
         this.actorRoleHandlerMap = new ViewServiceClientMap<>(ActorRoleHandler.class,
-                                                         serverName,
-                                                         auditLog,
-                                                         activeViewServices,
-                                                         myDescription.getViewServiceFullName(),
-                                                         myDescription.getViewServiceURLMarker(),
-                                                         maxPageSize);
+                                                              serverName,
+                                                              auditLog,
+                                                              activeViewServices,
+                                                              myDescription.getViewServiceFullName(),
+                                                              myDescription.getViewServiceURLMarker(),
+                                                              maxPageSize);
         this.userIdentityHandlerMap = new ViewServiceClientMap<>(UserIdentityHandler.class,
                                                             serverName,
                                                             auditLog,
@@ -109,6 +117,24 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                                                 PropertyServerException
     {
         return actorProfileHandlerMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
+     * contribution record artifacts.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public ContributionRecordHandler getContributionRecordHandler(String urlMarker,
+                                                                  String methodName) throws InvalidParameterException,
+                                                                                            PropertyServerException
+    {
+        return contributionRecordHandlerMap.getClient(urlMarker, methodName);
     }
 
 

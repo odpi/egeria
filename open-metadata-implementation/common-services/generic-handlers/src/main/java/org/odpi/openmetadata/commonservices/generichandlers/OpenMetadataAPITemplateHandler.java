@@ -197,6 +197,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         String              beanAnchorTypeName         = null; /* value of the anchor to set into the new beans */
         String              beanAnchorDomainName       = null; /* value of the anchor to set into the new beans */
         String              beanAnchorScopeGUID        = null; /* value of the anchor to set into the new beans */
+        List<String>        beanZoneMembership         = null; /* value of the anchor to set into the new beans */
 
         /**
          * Standard toString for logging
@@ -215,6 +216,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                     ", beanAnchorGUID='" + beanAnchorGUID + '\'' +
                     ", beanAnchorTypeName='" + beanAnchorTypeName + '\'' +
                     ", beanAnchorDomainName='" + beanAnchorDomainName + '\'' +
+                    ", beanZoneMembership='" + beanZoneMembership + '\'' +
                     '}';
         }
     }
@@ -363,6 +365,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                     templateProgress.beanAnchorTypeName = templateAnchorEntity.getType().getTypeDefName();
                     templateProgress.beanAnchorDomainName = this.getDomainName(templateAnchorEntity);
                     templateProgress.beanAnchorScopeGUID = this.getAnchorScopeGUIDFromAnchorsClassification(templateAnchorEntity, methodName);
+                    templateProgress.beanZoneMembership = this.getZoneMembershipFromClassification(templateAnchorEntity, methodName);
                 }
 
                 templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
@@ -379,6 +382,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                            templateProgress.beanAnchorTypeName,
                                            templateProgress.beanAnchorDomainName,
                                            templateProgress.beanAnchorScopeGUID,
+                                           templateProgress.beanZoneMembership,
                                            methodName);
             }
 

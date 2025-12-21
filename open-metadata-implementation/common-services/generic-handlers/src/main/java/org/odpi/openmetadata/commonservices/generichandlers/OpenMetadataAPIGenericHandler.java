@@ -2195,11 +2195,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             /*
              * A null anchorGUID meant that the element is its own Anchor.
              */
-            propertyBuilder.setAnchors(userId, null, entityTypeName, entityDomainName, entityScopeGUID, methodName);
-
             List<String> governanceZones = securityVerifier.getDefaultZones(propertyBuilder.getInitialGovernanceZones(), userId, entityTypeName, methodName);
 
             propertyBuilder.setGovernanceZones(userId, governanceZones, methodName);
+            propertyBuilder.setAnchors(userId, null, entityTypeName, entityDomainName, entityScopeGUID, governanceZones, methodName);
         }
         else if (propertyBuilder.isClassificationSet(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
         {
@@ -2705,6 +2704,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                    forDuplicateProcessing,
                                                    effectiveTime,
                                                    methodName);
+
+                super.refreshAnchorsClassification(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   originalEntity.getGUID(),
+                                                   entityGUIDParameterName,
+                                                   originalEntity.getType().getTypeDefName(),
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
             }
             else
             {
@@ -2722,7 +2732,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
-     * Update the zones for a specific asset to the list set up in publish zones.
+     * Update the zones for a specific asset to the list set up in default zones.
      *
      * @param userId calling user
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
@@ -2796,6 +2806,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                    OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                                    builder.getZoneMembershipProperties(elementZones, methodName),
                                                    true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+
+                super.refreshAnchorsClassification(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   originalEntity.getGUID(),
+                                                   entityGUIDParameterName,
+                                                   originalEntity.getType().getTypeDefName(),
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    effectiveTime,

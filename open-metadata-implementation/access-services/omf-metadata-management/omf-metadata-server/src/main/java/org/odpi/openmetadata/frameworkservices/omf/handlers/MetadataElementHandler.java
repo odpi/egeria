@@ -2038,6 +2038,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                metadataElementTypeName,
                                this.getDomainName(metadataElementTypeName),
                                anchorScopeGUID,
+                               builder.getInitialGovernanceZones(),
                                methodName);
         }
 
@@ -2224,7 +2225,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
+     * Update the zone membership to increase its visibility.  The publishZonesare defined in the user directory.
      *
      * @param userId caller's userId
      * @param externalSourceGUID      unique identifier of the software capability that owns this element

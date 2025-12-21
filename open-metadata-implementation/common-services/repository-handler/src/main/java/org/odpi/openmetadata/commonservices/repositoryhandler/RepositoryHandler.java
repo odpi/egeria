@@ -1174,17 +1174,17 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException calling user does not have appropriate permissions
      * @throws PropertyServerException    internal error
      */
-    private Classification getClassificationForEntity(String  userId,
-                                                      String  entityGUID,
-                                                      String  entityGUIDParameterName,
-                                                      String  entityTypeName,
-                                                      String  classificationName,
-                                                      boolean forLineage,
-                                                      boolean forDuplicateProcessing,
-                                                      Date    effectiveTime,
-                                                      String  methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public Classification getClassificationForEntity(String  userId,
+                                                     String  entityGUID,
+                                                     String  entityGUIDParameterName,
+                                                     String  entityTypeName,
+                                                     String  classificationName,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         /*
          * This call verifies that the entity is usable by the caller.
