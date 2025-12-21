@@ -538,6 +538,349 @@ public class ActorManagerRESTServices extends TokenController
     }
 
 
+
+    /* =====================================================================================================================
+     * A contribution record defines the level of contribution of a particular user.
+     */
+
+    /**
+     * Creates a new contribution record and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element where the contribution record is located
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createContributionRecord(String                   serverName,
+                                                 String                   urlMarker,
+                                                 String                   elementGUID,
+                                                 NewAttachmentRequestBody requestBody)
+    {
+        final String   methodName = "createContributionRecord";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            if (requestBody != null)
+            {
+                ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof ContributionRecordProperties contributionRecordProperties)
+                {
+                    if (requestBody.getParentRelationshipProperties() instanceof ContributionProperties contributionProperties)
+                    {
+                        response.setGUID(handler.addContributionRecordToElement(userId, elementGUID, requestBody, requestBody.getInitialClassifications(), contributionRecordProperties, contributionProperties));
+                    }
+                    else if (requestBody.getParentRelationshipProperties() == null)
+                    {
+                        response.setGUID(handler.addContributionRecordToElement(userId, elementGUID, requestBody, requestBody.getInitialClassifications(), contributionRecordProperties, null));
+                    }
+                    else
+                    {
+                        restExceptionHandler.handleInvalidPropertiesObject(ContributionProperties.class.getName(), methodName);
+                    }
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ContributionRecordProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ContributionRecordProperties.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update an existing contribution record.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param contributionRecordGUID  unique identifier for the contribution record to change.
+     * @param urlMarker  view service URL marker
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   updateContributionRecord(String                   serverName, 
+                                                   String                   urlMarker, 
+                                                   String                   contributionRecordGUID, 
+                                                   UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateContributionRecord";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ContributionRecordProperties contributionRecordProperties)
+                {
+                    ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
+
+                    handler.updateContributionRecord(userId, contributionRecordGUID, requestBody, contributionRecordProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ContributionRecordProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, UpdateElementRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Removes a contribution record from the repository.  All the relationships to referenceables are lost.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param contributionRecordGUID   unique id for the contribution record.
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteContributionRecord(String            serverName,
+                                                 String            urlMarker,
+                                                 String            contributionRecordGUID,
+                                                 DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteContributionRecord";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.deleteContributionRecord(userId, contributionRecordGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of contribution record metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findContributionRecords(String                  serverName, 
+                                                                    String                  urlMarker, 
+                                                                    SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findContributionRecords";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findContributionRecords(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findContributionRecords(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of contribution record metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getContributionRecordsByName(String            serverName, 
+                                                                         String            urlMarker, 
+                                                                         FilterRequestBody requestBody)
+    {
+        final String methodName = "getContributionRecordsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getContributionRecordsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+    
+
+    /**
+     * Retrieve the contribution record metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param contributionRecordGUID unique identifier of the requested metadata element
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getContributionRecordByGUID(String         serverName, 
+                                                                       String         urlMarker, 
+                                                                       String         contributionRecordGUID, 
+                                                                       GetRequestBody requestBody)
+    {
+        final String methodName = "getContributionRecordByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElement(handler.getContributionRecordByGUID(userId, contributionRecordGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /* =====================================================================================================================
+     * A role describes a set of responsibilities.
+     */
+
     /**
      * Create an actor role.
      *
@@ -1938,7 +2281,7 @@ public class ActorManagerRESTServices extends TokenController
 
 
     /**
-     * Attach a actor to an element such as a team, project, community, that defines its scope.
+     * Attach an actor to an element such as a team, project, community, that defines its scope.
      *
      * @param serverName       name of called server
      * @param urlMarker        view service URL marker
@@ -2000,7 +2343,7 @@ public class ActorManagerRESTServices extends TokenController
                 handler.linkAssignmentScope(userId,
                                             scopeElementGUID,
                                             actorGUID,
-                                            requestBody,
+                                            null,
                                             null);
             }
         }
@@ -2318,7 +2661,7 @@ public class ActorManagerRESTServices extends TokenController
                 handler.linkContactDetails(userId,
                                             elementGUID,
                                             contactDetailsGUID,
-                                            requestBody,
+                                            null,
                                             null);
             }
         }

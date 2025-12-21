@@ -411,6 +411,7 @@ public class OpenMetadataAPIGenericBuilder
                        anchorIdentifiers.anchorTypeName,
                        anchorIdentifiers.anchorDomainName,
                        anchorIdentifiers.anchorScopeGUID,
+                       anchorIdentifiers.zoneMembership,
                        methodName);
         }
     }
@@ -425,15 +426,17 @@ public class OpenMetadataAPIGenericBuilder
      * @param anchorTypeName unique name of the anchor entity's type
      * @param anchorDomainName unique name of the anchor entity's domain
      * @param anchorScopeGUID unique identifier of the anchor's scope
+     * @param zoneMembership zone membership from the anchor
      * @param methodName calling method
      * @throws PropertyServerException a null anchors GUID has been supplied
      */
-    public void setAnchors(String userId,
-                           String anchorGUID,
-                           String anchorTypeName,
-                           String anchorDomainName,
-                           String anchorScopeGUID,
-                           String methodName) throws PropertyServerException
+    public void setAnchors(String       userId,
+                           String       anchorGUID,
+                           String       anchorTypeName,
+                           String       anchorDomainName,
+                           String       anchorScopeGUID,
+                           List<String> zoneMembership,
+                           String       methodName) throws PropertyServerException
     {
         final String localMethodName = "setAnchors";
 
@@ -460,7 +463,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
-                                                                                  getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName));
+                                                                                  getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, zoneMembership, methodName));
             newClassifications.put(classification.getName(), classification);
         }
         catch (Exception error)
@@ -480,11 +483,12 @@ public class OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    InstanceProperties getAnchorsProperties(String anchorGUID,
-                                            String anchorTypeName,
-                                            String anchorDomainName,
-                                            String anchorScopeGUID,
-                                            String methodName)
+    InstanceProperties getAnchorsProperties(String       anchorGUID,
+                                            String       anchorTypeName,
+                                            String       anchorDomainName,
+                                            String       anchorScopeGUID,
+                                            List<String> zoneMembership,
+                                            String       methodName)
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -509,6 +513,12 @@ public class OpenMetadataAPIGenericBuilder
                                                                   OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
                                                                   anchorScopeGUID,
                                                                   methodName);
+
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                       zoneMembership,
+                                                                       methodName);
 
         return properties;
     }

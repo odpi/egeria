@@ -46,7 +46,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
               auditLog,
               serviceName,
               openMetadataClient,
-              OpenMetadataType.CONTACT_DETAILS.typeName);
+              OpenMetadataType.CONTRIBUTION_RECORD.typeName);
     }
 
 
@@ -110,6 +110,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setAnchorGUID(elementGUID);
+        newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setParentGUID(elementGUID);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName);
         newElementOptions.setParentAtEnd1(true);

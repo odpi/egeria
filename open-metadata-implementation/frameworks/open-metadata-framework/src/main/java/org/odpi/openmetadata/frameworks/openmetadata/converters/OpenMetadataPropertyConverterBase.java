@@ -3310,19 +3310,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return ordinal or 0 for not specified
      */
-    protected int removeKarmaPoints(ElementProperties elementProperties)
+    protected long removeKarmaPoints(ElementProperties elementProperties)
     {
         final String methodName = "removeKarmaPoints";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.KARMA_POINTS.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.KARMA_POINTS.name,
+                                                     elementProperties,
+                                                     methodName);
         }
 
-        return 0;
+        return 0L;
     }
 
 

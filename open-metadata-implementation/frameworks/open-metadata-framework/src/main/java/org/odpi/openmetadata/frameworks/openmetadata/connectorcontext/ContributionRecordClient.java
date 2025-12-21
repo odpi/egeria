@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ContributionRecordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -72,7 +74,7 @@ public class ContributionRecordClient extends ConnectorContextClientBase
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String addContributionRecordToElement(String                               elementGUID,
+    public String addContributionRecordToElement(String                                elementGUID,
                                                  MetadataSourceOptions                 metadataSourceOptions,
                                                  Map<String, ClassificationProperties> initialClassifications,
                                                  ContributionRecordProperties          properties,
@@ -89,6 +91,49 @@ public class ContributionRecordClient extends ConnectorContextClientBase
 
         return contributionRecordGUID;
     }
+
+
+    /**
+     * Create a new metadata element to represent a contribution record using an existing element as a template.
+     * The template defines additional classifications and relationships that should be added to the new contribution record.
+     *
+     * @param userId                       calling user
+     * @param templateOptions details of the element to create
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createContributionRecordFromTemplate(String                     userId,
+                                                       TemplateOptions            templateOptions,
+                                                       String                     templateGUID,
+                                                       EntityProperties           replacementProperties,
+                                                       Map<String, String>        placeholderProperties,
+                                                       RelationshipBeanProperties parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
+    {
+        String contributionRecordGUID = contributionRecordHandler.createContributionRecordFromTemplate(userId,
+                                                                                                       templateOptions,
+                                                                                                       templateGUID,
+                                                                                                       replacementProperties,
+                                                                                                       placeholderProperties,
+                                                                                                       parentRelationshipProperties);
+
+        if (parentContext.getIntegrationReportWriter() != null)
+        {
+            parentContext.getIntegrationReportWriter().reportElementCreation(contributionRecordGUID);
+        }
+
+        return contributionRecordGUID;
+    }
+
 
 
     /**

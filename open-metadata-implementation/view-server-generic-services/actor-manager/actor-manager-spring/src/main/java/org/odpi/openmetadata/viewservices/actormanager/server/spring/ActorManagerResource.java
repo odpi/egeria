@@ -166,7 +166,7 @@ public class ActorManagerResource
                                            @PathVariable
                                            String itProfileGUID,
                                            @RequestBody (required = false)
-                                               NewRelationshipRequestBody requestBody)
+                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkAssetToProfile(serverName, urlMarker, assetGUID, itProfileGUID, requestBody);
     }
@@ -202,7 +202,7 @@ public class ActorManagerResource
                                                @PathVariable
                                                String itProfileGUID,
                                                @RequestBody (required = false)
-                                                   DeleteRelationshipRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssetFromProfile(serverName, urlMarker, assetGUID, itProfileGUID, requestBody);
     }
@@ -235,7 +235,7 @@ public class ActorManagerResource
                                            @PathVariable
                                            String                    actorProfileGUID,
                                            @RequestBody (required = false)
-                                               DeleteElementRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteActorProfile(serverName, urlMarker, actorProfileGUID, requestBody);
     }
@@ -328,11 +328,200 @@ public class ActorManagerResource
                                                                  @PathVariable
                                                                  String             actorProfileGUID,
                                                                  @RequestBody (required = false)
-                                                                     GetRequestBody requestBody)
+                                                                 GetRequestBody requestBody)
     {
         return restAPI.getActorProfileByGUID(serverName, urlMarker, actorProfileGUID, requestBody);
     }
 
+    /* =====================================================================================================================
+     * A contribution record describes the contribution of the linked profile.
+     */
+
+
+    /**
+     * Creates a new contributionRecord for an element and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actorProfileGUID unique identifier of the profile to link the contribution record to
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actor-profiles/{actorProfileGUID}/contribution-records")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createContributionRecord",
+            description="Creates a new contributionRecord for an element and returns the unique identifier for it.",
+            externalDocs=@ExternalDocumentation(description="Contribution Records",
+                    url="https://egeria-project.org/concepts/contribution-record/"))
+
+    public GUIDResponse createContributionRecord(@PathVariable String            serverName,
+                                                 @PathVariable String                        urlMarker,
+                                                 @PathVariable String            actorProfileGUID,
+                                                 @RequestBody NewAttachmentRequestBody requestBody)
+    {
+        return restAPI.createContributionRecord(serverName, urlMarker, actorProfileGUID, requestBody);
+    }
+
+
+    /**
+     * Update an existing contribution record.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param contributionRecordGUID  unique identifier for the contribution record to change.
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/contribution-records/{contributionRecordGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateContributionRecord",
+            description="Update an existing contribution record.",
+            externalDocs=@ExternalDocumentation(description="Contribution Records",
+                    url="https://egeria-project.org/concepts/contribution-record/"))
+
+
+    public VoidResponse   updateContributionRecord(@PathVariable String                         serverName,
+                                                   @PathVariable String                        urlMarker,
+                                                   @PathVariable String                         contributionRecordGUID,
+                                                   @RequestBody UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateContributionRecord(serverName, urlMarker, contributionRecordGUID, requestBody);
+    }
+
+
+    /**
+     * Removes a contribution record from the repository.  All the relationships to referenceables are lost.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param contributionRecordGUID   unique id for the contribution record.
+     * @param requestBody  delete request body.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+
+    @PostMapping(path = "/contribution-records/{contributionRecordGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteContributionRecord",
+            description="Removes a contribution record from the repository.",
+            externalDocs=@ExternalDocumentation(description="Contribution Records",
+                    url="https://egeria-project.org/concepts/contribution-record/"))
+
+    public VoidResponse   deleteContributionRecord(@PathVariable String          serverName,
+                                                   @PathVariable String                        urlMarker,
+                                                   @PathVariable String          contributionRecordGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteContributionRecord(serverName, urlMarker, contributionRecordGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of contribution record metadata elements that contain the search string.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param requestBody search string and effective time.
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/contribution-records/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findContributionRecords",
+            description="Retrieve the list of contribution record metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Contribution Records",
+                    url="https://egeria-project.org/concepts/contribution-record/"))
+
+    public OpenMetadataRootElementsResponse findContributionRecords(@PathVariable String                  serverName,
+                                                                    @PathVariable String                        urlMarker,
+                                                                    @RequestBody  (required = false)
+                                                                    SearchStringRequestBody              requestBody)
+    {
+        return restAPI.findContributionRecords(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of contribution record metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/contribution-records/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getContributionRecordsByName",
+            description="Retrieve the list of contribution record metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
+            externalDocs=@ExternalDocumentation(description="Contribution Records",
+                    url="https://egeria-project.org/concepts/contribution-record/"))
+
+    public OpenMetadataRootElementsResponse getContributionRecordsByName(@PathVariable String          serverName,
+                                                                         @PathVariable String            urlMarker,
+                                                                         @RequestBody(required = false)  FilterRequestBody requestBody)
+    {
+        return restAPI.getContributionRecordsByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve the contribution record metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param contributionRecordGUID unique identifier of the requested metadata element
+     * @param requestBody optional effective time
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/contribution-records/{contributionRecordGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getContributionRecordByGUID",
+            description="Retrieve the contribution record metadata element with the supplied unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Contribution Records",
+                    url="https://egeria-project.org/concepts/contribution-record/"))
+
+    public OpenMetadataRootElementResponse getContributionRecordByGUID(@PathVariable String                        serverName,
+                                                                       @PathVariable String                        urlMarker,
+                                                                       @PathVariable String                        contributionRecordGUID,
+                                                                       @RequestBody(required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getContributionRecordByGUID(serverName, urlMarker, contributionRecordGUID, requestBody);
+    }
+
+
+    /* ===============================================================================
+     * A role describes a set of relationships
+     */
 
     /**
      * Create a actor role.
@@ -457,7 +646,7 @@ public class ActorManagerResource
                                                 @PathVariable
                                                 String personProfileGUID,
                                                 @RequestBody (required = false)
-                                                    NewRelationshipRequestBody requestBody)
+                                                NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPersonRoleToProfile(serverName, urlMarker, personRoleGUID, personProfileGUID, requestBody);
     }
@@ -493,7 +682,7 @@ public class ActorManagerResource
                                                     @PathVariable
                                                     String personProfileGUID,
                                                     @RequestBody (required = false)
-                                                        DeleteRelationshipRequestBody requestBody)
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPersonRoleFromProfile(serverName, urlMarker, personRoleGUID, personProfileGUID, requestBody);
     }
@@ -530,7 +719,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String teamProfileGUID,
                                               @RequestBody (required = false)
-                                                  NewRelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkTeamRoleToProfile(serverName, urlMarker, teamRoleGUID, teamProfileGUID, requestBody);
     }
@@ -566,7 +755,7 @@ public class ActorManagerResource
                                                   @PathVariable
                                                   String teamProfileGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRelationshipRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachTeamRoleFromProfile(serverName, urlMarker, teamRoleGUID, teamProfileGUID, requestBody);
     }
@@ -602,7 +791,7 @@ public class ActorManagerResource
                                                    @PathVariable
                                                    String itProfileGUID,
                                                    @RequestBody (required = false)
-                                                       NewRelationshipRequestBody requestBody)
+                                                   NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkITProfileRoleToProfile(serverName, urlMarker, itProfileRoleGUID, itProfileGUID, requestBody);
     }
@@ -638,7 +827,7 @@ public class ActorManagerResource
                                                        @PathVariable
                                                        String itProfileGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRelationshipRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachITProfileRoleFromProfile(serverName, urlMarker, itProfileRoleGUID, itProfileGUID, requestBody);
     }
@@ -671,7 +860,7 @@ public class ActorManagerResource
                                         @PathVariable
                                         String                    actorRoleGUID,
                                         @RequestBody (required = false)
-                                            DeleteElementRequestBody requestBody)
+                                        DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteActorRole(serverName, urlMarker, actorRoleGUID, requestBody);
     }
@@ -764,7 +953,7 @@ public class ActorManagerResource
                                                               @PathVariable
                                                               String             actorRoleGUID,
                                                               @RequestBody (required = false)
-                                                                  GetRequestBody requestBody)
+                                                              GetRequestBody requestBody)
     {
         return restAPI.getActorRoleByGUID(serverName, urlMarker, actorRoleGUID, requestBody);
     }
@@ -893,7 +1082,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String profileGUID,
                                               @RequestBody (required = false)
-                                                  NewRelationshipRequestBody requestBody)
+                                              NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkIdentityToProfile(serverName, urlMarker, userIdentityGUID, profileGUID, requestBody);
     }
@@ -929,7 +1118,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String                     profileGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRelationshipRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachProfileIdentity(serverName, urlMarker, userIdentityGUID, profileGUID, requestBody);
     }
@@ -962,7 +1151,7 @@ public class ActorManagerResource
                                                    @PathVariable
                                                    String                     userIdentityGUID,
                                                    @RequestBody (required = false)
-                                                       NewClassificationRequestBody requestBody)
+                                                   NewClassificationRequestBody requestBody)
     {
         return restAPI.addSecurityGroupMembership(serverName, urlMarker, userIdentityGUID, requestBody);
     }
@@ -1060,7 +1249,7 @@ public class ActorManagerResource
                                            @PathVariable
                                            String                    userIdentityGUID,
                                            @RequestBody (required = false)
-                                               DeleteElementRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteUserIdentity(serverName, urlMarker, userIdentityGUID, requestBody);
     }
@@ -1101,7 +1290,7 @@ public class ActorManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-      * @param requestBody string to find in the properties
+     * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1154,7 +1343,7 @@ public class ActorManagerResource
                                                                  @PathVariable
                                                                  String             userIdentityGUID,
                                                                  @RequestBody (required = false)
-                                                                     GetRequestBody requestBody)
+                                                                 GetRequestBody requestBody)
     {
         return restAPI.getUserIdentityByGUID(serverName, urlMarker, userIdentityGUID, requestBody);
     }
@@ -1181,10 +1370,10 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contact-method"))
 
     public GUIDResponse createContactDetails(@PathVariable
-                                            String                               serverName,
+                                             String                               serverName,
                                              @PathVariable String             urlMarker,
                                              @RequestBody (required = false)
-                                            NewElementRequestBody requestBody)
+                                             NewElementRequestBody requestBody)
     {
         return restAPI.createContactDetails(serverName, urlMarker, requestBody);
     }
@@ -1212,10 +1401,10 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contact-method"))
 
     public GUIDResponse createContactDetailsFromTemplate(@PathVariable
-                                                        String              serverName,
+                                                         String              serverName,
                                                          @PathVariable String             urlMarker,
                                                          @RequestBody (required = false)
-                                                        TemplateRequestBody requestBody)
+                                                         TemplateRequestBody requestBody)
     {
         return restAPI.createContactDetailsFromTemplate(serverName, urlMarker, requestBody);
     }
@@ -1243,12 +1432,12 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contact-method"))
 
     public BooleanResponse updateContactDetails(@PathVariable
-                                               String                                  serverName,
+                                                String                                  serverName,
                                                 @PathVariable String             urlMarker,
                                                 @PathVariable
-                                               String                                  contactDetailsGUID,
-                                               @RequestBody (required = false)
-                                               UpdateElementRequestBody requestBody)
+                                                String                                  contactDetailsGUID,
+                                                @RequestBody (required = false)
+                                                UpdateElementRequestBody requestBody)
     {
         return restAPI.updateContactDetails(serverName, urlMarker, contactDetailsGUID, requestBody);
     }
@@ -1277,11 +1466,11 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contact-method"))
 
     public VoidResponse linkContactDetails(@PathVariable String                  serverName,
-                                            @PathVariable String             urlMarker,
+                                           @PathVariable String             urlMarker,
                                            @PathVariable String                  elementGUID,
-                                            @PathVariable String                  contactDetailsGUID,
-                                            @RequestBody (required = false)
-                                            NewRelationshipRequestBody requestBody)
+                                           @PathVariable String                  contactDetailsGUID,
+                                           @RequestBody (required = false)
+                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkContactDetails(serverName, urlMarker, elementGUID, contactDetailsGUID, requestBody);
     }
@@ -1310,12 +1499,12 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contact-method"))
 
     public VoidResponse detachContactDetails(@PathVariable
-                                              String                    serverName,
-                                              @PathVariable String             urlMarker,
-                                              @PathVariable String                  elementGUID,
-                                              @PathVariable String                  contactDetailsGUID,
-                                              @RequestBody (required = false)
-                                              DeleteRelationshipRequestBody requestBody)
+                                             String                    serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable String                  elementGUID,
+                                             @PathVariable String                  contactDetailsGUID,
+                                             @RequestBody (required = false)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachContactDetails(serverName, urlMarker, elementGUID, contactDetailsGUID, requestBody);
     }
@@ -1343,12 +1532,12 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contact-method"))
 
     public VoidResponse deleteContactDetails(@PathVariable
-                                            String                    serverName,
+                                             String                    serverName,
                                              @PathVariable String             urlMarker,
                                              @PathVariable
-                                            String                    contactDetailsGUID,
-                                            @RequestBody (required = false)
-                                            DeleteElementRequestBody requestBody)
+                                             String                    contactDetailsGUID,
+                                             @RequestBody (required = false)
+                                             DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteContactDetails(serverName, urlMarker, contactDetailsGUID, requestBody);
     }
@@ -1438,9 +1627,9 @@ public class ActorManagerResource
     public OpenMetadataRootElementResponse getContactDetailsByGUID(@PathVariable String             serverName,
                                                                    @PathVariable String             urlMarker,
                                                                    @PathVariable
-                                                                  String             contactDetailsGUID,
-                                                                  @RequestBody (required = false)
-                                                                  GetRequestBody requestBody)
+                                                                   String             contactDetailsGUID,
+                                                                   @RequestBody (required = false)
+                                                                   GetRequestBody requestBody)
     {
         return restAPI.getContactDetailsByGUID(serverName, urlMarker, contactDetailsGUID, requestBody);
     }
@@ -1512,7 +1701,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String actorGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRelationshipRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssignmentScope(serverName, urlMarker, scopeElementGUID, actorGUID, requestBody);
     }

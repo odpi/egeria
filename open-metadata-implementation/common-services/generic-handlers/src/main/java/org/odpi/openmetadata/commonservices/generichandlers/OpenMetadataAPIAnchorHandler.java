@@ -14,12 +14,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,14 +70,15 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
     public static class AnchorIdentifiers
     {
         public String anchorGUID = null;
-        String anchorTypeName    = null;
-        String anchorDomainName  = null;
-        String anchorScopeGUID   = null;
+        String       anchorTypeName   = null;
+        String       anchorDomainName = null;
+        String       anchorScopeGUID  = null;
+        List<String> zoneMembership   = null;
     }
 
     /**
-     * Retrieve the anchorGUID property from the Anchors classification if present.  A null is returned if the Anchors classification
-     * is missing, or the property is missing from the classification or is null.
+     * Retrieve the anchorGUID property and related values from the Anchors classification if present.
+     * A null is returned if the Anchors classification is missing, or it has no properties.
      *
      * @param connectToEntity entity containing the classifications
      * @param methodName calling method
@@ -124,6 +129,11 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                                                             anchorsClassification.getProperties(),
                                                                                             methodName);
 
+                    anchorIdentifiers.zoneMembership = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                               OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                               anchorsClassification.getProperties(),
+                                                                                               methodName);
+
                     if (anchorIdentifiers.anchorGUID == null)
                     {
                         /*
@@ -135,6 +145,31 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                          * derive the Anchors classification if it is missing.
                          */
                         anchorIdentifiers.anchorGUID = connectToEntity.getGUID();
+                    }
+
+                    /*
+                     * If the ZoneMembership classification is set then add it to the anchor.  This allows for
+                     * efficient security evaluation.
+                     */
+                    try
+                    {
+                        Classification zoneMembershipClassification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                                   connectToEntity,
+                                                                                                                   OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                                   methodName);
+                        if (zoneMembershipClassification != null)
+                        {
+                            anchorIdentifiers.zoneMembership = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                                       OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                                       zoneMembershipClassification.getProperties(),
+                                                                                                       methodName);
+                        }
+                    }
+                    catch (ClassificationErrorException noAnchorsClassification)
+                    {
+                        /*
+                         * No ZoneMembership Classification - this is not an error.
+                         */
                     }
 
                     /*
@@ -173,6 +208,42 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         }
 
         return anchorIdentifiers;
+    }
+
+
+    /**
+     * Retrieve the anchorGUID property and related values from the Anchors classification if present.
+     * A null is returned if the Anchors classification is missing, or it has no properties.
+     *
+     * @param connectToEntity entity containing the classifications
+     * @param methodName calling method
+     * @return anchorGUID or null
+     */
+    List<String> getZoneMembershipFromClassification(EntitySummary connectToEntity,
+                                                     String methodName)
+    {
+        try
+        {
+            Classification zoneMembershipClassification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                       connectToEntity,
+                                                                                                       OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                       methodName);
+            if (zoneMembershipClassification != null)
+            {
+                return repositoryHelper.getStringArrayProperty(serviceName,
+                                                               OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                               zoneMembershipClassification.getProperties(),
+                                                                                           methodName);
+            }
+        }
+        catch (ClassificationErrorException noAnchorsClassification)
+        {
+            /*
+             * No ZoneMembership Classification - this is not an error.
+             */
+        }
+
+        return null;
     }
 
 
@@ -230,6 +301,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                        parentEntity.getType().getTypeDefName(),
                                        this.getDomainName(parentEntity),
                                        null,
+                                       this.getZoneMembershipFromClassification(parentEntity, methodName),
                                        methodName);
                 }
             }
@@ -291,6 +363,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                        anchorEntity.getType().getTypeDefName(),
                                        this.getDomainName(anchorEntity),
                                        anchorScopeGUID,
+                                       this.getZoneMembershipFromClassification(anchorEntity, methodName),
                                        methodName);
                 }
                 else
@@ -300,6 +373,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                        anchorEntity.getType().getTypeDefName(),
                                        this.getDomainName(anchorEntity),
                                        anchors.anchorScopeGUID,
+                                       anchors.zoneMembership,
                                        methodName);
                 }
 
@@ -1333,9 +1407,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
     }
 
 
-
-
-
     /**
      * Walk the graph to locate the anchor for an annotation review.  AnnotationReviews are attached to annotations which have levels of nesting
      * and eventually anchored to an asset via an OpenDiscoveryAnalysisReport.   The asset is the anchor.
@@ -1702,6 +1773,175 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         anchorIdentifiers.anchorDomainName = OpenMetadataType.GLOSSARY_TERM.typeName;
 
         return anchorIdentifiers;
+    }
+
+
+    /**
+     * Locate all of the elements that are anchored to this entity and update their Anchors classification
+     * to match this entity and their anchor.  This is used when something like the anchorScopeGUID or zoneMembership
+     * changes.  The assumption is that changes to the anchor element have already occurred.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param entityGUID unique identifier for the asset to update
+     * @param entityGUIDParameterName parameter name supplying entityGUID
+     * @param entityTypeName expected type of entity
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException guid or userId is null or this is not an anchor entity
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void refreshAnchorsClassification(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  entityGUID,
+                                             String  entityGUIDParameterName,
+                                             String  entityTypeName,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        /*
+         * Retrieve the latest version of the classification from the anchor element.
+         */
+        Classification anchorsClassification = repositoryHandler.getClassificationForEntity(userId,
+                                                                                            entityGUID,
+                                                                                            entityGUIDParameterName,
+                                                                                            entityTypeName,
+                                                                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            effectiveTime,
+                                                                                            methodName);
+
+        if (anchorsClassification != null)
+        {
+            int startFrom = 0;
+            int pageSize  = 100;
+
+            List<EntityDetail> retrievedEntities = this.getAnchoredEntities(userId, entityGUID, startFrom, pageSize, methodName);
+
+            while (retrievedEntities != null)
+            {
+                for (EntityDetail anchoredEntity : retrievedEntities)
+                {
+                    final String anchoredGUIDParameterName = "anchoredEntityGUID";
+
+                    if (anchoredEntity != null)
+                    {
+                        repositoryHandler.reclassifyEntity(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           anchoredEntity.getGUID(),
+                                                           anchoredGUIDParameterName,
+                                                           anchoredEntity.getType().getTypeDefName(),
+                                                           OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                           OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                           null,
+                                                           anchorsClassification.getProperties(),
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
+                                                           methodName);
+                    }
+                }
+
+                startFrom += pageSize;
+                retrievedEntities = this.getAnchoredEntities(userId, entityGUID, startFrom, pageSize, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Retrieve the list of entities that are anchored to an element.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the anchor
+     * @param startingFrom where in the paging sequence
+     * @param pageSize maximum results
+     * @param methodName calling method
+     * @return list of entities or null if there are no more
+     * @throws PropertyServerException problem with the repository
+     * @throws UserNotAuthorizedException security problem
+     */
+    public List<EntityDetail> getAnchoredEntities(String  userId,
+                                                  String  anchorGUID,
+                                                  int     startingFrom,
+                                                  int     pageSize,
+                                                  String  methodName) throws PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorGUID,
+                                                                                     OpenMetadataProperty.ANCHOR_GUID.name);
+
+        return repositoryHandler.findEntities(userId,
+                                              OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                              null,
+                                              null,
+                                              null,
+                                              searchClassifications,
+                                              null,
+                                              null,
+                                              SequencingOrder.GUID,
+                                              false,
+                                              false,
+                                              startingFrom,
+                                              pageSize,
+                                              null,
+                                              methodName);
+    }
+
+
+
+    /**
+     * Set up the search criteria to retrieve entities based on values in the Anchors classification
+     *
+     * @param contextValue value of the search
+     * @param anchorPropertyName the property to match it against in the Anchors classification
+     * @return search classification structure
+     */
+    private SearchClassifications getAnchorSearchClassifications(String contextValue,
+                                                                 String anchorPropertyName)
+    {
+        SearchClassifications         searchClassifications            = new SearchClassifications();
+        List<ClassificationCondition> classificationConditions         = new ArrayList<>();
+        ClassificationCondition       classificationCondition          = new ClassificationCondition();
+        SearchProperties              classificationSearchProperties   = new SearchProperties();
+        List<PropertyCondition>       classificationPropertyConditions = new ArrayList<>();
+        PropertyCondition             classificationPropertyCondition  = new PropertyCondition();
+        PrimitivePropertyValue        classificationPropertyValue      = new PrimitivePropertyValue();
+
+        classificationPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        classificationPropertyValue.setPrimitiveValue(contextValue);
+        classificationPropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        classificationPropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        classificationPropertyCondition.setProperty(anchorPropertyName);
+        classificationPropertyCondition.setOperator(PropertyComparisonOperator.EQ);
+        classificationPropertyCondition.setValue(classificationPropertyValue);
+        classificationPropertyConditions.add(classificationPropertyCondition);
+        classificationSearchProperties.setMatchCriteria(MatchCriteria.ALL);
+        classificationSearchProperties.setConditions(classificationPropertyConditions);
+
+        classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+        classificationCondition.setMatchProperties(classificationSearchProperties);
+        classificationConditions.add(classificationCondition);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+        searchClassifications.setConditions(classificationConditions);
+
+        return searchClassifications;
     }
 
 
@@ -2119,7 +2359,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                              OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                              ClassificationOrigin.ASSIGNED,
                                              null,
-                                             builder.getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName),
+                                             builder.getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, this.getZoneMembershipFromClassification(anchoredElement, methodName), methodName),
                                              forLineage,
                                              forDuplicateProcessing,
                                              effectiveTime,
@@ -2136,7 +2376,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
                                                OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                null,
-                                               builder.getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUID, methodName),
+                                               builder.getAnchorsProperties(anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, anchorIdentifiers.anchorDomainName, anchorIdentifiers.anchorScopeGUID, anchorIdentifiers.zoneMembership, methodName),
                                                forLineage,
                                                forDuplicateProcessing,
                                                effectiveTime,

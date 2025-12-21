@@ -765,6 +765,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
                                           OpenMetadataType.ASSET.typeName,
                                           null,
+                                          null,
                                           methodName);
 
                 String processInstanceGUID = this.createBeanInRepository(userId,

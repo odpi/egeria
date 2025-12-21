@@ -70,7 +70,7 @@ public enum SequencingOrder
     CREATION_DATE_OLDEST (3, "Creation Date (Oldest First)",    "Order by creation date, oldest first."),
 
     /**
-     * Order by last update date, most recently updated first."
+     * Order by last update date, most recently updated first.
      */
     LAST_UPDATE_RECENT   (4, "Last Update Date (Recent First)", "Order by last update date, most recently updated first."),
 

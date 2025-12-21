@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 
 import java.util.Map;
@@ -19,17 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = NewFeedbackRequestBody.class, name = "NewFeedbackRequestBody"),
-        })
 public class NewAttachmentRequestBody extends MetadataSourceOptions
 {
-    private OpenMetadataRootProperties            properties             = null;
-    private Map<String, ClassificationProperties> initialClassifications = null;
+    private OpenMetadataRootProperties            properties                   = null;
+    private Map<String, ClassificationProperties> initialClassifications       = null;
+    private RelationshipProperties                parentRelationshipProperties = null;
+
 
     /**
      * Default constructor
@@ -52,6 +50,7 @@ public class NewAttachmentRequestBody extends MetadataSourceOptions
         {
             this.properties = template.getProperties();
             this.initialClassifications = template.getInitialClassifications();
+            this.parentRelationshipProperties = template.getParentRelationshipProperties();
         }
     }
 
@@ -100,6 +99,30 @@ public class NewAttachmentRequestBody extends MetadataSourceOptions
     }
 
 
+
+    /**
+     * Return any properties to include in parent relationship.
+     *
+     * @return relationship properties
+     */
+    public RelationshipProperties getParentRelationshipProperties()
+    {
+        return parentRelationshipProperties;
+    }
+
+
+    /**
+     * Set up any properties to include in parent relationship.
+     *
+     * @param parentRelationshipProperties relationship properties
+     */
+    public void setParentRelationshipProperties(RelationshipProperties parentRelationshipProperties)
+    {
+        this.parentRelationshipProperties = parentRelationshipProperties;
+    }
+
+
+
     /**
      * JSON-style toString.
      *
@@ -108,9 +131,10 @@ public class NewAttachmentRequestBody extends MetadataSourceOptions
     @Override
     public String toString()
     {
-        return "NewFeedbackRequestBody{" +
+        return "NewAttachmentRequestBody{" +
                 "properties=" + properties +
                 ", initialClassifications=" + initialClassifications +
+                ", parentRelationshipProperties=" + parentRelationshipProperties +
                 "} " + super.toString();
     }
 
@@ -137,7 +161,8 @@ public class NewAttachmentRequestBody extends MetadataSourceOptions
             return false;
         }
         return Objects.equals(properties, that.properties) &&
-                Objects.equals(initialClassifications, that.initialClassifications);
+                Objects.equals(initialClassifications, that.initialClassifications) &&
+                Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties);
     }
 
 
@@ -149,6 +174,6 @@ public class NewAttachmentRequestBody extends MetadataSourceOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, initialClassifications);
+        return Objects.hash(super.hashCode(), properties, initialClassifications, parentRelationshipProperties);
     }
 }
