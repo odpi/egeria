@@ -25,7 +25,7 @@ public class KeyStoreFileProperties extends DataFileProperties
     public KeyStoreFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.KEY_STORE_FILE.typeName);
+        super.typeName = OpenMetadataType.KEY_STORE_FILE.typeName;
     }
 
 

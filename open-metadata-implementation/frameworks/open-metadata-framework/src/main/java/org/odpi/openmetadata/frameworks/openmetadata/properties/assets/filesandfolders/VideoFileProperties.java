@@ -25,7 +25,7 @@ public class VideoFileProperties extends MediaFileProperties
     public VideoFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VIDEO_FILE.typeName);
+        super.typeName = OpenMetadataType.VIDEO_FILE.typeName;
     }
 
 

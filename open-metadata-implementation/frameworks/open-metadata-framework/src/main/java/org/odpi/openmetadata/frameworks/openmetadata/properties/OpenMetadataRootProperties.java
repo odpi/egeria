@@ -33,8 +33,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class OpenMetadataRootProperties extends EntityProperties
 {
-    private String               typeName             = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
-    private Map<String, Object>  extendedProperties   = null;
+    protected String               typeName             = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+    private   Map<String, Object>  extendedProperties   = null;
 
     /**
      * Default constructor

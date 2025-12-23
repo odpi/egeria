@@ -25,7 +25,7 @@ public class PrimitiveSchemaTypeProperties extends SimpleSchemaTypeProperties
     public PrimitiveSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName;
     }
 
 

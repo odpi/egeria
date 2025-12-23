@@ -33,7 +33,7 @@ public class OwnershipProperties extends ClassificationBeanProperties
     public OwnershipProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName;
     }
 
 

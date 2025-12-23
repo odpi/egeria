@@ -30,7 +30,7 @@ public class ControlFlowProperties extends LineageRelationshipProperties
     public ControlFlowProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName;
     }
 
 

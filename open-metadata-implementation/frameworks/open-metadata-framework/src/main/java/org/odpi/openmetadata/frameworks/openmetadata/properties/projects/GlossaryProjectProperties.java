@@ -26,7 +26,7 @@ public class GlossaryProjectProperties extends ClassificationBeanProperties
     public GlossaryProjectProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GLOSSARY_PROJECT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.GLOSSARY_PROJECT_CLASSIFICATION.typeName;
     }
 
 

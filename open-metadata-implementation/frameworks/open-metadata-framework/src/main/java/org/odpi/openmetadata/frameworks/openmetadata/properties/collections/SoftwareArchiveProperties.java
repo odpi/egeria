@@ -26,7 +26,7 @@ public class SoftwareArchiveProperties extends CollectionProperties
     public SoftwareArchiveProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOFTWARE_ARCHIVE.typeName);
+        super.typeName = OpenMetadataType.SOFTWARE_ARCHIVE.typeName;
     }
 
 

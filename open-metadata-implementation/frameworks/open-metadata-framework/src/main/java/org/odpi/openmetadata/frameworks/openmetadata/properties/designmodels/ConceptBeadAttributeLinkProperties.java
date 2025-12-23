@@ -32,7 +32,7 @@ public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProper
     public ConceptBeadAttributeLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_BEAD_ATTRIBUTE_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_BEAD_ATTRIBUTE_LINK_RELATIONSHIP.typeName;
     }
 
 

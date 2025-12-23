@@ -26,7 +26,7 @@ public class VirtualRelationalTableProperties extends InformationViewProperties
     public VirtualRelationalTableProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName);
+        super.typeName = OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName;
     }
 
 

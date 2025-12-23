@@ -25,7 +25,7 @@ public class AssociatedAnnotationProperties extends RelationshipBeanProperties
     public AssociatedAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName;
     }
 
 

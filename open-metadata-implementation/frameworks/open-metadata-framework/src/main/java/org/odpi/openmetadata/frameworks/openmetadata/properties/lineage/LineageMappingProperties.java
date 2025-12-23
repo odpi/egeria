@@ -27,7 +27,7 @@ public class LineageMappingProperties extends LineageRelationshipProperties
     public LineageMappingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName;
     }
 
 

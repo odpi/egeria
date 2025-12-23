@@ -32,7 +32,7 @@ public class TeamRoleProperties extends ActorRoleProperties
     public TeamRoleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TEAM_ROLE.typeName);
+        super.typeName = OpenMetadataType.TEAM_ROLE.typeName;
     }
 
 

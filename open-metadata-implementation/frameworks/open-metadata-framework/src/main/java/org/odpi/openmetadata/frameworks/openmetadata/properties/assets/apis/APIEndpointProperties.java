@@ -26,7 +26,7 @@ public class APIEndpointProperties extends RelationshipBeanProperties
     public APIEndpointProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName;
     }
 
 

@@ -30,7 +30,7 @@ public class CloudProviderProperties extends ClassificationBeanProperties
     public CloudProviderProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION.typeName;
     }
 
 

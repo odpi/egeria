@@ -27,7 +27,7 @@ public class ReportDependencyProperties extends LabeledRelationshipProperties
     public ReportDependencyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName;
     }
 
 

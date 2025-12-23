@@ -24,7 +24,7 @@ public class GovernanceRepresentativeProperties extends GovernanceRoleProperties
     public GovernanceRepresentativeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_REPRESENTATIVE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_REPRESENTATIVE.typeName;
     }
 
 

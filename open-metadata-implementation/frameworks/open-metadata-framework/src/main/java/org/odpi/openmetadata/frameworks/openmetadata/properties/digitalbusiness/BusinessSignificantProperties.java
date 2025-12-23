@@ -33,7 +33,7 @@ public class BusinessSignificantProperties extends ClassificationBeanProperties
     public BusinessSignificantProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.BUSINESS_SIGNIFICANT_CLASSIFICATION.typeName;
     }
 
 

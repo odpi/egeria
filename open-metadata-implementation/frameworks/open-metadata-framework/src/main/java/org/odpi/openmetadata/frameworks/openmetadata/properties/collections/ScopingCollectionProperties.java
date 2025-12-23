@@ -31,7 +31,7 @@ public class ScopingCollectionProperties extends ClassificationBeanProperties
     public ScopingCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCOPING_COLLECTION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.SCOPING_COLLECTION_CLASSIFICATION.typeName;
     }
 
 

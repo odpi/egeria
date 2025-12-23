@@ -24,7 +24,7 @@ public class NamingStandardRuleSetProperties extends CollectionProperties
     public NamingStandardRuleSetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.NAMING_STANDARD_RULE_SET_COLLECTION.typeName;
     }
 
 

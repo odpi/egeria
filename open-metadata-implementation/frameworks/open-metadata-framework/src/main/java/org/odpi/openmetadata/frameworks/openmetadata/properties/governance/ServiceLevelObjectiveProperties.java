@@ -25,7 +25,7 @@ public class ServiceLevelObjectiveProperties extends TermsAndConditionsPropertie
     public ServiceLevelObjectiveProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName);
+        super.typeName = OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName;
     }
 
 

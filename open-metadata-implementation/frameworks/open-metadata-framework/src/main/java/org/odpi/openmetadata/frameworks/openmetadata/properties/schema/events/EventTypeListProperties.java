@@ -26,7 +26,7 @@ public class EventTypeListProperties extends SchemaTypeChoiceProperties
     public EventTypeListProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EVENT_TYPE_LIST.typeName);
+        super.typeName = OpenMetadataType.EVENT_TYPE_LIST.typeName;
     }
 
 

@@ -35,7 +35,7 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
     public QualityAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.QUALITY_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.QUALITY_ANNOTATION.typeName;
     }
 
 

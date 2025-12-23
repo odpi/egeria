@@ -31,7 +31,7 @@ public class SurveyReportProperties extends ReportProperties
     public SurveyReportProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SURVEY_REPORT.typeName);
+        super.typeName = OpenMetadataType.SURVEY_REPORT.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class ReferenceListProperties extends CollectionProperties
     public ReferenceListProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCE_LIST_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.REFERENCE_LIST_COLLECTION.typeName;
     }
 
 

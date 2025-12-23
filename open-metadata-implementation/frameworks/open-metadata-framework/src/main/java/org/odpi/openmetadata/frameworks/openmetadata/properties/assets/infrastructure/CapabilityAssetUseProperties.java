@@ -37,7 +37,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
     public CapabilityAssetUseProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName;
     }
 
 

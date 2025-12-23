@@ -25,7 +25,7 @@ public class ExternalDataSourceProperties extends ExternalReferenceProperties
     public ExternalDataSourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_DATA_SOURCE.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_DATA_SOURCE.typeName;
     }
 
 

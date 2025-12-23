@@ -35,7 +35,7 @@ public class CanonicalVocabularyProperties extends ClassificationBeanProperties
     public CanonicalVocabularyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName;
     }
 
 

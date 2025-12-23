@@ -26,7 +26,7 @@ public class BusinessCapabilityDependencyProperties extends LabeledRelationshipP
     public BusinessCapabilityDependencyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP.typeName;
     }
 
 

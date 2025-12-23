@@ -28,7 +28,7 @@ public class NotificationProperties extends ActionProperties
     public NotificationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NOTIFICATION.typeName);;
+        super.typeName = OpenMetadataType.NOTIFICATION.typeName;
     }
 
 

@@ -30,7 +30,7 @@ public class TeamRoleAppointmentProperties extends RelationshipBeanProperties
     public TeamRoleAppointmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName;
     }
 
 

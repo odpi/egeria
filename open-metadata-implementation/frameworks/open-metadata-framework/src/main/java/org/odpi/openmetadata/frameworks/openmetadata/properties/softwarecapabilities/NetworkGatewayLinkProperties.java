@@ -32,7 +32,7 @@ public class NetworkGatewayLinkProperties extends LabeledRelationshipProperties
     public NetworkGatewayLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NETWORK_GATEWAY_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NETWORK_GATEWAY_LINK_RELATIONSHIP.typeName;
     }
 
 

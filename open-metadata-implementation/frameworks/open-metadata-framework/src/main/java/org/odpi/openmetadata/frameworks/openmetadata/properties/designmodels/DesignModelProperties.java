@@ -35,7 +35,7 @@ public class DesignModelProperties extends CollectionProperties
     public DesignModelProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DESIGN_MODEL.typeName);
+        super.typeName = OpenMetadataType.DESIGN_MODEL.typeName;
     }
 
 

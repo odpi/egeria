@@ -41,7 +41,7 @@ public class ResourceManagerProperties extends SoftwareCapabilityProperties
     public ResourceManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_MANAGER.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_MANAGER.typeName;
     }
 
 

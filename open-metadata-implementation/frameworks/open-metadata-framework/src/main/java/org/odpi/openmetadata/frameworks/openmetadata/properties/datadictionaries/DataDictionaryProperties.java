@@ -25,7 +25,7 @@ public class DataDictionaryProperties extends CollectionProperties
     public DataDictionaryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName;
     }
 
 

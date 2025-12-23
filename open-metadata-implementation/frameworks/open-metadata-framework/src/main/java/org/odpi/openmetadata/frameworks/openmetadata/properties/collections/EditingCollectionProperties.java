@@ -31,7 +31,7 @@ public class EditingCollectionProperties extends ClassificationBeanProperties
     public EditingCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EDITING_COLLECTION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.EDITING_COLLECTION_CLASSIFICATION.typeName;
     }
 
 

@@ -31,7 +31,7 @@ public class CloudServiceProperties extends ClassificationBeanProperties
     public CloudServiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName;
     }
 
 

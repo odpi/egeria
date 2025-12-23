@@ -26,7 +26,7 @@ public class DeployedAnalyticsModelProperties extends DeployedSoftwareComponentP
     public DeployedAnalyticsModelProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DEPLOYED_ANALYTICS_MODEL.typeName);
+        super.typeName = OpenMetadataType.DEPLOYED_ANALYTICS_MODEL.typeName;
     }
 
 

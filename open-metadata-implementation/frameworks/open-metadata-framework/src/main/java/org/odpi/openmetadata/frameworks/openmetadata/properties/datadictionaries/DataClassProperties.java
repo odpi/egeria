@@ -49,7 +49,7 @@ public class DataClassProperties extends AuthoredReferenceableProperties
     public DataClassProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS.typeName);
+        super.typeName = OpenMetadataType.DATA_CLASS.typeName;
     }
 
 

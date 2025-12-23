@@ -34,7 +34,7 @@ public class RequestForActionProperties extends DataFieldAnnotationProperties
     public RequestForActionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName;
     }
 
 

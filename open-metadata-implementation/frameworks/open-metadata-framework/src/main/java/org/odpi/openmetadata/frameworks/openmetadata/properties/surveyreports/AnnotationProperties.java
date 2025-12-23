@@ -45,7 +45,7 @@ public class AnnotationProperties extends OpenMetadataRootProperties
     public AnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.ANNOTATION.typeName;
     }
 
 

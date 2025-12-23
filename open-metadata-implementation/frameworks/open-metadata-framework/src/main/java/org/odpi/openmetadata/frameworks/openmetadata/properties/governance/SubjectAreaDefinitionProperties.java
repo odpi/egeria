@@ -25,7 +25,7 @@ public class SubjectAreaDefinitionProperties extends GovernanceControlProperties
     public SubjectAreaDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName);
+        super.typeName = OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName;
     }
 
 

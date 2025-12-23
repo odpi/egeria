@@ -25,7 +25,7 @@ public class InformationSupplyChainLinkProperties extends LabeledRelationshipPro
     public InformationSupplyChainLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName;
     }
 
 

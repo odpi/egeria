@@ -30,7 +30,7 @@ public class DeployedConnectorProperties extends DeployedSoftwareComponentProper
     public DeployedConnectorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DEPLOYED_CONNECTOR.typeName);;
+        super.typeName = OpenMetadataType.DEPLOYED_CONNECTOR.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class ElementSupplementProperties extends ClassificationBeanProperties
     public ElementSupplementProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION.typeName;
     }
 
 

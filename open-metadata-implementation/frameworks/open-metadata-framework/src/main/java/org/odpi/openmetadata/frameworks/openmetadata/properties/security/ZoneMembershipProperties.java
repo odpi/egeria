@@ -31,7 +31,7 @@ public class ZoneMembershipProperties extends ClassificationBeanProperties
     public ZoneMembershipProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName;
     }
 
 

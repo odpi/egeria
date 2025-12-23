@@ -26,7 +26,7 @@ public class DataContainerProperties extends SchemaAttributeProperties
     public DataContainerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName);
+        super.typeName = OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName;
     }
 
 

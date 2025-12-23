@@ -25,7 +25,7 @@ public class ScriptFileProperties extends DataFileProperties
     public ScriptFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCRIPT_FILE.typeName);
+        super.typeName = OpenMetadataType.SCRIPT_FILE.typeName;
     }
 
 

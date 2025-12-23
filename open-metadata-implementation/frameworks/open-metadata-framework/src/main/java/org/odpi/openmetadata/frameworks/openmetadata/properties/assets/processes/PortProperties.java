@@ -39,7 +39,7 @@ public class PortProperties extends ReferenceableProperties
     public PortProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PORT.typeName);
+        super.typeName = OpenMetadataType.PORT.typeName;
     }
 
 

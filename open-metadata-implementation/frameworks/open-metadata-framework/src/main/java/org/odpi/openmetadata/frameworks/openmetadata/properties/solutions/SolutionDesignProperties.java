@@ -25,7 +25,7 @@ public class SolutionDesignProperties extends LabeledRelationshipProperties
     public SolutionDesignProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName;
     }
 
 

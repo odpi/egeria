@@ -31,7 +31,7 @@ public class ImplementedByProperties extends RoledRelationshipProperties
     public ImplementedByProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName;
     }
 
 

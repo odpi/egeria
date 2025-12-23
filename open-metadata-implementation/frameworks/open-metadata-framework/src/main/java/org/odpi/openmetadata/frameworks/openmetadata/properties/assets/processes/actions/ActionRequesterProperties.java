@@ -25,7 +25,7 @@ public class ActionRequesterProperties extends LabeledRelationshipProperties
     public ActionRequesterProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName;
     }
 
 

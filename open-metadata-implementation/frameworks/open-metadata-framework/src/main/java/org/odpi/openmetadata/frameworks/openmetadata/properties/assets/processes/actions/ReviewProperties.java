@@ -37,7 +37,7 @@ public class ReviewProperties extends ActionProperties
     public ReviewProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REVIEW.typeName);
+        super.typeName = OpenMetadataType.REVIEW.typeName;
     }
 
 

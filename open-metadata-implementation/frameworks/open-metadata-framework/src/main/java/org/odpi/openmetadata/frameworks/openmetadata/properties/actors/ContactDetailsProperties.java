@@ -33,7 +33,7 @@ public class ContactDetailsProperties extends ReferenceableProperties
     public ContactDetailsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTACT_DETAILS.typeName);
+        super.typeName = OpenMetadataType.CONTACT_DETAILS.typeName;
     }
 
 

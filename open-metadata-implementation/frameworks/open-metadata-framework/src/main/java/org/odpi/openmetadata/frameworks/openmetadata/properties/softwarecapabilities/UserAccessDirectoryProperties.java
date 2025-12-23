@@ -24,7 +24,7 @@ public class UserAccessDirectoryProperties extends ResourceManagerProperties
     public UserAccessDirectoryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.USER_ACCESS_DIRECTORY.typeName);
+        super.typeName = OpenMetadataType.USER_ACCESS_DIRECTORY.typeName;
     }
 
 

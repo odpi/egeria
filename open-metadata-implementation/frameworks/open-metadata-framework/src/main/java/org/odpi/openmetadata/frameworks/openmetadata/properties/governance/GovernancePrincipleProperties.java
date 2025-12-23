@@ -24,7 +24,7 @@ public class GovernancePrincipleProperties extends GovernancePolicyProperties
     public GovernancePrincipleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_PRINCIPLE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_PRINCIPLE.typeName;
     }
 
 

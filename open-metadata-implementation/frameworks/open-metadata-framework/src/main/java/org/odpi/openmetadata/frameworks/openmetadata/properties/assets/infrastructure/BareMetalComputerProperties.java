@@ -26,7 +26,7 @@ public class BareMetalComputerProperties extends HostProperties
     public BareMetalComputerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BARE_METAL_COMPUTER.typeName);
+        super.typeName = OpenMetadataType.BARE_METAL_COMPUTER.typeName;
     }
 
 

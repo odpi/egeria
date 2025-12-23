@@ -26,7 +26,7 @@ public class StructSchemaTypeProperties extends ComplexSchemaTypeProperties
     public StructSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName;
     }
 
 

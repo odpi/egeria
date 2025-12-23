@@ -81,7 +81,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     public ReferenceableProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
+        super.typeName = OpenMetadataType.REFERENCEABLE.typeName;
     }
 
 

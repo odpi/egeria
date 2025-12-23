@@ -31,7 +31,7 @@ public class TopicProperties extends DataFeedProperties
     public TopicProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TOPIC.typeName);
+        super.typeName = OpenMetadataType.TOPIC.typeName;
     }
 
 

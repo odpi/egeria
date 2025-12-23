@@ -25,7 +25,7 @@ public class SolutionBlueprintProperties extends DesignModelProperties
     public SolutionBlueprintProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_BLUEPRINT.typeName;
     }
 
 

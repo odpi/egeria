@@ -53,7 +53,7 @@ public class DataStoreProperties extends DataAssetProperties
     public DataStoreProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_STORE.typeName);
+        super.typeName = OpenMetadataType.DATA_STORE.typeName;
     }
 
 

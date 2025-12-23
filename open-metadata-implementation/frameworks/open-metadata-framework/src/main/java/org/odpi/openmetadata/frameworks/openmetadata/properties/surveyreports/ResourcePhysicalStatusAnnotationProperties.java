@@ -34,7 +34,7 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
     public ResourcePhysicalStatusAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName;
     }
 
 

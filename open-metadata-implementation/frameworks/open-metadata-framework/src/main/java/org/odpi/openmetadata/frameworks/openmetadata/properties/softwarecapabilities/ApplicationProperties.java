@@ -25,7 +25,7 @@ public class ApplicationProperties extends SoftwareCapabilityProperties
     public ApplicationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.APPLICATION.typeName);
+        super.typeName = OpenMetadataType.APPLICATION.typeName;
     }
 
 

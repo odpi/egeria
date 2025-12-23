@@ -25,7 +25,7 @@ public class TechnologyTypeProperties extends ValidMetadataValueProperties
     public TechnologyTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TECHNOLOGY_TYPE.typeName);
+        super.typeName = OpenMetadataType.TECHNOLOGY_TYPE.typeName;
     }
 
 

@@ -33,7 +33,7 @@ public class ContextEventImpactProperties extends LabeledRelationshipProperties
     public ContextEventImpactProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName;
     }
 
 

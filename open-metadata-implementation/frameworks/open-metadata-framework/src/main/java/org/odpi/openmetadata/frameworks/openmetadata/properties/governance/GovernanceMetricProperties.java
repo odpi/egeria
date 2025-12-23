@@ -30,7 +30,7 @@ public class GovernanceMetricProperties extends GovernanceControlProperties
     public GovernanceMetricProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_METRIC.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_METRIC.typeName;
     }
 
 

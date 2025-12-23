@@ -32,7 +32,7 @@ public class APIParameterProperties extends SchemaAttributeProperties
     public APIParameterProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.API_PARAMETER.typeName);
+        super.typeName = OpenMetadataType.API_PARAMETER.typeName;
     }
 
 

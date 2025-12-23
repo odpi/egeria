@@ -25,7 +25,7 @@ public class CrowdSourcingContributorProperties extends PersonRoleProperties
     public CrowdSourcingContributorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CROWD_SOURCING_CONTRIBUTOR.typeName);
+        super.typeName = OpenMetadataType.CROWD_SOURCING_CONTRIBUTOR.typeName;
     }
 
 

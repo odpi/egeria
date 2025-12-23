@@ -30,7 +30,7 @@ public class CalculatedValueProperties extends ClassificationBeanProperties
     public CalculatedValueProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class ReportedAnnotationProperties extends RelationshipBeanProperties
     public ReportedAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class NamespaceProperties extends CollectionProperties
     public NamespaceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NAMESPACE_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.NAMESPACE_COLLECTION.typeName;
     }
 
 

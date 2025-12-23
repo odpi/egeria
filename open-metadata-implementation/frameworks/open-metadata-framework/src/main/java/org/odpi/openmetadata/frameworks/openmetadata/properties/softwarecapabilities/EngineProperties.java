@@ -35,7 +35,7 @@ public class EngineProperties extends SoftwareCapabilityProperties
     public EngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ENGINE.typeName);
+        super.typeName = OpenMetadataType.ENGINE.typeName;
     }
 
 

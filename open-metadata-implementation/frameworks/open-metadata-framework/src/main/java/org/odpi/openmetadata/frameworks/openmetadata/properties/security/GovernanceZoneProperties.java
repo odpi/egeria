@@ -30,7 +30,7 @@ public class GovernanceZoneProperties extends SecurityAccessControlProperties
     public GovernanceZoneProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ZONE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ZONE.typeName;
     }
 
 

@@ -24,7 +24,7 @@ public class MasterDataManagerProperties extends ResourceManagerProperties
     public MasterDataManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MASTER_DATA_MANAGER.typeName);
+        super.typeName = OpenMetadataType.MASTER_DATA_MANAGER.typeName;
     }
 
 

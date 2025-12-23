@@ -26,7 +26,7 @@ public class ITProfileRoleProperties extends ActorRoleProperties
     public ITProfileRoleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IT_PROFILE_ROLE.typeName);
+        super.typeName = OpenMetadataType.IT_PROFILE_ROLE.typeName;
     }
 
 

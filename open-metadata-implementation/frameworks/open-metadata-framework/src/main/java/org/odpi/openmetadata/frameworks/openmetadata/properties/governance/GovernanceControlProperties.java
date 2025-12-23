@@ -48,7 +48,7 @@ public class GovernanceControlProperties extends GovernanceDefinitionProperties
     public GovernanceControlProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_CONTROL.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_CONTROL.typeName;
     }
 
 

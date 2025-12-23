@@ -25,7 +25,7 @@ public class NetworkGatewayProperties extends SoftwareCapabilityProperties
     public NetworkGatewayProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NETWORK_GATEWAY.typeName);
+        super.typeName = OpenMetadataType.NETWORK_GATEWAY.typeName;
     }
 
 

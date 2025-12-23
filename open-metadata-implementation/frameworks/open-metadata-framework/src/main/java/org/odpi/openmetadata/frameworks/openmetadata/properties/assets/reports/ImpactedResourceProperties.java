@@ -29,7 +29,7 @@ public class ImpactedResourceProperties extends RelationshipBeanProperties
     public ImpactedResourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName;
     }
 
 

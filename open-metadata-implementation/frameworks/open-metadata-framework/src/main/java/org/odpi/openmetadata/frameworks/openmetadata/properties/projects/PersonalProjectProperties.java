@@ -27,7 +27,7 @@ public class PersonalProjectProperties extends ClassificationBeanProperties
     public PersonalProjectProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeName;
     }
 
 

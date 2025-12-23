@@ -25,7 +25,7 @@ public class VisibleEndpointProperties extends RelationshipBeanProperties
     public VisibleEndpointProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VISIBLE_ENDPOINT.typeName);
+        super.typeName = OpenMetadataType.VISIBLE_ENDPOINT.typeName;
     }
 
 

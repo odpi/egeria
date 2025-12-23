@@ -39,7 +39,7 @@ public class RootSchemaTypeProperties extends ComplexSchemaTypeProperties
     public RootSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
     }
 
 

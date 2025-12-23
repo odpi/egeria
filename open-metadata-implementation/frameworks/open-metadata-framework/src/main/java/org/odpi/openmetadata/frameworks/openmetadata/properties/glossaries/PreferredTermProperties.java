@@ -24,7 +24,7 @@ public class PreferredTermProperties extends GlossaryTermRelationshipProperties
     public PreferredTermProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PREFERRED_TERM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PREFERRED_TERM_RELATIONSHIP.typeName;
     }
 
 

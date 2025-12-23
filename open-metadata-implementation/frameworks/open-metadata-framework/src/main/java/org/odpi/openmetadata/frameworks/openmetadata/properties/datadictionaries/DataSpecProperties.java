@@ -25,7 +25,7 @@ public class DataSpecProperties extends CollectionProperties
     public DataSpecProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_SPEC_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.DATA_SPEC_COLLECTION.typeName;
     }
 
 

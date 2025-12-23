@@ -26,7 +26,7 @@ public class AbstractConceptProperties extends ClassificationBeanProperties
     public AbstractConceptProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION.typeName;
     }
 
 

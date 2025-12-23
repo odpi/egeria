@@ -26,7 +26,7 @@ public class NestedFileProperties extends RelationshipBeanProperties
     public NestedFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName;
     }
 
 

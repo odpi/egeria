@@ -35,7 +35,7 @@ public class ValidValueAssociationProperties extends RelationshipBeanProperties
     public ValidValueAssociationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName;
     }
 
 

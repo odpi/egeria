@@ -35,7 +35,7 @@ public class SupportedSoftwareCapabilityProperties extends RelationshipBeanPrope
     public SupportedSoftwareCapabilityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName;
     }
 
 

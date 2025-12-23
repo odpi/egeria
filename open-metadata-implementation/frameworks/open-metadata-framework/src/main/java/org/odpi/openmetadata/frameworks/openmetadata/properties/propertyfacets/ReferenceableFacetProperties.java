@@ -31,7 +31,7 @@ public class ReferenceableFacetProperties extends LabeledRelationshipProperties
     public ReferenceableFacetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName;
     }
 
 

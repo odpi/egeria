@@ -35,7 +35,7 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     public ComplexSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName;
     }
 
 

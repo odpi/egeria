@@ -34,7 +34,7 @@ public class SearchKeywordProperties extends OpenMetadataRootProperties
     public SearchKeywordProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SEARCH_KEYWORD.typeName);
+        super.typeName = OpenMetadataType.SEARCH_KEYWORD.typeName;
     }
 
 

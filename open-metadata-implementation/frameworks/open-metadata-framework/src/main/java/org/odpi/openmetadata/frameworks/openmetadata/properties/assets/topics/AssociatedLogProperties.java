@@ -25,7 +25,7 @@ public class AssociatedLogProperties extends RelationshipBeanProperties
     public AssociatedLogProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName;
     }
 
 

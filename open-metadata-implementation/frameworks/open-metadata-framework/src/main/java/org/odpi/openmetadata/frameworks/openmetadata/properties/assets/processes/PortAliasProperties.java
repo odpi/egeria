@@ -25,7 +25,7 @@ public class PortAliasProperties extends PortProperties
     public PortAliasProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PORT_ALIAS.typeName);
+        super.typeName = OpenMetadataType.PORT_ALIAS.typeName;
     }
 
 

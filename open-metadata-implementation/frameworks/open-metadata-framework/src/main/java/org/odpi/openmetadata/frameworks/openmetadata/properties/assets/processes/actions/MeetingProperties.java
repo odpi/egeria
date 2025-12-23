@@ -33,7 +33,7 @@ public class MeetingProperties extends ActionProperties
     public MeetingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEETING.typeName);
+        super.typeName = OpenMetadataType.MEETING.typeName;
     }
 
 

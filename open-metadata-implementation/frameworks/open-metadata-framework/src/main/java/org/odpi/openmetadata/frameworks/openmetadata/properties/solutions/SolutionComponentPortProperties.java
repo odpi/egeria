@@ -25,7 +25,7 @@ public class SolutionComponentPortProperties extends RoledRelationshipProperties
     public SolutionComponentPortProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName;
     }
 
 

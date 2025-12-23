@@ -36,7 +36,7 @@ public class ValidValuesImplementationProperties extends RelationshipBeanPropert
     public ValidValuesImplementationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName;
     }
 
 

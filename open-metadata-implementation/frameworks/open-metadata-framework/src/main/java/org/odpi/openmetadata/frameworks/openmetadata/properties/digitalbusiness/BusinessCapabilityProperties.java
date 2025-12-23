@@ -32,7 +32,7 @@ public class BusinessCapabilityProperties extends CollectionProperties
     public BusinessCapabilityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
+        super.typeName = OpenMetadataType.BUSINESS_CAPABILITY.typeName;
     }
 
 

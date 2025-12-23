@@ -26,7 +26,7 @@ public class RegulationCertificationTypeProperties extends LabeledRelationshipPr
     public RegulationCertificationTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REGULATION_CERTIFICATION_TYPE.typeName);
+        super.typeName = OpenMetadataType.REGULATION_CERTIFICATION_TYPE.typeName;
     }
 
 

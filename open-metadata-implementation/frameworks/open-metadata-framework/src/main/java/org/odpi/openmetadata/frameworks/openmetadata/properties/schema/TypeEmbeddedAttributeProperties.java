@@ -44,7 +44,7 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
     public TypeEmbeddedAttributeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName;
     }
 
 

@@ -41,7 +41,7 @@ public class ConnectorActivityReportProperties extends ReportProperties
     public ConnectorActivityReportProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName);
+        super.typeName = OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName;
     }
 
 

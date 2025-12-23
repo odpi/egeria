@@ -33,7 +33,7 @@ public class ActorProperties extends ReferenceableProperties
     public ActorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTOR.typeName);
+        super.typeName = OpenMetadataType.ACTOR.typeName;
     }
 
 

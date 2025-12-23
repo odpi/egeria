@@ -31,7 +31,7 @@ public class MediaCollectionProperties extends DataSetProperties
     public MediaCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEDIA_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.MEDIA_COLLECTION.typeName;
     }
 
 

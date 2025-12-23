@@ -35,7 +35,7 @@ public class DataAssetEncodingProperties extends ClassificationBeanProperties
     public DataAssetEncodingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName;
     }
 
 

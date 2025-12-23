@@ -44,7 +44,7 @@ public class ReportProperties extends DataSetProperties
     public ReportProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORT.typeName);
+        super.typeName = OpenMetadataType.REPORT.typeName;
     }
 
 

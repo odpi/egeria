@@ -25,7 +25,7 @@ public class PortImplementationProperties extends PortProperties
     public PortImplementationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PORT_IMPLEMENTATION.typeName);
+        super.typeName = OpenMetadataType.PORT_IMPLEMENTATION.typeName;
     }
 
 

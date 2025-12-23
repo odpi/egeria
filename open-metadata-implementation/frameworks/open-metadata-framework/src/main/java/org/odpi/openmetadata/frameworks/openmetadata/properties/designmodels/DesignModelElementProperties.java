@@ -38,7 +38,7 @@ public class DesignModelElementProperties extends AuthoredReferenceablePropertie
     public DesignModelElementProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName);
+        super.typeName = OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName;
     }
 
 

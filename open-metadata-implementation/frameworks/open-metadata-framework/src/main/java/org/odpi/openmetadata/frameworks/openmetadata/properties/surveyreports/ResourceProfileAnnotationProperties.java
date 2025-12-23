@@ -50,7 +50,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
     public ResourceProfileAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName;
     }
 
 

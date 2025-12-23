@@ -27,7 +27,7 @@ public class APISchemaTypeProperties extends RootSchemaTypeProperties
     public APISchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.API_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.API_SCHEMA_TYPE.typeName;
     }
 
 

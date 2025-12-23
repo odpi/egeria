@@ -25,7 +25,7 @@ public class DataVirtualizationEngineProperties extends SoftwareCapabilityProper
     public DataVirtualizationEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_VIRTUALIZATION_ENGINE.typeName);
+        super.typeName = OpenMetadataType.DATA_VIRTUALIZATION_ENGINE.typeName;
     }
 
 

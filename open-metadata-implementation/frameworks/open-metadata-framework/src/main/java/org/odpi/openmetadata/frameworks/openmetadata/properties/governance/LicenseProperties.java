@@ -48,7 +48,7 @@ public class LicenseProperties extends RelationshipBeanProperties
     public LicenseProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LICENSE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.LICENSE_RELATIONSHIP.typeName;
     }
 
 

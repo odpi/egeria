@@ -32,7 +32,7 @@ public class APIOperationProperties extends SchemaTypeProperties
     public APIOperationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.API_OPERATION.typeName);
+        super.typeName = OpenMetadataType.API_OPERATION.typeName;
     }
 
 

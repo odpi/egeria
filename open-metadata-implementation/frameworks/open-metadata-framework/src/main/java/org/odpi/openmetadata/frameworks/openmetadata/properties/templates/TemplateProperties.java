@@ -34,7 +34,7 @@ public class TemplateProperties extends ClassificationBeanProperties
     public TemplateProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName;
     }
 
 

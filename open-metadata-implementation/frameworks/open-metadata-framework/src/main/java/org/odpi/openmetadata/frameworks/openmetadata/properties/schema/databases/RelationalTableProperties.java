@@ -26,7 +26,7 @@ public class RelationalTableProperties extends SchemaAttributeProperties
     public RelationalTableProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATIONAL_TABLE.typeName);
+        super.typeName = OpenMetadataType.RELATIONAL_TABLE.typeName;
     }
 
 

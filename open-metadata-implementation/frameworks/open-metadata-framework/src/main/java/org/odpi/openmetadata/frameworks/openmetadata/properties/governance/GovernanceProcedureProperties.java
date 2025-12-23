@@ -30,7 +30,7 @@ public class GovernanceProcedureProperties extends GovernanceControlProperties
     public GovernanceProcedureProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_PROCEDURE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_PROCEDURE.typeName;
     }
 
 

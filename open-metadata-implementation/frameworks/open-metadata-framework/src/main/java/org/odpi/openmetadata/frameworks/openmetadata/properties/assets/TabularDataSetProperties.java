@@ -33,7 +33,7 @@ public class TabularDataSetProperties extends DataSetProperties
     public TabularDataSetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TABULAR_DATA_SET.typeName);
+        super.typeName = OpenMetadataType.TABULAR_DATA_SET.typeName;
     }
 
 

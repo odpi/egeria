@@ -26,7 +26,7 @@ public class DataProcessingActionProperties extends AuthoredReferenceablePropert
     public DataProcessingActionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_PROCESSING_ACTION.typeName);
+        super.typeName = OpenMetadataType.DATA_PROCESSING_ACTION.typeName;
     }
 
 

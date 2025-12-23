@@ -26,7 +26,7 @@ public class ReportSubjectProperties extends RelationshipBeanProperties
     public ReportSubjectProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORT_SUBJECT.typeName);
+        super.typeName = OpenMetadataType.REPORT_SUBJECT.typeName;
     }
 
 

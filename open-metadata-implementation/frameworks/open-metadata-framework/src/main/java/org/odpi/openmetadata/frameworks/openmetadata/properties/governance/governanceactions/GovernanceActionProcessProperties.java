@@ -25,7 +25,7 @@ public class GovernanceActionProcessProperties extends GovernanceActionPropertie
     public GovernanceActionProcessProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName;
     }
 
 

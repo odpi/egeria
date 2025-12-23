@@ -31,7 +31,7 @@ public class SubjectAreaProperties extends ClassificationBeanProperties
     public SubjectAreaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName;
     }
 
 

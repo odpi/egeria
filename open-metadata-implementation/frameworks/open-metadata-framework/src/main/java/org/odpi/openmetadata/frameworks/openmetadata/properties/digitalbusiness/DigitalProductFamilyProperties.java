@@ -25,7 +25,7 @@ public class DigitalProductFamilyProperties extends DigitalProductProperties
     public DigitalProductFamilyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName;
     }
 
 

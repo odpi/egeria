@@ -27,7 +27,7 @@ public class ConsistentValidValuesProperties extends RelationshipBeanProperties
     public ConsistentValidValuesProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName;
     }
 
 

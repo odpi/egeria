@@ -31,7 +31,7 @@ public class PropertyFacetProperties extends ReferenceableProperties
     public PropertyFacetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROPERTY_FACET.typeName);
+        super.typeName = OpenMetadataType.PROPERTY_FACET.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class YAMLFileProperties extends PropertiesFileProperties
     public YAMLFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.YAML_FILE.typeName);
+        super.typeName = OpenMetadataType.YAML_FILE.typeName;
     }
 
 

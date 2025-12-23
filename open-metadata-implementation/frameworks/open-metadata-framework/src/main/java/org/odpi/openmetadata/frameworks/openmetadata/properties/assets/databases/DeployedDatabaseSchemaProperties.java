@@ -26,7 +26,7 @@ public class DeployedDatabaseSchemaProperties extends DataSetProperties
     public DeployedDatabaseSchemaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName);
+        super.typeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName;
     }
 
 

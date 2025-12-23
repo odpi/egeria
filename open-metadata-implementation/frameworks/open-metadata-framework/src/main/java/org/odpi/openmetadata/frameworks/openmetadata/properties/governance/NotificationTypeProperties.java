@@ -34,7 +34,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     public NotificationTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+        super.typeName = OpenMetadataType.NOTIFICATION_TYPE.typeName;
     }
 
 

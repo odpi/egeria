@@ -29,7 +29,7 @@ public class EmbeddedProcessProperties extends ActionProperties
     public EmbeddedProcessProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EMBEDDED_PROCESS.typeName);;
+        super.typeName = OpenMetadataType.EMBEDDED_PROCESS.typeName;
     }
 
 

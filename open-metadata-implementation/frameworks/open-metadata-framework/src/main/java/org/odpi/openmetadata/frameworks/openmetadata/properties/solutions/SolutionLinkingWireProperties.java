@@ -31,7 +31,7 @@ public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
     public SolutionLinkingWireProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName;
     }
 
 

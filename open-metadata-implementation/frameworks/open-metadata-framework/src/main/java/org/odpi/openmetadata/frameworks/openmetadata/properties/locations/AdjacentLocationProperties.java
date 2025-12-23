@@ -25,7 +25,7 @@ public class AdjacentLocationProperties extends LabeledRelationshipProperties
     public AdjacentLocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ADJACENT_LOCATION_RELATIONSHIP.typeName;
     }
 
 

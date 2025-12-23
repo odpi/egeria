@@ -32,7 +32,7 @@ public class SolutionPortProperties extends DesignModelElementProperties
     public SolutionPortProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_PORT.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_PORT.typeName;
     }
 
 

@@ -31,7 +31,7 @@ public class SampleDataProperties extends RelationshipBeanProperties
     public SampleDataProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeName;
     }
 
 

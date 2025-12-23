@@ -24,7 +24,7 @@ public class WatchdogActionEngineProperties extends GovernanceEngineProperties
     public WatchdogActionEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.WATCHDOG_ACTION_ENGINE.typeName);;
+        super.typeName = OpenMetadataType.WATCHDOG_ACTION_ENGINE.typeName;
     }
 
 

@@ -28,7 +28,7 @@ public class ReferenceDataProperties extends ClassificationBeanProperties
     public ReferenceDataProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCE_DATA_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.REFERENCE_DATA_CLASSIFICATION.typeName;
     }
 
 

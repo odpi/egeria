@@ -27,7 +27,7 @@ public class MetadataRepositoryProperties extends DataStoreProperties
     public MetadataRepositoryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.METADATA_REPOSITORY.typeName);
+        super.typeName = OpenMetadataType.METADATA_REPOSITORY.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class TypedByConceptBeadProperties extends RelationshipBeanProperties
     public TypedByConceptBeadProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TYPED_BY_CONCEPT_BEAD_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.TYPED_BY_CONCEPT_BEAD_RELATIONSHIP.typeName;
     }
 
 

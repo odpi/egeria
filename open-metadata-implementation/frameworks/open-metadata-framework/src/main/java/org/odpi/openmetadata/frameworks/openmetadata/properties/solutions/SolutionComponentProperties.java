@@ -31,7 +31,7 @@ public class SolutionComponentProperties extends DesignModelElementProperties
     public SolutionComponentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_COMPONENT.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_COMPONENT.typeName;
     }
 
 

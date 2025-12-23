@@ -33,7 +33,7 @@ public class AnchorsProperties extends ClassificationBeanProperties
     public AnchorsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.ANCHORS_CLASSIFICATION.typeName;
     }
 
 

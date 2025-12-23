@@ -24,7 +24,7 @@ public class LogFileProperties extends DataFileProperties
     public LogFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LOG_FILE.typeName);
+        super.typeName = OpenMetadataType.LOG_FILE.typeName;
     }
 
 

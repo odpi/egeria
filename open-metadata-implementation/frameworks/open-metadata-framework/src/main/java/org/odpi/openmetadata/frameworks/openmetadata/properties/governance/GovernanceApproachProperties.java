@@ -24,7 +24,7 @@ public class GovernanceApproachProperties extends GovernancePolicyProperties
     public GovernanceApproachProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_APPROACH.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_APPROACH.typeName;
     }
 
 

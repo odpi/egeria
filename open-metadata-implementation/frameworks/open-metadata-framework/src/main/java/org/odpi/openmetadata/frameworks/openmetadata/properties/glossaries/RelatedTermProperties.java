@@ -24,7 +24,7 @@ public class RelatedTermProperties extends GlossaryTermRelationshipProperties
     public RelatedTermProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName;
     }
 
 

@@ -39,7 +39,7 @@ public class GovernanceActionExecutorProperties extends RelationshipBeanProperti
     public GovernanceActionExecutorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName;
     }
 
 

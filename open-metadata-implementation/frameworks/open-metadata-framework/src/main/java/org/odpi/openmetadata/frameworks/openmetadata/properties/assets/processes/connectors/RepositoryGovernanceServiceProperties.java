@@ -25,7 +25,7 @@ public class RepositoryGovernanceServiceProperties extends GovernanceServiceProp
     public RepositoryGovernanceServiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName);;
+        super.typeName = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName;
     }
 
 

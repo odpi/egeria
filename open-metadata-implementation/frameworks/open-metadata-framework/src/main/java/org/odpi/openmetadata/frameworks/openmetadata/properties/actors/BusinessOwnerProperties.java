@@ -24,7 +24,7 @@ public class BusinessOwnerProperties extends GovernanceRoleProperties
     public BusinessOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BUSINESS_OWNER.typeName);
+        super.typeName = OpenMetadataType.BUSINESS_OWNER.typeName;
     }
 
 

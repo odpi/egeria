@@ -24,7 +24,7 @@ public class SubjectAreaOwnerProperties extends GovernanceRoleProperties
     public SubjectAreaOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUBJECT_AREA_OWNER.typeName);
+        super.typeName = OpenMetadataType.SUBJECT_AREA_OWNER.typeName;
     }
 
 

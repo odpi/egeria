@@ -30,7 +30,7 @@ public class AssociatedSecurityGroupProperties extends RelationshipBeanPropertie
     public AssociatedSecurityGroupProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSOCIATED_SECURITY_GROUP_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ASSOCIATED_SECURITY_GROUP_RELATIONSHIP.typeName;
     }
 
 

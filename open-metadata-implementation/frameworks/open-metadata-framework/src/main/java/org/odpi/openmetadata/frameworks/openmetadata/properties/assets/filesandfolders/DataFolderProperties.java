@@ -25,7 +25,7 @@ public class DataFolderProperties extends FileFolderProperties
     public DataFolderProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_FOLDER.typeName);
+        super.typeName = OpenMetadataType.DATA_FOLDER.typeName;
     }
 
 

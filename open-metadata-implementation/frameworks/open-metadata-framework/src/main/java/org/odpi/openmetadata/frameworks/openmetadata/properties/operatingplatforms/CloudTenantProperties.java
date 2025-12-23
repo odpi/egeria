@@ -31,7 +31,7 @@ public class CloudTenantProperties extends ClassificationBeanProperties
     public CloudTenantProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CLOUD_TENANT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CLOUD_TENANT_CLASSIFICATION.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class DataFileCollectionProperties extends DataSetProperties
     public DataFileCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_FILE_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.DATA_FILE_COLLECTION.typeName;
     }
 
 

@@ -27,7 +27,7 @@ public class SemanticDefinitionProperties extends RelationshipBeanProperties
     public SemanticDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName;
     }
 
 

@@ -31,7 +31,7 @@ public class APIParameterListProperties extends ComplexSchemaTypeProperties
     public APIParameterListProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.API_PARAMETER_LIST.typeName);
+        super.typeName = OpenMetadataType.API_PARAMETER_LIST.typeName;
     }
 
 

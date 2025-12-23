@@ -26,7 +26,7 @@ public class QueryDataFieldProperties extends SchemaAttributeProperties
     public QueryDataFieldProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.QUERY_DATA_FIELD.typeName);
+        super.typeName = OpenMetadataType.QUERY_DATA_FIELD.typeName;
     }
 
 

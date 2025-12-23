@@ -26,7 +26,7 @@ public class MapToElementTypeProperties extends RelationshipBeanProperties
     public MapToElementTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName;
     }
 
 

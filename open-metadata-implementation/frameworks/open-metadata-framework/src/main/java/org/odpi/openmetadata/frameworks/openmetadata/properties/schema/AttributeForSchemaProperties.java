@@ -26,7 +26,7 @@ public class AttributeForSchemaProperties extends PartOfRelationshipProperties
     public AttributeForSchemaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName;
     }
 
 

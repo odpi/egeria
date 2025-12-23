@@ -42,7 +42,7 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
     public CollectionMembershipProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName;
     }
 
 

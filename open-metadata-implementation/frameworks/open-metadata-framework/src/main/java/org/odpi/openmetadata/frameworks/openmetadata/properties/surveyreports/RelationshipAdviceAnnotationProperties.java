@@ -34,7 +34,7 @@ public class RelationshipAdviceAnnotationProperties extends DataFieldAnnotationP
     public RelationshipAdviceAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATIONSHIP_ADVICE_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.RELATIONSHIP_ADVICE_ANNOTATION.typeName;
     }
 
 

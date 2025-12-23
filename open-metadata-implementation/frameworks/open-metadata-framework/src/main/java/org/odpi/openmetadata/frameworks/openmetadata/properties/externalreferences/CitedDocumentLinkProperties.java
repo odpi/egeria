@@ -32,7 +32,7 @@ public class CitedDocumentLinkProperties extends RelationshipBeanProperties
     public CitedDocumentLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName;
     }
 
 

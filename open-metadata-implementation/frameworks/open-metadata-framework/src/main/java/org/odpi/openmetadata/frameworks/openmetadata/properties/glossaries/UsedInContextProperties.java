@@ -24,7 +24,7 @@ public class UsedInContextProperties extends GlossaryTermRelationshipProperties
     public UsedInContextProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName;
     }
 
 

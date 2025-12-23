@@ -30,7 +30,7 @@ public class RequestForActionTargetProperties extends RelationshipBeanProperties
     public RequestForActionTargetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName;
     }
 
 

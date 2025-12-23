@@ -31,7 +31,7 @@ public class StagingCollectionProperties extends ClassificationBeanProperties
     public StagingCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.STAGING_COLLECTION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.STAGING_COLLECTION_CLASSIFICATION.typeName;
     }
 
 

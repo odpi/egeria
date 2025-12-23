@@ -25,7 +25,7 @@ public class DataProcessingPurposeProperties extends GovernanceControlProperties
     public DataProcessingPurposeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName);
+        super.typeName = OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName;
     }
 
 

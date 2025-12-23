@@ -25,7 +25,7 @@ public class VectorFileProperties extends MediaFileProperties
     public VectorFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VECTOR_FILE.typeName);
+        super.typeName = OpenMetadataType.VECTOR_FILE.typeName;
     }
 
 

@@ -33,7 +33,7 @@ public class GovernanceServiceProperties extends DeployedConnectorProperties
     public GovernanceServiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_SERVICE.typeName);;
+        super.typeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
     }
 
 

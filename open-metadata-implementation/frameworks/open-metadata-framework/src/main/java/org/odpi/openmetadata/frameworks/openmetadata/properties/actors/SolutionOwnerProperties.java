@@ -24,7 +24,7 @@ public class SolutionOwnerProperties extends GovernanceRoleProperties
     public SolutionOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_OWNER.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_OWNER.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class ExternalReferenceLinkProperties extends LabeledRelationshipProperti
     public ExternalReferenceLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName;
     }
 
 

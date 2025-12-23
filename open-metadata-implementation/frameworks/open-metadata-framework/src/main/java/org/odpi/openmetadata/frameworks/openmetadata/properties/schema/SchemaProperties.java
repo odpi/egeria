@@ -26,7 +26,7 @@ public class SchemaProperties extends RelationshipBeanProperties
     public SchemaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SCHEMA_RELATIONSHIP.typeName;
     }
 
 

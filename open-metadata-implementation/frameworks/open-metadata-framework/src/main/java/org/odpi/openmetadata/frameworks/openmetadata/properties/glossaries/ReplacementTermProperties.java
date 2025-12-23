@@ -24,7 +24,7 @@ public class ReplacementTermProperties extends GlossaryTermRelationshipPropertie
     public ReplacementTermProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPLACEMENT_TERM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REPLACEMENT_TERM_RELATIONSHIP.typeName;
     }
 
 

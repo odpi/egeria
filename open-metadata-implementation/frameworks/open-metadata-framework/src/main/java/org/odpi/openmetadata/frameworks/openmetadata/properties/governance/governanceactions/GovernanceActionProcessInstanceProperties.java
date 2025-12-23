@@ -27,7 +27,7 @@ public class GovernanceActionProcessInstanceProperties extends TransientEmbedded
     public GovernanceActionProcessInstanceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName;
     }
 
 

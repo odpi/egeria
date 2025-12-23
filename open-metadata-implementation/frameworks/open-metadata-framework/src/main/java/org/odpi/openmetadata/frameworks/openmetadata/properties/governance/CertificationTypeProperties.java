@@ -27,7 +27,7 @@ public class CertificationTypeProperties extends TermsAndConditionsProperties
     public CertificationTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CERTIFICATION_TYPE.typeName);
+        super.typeName = OpenMetadataType.CERTIFICATION_TYPE.typeName;
     }
 
 

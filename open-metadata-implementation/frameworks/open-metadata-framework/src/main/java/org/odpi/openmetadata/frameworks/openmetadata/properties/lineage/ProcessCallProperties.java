@@ -32,7 +32,7 @@ public class ProcessCallProperties extends LineageRelationshipProperties
     public ProcessCallProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName;
     }
 
 

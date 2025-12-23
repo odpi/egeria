@@ -26,7 +26,7 @@ public class ProjectDependencyProperties extends LabeledRelationshipProperties
     public ProjectDependencyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName;
     }
 
 

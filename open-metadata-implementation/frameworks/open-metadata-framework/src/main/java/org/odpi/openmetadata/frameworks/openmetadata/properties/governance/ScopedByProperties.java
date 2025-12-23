@@ -26,7 +26,7 @@ public class ScopedByProperties extends RelationshipBeanProperties
     public ScopedByProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName;
     }
 
 

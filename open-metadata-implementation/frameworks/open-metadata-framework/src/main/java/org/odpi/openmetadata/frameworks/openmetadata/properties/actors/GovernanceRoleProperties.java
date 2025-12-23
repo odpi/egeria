@@ -43,7 +43,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
     public GovernanceRoleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ROLE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ROLE.typeName;
     }
 
 

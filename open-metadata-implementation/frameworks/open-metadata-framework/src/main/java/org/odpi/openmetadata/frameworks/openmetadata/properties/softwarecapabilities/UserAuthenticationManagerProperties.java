@@ -24,7 +24,7 @@ public class UserAuthenticationManagerProperties extends SoftwareCapabilityPrope
     public UserAuthenticationManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.USER_AUTHENTICATION_MANAGER.typeName);
+        super.typeName = OpenMetadataType.USER_AUTHENTICATION_MANAGER.typeName;
     }
 
 

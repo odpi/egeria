@@ -28,7 +28,7 @@ public class ContextEventForTimelineEffectsProperties extends LabeledRelationshi
     public ContextEventForTimelineEffectsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP.typeName;
     }
 
 

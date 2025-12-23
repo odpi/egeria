@@ -25,7 +25,7 @@ public class SolutionPortDelegationProperties extends RoledRelationshipPropertie
     public SolutionPortDelegationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName;
     }
 
 

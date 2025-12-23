@@ -34,7 +34,7 @@ public class FileSystemProperties extends ResourceManagerProperties
     public FileSystemProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FILE_SYSTEM.typeName);
+        super.typeName = OpenMetadataType.FILE_SYSTEM.typeName;
     }
 
 

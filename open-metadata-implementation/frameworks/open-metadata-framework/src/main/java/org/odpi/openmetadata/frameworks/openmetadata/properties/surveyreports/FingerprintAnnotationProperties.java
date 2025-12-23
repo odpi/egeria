@@ -34,7 +34,7 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
     public FingerprintAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FINGERPRINT_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.FINGERPRINT_ANNOTATION.typeName;
     }
 
 

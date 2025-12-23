@@ -38,7 +38,7 @@ public class RatingProperties extends OpenMetadataRootProperties
     public RatingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RATING.typeName);
+        super.typeName = OpenMetadataType.RATING.typeName;
     }
 
 

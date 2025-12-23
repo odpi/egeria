@@ -40,7 +40,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     public CatalogTargetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class CollectionFolderProperties extends CollectionProperties
     public CollectionFolderProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COLLECTION_FOLDER.typeName);
+        super.typeName = OpenMetadataType.COLLECTION_FOLDER.typeName;
     }
 
 

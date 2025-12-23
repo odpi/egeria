@@ -36,7 +36,7 @@ public class EndpointProperties extends ReferenceableProperties
     public EndpointProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ENDPOINT.typeName);
+        super.typeName = OpenMetadataType.ENDPOINT.typeName;
     }
 
 

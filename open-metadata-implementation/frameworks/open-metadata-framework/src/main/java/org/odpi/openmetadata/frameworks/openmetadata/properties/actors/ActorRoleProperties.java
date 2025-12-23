@@ -38,7 +38,7 @@ public class ActorRoleProperties extends ActorProperties
     public ActorRoleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTOR_ROLE.typeName);
+        super.typeName = OpenMetadataType.ACTOR_ROLE.typeName;
     }
 
 

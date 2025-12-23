@@ -30,7 +30,7 @@ public class TeamStructureProperties extends RelationshipBeanProperties
     public TeamStructureProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName;
     }
 
 

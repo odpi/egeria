@@ -29,7 +29,7 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
     public LiteralSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LITERAL_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.LITERAL_SCHEMA_TYPE.typeName;
     }
 
 

@@ -29,7 +29,7 @@ public class ReferenceCodeMappingTableProperties extends TabularDataSetPropertie
     public ReferenceCodeMappingTableProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCE_CODE_MAPPING_TABLE.typeName);
+        super.typeName = OpenMetadataType.REFERENCE_CODE_MAPPING_TABLE.typeName;
     }
 
 

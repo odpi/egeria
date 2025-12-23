@@ -26,7 +26,7 @@ public class NoteLogProperties extends ReferenceableProperties
     public NoteLogProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NOTE_LOG.typeName);
+        super.typeName = OpenMetadataType.NOTE_LOG.typeName;
     }
 
 

@@ -24,7 +24,7 @@ public class GovernanceActionEngineProperties extends GovernanceEngineProperties
     public GovernanceActionEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName);;
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
     }
 
 

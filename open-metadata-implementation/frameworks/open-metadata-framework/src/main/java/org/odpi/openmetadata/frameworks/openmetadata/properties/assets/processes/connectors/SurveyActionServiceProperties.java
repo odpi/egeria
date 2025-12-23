@@ -25,7 +25,7 @@ public class SurveyActionServiceProperties extends GovernanceServiceProperties
     public SurveyActionServiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName);;
+        super.typeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
     }
 
 

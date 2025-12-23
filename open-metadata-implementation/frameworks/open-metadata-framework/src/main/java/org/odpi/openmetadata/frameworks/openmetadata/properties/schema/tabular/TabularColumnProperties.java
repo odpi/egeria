@@ -34,7 +34,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     public TabularColumnProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TABULAR_COLUMN.typeName);
+        super.typeName = OpenMetadataType.TABULAR_COLUMN.typeName;
     }
 
 

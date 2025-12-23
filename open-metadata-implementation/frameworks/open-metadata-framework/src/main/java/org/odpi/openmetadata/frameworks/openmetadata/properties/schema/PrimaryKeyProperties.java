@@ -35,7 +35,7 @@ public class PrimaryKeyProperties extends ClassificationBeanProperties
     public PrimaryKeyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName;
     }
 
 

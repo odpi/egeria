@@ -24,7 +24,7 @@ public class CohortMemberProperties extends SoftwareCapabilityProperties
     public CohortMemberProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COHORT_MEMBER.typeName);
+        super.typeName = OpenMetadataType.COHORT_MEMBER.typeName;
     }
 
 

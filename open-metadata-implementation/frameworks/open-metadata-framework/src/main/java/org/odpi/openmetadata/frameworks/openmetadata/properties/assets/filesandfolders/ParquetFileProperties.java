@@ -25,7 +25,7 @@ public class ParquetFileProperties extends DataFileProperties
     public ParquetFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PARQUET_FILE.typeName);
+        super.typeName = OpenMetadataType.PARQUET_FILE.typeName;
     }
 
 

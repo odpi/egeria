@@ -25,7 +25,7 @@ public class WorkflowEngineProperties extends SoftwareCapabilityProperties
     public WorkflowEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.WORKFLOW_ENGINE.typeName);
+        super.typeName = OpenMetadataType.WORKFLOW_ENGINE.typeName;
     }
 
 

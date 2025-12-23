@@ -25,7 +25,7 @@ public class SubjectAreaHierarchyProperties extends RelationshipBeanProperties
     public SubjectAreaHierarchyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SUBJECT_AREA_HIERARCHY_RELATIONSHIP.typeName;
     }
 
 

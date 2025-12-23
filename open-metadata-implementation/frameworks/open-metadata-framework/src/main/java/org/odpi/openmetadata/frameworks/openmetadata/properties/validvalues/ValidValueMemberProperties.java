@@ -30,7 +30,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
     public ValidValueMemberProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName;
     }
 
 

@@ -37,7 +37,7 @@ public class ConsolidatedDuplicateProperties extends ClassificationBeanPropertie
     public ConsolidatedDuplicateProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName;
     }
 
 

@@ -31,7 +31,7 @@ public class GlossaryProperties extends CollectionProperties
     public GlossaryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GLOSSARY.typeName);
+        super.typeName = OpenMetadataType.GLOSSARY.typeName;
     }
 
 

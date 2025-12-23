@@ -114,7 +114,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
     public ConnectorTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONNECTOR_TYPE.typeName);
+        super.typeName = OpenMetadataType.CONNECTOR_TYPE.typeName;
     }
 
 

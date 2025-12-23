@@ -26,7 +26,7 @@ public class ContactThroughProperties extends RelationshipBeanProperties
     public ContactThroughProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName;
     }
 
 

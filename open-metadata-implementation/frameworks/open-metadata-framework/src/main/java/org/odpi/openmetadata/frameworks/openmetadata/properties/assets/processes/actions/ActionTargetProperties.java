@@ -35,7 +35,7 @@ public class ActionTargetProperties extends RelationshipBeanProperties
     public ActionTargetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName;
     }
 
 

@@ -30,7 +30,7 @@ public class SecurityAccessControlProperties extends GovernanceControlProperties
     public SecurityAccessControlProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName);
+        super.typeName = OpenMetadataType.SECURITY_ACCESS_CONTROL.typeName;
     }
 
 

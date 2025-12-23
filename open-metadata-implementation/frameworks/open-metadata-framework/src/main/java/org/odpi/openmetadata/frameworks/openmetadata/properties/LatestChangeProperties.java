@@ -39,7 +39,7 @@ public class LatestChangeProperties extends ClassificationBeanProperties
     public LatestChangeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName;
     }
 
 

@@ -37,7 +37,7 @@ public class PeerDuplicateLinkProperties extends RelationshipBeanProperties
     public PeerDuplicateLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PEER_DUPLICATE_LINK.typeName);
+        super.typeName = OpenMetadataType.PEER_DUPLICATE_LINK.typeName;
     }
 
 

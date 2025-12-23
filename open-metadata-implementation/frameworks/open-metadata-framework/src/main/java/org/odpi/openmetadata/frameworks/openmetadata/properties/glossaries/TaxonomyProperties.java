@@ -36,7 +36,7 @@ public class TaxonomyProperties extends ClassificationBeanProperties
     public TaxonomyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName;
     }
 
 

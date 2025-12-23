@@ -30,7 +30,7 @@ public class ResourceProfileLogAnnotationProperties extends DataFieldAnnotationP
     public ResourceProfileLogAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName;
     }
 
 

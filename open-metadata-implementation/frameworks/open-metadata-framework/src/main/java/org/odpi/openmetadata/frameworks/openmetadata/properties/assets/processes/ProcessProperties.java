@@ -53,7 +53,7 @@ public class ProcessProperties extends AssetProperties
     public ProcessProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROCESS.typeName);;
+        super.typeName = OpenMetadataType.PROCESS.typeName;
     }
 
 

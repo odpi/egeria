@@ -25,7 +25,7 @@ public class ImpactProperties extends GovernanceClassificationProperties
     public ImpactProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IMPACT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.IMPACT_CLASSIFICATION.typeName;
     }
 
 

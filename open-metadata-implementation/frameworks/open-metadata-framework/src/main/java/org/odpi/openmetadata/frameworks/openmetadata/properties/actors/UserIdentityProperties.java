@@ -30,7 +30,7 @@ public class UserIdentityProperties extends ActorProperties
     public UserIdentityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.USER_IDENTITY.typeName);
+        super.typeName = OpenMetadataType.USER_IDENTITY.typeName;
     }
 
 

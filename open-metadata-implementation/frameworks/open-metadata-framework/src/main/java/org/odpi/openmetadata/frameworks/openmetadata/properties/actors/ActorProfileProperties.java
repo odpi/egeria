@@ -32,7 +32,7 @@ public class ActorProfileProperties extends ActorProperties
     public ActorProfileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTOR_PROFILE.typeName);
+        super.typeName = OpenMetadataType.ACTOR_PROFILE.typeName;
     }
 
 

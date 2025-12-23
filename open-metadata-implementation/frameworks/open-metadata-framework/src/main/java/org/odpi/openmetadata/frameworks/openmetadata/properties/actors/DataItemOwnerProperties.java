@@ -24,7 +24,7 @@ public class DataItemOwnerProperties extends GovernanceRoleProperties
     public DataItemOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_ITEM_OWNER.typeName);
+        super.typeName = OpenMetadataType.DATA_ITEM_OWNER.typeName;
     }
 
 

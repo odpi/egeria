@@ -26,7 +26,7 @@ public class SecretsCollectionProperties extends DataSetProperties
     public SecretsCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SECRETS_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.SECRETS_COLLECTION.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class IntegrationGroupProperties extends SoftwareCapabilityProperties
     public IntegrationGroupProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INTEGRATION_GROUP.typeName);;
+        super.typeName = OpenMetadataType.INTEGRATION_GROUP.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class BuildInstructionFileProperties extends DataFileProperties
     public BuildInstructionFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BUILD_INSTRUCTION_FILE.typeName);
+        super.typeName = OpenMetadataType.BUILD_INSTRUCTION_FILE.typeName;
     }
 
 

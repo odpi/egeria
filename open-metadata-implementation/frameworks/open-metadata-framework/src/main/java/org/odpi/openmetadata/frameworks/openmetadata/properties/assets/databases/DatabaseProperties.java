@@ -36,7 +36,7 @@ public class DatabaseProperties extends DataStoreProperties
     public DatabaseProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATABASE.typeName);
+        super.typeName = OpenMetadataType.DATABASE.typeName;
     }
 
 

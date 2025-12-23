@@ -25,7 +25,7 @@ public class ExecutableFileProperties extends DataFileProperties
     public ExecutableFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXECUTABLE_FILE.typeName);
+        super.typeName = OpenMetadataType.EXECUTABLE_FILE.typeName;
     }
 
 

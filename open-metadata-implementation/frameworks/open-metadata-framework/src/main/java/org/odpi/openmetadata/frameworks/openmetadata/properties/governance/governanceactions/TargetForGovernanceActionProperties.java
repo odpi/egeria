@@ -29,7 +29,7 @@ public class TargetForGovernanceActionProperties extends RelationshipBeanPropert
     public TargetForGovernanceActionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName;
     }
 
 

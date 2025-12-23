@@ -30,7 +30,7 @@ public class SourcedFromProperties extends RelationshipBeanProperties
     public SourcedFromProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName;
     }
 
 

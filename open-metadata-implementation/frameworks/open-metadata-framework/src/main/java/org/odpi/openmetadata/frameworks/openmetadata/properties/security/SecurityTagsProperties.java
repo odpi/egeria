@@ -35,7 +35,7 @@ public class SecurityTagsProperties extends ClassificationBeanProperties
     public SecurityTagsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName;
     }
 
 

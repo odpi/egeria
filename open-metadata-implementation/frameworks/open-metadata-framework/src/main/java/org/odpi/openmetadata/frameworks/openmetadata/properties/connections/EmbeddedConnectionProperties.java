@@ -34,7 +34,7 @@ public class EmbeddedConnectionProperties extends RelationshipBeanProperties
     public EmbeddedConnectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName;
     }
 
 

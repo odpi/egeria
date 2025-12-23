@@ -24,7 +24,7 @@ public class AssetOwnerProperties extends GovernanceRoleProperties
     public AssetOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSET_OWNER.typeName);
+        super.typeName = OpenMetadataType.ASSET_OWNER.typeName;
     }
 
 

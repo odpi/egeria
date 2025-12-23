@@ -32,7 +32,7 @@ public class DataManagerProperties extends SoftwareCapabilityProperties
     public DataManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_MANAGER.typeName);
+        super.typeName = OpenMetadataType.DATA_MANAGER.typeName;
     }
 
 

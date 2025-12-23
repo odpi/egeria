@@ -26,7 +26,7 @@ public class LinkedFileProperties extends RelationshipBeanProperties
     public LinkedFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName;
     }
 
 

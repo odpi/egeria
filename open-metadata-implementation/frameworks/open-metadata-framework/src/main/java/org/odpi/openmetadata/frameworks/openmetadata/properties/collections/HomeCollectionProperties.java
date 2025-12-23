@@ -26,7 +26,7 @@ public class HomeCollectionProperties extends CollectionProperties
     public HomeCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.HOME_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.HOME_COLLECTION.typeName;
     }
 
 

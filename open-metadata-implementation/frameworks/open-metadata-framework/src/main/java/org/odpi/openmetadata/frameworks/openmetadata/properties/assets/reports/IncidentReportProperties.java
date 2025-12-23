@@ -25,7 +25,7 @@ public class IncidentReportProperties extends ReportProperties
     public IncidentReportProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INCIDENT_REPORT.typeName);
+        super.typeName = OpenMetadataType.INCIDENT_REPORT.typeName;
     }
 
 

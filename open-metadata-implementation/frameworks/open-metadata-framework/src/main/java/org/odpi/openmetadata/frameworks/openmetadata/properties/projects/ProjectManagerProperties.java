@@ -25,7 +25,7 @@ public class ProjectManagerProperties extends PersonRoleProperties
     public ProjectManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROJECT_MANAGER.typeName);
+        super.typeName = OpenMetadataType.PROJECT_MANAGER.typeName;
     }
 
 

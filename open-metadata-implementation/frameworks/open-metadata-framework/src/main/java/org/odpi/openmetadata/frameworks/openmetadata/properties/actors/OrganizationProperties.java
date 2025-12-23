@@ -25,7 +25,7 @@ public class OrganizationProperties extends TeamProperties
     public OrganizationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ORGANIZATION.typeName);
+        super.typeName = OpenMetadataType.ORGANIZATION.typeName;
     }
 
 

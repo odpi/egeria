@@ -24,7 +24,7 @@ public class ToDoProperties extends ActionProperties
     public ToDoProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TO_DO.typeName);;
+        super.typeName = OpenMetadataType.TO_DO.typeName;
     }
 
 

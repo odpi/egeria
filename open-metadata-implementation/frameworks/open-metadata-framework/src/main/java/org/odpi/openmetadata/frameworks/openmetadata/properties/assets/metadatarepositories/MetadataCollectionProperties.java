@@ -30,7 +30,7 @@ public class MetadataCollectionProperties extends DataSetProperties
     public MetadataCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.METADATA_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.METADATA_COLLECTION.typeName;
     }
 
 

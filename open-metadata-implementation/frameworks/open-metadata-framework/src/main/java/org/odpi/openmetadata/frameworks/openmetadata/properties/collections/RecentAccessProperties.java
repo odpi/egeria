@@ -26,7 +26,7 @@ public class RecentAccessProperties extends CollectionProperties
     public RecentAccessProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RECENT_ACCESS_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.RECENT_ACCESS_COLLECTION.typeName;
     }
 
 

@@ -31,7 +31,7 @@ public class CrowdSourcingContributionProperties extends RelationshipBeanPropert
     public CrowdSourcingContributionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP.typeName;
     }
 
 

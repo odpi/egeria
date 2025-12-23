@@ -43,7 +43,7 @@ public class PersonProperties extends ActorProfileProperties
     public PersonProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PERSON.typeName);
+        super.typeName = OpenMetadataType.PERSON.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class MobileResourceProperties extends ClassificationBeanProperties
     public MobileResourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MOBILE_RESOURCE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.MOBILE_RESOURCE_CLASSIFICATION.typeName;
     }
 
 

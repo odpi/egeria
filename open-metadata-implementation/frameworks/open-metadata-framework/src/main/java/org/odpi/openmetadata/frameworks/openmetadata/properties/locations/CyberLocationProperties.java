@@ -30,7 +30,7 @@ public class CyberLocationProperties extends ClassificationBeanProperties
     public CyberLocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName;
     }
 
 

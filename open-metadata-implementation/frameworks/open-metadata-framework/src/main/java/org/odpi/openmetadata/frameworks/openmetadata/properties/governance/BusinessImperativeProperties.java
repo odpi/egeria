@@ -24,7 +24,7 @@ public class BusinessImperativeProperties extends GovernanceDriverProperties
     public BusinessImperativeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.BUSINESS_IMPERATIVE.typeName);
+        super.typeName = OpenMetadataType.BUSINESS_IMPERATIVE.typeName;
     }
 
 

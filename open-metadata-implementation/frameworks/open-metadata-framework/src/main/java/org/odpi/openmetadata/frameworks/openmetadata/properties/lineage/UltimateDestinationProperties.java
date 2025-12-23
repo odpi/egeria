@@ -24,7 +24,7 @@ public class UltimateDestinationProperties extends LineageBoundaryProperties
     public UltimateDestinationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ULTIMATE_DESTINATION.typeName);
+        super.typeName = OpenMetadataType.ULTIMATE_DESTINATION.typeName;
     }
 
 

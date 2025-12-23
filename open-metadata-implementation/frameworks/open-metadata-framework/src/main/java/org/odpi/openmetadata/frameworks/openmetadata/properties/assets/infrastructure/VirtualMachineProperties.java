@@ -26,7 +26,7 @@ public class VirtualMachineProperties extends HostProperties
     public VirtualMachineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VIRTUAL_MACHINE.typeName);
+        super.typeName = OpenMetadataType.VIRTUAL_MACHINE.typeName;
     }
 
 

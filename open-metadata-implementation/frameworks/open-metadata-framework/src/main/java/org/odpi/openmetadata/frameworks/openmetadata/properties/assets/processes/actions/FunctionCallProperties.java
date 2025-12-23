@@ -25,7 +25,7 @@ public class FunctionCallProperties extends TransientEmbeddedProcessProperties
     public FunctionCallProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FUNCTION_CALL.typeName);
+        super.typeName = OpenMetadataType.FUNCTION_CALL.typeName;
     }
 
 

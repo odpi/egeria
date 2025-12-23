@@ -25,7 +25,7 @@ public class ActionsProperties extends LabeledRelationshipProperties
     public ActionsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTIONS_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ACTIONS_RELATIONSHIP.typeName;
     }
 
 

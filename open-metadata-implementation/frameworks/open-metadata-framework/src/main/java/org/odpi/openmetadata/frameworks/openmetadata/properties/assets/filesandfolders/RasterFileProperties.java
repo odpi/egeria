@@ -25,7 +25,7 @@ public class RasterFileProperties extends MediaFileProperties
     public RasterFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RASTER_FILE.typeName);
+        super.typeName = OpenMetadataType.RASTER_FILE.typeName;
     }
 
 

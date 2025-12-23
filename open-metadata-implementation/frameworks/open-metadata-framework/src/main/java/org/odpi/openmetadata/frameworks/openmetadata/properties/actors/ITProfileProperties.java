@@ -25,7 +25,7 @@ public class ITProfileProperties extends ActorProfileProperties
     public ITProfileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IT_PROFILE.typeName);
+        super.typeName = OpenMetadataType.IT_PROFILE.typeName;
     }
 
 

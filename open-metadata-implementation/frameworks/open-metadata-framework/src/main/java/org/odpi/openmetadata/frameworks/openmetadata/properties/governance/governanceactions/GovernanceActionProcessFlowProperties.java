@@ -31,7 +31,7 @@ public class GovernanceActionProcessFlowProperties extends RelationshipBeanPrope
     public GovernanceActionProcessFlowProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName;
     }
 
 

@@ -35,7 +35,7 @@ public class ResourceMeasureAnnotationProperties extends AnnotationProperties
     public ResourceMeasureAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class DeployedAPIProperties extends DeployedSoftwareComponentProperties
     public DeployedAPIProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DEPLOYED_API.typeName);
+        super.typeName = OpenMetadataType.DEPLOYED_API.typeName;
     }
 
 

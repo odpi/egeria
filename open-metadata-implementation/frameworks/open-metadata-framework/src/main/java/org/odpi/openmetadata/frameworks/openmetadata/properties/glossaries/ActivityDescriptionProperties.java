@@ -33,7 +33,7 @@ public class ActivityDescriptionProperties extends ClassificationBeanProperties
     public ActivityDescriptionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName;
     }
 
 

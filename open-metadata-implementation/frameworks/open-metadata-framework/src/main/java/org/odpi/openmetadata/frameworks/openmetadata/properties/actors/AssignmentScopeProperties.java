@@ -31,7 +31,7 @@ public class AssignmentScopeProperties extends RelationshipBeanProperties
     public AssignmentScopeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName;
     }
 
 

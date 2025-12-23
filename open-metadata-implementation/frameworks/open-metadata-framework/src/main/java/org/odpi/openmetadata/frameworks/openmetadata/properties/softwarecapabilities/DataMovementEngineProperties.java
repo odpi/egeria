@@ -25,7 +25,7 @@ public class DataMovementEngineProperties extends SoftwareCapabilityProperties
     public DataMovementEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName);
+        super.typeName = OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName;
     }
 
 
