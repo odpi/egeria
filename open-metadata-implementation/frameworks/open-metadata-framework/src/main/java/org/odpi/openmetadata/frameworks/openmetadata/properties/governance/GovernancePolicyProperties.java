@@ -32,7 +32,7 @@ public class GovernancePolicyProperties extends GovernanceDefinitionProperties
     public GovernancePolicyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_POLICY.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_POLICY.typeName;
     }
 
 

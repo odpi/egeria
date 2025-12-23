@@ -31,7 +31,7 @@ public class LikeProperties extends OpenMetadataRootProperties
     public LikeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LIKE.typeName);
+        super.typeName = OpenMetadataType.LIKE.typeName;
     }
 
 

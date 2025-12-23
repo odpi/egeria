@@ -25,7 +25,7 @@ public class JSONFileProperties extends DataFileProperties
     public JSONFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.JSON_FILE.typeName);
+        super.typeName = OpenMetadataType.JSON_FILE.typeName;
     }
 
 

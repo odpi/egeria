@@ -33,7 +33,7 @@ public class ProfileIdentityProperties extends RelationshipBeanProperties
     public ProfileIdentityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName;
     }
 
 

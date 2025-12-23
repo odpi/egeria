@@ -27,7 +27,7 @@ public class ContextEventEvidenceProperties extends LabeledRelationshipPropertie
     public ContextEventEvidenceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTEXT_EVENT_EVIDENCE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTEXT_EVENT_EVIDENCE_RELATIONSHIP.typeName;
     }
 
 

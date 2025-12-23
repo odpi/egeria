@@ -25,7 +25,7 @@ public class ConfidentialityProperties extends GovernanceClassificationPropertie
     public ConfidentialityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName;
     }
 
 

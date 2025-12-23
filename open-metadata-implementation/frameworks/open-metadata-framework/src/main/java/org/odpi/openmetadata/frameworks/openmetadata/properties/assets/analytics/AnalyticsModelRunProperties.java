@@ -26,7 +26,7 @@ public class AnalyticsModelRunProperties extends TransientEmbeddedProcessPropert
     public AnalyticsModelRunProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANALYTICS_MODEL_RUN.typeName);
+        super.typeName = OpenMetadataType.ANALYTICS_MODEL_RUN.typeName;
     }
 
 

@@ -38,7 +38,7 @@ public class ForeignKeyProperties extends RelationshipBeanProperties
     public ForeignKeyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName;
     }
 
 

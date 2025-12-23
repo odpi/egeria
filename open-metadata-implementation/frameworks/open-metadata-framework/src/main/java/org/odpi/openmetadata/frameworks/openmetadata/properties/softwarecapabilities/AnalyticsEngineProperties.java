@@ -25,7 +25,7 @@ public class AnalyticsEngineProperties extends SoftwareCapabilityProperties
     public AnalyticsEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANALYTICS_ENGINE.typeName);
+        super.typeName = OpenMetadataType.ANALYTICS_ENGINE.typeName;
     }
 
 

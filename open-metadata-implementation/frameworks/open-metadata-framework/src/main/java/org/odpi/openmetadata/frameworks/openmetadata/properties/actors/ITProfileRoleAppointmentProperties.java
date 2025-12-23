@@ -25,7 +25,7 @@ public class ITProfileRoleAppointmentProperties extends RelationshipBeanProperti
     public ITProfileRoleAppointmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName;
     }
 
 

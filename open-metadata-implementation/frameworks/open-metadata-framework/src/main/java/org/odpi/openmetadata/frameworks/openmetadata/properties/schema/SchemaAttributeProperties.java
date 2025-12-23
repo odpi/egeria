@@ -51,7 +51,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public SchemaAttributeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
+        super.typeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
     }
 
 

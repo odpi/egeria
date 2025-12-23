@@ -25,7 +25,7 @@ public class PublisherInterfaceProperties extends ClassificationBeanProperties
     public PublisherInterfaceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PUBLISHER_INTERFACE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.PUBLISHER_INTERFACE_CLASSIFICATION.typeName;
     }
 
 

@@ -27,7 +27,7 @@ public class CohortRegistryStoreProperties extends DataStoreProperties
     public CohortRegistryStoreProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COHORT_REGISTRY_STORE.typeName);
+        super.typeName = OpenMetadataType.COHORT_REGISTRY_STORE.typeName;
     }
 
 

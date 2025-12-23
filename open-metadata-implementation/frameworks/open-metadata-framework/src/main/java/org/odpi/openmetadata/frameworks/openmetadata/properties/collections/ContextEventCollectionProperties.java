@@ -26,7 +26,7 @@ public class ContextEventCollectionProperties extends CollectionProperties
     public ContextEventCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTEXT_EVENT_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.CONTEXT_EVENT_COLLECTION.typeName;
     }
 
 

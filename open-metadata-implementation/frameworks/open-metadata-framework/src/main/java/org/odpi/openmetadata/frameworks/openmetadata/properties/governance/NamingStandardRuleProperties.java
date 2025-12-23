@@ -30,7 +30,7 @@ public class NamingStandardRuleProperties extends GovernanceRuleProperties
     public NamingStandardRuleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NAMING_STANDARD_RULE.typeName);
+        super.typeName = OpenMetadataType.NAMING_STANDARD_RULE.typeName;
     }
 
 

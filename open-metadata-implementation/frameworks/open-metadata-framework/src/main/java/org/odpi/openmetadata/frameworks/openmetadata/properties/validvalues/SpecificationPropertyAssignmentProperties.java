@@ -32,7 +32,7 @@ public class SpecificationPropertyAssignmentProperties extends RelationshipBeanP
     public SpecificationPropertyAssignmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName;
     }
 
 

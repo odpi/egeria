@@ -25,7 +25,7 @@ public class MonitoredResourceProperties extends LabeledRelationshipProperties
     public MonitoredResourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName;
     }
 
 

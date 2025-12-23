@@ -24,7 +24,7 @@ public class LocationOwnerProperties extends GovernanceRoleProperties
     public LocationOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LOCATION_OWNER.typeName);
+        super.typeName = OpenMetadataType.LOCATION_OWNER.typeName;
     }
 
 

@@ -30,7 +30,7 @@ public class SupplementaryPropertiesProperties extends RelationshipBeanPropertie
     public SupplementaryPropertiesProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName;
     }
 
 

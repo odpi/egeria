@@ -34,7 +34,7 @@ public class FixedLocationProperties extends ClassificationBeanProperties
     public FixedLocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName;
     }
 
 

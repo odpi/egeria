@@ -26,7 +26,7 @@ public class AttachedRatingProperties extends RelationshipBeanProperties
     public AttachedRatingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName;
     }
 
 

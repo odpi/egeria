@@ -26,7 +26,7 @@ public class NetworkProperties extends ITInfrastructureProperties
     public NetworkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NETWORK.typeName);
+        super.typeName = OpenMetadataType.NETWORK.typeName;
     }
 
 

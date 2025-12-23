@@ -37,7 +37,7 @@ public class MementoProperties extends ClassificationBeanProperties
     public MementoProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEMENTO_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.MEMENTO_CLASSIFICATION.typeName;
     }
 
 

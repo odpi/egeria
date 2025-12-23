@@ -25,7 +25,7 @@ public class ArchiveContentsProperties extends RelationshipBeanProperties
     public ArchiveContentsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName;
     }
 
 

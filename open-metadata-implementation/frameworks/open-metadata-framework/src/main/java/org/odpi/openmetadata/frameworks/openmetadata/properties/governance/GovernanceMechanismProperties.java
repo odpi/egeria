@@ -25,7 +25,7 @@ public class GovernanceMechanismProperties extends SupportingDefinitionPropertie
     public GovernanceMechanismProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName;
     }
 
 

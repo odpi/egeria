@@ -24,7 +24,7 @@ public class SynonymProperties extends GlossaryTermRelationshipProperties
     public SynonymProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SYNONYM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SYNONYM_RELATIONSHIP.typeName;
     }
 
 

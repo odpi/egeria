@@ -40,7 +40,7 @@ public class MediaFileProperties extends DataFileProperties
     public MediaFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEDIA_FILE.typeName);
+        super.typeName = OpenMetadataType.MEDIA_FILE.typeName;
     }
 
 

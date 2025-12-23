@@ -27,7 +27,7 @@ public class CampaignProperties extends ClassificationBeanProperties
     public CampaignProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName;
     }
 
 

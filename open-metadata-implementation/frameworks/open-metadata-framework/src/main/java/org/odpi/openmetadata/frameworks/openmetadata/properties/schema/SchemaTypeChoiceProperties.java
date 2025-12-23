@@ -30,7 +30,7 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
     public SchemaTypeChoiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName);
+        super.typeName = OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName;
     }
 
 

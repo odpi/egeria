@@ -29,7 +29,7 @@ public class ConsolidatedDuplicateLinkProperties extends RelationshipBeanPropert
     public ConsolidatedDuplicateLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName);
+        super.typeName = OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName;
     }
 
 

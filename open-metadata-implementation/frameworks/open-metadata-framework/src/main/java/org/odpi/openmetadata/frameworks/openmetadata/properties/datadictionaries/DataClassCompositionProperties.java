@@ -26,7 +26,7 @@ public class DataClassCompositionProperties extends RelationshipBeanProperties
     public DataClassCompositionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName;
     }
 
 

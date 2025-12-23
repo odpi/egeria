@@ -27,7 +27,7 @@ public class LocationProperties extends ReferenceableProperties
     public LocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LOCATION.typeName);
+        super.typeName = OpenMetadataType.LOCATION.typeName;
     }
 
 

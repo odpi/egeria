@@ -26,7 +26,7 @@ public class ContributionProperties extends RelationshipBeanProperties
     public ContributionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName;
     }
 
 

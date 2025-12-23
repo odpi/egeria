@@ -34,7 +34,7 @@ public class ReportTypeProperties extends DataAssetProperties
     public ReportTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORT_TYPE.typeName);
+        super.typeName = OpenMetadataType.REPORT_TYPE.typeName;
     }
 
 

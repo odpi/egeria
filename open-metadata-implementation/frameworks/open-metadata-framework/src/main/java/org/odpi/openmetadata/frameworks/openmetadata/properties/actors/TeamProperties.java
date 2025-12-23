@@ -36,7 +36,7 @@ public class TeamProperties extends ActorProfileProperties
     public TeamProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TEAM.typeName);
+        super.typeName = OpenMetadataType.TEAM.typeName;
     }
 
 

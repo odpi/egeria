@@ -24,7 +24,7 @@ public class ConceptModelProperties extends DesignModelProperties
     public ConceptModelProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_MODEL.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_MODEL.typeName;
     }
 
 

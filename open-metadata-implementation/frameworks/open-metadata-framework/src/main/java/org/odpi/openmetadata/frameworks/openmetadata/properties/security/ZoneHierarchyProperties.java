@@ -25,7 +25,7 @@ public class ZoneHierarchyProperties extends RelationshipBeanProperties
     public ZoneHierarchyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ZONE_HIERARCHY_RELATIONSHIP.typeName;
     }
 
 

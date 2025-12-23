@@ -31,7 +31,7 @@ public class SchemaAnalysisAnnotationProperties extends AnnotationProperties
     public SchemaAnalysisAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName;
     }
 
 

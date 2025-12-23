@@ -25,7 +25,7 @@ public class SolutionComponentActorProperties extends RoledRelationshipPropertie
     public SolutionComponentActorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName;
     }
 
 

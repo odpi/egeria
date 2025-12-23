@@ -34,7 +34,7 @@ public class TransientEmbeddedProcessProperties extends EmbeddedProcessPropertie
     public TransientEmbeddedProcessProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName);;
+        super.typeName = OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName;
     }
 
 

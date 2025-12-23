@@ -43,7 +43,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
     public DataFieldProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_FIELD.typeName);
+        super.typeName = OpenMetadataType.DATA_FIELD.typeName;
     }
 
 

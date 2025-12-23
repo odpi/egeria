@@ -26,7 +26,7 @@ public class TabularFileColumnProperties extends TabularColumnProperties
     public TabularFileColumnProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TABULAR_FILE_COLUMN.typeName);
+        super.typeName = OpenMetadataType.TABULAR_FILE_COLUMN.typeName;
     }
 
 

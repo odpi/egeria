@@ -27,7 +27,7 @@ public class DataClassDefinitionProperties extends RelationshipBeanProperties
     public DataClassDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName;
     }
 
 

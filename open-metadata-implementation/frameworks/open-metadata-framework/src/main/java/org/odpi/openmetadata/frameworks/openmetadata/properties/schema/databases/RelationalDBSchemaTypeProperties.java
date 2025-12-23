@@ -26,7 +26,7 @@ public class RelationalDBSchemaTypeProperties extends RootSchemaTypeProperties
     public RelationalDBSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName;
     }
 
 

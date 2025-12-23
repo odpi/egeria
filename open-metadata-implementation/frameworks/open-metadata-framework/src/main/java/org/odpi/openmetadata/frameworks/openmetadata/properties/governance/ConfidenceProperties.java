@@ -25,7 +25,7 @@ public class ConfidenceProperties extends GovernanceClassificationProperties
     public ConfidenceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName;
     }
 
 

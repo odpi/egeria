@@ -24,7 +24,7 @@ public class AntonymProperties extends GlossaryTermRelationshipProperties
     public AntonymProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANTONYM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ANTONYM_RELATIONSHIP.typeName;
     }
 
 

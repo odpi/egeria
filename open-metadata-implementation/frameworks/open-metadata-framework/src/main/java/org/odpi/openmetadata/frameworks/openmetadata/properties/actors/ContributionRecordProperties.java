@@ -33,7 +33,7 @@ public class ContributionRecordProperties extends ReferenceableProperties
     public ContributionRecordProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTRIBUTION_RECORD.typeName);
+        super.typeName = OpenMetadataType.CONTRIBUTION_RECORD.typeName;
     }
 
 

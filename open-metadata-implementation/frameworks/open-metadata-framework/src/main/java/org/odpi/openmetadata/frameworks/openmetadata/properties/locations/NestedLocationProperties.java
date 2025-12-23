@@ -26,7 +26,7 @@ public class NestedLocationProperties extends LabeledRelationshipProperties
     public NestedLocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NESTED_LOCATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NESTED_LOCATION_RELATIONSHIP.typeName;
     }
 
 

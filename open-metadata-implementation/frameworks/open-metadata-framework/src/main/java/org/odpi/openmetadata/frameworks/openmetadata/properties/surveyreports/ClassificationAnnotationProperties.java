@@ -30,7 +30,7 @@ public class ClassificationAnnotationProperties extends DataFieldAnnotationPrope
     public ClassificationAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CLASSIFICATION_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.CLASSIFICATION_ANNOTATION.typeName;
     }
 
 

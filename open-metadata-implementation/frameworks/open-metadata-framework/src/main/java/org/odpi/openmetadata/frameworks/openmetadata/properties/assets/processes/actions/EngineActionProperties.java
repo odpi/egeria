@@ -50,7 +50,7 @@ public class EngineActionProperties extends ActionProperties
     public EngineActionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ENGINE_ACTION.typeName);;
+        super.typeName = OpenMetadataType.ENGINE_ACTION.typeName;
     }
 
 

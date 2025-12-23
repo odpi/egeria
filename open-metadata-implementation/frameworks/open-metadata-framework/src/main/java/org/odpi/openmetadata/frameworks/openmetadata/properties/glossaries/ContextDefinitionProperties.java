@@ -32,7 +32,7 @@ public class ContextDefinitionProperties extends ClassificationBeanProperties
     public ContextDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION.typeName;
     }
 
 

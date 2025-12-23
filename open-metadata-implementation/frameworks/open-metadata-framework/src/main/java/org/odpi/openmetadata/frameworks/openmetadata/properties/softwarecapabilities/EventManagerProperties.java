@@ -25,7 +25,7 @@ public class EventManagerProperties extends SoftwareCapabilityProperties
     public EventManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EVENT_MANAGER.typeName);
+        super.typeName = OpenMetadataType.EVENT_MANAGER.typeName;
     }
 
 

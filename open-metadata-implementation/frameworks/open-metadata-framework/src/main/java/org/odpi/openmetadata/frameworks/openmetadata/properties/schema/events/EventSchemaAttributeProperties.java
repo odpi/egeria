@@ -27,7 +27,7 @@ public class EventSchemaAttributeProperties extends SchemaAttributeProperties
     public EventSchemaAttributeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName);
+        super.typeName = OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName;
     }
 
 

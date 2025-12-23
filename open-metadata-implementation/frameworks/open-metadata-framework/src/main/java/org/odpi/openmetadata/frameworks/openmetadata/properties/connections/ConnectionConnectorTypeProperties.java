@@ -25,7 +25,7 @@ public class ConnectionConnectorTypeProperties extends RelationshipBeanPropertie
     public ConnectionConnectorTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName;
     }
 
 

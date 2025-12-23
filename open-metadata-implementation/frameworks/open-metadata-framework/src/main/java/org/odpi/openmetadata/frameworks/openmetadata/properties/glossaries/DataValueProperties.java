@@ -26,7 +26,7 @@ public class DataValueProperties extends ClassificationBeanProperties
     public DataValueProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.DATA_VALUE_CLASSIFICATION.typeName;
     }
 
 

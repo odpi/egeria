@@ -31,7 +31,7 @@ public class ProcessHierarchyProperties extends RelationshipBeanProperties
     public ProcessHierarchyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName;
     }
 
 

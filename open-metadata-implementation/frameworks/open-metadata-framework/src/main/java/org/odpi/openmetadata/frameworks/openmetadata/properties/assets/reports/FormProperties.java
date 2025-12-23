@@ -26,7 +26,7 @@ public class FormProperties extends DataSetProperties
     public FormProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FORM.typeName);
+        super.typeName = OpenMetadataType.FORM.typeName;
     }
 
 

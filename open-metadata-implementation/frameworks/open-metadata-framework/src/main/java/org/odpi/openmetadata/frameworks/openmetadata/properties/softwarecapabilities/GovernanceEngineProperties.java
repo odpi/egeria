@@ -32,7 +32,7 @@ public class GovernanceEngineProperties extends EngineProperties
     public GovernanceEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ENGINE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
     }
 
 

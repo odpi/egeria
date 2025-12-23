@@ -24,7 +24,7 @@ public class ContentCollectionManagerProperties extends ResourceManagerPropertie
     public ContentCollectionManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTENT_COLLECTION_MANAGER.typeName);
+        super.typeName = OpenMetadataType.CONTENT_COLLECTION_MANAGER.typeName;
     }
 
 

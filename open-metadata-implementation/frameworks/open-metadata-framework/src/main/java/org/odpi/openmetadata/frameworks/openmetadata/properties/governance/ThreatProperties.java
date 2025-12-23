@@ -25,7 +25,7 @@ public class ThreatProperties extends GovernanceDriverProperties
     public ThreatProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.THREAT.typeName);
+        super.typeName = OpenMetadataType.THREAT.typeName;
     }
 
 

@@ -24,7 +24,7 @@ public class UltimateSourceProperties extends LineageBoundaryProperties
     public UltimateSourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ULTIMATE_SOURCE.typeName);
+        super.typeName = OpenMetadataType.ULTIMATE_SOURCE.typeName;
     }
 
 

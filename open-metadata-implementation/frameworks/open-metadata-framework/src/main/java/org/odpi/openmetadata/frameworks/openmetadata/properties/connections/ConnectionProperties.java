@@ -101,7 +101,7 @@ public class ConnectionProperties extends ReferenceableProperties
     public ConnectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONNECTION.typeName);
+        super.typeName = OpenMetadataType.CONNECTION.typeName;
     }
 
 

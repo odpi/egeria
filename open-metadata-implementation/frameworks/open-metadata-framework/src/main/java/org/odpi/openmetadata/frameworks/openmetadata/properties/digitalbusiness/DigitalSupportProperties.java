@@ -27,7 +27,7 @@ public class DigitalSupportProperties extends LabeledRelationshipProperties
     public DigitalSupportProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_SUPPORT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_SUPPORT_RELATIONSHIP.typeName;
     }
 
 

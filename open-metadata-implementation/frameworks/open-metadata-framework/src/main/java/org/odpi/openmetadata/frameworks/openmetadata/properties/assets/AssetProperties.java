@@ -40,7 +40,7 @@ public class AssetProperties extends ReferenceableProperties
     public AssetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSET.typeName);
+        super.typeName = OpenMetadataType.ASSET.typeName;
     }
 
 

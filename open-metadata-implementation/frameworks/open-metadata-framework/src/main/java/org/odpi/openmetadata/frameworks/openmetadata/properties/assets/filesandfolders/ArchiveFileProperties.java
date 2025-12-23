@@ -25,7 +25,7 @@ public class ArchiveFileProperties extends DataFileProperties
     public ArchiveFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ARCHIVE_FILE.typeName);
+        super.typeName = OpenMetadataType.ARCHIVE_FILE.typeName;
     }
 
 

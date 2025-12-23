@@ -26,7 +26,7 @@ public class RootCollectionProperties extends CollectionProperties
     public RootCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ROOT_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.ROOT_COLLECTION.typeName;
     }
 
 

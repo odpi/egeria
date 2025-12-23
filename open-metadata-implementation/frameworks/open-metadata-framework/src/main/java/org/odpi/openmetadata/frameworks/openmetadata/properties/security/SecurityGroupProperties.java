@@ -30,7 +30,7 @@ public class SecurityGroupProperties extends GovernanceControlProperties
     public SecurityGroupProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SECURITY_GROUP.typeName);
+        super.typeName = OpenMetadataType.SECURITY_GROUP.typeName;
     }
 
 

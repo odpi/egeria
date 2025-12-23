@@ -42,7 +42,7 @@ public class CitedDocumentProperties extends ExternalReferenceProperties
     public CitedDocumentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CITED_DOCUMENT.typeName);
+        super.typeName = OpenMetadataType.CITED_DOCUMENT.typeName;
     }
 
 

@@ -30,7 +30,7 @@ public class NextGovernanceActionProcessStepProperties extends RelationshipBeanP
     public NextGovernanceActionProcessStepProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName;
     }
 
 

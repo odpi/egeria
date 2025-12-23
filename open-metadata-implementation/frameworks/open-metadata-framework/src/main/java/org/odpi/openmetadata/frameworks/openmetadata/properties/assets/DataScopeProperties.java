@@ -41,7 +41,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
     public DataScopeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName;
     }
 
 

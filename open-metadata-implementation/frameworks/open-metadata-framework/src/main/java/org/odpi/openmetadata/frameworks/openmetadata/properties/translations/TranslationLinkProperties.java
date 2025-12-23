@@ -25,7 +25,7 @@ public class TranslationLinkProperties extends RelationshipBeanProperties
     public TranslationLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TRANSLATION_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.TRANSLATION_LINK_RELATIONSHIP.typeName;
     }
 
 

@@ -36,7 +36,7 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
     public GovernanceExpectationsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION.typeName;
     }
 
 

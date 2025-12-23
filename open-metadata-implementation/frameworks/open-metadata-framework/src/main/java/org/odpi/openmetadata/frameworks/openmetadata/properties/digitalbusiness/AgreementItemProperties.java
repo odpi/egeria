@@ -38,7 +38,7 @@ public class AgreementItemProperties extends RelationshipBeanProperties
     public AgreementItemProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName;
     }
 
 

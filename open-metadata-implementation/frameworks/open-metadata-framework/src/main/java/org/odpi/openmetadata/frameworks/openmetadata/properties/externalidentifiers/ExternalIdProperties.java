@@ -40,7 +40,7 @@ public class ExternalIdProperties extends ReferenceableProperties
     public ExternalIdProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_ID.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_ID.typeName;
     }
 
 

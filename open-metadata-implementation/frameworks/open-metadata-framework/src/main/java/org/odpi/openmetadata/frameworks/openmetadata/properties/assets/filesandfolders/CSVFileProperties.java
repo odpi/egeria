@@ -30,7 +30,7 @@ public class CSVFileProperties extends DataFileProperties
     public CSVFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CSV_FILE.typeName);
+        super.typeName = OpenMetadataType.CSV_FILE.typeName;
     }
 
 

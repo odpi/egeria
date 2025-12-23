@@ -24,7 +24,7 @@ public class NotificationManagerProperties extends ResourceManagerProperties
     public NotificationManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NOTIFICATION_MANAGER.typeName);
+        super.typeName = OpenMetadataType.NOTIFICATION_MANAGER.typeName;
     }
 
 

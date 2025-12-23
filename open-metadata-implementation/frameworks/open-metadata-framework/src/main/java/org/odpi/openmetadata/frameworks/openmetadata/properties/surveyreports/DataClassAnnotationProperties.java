@@ -32,7 +32,7 @@ public class DataClassAnnotationProperties extends DataFieldAnnotationProperties
     public DataClassAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.DATA_CLASS_ANNOTATION.typeName;
     }
 
 

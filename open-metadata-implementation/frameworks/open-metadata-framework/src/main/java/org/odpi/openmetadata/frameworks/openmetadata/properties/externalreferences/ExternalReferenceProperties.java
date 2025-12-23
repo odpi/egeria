@@ -49,7 +49,7 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     public ExternalReferenceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_REFERENCE.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_REFERENCE.typeName;
     }
 
 

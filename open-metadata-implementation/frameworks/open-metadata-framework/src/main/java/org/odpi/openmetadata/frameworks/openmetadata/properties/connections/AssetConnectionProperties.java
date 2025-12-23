@@ -25,7 +25,7 @@ public class AssetConnectionProperties extends RelationshipBeanProperties
     public AssetConnectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName;
     }
 
 

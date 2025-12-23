@@ -25,7 +25,7 @@ public class DocumentProperties extends MediaFileProperties
     public DocumentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DOCUMENT.typeName);
+        super.typeName = OpenMetadataType.DOCUMENT.typeName;
     }
 
 

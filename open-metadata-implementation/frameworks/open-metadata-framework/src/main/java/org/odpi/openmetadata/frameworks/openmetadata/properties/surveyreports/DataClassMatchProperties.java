@@ -31,7 +31,7 @@ public class DataClassMatchProperties extends RelationshipBeanProperties
     public DataClassMatchProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS_MATCH_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_CLASS_MATCH_RELATIONSHIP.typeName;
     }
 
 

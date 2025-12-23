@@ -34,7 +34,7 @@ public class CommentProperties extends ReferenceableProperties
     public CommentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COMMENT.typeName);
+        super.typeName = OpenMetadataType.COMMENT.typeName;
     }
 
 

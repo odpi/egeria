@@ -41,7 +41,7 @@ public class ContextEventProperties extends ReferenceableProperties
     public ContextEventProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTEXT_EVENT.typeName);
+        super.typeName = OpenMetadataType.CONTEXT_EVENT.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class EventTypeProperties extends RootSchemaTypeProperties
     public EventTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EVENT_TYPE.typeName);
+        super.typeName = OpenMetadataType.EVENT_TYPE.typeName;
     }
 
 

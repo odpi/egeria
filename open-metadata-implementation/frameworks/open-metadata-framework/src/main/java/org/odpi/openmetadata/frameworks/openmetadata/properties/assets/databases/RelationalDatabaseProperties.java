@@ -25,7 +25,7 @@ public class RelationalDatabaseProperties extends DatabaseProperties
     public RelationalDatabaseProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATIONAL_DATABASE.typeName);
+        super.typeName = OpenMetadataType.RELATIONAL_DATABASE.typeName;
     }
 
 

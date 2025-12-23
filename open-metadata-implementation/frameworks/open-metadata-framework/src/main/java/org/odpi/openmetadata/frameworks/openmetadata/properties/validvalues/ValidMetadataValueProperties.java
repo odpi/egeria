@@ -30,7 +30,7 @@ public class ValidMetadataValueProperties extends ValidValueDefinitionProperties
     public ValidMetadataValueProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_METADATA_VALUE.typeName);
+        super.typeName = OpenMetadataType.VALID_METADATA_VALUE.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class ListenerInterfaceProperties extends ClassificationBeanProperties
     public ListenerInterfaceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LISTENER_INTERFACE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.LISTENER_INTERFACE_CLASSIFICATION.typeName;
     }
 
 

@@ -29,7 +29,7 @@ public class ReferenceCodeTableProperties extends TabularDataSetProperties
     public ReferenceCodeTableProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCE_CODE_TABLE.typeName);
+        super.typeName = OpenMetadataType.REFERENCE_CODE_TABLE.typeName;
     }
 
 

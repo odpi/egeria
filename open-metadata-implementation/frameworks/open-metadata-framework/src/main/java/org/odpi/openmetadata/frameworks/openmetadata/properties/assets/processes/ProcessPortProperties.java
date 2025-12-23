@@ -27,7 +27,7 @@ public class ProcessPortProperties extends RelationshipBeanProperties
     public ProcessPortProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName;
     }
 
 

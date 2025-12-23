@@ -59,7 +59,7 @@ public class CollectionProperties extends AuthoredReferenceableProperties
     public CollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COLLECTION.typeName);
+        super.typeName = OpenMetadataType.COLLECTION.typeName;
     }
 
     /**

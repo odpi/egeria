@@ -26,7 +26,7 @@ public class DigitalProductCatalogProperties extends CollectionProperties
     public DigitalProductCatalogProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_PRODUCT_CATALOG.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_CATALOG.typeName;
     }
 
 

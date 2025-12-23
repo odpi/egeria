@@ -37,7 +37,7 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
     public GovernanceMeasurementsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName;
     }
 
 

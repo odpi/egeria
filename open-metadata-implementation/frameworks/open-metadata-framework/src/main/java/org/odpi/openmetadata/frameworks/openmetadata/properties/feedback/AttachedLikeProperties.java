@@ -26,7 +26,7 @@ public class AttachedLikeProperties extends RelationshipBeanProperties
     public AttachedLikeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName;
     }
 
 

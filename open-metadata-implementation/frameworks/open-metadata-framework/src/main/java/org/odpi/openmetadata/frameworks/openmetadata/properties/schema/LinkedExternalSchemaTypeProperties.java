@@ -26,7 +26,7 @@ public class LinkedExternalSchemaTypeProperties extends RelationshipBeanProperti
     public LinkedExternalSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName;
     }
 
 

@@ -26,7 +26,7 @@ public class AttachedTagProperties extends RelationshipBeanProperties
     public AttachedTagProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName;
     }
 
 

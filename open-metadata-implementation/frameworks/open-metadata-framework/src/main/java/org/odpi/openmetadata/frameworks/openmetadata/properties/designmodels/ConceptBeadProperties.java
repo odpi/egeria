@@ -24,7 +24,7 @@ public class ConceptBeadProperties extends ConceptModelElementProperties
     public ConceptBeadProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_BEAD.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_BEAD.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class CommunityMemberProperties extends PersonRoleProperties
     public CommunityMemberProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COMMUNITY_MEMBER.typeName);
+        super.typeName = OpenMetadataType.COMMUNITY_MEMBER.typeName;
     }
 
 

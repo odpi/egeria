@@ -27,7 +27,7 @@ public class PortDelegationProperties extends RelationshipBeanProperties
     public PortDelegationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName;
     }
 
 

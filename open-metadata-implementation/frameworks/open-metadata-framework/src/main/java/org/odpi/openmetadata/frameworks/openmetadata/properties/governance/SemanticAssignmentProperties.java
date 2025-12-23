@@ -41,7 +41,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
     public SemanticAssignmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName;
     }
 
 

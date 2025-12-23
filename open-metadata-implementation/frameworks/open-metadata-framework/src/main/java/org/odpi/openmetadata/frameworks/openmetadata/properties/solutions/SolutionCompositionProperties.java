@@ -25,7 +25,7 @@ public class SolutionCompositionProperties extends RoledRelationshipProperties
     public SolutionCompositionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName;
     }
 
 

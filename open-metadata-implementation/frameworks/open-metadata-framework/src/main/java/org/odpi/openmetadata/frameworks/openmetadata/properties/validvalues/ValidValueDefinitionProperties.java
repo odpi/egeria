@@ -42,7 +42,7 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
     public ValidValueDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+        super.typeName = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
     }
 
 

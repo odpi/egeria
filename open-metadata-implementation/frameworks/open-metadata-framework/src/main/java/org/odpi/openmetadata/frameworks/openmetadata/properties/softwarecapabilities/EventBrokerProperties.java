@@ -25,7 +25,7 @@ public class EventBrokerProperties extends SoftwareCapabilityProperties
     public EventBrokerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EVENT_BROKER.typeName);
+        super.typeName = OpenMetadataType.EVENT_BROKER.typeName;
     }
 
 

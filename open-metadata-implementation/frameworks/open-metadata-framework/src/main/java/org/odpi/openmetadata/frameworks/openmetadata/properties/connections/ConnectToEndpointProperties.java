@@ -25,7 +25,7 @@ public class ConnectToEndpointProperties extends RelationshipBeanProperties
     public ConnectToEndpointProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName;
     }
 
 

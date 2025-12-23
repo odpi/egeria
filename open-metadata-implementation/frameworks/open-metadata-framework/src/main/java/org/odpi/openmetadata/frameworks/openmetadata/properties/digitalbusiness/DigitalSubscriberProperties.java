@@ -31,7 +31,7 @@ public class DigitalSubscriberProperties extends RelationshipBeanProperties
     public DigitalSubscriberProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName;
     }
 
 

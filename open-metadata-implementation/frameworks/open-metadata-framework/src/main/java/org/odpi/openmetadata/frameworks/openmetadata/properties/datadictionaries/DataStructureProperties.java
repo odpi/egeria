@@ -33,7 +33,7 @@ public class DataStructureProperties extends AuthoredReferenceableProperties
     public DataStructureProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_STRUCTURE.typeName);
+        super.typeName = OpenMetadataType.DATA_STRUCTURE.typeName;
     }
 
 

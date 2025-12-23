@@ -32,7 +32,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     public NotificationSubscriberProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName;
     }
 
 

@@ -51,7 +51,7 @@ public class DataFileProperties extends DataStoreProperties
     public DataFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_FILE.typeName);
+        super.typeName = OpenMetadataType.DATA_FILE.typeName;
     }
 
 

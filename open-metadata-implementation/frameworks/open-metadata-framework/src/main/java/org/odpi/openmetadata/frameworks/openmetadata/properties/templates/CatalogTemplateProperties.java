@@ -26,7 +26,7 @@ public class CatalogTemplateProperties extends LabeledRelationshipProperties
     public CatalogTemplateProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName;
     }
 
 

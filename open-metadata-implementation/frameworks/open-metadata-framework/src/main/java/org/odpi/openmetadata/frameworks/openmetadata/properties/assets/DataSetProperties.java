@@ -52,7 +52,7 @@ public class DataSetProperties extends DataAssetProperties
     public DataSetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_SET.typeName);
+        super.typeName = OpenMetadataType.DATA_SET.typeName;
     }
 
 

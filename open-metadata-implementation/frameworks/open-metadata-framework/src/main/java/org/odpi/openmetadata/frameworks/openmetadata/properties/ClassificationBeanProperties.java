@@ -102,8 +102,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ClassificationBeanProperties extends ClassificationProperties
 {
-    private String               typeName             = null;
-    private Map<String, Object>  extendedProperties   = null;
+    protected String               typeName             = null;
+    private   Map<String, Object>  extendedProperties   = null;
 
 
     /**

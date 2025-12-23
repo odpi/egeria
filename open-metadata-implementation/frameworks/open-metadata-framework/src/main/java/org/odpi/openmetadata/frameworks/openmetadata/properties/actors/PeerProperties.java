@@ -25,7 +25,7 @@ public class PeerProperties extends RelationshipBeanProperties
     public PeerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PEER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PEER_RELATIONSHIP.typeName;
     }
 
 

@@ -39,7 +39,7 @@ public class InformationSupplyChainProperties extends CollectionProperties
     public InformationSupplyChainProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName);
+        super.typeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName;
     }
 
 

@@ -39,7 +39,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
     public ConceptBeadRelationshipEndProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_BEAD_RELATIONSHIP_END_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_BEAD_RELATIONSHIP_END_RELATIONSHIP.typeName;
     }
 
 

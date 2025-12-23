@@ -26,7 +26,7 @@ public class WorkItemListProperties extends CollectionProperties
     public WorkItemListProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.WORK_ITEM_LIST_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.WORK_ITEM_LIST_COLLECTION.typeName;
     }
 
 

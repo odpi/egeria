@@ -25,7 +25,7 @@ public class ConceptDesignProperties extends LabeledRelationshipProperties
     public ConceptDesignProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_DESIGN_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_DESIGN_RELATIONSHIP.typeName;
     }
 
 

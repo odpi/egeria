@@ -26,7 +26,7 @@ public class ImplementationResourceProperties extends RoledRelationshipPropertie
     public ImplementationResourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName;
     }
 
 

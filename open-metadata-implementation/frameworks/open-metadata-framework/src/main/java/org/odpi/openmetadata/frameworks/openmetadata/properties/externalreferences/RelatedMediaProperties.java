@@ -38,7 +38,7 @@ public class RelatedMediaProperties extends ExternalReferenceProperties
     public RelatedMediaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATED_MEDIA.typeName);
+        super.typeName = OpenMetadataType.RELATED_MEDIA.typeName;
     }
 
 

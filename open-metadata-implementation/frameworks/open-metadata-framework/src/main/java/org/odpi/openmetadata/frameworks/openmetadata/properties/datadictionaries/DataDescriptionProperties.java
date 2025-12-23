@@ -26,7 +26,7 @@ public class DataDescriptionProperties extends LabeledRelationshipProperties
     public DataDescriptionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName;
     }
 
 

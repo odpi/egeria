@@ -35,7 +35,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
     public GovernanceActionTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName;
     }
 
 

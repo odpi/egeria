@@ -26,7 +26,7 @@ public class IsAConceptBeadProperties extends RelationshipBeanProperties
     public IsAConceptBeadProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IS_A_CONCEPT_BEAD_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.IS_A_CONCEPT_BEAD_RELATIONSHIP.typeName;
     }
 
 

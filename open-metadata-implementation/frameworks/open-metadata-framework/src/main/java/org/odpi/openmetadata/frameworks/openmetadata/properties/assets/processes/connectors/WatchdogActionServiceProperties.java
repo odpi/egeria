@@ -25,7 +25,7 @@ public class WatchdogActionServiceProperties extends GovernanceServiceProperties
     public WatchdogActionServiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName);;
+        super.typeName = OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName;
     }
 
 

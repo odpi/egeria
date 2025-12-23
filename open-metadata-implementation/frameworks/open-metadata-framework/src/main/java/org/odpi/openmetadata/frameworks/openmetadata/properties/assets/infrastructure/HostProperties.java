@@ -34,7 +34,7 @@ public class HostProperties extends ITInfrastructureProperties
     public HostProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.HOST.typeName);
+        super.typeName = OpenMetadataType.HOST.typeName;
     }
 
 

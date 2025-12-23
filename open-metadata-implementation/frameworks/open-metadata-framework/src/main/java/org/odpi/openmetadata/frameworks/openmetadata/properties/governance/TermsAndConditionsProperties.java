@@ -39,7 +39,7 @@ public class TermsAndConditionsProperties extends GovernanceControlProperties
     public TermsAndConditionsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TERMS_AND_CONDITIONS.typeName);
+        super.typeName = OpenMetadataType.TERMS_AND_CONDITIONS.typeName;
     }
 
 

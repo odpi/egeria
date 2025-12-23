@@ -26,7 +26,7 @@ public class SearchKeywordLinkProperties extends RelationshipBeanProperties
     public SearchKeywordLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName;
     }
 
 

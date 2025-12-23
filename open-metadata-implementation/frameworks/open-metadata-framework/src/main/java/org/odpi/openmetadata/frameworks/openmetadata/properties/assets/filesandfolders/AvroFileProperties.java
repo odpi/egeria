@@ -25,7 +25,7 @@ public class AvroFileProperties extends DataFileProperties
     public AvroFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.AVRO_FILE.typeName);
+        super.typeName = OpenMetadataType.AVRO_FILE.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class DatabaseManagerProperties extends DataManagerProperties
     public DatabaseManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATABASE_MANAGER.typeName);
+        super.typeName = OpenMetadataType.DATABASE_MANAGER.typeName;
     }
 
 

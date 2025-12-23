@@ -27,7 +27,7 @@ public class TabularSchemaTypeProperties extends RootSchemaTypeProperties
     public TabularSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName;
     }
 
 

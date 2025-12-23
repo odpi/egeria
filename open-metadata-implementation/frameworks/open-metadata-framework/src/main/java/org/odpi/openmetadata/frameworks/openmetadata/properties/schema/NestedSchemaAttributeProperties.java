@@ -28,7 +28,7 @@ public class NestedSchemaAttributeProperties extends PartOfRelationshipPropertie
     public NestedSchemaAttributeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName;
     }
 
 

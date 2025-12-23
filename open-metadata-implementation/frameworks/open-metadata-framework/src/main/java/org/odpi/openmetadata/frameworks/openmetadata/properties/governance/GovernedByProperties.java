@@ -26,7 +26,7 @@ public class GovernedByProperties extends LabeledRelationshipProperties
     public GovernedByProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName;
     }
 
 

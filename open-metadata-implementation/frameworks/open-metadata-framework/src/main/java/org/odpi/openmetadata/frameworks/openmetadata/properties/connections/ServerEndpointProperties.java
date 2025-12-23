@@ -25,7 +25,7 @@ public class ServerEndpointProperties extends RelationshipBeanProperties
     public ServerEndpointProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName;
     }
 
 

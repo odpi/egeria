@@ -40,7 +40,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     public RegisteredIntegrationConnectorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName;
     }
 
 

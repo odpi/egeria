@@ -29,7 +29,7 @@ public class RelationalColumnProperties extends TabularColumnProperties
     public RelationalColumnProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATIONAL_COLUMN.typeName);
+        super.typeName = OpenMetadataType.RELATIONAL_COLUMN.typeName;
     }
 
 

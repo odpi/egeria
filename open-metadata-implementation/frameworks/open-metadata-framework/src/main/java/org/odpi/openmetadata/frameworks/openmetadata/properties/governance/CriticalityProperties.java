@@ -25,7 +25,7 @@ public class CriticalityProperties extends GovernanceClassificationProperties
     public CriticalityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName;
     }
 
 

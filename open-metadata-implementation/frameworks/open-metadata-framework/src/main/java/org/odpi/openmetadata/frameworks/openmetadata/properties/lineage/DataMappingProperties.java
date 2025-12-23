@@ -33,7 +33,7 @@ public class DataMappingProperties extends LineageRelationshipProperties
     public DataMappingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName;
     }
 
 

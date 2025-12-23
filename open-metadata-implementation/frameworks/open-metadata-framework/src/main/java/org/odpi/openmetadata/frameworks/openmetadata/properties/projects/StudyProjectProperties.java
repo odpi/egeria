@@ -27,7 +27,7 @@ public class StudyProjectProperties extends ClassificationBeanProperties
     public StudyProjectProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.typeName;
     }
 
 

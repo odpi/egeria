@@ -24,7 +24,7 @@ public class MethodologyProperties extends GovernanceProcedureProperties
     public MethodologyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.METHODOLOGY.typeName);
+        super.typeName = OpenMetadataType.METHODOLOGY.typeName;
     }
 
 

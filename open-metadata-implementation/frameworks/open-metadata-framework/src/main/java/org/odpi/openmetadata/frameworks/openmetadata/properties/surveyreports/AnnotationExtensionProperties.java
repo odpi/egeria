@@ -25,7 +25,7 @@ public class AnnotationExtensionProperties extends RelationshipBeanProperties
     public AnnotationExtensionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName;
     }
 
 

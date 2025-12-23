@@ -24,7 +24,7 @@ public class InventoryCatalogProperties extends SoftwareCapabilityProperties
     public InventoryCatalogProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INVENTORY_CATALOG.typeName);
+        super.typeName = OpenMetadataType.INVENTORY_CATALOG.typeName;
     }
 
 

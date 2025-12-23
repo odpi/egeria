@@ -45,7 +45,7 @@ public class DataAssetProperties extends AssetProperties
     public DataAssetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_ASSET.typeName);
+        super.typeName = OpenMetadataType.DATA_ASSET.typeName;
     }
 
 

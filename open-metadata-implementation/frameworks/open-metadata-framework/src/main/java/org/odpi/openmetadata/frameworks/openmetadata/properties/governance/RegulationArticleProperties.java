@@ -25,7 +25,7 @@ public class RegulationArticleProperties extends GovernanceDriverProperties
     public RegulationArticleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REGULATION_ARTICLE.typeName);
+        super.typeName = OpenMetadataType.REGULATION_ARTICLE.typeName;
     }
 
 

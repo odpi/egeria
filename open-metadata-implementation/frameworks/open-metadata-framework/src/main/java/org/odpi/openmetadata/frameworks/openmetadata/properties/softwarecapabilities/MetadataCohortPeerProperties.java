@@ -31,7 +31,7 @@ public class MetadataCohortPeerProperties extends RelationshipBeanProperties
     public MetadataCohortPeerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName;
     }
 
 

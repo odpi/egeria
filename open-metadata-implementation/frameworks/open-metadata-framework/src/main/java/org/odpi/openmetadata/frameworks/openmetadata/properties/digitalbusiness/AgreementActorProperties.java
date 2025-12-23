@@ -31,7 +31,7 @@ public class AgreementActorProperties extends RelationshipBeanProperties
     public AgreementActorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.AGREEMENT_ACTOR_RELATIONSHIP.typeName;
     }
 
 

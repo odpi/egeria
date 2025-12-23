@@ -25,7 +25,7 @@ public class TemplateSubstituteProperties extends ClassificationBeanProperties
     public TemplateSubstituteProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName;
     }
 
 

@@ -27,7 +27,7 @@ public class TaskProperties extends ClassificationBeanProperties
     public TaskProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TASK_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.TASK_CLASSIFICATION.typeName;
     }
 
 

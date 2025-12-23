@@ -31,7 +31,7 @@ public class ConceptModelElementProperties extends DesignModelElementProperties
     public ConceptModelElementProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_MODEL_ELEMENT.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_MODEL_ELEMENT.typeName;
     }
 
 

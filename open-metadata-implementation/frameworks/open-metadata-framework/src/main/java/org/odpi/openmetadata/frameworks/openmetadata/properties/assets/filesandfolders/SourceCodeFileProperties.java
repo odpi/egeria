@@ -25,7 +25,7 @@ public class SourceCodeFileProperties extends DataFileProperties
     public SourceCodeFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOURCE_CODE_FILE.typeName);
+        super.typeName = OpenMetadataType.SOURCE_CODE_FILE.typeName;
     }
 
 

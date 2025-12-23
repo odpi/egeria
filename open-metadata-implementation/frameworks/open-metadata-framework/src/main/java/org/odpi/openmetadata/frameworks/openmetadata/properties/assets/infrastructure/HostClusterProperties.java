@@ -26,7 +26,7 @@ public class HostClusterProperties extends HostProperties
     public HostClusterProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.HOST_CLUSTER.typeName);
+        super.typeName = OpenMetadataType.HOST_CLUSTER.typeName;
     }
 
 

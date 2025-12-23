@@ -24,7 +24,7 @@ public class ExternalSourceCodeProperties extends ExternalReferenceProperties
     public ExternalSourceCodeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_SOURCE_CODE.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_SOURCE_CODE.typeName;
     }
 
 

@@ -24,7 +24,7 @@ public class ComponentOwnerProperties extends GovernanceRoleProperties
     public ComponentOwnerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COMPONENT_OWNER.typeName);
+        super.typeName = OpenMetadataType.COMPONENT_OWNER.typeName;
     }
 
 

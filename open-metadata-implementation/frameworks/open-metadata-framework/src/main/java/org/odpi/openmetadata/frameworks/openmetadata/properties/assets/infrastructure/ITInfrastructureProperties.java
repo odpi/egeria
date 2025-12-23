@@ -35,7 +35,7 @@ public class ITInfrastructureProperties extends InfrastructureProperties
     public ITInfrastructureProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IT_INFRASTRUCTURE.typeName);
+        super.typeName = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
     }
 
 

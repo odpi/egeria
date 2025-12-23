@@ -37,7 +37,7 @@ public class InformalTagProperties extends ReferenceableProperties
     public InformalTagProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFORMAL_TAG.typeName);
+        super.typeName = OpenMetadataType.INFORMAL_TAG.typeName;
     }
 
 

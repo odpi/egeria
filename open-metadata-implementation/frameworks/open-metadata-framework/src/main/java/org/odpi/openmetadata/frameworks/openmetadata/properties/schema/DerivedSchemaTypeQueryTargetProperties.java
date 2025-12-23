@@ -35,7 +35,7 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
     public DerivedSchemaTypeQueryTargetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName;
     }
 
 

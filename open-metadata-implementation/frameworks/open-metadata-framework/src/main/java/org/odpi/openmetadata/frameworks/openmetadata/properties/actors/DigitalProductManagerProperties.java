@@ -25,7 +25,7 @@ public class DigitalProductManagerProperties extends PersonRoleProperties
     public DigitalProductManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName;
     }
 
 

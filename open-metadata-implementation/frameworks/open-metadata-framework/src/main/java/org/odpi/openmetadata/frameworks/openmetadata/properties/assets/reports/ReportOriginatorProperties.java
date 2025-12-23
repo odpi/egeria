@@ -26,7 +26,7 @@ public class ReportOriginatorProperties extends RelationshipBeanProperties
     public ReportOriginatorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORT_ORIGINATOR.typeName);
+        super.typeName = OpenMetadataType.REPORT_ORIGINATOR.typeName;
     }
 
 

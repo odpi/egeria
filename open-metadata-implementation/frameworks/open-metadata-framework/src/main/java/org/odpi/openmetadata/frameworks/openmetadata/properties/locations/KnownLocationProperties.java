@@ -26,7 +26,7 @@ public class KnownLocationProperties extends LabeledRelationshipProperties
     public KnownLocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName;
     }
 
 

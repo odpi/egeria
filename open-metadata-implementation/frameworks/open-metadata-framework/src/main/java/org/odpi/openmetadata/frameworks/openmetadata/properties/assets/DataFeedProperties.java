@@ -32,7 +32,7 @@ public class DataFeedProperties extends DataAssetProperties
     public DataFeedProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_FEED.typeName);
+        super.typeName = OpenMetadataType.DATA_FEED.typeName;
     }
 
 

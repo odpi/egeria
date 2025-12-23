@@ -30,7 +30,7 @@ public class FileFolderProperties extends DataStoreProperties
     public FileFolderProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FILE_FOLDER.typeName);
+        super.typeName = OpenMetadataType.FILE_FOLDER.typeName;
     }
 
 

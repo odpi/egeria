@@ -25,7 +25,7 @@ public class SpreadsheetFileProperties extends DataFileProperties
     public SpreadsheetFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SPREADSHEET_FILE.typeName);
+        super.typeName = OpenMetadataType.SPREADSHEET_FILE.typeName;
     }
 
 

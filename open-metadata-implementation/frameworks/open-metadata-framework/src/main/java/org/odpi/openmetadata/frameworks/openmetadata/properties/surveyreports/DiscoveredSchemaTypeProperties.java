@@ -25,7 +25,7 @@ public class DiscoveredSchemaTypeProperties extends RelationshipBeanProperties
     public DiscoveredSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DISCOVERED_SCHEMA_TYPE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DISCOVERED_SCHEMA_TYPE_RELATIONSHIP.typeName;
     }
 
 

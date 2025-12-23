@@ -36,7 +36,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
     public SupportedGovernanceServiceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName;
     }
 
 

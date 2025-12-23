@@ -26,7 +26,7 @@ public class ITInfrastructureProfileProperties extends RelationshipBeanPropertie
     public ITInfrastructureProfileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName;
     }
 
 

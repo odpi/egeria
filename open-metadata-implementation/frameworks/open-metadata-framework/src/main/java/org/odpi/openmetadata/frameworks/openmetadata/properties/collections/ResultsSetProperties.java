@@ -26,7 +26,7 @@ public class ResultsSetProperties extends CollectionProperties
     public ResultsSetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESULTS_SET_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.RESULTS_SET_COLLECTION.typeName;
     }
 
 

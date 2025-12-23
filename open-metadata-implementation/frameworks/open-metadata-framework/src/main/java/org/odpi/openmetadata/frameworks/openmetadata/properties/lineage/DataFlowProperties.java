@@ -30,7 +30,7 @@ public class DataFlowProperties extends LineageRelationshipProperties
     public DataFlowProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName;
     }
 
 

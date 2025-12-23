@@ -25,7 +25,7 @@ public class GovernanceResponseProperties extends SupportingDefinitionProperties
     public GovernanceResponseProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName;
     }
 
 

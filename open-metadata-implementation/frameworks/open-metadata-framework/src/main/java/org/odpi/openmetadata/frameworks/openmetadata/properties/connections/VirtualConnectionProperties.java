@@ -24,7 +24,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
     public VirtualConnectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VIRTUAL_CONNECTION.typeName);
+        super.typeName = OpenMetadataType.VIRTUAL_CONNECTION.typeName;
     }
 
 

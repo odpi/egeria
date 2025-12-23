@@ -24,7 +24,7 @@ public class ISARelationshipProperties extends GlossaryTermRelationshipPropertie
     public ISARelationshipProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ISA_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ISA_RELATIONSHIP.typeName;
     }
 
 

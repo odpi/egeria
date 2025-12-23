@@ -31,7 +31,7 @@ public class AnnotationReviewProperties extends ReviewProperties
     public AnnotationReviewProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ANNOTATION_REVIEW.typeName);
+        super.typeName = OpenMetadataType.ANNOTATION_REVIEW.typeName;
     }
 
 

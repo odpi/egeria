@@ -30,7 +30,7 @@ public class CommunityProperties extends ReferenceableProperties
     public CommunityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COMMUNITY.typeName);
+        super.typeName = OpenMetadataType.COMMUNITY.typeName;
     }
 
 

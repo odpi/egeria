@@ -29,7 +29,7 @@ public class GovernanceActionProcessStepProperties extends GovernanceActionTypeP
     public GovernanceActionProcessStepProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName;
     }
 
 

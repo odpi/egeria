@@ -25,7 +25,7 @@ public class DataAccessManagerProperties extends DataManagerProperties
     public DataAccessManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_ACCESS_MANAGER.typeName);
+        super.typeName = OpenMetadataType.DATA_ACCESS_MANAGER.typeName;
     }
 
 

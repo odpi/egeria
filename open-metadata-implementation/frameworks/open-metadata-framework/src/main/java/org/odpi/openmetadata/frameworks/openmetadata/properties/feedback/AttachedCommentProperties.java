@@ -26,7 +26,7 @@ public class AttachedCommentProperties extends RelationshipBeanProperties
     public AttachedCommentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName;
     }
 
 

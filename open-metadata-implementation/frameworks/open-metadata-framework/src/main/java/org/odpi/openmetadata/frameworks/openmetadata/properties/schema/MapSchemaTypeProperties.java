@@ -26,7 +26,7 @@ public class MapSchemaTypeProperties extends SchemaTypeProperties
     public MapSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MAP_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.MAP_SCHEMA_TYPE.typeName;
     }
 
 

@@ -37,7 +37,7 @@ public class ValidValuesMappingProperties extends RelationshipBeanProperties
     public ValidValuesMappingProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName;
     }
 
 

@@ -25,7 +25,7 @@ public class LicenseTypeProperties extends TermsAndConditionsProperties
     public LicenseTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LICENSE_TYPE.typeName);
+        super.typeName = OpenMetadataType.LICENSE_TYPE.typeName;
     }
 
 

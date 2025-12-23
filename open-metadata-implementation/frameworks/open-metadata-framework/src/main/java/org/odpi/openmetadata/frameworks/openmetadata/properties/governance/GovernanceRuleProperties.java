@@ -30,7 +30,7 @@ public class GovernanceRuleProperties extends GovernanceControlProperties
     public GovernanceRuleProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_RULE.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_RULE.typeName;
     }
 
 

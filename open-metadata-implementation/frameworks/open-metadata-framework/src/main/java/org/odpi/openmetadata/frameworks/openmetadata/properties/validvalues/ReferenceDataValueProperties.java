@@ -24,7 +24,7 @@ public class ReferenceDataValueProperties extends ValidValueDefinitionProperties
     public ReferenceDataValueProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCE_DATA_VALUE.typeName);
+        super.typeName = OpenMetadataType.REFERENCE_DATA_VALUE.typeName;
     }
 
 

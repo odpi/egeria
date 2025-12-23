@@ -26,7 +26,7 @@ public class DigitalProductDependencyProperties extends LineageRelationshipPrope
     public DigitalProductDependencyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName;
     }
 
 

@@ -30,7 +30,7 @@ public class ValidValuesAssignmentProperties extends RelationshipBeanProperties
     public ValidValuesAssignmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName;
     }
 
 

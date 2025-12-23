@@ -35,7 +35,7 @@ public class SemanticAnnotationProperties extends DataFieldAnnotationProperties
     public SemanticAnnotationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SEMANTIC_ANNOTATION.typeName);
+        super.typeName = OpenMetadataType.SEMANTIC_ANNOTATION.typeName;
     }
 
 

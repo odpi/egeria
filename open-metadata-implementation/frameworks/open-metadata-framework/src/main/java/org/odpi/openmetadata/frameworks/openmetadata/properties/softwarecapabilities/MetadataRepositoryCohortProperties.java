@@ -33,7 +33,7 @@ public class MetadataRepositoryCohortProperties extends ReferenceableProperties
     public MetadataRepositoryCohortProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.METADATA_REPOSITORY_COHORT.typeName);
+        super.typeName = OpenMetadataType.METADATA_REPOSITORY_COHORT.typeName;
     }
 
 

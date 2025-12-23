@@ -25,7 +25,7 @@ public class ExternalSchemaTypeProperties extends SchemaTypeProperties
     public ExternalSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName;
     }
 
 

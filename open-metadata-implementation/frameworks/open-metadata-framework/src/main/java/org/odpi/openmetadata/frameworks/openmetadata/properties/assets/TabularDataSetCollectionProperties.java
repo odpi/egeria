@@ -26,7 +26,7 @@ public class TabularDataSetCollectionProperties extends DataSetProperties
     public TabularDataSetCollectionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName;
     }
 
 

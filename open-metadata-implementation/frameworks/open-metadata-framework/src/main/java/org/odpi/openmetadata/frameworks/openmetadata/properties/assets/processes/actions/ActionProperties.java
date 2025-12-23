@@ -39,7 +39,7 @@ public class ActionProperties extends ProcessProperties
     public ActionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACTION.typeName);;
+        super.typeName = OpenMetadataType.ACTION.typeName;
     }
 
 

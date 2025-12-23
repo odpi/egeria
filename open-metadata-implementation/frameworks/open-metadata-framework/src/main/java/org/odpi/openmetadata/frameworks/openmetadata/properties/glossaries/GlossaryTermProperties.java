@@ -38,7 +38,7 @@ public class GlossaryTermProperties extends AuthoredReferenceableProperties
     public GlossaryTermProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GLOSSARY_TERM.typeName);
+        super.typeName = OpenMetadataType.GLOSSARY_TERM.typeName;
     }
 
 

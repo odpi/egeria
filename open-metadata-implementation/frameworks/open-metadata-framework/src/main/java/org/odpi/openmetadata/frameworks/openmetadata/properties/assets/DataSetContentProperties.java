@@ -33,7 +33,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
     public DataSetContentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName;
     }
 
 

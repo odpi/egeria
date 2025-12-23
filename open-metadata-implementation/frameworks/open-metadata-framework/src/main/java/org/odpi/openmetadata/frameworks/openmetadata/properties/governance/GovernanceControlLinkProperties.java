@@ -25,7 +25,7 @@ public class GovernanceControlLinkProperties extends PeerDefinitionProperties
     public GovernanceControlLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName;
     }
 
 

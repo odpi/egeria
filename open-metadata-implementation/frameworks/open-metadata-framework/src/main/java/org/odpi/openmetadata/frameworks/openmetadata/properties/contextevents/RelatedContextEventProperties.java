@@ -38,7 +38,7 @@ public class RelatedContextEventProperties extends LabeledRelationshipProperties
     public RelatedContextEventProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName;
     }
 
 

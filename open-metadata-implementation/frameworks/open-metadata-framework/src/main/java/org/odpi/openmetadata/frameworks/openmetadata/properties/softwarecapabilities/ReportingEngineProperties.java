@@ -25,7 +25,7 @@ public class ReportingEngineProperties extends SoftwareCapabilityProperties
     public ReportingEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPORTING_ENGINE.typeName);
+        super.typeName = OpenMetadataType.REPORTING_ENGINE.typeName;
     }
 
 

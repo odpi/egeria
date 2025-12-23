@@ -31,7 +31,7 @@ public class RegulationProperties extends GovernanceDefinitionProperties
     public RegulationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REGULATION.typeName);
+        super.typeName = OpenMetadataType.REGULATION.typeName;
     }
 
 

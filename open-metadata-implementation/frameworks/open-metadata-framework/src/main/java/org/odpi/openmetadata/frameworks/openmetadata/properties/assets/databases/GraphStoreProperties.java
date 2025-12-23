@@ -26,7 +26,7 @@ public class GraphStoreProperties extends DataStoreProperties
     public GraphStoreProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GRAPH_STORE.typeName);
+        super.typeName = OpenMetadataType.GRAPH_STORE.typeName;
     }
 
 

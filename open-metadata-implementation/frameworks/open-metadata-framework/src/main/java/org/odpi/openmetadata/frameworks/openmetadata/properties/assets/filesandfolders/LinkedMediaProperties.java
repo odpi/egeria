@@ -25,7 +25,7 @@ public class LinkedMediaProperties extends RelationshipBeanProperties
     public LinkedMediaProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName;
     }
 
 

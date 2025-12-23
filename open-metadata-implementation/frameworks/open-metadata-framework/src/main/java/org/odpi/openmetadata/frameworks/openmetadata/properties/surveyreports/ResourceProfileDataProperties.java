@@ -26,7 +26,7 @@ public class ResourceProfileDataProperties extends RelationshipBeanProperties
     public ResourceProfileDataProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName;
     }
 
 

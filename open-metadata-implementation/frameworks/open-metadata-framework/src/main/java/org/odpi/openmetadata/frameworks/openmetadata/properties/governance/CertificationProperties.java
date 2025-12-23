@@ -44,7 +44,7 @@ public class CertificationProperties extends RelationshipBeanProperties
     public CertificationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName;
     }
 
 

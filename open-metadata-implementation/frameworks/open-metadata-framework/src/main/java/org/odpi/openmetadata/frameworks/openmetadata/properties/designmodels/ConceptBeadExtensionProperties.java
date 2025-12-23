@@ -25,7 +25,7 @@ public class ConceptBeadExtensionProperties extends RoledRelationshipProperties
     public ConceptBeadExtensionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONCEPT_BEAD_EXTENSION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONCEPT_BEAD_EXTENSION_RELATIONSHIP.typeName;
     }
 
 

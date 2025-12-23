@@ -34,7 +34,7 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
     public MediaReferenceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName;
     }
 
 

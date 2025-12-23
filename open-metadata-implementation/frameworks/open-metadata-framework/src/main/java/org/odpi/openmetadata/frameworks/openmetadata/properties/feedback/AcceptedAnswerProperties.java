@@ -26,7 +26,7 @@ public class AcceptedAnswerProperties extends RelationshipBeanProperties
     public AcceptedAnswerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName;
     }
 
 

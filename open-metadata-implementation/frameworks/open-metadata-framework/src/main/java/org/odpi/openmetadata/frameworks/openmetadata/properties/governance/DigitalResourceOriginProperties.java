@@ -36,7 +36,7 @@ public class DigitalResourceOriginProperties extends ClassificationBeanPropertie
     public DigitalResourceOriginProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName;
     }
 
 

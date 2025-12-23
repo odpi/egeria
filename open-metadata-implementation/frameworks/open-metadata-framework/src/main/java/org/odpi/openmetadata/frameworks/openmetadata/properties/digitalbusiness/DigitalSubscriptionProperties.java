@@ -32,7 +32,7 @@ public class DigitalSubscriptionProperties extends AgreementProperties
     public DigitalSubscriptionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName);
+        super.typeName = OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName;
     }
 
 

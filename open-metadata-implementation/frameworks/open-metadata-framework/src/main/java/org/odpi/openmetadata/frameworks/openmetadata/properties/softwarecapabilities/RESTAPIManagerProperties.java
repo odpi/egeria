@@ -25,7 +25,7 @@ public class RESTAPIManagerProperties extends APIManagerProperties
     public RESTAPIManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REST_API_MANAGER.typeName);
+        super.typeName = OpenMetadataType.REST_API_MANAGER.typeName;
     }
 
 

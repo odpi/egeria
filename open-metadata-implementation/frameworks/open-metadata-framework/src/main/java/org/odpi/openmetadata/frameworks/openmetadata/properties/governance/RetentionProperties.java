@@ -34,7 +34,7 @@ public class RetentionProperties extends GovernanceClassificationBase
     public RetentionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RETENTION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.RETENTION_CLASSIFICATION.typeName;
     }
 
 

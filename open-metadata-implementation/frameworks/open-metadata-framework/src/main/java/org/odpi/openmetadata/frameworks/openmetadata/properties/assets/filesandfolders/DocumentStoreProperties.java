@@ -31,7 +31,7 @@ public class DocumentStoreProperties extends DataStoreProperties
     public DocumentStoreProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DOCUMENT_STORE.typeName);
+        super.typeName = OpenMetadataType.DOCUMENT_STORE.typeName;
     }
 
 

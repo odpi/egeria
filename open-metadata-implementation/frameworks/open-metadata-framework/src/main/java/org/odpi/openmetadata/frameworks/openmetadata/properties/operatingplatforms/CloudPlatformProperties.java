@@ -30,7 +30,7 @@ public class CloudPlatformProperties extends ClassificationBeanProperties
     public CloudPlatformProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION.typeName;
     }
 
 

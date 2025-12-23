@@ -26,7 +26,7 @@ public class VirtualContainerProperties extends HostProperties
     public VirtualContainerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.VIRTUAL_CONTAINER.typeName);
+        super.typeName = OpenMetadataType.VIRTUAL_CONTAINER.typeName;
     }
 
 

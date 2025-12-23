@@ -30,7 +30,7 @@ public class APIManagerProperties extends SoftwareCapabilityProperties
     public APIManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.API_MANAGER.typeName);
+        super.typeName = OpenMetadataType.API_MANAGER.typeName;
     }
 
 

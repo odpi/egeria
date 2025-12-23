@@ -33,7 +33,7 @@ public class DataProcessingDescriptionProperties extends AuthoredReferenceablePr
     public DataProcessingDescriptionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName);
+        super.typeName = OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName;
     }
 
 

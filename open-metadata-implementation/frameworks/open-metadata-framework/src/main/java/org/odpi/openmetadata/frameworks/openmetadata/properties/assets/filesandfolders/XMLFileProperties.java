@@ -25,7 +25,7 @@ public class XMLFileProperties extends DataFileProperties
     public XMLFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.XML_FILE.typeName);
+        super.typeName = OpenMetadataType.XML_FILE.typeName;
     }
 
 

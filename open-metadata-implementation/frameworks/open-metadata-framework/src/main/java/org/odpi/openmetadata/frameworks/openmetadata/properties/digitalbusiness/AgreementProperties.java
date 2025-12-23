@@ -32,7 +32,7 @@ public class AgreementProperties extends CollectionProperties
     public AgreementProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.AGREEMENT.typeName);
+        super.typeName = OpenMetadataType.AGREEMENT.typeName;
     }
 
 

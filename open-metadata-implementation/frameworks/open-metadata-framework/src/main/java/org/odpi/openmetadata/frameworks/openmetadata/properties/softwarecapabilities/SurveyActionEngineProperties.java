@@ -24,7 +24,7 @@ public class SurveyActionEngineProperties extends GovernanceEngineProperties
     public SurveyActionEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName);;
+        super.typeName = OpenMetadataType.SURVEY_ACTION_ENGINE.typeName;
     }
 
 

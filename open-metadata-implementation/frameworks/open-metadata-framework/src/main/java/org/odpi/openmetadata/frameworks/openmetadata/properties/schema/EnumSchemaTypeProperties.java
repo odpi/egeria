@@ -29,7 +29,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     public EnumSchemaTypeProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ENUM_SCHEMA_TYPE.typeName);
+        super.typeName = OpenMetadataType.ENUM_SCHEMA_TYPE.typeName;
     }
 
 

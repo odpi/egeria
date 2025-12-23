@@ -40,7 +40,7 @@ public class InfrastructureProperties extends AssetProperties
     public InfrastructureProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFRASTRUCTURE.typeName);
+        super.typeName = OpenMetadataType.INFRASTRUCTURE.typeName;
     }
 
 

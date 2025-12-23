@@ -30,7 +30,7 @@ public class PropertiesFileProperties extends DataFileProperties
     public PropertiesFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROPERTIES_FILE.typeName);
+        super.typeName = OpenMetadataType.PROPERTIES_FILE.typeName;
     }
 
 

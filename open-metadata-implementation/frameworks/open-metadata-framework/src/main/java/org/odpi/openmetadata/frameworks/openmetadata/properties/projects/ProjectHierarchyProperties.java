@@ -26,7 +26,7 @@ public class ProjectHierarchyProperties extends LabeledRelationshipProperties
     public ProjectHierarchyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName;
     }
 
 

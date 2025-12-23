@@ -38,7 +38,7 @@ public class DeployedSoftwareComponentProperties extends ProcessProperties
     public DeployedSoftwareComponentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName);;
+        super.typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName;
     }
 
 

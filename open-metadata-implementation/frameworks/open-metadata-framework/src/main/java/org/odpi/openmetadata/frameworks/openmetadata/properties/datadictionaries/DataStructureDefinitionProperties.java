@@ -27,7 +27,7 @@ public class DataStructureDefinitionProperties extends LabeledRelationshipProper
     public DataStructureDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName;
     }
 
 

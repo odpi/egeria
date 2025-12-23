@@ -59,7 +59,7 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     public SoftwareCapabilityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
+        super.typeName = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
     }
 
 

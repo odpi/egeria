@@ -24,7 +24,7 @@ public class UserProfileManagerProperties extends ResourceManagerProperties
     public UserProfileManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.USER_PROFILE_MANAGER.typeName);
+        super.typeName = OpenMetadataType.USER_PROFILE_MANAGER.typeName;
     }
 
 

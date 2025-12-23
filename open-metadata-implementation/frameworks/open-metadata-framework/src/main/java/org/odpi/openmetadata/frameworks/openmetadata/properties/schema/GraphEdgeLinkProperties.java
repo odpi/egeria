@@ -38,7 +38,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
     public GraphEdgeLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName;
     }
 
 

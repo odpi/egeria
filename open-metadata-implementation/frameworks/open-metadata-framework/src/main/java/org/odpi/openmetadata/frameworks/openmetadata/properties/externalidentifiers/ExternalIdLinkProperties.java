@@ -39,7 +39,7 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
     public ExternalIdLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName;
     }
 
 

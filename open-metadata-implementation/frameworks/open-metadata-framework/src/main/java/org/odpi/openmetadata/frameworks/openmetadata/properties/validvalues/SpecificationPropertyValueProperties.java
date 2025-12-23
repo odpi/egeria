@@ -25,7 +25,7 @@ public class SpecificationPropertyValueProperties extends ValidValueDefinitionPr
     public SpecificationPropertyValueProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName);
+        super.typeName = OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName;
     }
 
 
@@ -37,7 +37,7 @@ public class SpecificationPropertyValueProperties extends ValidValueDefinitionPr
     public SpecificationPropertyValueProperties(ValidValueDefinitionProperties template)
     {
         super(template);
-        super.setTypeName(OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName);
+        super.typeName = OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName;
     }
 
 

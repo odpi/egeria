@@ -27,7 +27,7 @@ public class KnownDuplicateProperties extends ClassificationBeanProperties
     public KnownDuplicateProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName;
     }
 
 

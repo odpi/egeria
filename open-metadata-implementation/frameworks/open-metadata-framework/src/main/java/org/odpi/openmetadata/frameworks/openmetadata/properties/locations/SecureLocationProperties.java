@@ -31,7 +31,7 @@ public class SecureLocationProperties extends ClassificationBeanProperties
     public SecureLocationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SECURE_LOCATION_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.SECURE_LOCATION_CLASSIFICATION.typeName;
     }
 
 

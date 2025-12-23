@@ -25,7 +25,7 @@ public class FolderHierarchyProperties extends RelationshipBeanProperties
     public FolderHierarchyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName;
     }
 
 

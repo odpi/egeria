@@ -25,7 +25,7 @@ public class GovernanceObligationProperties extends GovernancePolicyProperties
     public GovernanceObligationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_OBLIGATION.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_OBLIGATION.typeName;
     }
 
 

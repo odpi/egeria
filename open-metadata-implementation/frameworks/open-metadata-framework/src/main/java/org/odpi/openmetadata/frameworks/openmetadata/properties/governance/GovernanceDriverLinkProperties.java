@@ -25,7 +25,7 @@ public class GovernanceDriverLinkProperties extends PeerDefinitionProperties
     public GovernanceDriverLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName;
     }
 
 

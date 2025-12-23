@@ -25,7 +25,7 @@ public class RequestResponseInterfaceProperties extends ClassificationBeanProper
     public RequestResponseInterfaceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REQUEST_RESPONSE_INTERFACE_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.REQUEST_RESPONSE_INTERFACE_CLASSIFICATION.typeName;
     }
 
 

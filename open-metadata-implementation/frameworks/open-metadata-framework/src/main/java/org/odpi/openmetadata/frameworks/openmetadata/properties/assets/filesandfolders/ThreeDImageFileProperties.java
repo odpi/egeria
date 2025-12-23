@@ -25,7 +25,7 @@ public class ThreeDImageFileProperties extends MediaFileProperties
     public ThreeDImageFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.THREE_D_IMAGE_FILE.typeName);
+        super.typeName = OpenMetadataType.THREE_D_IMAGE_FILE.typeName;
     }
 
 

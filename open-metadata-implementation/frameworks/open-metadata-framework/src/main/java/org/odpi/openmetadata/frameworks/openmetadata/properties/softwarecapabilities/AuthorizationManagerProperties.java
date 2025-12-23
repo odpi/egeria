@@ -24,7 +24,7 @@ public class AuthorizationManagerProperties extends SoftwareCapabilityProperties
     public AuthorizationManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.AUTHORIZATION_MANAGER.typeName);
+        super.typeName = OpenMetadataType.AUTHORIZATION_MANAGER.typeName;
     }
 
 

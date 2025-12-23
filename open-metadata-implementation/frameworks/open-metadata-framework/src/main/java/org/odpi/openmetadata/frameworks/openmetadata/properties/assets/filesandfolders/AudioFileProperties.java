@@ -25,7 +25,7 @@ public class AudioFileProperties extends MediaFileProperties
     public AudioFileProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.AUDIO_FILE.typeName);
+        super.typeName = OpenMetadataType.AUDIO_FILE.typeName;
     }
 
 

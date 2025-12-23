@@ -31,7 +31,7 @@ public class SchemaElementProperties extends AuthoredReferenceableProperties
     public SchemaElementProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SCHEMA_ELEMENT.typeName);
+        super.typeName = OpenMetadataType.SCHEMA_ELEMENT.typeName;
     }
 
 

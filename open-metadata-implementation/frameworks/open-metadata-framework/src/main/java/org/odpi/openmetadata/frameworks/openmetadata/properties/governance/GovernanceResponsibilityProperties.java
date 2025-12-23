@@ -26,7 +26,7 @@ public class GovernanceResponsibilityProperties extends GovernanceControlPropert
     public GovernanceResponsibilityProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName;
     }
 
 

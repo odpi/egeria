@@ -41,7 +41,7 @@ public class ProjectProperties extends ReferenceableProperties
     public ProjectProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.PROJECT.typeName);
+        super.typeName = OpenMetadataType.PROJECT.typeName;
     }
 
 

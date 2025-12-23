@@ -31,7 +31,7 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
     public GovernanceResultsProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName;
     }
 
 

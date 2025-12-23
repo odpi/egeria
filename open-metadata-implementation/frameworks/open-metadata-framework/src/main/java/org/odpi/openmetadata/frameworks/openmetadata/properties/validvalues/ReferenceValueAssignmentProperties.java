@@ -38,7 +38,7 @@ public class ReferenceValueAssignmentProperties extends RelationshipBeanProperti
     public ReferenceValueAssignmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName;
     }
 
 

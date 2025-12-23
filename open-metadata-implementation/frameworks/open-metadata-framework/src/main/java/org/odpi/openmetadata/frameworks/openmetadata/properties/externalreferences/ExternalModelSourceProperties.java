@@ -25,7 +25,7 @@ public class ExternalModelSourceProperties extends ExternalReferenceProperties
     public ExternalModelSourceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EXTERNAL_MODEL_SOURCE.typeName);
+        super.typeName = OpenMetadataType.EXTERNAL_MODEL_SOURCE.typeName;
     }
 
 

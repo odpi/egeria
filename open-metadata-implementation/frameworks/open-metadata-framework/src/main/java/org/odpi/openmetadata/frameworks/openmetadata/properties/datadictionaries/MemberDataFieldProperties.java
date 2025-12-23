@@ -26,7 +26,7 @@ public class MemberDataFieldProperties extends PartOfRelationshipProperties
     public MemberDataFieldProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName;
     }
 
 

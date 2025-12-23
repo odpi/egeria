@@ -187,8 +187,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class RelationshipBeanProperties extends RelationshipProperties
 {
-    private String               typeName             = null;
-    private Map<String, Object>  extendedProperties   = null;
+    protected String               typeName             = null;
+    private   Map<String, Object>  extendedProperties   = null;
 
     /**
      * Default constructor

@@ -24,7 +24,7 @@ public class RepositoryGovernanceEngineProperties extends GovernanceEngineProper
     public RepositoryGovernanceEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName);;
+        super.typeName = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName;
     }
 
 

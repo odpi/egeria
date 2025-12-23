@@ -47,7 +47,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
     public GovernanceDefinitionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_DEFINITION.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
     }
 
 

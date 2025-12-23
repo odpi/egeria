@@ -33,7 +33,7 @@ public class ContractLinkProperties extends RelationshipBeanProperties
     public ContractLinkProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.CONTRACT_LINK_RELATIONSHIP.typeName;
     }
 
 

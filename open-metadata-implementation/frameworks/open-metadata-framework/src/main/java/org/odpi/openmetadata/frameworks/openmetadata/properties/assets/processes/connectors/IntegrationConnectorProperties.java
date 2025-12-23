@@ -31,7 +31,7 @@ public class IntegrationConnectorProperties extends DeployedConnectorProperties
     public IntegrationConnectorProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INTEGRATION_CONNECTOR.typeName);
+        super.typeName = OpenMetadataType.INTEGRATION_CONNECTOR.typeName;
     }
 
 

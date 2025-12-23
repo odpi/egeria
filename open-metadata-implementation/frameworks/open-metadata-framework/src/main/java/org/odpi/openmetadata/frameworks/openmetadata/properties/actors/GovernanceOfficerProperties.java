@@ -24,7 +24,7 @@ public class GovernanceOfficerProperties extends GovernanceRoleProperties
     public GovernanceOfficerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_OFFICER.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_OFFICER.typeName;
     }
 
 

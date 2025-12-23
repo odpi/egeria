@@ -42,7 +42,7 @@ public class DeployedOnProperties extends RelationshipBeanProperties
     public DeployedOnProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName;
     }
 
 

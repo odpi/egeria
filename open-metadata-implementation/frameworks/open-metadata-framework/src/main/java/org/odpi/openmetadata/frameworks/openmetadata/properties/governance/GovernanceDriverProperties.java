@@ -34,7 +34,7 @@ public class GovernanceDriverProperties extends GovernanceDefinitionProperties
     public GovernanceDriverProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_DRIVER.typeName);
+        super.typeName = OpenMetadataType.GOVERNANCE_DRIVER.typeName;
     }
 
 

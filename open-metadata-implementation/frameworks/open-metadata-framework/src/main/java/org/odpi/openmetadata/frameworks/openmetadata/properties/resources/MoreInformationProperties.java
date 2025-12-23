@@ -25,7 +25,7 @@ public class MoreInformationProperties extends LabeledRelationshipProperties
     public MoreInformationProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName;
     }
 
 

@@ -31,7 +31,7 @@ public class InformationViewProperties extends DataSetProperties
     public InformationViewProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFORMATION_VIEW.typeName);
+        super.typeName = OpenMetadataType.INFORMATION_VIEW.typeName;
     }
 
 

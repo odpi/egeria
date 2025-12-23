@@ -36,7 +36,7 @@ public class ResourceListProperties extends RelationshipBeanProperties
     public ResourceListProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName;
     }
 
 

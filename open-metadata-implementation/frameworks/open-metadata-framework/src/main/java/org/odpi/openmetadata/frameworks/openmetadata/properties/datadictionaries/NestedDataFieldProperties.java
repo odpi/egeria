@@ -26,7 +26,7 @@ public class NestedDataFieldProperties extends PartOfRelationshipProperties
     public NestedDataFieldProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName);
+        super.typeName = OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName;
     }
 
 

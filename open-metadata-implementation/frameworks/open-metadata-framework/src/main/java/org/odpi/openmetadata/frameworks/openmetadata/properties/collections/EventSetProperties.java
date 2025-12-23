@@ -26,7 +26,7 @@ public class EventSetProperties extends CollectionProperties
     public EventSetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.EVENT_SET_COLLECTION.typeName);
+        super.typeName = OpenMetadataType.EVENT_SET_COLLECTION.typeName;
     }
 
 

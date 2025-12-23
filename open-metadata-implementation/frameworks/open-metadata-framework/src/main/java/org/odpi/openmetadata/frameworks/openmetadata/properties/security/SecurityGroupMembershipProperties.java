@@ -32,7 +32,7 @@ public class SecurityGroupMembershipProperties extends ClassificationBeanPropert
     public SecurityGroupMembershipProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION.typeName);
+        super.typeName = OpenMetadataType.SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION.typeName;
     }
 
 
