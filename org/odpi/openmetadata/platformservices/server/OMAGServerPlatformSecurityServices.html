@@ -117,17 +117,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearPlatformSecurityConnection()" class="member-name-link">clearPlatformSecurityConnection</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearPlatformSecurityConnection(java.lang.String)" class="member-name-link">clearPlatformSecurityConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the connection object for the platform security connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../adminservices/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformSecurityConnection()" class="member-name-link">getPlatformSecurityConnection</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformSecurityConnection(java.lang.String)" class="member-name-link">getPlatformSecurityConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection object for the platform security connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPlatformSecurityConnection(org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody)" class="member-name-link">setPlatformSecurityConnection</a><wbr>(<a href="../../adminservices/rest/PlatformSecurityRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">PlatformSecurityRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPlatformSecurityConnection(java.lang.String,org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody)" class="member-name-link">setPlatformSecurityConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
+ <a href="../../adminservices/rest/PlatformSecurityRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">PlatformSecurityRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Override the default platform security connector.</div>
 </div>
@@ -166,12 +167,14 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setPlatformSecurityConnection(org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody)">
+<section class="detail" id="setPlatformSecurityConnection(java.lang.String,org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody)">
 <h3>setPlatformSecurityConnection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setPlatformSecurityConnection</span><wbr><span class="parameters">(<a href="../../adminservices/rest/PlatformSecurityRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">PlatformSecurityRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setPlatformSecurityConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId,
+ <a href="../../adminservices/rest/PlatformSecurityRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">PlatformSecurityRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Override the default platform security connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>delegatingUserId</code> - external userId making request</dd>
 <dd><code>requestBody</code> - containing serverPlatformURL (URL Root of the server platform) and
  connection used to create and configure the connector.</dd>
 <dt>Returns:</dt>
@@ -180,23 +183,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getPlatformSecurityConnection()">
+<section class="detail" id="getPlatformSecurityConnection(java.lang.String)">
 <h3>getPlatformSecurityConnection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../adminservices/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionResponse</a></span>&nbsp;<span class="element-name">getPlatformSecurityConnection</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../adminservices/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ConnectionResponse</a></span>&nbsp;<span class="element-name">getPlatformSecurityConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId)</span></div>
 <div class="block">Return the connection object for the platform security connector.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>delegatingUserId</code> - external userId making request</dd>
 <dt>Returns:</dt>
 <dd>connection response</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="clearPlatformSecurityConnection()">
+<section class="detail" id="clearPlatformSecurityConnection(java.lang.String)">
 <h3>clearPlatformSecurityConnection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearPlatformSecurityConnection</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearPlatformSecurityConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;delegatingUserId)</span></div>
 <div class="block">Clear the connection object for the platform security connector.
  This sets the platform security back to default.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>delegatingUserId</code> - external userId making request</dd>
 <dt>Returns:</dt>
 <dd>connection response</dd>
 </dl>
