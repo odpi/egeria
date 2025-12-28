@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
-import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -57,25 +56,25 @@ public class OMAGServerAdminStoreServices extends TokenController
 
 
     /**
-     * Override the default server configuration document.
+     * Override the default server configuration document.  This is called from inside the platform and
+     * represents the definition from the application.properties.
      *
-     * @param userId              calling user.
+     * @param platformUserId              calling user.
      * @param defaultServerConfig values to include in every new configured server.
-     * @return void response
      */
-    public synchronized VoidResponse setDefaultOMAGServerConfig(String userId,
-                                                                OMAGServerConfig defaultServerConfig)
+    public synchronized void setAppPropertiesDefaultOMAGServerConfig(String           platformUserId,
+                                                                     OMAGServerConfig defaultServerConfig)
     {
         final String methodName    = "setDefaultOMAGServerConfig";
         final String parameterName = "defaultServerConfig";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, platformUserId, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(platformUserId);
 
             errorHandler.validatePropertyNotNull(defaultServerConfig, parameterName, null, methodName);
 
@@ -87,18 +86,18 @@ public class OMAGServerAdminStoreServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
     }
 
 
     /**
-     * Override the default server configuration document.
+     * Override the default server configuration document set by the application properties.
      *
+     * @param delegatingUserId external userId making request
      * @param defaultServerConfig values to include in every new configured server.
      * @return void response
      */
-    public synchronized VoidResponse setDefaultOMAGServerConfig(OMAGServerConfig defaultServerConfig)
+    public synchronized VoidResponse setDefaultOMAGServerConfig(String           delegatingUserId,
+                                                                OMAGServerConfig defaultServerConfig)
     {
         final String methodName    = "setDefaultOMAGServerConfig";
         final String parameterName = "defaultServerConfig";
@@ -114,6 +113,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             errorHandler.validatePropertyNotNull(defaultServerConfig, parameterName, null, methodName);
 
@@ -133,9 +136,10 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Return the default server configuration document.
      *
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig response
      */
-    public synchronized OMAGServerConfigResponse getDefaultOMAGServerConfig()
+    public synchronized OMAGServerConfigResponse getDefaultOMAGServerConfig(String delegatingUserId)
     {
         final String methodName = "getDefaultOMAGServerConfig";
 
@@ -150,6 +154,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
             
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             response.setOMAGServerConfig(defaultServerConfig);
         }
@@ -167,9 +175,10 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Clear the default configuration document.
      *
+     * @param delegatingUserId external userId making request
      * @return void response
      */
-    public synchronized VoidResponse clearDefaultOMAGServerConfig()
+    public synchronized VoidResponse clearDefaultOMAGServerConfig(String delegatingUserId)
     {
         final String methodName = "clearDefaultServerConfig";
 
@@ -184,6 +193,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
             
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             defaultServerConfig = new OMAGServerConfig();
         }
@@ -212,22 +225,22 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Set up the placeholder variables that will be used on each server start up.
      *
-     * @param userId               calling user.
+     * @param platformUserId               calling user.
      * @param placeholderVariables map of variable name to value.
      */
-    public synchronized void setPlaceholderVariables(String userId,
-                                                     Map<String, String> placeholderVariables)
+    public synchronized void setAppPropertiesPlaceholderVariables(String              platformUserId,
+                                                                  Map<String, String> placeholderVariables)
     {
         final String methodName    = "setPlaceholderVariables";
         final String parameterName = "placeholderVariables";
 
-        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(null, platformUserId, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(platformUserId);
 
             errorHandler.validatePropertyNotNull(placeholderVariables, parameterName, null, methodName);
 
@@ -246,10 +259,12 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Set up the placeholder variables that will be used on each server start up.
      *
+     * @param delegatingUserId external userId making request
      * @param placeholderVariables map of variable name to value.
      * @return void response
      */
-    public synchronized VoidResponse setPlaceholderVariables(Map<String, String> placeholderVariables)
+    public synchronized VoidResponse setPlaceholderVariables(String              delegatingUserId,
+                                                             Map<String, String> placeholderVariables)
     {
         final String methodName    = "setPlaceholderVariables";
         final String parameterName = "placeholderVariables";
@@ -265,6 +280,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             errorHandler.validatePropertyNotNull(placeholderVariables, parameterName, null, methodName);
 
@@ -284,9 +303,10 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Return the placeholder variables that will be used on each server start up.
      *
+     * @param delegatingUserId external userId making request
      * @return string map response
      */
-    public synchronized StringMapResponse getPlaceholderVariables()
+    public synchronized StringMapResponse getPlaceholderVariables(String delegatingUserId)
     {
         final String methodName = "getPlaceholderVariables";
 
@@ -301,6 +321,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             response.setStringMap(placeHolderVariables);
         }
@@ -318,9 +342,10 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Clear the placeholder variables.
      *
+     * @param delegatingUserId external userId making request
      * @return void response
      */
-    public synchronized VoidResponse clearPlaceholderVariables()
+    public synchronized VoidResponse clearPlaceholderVariables(String delegatingUserId)
     {
         final String methodName = "clearPlaceholderVariables";
 
@@ -335,6 +360,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             placeHolderVariables = null;
         }
@@ -363,12 +392,12 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Override the default location of the configuration documents.
      *
-     * @param userId     calling user.
+     * @param platformUserId     calling user.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
      */
-    public synchronized void setConfigurationStoreConnection(String userId,
-                                                             Connection connection)
+    public synchronized void setAppPropertiesConfigurationStoreConnection(String     platformUserId,
+                                                                          Connection connection)
     {
         final String methodName = "setConfigurationStoreConnection";
 
@@ -378,7 +407,7 @@ public class OMAGServerAdminStoreServices extends TokenController
 
         try
         {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(platformUserId);
 
             errorHandler.validatePlatformConnection(connection, methodName);
 
@@ -397,11 +426,13 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Override the default location of the configuration documents.
      *
+     * @param delegatingUserId external userId making request
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
      * @return void response
      */
-    public synchronized VoidResponse setConfigurationStoreConnection(Connection connection)
+    public synchronized VoidResponse setConfigurationStoreConnection(String     delegatingUserId,
+                                                                     Connection connection)
     {
         final String methodName = "setConfigurationStoreConnection";
 
@@ -416,6 +447,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             errorHandler.validatePlatformConnection(connection, methodName);
 
@@ -432,14 +467,14 @@ public class OMAGServerAdminStoreServices extends TokenController
     }
 
 
-
     /**
      * Return the connection object for the configuration store.  Null is returned if the server should
      * use the default store.
      *
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
-    public synchronized ConnectionResponse getConfigurationStoreConnection()
+    public synchronized ConnectionResponse getConfigurationStoreConnection(String delegatingUserId)
     {
         final String methodName = "getConfigurationStoreConnection";
 
@@ -454,6 +489,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             response.setConnection(configurationStoreConnection);
         }
@@ -471,9 +510,10 @@ public class OMAGServerAdminStoreServices extends TokenController
     /**
      * Clear the connection object for the configuration store.
      *
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
-    public synchronized VoidResponse clearConfigurationStoreConnection()
+    public synchronized VoidResponse clearConfigurationStoreConnection(String delegatingUserId)
     {
         final String methodName = "clearConfigurationStoreConnection";
 
@@ -488,6 +528,10 @@ public class OMAGServerAdminStoreServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             configurationStoreConnection = null;
         }
@@ -592,7 +636,7 @@ public class OMAGServerAdminStoreServices extends TokenController
      * @return configuration connector file
      * @throws OMAGConfigurationErrorException A connection error occurred while attempting to access the server config store.
      */
-    private OMAGServerConfigStoreRetrieveAll getServerConfigStoreForRetrieveAll() throws OMAGConfigurationErrorException
+    private OMAGServerConfigStore getServerConfigStoreForRetrieveAll() throws OMAGConfigurationErrorException
     {
         final String methodName = "getServerConfigStoreForRetrieveAll";
 
@@ -607,7 +651,8 @@ public class OMAGServerAdminStoreServices extends TokenController
             OMAGServerConfigStore serverConfigStore = (OMAGServerConfigStore) connector;
 
             connector.start();
-            return getOMAGServerConfigStoreRetrieveAll(serverConfigStore, methodName);
+
+            return serverConfigStore;
         }
         catch (Exception error)
         {
@@ -620,59 +665,14 @@ public class OMAGServerAdminStoreServices extends TokenController
         }
     }
 
-    /**
-     * Get the OMAG Server Config store for retrieving all the server configurations associated with this platform.
-     *
-     * @param serverConfigStore the server config store - note the configured config store may not support this operation
-     * @param methodName        current operation
-     * @return the store to use for the retrieve all server configurations
-     * @throws OMAGConfigurationErrorException the store does not support the retrieve all configured servers for this platform operation
-     */
-    OMAGServerConfigStoreRetrieveAll getOMAGServerConfigStoreRetrieveAll(OMAGServerConfigStore serverConfigStore, String methodName) throws OMAGConfigurationErrorException
-    {
-        OMAGServerConfigStoreRetrieveAll omagServerConfigStoreRetrieveAll;
-
-        if (serverConfigStore instanceof OMAGServerConfigStoreRetrieveAll)
-        {
-            omagServerConfigStoreRetrieveAll = (OMAGServerConfigStoreRetrieveAll) serverConfigStore;
-        }
-        else
-        {
-            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED.getMessageDefinition(),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-
-        return omagServerConfigStoreRetrieveAll;
-    }
-
-
-    /**
-     * Retrieve any saved configuration for this server.
-     *
-     * @param serverName name of the server
-     * @param methodName method requesting the server details
-     * @return configuration properties
-     * @throws InvalidParameterException problem with the configuration file
-     * @throws UserNotAuthorizedException    user not authorized to make these changes
-     * @throws OMAGConfigurationErrorException  problem working with configuration document
-     */
-    OMAGServerConfig getServerConfig(String userId,
-                                     String serverName,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               OMAGConfigurationErrorException
-    {
-        return getServerConfig(userId, serverName, true, methodName);
-    }
-
 
     /**
      * Retrieve any saved configuration for this server.
      *
      * @param userId     calling user
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
-     * @param adminCall  flag to indicate whether the call is to change or just read the configuration
+     * @param updateConfigCall  flag to indicate whether the call is to change or just read the configuration
      * @param methodName method requesting the server details
      * @return configuration properties
      * @throws InvalidParameterException problem with the configuration file
@@ -680,8 +680,9 @@ public class OMAGServerAdminStoreServices extends TokenController
      * @throws OMAGConfigurationErrorException problem with the configuration document
      */
     OMAGServerConfig getServerConfig(String  userId,
+                                     String  delegatingUserId,
                                      String  serverName,
-                                     boolean adminCall,
+                                     boolean updateConfigCall,
                                      String  methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 OMAGConfigurationErrorException
@@ -696,13 +697,13 @@ public class OMAGServerAdminStoreServices extends TokenController
 
         if (serverConfig == null)
         {
-            try
+            /*
+             * Check that the user is able to create a new entry in the config store.
+             */
+            OpenMetadataPlatformSecurityVerifier.validateUserForNewServer(userId);
+            if (delegatingUserId != null)
             {
-                OpenMetadataPlatformSecurityVerifier.validateUserForNewServer(userId);
-            }
-            catch (UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error, userId);
+                OpenMetadataPlatformSecurityVerifier.validateUserForNewServer(delegatingUserId);
             }
 
             serverConfig = new OMAGServerConfig(this.getDefaultServerConfig());
@@ -711,6 +712,26 @@ public class OMAGServerAdminStoreServices extends TokenController
         }
         else
         {
+            /*
+             * Check that the user has access to the config store.
+             */
+            if (updateConfigCall)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+                if (delegatingUserId != null)
+                {
+                    OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+                }
+            }
+            else
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+                if (delegatingUserId != null)
+                {
+                    OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
+                }
+            }
+
             String  versionId           = serverConfig.getVersionId();
             boolean isCompatibleVersion = false;
 
@@ -749,13 +770,21 @@ public class OMAGServerAdminStoreServices extends TokenController
                                                            null,
                                                            resolvedServerConfig.getServerSecurityConnection());
 
-                if (adminCall)
+                if (updateConfigCall)
                 {
                     securityVerifier.validateUserAsServerAdmin(userId);
+                    if (delegatingUserId != null)
+                    {
+                        securityVerifier.validateUserAsServerAdmin(delegatingUserId);
+                    }
                 }
                 else
                 {
                     securityVerifier.validateUserAsServerOperator(userId);
+                    if (delegatingUserId != null)
+                    {
+                        securityVerifier.validateUserAsServerOperator(delegatingUserId);
+                    }
                 }
             }
             catch (InvalidParameterException error)
@@ -778,6 +807,7 @@ public class OMAGServerAdminStoreServices extends TokenController
      * Retrieve any saved configuration for this server.
      *
      * @param userId     calling user
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @param methodName method requesting the server details
      * @return configuration properties
@@ -786,6 +816,7 @@ public class OMAGServerAdminStoreServices extends TokenController
      * @throws OMAGConfigurationErrorException unable to parse the OMAGServerConfig
      */
     public OMAGServerConfig getServerConfigForStartUp(String userId,
+                                                      String delegatingUserId,
                                                       String serverName,
                                                       String methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
@@ -867,7 +898,15 @@ public class OMAGServerAdminStoreServices extends TokenController
                                                        null,
                                                        serverConfig.getServerSecurityConnection());
 
+            /*
+             * The userId is the value from the bearer token.  The delegatingUserId is option and only need to be
+             * checked if supplied.
+             */
             securityVerifier.validateUserAsServerOperator(userId);
+            if (delegatingUserId != null)
+            {
+                securityVerifier.validateUserAsServerOperator(delegatingUserId);
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -956,8 +995,8 @@ public class OMAGServerAdminStoreServices extends TokenController
      * @param serverConfig  properties to save
      * @throws InvalidParameterException problem with the config file
      */
-    public void saveServerConfig(String serverName,
-                                 String methodName,
+    public void saveServerConfig(String           serverName,
+                                 String           methodName,
                                  OMAGServerConfig serverConfig) throws InvalidParameterException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
@@ -983,14 +1022,17 @@ public class OMAGServerAdminStoreServices extends TokenController
      * Retrieve all the saved OMAG Server configurations for this platform.  If the calling user is not authorized to access a particular
      * server's configuration it is removed from the list.
      *
+     * @param userId user from bearer token
+     * @param delegatingUserId external userId making request
      * @return  a set of OMAG Server configurations
      * @throws OMAGConfigurationErrorException the OMAG Server configuration connector defined in configuration does not support retrieve all servers call.
      */
-    Set<OMAGServerConfig> retrieveAllServerConfigs(String   userId) throws OMAGConfigurationErrorException
+    Set<OMAGServerConfig> retrieveAllServerConfigs(String   userId,
+                                                   String   delegatingUserId) throws OMAGConfigurationErrorException
     {
         final String methodName = "retrieveAllServerConfigs";
 
-        OMAGServerConfigStoreRetrieveAll serverConfigStore = this.getServerConfigStoreForRetrieveAll();
+        OMAGServerConfigStore serverConfigStore = this.getServerConfigStoreForRetrieveAll();
 
         Set<OMAGServerConfig> configuredServers = serverConfigStore.retrieveAllServerConfigs();
 
@@ -1007,7 +1049,7 @@ public class OMAGServerAdminStoreServices extends TokenController
                 {
                     try
                     {
-                        OMAGServerConfig validatedConfig = this.getServerConfig(userId, serverConfig.getLocalServerName(), false, methodName);
+                        OMAGServerConfig validatedConfig = this.getServerConfig(userId, delegatingUserId, serverConfig.getLocalServerName(), false, methodName);
 
                         if (validatedConfig != null)
                         {

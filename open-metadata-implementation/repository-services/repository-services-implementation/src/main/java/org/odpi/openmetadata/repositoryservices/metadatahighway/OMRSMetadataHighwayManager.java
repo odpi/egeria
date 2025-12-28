@@ -191,17 +191,9 @@ public class OMRSMetadataHighwayManager
                     = getCohortRegistryStore(cohortConfig.getCohortName(),
                                              cohortConfig.getCohortRegistryConnection());
 
-            OMRSTopicConnector cohortSingleTopicConnector = null;
             OMRSTopicConnector cohortRegistrationTopicConnector = null;
             OMRSTopicConnector cohortTypesTopicConnector = null;
             OMRSTopicConnector cohortInstancesTopicConnector = null;
-
-            if (cohortConfig.getCohortOMRSTopicConnection() != null)
-            {
-                cohortSingleTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (single)",
-                                                               cohortConfig.getCohortOMRSTopicConnection(),
-                                                               cohortConfig.getCohortOMRSTopicProtocolVersion());
-            }
 
             if (cohortConfig.getCohortOMRSRegistrationTopicConnection() != null)
             {
@@ -243,8 +235,6 @@ public class OMRSMetadataHighwayManager
                                      enterpriseAccessConnectionConsumer,
                                      enterpriseAccessTopicConnector,
                                      cohortRegistryStore,
-                                     cohortConfig.getCohortOMRSTopicConnection(),
-                                     cohortSingleTopicConnector,
                                      cohortConfig.getCohortOMRSRegistrationTopicConnection(),
                                      cohortRegistrationTopicConnector,
                                      cohortConfig.getCohortOMRSTypesTopicConnection(),

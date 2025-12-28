@@ -39,11 +39,13 @@ public class OMAGServerPlatformSecurityServices extends TokenController
     /**
      * Override the default platform security connector.
      *
+     * @param delegatingUserId external userId making request
      * @param requestBody containing serverPlatformURL (URL Root of the server platform) and
      * connection used to create and configure the connector.
      * @return void response
      */
-    public synchronized VoidResponse setPlatformSecurityConnection(PlatformSecurityRequestBody requestBody)
+    public synchronized VoidResponse setPlatformSecurityConnection(String                      delegatingUserId,
+                                                                   PlatformSecurityRequestBody requestBody)
     {
         final String methodName = "setPlatformSecurityConnection";
 
@@ -66,6 +68,7 @@ public class OMAGServerPlatformSecurityServices extends TokenController
                 errorHandler.validatePlatformConnection(requestBody.getPlatformSecurityConnection(), methodName);
 
                 OpenMetadataPlatformSecurityVerifier.setPlatformSecurityConnection(userId,
+                                                                                   delegatingUserId,
                                                                                    requestBody.getUrlRoot(),
                                                                                    requestBody.getPlatformSecurityConnection());
             }
@@ -84,9 +87,10 @@ public class OMAGServerPlatformSecurityServices extends TokenController
     /**
      * Return the connection object for the platform security connector.
      *
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
-    public synchronized ConnectionResponse getPlatformSecurityConnection()
+    public synchronized ConnectionResponse getPlatformSecurityConnection(String delegatingUserId)
     {
         final String methodName = "getPlatformSecurityConnection";
 
@@ -100,7 +104,7 @@ public class OMAGServerPlatformSecurityServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setConnection(OpenMetadataPlatformSecurityVerifier.getPlatformSecurityConnection(userId));
+            response.setConnection(OpenMetadataPlatformSecurityVerifier.getPlatformSecurityConnection(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -117,9 +121,10 @@ public class OMAGServerPlatformSecurityServices extends TokenController
      * Clear the connection object for the platform security connector.
      * This sets the platform security back to default.
      *
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
-    public synchronized VoidResponse clearPlatformSecurityConnection()
+    public synchronized VoidResponse clearPlatformSecurityConnection(String delegatingUserId)
     {
         final String methodName = "clearPlatformSecurityConnection";
 
@@ -133,7 +138,7 @@ public class OMAGServerPlatformSecurityServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OpenMetadataPlatformSecurityVerifier.clearPlatformSecurityConnection(userId);
+            OpenMetadataPlatformSecurityVerifier.clearPlatformSecurityConnection(userId, delegatingUserId);
         }
         catch (Throwable error)
         {

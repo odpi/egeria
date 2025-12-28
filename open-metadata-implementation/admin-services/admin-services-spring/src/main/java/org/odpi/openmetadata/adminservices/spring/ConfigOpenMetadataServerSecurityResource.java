@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -44,6 +45,7 @@ public class ConfigOpenMetadataServerSecurityResource
      * Override the existing server security connector.
      *
      * @param serverName server to configure
+     * @param delegatingUserId external userId making request
      * @param connection connection used to create and configure the connector.
      * @return void response
      */
@@ -56,9 +58,10 @@ public class ConfigOpenMetadataServerSecurityResource
                                                    url="https://egeria-project.org/concepts/server-metadata-security-connector/"))
 
     public synchronized VoidResponse setServerSecurityConnection(@PathVariable String       serverName,
+                                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                                  @RequestBody  Connection   connection)
     {
-          return adminSecurityAPI.setServerSecurityConnection(serverName, connection);
+          return adminSecurityAPI.setServerSecurityConnection(serverName, delegatingUserId, connection);
     }
 
 
@@ -66,6 +69,7 @@ public class ConfigOpenMetadataServerSecurityResource
      * Return the connection object for the server security connector.
      *
      * @param serverName server to retrieve configuration from
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
     @GetMapping(path = "/connection")
@@ -76,9 +80,10 @@ public class ConfigOpenMetadataServerSecurityResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/server-metadata-security-connector/"))
 
-    public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       serverName)
+    public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       serverName,
+                                                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminSecurityAPI.getServerSecurityConnection(serverName);
+        return adminSecurityAPI.getServerSecurityConnection(serverName, delegatingUserId);
     }
 
 
@@ -86,6 +91,7 @@ public class ConfigOpenMetadataServerSecurityResource
      * Clear the connection object for the server security connector. This sets the server security back to default of no authorization security.
      *
      * @param serverName server to configure
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
     @DeleteMapping(path = "/connection")
@@ -97,8 +103,9 @@ public class ConfigOpenMetadataServerSecurityResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/server-metadata-security-connector/"))
 
-    public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   serverName)
+    public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   serverName,
+                                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminSecurityAPI.clearServerSecurityConnection(serverName);
+        return adminSecurityAPI.clearServerSecurityConnection(serverName, delegatingUserId);
     }
 }

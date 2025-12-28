@@ -4,6 +4,7 @@ package org.odpi.openmetadata.engineservices.repositorygovernance.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -42,6 +43,7 @@ public class RepositoryGovernanceResource
      * engine host.
      *
      * @param serverName engine host server name
+     * @param delegatingUserId external userId making request
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
@@ -60,8 +62,9 @@ public class RepositoryGovernanceResource
                                                    url="https://egeria-project.org/concepts/governance-action-service"))
 
     public ConnectorReportResponse validateConnector(@PathVariable String serverName,
-                                                     @PathVariable String connectorProviderClassName)
+                                                     @PathVariable String connectorProviderClassName,
+                                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.validateConnector(serverName, connectorProviderClassName);
+        return restAPI.validateConnector(serverName, delegatingUserId, connectorProviderClassName);
     }
 }

@@ -41,6 +41,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * support of the repository services running in the server named tutRepositoryServerName.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -48,9 +49,11 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * OMAGConfigurationErrorException unexpected exception.
      */
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(String                               serverName,
+                                                                  String                               delegatingUserId,
                                                                   RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
         return this.enableAllConformanceSuiteWorkbenches(serverName,
+                                                         delegatingUserId,
                                                          repositoryConformanceWorkbenchConfig,
                                                          null);
     }
@@ -61,6 +64,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * performance of the repository services running in the server named tutRepositoryServerName.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param repositoryPerformanceWorkbenchConfig configuration for the repository performance workbench.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -68,9 +72,12 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * OMAGConfigurationErrorException unexpected exception.
      */
     public VoidResponse enableRepositoryPerformanceSuiteWorkbench(String                               serverName,
+                                                                  String                               delegatingUserId,
                                                                   RepositoryPerformanceWorkbenchConfig repositoryPerformanceWorkbenchConfig)
     {
-        return this.enableRepositoryPerformanceWorkbench(serverName, repositoryPerformanceWorkbenchConfig);
+        return this.enableRepositoryPerformanceWorkbench(serverName,
+                                                         delegatingUserId,
+                                                         repositoryPerformanceWorkbenchConfig);
     }
 
 
@@ -79,6 +86,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * support of the platform services running in the platform at tutPlatformRootURL.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody url of the OMAG platform to test.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -86,9 +94,11 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * OMAGConfigurationErrorException unexpected exception.
      */
     public VoidResponse enablePlatformConformanceSuiteWorkbench(String         serverName,
+                                                                String         delegatingUserId,
                                                                 URLRequestBody requestBody)
     {
         return this.enableAllConformanceSuiteWorkbenches(serverName,
+                                                         delegatingUserId,
                                                          null,
                                                          requestBody.getUrlRoot());
     }
@@ -98,6 +108,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * Request that the repository performance suite services are activated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param repositoryPerformanceWorkbenchConfig configuration for the repository performance workbench.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -105,6 +116,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * OMAGConfigurationErrorException unexpected exception.
      */
     private VoidResponse enableRepositoryPerformanceWorkbench(String                               serverName,
+                                                              String                               delegatingUserId,
                                                               RepositoryPerformanceWorkbenchConfig repositoryPerformanceWorkbenchConfig)
     {
         final String methodName = "enableRepositoryPerformanceWorkbench";
@@ -121,7 +133,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             ConformanceSuiteConfig conformanceSuiteConfig = serverConfig.getConformanceSuiteConfig();
 
@@ -148,11 +160,11 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
             {
                 OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
-                adminAPI.setMaxPageSize(serverName, maxPageSize);
-                adminAPI.setServerType(serverName, GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
-                adminAPI.setInMemLocalRepository(serverName, new NullRequestBody());
+                adminAPI.setMaxPageSize(serverName, delegatingUserId, maxPageSize);
+                adminAPI.setServerType(serverName, delegatingUserId, GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                adminAPI.setInMemLocalRepository(serverName, delegatingUserId, new NullRequestBody());
 
-                serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+                serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
                 RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
@@ -167,7 +179,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
                 configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             configAuditTrail = serverConfig.getAuditTrail();
 
             if (repositoryPerformanceWorkbenchConfig != null)
@@ -201,6 +213,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * workbench is run.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @param tutPlatformRootURL url of the OMAG platform to test.
      * @return void response or
@@ -209,6 +222,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * OMAGConfigurationErrorException unexpected exception.
      */
     private VoidResponse enableAllConformanceSuiteWorkbenches(String                               serverName,
+                                                              String                               delegatingUserId,
                                                               RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig,
                                                               String                               tutPlatformRootURL)
     {
@@ -226,7 +240,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
             
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             ConformanceSuiteConfig conformanceSuiteConfig = serverConfig.getConformanceSuiteConfig();
 
@@ -253,11 +267,11 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
             {
                 OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
-                adminAPI.setMaxPageSize(serverName, maxPageSize);
-                adminAPI.setServerType(serverName, GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
-                adminAPI.setInMemLocalRepository(serverName, new NullRequestBody());
+                adminAPI.setMaxPageSize(serverName, delegatingUserId, maxPageSize);
+                adminAPI.setServerType(serverName, delegatingUserId, GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                adminAPI.setInMemLocalRepository(serverName, delegatingUserId, new NullRequestBody());
 
-                serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+                serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
                 RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
                 OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
@@ -272,7 +286,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
                 configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             configAuditTrail = serverConfig.getAuditTrail();
 
             if (repositoryConformanceWorkbenchConfig != null)
@@ -314,12 +328,14 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * Request that the repository conformance suite tests are deactivated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    public VoidResponse disableRepositoryConformanceSuiteServices(String serverName)
+    public VoidResponse disableRepositoryConformanceSuiteServices(String serverName,
+                                                                  String delegatingUserId)
     {
         final String methodName = "disableRepositoryConformanceSuiteServices";
 
@@ -335,7 +351,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
             
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             ConformanceSuiteConfig conformanceSuiteConfig = serverConfig.getConformanceSuiteConfig();
 
@@ -378,12 +394,14 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * Request that the repository conformance suite tests are deactivated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    public VoidResponse disablePlatformConformanceSuiteServices(String serverName)
+    public VoidResponse disablePlatformConformanceSuiteServices(String serverName,
+                                                                String delegatingUserId)
     {
         final String methodName = "disablePlatformConformanceSuiteServices";
 
@@ -399,7 +417,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
             
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             ConformanceSuiteConfig conformanceSuiteConfig = serverConfig.getConformanceSuiteConfig();
 
@@ -442,12 +460,14 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
      * Request that all the conformance suite tests are deactivated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      * OMAGConfigurationErrorException unexpected exception.
      */
-    public VoidResponse disableAllConformanceSuiteWorkbenches(String serverName)
+    public VoidResponse disableAllConformanceSuiteWorkbenches(String serverName,
+                                                              String delegatingUserId)
     {
         final String methodName = "disableAllConformanceSuiteWorkbenches";
 
@@ -463,7 +483,7 @@ public class OMAGConformanceSuiteConfigServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
             
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 

@@ -25,6 +25,7 @@ import java.util.Set;
 public class ConfigurationManagementClient
 {
     private final String serverPlatformRootURL;    /* Initialized in constructor */
+    private final String delegatingUserId;         /* Initialized in the constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private final AdminServicesRESTClient restClient;               /* Initialized in constructor */
@@ -39,6 +40,7 @@ public class ConfigurationManagementClient
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -47,6 +49,7 @@ public class ConfigurationManagementClient
                                          String   secretStoreProvider,
                                          String   secretStoreLocation,
                                          String   secretStoreCollection,
+                                         String   delegatingUserId,
                                          AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
@@ -56,6 +59,7 @@ public class ConfigurationManagementClient
             invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, NULL_SERVER_NAME, methodName);
 
             this.serverPlatformRootURL = serverPlatformRootURL;
+            this.delegatingUserId = delegatingUserId;
 
             this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
         }
@@ -71,12 +75,14 @@ public class ConfigurationManagementClient
      *
      * @param serverPlatformRootURL the network address of the server running the admin services
      * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
     public ConfigurationManagementClient(String                             serverPlatformRootURL,
                                          Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                         String                             delegatingUserId,
                                          AuditLog                           auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
@@ -86,6 +92,7 @@ public class ConfigurationManagementClient
             invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, NULL_SERVER_NAME, methodName);
 
             this.serverPlatformRootURL = serverPlatformRootURL;
+            this.delegatingUserId = delegatingUserId;
 
             this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
         }
@@ -109,10 +116,11 @@ public class ConfigurationManagementClient
                                                                      InvalidParameterException
     {
         final String methodName  = "getAllServerConfigurations";
-        final String urlTemplate = "/open-metadata/admin-services/configurations";
+        final String urlTemplate = "/open-metadata/admin-services/configurations?delegatingUserId={1}";
 
         OMAGServerConfigsResponse restResult = restClient.callGetAllServerConfigurationsRESTCall(methodName,
-                                                                                                 serverPlatformRootURL + urlTemplate);
+                                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                                 delegatingUserId);
 
         return restResult.getOMAGServerConfigs();
     }
@@ -132,12 +140,13 @@ public class ConfigurationManagementClient
                                                                           InvalidParameterException
     {
         final String methodName  = "setOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         serverConfig,
-                                        serverConfig.getLocalServerName());
+                                        serverConfig.getLocalServerName(),
+                                        delegatingUserId);
     }
 
 
@@ -156,7 +165,7 @@ public class ConfigurationManagementClient
                                                                                  InvalidParameterException
     {
         final String methodName  = "deployOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration/deploy";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration/deploy?delegatingUserId={1}";
 
         URLRequestBody requestBody = new URLRequestBody();
 
@@ -165,7 +174,8 @@ public class ConfigurationManagementClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -183,11 +193,12 @@ public class ConfigurationManagementClient
                                                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "getStoredOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration?delegatingUserId={1}";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,
-                                                                                         serverName);
+                                                                                         serverName,
+                                                                                         delegatingUserId);
 
         return restResult.getOMAGServerConfig();
     }
@@ -207,11 +218,12 @@ public class ConfigurationManagementClient
                                                                                   OMAGConfigurationErrorException
     {
         final String methodName  = "getResolvedOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration/resolved";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration/resolved?delegatingUserId={1}";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,
-                                                                                         serverName);
+                                                                                         serverName,
+                                                                                         delegatingUserId);
 
         return restResult.getOMAGServerConfig();
     }

@@ -40,9 +40,11 @@ public class OMRSAuditLogRESTServices extends TokenController
      * Return the details of the severities defined for audit log records from this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return list of severity definitions
      */
-    public AuditLogSeveritiesResponse getSeverityList(String     serverName)
+    public AuditLogSeveritiesResponse getSeverityList(String serverName,
+                                                      String delegatingUserId)
     {
         final  String   methodName = "getSeverityList";
 
@@ -57,7 +59,7 @@ public class OMRSAuditLogRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             /*
              * Validate that the serverName and userId permit the request.
@@ -80,9 +82,11 @@ public class OMRSAuditLogRESTServices extends TokenController
      * Return the report from the audit log for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return report of the audit log
      */
-    public AuditLogReportResponse getAuditLogReport(String     serverName)
+    public AuditLogReportResponse getAuditLogReport(String serverName,
+                                                    String delegatingUserId)
     {
         final  String   methodName = "getAuditLogReport";
 
@@ -97,7 +101,7 @@ public class OMRSAuditLogRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             /*
              * Validate that the serverName and userId permit the request.

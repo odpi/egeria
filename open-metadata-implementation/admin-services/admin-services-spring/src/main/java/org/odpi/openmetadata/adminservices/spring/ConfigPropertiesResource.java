@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -47,6 +48,7 @@ public class ConfigPropertiesResource
      * Return the derived server type that is created from the classification of the server configuration.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or serverType parameter.
@@ -59,9 +61,10 @@ public class ConfigPropertiesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/omag-server/#types-of-omag-server"))
 
-    public ServerTypeClassificationResponse getServerTypeClassification(@PathVariable String serverName)
+    public ServerTypeClassificationResponse getServerTypeClassification(@PathVariable String serverName,
+                                                                        @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getServerTypeClassification(serverName);
+        return adminAPI.getServerTypeClassification(serverName, delegatingUserId);
     }
 
 
@@ -70,6 +73,7 @@ public class ConfigPropertiesResource
      * make it easier to understand the source of events.  The default value is null.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param name  String name of the organization.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -85,9 +89,10 @@ public class ConfigPropertiesResource
                                                    url="https://egeria-project.org/concepts/omag-server/"))
 
     public VoidResponse setOrganizationName(@PathVariable String serverName,
+                                            @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                             @RequestParam String name)
     {
-        return adminAPI.setOrganizationName(serverName, name);
+        return adminAPI.setOrganizationName(serverName, delegatingUserId, name);
     }
 
 
@@ -95,6 +100,7 @@ public class ConfigPropertiesResource
      * Set up the description of this server. The default value is null.
      *
      * @param serverName  local server description.
+     * @param delegatingUserId external userId making request
      * @param description  String description of the server.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -109,9 +115,10 @@ public class ConfigPropertiesResource
                                                    url="https://egeria-project.org/concepts/omag-server/"))
 
     public VoidResponse setServerDescription(@PathVariable String serverName,
+                                             @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                              @RequestBody  String description)
     {
-        return adminAPI.setServerDescription(serverName, description);
+        return adminAPI.setServerDescription(serverName, delegatingUserId, description);
     }
 
 
@@ -120,6 +127,7 @@ public class ConfigPropertiesResource
      * from another server).
      *
      * @param serverName - local server name.
+     * @param delegatingUserId external userId making request
      * @param id - String user is for the server.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -134,9 +142,10 @@ public class ConfigPropertiesResource
                                                    url="https://egeria-project.org/concepts/omag-server/"))
 
     public VoidResponse setServerUserId(@PathVariable String serverName,
+                                        @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                         @RequestParam String id)
     {
-        return adminAPI.setServerUserId(serverName, id);
+        return adminAPI.setServerUserId(serverName, delegatingUserId, id);
     }
 
 
@@ -146,6 +155,7 @@ public class ConfigPropertiesResource
      * value is 1000.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param limit  max number of elements that can be returned on a request.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -160,9 +170,10 @@ public class ConfigPropertiesResource
                                                    url="https://egeria-project.org/concepts/omag-server/"))
 
     public VoidResponse setMaxPageSize(@PathVariable String  serverName,
+                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                        @RequestParam int     limit)
     {
-        return adminAPI.setMaxPageSize(serverName, limit);
+        return adminAPI.setMaxPageSize(serverName, delegatingUserId, limit);
     }
 
 
@@ -170,6 +181,7 @@ public class ConfigPropertiesResource
      * Set up the basic server properties in a single request.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody property details
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -184,9 +196,10 @@ public class ConfigPropertiesResource
                                                    url="https://egeria-project.org/concepts/omag-server/"))
 
     public VoidResponse setBasicServerProperties(@PathVariable String                      serverName,
+                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                  @RequestBody  ServerPropertiesRequestBody requestBody)
     {
-        return adminAPI.setBasicServerProperties(serverName, requestBody);
+        return adminAPI.setBasicServerProperties(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -194,6 +207,7 @@ public class ConfigPropertiesResource
      * Get the basic server properties in a single request.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return properties response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or maxPageSize parameter.
@@ -206,8 +220,9 @@ public class ConfigPropertiesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/omag-server/"))
 
-    public BasicServerPropertiesResponse getBasicServerProperties(@PathVariable String serverName)
+    public BasicServerPropertiesResponse getBasicServerProperties(@PathVariable String serverName,
+                                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getBasicServerProperties(serverName);
+        return adminAPI.getBasicServerProperties(serverName, delegatingUserId);
     }
 }

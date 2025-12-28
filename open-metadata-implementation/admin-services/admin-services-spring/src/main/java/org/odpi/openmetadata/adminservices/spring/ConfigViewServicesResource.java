@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -49,6 +50,7 @@ public class ConfigViewServicesResource
      * Return the list of view services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return list of view service descriptions
      */
     @GetMapping(path = "/view-services")
@@ -59,9 +61,10 @@ public class ConfigViewServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omvs/"))
 
-    public RegisteredOMAGServicesResponse getConfiguredViewServices(@PathVariable String serverName)
+    public RegisteredOMAGServicesResponse getConfiguredViewServices(@PathVariable String serverName,
+                                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getConfiguredViewServices(serverName);
+        return adminAPI.getConfiguredViewServices(serverName, delegatingUserId);
     }
 
 
@@ -69,6 +72,7 @@ public class ConfigViewServicesResource
      * Return the view services configuration for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return response containing the view services configuration
      */
     @GetMapping(path = "/view-services/configuration")
@@ -79,9 +83,10 @@ public class ConfigViewServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omvs/"))
 
-    public ViewServicesResponse getViewServicesConfiguration(@PathVariable String serverName)
+    public ViewServicesResponse getViewServicesConfiguration(@PathVariable String serverName,
+                                                             @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getViewServicesConfiguration(serverName);
+        return adminAPI.getViewServicesConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -90,6 +95,7 @@ public class ConfigViewServicesResource
      * This operation is used for editing existing view service configuration.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @param viewServiceConfigs list of configured view services
      * @return void
      */
@@ -102,9 +108,10 @@ public class ConfigViewServicesResource
                     url="https://egeria-project.org/services/omvs/"))
 
     public VoidResponse setViewServicesConfiguration(@PathVariable String                  serverName,
+                                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                      @RequestBody  List<ViewServiceConfig> viewServiceConfigs)
     {
-        return adminAPI.setViewServicesConfiguration(serverName, viewServiceConfigs);
+        return adminAPI.setViewServicesConfiguration(serverName, delegatingUserId, viewServiceConfigs);
     }
 
 
@@ -112,6 +119,7 @@ public class ConfigViewServicesResource
      * Return the configuration of a specific view service.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating the view service of interest
      * @return response containing the configuration of the view service
      */
@@ -124,9 +132,10 @@ public class ConfigViewServicesResource
                                                    url="https://egeria-project.org/services/omvs/"))
 
     public ViewServiceConfigResponse getViewServiceConfig(@PathVariable String serverName,
-                                                          @PathVariable String serviceURLMarker)
+                                                          @PathVariable String serviceURLMarker,
+                                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getViewServiceConfig(serverName, serviceURLMarker);
+        return adminAPI.getViewServiceConfig(serverName, delegatingUserId, serviceURLMarker);
     }
 
 
@@ -134,6 +143,7 @@ public class ConfigViewServicesResource
      * Configure a single view service.
      *
      * @param serverName       local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which view service it is configuring
      * @param requestBody if specified, the view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL that
      *                    the view service will use.
@@ -152,9 +162,10 @@ public class ConfigViewServicesResource
 
     public VoidResponse configureViewService(@PathVariable  String                 serverName,
                                              @PathVariable  String                 serviceURLMarker,
+                                             @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                              @RequestBody   ViewServiceRequestBody requestBody)
     {
-        return adminAPI.configureViewService(serverName, serviceURLMarker, requestBody);
+        return adminAPI.configureViewService(serverName, delegatingUserId, serviceURLMarker, requestBody);
     }
 
 
@@ -162,6 +173,7 @@ public class ConfigViewServicesResource
      * Enable all view services that are registered with this server platform.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody  view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL for view services to use.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -177,9 +189,10 @@ public class ConfigViewServicesResource
                     url="https://egeria-project.org/services/omvs/"))
 
     public VoidResponse configureAllViewServices(@PathVariable String                 serverName,
+                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                  @RequestBody  ViewServiceRequestBody requestBody)
     {
-        return adminAPI.configureAllViewServices(serverName, requestBody);
+        return adminAPI.configureAllViewServices(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -187,6 +200,7 @@ public class ConfigViewServicesResource
      * Remove the config for a view service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which view service to clear
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -202,9 +216,10 @@ public class ConfigViewServicesResource
                                                    url="https://egeria-project.org/services/omvs/"))
 
     public VoidResponse clearViewService(@PathVariable String serverName,
-                                         @PathVariable String serviceURLMarker)
+                                         @PathVariable String serviceURLMarker,
+                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearViewService(serverName, serviceURLMarker);
+        return adminAPI.clearViewService(serverName, delegatingUserId, serviceURLMarker);
     }
 
 
@@ -212,6 +227,7 @@ public class ConfigViewServicesResource
      * Disable the view services.  This removes all configuration for the view services.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter or
@@ -225,8 +241,9 @@ public class ConfigViewServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omvs/"))
 
-    public VoidResponse clearAllViewServices(@PathVariable String serverName)
+    public VoidResponse clearAllViewServices(@PathVariable String serverName,
+                                             @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearAllViewServices(serverName);
+        return adminAPI.clearAllViewServices(serverName, delegatingUserId);
     }
 }

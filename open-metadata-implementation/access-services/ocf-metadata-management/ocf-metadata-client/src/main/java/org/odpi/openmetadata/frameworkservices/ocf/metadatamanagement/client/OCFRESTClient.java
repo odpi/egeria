@@ -5,9 +5,12 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+
+import java.util.Map;
 
 
 /**
@@ -36,6 +39,25 @@ public class OCFRESTClient extends FFDCRESTClient
                          AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public OCFRESTClient(String                             serverName,
+                         String                             serverPlatformURLRoot,
+                         Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                         AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, auditLog);
     }
 
 

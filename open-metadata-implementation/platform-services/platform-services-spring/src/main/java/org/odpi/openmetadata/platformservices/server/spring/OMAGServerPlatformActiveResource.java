@@ -19,10 +19,7 @@ import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformActiveServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -56,6 +53,7 @@ public class OMAGServerPlatformActiveResource
     /**
      * Return the start time for this instance of the platform.
      *
+     * @param delegatingUserId external userId making request
      * @return start date/time
      */
     @GetMapping(path = "/start-time")
@@ -72,9 +70,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
                 })
-    public DateResponse getPlatformStartTime()
+    public DateResponse getPlatformStartTime(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getPlatformStartTime();
+        return platformAPI.getPlatformStartTime(delegatingUserId);
     }
 
 
@@ -82,6 +80,7 @@ public class OMAGServerPlatformActiveResource
     /**
      * Retrieve the name of the organization running this platform.
      *
+     * @param delegatingUserId external userId making request
      * @return String description
      */
     @GetMapping(path = "/organization-name")
@@ -94,9 +93,9 @@ public class OMAGServerPlatformActiveResource
                             content = @Content(mediaType ="application/json"))
             })
 
-    public StringResponse getServerPlatformOrganizationName()
+    public StringResponse getServerPlatformOrganizationName(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getServerPlatformOrganizationName();
+        return platformAPI.getServerPlatformOrganizationName(delegatingUserId);
     }
 
 
@@ -104,6 +103,7 @@ public class OMAGServerPlatformActiveResource
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
      * and can be configured for a metadata server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/access-services")
@@ -120,15 +120,17 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredAccessServices()
+    public RegisteredOMAGServicesResponse getRegisteredAccessServices(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getRegisteredAccessServices();
+        return platformAPI.getRegisteredAccessServices(delegatingUserId);
     }
+
 
     /**
      * Return the list of engine services that are implemented in this OMAG Server Platform
      * and can be configured for an engine host server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/engine-services")
@@ -145,9 +147,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredEngineServices()
+    public RegisteredOMAGServicesResponse getRegisteredEngineServices(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getRegisteredEngineServices();
+        return platformAPI.getRegisteredEngineServices(delegatingUserId);
     }
 
 
@@ -155,6 +157,7 @@ public class OMAGServerPlatformActiveResource
      * Return the list of view services that are registered (supported) in this OMAG Server Platform
      * and can be configured for a view server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/view-services")
@@ -171,9 +174,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredViewServices()
+    public RegisteredOMAGServicesResponse getRegisteredViewServices(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getRegisteredViewServices();
+        return platformAPI.getRegisteredViewServices(delegatingUserId);
     }
 
 
@@ -181,6 +184,7 @@ public class OMAGServerPlatformActiveResource
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of a governance server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/governance-services")
@@ -197,9 +201,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices()
+    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getRegisteredGovernanceServices();
+        return platformAPI.getRegisteredGovernanceServices(delegatingUserId);
     }
 
 
@@ -207,6 +211,7 @@ public class OMAGServerPlatformActiveResource
      * Return the list of common services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of any server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/common-services")
@@ -223,15 +228,16 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getRegisteredCommonServices()
+    public RegisteredOMAGServicesResponse getRegisteredCommonServices(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getRegisteredCommonServices();
+        return platformAPI.getRegisteredCommonServices(delegatingUserId);
     }
 
 
     /**
      * Return the list of all services that are supported in this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services")
@@ -248,9 +254,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public RegisteredOMAGServicesResponse getAllRegisteredServices()
+    public RegisteredOMAGServicesResponse getAllRegisteredServices(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getAllRegisteredServices();
+        return platformAPI.getAllRegisteredServices(delegatingUserId);
     }
 
 
@@ -260,6 +266,7 @@ public class OMAGServerPlatformActiveResource
      * connectors into an Egeria server.  It does not validate that the connector will load and initialize.
      *
      * @param connectorProviderClassName name of the connector provider class
+     * @param delegatingUserId external userId making request
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      */
     @GetMapping(path = "/connector-types/{connectorProviderClassName}")
@@ -278,9 +285,10 @@ public class OMAGServerPlatformActiveResource
 
                         )
                 })
-    public OCFConnectorTypeResponse getConnectorType(@Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
+    public OCFConnectorTypeResponse getConnectorType(@Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName,
+                                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getConnectorType(connectorProviderClassName);
+        return platformAPI.getConnectorType(connectorProviderClassName, delegatingUserId);
     }
 
 
@@ -288,6 +296,7 @@ public class OMAGServerPlatformActiveResource
      * Return a flag to indicate if this server has ever run on this OMAG Server Platform instance.
      *
      * @param serverName server of interest
+     * @param delegatingUserId external userId making request
      * @return flag
      */
     @GetMapping(path = "/servers/{serverName}/is-known")
@@ -304,15 +313,17 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public BooleanResponse isServerKnown(@Parameter(description="server name") @PathVariable String    serverName)
+    public BooleanResponse isServerKnown(@Parameter(description="server name") @PathVariable String    serverName,
+                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.isServerKnown(serverName);
+        return platformAPI.isServerKnown(serverName, delegatingUserId);
     }
 
 
     /**
      * Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @return list of OMAG server names
      */
     @GetMapping(path = "/servers")
@@ -329,15 +340,16 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerListResponse getKnownServerList()
+    public ServerListResponse getKnownServerList(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getKnownServerList();
+        return platformAPI.getKnownServerList(delegatingUserId);
     }
 
 
     /**
      * Return the list of OMAG Servers that are active on this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @return list of server names
      */
     @GetMapping(path = "/servers/active")
@@ -354,9 +366,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerListResponse getActiveServerList()
+    public ServerListResponse getActiveServerList(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getActiveServerList();
+        return platformAPI.getActiveServerList(delegatingUserId);
     }
 
 
@@ -364,6 +376,7 @@ public class OMAGServerPlatformActiveResource
      * Return information about when the server has been active.
      *
      * @param serverName name of the server of interest
+     * @param delegatingUserId external userId making request
      * @return details of the server status
      */
     @GetMapping(path = "/servers/{serverName}/status")
@@ -379,9 +392,10 @@ public class OMAGServerPlatformActiveResource
                             )
                     )
             })
-    public ServerStatusResponse getServerStatus(@Parameter(description="server name")  @PathVariable String    serverName)
+    public ServerStatusResponse getServerStatus(@Parameter(description="server name")  @PathVariable String    serverName,
+                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String    delegatingUserId)
     {
-        return platformAPI.getServerStatus(serverName);
+        return platformAPI.getServerStatus(serverName, delegatingUserId);
     }
 
 
@@ -389,6 +403,7 @@ public class OMAGServerPlatformActiveResource
      * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
      *
      * @param serverName name of the server of interest
+     * @param delegatingUserId external userId making request
      * @return server name and list od services running within
      */
     @GetMapping(path = "/servers/{serverName}/services")
@@ -405,8 +420,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerServicesListResponse getActiveServicesForServer(@Parameter(description="server name")  @PathVariable String    serverName)
+    public ServerServicesListResponse getActiveServicesForServer(@Parameter(description="server name")  @PathVariable String    serverName,
+                                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformAPI.getActiveServicesForServer(serverName);
+        return platformAPI.getActiveServicesForServer(serverName, delegatingUserId);
     }
 }

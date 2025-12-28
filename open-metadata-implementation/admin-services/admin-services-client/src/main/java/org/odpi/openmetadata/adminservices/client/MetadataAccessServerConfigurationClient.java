@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
@@ -33,6 +34,7 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -42,9 +44,29 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                    String   secretStoreProvider,
                                                    String   secretStoreLocation,
                                                    String   secretStoreCollection,
+                                                   String   delegatingUserId,
                                                    AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public MetadataAccessServerConfigurationClient(String                             serverPlatformRootURL,
+                                                   Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                   String                             delegatingUserId,
+                                                   AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
     }
 
 
@@ -66,10 +88,11 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "getRegisteredAccessServices";
-        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/access-services";
+        final String urlTemplate = "/open-metadata/platform-services/server-platform/registered-services/access-services?delegatingUserId={0}";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
-                                                                                                     serverPlatformRootURL + urlTemplate);
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     delegatingUserId);
         return restResult.getServices();
     }
 
@@ -93,11 +116,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "getConfiguredAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services?delegatingUserId={1}";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
                                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                                     serverName);
+                                                                                                     serverName,
+                                                                                                     delegatingUserId);
         return restResult.getServices();
     }
 
@@ -115,11 +139,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                              OMAGConfigurationErrorException
     {
         final String methodName  = "getAccessServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/configuration?delegatingUserId={1}";
 
         AccessServicesResponse restResult = restClient.callAccessServicesGetRESTCall(methodName,
                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                     serverName);
+                                                                                     serverName,
+                                                                                     delegatingUserId);
         return restResult.getServices();
     }
 
@@ -162,14 +187,15 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     {
         final String methodName    = "disableAccessService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        serverName,
-                                        serviceURLMarker);
+                                          serverPlatformRootURL + urlTemplate,
+                                          serverName,
+                                          serviceURLMarker,
+                                          delegatingUserId);
     }
 
 
@@ -190,7 +216,7 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     {
         final String methodName    = "configureAccessService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
@@ -198,7 +224,8 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
                                         serverName,
-                                        serviceURLMarker);
+                                        serviceURLMarker,
+                                        delegatingUserId);
     }
 
 
@@ -236,7 +263,7 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     {
         final String methodName    = "configureAccessServiceNoTopics";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/no-topics";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/no-topics?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
@@ -244,7 +271,8 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
                                         serverName,
-                                        serviceURLMarker);
+                                        serviceURLMarker,
+                                        delegatingUserId);
     }
 
 
@@ -263,12 +291,13 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                                             OMAGConfigurationErrorException
     {
         final String methodName  = "configureAllAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -289,12 +318,13 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                                                     OMAGConfigurationErrorException
     {
         final String methodName  = "configureAllAccessServicesNoTopics";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/no-topics";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/no-topics?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServiceOptions,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -314,14 +344,15 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     {
         final String methodName    = "getAccessServiceTopicNames";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/topic-names";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/topic-names?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
                                                                          serverPlatformRootURL + urlTemplate,
                                                                          serverName,
-                                                                         serviceURLMarker);
+                                                                         serviceURLMarker,
+                                                                         delegatingUserId);
 
         return response.getStringMap();
     }
@@ -340,11 +371,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                       OMAGConfigurationErrorException
     {
         final String methodName    = "getAllAccessServiceTopicNames";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/topic-names";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/topic-names?delegatingUserId={1}";
 
         StringMapResponse response = restClient.callStringMapGetRESTCall(methodName,
                                                                          serverPlatformRootURL + urlTemplate,
-                                                                         serverName);
+                                                                         serverName,
+                                                                         delegatingUserId);
 
         return response.getStringMap();
     }
@@ -368,7 +400,7 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
     {
         final String methodName    = "overrideAccessServiceOutTopic";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/topic-names/out-topic";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/access-services/{1}/topic-names/out-topic?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
@@ -376,7 +408,8 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
                                         serverName,
-                                        serviceURLMarker);
+                                        serviceURLMarker,
+                                        delegatingUserId);
     }
 
 
@@ -393,11 +426,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "clearAllAccessServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -420,12 +454,13 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                                                OMAGConfigurationErrorException
     {
         final String methodName  = "setAccessServicesConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/access-services/configuration?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         accessServicesConfig,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -442,12 +477,13 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                                               OMAGConfigurationErrorException
     {
         final String methodName  = "setEnterpriseAccessConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/enterprise-access/remote-topic";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/enterprise-access/remote-topic?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         configurationProperties,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -469,11 +505,12 @@ public class MetadataAccessServerConfigurationClient extends CohortMemberConfigu
                                                                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "setEnterpriseAccessConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/enterprise-access/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/enterprise-access/configuration?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         enterpriseAccessConfig,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 }

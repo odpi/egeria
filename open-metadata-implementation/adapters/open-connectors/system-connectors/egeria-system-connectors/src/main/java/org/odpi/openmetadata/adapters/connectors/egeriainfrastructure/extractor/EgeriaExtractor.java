@@ -90,17 +90,17 @@ public class EgeriaExtractor
         this.secretsStoreConnectorMap = secretsStoreConnectorMap;
         this.auditLog                 = auditLog;
 
-        platformServicesClient        = new PlatformServicesClient(platformName, platformURLRoot, secretsStoreConnectorMap, auditLog);
-        platformConfigurationClient   = new OMAGServerPlatformConfigurationClient(platformURLRoot, secretsStoreConnectorMap, auditLog);
-        configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreConnectorMap, auditLog);
-        serverOperationsClient        = new ServerOperationsClient(platformName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+        platformServicesClient        = new PlatformServicesClient(platformName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+        platformConfigurationClient   = new OMAGServerPlatformConfigurationClient(platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+        configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+        serverOperationsClient        = new ServerOperationsClient(platformName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
 
         if (serverOfInterest != null)
         {
-            integrationDaemonClient = new IntegrationDaemon(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
-            engineHostClient = new EngineHostClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
-            metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
-            auditLogServicesClient = new AuditLogServicesClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, auditLog);
+            integrationDaemonClient = new IntegrationDaemon(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+            engineHostClient = new EngineHostClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+            metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
+            auditLogServicesClient = new AuditLogServicesClient(serverOfInterest, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
         }
         else
         {
@@ -237,23 +237,6 @@ public class EgeriaExtractor
                                                                                PropertyServerException
     {
         return platformServicesClient.getViewServices();
-    }
-
-
-    /**
-     * Retrieve a list of the integration services registered on the platform
-     *
-     * @return List of integration services
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<RegisteredOMAGService> getIntegrationServices() throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        return platformServicesClient.getIntegrationServices();
     }
 
 
@@ -792,7 +775,7 @@ public class EgeriaExtractor
 
                 if (this.isServerRunning(serverName))
                 {
-                    IntegrationDaemon integrationDaemonClient = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+                    IntegrationDaemon integrationDaemonClient = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
 
                     IntegrationDaemonStatus integrationDaemonStatus = integrationDaemonClient.getIntegrationDaemonStatus();
 
@@ -833,7 +816,7 @@ public class EgeriaExtractor
 
                 if (this.isServerRunning(serverName))
                 {
-                    EngineHostClient engineHostClient = new EngineHostClient(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+                    EngineHostClient engineHostClient = new EngineHostClient(serverName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
 
                     engineHost.setGovernanceEngineSummaries(engineHostClient.getGovernanceEngineSummaries());
                 }
@@ -991,7 +974,7 @@ public class EgeriaExtractor
         {
             try
             {
-                MetadataHighwayServicesClient metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverName, platformURLRoot, secretsStoreConnectorMap, auditLog);
+                MetadataHighwayServicesClient metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverName, platformURLRoot, secretsStoreConnectorMap, delegatingUserId, auditLog);
 
                 List<CohortDescription> cohortDescriptions = metadataHighwayServicesClient.getCohortDescriptions();
 
@@ -1025,12 +1008,6 @@ public class EgeriaExtractor
                         {
                             cohortConnectors.add(getConnectorProperties(cohortDetails.getCohortName() + " Cohort Registry Connector",
                                                                         cohortConfig.getCohortRegistryConnection()));
-                        }
-
-                        if (cohortConfig.getCohortOMRSTopicConnection() != null)
-                        {
-                            cohortConnectors.add(getConnectorProperties(cohortDetails.getCohortName() + " Cohort Topic",
-                                                                        cohortConfig.getCohortOMRSTopicConnection()));
                         }
 
                         if (cohortConfig.getCohortOMRSRegistrationTopicConnection() != null)

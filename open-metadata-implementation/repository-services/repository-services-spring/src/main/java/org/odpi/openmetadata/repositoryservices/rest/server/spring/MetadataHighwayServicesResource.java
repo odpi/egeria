@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,10 +15,7 @@ import org.odpi.openmetadata.repositoryservices.rest.properties.CohortListRespon
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipResponse;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSMetadataHighwayRESTServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -58,6 +56,7 @@ public class MetadataHighwayServicesResource
      * Return the details of the cohorts that this server is participating in.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return variety of properties
      */
     @GetMapping(path = "/cohort-descriptions")
@@ -68,9 +67,10 @@ public class MetadataHighwayServicesResource
                externalDocs=@ExternalDocumentation(description="Cohort Member",
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
-    public CohortListResponse getCohorts(@PathVariable String serverName)
+    public CohortListResponse getCohorts(@PathVariable String serverName,
+                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getCohortList(serverName);
+        return restAPI.getCohortList(serverName, delegatingUserId);
     }
 
 
@@ -79,6 +79,7 @@ public class MetadataHighwayServicesResource
      * No registration time is provided.  Use the cohort specific version to retrieve the registration time.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @return registration properties for server
      */
     @GetMapping(path = "/local-registration")
@@ -90,9 +91,10 @@ public class MetadataHighwayServicesResource
                externalDocs=@ExternalDocumentation(description="Cohort Member",
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
-    public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName)
+    public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
+                                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getLocalRegistration(serverName);
+        return restAPI.getLocalRegistration(serverName, delegatingUserId);
     }
 
 
@@ -101,6 +103,7 @@ public class MetadataHighwayServicesResource
      * open metadata repository cohort.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of the specific cohort to query for the registration information
      * @return local registration properties for server
      */
@@ -113,9 +116,10 @@ public class MetadataHighwayServicesResource
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
     public CohortMembershipResponse getLocalRegistration(@PathVariable String   serverName,
-                                                         @PathVariable String   cohortName)
+                                                         @PathVariable String   cohortName,
+                                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getLocalRegistration(serverName, cohortName);
+        return restAPI.getLocalRegistration(serverName, delegatingUserId, cohortName);
     }
 
 
@@ -127,6 +131,7 @@ public class MetadataHighwayServicesResource
      *
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      */
     @GetMapping(path = "/cohorts/{cohortName}/connect")
@@ -141,9 +146,10 @@ public class MetadataHighwayServicesResource
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
     public BooleanResponse connectToCohort(@PathVariable String serverName,
-                                           @PathVariable String cohortName)
+                                           @PathVariable String cohortName,
+                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.connectToCohort(serverName, cohortName);
+        return restAPI.connectToCohort(serverName, delegatingUserId, cohortName);
     }
 
 
@@ -151,6 +157,7 @@ public class MetadataHighwayServicesResource
      * Return the list of registrations received from remote members of the cohort.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of the specific cohort
      * @return list of registration information for remote members
      */
@@ -163,9 +170,10 @@ public class MetadataHighwayServicesResource
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
     public CohortMembershipListResponse getRemoteRegistrations(@PathVariable String   serverName,
-                                                               @PathVariable String   cohortName)
+                                                               @PathVariable String   cohortName,
+                                                               @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getRemoteRegistrations(serverName, cohortName);
+        return restAPI.getRemoteRegistrations(serverName, delegatingUserId, cohortName);
     }
 
 
@@ -173,6 +181,7 @@ public class MetadataHighwayServicesResource
      * Disconnect communications from a specific cohort.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
@@ -185,9 +194,10 @@ public class MetadataHighwayServicesResource
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
     public BooleanResponse disconnectFromCohort(@PathVariable String serverName,
-                                                @PathVariable String cohortName)
+                                                @PathVariable String cohortName,
+                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.disconnectFromCohort(serverName, cohortName);
+        return restAPI.disconnectFromCohort(serverName, delegatingUserId, cohortName);
     }
 
 
@@ -195,6 +205,7 @@ public class MetadataHighwayServicesResource
      * Unregister from a specific cohort and disconnect from cohort communications.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
@@ -207,8 +218,9 @@ public class MetadataHighwayServicesResource
                                                    url="https://egeria-project.org/concepts/cohort-member/"))
 
     public BooleanResponse unregisterFromCohort(@PathVariable String serverName,
-                                                @PathVariable String cohortName)
+                                                @PathVariable String cohortName,
+                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.unregisterFromCohort(serverName, cohortName);
+        return restAPI.unregisterFromCohort(serverName, delegatingUserId, cohortName);
     }
 }

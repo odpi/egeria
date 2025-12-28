@@ -39,6 +39,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
         super(serverName, serverPlatformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
 
+
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *

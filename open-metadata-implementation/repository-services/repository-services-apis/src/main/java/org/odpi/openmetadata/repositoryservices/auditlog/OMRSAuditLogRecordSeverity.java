@@ -180,25 +180,8 @@ public enum OMRSAuditLogRecordSeverity implements AuditLogRecordSeverity
      *
      * @return list of severity values
      */
-    public static List<OMRSAuditLogReportSeverity> getSeverityList()
+    public static List<AuditLogRecordSeverity> getSeverityList()
     {
-        List<OMRSAuditLogRecordSeverity> values = new ArrayList<>(Arrays.asList(OMRSAuditLogRecordSeverity.values()));
-        List<OMRSAuditLogReportSeverity> result = new ArrayList<>();
-
-        for (OMRSAuditLogRecordSeverity severityDefinition : values)
-        {
-            if (severityDefinition != null)
-            {
-                OMRSAuditLogReportSeverity bean = new OMRSAuditLogReportSeverity(severityDefinition);
-                result.add(bean);
-            }
-        }
-
-        if (result.isEmpty())
-        {
-            return null;
-        }
-
-        return result;
+        return new ArrayList<>(Arrays.asList(OMRSAuditLogRecordSeverity.values()));
     }
 }

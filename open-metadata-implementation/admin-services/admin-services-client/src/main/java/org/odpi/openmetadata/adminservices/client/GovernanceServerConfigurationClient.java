@@ -4,7 +4,10 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+
+import java.util.Map;
 
 /**
  * GovernanceServerConfigurationClient provides the common configuration for all types of governance server.
@@ -20,6 +23,7 @@ public class GovernanceServerConfigurationClient extends OMAGServerConfiguration
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -29,8 +33,28 @@ public class GovernanceServerConfigurationClient extends OMAGServerConfiguration
                                                String   secretStoreProvider,
                                                String   secretStoreLocation,
                                                String   secretStoreCollection,
+                                               String   delegatingUserId,
                                                AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public GovernanceServerConfigurationClient(String                             serverPlatformRootURL,
+                                               Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                               String                             delegatingUserId,
+                                               AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
     }
 }

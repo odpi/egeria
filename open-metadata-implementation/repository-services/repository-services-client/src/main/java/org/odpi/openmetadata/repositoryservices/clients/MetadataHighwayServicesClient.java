@@ -40,6 +40,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
 
     private final RESTClientConnector restClient;                 /* Initialized in constructor */
     private final String              serverName;                 /* Initialized in constructor */
+    private final String              delegatingUserId;           /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -55,6 +56,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param secretsStoreProvider secrets store connector for bearer token
      * @param secretsStoreLocation secrets store location for bearer token
      * @param secretsStoreCollection secrets store collection for bearer token
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException bad input parameters
@@ -64,6 +66,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                          String   secretsStoreProvider,
                                          String   secretsStoreLocation,
                                          String   secretsStoreCollection,
+                                         String   delegatingUserId,
                                          AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
@@ -71,6 +74,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
 
         this.serverName = serverName;
+        this.delegatingUserId = delegatingUserId;
         this.restURLRoot = restURLRoot;
         this.restClient = this.getRESTClientConnector(serverName, restURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
@@ -82,6 +86,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
      * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException bad input parameters
@@ -89,6 +94,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     public MetadataHighwayServicesClient(String                             serverName,
                                          String                             restURLRoot,
                                          Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                         String                             delegatingUserId,
                                          AuditLog                           auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
@@ -96,6 +102,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
 
         this.serverName = serverName;
+        this.delegatingUserId = delegatingUserId;
         this.restURLRoot = restURLRoot;
         this.restClient = this.getRESTClientConnector(serverName, restURLRoot, secretsStoreConnectorMap, auditLog);
     }
@@ -144,7 +151,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                                   UserNotAuthorizedException
     {
         final String methodName  = "getCohortDescriptions";
-        final String operationSpecificURL = "/metadata-highway/cohort-descriptions";
+        final String operationSpecificURL = "/metadata-highway/cohort-descriptions?delegatingUserId={1}";
 
         CohortListResponse restResult;
 
@@ -153,7 +160,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortListResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
-                                                    serverName);
+                                                    serverName,
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -169,7 +177,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-
 
         return restResult.getCohorts();
     }
@@ -191,7 +198,10 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                                              UserNotAuthorizedException
     {
         final String methodName  = "getLocalRegistration";
-        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/local-registration";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/local-registration?delegatingUserId={1}";
+        final String cohortNameParameter = "cohortName";
+
+        invalidParameterHandler.validateName(cohortName, cohortNameParameter, methodName);
 
         CohortMembershipResponse restResult = null;
 
@@ -200,7 +210,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortMembershipResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
-                                                    serverName);
+                                                    serverName,
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -217,7 +228,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
 
-
         return restResult.getCohortMember();
     }
 
@@ -226,7 +236,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
      * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
      * event has been sent.
-     *
      * If the server has already registered in the past, it sends a reregistration request.
      *
      * @param cohortName name of cohort
@@ -242,7 +251,10 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                              UserNotAuthorizedException
     {
         final String methodName  = "connectToCohort";
-        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/connect";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/connect?delegatingUserId={1}";
+        final String cohortNameParameter = "cohortName";
+
+        invalidParameterHandler.validateName(cohortName, cohortNameParameter, methodName);
 
         BooleanResponse restResult;
 
@@ -251,7 +263,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     BooleanResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
-                                                    serverName);
+                                                    serverName,
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -286,10 +299,11 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                                                      UserNotAuthorizedException
     {
         final String methodName  = "getRemoteRegistrations";
+        final String cohortNameParameter = "cohortName";
 
-        // TODO - validate cohortName
+        invalidParameterHandler.validateName(cohortName, cohortNameParameter, methodName);
 
-        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/remote-members";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/remote-members?delegatingUserId={1}";
 
         CohortMembershipListResponse restResult = null;
 
@@ -298,7 +312,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortMembershipListResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
-                                                    serverName);
+                                                    serverName,
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -314,7 +329,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-
 
         return restResult.getCohortMembers();
     }
@@ -334,7 +348,10 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                                   UserNotAuthorizedException
     {
         final String methodName = "disconnectFromCohort";
-        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/disconnect";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/disconnect?delegatingUserId={1}";
+        final String cohortNameParameter = "cohortName";
+
+        invalidParameterHandler.validateName(cohortName, cohortNameParameter, methodName);
 
         BooleanResponse restResult;
 
@@ -343,7 +360,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     BooleanResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
-                                                    serverName);
+                                                    serverName,
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -378,7 +396,10 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                                   UserNotAuthorizedException
     {
         final String methodName = "unregisterFromCohort";
-        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/unregister";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/unregister?delegatingUserId={1}";
+        final String cohortNameParameter = "cohortName";
+
+        invalidParameterHandler.validateName(cohortName, cohortNameParameter, methodName);
 
         BooleanResponse restResult;
 
@@ -387,7 +408,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     BooleanResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
-                                                    serverName);
+                                                    serverName,
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -498,145 +520,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     }
 
 
-    /* =====================
-     * Issuing REST Calls
-     * =====================
-     */
-
-
-    /**
-     * Issue a GET REST call that returns a CohortListResponse object.
-     *
-     * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return AttributeTypeDefListResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private CohortListResponse callCohortListGetRESTCall(String    methodName,
-                                                         String    operationSpecificURL,
-                                                         Object... params) throws RepositoryErrorException
-    {
-        return this.callGetRESTCall(methodName,
-                                    CohortListResponse.class,
-                                    operationSpecificURL,
-                                    params);
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a AttributeTypeDefResponse object.
-     *
-     * @param methodName name of the method being called
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
-     * @param requestBody request body object
-     * @param params a list of parameters that are slotted into the url template
-     * @return AttributeTypeDefResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private AttributeTypeDefResponse callAttributeTypeDefPostRESTCall(String    methodName,
-                                                                      String    operationSpecificURL,
-                                                                      Object    requestBody,
-                                                                      Object... params) throws RepositoryErrorException
-    {
-        return this.callPostRESTCall(methodName,
-                                     AttributeTypeDefResponse.class,
-                                     operationSpecificURL,
-                                     requestBody,
-                                     params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns the requested object.
-     *
-     * @param <T> class name
-     * @param methodName  name of the method being called
-     * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
-     * @return TypeDefResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private <T> T callGetRESTCall(String    methodName,
-                                  Class<T>  returnClass,
-                                  String    operationSpecificURL) throws RepositoryErrorException
-    {
-        return this.callGetRESTCall(methodName, returnClass, operationSpecificURL, (Object[])null);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a TypeDefResponse object.
-     *
-     * @param <T> class name
-     * @param methodName  name of the method being called
-     * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return TypeDefResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private <T> T callGetRESTCall(String    methodName,
-                                  Class<T>  returnClass,
-                                  String    operationSpecificURL,
-                                  Object... params) throws RepositoryErrorException
-    {
-        try
-        {
-            return restClient.callGetRESTCall(methodName,
-                                              returnClass,
-                                              operationSpecificURL,
-                                              params);
-        }
-        catch (Exception error)
-        {
-            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                             serverName,
-                                                                                                             error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error);
-        }
-    }
-
-    /**
-     * Issue a POST REST call that returns the requested type of object.
-     *
-     * @param <T> class name
-     * @param methodName name of the method being called
-     * @param returnClass class name of response object
-     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
-     * @param params a list of parameters that are slotted into the url template
-     * @return VoidResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private <T> T callPostRESTCall(String    methodName,
-                                   Class<T>  returnClass,
-                                   String    operationSpecificURL,
-                                   Object    request,
-                                   Object... params) throws RepositoryErrorException
-    {
-        try
-        {
-            return restClient.callPostRESTCall(methodName,
-                                               returnClass,
-                                               operationSpecificURL,
-                                               request,
-                                               params);
-        }
-        catch (Exception error)
-        {
-            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                             serverName,
-                                                                                                             error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error);
-        }
-    }
-
-
     /*
      * ===============================
      * Handling exceptions
@@ -711,35 +594,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             }
         }
     }
-
-
-    /**  TODO consider reusing this for invalid cohort detection - or delete
-     * Throw an InvalidRelationshipException if it is encoded in the REST response.
-     *
-     * @param methodName name of the method called
-     * @param restResult response from the rest call.  This generated in the remote server.
-     * @throws InvalidRelationshipException encoded exception from the server
-     */
-    private void detectAndThrowInvalidRelationshipException(String          methodName,
-                                                            OMRSAPIResponse restResult) throws InvalidRelationshipException
-    {
-        final String   exceptionClassName = InvalidRelationshipException.class.getName();
-
-        if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
-        {
-            throw new InvalidRelationshipException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
-        }
-    }
-
 
 
     /**

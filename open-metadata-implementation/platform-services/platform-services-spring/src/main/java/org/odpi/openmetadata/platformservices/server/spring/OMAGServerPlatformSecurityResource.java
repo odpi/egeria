@@ -5,6 +5,7 @@ package org.odpi.openmetadata.platformservices.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,12 +15,7 @@ import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformSecurityServices;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * OMAGServerPlatformSecurityResource provides the API to configure the security connector that validates
@@ -50,6 +46,7 @@ public class OMAGServerPlatformSecurityResource
     /**
      * Set up a platform metadata security connector
      *
+     * @param delegatingUserId external userId making request
      * @param requestBody requestBody used to create and configure the connector that performs platform security
      * @return void response
      */
@@ -61,9 +58,10 @@ public class OMAGServerPlatformSecurityResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/platform-services/overview/#dynamically-configuring-the-platform-metadata-security-connector"))
 
-    public VoidResponse setPlatformSecurityConnection(@RequestBody  PlatformSecurityRequestBody requestBody)
+    public VoidResponse setPlatformSecurityConnection(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                                      @RequestBody  PlatformSecurityRequestBody requestBody)
     {
-        return adminSecurityAPI.setPlatformSecurityConnection(requestBody);
+        return adminSecurityAPI.setPlatformSecurityConnection(delegatingUserId, requestBody);
     }
 
 
@@ -71,6 +69,7 @@ public class OMAGServerPlatformSecurityResource
      * Return the connection object for platform metadata security connector.  Null is returned if no platform security
      * has been set up.
      *
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
     @GetMapping(path = "/connection")
@@ -82,15 +81,16 @@ public class OMAGServerPlatformSecurityResource
                                                    url="https://egeria-project.org/features/metadata-security/overview/"))
 
 
-    public ConnectionResponse getPlatformSecurityConnection()
+    public ConnectionResponse getPlatformSecurityConnection(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminSecurityAPI.getPlatformSecurityConnection();
+        return adminSecurityAPI.getPlatformSecurityConnection(delegatingUserId);
     }
 
 
     /**
      * Clear the connection object for platform security.  This means there is no platform security set up.
      *
+     * @param delegatingUserId external userId making request
      * @return void response
      */
     @DeleteMapping(path = "/connection")
@@ -101,8 +101,8 @@ public class OMAGServerPlatformSecurityResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/platform-services/overview/#dynamically-configuring-the-platform-metadata-security-connector"))
 
-    public  VoidResponse clearPlatformSecurityConnection()
+    public  VoidResponse clearPlatformSecurityConnection(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminSecurityAPI.clearPlatformSecurityConnection();
+        return adminSecurityAPI.clearPlatformSecurityConnection(delegatingUserId);
     }
 }

@@ -7,8 +7,11 @@ import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryCo
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+
+import java.util.Map;
 
 /**
  * ConformanceTestServerConfigurationClient provides the configuration services needed by
@@ -24,6 +27,7 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -33,11 +37,30 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
                                                     String   secretStoreProvider,
                                                     String   secretStoreLocation,
                                                     String   secretStoreCollection,
+                                                    String   delegatingUserId,
                                                     AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
     }
 
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public ConformanceTestServerConfigurationClient(String                             serverPlatformRootURL,
+                                                    Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                    String                             delegatingUserId,
+                                                    AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
+    }
 
     /**
      * Request that the conformance suite services are activated in this server to test the
@@ -56,14 +79,15 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
         final String methodName    = "enableRepositoryConformanceSuiteWorkbench";
         final String parameterName = "repositoryConformanceWorkbenchConfig";
         final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/repository-workbench" +
-                "/repositories";
+                "/repositories?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(repositoryConformanceWorkbenchConfig, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         repositoryConformanceWorkbenchConfig,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -82,7 +106,7 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
     {
         final String methodName    = "enablePlatformConformanceSuiteWorkbench";
         final String parameterName = "platformURL";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/platform-workbench/platforms";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/platform-workbench/platforms?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(platformURL, parameterName, methodName);
 
@@ -93,7 +117,8 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -109,11 +134,12 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
                                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "disableRepositoryConformanceSuiteServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/repository-workbench";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/repository-workbench?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        serverName);
+                                          serverPlatformRootURL + urlTemplate,
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -129,11 +155,12 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
                                                                  OMAGConfigurationErrorException
     {
         final String methodName  = "disablePlatformConformanceSuiteServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/platform-workbench";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches/platform-workbench?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -149,10 +176,11 @@ public class ConformanceTestServerConfigurationClient extends CohortMemberConfig
                                                                OMAGConfigurationErrorException
     {
         final String methodName  = "disableAllConformanceSuiteWorkbenches";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/conformance-suite-workbenches?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 }

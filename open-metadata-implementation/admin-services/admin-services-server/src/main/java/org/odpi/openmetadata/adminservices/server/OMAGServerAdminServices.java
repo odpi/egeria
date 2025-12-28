@@ -51,11 +51,13 @@ public class OMAGServerAdminServices extends TokenController
      * Return the derived server type that is created from the classification of the server configuration.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @return server type classification response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or serverType parameter.
      */
-    public ServerTypeClassificationResponse getServerTypeClassification(String serverName)
+    public ServerTypeClassificationResponse getServerTypeClassification(String serverName,
+                                                                        String delegatingUserId)
     {
         final String methodName = "getServerTypeClassification";
 
@@ -71,7 +73,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            ServerTypeClassifier classifier = new ServerTypeClassifier(serverName, configStore.getServerConfig(userId, serverName, false, methodName));
+            ServerTypeClassifier classifier = new ServerTypeClassifier(serverName, configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName));
             ServerTypeClassificationSummary summary = new ServerTypeClassificationSummary(classifier.getServerType());
 
             response.setServerTypeClassification(summary);
@@ -98,12 +100,14 @@ public class OMAGServerAdminServices extends TokenController
      * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @param typeName   short description for the type of server.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or serverType parameter.
      */
     public VoidResponse setServerType(String serverName,
+                                      String delegatingUserId,
                                       String typeName)
     {
         final String methodName = "setServerType";
@@ -120,7 +124,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -164,12 +168,14 @@ public class OMAGServerAdminServices extends TokenController
      * make it easier to understand the source of events.  The default value is null.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @param name       String name of the organization.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or organizationName parameter.
      */
     public VoidResponse setOrganizationName(String serverName,
+                                            String delegatingUserId,
                                             String name)
     {
         final String methodName = "setOrganizationName";
@@ -186,7 +192,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setOrganizationName(serverConfig, userId, serverName, name, methodName);
         }
@@ -250,12 +256,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the description of this server. The default value is null.
      *
      * @param serverName  local server description.
+     * @param delegatingUserId external userId making request
      * @param description String description of the server.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or organizationName parameter.
      */
     public VoidResponse setServerDescription(String serverName,
+                                             String delegatingUserId,
                                              String description)
     {
 
@@ -273,7 +281,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setServerDescription(serverConfig, userId, serverName, description, methodName);
         }
@@ -337,12 +345,14 @@ public class OMAGServerAdminServices extends TokenController
      * from another server).
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serverUserId  String user is for the server.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or serverURLRoot parameter.
      */
     public VoidResponse setServerUserId(String serverName,
+                                        String delegatingUserId,
                                         String serverUserId)
     {
         final String methodName = "setServerUserId";
@@ -359,7 +369,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setServerUserId(serverConfig, userId, serverName, serverUserId, methodName);
         }
@@ -419,18 +429,19 @@ public class OMAGServerAdminServices extends TokenController
     }
 
 
-
     /**
      * Set an upper limit in the page size that can be requested on a REST call to the server.  The default
      * value is 1000.
      *
      * @param serverName - local server name.
+     * @param delegatingUserId external userId making request
      * @param maxPageSize - max number of elements that can be returned on a request.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or maxPageSize parameter.
      */
     public VoidResponse setMaxPageSize(String  serverName,
+                                       String  delegatingUserId,
                                        int     maxPageSize)
     {
         final String methodName = "setMaxPageSize";
@@ -450,7 +461,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setMaxPageSize(serverConfig, userId, serverName, maxPageSize, methodName);
         }
@@ -562,6 +573,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the basic server properties in a single request.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody property details
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -569,6 +581,7 @@ public class OMAGServerAdminServices extends TokenController
      */
 
     public VoidResponse setBasicServerProperties(String                      serverName,
+                                                 String                      delegatingUserId,
                                                  ServerPropertiesRequestBody requestBody)
     {
         final String methodName = "setBasicServerProperties";
@@ -589,27 +602,27 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setOrganizationName(serverConfig, userId, serverName, requestBody.getOrganizationName(), methodName);
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setServerDescription(serverConfig, userId, serverName, requestBody.getLocalServerDescription(), methodName);
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setServerUserId(serverConfig, userId, serverName, requestBody.getLocalServerUserId(), methodName);
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setServerRootURL(serverConfig, userId, serverName, requestBody.getLocalServerURL(), methodName);
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setMaxPageSize(serverConfig, userId, serverName, requestBody.getMaxPageSize(), methodName);
 
-            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             this.setSecretStore(serverConfig, userId, serverName, requestBody.getSecretsStoreProvider(), requestBody.getSecretsStoreLocation(), requestBody.getSecretsStoreCollection(), methodName);
         }
@@ -628,12 +641,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the basic server properties in a single request.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return properties response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or maxPageSize parameter.
      */
 
-    public BasicServerPropertiesResponse getBasicServerProperties(String serverName)
+    public BasicServerPropertiesResponse getBasicServerProperties(String serverName,
+                                                                  String delegatingUserId)
     {
         final String methodName = "setBasicServerProperties";
 
@@ -652,7 +667,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             response.setBasicServerProperties(serverConfig);
         }
@@ -675,6 +690,7 @@ public class OMAGServerAdminServices extends TokenController
      * existing configuration.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.
      * @param configurationProperties  property name/value pairs used to configure the connection to the event bus connector
@@ -684,6 +700,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse setEventBus(String              serverName,
+                                    String              delegatingUserId,
                                     String              connectorProvider,
                                     String              topicURLRoot,
                                     Map<String, Object> configurationProperties)
@@ -708,7 +725,7 @@ public class OMAGServerAdminServices extends TokenController
             /*
              * Retrieve the existing configuration.
              */
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
@@ -772,12 +789,14 @@ public class OMAGServerAdminServices extends TokenController
      * Return the current configuration for the event bus.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @return event bus config response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
      * InvalidParameterException invalid serverName parameter.
      */
-    public EventBusConfigResponse getEventBus(String serverName)
+    public EventBusConfigResponse getEventBus(String serverName,
+                                              String delegatingUserId)
     {
         final String methodName = "getEventBus";
 
@@ -799,7 +818,7 @@ public class OMAGServerAdminServices extends TokenController
             /*
              * Retrieve the existing configuration.
              */
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             if (configStore != null)
             {
@@ -821,12 +840,14 @@ public class OMAGServerAdminServices extends TokenController
      * Delete the current configuration for the event bus.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @return void  or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse deleteEventBus(String serverName)
+    public VoidResponse deleteEventBus(String serverName,
+                                       String delegatingUserId)
     {
         final String methodName = "deleteEventBus";
 
@@ -848,7 +869,7 @@ public class OMAGServerAdminServices extends TokenController
             /*
              * Retrieve the existing configuration.
              */
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (configStore != null)
             {
@@ -890,6 +911,7 @@ public class OMAGServerAdminServices extends TokenController
      * after the local repository is configured, it has no effect.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody  String url.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -897,6 +919,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     public VoidResponse setServerRootURL(String         serverName,
+                                         String         delegatingUserId,
                                          URLRequestBody requestBody)
     {
         final String methodName = "setServerURLRoot";
@@ -913,7 +936,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (requestBody != null)
             {
@@ -983,6 +1006,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the default audit log for the server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody null request body
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -990,6 +1014,7 @@ public class OMAGServerAdminServices extends TokenController
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse setDefaultAuditLog(String          serverName,
+                                           String          delegatingUserId,
                                            NullRequestBody requestBody)
     {
         final String methodName = "setDefaultAuditLog";
@@ -1006,7 +1031,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -1060,12 +1085,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the console (stdout) audit log destination for the server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or null userId parameter.
      */
     public VoidResponse addConsoleAuditLogDestination(String       serverName,
+                                                      String       delegatingUserId,
                                                       List<String> supportedSeverities)
     {
         final String methodName = "addConsoleAuditLogDestination";
@@ -1095,7 +1122,7 @@ public class OMAGServerAdminServices extends TokenController
                 qualifier = "- " + supportedSeverities;
             }
 
-            this.addAuditLogDestination(serverName, configurationFactory.getConsoleAuditLogConnection(qualifier, supportedSeverities));
+            this.addAuditLogDestination(serverName, delegatingUserId, configurationFactory.getConsoleAuditLogConnection(qualifier, supportedSeverities));
         }
         catch (Throwable error)
         {
@@ -1112,12 +1139,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the SLF4J audit log destination for the server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or null userId parameter.
      */
     public VoidResponse addSLF4JAuditLogDestination(String       serverName,
+                                                    String       delegatingUserId,
                                                     List<String> supportedSeverities)
     {
         final String methodName = "addSLF4JAuditLogDestination";
@@ -1147,7 +1176,7 @@ public class OMAGServerAdminServices extends TokenController
                 qualifier = "- " + supportedSeverities;
             }
 
-            this.addAuditLogDestination(serverName, configurationFactory.getSLF4JAuditLogConnection(qualifier, supportedSeverities));
+            this.addAuditLogDestination(serverName, delegatingUserId, configurationFactory.getSLF4JAuditLogConnection(qualifier, supportedSeverities));
         }
         catch (Throwable error)
         {
@@ -1164,6 +1193,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the File based audit log destination for the server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param directoryName name of directory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
@@ -1171,6 +1201,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName or null userId parameter.
      */
     public VoidResponse addFileAuditLogDestination(String       serverName,
+                                                   String       delegatingUserId,
                                                    String       directoryName,
                                                    List<String> supportedSeverities)
     {
@@ -1190,7 +1221,7 @@ public class OMAGServerAdminServices extends TokenController
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(serverName, configurationFactory.getFileBasedAuditLogConnection(serverName, directoryName, supportedSeverities));
+            this.addAuditLogDestination(serverName, delegatingUserId, configurationFactory.getFileBasedAuditLogConnection(serverName, directoryName, supportedSeverities));
         }
         catch (Throwable error)
         {
@@ -1203,17 +1234,18 @@ public class OMAGServerAdminServices extends TokenController
     }
 
 
-
     /**
      * Set up the JDBC based audit log destination for the server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param storageProperties  properties used to configure access to the database
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or null userId parameter.
      */
     public VoidResponse addPostgreSQLAuditLogDestination(String              serverName,
+                                                         String              delegatingUserId,
                                                          Map<String, Object> storageProperties)
     {
         final String methodName = "addPostgreSQLAuditLogDestination";
@@ -1232,7 +1264,7 @@ public class OMAGServerAdminServices extends TokenController
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(serverName, configurationFactory.getPostgreSQLBasedAuditLogConnection(storageProperties));
+            this.addAuditLogDestination(serverName, delegatingUserId, configurationFactory.getPostgreSQLBasedAuditLogConnection(storageProperties));
         }
         catch (Throwable error)
         {
@@ -1249,6 +1281,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the File based audit log destination for the server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param topicName name of topic
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
@@ -1256,6 +1289,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName or null userId parameter.
      */
     public VoidResponse addEventTopicAuditLogDestination(String       serverName,
+                                                         String       delegatingUserId,
                                                          String       topicName,
                                                          List<String> supportedSeverities)
     {
@@ -1273,19 +1307,21 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             EventBusConfig   eventBusConfig  = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(serverName, configurationFactory.getEventTopicAuditLogConnection(serverName,
-                                                                                                                 supportedSeverities,
-                                                                                                                 eventBusConfig.getConnectorProvider(),
-                                                                                                                 eventBusConfig.getTopicURLRoot(),
-                                                                                                                 topicName,
-                                                                                                                 serverConfig.getLocalServerId(),
-                                                                                                                 eventBusConfig.getConfigurationProperties()));
+            this.addAuditLogDestination(serverName,
+                                        delegatingUserId,
+                                        configurationFactory.getEventTopicAuditLogConnection(serverName,
+                                                                                             supportedSeverities,
+                                                                                             eventBusConfig.getConnectorProvider(),
+                                                                                             eventBusConfig.getTopicURLRoot(),
+                                                                                             topicName,
+                                                                                             serverConfig.getLocalServerId(),
+                                                                                             eventBusConfig.getConfigurationProperties()));
         }
         catch (Throwable error)
         {
@@ -1302,12 +1338,14 @@ public class OMAGServerAdminServices extends TokenController
      * Add a new open metadata archive to load at startup.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param fileName name of the open metadata archive file.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or fileName parameter.
      */
     public VoidResponse addStartUpOpenMetadataArchiveFile(String serverName,
+                                                          String delegatingUserId,
                                                           String fileName)
     {
         final String methodName = "addStartUpOpenMetadataArchiveFile";
@@ -1330,7 +1368,7 @@ public class OMAGServerAdminServices extends TokenController
 
             List<Connection>              openMetadataArchiveConnections = null;
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             RepositoryServicesConfig  repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
             if (repositoryServicesConfig != null)
@@ -1345,7 +1383,7 @@ public class OMAGServerAdminServices extends TokenController
 
             openMetadataArchiveConnections.add(newOpenMetadataArchive);
 
-            this.setOpenMetadataArchives(serverName, openMetadataArchiveConnections);
+            this.setOpenMetadataArchives(serverName, delegatingUserId, openMetadataArchiveConnections);
         }
         catch (Throwable error)
         {
@@ -1363,6 +1401,7 @@ public class OMAGServerAdminServices extends TokenController
      * for demos, testing and POCs.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody null request body
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -1370,6 +1409,7 @@ public class OMAGServerAdminServices extends TokenController
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse setInMemLocalRepository(String          serverName,
+                                                String          delegatingUserId,
                                                 NullRequestBody requestBody)
     {
         final String methodName = "setInMemLocalRepository";
@@ -1386,11 +1426,12 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
             this.setLocalRepositoryConfig(serverName,
+                                          delegatingUserId,
                                           configurationFactory.getInMemoryLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                                 serverConfig.getLocalServerURL()));
         }
@@ -1409,6 +1450,7 @@ public class OMAGServerAdminServices extends TokenController
      * Set up a PostgreSQL Database Schema as the local repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param storageProperties  properties used to configure Egeria Graph DB
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -1416,6 +1458,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     public VoidResponse setPostgresLocalRepository(String              serverName,
+                                                   String              delegatingUserId,
                                                    Map<String, Object> storageProperties)
     {
         final String methodName = "setPostgresLocalRepository";
@@ -1432,11 +1475,12 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
 
             this.setLocalRepositoryConfig(serverName,
+                                          delegatingUserId,
                                           configurationFactory.getPostgresLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                                 serverConfig.getLocalServerURL(),
                                                                                                 storageProperties));
@@ -1456,12 +1500,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up a read only store as the local repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * InvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    public VoidResponse setReadOnlyLocalRepository(String serverName)
+    public VoidResponse setReadOnlyLocalRepository(String serverName,
+                                                   String delegatingUserId)
     {
         final String methodName = "setReadOnlyLocalRepository";
 
@@ -1477,12 +1523,13 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
 
             this.setLocalRepositoryConfig(serverName,
+                                          delegatingUserId,
                                           configurationFactory.getReadOnlyLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                                 serverConfig.getLocalServerURL()));
         }
@@ -1502,13 +1549,15 @@ public class OMAGServerAdminServices extends TokenController
      * can be used to remove subsequent local repository configuration.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    public VoidResponse setNoRepositoryMode(String serverName)
+    public VoidResponse setNoRepositoryMode(String serverName,
+                                            String delegatingUserId)
     {
-        return clearLocalRepositoryConfig(serverName);
+        return clearLocalRepositoryConfig(serverName, delegatingUserId);
     }
 
 
@@ -1516,12 +1565,14 @@ public class OMAGServerAdminServices extends TokenController
      * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param connection  connection to the OMRS repository connector.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      */
     public VoidResponse setPluginRepositoryConnection(String     serverName,
+                                                      String     delegatingUserId,
                                                       Connection connection)
     {
         final String methodName = "setPluginRepositoryConnection";
@@ -1539,9 +1590,9 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
-            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+            OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
             LocalRepositoryConfig localRepositoryConfig
                     = configurationFactory.getPluginRepositoryLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                     serverConfig.getLocalServerURL());
@@ -1552,7 +1603,7 @@ public class OMAGServerAdminServices extends TokenController
             localRepositoryConfig.setLocalRepositoryLocalConnection(connection);
             localRepositoryConfig.setEventMapperConnection(null);
 
-            this.setLocalRepositoryConfig(serverName, localRepositoryConfig);
+            this.setLocalRepositoryConfig(serverName, delegatingUserId, localRepositoryConfig);
         }
         catch (Throwable error)
         {
@@ -1570,6 +1621,7 @@ public class OMAGServerAdminServices extends TokenController
      * This is used when the local repository mode is set to plugin repository.
      *
      * @param serverName                local server name.
+     * @param delegatingUserId external userId making request
      * @param connectorProvider         connector provider class name to the OMRS repository connector.
      * @param additionalProperties      additional parameters to pass to the repository connector
      * @return void response or
@@ -1578,6 +1630,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the local repository mode has not been set.
      */
     public VoidResponse setPluginRepositoryConnection(String               serverName,
+                                                      String               delegatingUserId,
                                                       String               connectorProvider,
                                                       Map<String, Object>  additionalProperties)
     {
@@ -1595,11 +1648,12 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             this.setPluginRepositoryConnection(serverName,
+                                               delegatingUserId,
                                                connectorConfigurationFactory.getRepositoryConnection(connectorProvider,
                                                                                                      serverConfig.getLocalServerURL(),
                                                                                                      additionalProperties));
@@ -1615,17 +1669,18 @@ public class OMAGServerAdminServices extends TokenController
     }
 
 
-
     /**
      * Provide the connection to the local repository - used when the local repository mode is set to repository proxy.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param connection  connection to the OMRS repository connector.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      */
     public VoidResponse setRepositoryProxyConnection(String     serverName,
+                                                     String     delegatingUserId,
                                                      Connection connection)
     {
         final String methodName = "setRepositoryProxyConnection";
@@ -1643,9 +1698,9 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
-            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+            OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
             LocalRepositoryConfig localRepositoryConfig
                     = configurationFactory.getRepositoryProxyLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                    serverConfig.getLocalServerURL());
@@ -1655,7 +1710,7 @@ public class OMAGServerAdminServices extends TokenController
              */
             localRepositoryConfig.setLocalRepositoryLocalConnection(connection);
 
-            this.setLocalRepositoryConfig(serverName, localRepositoryConfig);
+            this.setLocalRepositoryConfig(serverName, delegatingUserId, localRepositoryConfig);
         }
         catch (Throwable error)
         {
@@ -1673,6 +1728,7 @@ public class OMAGServerAdminServices extends TokenController
      * This is used when the local repository mode is set to repository proxy.
      *
      * @param serverName                local server name.
+     * @param delegatingUserId external userId making request
      * @param connectorProvider         connector provider class name to the OMRS repository connector.
      * @param additionalProperties      additional parameters to pass to the repository connector
      * @return void response or
@@ -1681,6 +1737,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the local repository mode has not been set.
      */
     public VoidResponse setRepositoryProxyConnection(String               serverName,
+                                                     String               delegatingUserId,
                                                      String               connectorProvider,
                                                      Map<String, Object>  additionalProperties)
     {
@@ -1698,11 +1755,12 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             this.setRepositoryProxyConnection(serverName,
+                                              delegatingUserId,
                                               connectorConfigurationFactory.getRepositoryConnection(connectorProvider,
                                                                                                     serverConfig.getLocalServerURL(),
                                                                                                     additionalProperties));
@@ -1724,6 +1782,7 @@ public class OMAGServerAdminServices extends TokenController
      * the metadata in the repository without going through the open metadata and governance services.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @param connection connection to the OMRS repository event mapper.
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -1731,6 +1790,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the local repository mode has not been set
      */
     public VoidResponse setRepositoryProxyEventMapper(String     serverName,
+                                                      String     delegatingUserId,
                                                       Connection connection)
     {
         final String methodName = "setRepositoryProxyEventMapper";
@@ -1748,7 +1808,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -1783,7 +1843,7 @@ public class OMAGServerAdminServices extends TokenController
              */
             localRepositoryConfig.setEventMapperConnection(connection);
 
-            this.setLocalRepositoryConfig(serverName, localRepositoryConfig);
+            this.setLocalRepositoryConfig(serverName, delegatingUserId, localRepositoryConfig);
         }
         catch (Throwable error)
         {
@@ -1802,6 +1862,7 @@ public class OMAGServerAdminServices extends TokenController
      * the metadata in the repository without going through the open metadata and governance services.
      *
      * @param serverName                  local server name.
+     * @param delegatingUserId external userId making request
      * @param connectorProvider           Java class name of the connector provider for the OMRS repository event mapper.
      * @param eventSource                 topic name or URL to the native event source.
      * @param additionalProperties        additional properties for the event mapper connection
@@ -1811,6 +1872,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the event bus is not set.
      */
     public VoidResponse setRepositoryProxyEventMapper(String              serverName,
+                                                      String              delegatingUserId,
                                                       String              connectorProvider,
                                                       String              eventSource,
                                                       Map<String, Object> additionalProperties)
@@ -1832,6 +1894,7 @@ public class OMAGServerAdminServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             this.setRepositoryProxyEventMapper(serverName,
+                                               delegatingUserId,
                                                connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
                                                                                                                 additionalProperties,
                                                                                                                 eventSource));
@@ -1852,12 +1915,14 @@ public class OMAGServerAdminServices extends TokenController
      * then the invalid parameter exception is returned.
      *
      * @param serverName                  local server name.
+     * @param delegatingUserId external userId making request
      * @return guid response or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or name parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public GUIDResponse getLocalMetadataCollectionId(String serverName)
+    public GUIDResponse getLocalMetadataCollectionId(String serverName,
+                                                     String delegatingUserId)
     {
         final String methodName = "getLocalMetadataCollectionId";
 
@@ -1873,7 +1938,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -1922,6 +1987,7 @@ public class OMAGServerAdminServices extends TokenController
      * then the invalid parameter exception is returned.
      *
      * @param serverName                  local server name.
+     * @param delegatingUserId external userId making request
      * @param metadataCollectionId        new value for the metadata collection id
      * @return guid response or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
@@ -1929,6 +1995,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the event bus is not set.
      */
     public VoidResponse setLocalMetadataCollectionId(String serverName,
+                                                     String delegatingUserId,
                                                      String metadataCollectionId)
     {
         final String methodName = "setLocalMetadataCollectionId";
@@ -1947,7 +2014,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -2015,12 +2082,14 @@ public class OMAGServerAdminServices extends TokenController
      * then the invalid parameter exception is returned.
      *
      * @param serverName                  local server name.
+     * @param delegatingUserId external userId making request
      * @return guid response or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or name parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public StringResponse getLocalMetadataCollectionName(String serverName)
+    public StringResponse getLocalMetadataCollectionName(String serverName,
+                                                         String delegatingUserId)
     {
         final String methodName = "getLocalMetadataCollectionName";
 
@@ -2036,7 +2105,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -2085,14 +2154,16 @@ public class OMAGServerAdminServices extends TokenController
      * local server name.
      *
      * @param serverName                  local server name.
+     * @param delegatingUserId external userId making request
      * @param localMetadataCollectionName metadata collection name
      * @return void response or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or name parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public VoidResponse setLocalMetadataCollectionName(String               serverName,
-                                                       String               localMetadataCollectionName)
+    public VoidResponse setLocalMetadataCollectionName(String serverName,
+                                                       String delegatingUserId,
+                                                       String localMetadataCollectionName)
     {
         final String methodName = "setLocalMetadataCollectionName";
 
@@ -2109,7 +2180,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -2137,7 +2208,7 @@ public class OMAGServerAdminServices extends TokenController
              */
             localRepositoryConfig.setMetadataCollectionName(localMetadataCollectionName);
 
-            this.setLocalRepositoryConfig(serverName, localRepositoryConfig);
+            this.setLocalRepositoryConfig(serverName, delegatingUserId, localRepositoryConfig);
         }
         catch (Throwable error)
         {
@@ -2158,8 +2229,8 @@ public class OMAGServerAdminServices extends TokenController
      * They are also able to query each other's metadata directly through REST calls.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort
-     * @param cohortTopicStructure the style of cohort topic set up to use
      * @param configurationProperties additional properties for the cohort
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -2167,8 +2238,8 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the event bus is not set.
      */
     public VoidResponse addCohortRegistration(String               serverName,
+                                              String               delegatingUserId,
                                               String               cohortName,
-                                              CohortTopicStructure cohortTopicStructure,
                                               Map<String, Object>  configurationProperties)
     {
         final String methodName = "addCohortRegistration";
@@ -2186,7 +2257,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             EventBusConfig   eventBusConfig  = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
 
@@ -2197,7 +2268,6 @@ public class OMAGServerAdminServices extends TokenController
 
             CohortConfig newCohortConfig = configurationFactory.getDefaultCohortConfig(serverConfig.getLocalServerName(),
                                                                                        cohortName,
-                                                                                       cohortTopicStructure,
                                                                                        configurationProperties,
                                                                                        eventBusConfig.getConnectorProvider(),
                                                                                        eventBusConfig.getTopicURLRoot(),
@@ -2205,60 +2275,7 @@ public class OMAGServerAdminServices extends TokenController
                                                                                        eventBusConfig.getConfigurationProperties());
 
 
-            this.setCohortConfig(serverName, cohortName, newCohortConfig);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Retrieve the topic name that is used by this server to contact the other members of the
-     * open metadata repository cohort.  This call can only be made once the cohort
-     * is set up with addCohortRegistration().
-     *
-     * @param serverName  local server name.
-     * @param cohortName  name of the cohort.
-     * @return string response or
-     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * InvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
-     */
-    public StringResponse getCohortTopicName(String serverName,
-                                             String cohortName)
-    {
-        final String methodName = "getCohortTopicName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        StringResponse response = new StringResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateCohortName(cohortName, serverName, methodName);
-
-            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
-
-            if (serverConfig != null)
-            {
-                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
-
-                if (currentCohortDetails != null)
-                {
-                    response.setResultString(this.getCohortTopicName(currentCohortDetails.getCohortOMRSTopicConnection()));
-                }
-            }
+            this.setCohortConfig(serverName, delegatingUserId, cohortName, newCohortConfig);
         }
         catch (Throwable error)
         {
@@ -2276,6 +2293,7 @@ public class OMAGServerAdminServices extends TokenController
      * is set up with addCohortRegistration().
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort.
      * @return list of topics response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -2283,6 +2301,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public DedicatedTopicListResponse getDedicatedCohortTopicNames(String serverName,
+                                                                   String delegatingUserId,
                                                                    String cohortName)
     {
         final String methodName = "getDedicatedCohortTopicNames";
@@ -2300,7 +2319,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             if (serverConfig != null)
             {
@@ -2361,72 +2380,6 @@ public class OMAGServerAdminServices extends TokenController
     }
 
 
-    /**
-     * Change the topic name that is used by this server to contact the other members of the
-     * open metadata repository cohort.  Note this name needs to be configured to same
-     * in all members of a cohort.
-     *
-     * @param serverName  local server name.
-     * @param cohortName  name of the cohort.
-     * @param topicName new topic name
-     * @return void response or
-     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * InvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
-     */
-    public VoidResponse overrideCohortTopicName(String serverName,
-                                                String cohortName,
-                                                String topicName)
-    {
-        final String methodName = "overrideCohortTopicName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-            errorHandler.validateCohortName(cohortName, serverName, methodName);
-
-            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-            if (serverConfig != null)
-            {
-                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
-
-                if (currentCohortDetails != null)
-                {
-                    Connection eventTopicConnection = overrideCohortTopicName(currentCohortDetails.getCohortOMRSTopicConnection(), topicName);
-
-                    if (eventTopicConnection != null)
-                    {
-                        currentCohortDetails.setCohortOMRSTopicConnection(eventTopicConnection);
-
-                        this.setCohortConfig(serverName, cohortName, currentCohortDetails);
-                    }
-                    else
-                    {
-                        errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
-                    }
-
-                }
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
 
     /**
      * Change the topic name that is used by this server to register members in the
@@ -2434,6 +2387,7 @@ public class OMAGServerAdminServices extends TokenController
      * in all members of a cohort.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort.
      * @param topicName new topic name
      * @return void response or
@@ -2442,6 +2396,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideRegistrationCohortTopicName(String serverName,
+                                                            String delegatingUserId,
                                                             String cohortName,
                                                             String topicName)
     {
@@ -2460,7 +2415,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {
@@ -2474,7 +2429,7 @@ public class OMAGServerAdminServices extends TokenController
                     {
                         currentCohortDetails.setCohortOMRSRegistrationTopicConnection(eventTopicConnection);
 
-                        this.setCohortConfig(serverName, cohortName, currentCohortDetails);
+                        this.setCohortConfig(serverName, delegatingUserId, cohortName, currentCohortDetails);
                     }
                     else
                     {
@@ -2502,6 +2457,7 @@ public class OMAGServerAdminServices extends TokenController
      * in all members of a cohort.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort.
      * @param topicName new topic name
      * @return void response or
@@ -2510,6 +2466,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideTypesCohortTopicName(String serverName,
+                                                     String delegatingUserId,
                                                      String cohortName,
                                                      String topicName)
     {
@@ -2528,7 +2485,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {
@@ -2542,7 +2499,7 @@ public class OMAGServerAdminServices extends TokenController
                     {
                         currentCohortDetails.setCohortOMRSTypesTopicConnection(eventTopicConnection);
 
-                        this.setCohortConfig(serverName, cohortName, currentCohortDetails);
+                        this.setCohortConfig(serverName, delegatingUserId, cohortName, currentCohortDetails);
                     }
                     else
                     {
@@ -2570,6 +2527,7 @@ public class OMAGServerAdminServices extends TokenController
      * in all members of a cohort.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort.
      * @param topicName new topic name
      * @return void response or
@@ -2578,6 +2536,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideInstancesCohortTopicName(String serverName,
+                                                         String delegatingUserId,
                                                          String cohortName,
                                                          String topicName)
     {
@@ -2596,7 +2555,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {
@@ -2610,7 +2569,7 @@ public class OMAGServerAdminServices extends TokenController
                     {
                         currentCohortDetails.setCohortOMRSInstancesTopicConnection(eventTopicConnection);
 
-                        this.setCohortConfig(serverName, cohortName, currentCohortDetails);
+                        this.setCohortConfig(serverName, delegatingUserId, cohortName, currentCohortDetails);
                     }
                     else
                     {
@@ -2628,7 +2587,6 @@ public class OMAGServerAdminServices extends TokenController
 
         return response;
     }
-
 
 
     /**
@@ -2688,13 +2646,15 @@ public class OMAGServerAdminServices extends TokenController
      * to the connectors that will handle the audit log records.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param auditLogDestination connection object for audit log destination
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public VoidResponse addAuditLogDestination(String                serverName,
-                                               Connection            auditLogDestination)
+    public VoidResponse addAuditLogDestination(String     serverName,
+                                               String     delegatingUserId,
+                                               Connection auditLogDestination)
     {
         final String methodName = "addAuditLogDestination";
 
@@ -2713,7 +2673,7 @@ public class OMAGServerAdminServices extends TokenController
 
             if (auditLogDestination != null)
             {
-                OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+                OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
                 List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
                 if (configAuditTrail == null)
@@ -2773,6 +2733,7 @@ public class OMAGServerAdminServices extends TokenController
      * In this way it is possible to rename Connections.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param suppliedConnectionName name of the audit log destination to be updated
      * @param suppliedConnection connection object that defines the audit log destination
      * @return void response or
@@ -2780,6 +2741,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
     public VoidResponse updateAuditLogDestination(String     serverName,
+                                                  String     delegatingUserId,
                                                   String     suppliedConnectionName,
                                                   Connection suppliedConnection)
     {
@@ -2801,7 +2763,7 @@ public class OMAGServerAdminServices extends TokenController
 
             if (suppliedConnection != null)
             {
-                OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+                OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
                 List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
                 if (configAuditTrail == null)
@@ -2918,12 +2880,14 @@ public class OMAGServerAdminServices extends TokenController
      * Delete an audit log destination connection, that is identified with the supplied destination connection name.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param suppliedConnectionName qualified name of the audit log destination to be deleted
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
     public VoidResponse clearAuditLogDestination(String serverName,
+                                                 String delegatingUserId,
                                                  String suppliedConnectionName)
     {
         final String methodName   = "clearAuditLogDestination";
@@ -2941,7 +2905,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -3055,13 +3019,15 @@ public class OMAGServerAdminServices extends TokenController
      * to the connectors that will handle the audit log records.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param auditLogDestinations list of connection objects
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public VoidResponse setAuditLogDestinations(String                serverName,
-                                                List<Connection>      auditLogDestinations)
+    public VoidResponse setAuditLogDestinations(String           serverName,
+                                                String           delegatingUserId,
+                                                List<Connection> auditLogDestinations)
     {
         final String methodName = "setAuditLogDestinations";
 
@@ -3085,7 +3051,7 @@ public class OMAGServerAdminServices extends TokenController
                 }
             }
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -3143,11 +3109,13 @@ public class OMAGServerAdminServices extends TokenController
      * to the connectors that will handle the audit log records.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return connection list response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public ConnectionListResponse getAuditLogDestinations(String serverName)
+    public ConnectionListResponse getAuditLogDestinations(String serverName,
+                                                          String delegatingUserId)
     {
         final String methodName = "getAuditLogDestinations";
 
@@ -3163,7 +3131,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -3188,13 +3156,15 @@ public class OMAGServerAdminServices extends TokenController
      * to the connectors that will handle the audit log records.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public VoidResponse clearAuditLogDestinations(String serverName)
+    public VoidResponse clearAuditLogDestinations(String serverName,
+                                                  String delegatingUserId)
     {
-        return this.setAuditLogDestinations(serverName, null);
+        return this.setAuditLogDestinations(serverName, delegatingUserId, null);
     }
 
 
@@ -3203,13 +3173,15 @@ public class OMAGServerAdminServices extends TokenController
      * repository start up.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param openMetadataArchives list of connection objects
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public VoidResponse setOpenMetadataArchives(String                serverName,
-                                                List<Connection>      openMetadataArchives)
+    public VoidResponse setOpenMetadataArchives(String           serverName,
+                                                String           delegatingUserId,
+                                                List<Connection> openMetadataArchives)
     {
         final String methodName = "setOpenMetadataArchives";
 
@@ -3225,7 +3197,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             List<String>  configAuditTrail  = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -3283,11 +3255,13 @@ public class OMAGServerAdminServices extends TokenController
      * repository start up.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return connection list response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public ConnectionListResponse getOpenMetadataArchives(String serverName)
+    public ConnectionListResponse getOpenMetadataArchives(String serverName,
+                                                          String delegatingUserId)
     {
         final String methodName = "getOpenMetadataArchives";
 
@@ -3303,7 +3277,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -3327,13 +3301,15 @@ public class OMAGServerAdminServices extends TokenController
      * Clear the list of open metadata archives for loading at server startup.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public VoidResponse clearOpenMetadataArchives(String serverName)
+    public VoidResponse clearOpenMetadataArchives(String serverName,
+                                                  String delegatingUserId)
     {
-        return this.setOpenMetadataArchives(serverName, null);
+        return this.setOpenMetadataArchives(serverName, delegatingUserId, null);
     }
 
 
@@ -3341,12 +3317,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the configuration for the local repository.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param localRepositoryConfig  configuration properties for the local repository.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or localRepositoryConfig parameter.
      */
     public VoidResponse setLocalRepositoryConfig(String                serverName,
+                                                 String                delegatingUserId,
                                                  LocalRepositoryConfig localRepositoryConfig)
     {
         final String methodName = "setLocalRepositoryConfig";
@@ -3362,8 +3340,8 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
+            List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
@@ -3431,11 +3409,13 @@ public class OMAGServerAdminServices extends TokenController
      * Return the configuration for the local repository.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return local repository config response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName.
      */
-    public LocalRepositoryConfigResponse getLocalRepositoryConfig(String serverName)
+    public LocalRepositoryConfigResponse getLocalRepositoryConfig(String serverName,
+                                                                  String delegatingUserId)
     {
         final String methodName = "setLocalRepositoryConfig";
 
@@ -3451,7 +3431,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -3476,11 +3456,13 @@ public class OMAGServerAdminServices extends TokenController
      * can be used to remove subsequent local repository configuration.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
-    public VoidResponse clearLocalRepositoryConfig(String serverName)
+    public VoidResponse clearLocalRepositoryConfig(String serverName,
+                                                   String delegatingUserId)
     {
         final String methodName = "clearLocalRepositoryConfig";
 
@@ -3496,7 +3478,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            this.setLocalRepositoryConfig(serverName, null);
+            this.setLocalRepositoryConfig(serverName, delegatingUserId, null);
         }
         catch (Throwable error)
         {
@@ -3516,6 +3498,7 @@ public class OMAGServerAdminServices extends TokenController
      * URL is updated, and the server restarted, it will broadcast its new URL to the rest of the cohort.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody  String url.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -3523,6 +3506,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     public VoidResponse resetRemoteCohortURL(String         serverName,
+                                             String         delegatingUserId,
                                              URLRequestBody requestBody)
     {
         final String methodName = "resetRemoteCohortURL";
@@ -3539,9 +3523,8 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+            OMAGServerConfig serverConfig      = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
+            List<String>     configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
@@ -3611,6 +3594,7 @@ public class OMAGServerAdminServices extends TokenController
      * cohort.  Use setCohortMode to delete a cohort.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort
      * @param cohortConfig  configuration for the cohort
      * @return void response or
@@ -3618,6 +3602,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName, cohortName or cohortConfig parameter.
      */
     public VoidResponse setCohortConfig(String       serverName,
+                                        String       delegatingUserId,
                                         String       cohortName,
                                         CohortConfig cohortConfig)
     {
@@ -3636,7 +3621,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             List<CohortConfig>       existingCohortConfigs = null;
@@ -3738,6 +3723,7 @@ public class OMAGServerAdminServices extends TokenController
      * Return the current configuration for a cohort.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort.
      * @return cohort config response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -3745,6 +3731,7 @@ public class OMAGServerAdminServices extends TokenController
      * OMAGConfigurationErrorException the event bus is not set.
      */
     public CohortConfigResponse getCohortConfig(String serverName,
+                                                String delegatingUserId,
                                                 String cohortName)
     {
         final String methodName = "getCohortConfig";
@@ -3762,7 +3749,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             if (serverConfig != null)
             {
@@ -3788,13 +3775,15 @@ public class OMAGServerAdminServices extends TokenController
      * query each other's metadata directly through REST calls.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param cohortName  name of the cohort.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
-    public VoidResponse clearCohortConfig(String          serverName,
-                                          String          cohortName)
+    public VoidResponse clearCohortConfig(String serverName,
+                                          String delegatingUserId,
+                                          String cohortName)
     {
         final String methodName = "clearCohortRegistration";
 
@@ -3811,7 +3800,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            this.setCohortConfig(serverName, cohortName, null);
+            this.setCohortConfig(serverName, delegatingUserId, cohortName, null);
         }
         catch (Throwable error)
         {
@@ -3828,12 +3817,14 @@ public class OMAGServerAdminServices extends TokenController
      * Set up the configuration properties for an OMAG Server in a single command.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param omagServerConfig  configuration for the server
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
     public VoidResponse setOMAGServerConfig(String           serverName,
+                                            String           delegatingUserId,
                                             OMAGServerConfig omagServerConfig)
     {
         final String methodName = "setOMAGServerConfig";
@@ -3855,6 +3846,12 @@ public class OMAGServerAdminServices extends TokenController
                                                    this.getClass().getName(),
                                                    methodName,
                                                    OMAGServerConfig.class.getName());
+            }
+
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
             }
 
             List<String>  configAuditTrail = omagServerConfig.getAuditTrail();
@@ -3885,6 +3882,7 @@ public class OMAGServerAdminServices extends TokenController
      * Push the configuration for the server to another OMAG Server Platform.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param destinationPlatform  location of the platform where the config is to be deployed to
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -3892,6 +3890,7 @@ public class OMAGServerAdminServices extends TokenController
      * InvalidParameterException invalid serverName or destinationPlatform parameter.
      */
     public VoidResponse deployOMAGServerConfig(String         serverName,
+                                               String         delegatingUserId,
                                                URLRequestBody destinationPlatform)
     {
         final String methodName = "deployOMAGServerConfig";
@@ -3908,7 +3907,7 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             String  serverURLRoot = serverConfig.getLocalServerURL();
             String secretsStoreProvider = serverConfig.getSecretsStoreProvider();
@@ -3938,7 +3937,7 @@ public class OMAGServerAdminServices extends TokenController
                 }
             }
 
-            ConfigurationManagementClient client = new ConfigurationManagementClient(serverURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            ConfigurationManagementClient client = new ConfigurationManagementClient(serverURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, delegatingUserId, null);
 
             client.setOMAGServerConfig(serverConfig);
         }
@@ -3957,11 +3956,13 @@ public class OMAGServerAdminServices extends TokenController
      * Return the complete set of configuration properties in use by the server from the configuration store.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig properties or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      */
-    public OMAGServerConfigResponse getStoredConfiguration(String serverName)
+    public OMAGServerConfigResponse getStoredConfiguration(String serverName,
+                                                           String delegatingUserId)
     {
         final String methodName = "getStoredConfiguration";
 
@@ -3977,7 +3978,13 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setOMAGServerConfig(configStore.getServerConfig(userId, serverName, false, methodName));
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
+            }
+
+            response.setOMAGServerConfig(configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName));
         }
         catch (Throwable error)
         {
@@ -3994,11 +4001,13 @@ public class OMAGServerAdminServices extends TokenController
      * Return the complete set of configuration properties in use by the server that have the placeholders resolved.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig properties or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      */
-    public OMAGServerConfigResponse getResolvedConfiguration(String serverName)
+    public OMAGServerConfigResponse getResolvedConfiguration(String serverName,
+                                                             String delegatingUserId)
     {
         final String methodName = "getResolvedConfiguration";
 
@@ -4014,7 +4023,13 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setOMAGServerConfig(configStore.getServerConfigForStartUp(userId, serverName, methodName));
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
+            }
+
+            response.setOMAGServerConfig(configStore.getServerConfigForStartUp(userId, delegatingUserId, serverName, methodName));
         }
         catch (Throwable error)
         {
@@ -4030,11 +4045,12 @@ public class OMAGServerAdminServices extends TokenController
     /**
      * Return the stored configuration documents stored on the platform
      *
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfigs properties or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid parameter occurred while processing.
      */
-    public OMAGServerConfigsResponse retrieveAllServerConfigs()
+    public OMAGServerConfigsResponse retrieveAllServerConfigs(String delegatingUserId)
     {
         final String methodName = "retrieveAllServerConfigs";
 
@@ -4048,8 +4064,13 @@ public class OMAGServerAdminServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
-            response.setOMAGServerConfigs(configStore.retrieveAllServerConfigs(userId));
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
+            }
+
+            response.setOMAGServerConfigs(configStore.retrieveAllServerConfigs(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -4066,11 +4087,13 @@ public class OMAGServerAdminServices extends TokenController
      * Remove the configuration for the server.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return void or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse clearOMAGServerConfig(String serverName)
+    public VoidResponse clearOMAGServerConfig(String serverName,
+                                              String delegatingUserId)
     {
         final String methodName = "clearOMAGServerConfig";
 
@@ -4085,6 +4108,12 @@ public class OMAGServerAdminServices extends TokenController
             String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
 
             restCallLogger.setUserId(token, userId);
+
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             configStore.saveServerConfig(serverName, methodName, null);
         }

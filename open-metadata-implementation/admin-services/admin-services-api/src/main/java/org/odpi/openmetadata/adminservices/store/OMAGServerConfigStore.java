@@ -4,6 +4,8 @@ package org.odpi.openmetadata.adminservices.store;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 
+import java.util.Set;
+
 /**
  * OMAGServerConfigStore provides the interface to the configuration for an OMAG Server.  This is accessed
  * through a connector.
@@ -38,4 +40,11 @@ public interface OMAGServerConfigStore
      * Remove the server configuration.
      */
     void removeServerConfig();
+
+    /**
+     * Retrieve all the stored server configurations
+     *
+     * @return the set of server configurations present in this OMAG Server Config store
+     */
+    Set<OMAGServerConfig> retrieveAllServerConfigs();
 }

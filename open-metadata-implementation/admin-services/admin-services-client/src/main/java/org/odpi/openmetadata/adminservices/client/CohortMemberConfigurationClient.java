@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
@@ -13,6 +12,7 @@ import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -34,6 +34,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -43,10 +44,31 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                            String   secretStoreProvider,
                                            String   secretStoreLocation,
                                            String   secretStoreCollection,
+                                           String   delegatingUserId,
                                            AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
     }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public CohortMemberConfigurationClient(String                             serverPlatformRootURL,
+                                           Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                           String                             delegatingUserId,
+                                           AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
+    }
+
 
     /*
      * =============================================================
@@ -74,49 +96,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "addCohortRegistration";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}";
-
-        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-
-        Map<String, Object>  requestBody = additionalProperties;
-        if (requestBody == null)
-        {
-            requestBody = new HashMap<>();
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        cohortName);
-    }
-
-
-    /**
-     * Enable registration of server to an open metadata repository cohort using the topic pattern specified by cohortTopicStructure.
-     * A cohort is a group of open metadata
-     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
-     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
-     * information and events related to changes in their supported metadata types and instances.
-     * They are also able to query each other's metadata directly through REST calls.
-     *
-     * @param cohortName  name of the cohort
-     * @param cohortTopicStructure the style of cohort topic set up to use
-     * @param additionalProperties additional properties for the event bus connection
-     *
-     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command
-     * @throws InvalidParameterException invalid parameter
-     * @throws OMAGConfigurationErrorException unusual state in the admin server
-     */
-    public void addCohortRegistration(String               cohortName,
-                                      CohortTopicStructure cohortTopicStructure,
-                                      Map<String, Object>  additionalProperties) throws UserNotAuthorizedException,
-                                                                                        InvalidParameterException,
-                                                                                        OMAGConfigurationErrorException
-    {
-        final String methodName    = "addCohortRegistration";
-        final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-structure/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
@@ -131,37 +111,9 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                         requestBody,
                                         serverName,
                                         cohortName,
-                                        cohortTopicStructure);
+                                        delegatingUserId);
     }
 
-
-    /**
-     * Retrieve the current topic name for the cohort.  This call can only be made once the cohort
-     * is set up with addCohortRegistration().
-     *
-     * @param cohortName  name of the cohort.
-     * @return string topic name
-     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws InvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public String getCohortTopicName(String cohortName) throws UserNotAuthorizedException,
-                                                               InvalidParameterException,
-                                                               OMAGConfigurationErrorException
-    {
-        final String methodName          = "getCohortTopicName";
-        final String parameterName       = "cohortName";
-        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name";
-
-        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-
-        StringResponse response = restClient.callStringGetRESTCall(methodName,
-                                                                   serverPlatformRootURL + urlTemplate,
-                                                                   serverName,
-                                                                   cohortName);
-
-        return response.getResultString();
-    }
 
 
     /**
@@ -174,53 +126,23 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public DedicatedTopicList getDedicatedCohortTopicNames(String cohortName) throws UserNotAuthorizedException,
-                                                                                     InvalidParameterException,
-                                                                                     OMAGConfigurationErrorException
+    public DedicatedTopicList getCohortTopicNames(String cohortName) throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
+                                                                            OMAGConfigurationErrorException
     {
-        final String methodName    = "getDedicatedCohortTopicNames";
+        final String methodName    = "getCohortTopicNames";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/dedicated-topic-names";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-names?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         DedicatedTopicListResponse response = restClient.callDedicatedTopicListGetRESTCall(methodName,
                                                                                            serverPlatformRootURL + urlTemplate,
                                                                                            serverName,
-                                                                                           cohortName);
+                                                                                           cohortName,
+                                                                                           delegatingUserId);
 
         return response.getDedicatedTopicList();
-    }
-
-
-    /**
-     * Override the current topic name for the cohort.  This call can only be made once the cohort
-     * is set up with addCohortRegistration().
-     *
-     * @param cohortName  name of the cohort.
-     * @param topicName new name for the topic.
-     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws InvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void overrideCohortTopicName(String cohortName,
-                                        String topicName) throws UserNotAuthorizedException,
-                                                                 InvalidParameterException,
-                                                                 OMAGConfigurationErrorException
-    {
-        final String methodName          = "overrideCohortTopicName";
-        final String parameterName       = "cohortName";
-        final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override";
-
-        invalidParameterHandler.validateName(cohortName, parameterName, methodName);
-        invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        topicName,
-                                        serverName,
-                                        cohortName);
     }
 
 
@@ -242,7 +164,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         final String methodName          = "overrideRegistrationCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/registration";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/registration?delegatingUserId={2}";
 
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
@@ -252,7 +174,8 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
                                         serverName,
-                                        cohortName);
+                                        cohortName,
+                                        delegatingUserId);
     }
 
 
@@ -274,7 +197,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         final String methodName          = "overrideTypesCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/types";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/types?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
         invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
@@ -283,7 +206,8 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
                                         serverName,
-                                        cohortName);
+                                        cohortName,
+                                        delegatingUserId);
     }
 
 
@@ -306,7 +230,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         final String methodName          = "overrideInstancesCohortTopicName";
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
-        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/instances";
+        final String urlTemplate         = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/topic-name-override/instances?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
         invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
@@ -315,7 +239,8 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                         serverPlatformRootURL + urlTemplate,
                                         topicName,
                                         serverName,
-                                        cohortName);
+                                        cohortName,
+                                        delegatingUserId);
     }
 
 
@@ -341,7 +266,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "setCohortConfig";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}/configuration?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
@@ -349,7 +274,8 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                         serverPlatformRootURL + urlTemplate,
                                         cohortConfig,
                                         serverName,
-                                        cohortName);
+                                        cohortName,
+                                        delegatingUserId);
     }
 
 
@@ -367,14 +293,15 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "clearCohortRegistration";
         final String parameterName = "cohortName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/cohorts/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(cohortName, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
                                           serverName,
-                                          cohortName);
+                                          cohortName,
+                                          delegatingUserId);
     }
 
 
@@ -398,14 +325,15 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "addStartUpOpenMetadataArchiveFile";
         final String parameterName = "fileName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/open-metadata-archives/file";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/open-metadata-archives/file?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(fileName, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         fileName,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -423,14 +351,15 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "addStartUpOpenMetadataArchiveFile";
         final String parameterName = "connections";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/open-metadata-archives";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/open-metadata-archives?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(connections, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connections,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -446,11 +375,12 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "clearOpenMetadataArchives";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/open-metadata-archives";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/open-metadata-archives?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -474,14 +404,15 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "setEventMapperConnection";
         final String parameterName = "localRepositoryConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/configuration?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(localRepositoryConfig, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         localRepositoryConfig,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -499,11 +430,12 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                               OMAGConfigurationErrorException
     {
         final String methodName  = "clearLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -523,7 +455,7 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName    = "resetRemoteCohortURL";
         final String parameterName = "serverURLRoot";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/configuration/remote-repository-connector-url";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/configuration/remote-repository-connector-url?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverURLRoot, parameterName, methodName);
 
@@ -533,7 +465,8 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -541,7 +474,6 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      * =======================================================================
      * Working with the metadata collections managed by cohort members
      */
-
 
 
     /**
@@ -558,14 +490,14 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "getLocalMetadataCollectionName";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-name";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-name?delegatingUserId={1}";
 
         StringResponse restResult = restClient.callStringGetRESTCall(methodName,
                                                                      serverPlatformRootURL + urlTemplate,
-                                                                     serverName);
+                                                                     serverName,
+                                                                     delegatingUserId);
         return restResult.getResultString();
     }
-
 
 
     /**
@@ -582,13 +514,14 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "setLocalMetadataCollectionName";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-name/{1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-name/{1}?delegatingUserId={2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         nullRequestBody,
                                         serverName,
-                                        name);
+                                        name,
+                                        delegatingUserId);
     }
 
 
@@ -606,11 +539,12 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                                         OMAGConfigurationErrorException
     {
         final String methodName  = "getLocalMetadataCollectionId";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-id";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-id?delegatingUserId={1}";
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
                                                                  serverPlatformRootURL + urlTemplate,
-                                                                 serverName);
+                                                                 serverName,
+                                                                 delegatingUserId);
         return restResult.getGUID();
     }
 
@@ -630,13 +564,14 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
     {
         final String methodName  = "setLocalMetadataCollectionId";
         final String parameterName = "metadataCollectionId";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-id";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/metadata-collection-id?delegatingUserId={1}";
 
         invalidParameterHandler.validateGUID(metadataCollectionId, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         metadataCollectionId,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 }

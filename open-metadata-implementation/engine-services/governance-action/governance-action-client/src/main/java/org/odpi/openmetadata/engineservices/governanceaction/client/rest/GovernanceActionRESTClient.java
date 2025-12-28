@@ -5,7 +5,10 @@ package org.odpi.openmetadata.engineservices.governanceaction.client.rest;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+
+import java.util.Map;
 
 /**
  * GovernanceActionRESTClient is responsible for issuing the REST API calls
@@ -30,5 +33,24 @@ public class GovernanceActionRESTClient extends FFDCRESTClient
                                       AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param auditLog destination for log messages
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public GovernanceActionRESTClient(String                             serverName,
+                                      String                             serverPlatformURLRoot,
+                                      Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                      AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, auditLog);
     }
 }

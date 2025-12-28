@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
@@ -31,6 +32,7 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -40,9 +42,29 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                          String   secretStoreProvider,
                                          String   secretStoreLocation,
                                          String   secretStoreCollection,
+                                         String   delegatingUserId,
                                          AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public ViewServerConfigurationClient(String                             serverPlatformRootURL,
+                                         Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                         String                             delegatingUserId,
+                                         AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
     }
 
 
@@ -64,10 +86,11 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "getRegisteredViewServices";
-        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/view-services";
+        final String urlTemplate = "/open-metadata/platform-services/server-platform/registered-services/view-services?delegatingUserId={0}";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
-                                                                                                     serverPlatformRootURL + urlTemplate);
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     delegatingUserId);
         return restResult.getServices();
     }
 
@@ -91,11 +114,12 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "getConfiguredViewServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services?delegatingUserId={1}";
 
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
                                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                                     serverName);
+                                                                                                     serverName,
+                                                                                                     delegatingUserId);
         return restResult.getServices();
     }
 
@@ -113,14 +137,14 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                                                          OMAGConfigurationErrorException
     {
         final String methodName  = "getViewServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services/configuration?delegatingUserId={1}";
 
         ViewServicesResponse restResult = restClient.callViewServicesGetRESTCall(methodName, 
                                                                                  serverPlatformRootURL + urlTemplate,
-                                                                                 serverName);
+                                                                                 serverName,
+                                                                                 delegatingUserId);
         return restResult.getServices();
     }
-
 
 
     /**
@@ -136,12 +160,13 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "setViewServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services/configuration?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         viewServices,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -167,9 +192,9 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     {
         final String methodName    = "configureViewService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services/{1}?delegatingUserId={2}";
 
-        invalidParameterHandler.validateName(serviceURLMarker, serviceURLMarker, methodName);
+        invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         ViewServiceRequestBody requestBody = new ViewServiceRequestBody(viewServiceConfig);
 
@@ -177,7 +202,8 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
-                                        serviceURLMarker);
+                                        serviceURLMarker,
+                                        delegatingUserId);
     }
 
 
@@ -196,16 +222,16 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     {
         final String methodName    = "disableViewService";
         final String parameterName = "serviceURLMarker";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        serverName,
-                                        serviceURLMarker);
+                                          serverPlatformRootURL + urlTemplate,
+                                          serverName,
+                                          serviceURLMarker,
+                                          delegatingUserId);
     }
-
 
 
     /**
@@ -225,7 +251,7 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                                                                           OMAGConfigurationErrorException
     {
         final String methodName    = "configureAllViewService";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/view-services?delegatingUserId={1}";
 
         ViewServiceRequestBody requestBody = new ViewServiceRequestBody(metadataServerDetails);
 
@@ -234,7 +260,8 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -250,10 +277,11 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                               OMAGConfigurationErrorException
     {
         final String methodName  = "clearAllViewServices";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/view-services?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 }

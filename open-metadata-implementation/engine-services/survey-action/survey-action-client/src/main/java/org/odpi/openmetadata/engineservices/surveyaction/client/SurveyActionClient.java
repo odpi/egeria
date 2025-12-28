@@ -3,52 +3,88 @@
 package org.odpi.openmetadata.engineservices.surveyaction.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.engineservices.surveyaction.api.SurveyActionAPI;
 import org.odpi.openmetadata.engineservices.surveyaction.client.rest.SurveyActionRESTClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+
+import java.util.Map;
 
 /**
  * SurveyActionClient is a client-side library for calling a specific survey action engine with an engine host server.
  */
 public class SurveyActionClient implements SurveyActionAPI
 {
-    private final String                  serverName;               /* Initialized in constructor */
-    private final String                  serverPlatformRootURL;    /* Initialized in constructor */
-    private final String                  surveyActionEngineName;   /* Initialized in constructor */
+    private final String                 serverName;               /* Initialized in constructor */
+    private final String                 serverPlatformRootURL;    /* Initialized in constructor */
+    private final String                 delegatingUserId;           /* Initialized in the constructor */
     private final SurveyActionRESTClient restClient;                /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+
+    /**
+     * Create a client-side object for calling a governance action engine.
+     *
+     * @param serverPlatformRootURL the root url of the platform where the governance action engine is running.
+     * @param serverName the name of the engine host server where the governance action engine is running
+     * @param localServerSecretsStoreProvider class name of the secrets store
+     * @param localServerSecretsStoreLocation location (networkAddress) of the secrets store
+     * @param localServerSecretsStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     */
+    public SurveyActionClient(String   serverPlatformRootURL,
+                              String   serverName,
+                              String   localServerSecretsStoreProvider,
+                              String   localServerSecretsStoreLocation,
+                              String   localServerSecretsStoreCollection,
+                              String   delegatingUserId,
+                              AuditLog auditLog) throws InvalidParameterException
+    {
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverName            = serverName;
+        this.delegatingUserId      = delegatingUserId;
+
+        this.restClient = new SurveyActionRESTClient(serverName,
+                                                     serverPlatformRootURL,
+                                                     localServerSecretsStoreProvider,
+                                                     localServerSecretsStoreLocation,
+                                                     localServerSecretsStoreCollection,
+                                                     auditLog);
+    }
 
 
     /**
-     * Create a client-side object for calling a survey action engine.
+     * Create a new client with bearer token from supplied secrets store.
      *
-     * @param serverPlatformRootURL the root url of the platform where the survey action engine is running.
-     * @param serverName the name of the engine host server where the survey action engine is running
-     * @param secretsStoreProvider secrets store connector for bearer token
-     * @param secretsStoreLocation secrets store location for bearer token
-     * @param secretsStoreCollection secrets store collection for bearer token
-     * @param surveyActionEngineName the unique name of the survey action engine.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @param serverPlatformRootURL the root url of the platform where the governance action engine is running.
+     * @param serverName the name of the engine host server where the governance action engine is running
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
-    public SurveyActionClient(String serverPlatformRootURL,
-                              String serverName,
-                              String secretsStoreProvider,
-                              String secretsStoreLocation,
-                              String secretsStoreCollection,
-                              String surveyActionEngineName) throws InvalidParameterException
+    public SurveyActionClient(String                             serverPlatformRootURL,
+                              String                             serverName,
+                              Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                              String                             delegatingUserId,
+                              AuditLog                           auditLog) throws InvalidParameterException
     {
-        this.serverPlatformRootURL  = serverPlatformRootURL;
-        this.serverName             = serverName;
-        this.surveyActionEngineName = surveyActionEngineName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverName            = serverName;
+        this.delegatingUserId      = delegatingUserId;
 
-        this.restClient = new SurveyActionRESTClient(serverName, serverPlatformRootURL, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+        this.restClient = new SurveyActionRESTClient(serverName,
+                                                     serverPlatformRootURL,
+                                                     secretsStoreConnectorMap,
+                                                     auditLog);
     }
 
 
@@ -70,14 +106,15 @@ public class SurveyActionClient implements SurveyActionAPI
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/survey-action/validate-connector";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/survey-action/validate-connector/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
         ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
                                                                                           serverPlatformRootURL + urlTemplate,
                                                                                           serverName,
-                                                                                          connectorProviderClassName);
+                                                                                          connectorProviderClassName,
+                                                                                          delegatingUserId);
 
         return restResult.getConnectorReport();
     }

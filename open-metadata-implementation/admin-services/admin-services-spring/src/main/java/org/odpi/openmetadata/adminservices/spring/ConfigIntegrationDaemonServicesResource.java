@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -47,6 +48,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Return the integration groups configuration for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return response containing the integration groups configuration
      */
     @GetMapping("/integration-groups/configuration")
@@ -57,9 +59,10 @@ public class ConfigIntegrationDaemonServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-group/"))
 
-    public IntegrationGroupsResponse getIntegrationGroupsConfiguration(@PathVariable String serverName)
+    public IntegrationGroupsResponse getIntegrationGroupsConfiguration(@PathVariable String serverName,
+                                                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getIntegrationGroupsConfiguration(serverName);
+        return adminAPI.getIntegrationGroupsConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -67,6 +70,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Add configuration for a single integration group to the server's config document.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param groupConfig  all values to configure an integration group
      *
      * @return void response or
@@ -83,9 +87,10 @@ public class ConfigIntegrationDaemonServicesResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public VoidResponse configureIntegrationGroup(@PathVariable String                 serverName,
+                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                   @RequestBody IntegrationGroupConfig groupConfig)
     {
-        return adminAPI.configureIntegrationGroup(serverName, groupConfig);
+        return adminAPI.configureIntegrationGroup(serverName, delegatingUserId, groupConfig);
     }
 
 
@@ -93,6 +98,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Set up the configuration for all the open metadata integration groups.  This overrides the current values.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param integrationGroupsConfig  list of configuration properties for each integration group.
      * @return void response or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
@@ -107,9 +113,10 @@ public class ConfigIntegrationDaemonServicesResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public VoidResponse setIntegrationGroupsConfig(@PathVariable String                       serverName,
+                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                    @RequestBody  List<IntegrationGroupConfig> integrationGroupsConfig)
     {
-        return adminAPI.setIntegrationGroupsConfig(serverName, integrationGroupsConfig);
+        return adminAPI.setIntegrationGroupsConfig(serverName, delegatingUserId, integrationGroupsConfig);
     }
 
 
@@ -117,6 +124,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Disable the integration groups.  This removes all configuration for the integration groups from the integration daemon.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter or
@@ -130,9 +138,10 @@ public class ConfigIntegrationDaemonServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-group/"))
 
-    public VoidResponse clearAllIntegrationGroups(@PathVariable String serverName)
+    public VoidResponse clearAllIntegrationGroups(@PathVariable String serverName,
+                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearAllIntegrationGroups(serverName);
+        return adminAPI.clearAllIntegrationGroups(serverName, delegatingUserId);
     }
 
 
@@ -140,6 +149,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Remove an integration group.  This removes all configuration for the integration group.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param groupQualifiedName integration group name used in URL
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -154,9 +164,10 @@ public class ConfigIntegrationDaemonServicesResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public VoidResponse clearIntegrationGroup(@PathVariable String serverName,
-                                              @PathVariable String groupQualifiedName)
+                                              @PathVariable String groupQualifiedName,
+                                              @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearIntegrationGroup(serverName, groupQualifiedName);
+        return adminAPI.clearIntegrationGroup(serverName, delegatingUserId, groupQualifiedName);
     }
 
 
@@ -164,6 +175,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Return the configuration of the specialist services for an Integration Daemon OMAG Server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return response containing the integration daemon services configuration
      */
     @GetMapping("/integration-daemon-services")
@@ -174,9 +186,10 @@ public class ConfigIntegrationDaemonServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
-    public IntegrationDaemonServicesResponse getIntegrationDaemonServicesConfiguration(@PathVariable String serverName)
+    public IntegrationDaemonServicesResponse getIntegrationDaemonServicesConfiguration(@PathVariable String serverName,
+                                                                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getIntegrationDaemonServicesConfiguration(serverName);
+        return adminAPI.getIntegrationDaemonServicesConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -184,6 +197,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Set up the configuration of the specialist services for an Integration Daemon OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param servicesConfig full configuration for the integration daemon server.
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -199,9 +213,10 @@ public class ConfigIntegrationDaemonServicesResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public VoidResponse setIntegrationDaemonServicesConfig(@PathVariable String                         serverName,
+                                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                            @RequestBody IntegrationDaemonServicesConfig servicesConfig)
     {
-        return adminAPI.setIntegrationDaemonServicesConfig(serverName, servicesConfig);
+        return adminAPI.setIntegrationDaemonServicesConfig(serverName, delegatingUserId, servicesConfig);
     }
 
 
@@ -209,6 +224,7 @@ public class ConfigIntegrationDaemonServicesResource
      * Remove the configuration of the specialist services for an Integration Daemon OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
@@ -222,8 +238,9 @@ public class ConfigIntegrationDaemonServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
-    public VoidResponse clearIntegrationDaemonServicesConfig(@PathVariable String serverName)
+    public VoidResponse clearIntegrationDaemonServicesConfig(@PathVariable String serverName,
+                                                             @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearIntegrationDaemonServicesConfig(serverName);
+        return adminAPI.clearIntegrationDaemonServicesConfig(serverName, delegatingUserId);
     }
 }

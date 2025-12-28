@@ -32,6 +32,7 @@ public class EngineHostRESTServices extends TokenController
      * is in use.
      *
      * @param serverName name of the governance server.
+     * @param delegatingUserId external userId making request
      * @param governanceEngineName unique name of the governance engine.
      *
      * @return void or
@@ -40,6 +41,7 @@ public class EngineHostRESTServices extends TokenController
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     public  VoidResponse refreshConfig(String serverName,
+                                       String delegatingUserId,
                                        String governanceEngineName)
     {
         final String        methodName = "refreshConfig";
@@ -55,7 +57,7 @@ public class EngineHostRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             instanceHandler.refreshConfig(userId, serverName, governanceEngineName, methodName);
         }
@@ -77,13 +79,15 @@ public class EngineHostRESTServices extends TokenController
      * is in use.
      *
      * @param serverName name of the governance server.
+     * @param delegatingUserId external userId making request
      *
      * @return void or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
-    public  VoidResponse refreshConfig(String serverName)
+    public  VoidResponse refreshConfig(String serverName,
+                                       String delegatingUserId)
     {
         final String        methodName = "refreshConfig";
 
@@ -98,7 +102,7 @@ public class EngineHostRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             instanceHandler.refreshConfig(userId, serverName, null, methodName);
         }
@@ -118,6 +122,7 @@ public class EngineHostRESTServices extends TokenController
      * Return a summary of the requested engine's status.
      *
      * @param serverName name of the server tied to the request
+     * @param delegatingUserId external userId making request
      * @param governanceEngineName qualifiedName of the requested governance engine
      *
      * @return list of governance engine summaries or
@@ -126,6 +131,7 @@ public class EngineHostRESTServices extends TokenController
      *  PropertyServerException the service name is not known - indicating a logic error
      */
     public GovernanceEngineSummaryResponse getGovernanceEngineSummary(String serverName,
+                                                                      String delegatingUserId,
                                                                       String governanceEngineName)
     {
         final String methodName = "getGovernanceEngineSummary";
@@ -141,7 +147,7 @@ public class EngineHostRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             response.setGovernanceEngineSummary(instanceHandler.getGovernanceEngineSummary(userId, serverName, governanceEngineName, methodName));
         }
@@ -160,11 +166,13 @@ public class EngineHostRESTServices extends TokenController
      * Return a summary of each of the governance engines' status for all running engine services.
      *
      * @param serverName engine host server name
+     * @param delegatingUserId external userId making request
      * @return list of statuses - on for each assigned governance engines or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
-    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(String   serverName)
+    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(String serverName,
+                                                                          String delegatingUserId)
     {
         final String methodName = "getGovernanceEngineSummaries";
 
@@ -179,7 +187,7 @@ public class EngineHostRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             response.setGovernanceEngineSummaries(instanceHandler.getGovernanceEngineSummaries(userId, serverName, methodName));
         }

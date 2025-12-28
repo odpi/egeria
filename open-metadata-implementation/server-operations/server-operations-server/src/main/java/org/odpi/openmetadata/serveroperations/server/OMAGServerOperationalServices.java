@@ -69,14 +69,15 @@ public class OMAGServerOperationalServices extends TokenController
      * start and returns the error.  Otherwise, it continues through the list, returning the successful
      * start-up messages.
      *
+     * @param userId  user that is issuing the request
      * @param serverNames  list of server names
      * @return success message or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    public SuccessMessageResponse activateServerListWithStoredConfig(String       userId,
-                                                                     List<String> serverNames)
+    public SuccessMessageResponse activateAutoStartServerListWithStoredConfig(String       userId,
+                                                                              List<String> serverNames)
     {
         String                 startUpMessage = null;
         SuccessMessageResponse response       = new SuccessMessageResponse();
@@ -89,7 +90,7 @@ public class OMAGServerOperationalServices extends TokenController
             {
                 if (serverName != null)
                 {
-                    response = activateWithStoredConfig(userId, serverName.trim());
+                    response = activateWithStoredConfig(userId, null, serverName.trim());
 
                     if (response.getRelatedHTTPCode() == 200)
                     {
@@ -129,6 +130,7 @@ public class OMAGServerOperationalServices extends TokenController
      * Activate the open metadata and governance services using the stored configuration information.
      *
      * @param userId  user that is issuing the request
+     * @param delegatingUserId external userId making request
      * @param serverName  local server name
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -136,6 +138,7 @@ public class OMAGServerOperationalServices extends TokenController
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithStoredConfig(String userId,
+                                                           String delegatingUserId,
                                                            String serverName)
     {
         final String methodName = "activateWithStoredConfig";
@@ -147,7 +150,7 @@ public class OMAGServerOperationalServices extends TokenController
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfigForStartUp(userId, serverName, methodName));
+            response = activateWithSuppliedConfig(userId, delegatingUserId, serverName, configStore.getServerConfigForStartUp(userId, delegatingUserId, serverName, methodName));
         }
         catch (Throwable error)
         {
@@ -162,12 +165,14 @@ public class OMAGServerOperationalServices extends TokenController
      * Activate the open metadata and governance services using the stored configuration information.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    public SuccessMessageResponse activateWithStoredConfig(String serverName)
+    public SuccessMessageResponse activateWithStoredConfig(String serverName,
+                                                           String delegatingUserId)
     {
         final String methodName = "activateWithStoredConfig";
 
@@ -180,7 +185,7 @@ public class OMAGServerOperationalServices extends TokenController
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response = activateWithSuppliedConfig(serverName, configStore.getServerConfigForStartUp(userId, serverName, methodName));
+            response = activateWithSuppliedConfig(serverName, delegatingUserId, configStore.getServerConfigForStartUp(userId, delegatingUserId, serverName, methodName));
         }
         catch (Throwable error)
         {
@@ -284,6 +289,7 @@ public class OMAGServerOperationalServices extends TokenController
      * the whole start up process is halted and the exception is returned to the caller.
      *
      * @param configuration  properties used to initialize the services
+     * @param delegatingUserId external userId making request
      * @param serverName  local server name
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -291,9 +297,10 @@ public class OMAGServerOperationalServices extends TokenController
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithSuppliedConfig(String           serverName,
+                                                             String           delegatingUserId,
                                                              OMAGServerConfig configuration)
     {
-        final String methodName        = "activateWithSuppliedConfig";
+        final String methodName = "activateWithSuppliedConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -310,7 +317,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            return activateWithSuppliedConfig(userId, serverName, configuration);
+            return activateWithSuppliedConfig(userId, delegatingUserId, serverName, configuration);
         }
         catch (Throwable error)
         {
@@ -330,6 +337,7 @@ public class OMAGServerOperationalServices extends TokenController
      * the whole start up process is halted and the exception is returned to the caller.
      *
      * @param userId  user that is issuing the request
+     * @param delegatingUserId external userId making request
      * @param configuration  properties used to initialize the services
      * @param serverName  local server name
      * @return success message response or
@@ -338,6 +346,7 @@ public class OMAGServerOperationalServices extends TokenController
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithSuppliedConfig(String           userId,
+                                                             String           delegatingUserId,
                                                              String           serverName,
                                                              OMAGServerConfig configuration)
     {
@@ -359,6 +368,15 @@ public class OMAGServerOperationalServices extends TokenController
             errorHandler.validateUserId(userId, serverName, methodName);
 
             /*
+             * Check that the user is allowed to operate on this platform.
+             */
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
+
+            /*
              * Validate the content of the configuration document.  This will throw an exception if the
              * configuration document is null or the combination of requested services does not make a useful server.
              */
@@ -372,9 +390,9 @@ public class OMAGServerOperationalServices extends TokenController
             /*
              * Validate that the server is not running already.  If it is running it should be shutdown.
              */
-            if (instanceHandler.isServerActive(userId, serverName))
+            if (instanceHandler.isServerActive(userId, delegatingUserId, serverName))
             {
-                this.shutdownServer(serverName);
+                this.shutdownServer(serverName, delegatingUserId);
             }
 
             /*
@@ -1376,6 +1394,7 @@ public class OMAGServerOperationalServices extends TokenController
 
     /**
      * Shutdown any running services for a specific server instance.
+     * Note that authorization checks have already occurred.
      *
      * @param userId calling user
      * @param serverName name of this server
@@ -1543,8 +1562,10 @@ public class OMAGServerOperationalServices extends TokenController
      * Temporarily deactivate the open metadata and governance servers in th supplied list.
      *
      * @param serverNames list of server names
+     * @param delegatingUserId external userId making request
      */
-    public void deactivateTemporarilyServerList(List<String>  serverNames)
+    public void deactivateTemporarilyServerList(List<String>  serverNames,
+                                                String        delegatingUserId)
     {
         if (serverNames != null)
         {
@@ -1552,7 +1573,7 @@ public class OMAGServerOperationalServices extends TokenController
             {
                 if (serverName != null)
                 {
-                    shutdownServer(serverName);
+                    shutdownServer(serverName, delegatingUserId);
                 }
             }
         }
@@ -1563,11 +1584,13 @@ public class OMAGServerOperationalServices extends TokenController
      * Temporarily deactivate any open metadata and governance services for the requested server.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownServer(String  serverName)
+    public VoidResponse shutdownServer(String serverName,
+                                       String delegatingUserId)
     {
         final String methodName = "shutdownServer";
 
@@ -1583,10 +1606,16 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
+
             deactivateRunningServiceInstances(userId,
                                               serverName,
                                               methodName,
-                                              instanceHandler.getServerServiceInstance(userId, serverName, methodName),
+                                              instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName),
                                               false);
         }
         catch (Throwable error)
@@ -1604,11 +1633,13 @@ public class OMAGServerOperationalServices extends TokenController
      * Terminate any running open metadata and governance services, remove the server from any open metadata cohorts.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownAndUnregisterServer(String  serverName)
+    public VoidResponse shutdownAndUnregisterServer(String serverName,
+                                                    String delegatingUserId)
     {
         final String methodName = "shutdownAndUnregisterServer";
 
@@ -1624,10 +1655,16 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
+
             deactivateRunningServiceInstances(userId,
                                               serverName,
                                               methodName,
-                                              instanceHandler.getServerServiceInstance(userId, serverName, methodName),
+                                              instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName),
                                               true);
         }
         catch (Throwable error)
@@ -1653,11 +1690,13 @@ public class OMAGServerOperationalServices extends TokenController
      * Return the complete set of configuration properties in use by the server.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig properties or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter or the server is not running.
      */
-    public OMAGServerConfigResponse getActiveConfiguration(String serverName)
+    public OMAGServerConfigResponse getActiveConfiguration(String serverName,
+                                                           String delegatingUserId)
     {
         final String methodName = "getActiveConfiguration";
 
@@ -1671,7 +1710,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName);
 
             response.setOMAGServerConfig(instance.getOperationalConfiguration());
         }
@@ -1690,11 +1729,13 @@ public class OMAGServerOperationalServices extends TokenController
      * Return the status of the server along with it services within.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig properties or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter or the server is not running.
      */
-    public OMAGServerStatusResponse getActiveServerStatus(String serverName)
+    public OMAGServerStatusResponse getActiveServerStatus(String serverName,
+                                                          String delegatingUserId)
     {
         final String methodName = "getActiveServerStatus";
 
@@ -1708,7 +1749,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName);
 
             response.setServerStatus(instance.getServerStatus());
         }
@@ -1726,9 +1767,11 @@ public class OMAGServerOperationalServices extends TokenController
      * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
      *
      * @param serverName name of the server of interest
+     * @param delegatingUserId external userId making request
      * @return List of service names
      */
-    public ServerServicesListResponse getActiveServices(String    serverName)
+    public ServerServicesListResponse getActiveServices(String serverName,
+                                                        String delegatingUserId)
     {
         final String   methodName = "getActiveServiceListForServer";
 
@@ -1742,7 +1785,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName);
 
             response.setServerName(serverName);
             response.setServerServicesList(instance.getActiveServiceListForServer());
@@ -1762,12 +1805,14 @@ public class OMAGServerOperationalServices extends TokenController
      * Add a new open metadata archive to running repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param fileName name of the open metadata archive file.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or fileName parameter.
      */
     public VoidResponse addOpenMetadataArchiveFile(String serverName,
+                                                   String delegatingUserId,
                                                    String fileName)
     {
         final String methodName = "addOpenMetadataArchiveFile";
@@ -1785,10 +1830,12 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+
+
             ConnectorConfigurationFactory configurationFactory   = new ConnectorConfigurationFactory();
             Connection newOpenMetadataArchive = configurationFactory.getOpenMetadataArchiveFileConnection(fileName);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
             repositoryServicesInstance.addOpenMetadataArchive(serverName, newOpenMetadataArchive, fileName);
@@ -1807,12 +1854,14 @@ public class OMAGServerOperationalServices extends TokenController
      * Add a new open metadata archive to running repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param connection connection to access the open metadata archive file.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or connection parameter.
      */
     public VoidResponse addOpenMetadataArchive(String     serverName,
+                                               String     delegatingUserId,
                                                Connection connection)
     {
         final String methodName = "addOpenMetadataArchive";
@@ -1830,7 +1879,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
             repositoryServicesInstance.addOpenMetadataArchive(serverName, connection, methodName);
@@ -1850,12 +1899,14 @@ public class OMAGServerOperationalServices extends TokenController
      * Add a new open metadata archive to running repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param openMetadataArchive contents of the open metadata archive file.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.
      */
     public VoidResponse addOpenMetadataArchive(String              serverName,
+                                               String              delegatingUserId,
                                                OpenMetadataArchive openMetadataArchive)
     {
         final String methodName = "addOpenMetadataArchive";
@@ -1873,7 +1924,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, delegatingUserId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
             OpenMetadataArchiveWrapper      archiveWrapper = new OpenMetadataArchiveWrapper();
 

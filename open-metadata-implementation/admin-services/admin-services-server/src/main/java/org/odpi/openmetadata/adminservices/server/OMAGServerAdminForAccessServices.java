@@ -56,10 +56,12 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Return the list of access services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      *
      * @return list of access service descriptions
      */
-    public RegisteredOMAGServicesResponse getConfiguredAccessServices(String serverName)
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(String serverName,
+                                                                      String delegatingUserId)
     {
         final String methodName = "getConfiguredAccessServices";
 
@@ -78,7 +80,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of Access Services configured in this server.
@@ -128,10 +130,12 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Return the list of access services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      *
      * @return list of access service configurations
      */
-    public AccessServicesResponse getAccessServicesConfiguration(String serverName)
+    public AccessServicesResponse getAccessServicesConfiguration(String serverName,
+                                                                 String delegatingUserId)
     {
         final String methodName = "getAccessServicesConfiguration";
 
@@ -150,7 +154,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of Access Services configured in this server.
@@ -174,6 +178,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * clearOpenMetadataOutTopic.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker access service name used in URL
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      *
@@ -183,6 +188,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureAccessService(String              serverName,
+                                               String              delegatingUserId,
                                                String              serviceURLMarker,
                                                Map<String, Object> accessServiceOptions)
     {
@@ -203,7 +209,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             EventBusConfig            eventBusConfig          = serverConfig.getEventBusConfig();
             List<AccessServiceConfig> accessServiceConfigList = serverConfig.getAccessServicesConfig();
@@ -234,8 +240,8 @@ public class OMAGServerAdminForAccessServices extends TokenController
                                                                                                serverConfig.getLocalServerId());
             }
 
-            this.setAccessServicesConfig(serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, delegatingUserId, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, delegatingUserId, enterpriseAccessConfig);
 
         }
         catch (Throwable error)
@@ -254,6 +260,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * for each access service can be changed from their default using setAccessServicesConfig operation.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
@@ -261,6 +268,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureAllAccessServices(String              serverName,
+                                                   String              delegatingUserId,
                                                    Map<String, Object> accessServiceOptions)
     {
         final String methodName = "configureAllAccessServices";
@@ -280,7 +288,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             EventBusConfig            eventBusConfig          = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
             List<AccessServiceConfig> accessServiceConfigList = new ArrayList<>();
@@ -324,8 +332,8 @@ public class OMAGServerAdminForAccessServices extends TokenController
                 accessServiceConfigList = null;
             }
 
-            this.setAccessServicesConfig(serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, delegatingUserId, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, delegatingUserId, enterpriseAccessConfig);
         }
         catch (Throwable error)
         {
@@ -344,6 +352,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker access service name used in URL
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      *
@@ -353,6 +362,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureAccessServiceNoTopics(String              serverName,
+                                                       String              delegatingUserId,
                                                        String              serviceURLMarker,
                                                        Map<String, Object> accessServiceOptions)
     {
@@ -373,7 +383,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<AccessServiceConfig> accessServiceConfigList = serverConfig.getAccessServicesConfig();
             EnterpriseAccessConfig    enterpriseAccessConfig  = this.getEnterpriseAccessConfig(serverConfig);
@@ -403,8 +413,8 @@ public class OMAGServerAdminForAccessServices extends TokenController
                                                                                                serverConfig.getLocalServerId());
             }
 
-            this.setAccessServicesConfig(serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, delegatingUserId, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, delegatingUserId, enterpriseAccessConfig);
 
         }
         catch (Throwable error)
@@ -424,6 +434,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
@@ -431,6 +442,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureAllAccessServicesNoTopics(String              serverName,
+                                                           String              delegatingUserId,
                                                            Map<String, Object> accessServiceOptions)
     {
         final String methodName = "configureAllAccessServicesNoTopics";
@@ -450,7 +462,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<AccessServiceConfig> accessServiceConfigList = new ArrayList<>();
             EnterpriseAccessConfig    enterpriseAccessConfig  = null;
@@ -493,8 +505,8 @@ public class OMAGServerAdminForAccessServices extends TokenController
                 accessServiceConfigList = null;
             }
 
-            this.setAccessServicesConfig(serverName, accessServiceConfigList);
-            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
+            this.setAccessServicesConfig(serverName, delegatingUserId, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(serverName, delegatingUserId, enterpriseAccessConfig);
         }
         catch (Throwable error)
         {
@@ -593,11 +605,13 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * and disables the enterprise repository services.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAllAccessServices(String serverName)
+    public VoidResponse clearAllAccessServices(String serverName,
+                                               String delegatingUserId)
     {
         final String methodName = "clearAllAccessServices";
 
@@ -616,8 +630,8 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            this.setAccessServicesConfig(serverName, null);
-            this.setEnterpriseAccessConfig(serverName, null);
+            this.setAccessServicesConfig(serverName, delegatingUserId, null);
+            this.setEnterpriseAccessConfig(serverName, delegatingUserId, null);
         }
         catch (Throwable error)
         {
@@ -634,12 +648,14 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Retrieve the config for an access service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker access service name used in URL
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
     public AccessServiceConfigResponse getAccessServiceConfig(String serverName,
+                                                              String delegatingUserId,
                                                               String serviceURLMarker)
     {
         final String methodName = "getAccessServiceConfig";
@@ -659,7 +675,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             List<AccessServiceConfig> currentList = serverConfig.getAccessServicesConfig();
 
@@ -692,12 +708,14 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Remove an access service.  This removes all configuration for the access service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker access service name used in URL
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
     public VoidResponse clearAccessService(String serverName,
+                                           String delegatingUserId,
                                            String serviceURLMarker)
     {
         final String methodName = "clearAccessService";
@@ -717,7 +735,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<AccessServiceConfig> currentList = serverConfig.getAccessServicesConfig();
             List<AccessServiceConfig> newList     = new ArrayList<>();
@@ -754,6 +772,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Retrieve the topic names for this access service
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which access service it requested
      *
      * @return map of topic names or
@@ -761,6 +780,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     public StringMapResponse  getAccessServiceTopicNames(String serverName,
+                                                         String delegatingUserId,
                                                          String serviceURLMarker)
     {
         final String methodName   = "getAccessServiceTopicNames";
@@ -783,7 +803,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             errorHandler.validatePropertyNotNull(serviceURLMarker, propertyName, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
 
             if (configuredAccessServices != null)
@@ -827,12 +847,14 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Retrieve the topic names for all configured access services
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      *
      * @return map of topic names or
      * UserNotAuthorizedException  the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    public StringMapResponse  getAllAccessServiceTopicNames(String serverName)
+    public StringMapResponse  getAllAccessServiceTopicNames(String serverName,
+                                                            String delegatingUserId)
     {
         final String methodName   = "getAccessServiceTopicNames";
 
@@ -851,7 +873,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
 
             if (configuredAccessServices != null)
@@ -889,6 +911,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Update the out topic name for a specific access service.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which access service it requested
      * @param topicName string for new topic name
      *
@@ -897,6 +920,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     public VoidResponse  overrideAccessServiceOutTopicName(String serverName,
+                                                           String delegatingUserId,
                                                            String serviceURLMarker,
                                                            String topicName)
     {
@@ -921,7 +945,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
 
             if (configuredAccessServices != null)
@@ -946,7 +970,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
                                     endpoint.setNetworkAddress(topicName);
                                     connection.setEndpoint(endpoint);
                                     accessServiceConfig.setAccessServiceOutTopic(connection);
-                                    setAccessServicesConfig(serverName, configuredAccessServices);
+                                    setAccessServicesConfig(serverName, delegatingUserId, configuredAccessServices);
                                 }
                             }
                         }
@@ -971,12 +995,14 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * the current values.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServicesConfig  list of configuration properties for each access service.
      * @return void response or
      * UserNotAuthorizedException  the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     public VoidResponse setAccessServicesConfig(String                    serverName,
+                                                String                    delegatingUserId,
                                                 List<AccessServiceConfig> accessServicesConfig)
     {
         final String methodName = "setAccessServicesConfig";
@@ -993,7 +1019,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -1051,13 +1077,15 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param configurationProperties additional properties for the cohort
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse addRemoteEnterpriseTopic(String               serverName,
-                                                 Map<String, Object>  configurationProperties)
+    public VoidResponse addRemoteEnterpriseTopic(String              serverName,
+                                                 String              delegatingUserId,
+                                                 Map<String, Object> configurationProperties)
     {
         final String methodName = "addRemoteEnterpriseTopic";
 
@@ -1073,7 +1101,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             EventBusConfig   eventBusConfig  = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
 
@@ -1097,7 +1125,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
                                                                                                                                                       eventBusConfig.getTopicURLRoot(),
                                                                                                                                                       serverConfig.getLocalServerId(),
                                                                                                                                                       eventBusConfig.getConfigurationProperties()));
-            this.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
+            this.setEnterpriseAccessConfig(serverName, delegatingUserId, enterpriseAccessConfig);
         }
         catch (Throwable error)
         {
@@ -1117,12 +1145,14 @@ public class OMAGServerAdminForAccessServices extends TokenController
      * open metadata repository cohorts.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param enterpriseAccessConfig  enterprise repository services configuration properties.
      * @return void response or
      * UserNotAuthorizedException the supplied user is not authorized to issue this command or
      * InvalidParameterException invalid serverName or enterpriseAccessConfig parameter.
      */
     public VoidResponse setEnterpriseAccessConfig(String                 serverName,
+                                                  String                 delegatingUserId,
                                                   EnterpriseAccessConfig enterpriseAccessConfig)
     {
         final String methodName = "setEnterpriseAccessConfig";
@@ -1139,7 +1169,7 @@ public class OMAGServerAdminForAccessServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 

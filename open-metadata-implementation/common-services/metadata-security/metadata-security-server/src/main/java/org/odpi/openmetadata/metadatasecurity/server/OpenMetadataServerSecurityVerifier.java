@@ -71,10 +71,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws InvalidParameterException the connection is invalid
      */
-    synchronized public  void registerSecurityValidator(String                                                                    localServerUserId,
-                                                        String                                                                    serverName,
-                                                        AuditLog                                                                  auditLog,
-                                                        org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection   connection) throws InvalidParameterException
+    synchronized public  void registerSecurityValidator(String     localServerUserId,
+                                                        String     serverName,
+                                                        AuditLog   auditLog,
+                                                        Connection connection) throws InvalidParameterException
     {
         OpenMetadataSecurityConnector connector;
 

@@ -4,8 +4,6 @@ package org.odpi.openmetadata.repositoryservices.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -22,11 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = CohortDescription.class, name = "CohortDescription"),
         })
-abstract class OMRSProperty implements Serializable
+abstract class OMRSProperty
 {
-    private static final long       serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

@@ -24,7 +24,7 @@ public abstract class OMAGServerServiceInstanceHandler
      *
      * @param serviceName unique identifier for this service with a human meaningful value
      */
-    public OMAGServerServiceInstanceHandler(String       serviceName)
+    public OMAGServerServiceInstanceHandler(String serviceName)
     {
         this.serviceName = serviceName;
     }
@@ -46,15 +46,17 @@ public abstract class OMAGServerServiceInstanceHandler
      * This is used by the admin services when finding no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      *
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public boolean isServerActive(String    userId,
+                                  String    delegatingUserId,
                                   String    serverName) throws UserNotAuthorizedException
     {
-        return platformInstanceMap.isServerActive(userId, serverName);
+        return platformInstanceMap.isServerActive(userId, delegatingUserId, serverName);
     }
 
 
@@ -72,6 +74,29 @@ public abstract class OMAGServerServiceInstanceHandler
 
     {
         return platformInstanceMap.getServerSecurityVerifier(userId, serverName);
+    }
+
+
+    /**
+     * Get the object containing the properties for this server.
+     *
+     * @param userId calling user
+     * @param delegatingUserId external userId making request
+     * @param serverName name of this server
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return specific service instance
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    protected  OMAGServerServiceInstance getServerServiceInstance(String  userId,
+                                                                  String  delegatingUserId,
+                                                                  String  serverName,
+                                                                  String  serviceOperationName) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        return platformInstanceMap.getServiceInstance(userId, delegatingUserId, serverName, serviceName, serviceOperationName);
     }
 
 

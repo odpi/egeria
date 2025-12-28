@@ -40,6 +40,7 @@ public class ConfigsResource
     /**
      * Return all the server configuration documents.
      *
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfigs properties or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid parameter occurred while processing.
@@ -52,8 +53,8 @@ public class ConfigsResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public OMAGServerConfigsResponse getStoredConfigurations()
+    public OMAGServerConfigsResponse getStoredConfigurations(@RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.retrieveAllServerConfigs();
+        return adminAPI.retrieveAllServerConfigs(delegatingUserId);
     }
 }

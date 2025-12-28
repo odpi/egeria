@@ -40,12 +40,12 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
     }
 
 
-
     /**
      * Set up the list of governance engines that will use the metadata from the same metadata access server as the
      * engine host uses for retrieving the engine configuration.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param engine  new engine
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -53,6 +53,7 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse addEngine(String       serverName,
+                                  String       delegatingUserId,
                                   EngineConfig engine)
     {
         final String methodName = "addEngine";
@@ -73,7 +74,7 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -130,10 +131,12 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
      * Return the engine host services configuration including the list of engine services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      *
      * @return engine host services configuration
      */
-    public EngineHostServicesResponse getEngineHostServicesConfiguration(String serverName)
+    public EngineHostServicesResponse getEngineHostServicesConfiguration(String serverName,
+                                                                         String delegatingUserId)
     {
         final String methodName = "getEngineHostServicesConfiguration";
 
@@ -152,7 +155,7 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of Engine Services configured in this server.
@@ -174,13 +177,16 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
      * Set up the configuration for an Engine Host OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param governanceEngines full configuration for the engine host server.
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse setEngineHostServicesConfig(String serverName, List<EngineConfig> governanceEngines)
+    public VoidResponse setEngineHostServicesConfig(String             serverName,
+                                                    String             delegatingUserId,
+                                                    List<EngineConfig> governanceEngines)
     {
         final String methodName                     = "setEngineHostServicesConfig";
         final String serviceConfigParameterName     = "governanceEngines";
@@ -201,7 +207,7 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {
@@ -232,12 +238,14 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
      * Remove the configuration for an Engine Host OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse clearEngineHostServicesConfig(String serverName)
+    public VoidResponse clearEngineHostServicesConfig(String serverName,
+                                                      String delegatingUserId)
     {
         final String methodName = "clearEngineHostServicesConfig";
 
@@ -256,7 +264,7 @@ public class OMAGServerAdminForEngineHostServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {

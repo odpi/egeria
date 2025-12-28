@@ -45,6 +45,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *
      * @param serverName integration daemon server name
      * @param connectorProviderClassName name of a specific connector or null for all connectors
+     * @param delegatingUserId external userId making request
      *
      * @return connector report or
      *  InvalidParameterException the connector provider class name is not a valid connector fo this service
@@ -52,6 +53,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the integration service
      */
     public ConnectorReportResponse validateConnector(String serverName,
+                                                     String delegatingUserId,
                                                      String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
@@ -67,7 +69,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
                                                                                 IntegrationConnector.class,
@@ -93,9 +95,11 @@ public class IntegrationDaemonRESTServices extends TokenController
      * listener for open lineage events.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param event open lineage event to publish.
      */
     public VoidResponse publishOpenLineageEvent(String serverName,
+                                                String delegatingUserId,
                                                 String event)
     {
         final String methodName = "publishOpenLineageEvent";
@@ -111,7 +115,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             List<IntegrationContextManager> contextManagers = instanceHandler.getIntegrationGroupContextManagers(userId,
                                                                                                                  serverName,
@@ -143,6 +147,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Retrieve the configuration properties of the named connector.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorName name of a specific connector
      *
      * @return properties map or
@@ -151,6 +156,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the integration service.
      */
     public PropertiesResponse getConfigurationProperties(String serverName,
+                                                         String delegatingUserId,
                                                          String connectorName)
     {
         final String methodName = "getConfigurationProperties";
@@ -166,7 +172,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             response.setProperties(instanceHandler.getConfigurationProperties(userId,
                                                                               serverName,
@@ -188,6 +194,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
      * @return void or
@@ -196,6 +203,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the integration service.
      */
     public  VoidResponse updateConfigurationProperties(String                               serverName,
+                                                       String                               delegatingUserId,
                                                        ConnectorConfigPropertiesRequestBody requestBody)
     {
         final String methodName = "updateConfigurationProperties";
@@ -211,7 +219,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -242,6 +250,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Update the endpoint network address for a specific integration connector.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorName name of a specific connector
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
@@ -252,6 +261,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      */
 
     public  VoidResponse updateEndpointNetworkAddress(String            serverName,
+                                                      String            delegatingUserId,
                                                       String            connectorName,
                                                       StringRequestBody requestBody)
     {
@@ -268,7 +278,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -298,6 +308,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Update the connection for a specific integration connector.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorName name of a specific connector
      * @param requestBody new connection object
      *
@@ -308,6 +319,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      */
 
     public  VoidResponse updateConnectorConnection(String     serverName,
+                                                   String     delegatingUserId,
                                                    String     connectorName,
                                                    Connection requestBody)
     {
@@ -324,7 +336,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -354,6 +366,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Request that the integration daemon refresh all the connectors in all the integration services and groups
      *
      * @param serverName name of the integration daemon
+     * @param delegatingUserId external userId making request
      * @param requestBody null request body
      *
      * @return void or
@@ -362,6 +375,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the integration service.
      */
     public  VoidResponse refreshConnectors(String          serverName,
+                                           String          delegatingUserId,
                                            NameRequestBody requestBody)
     {
         final String methodName = "refreshConnectors";
@@ -377,7 +391,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             String connectorName = null;
 
@@ -403,6 +417,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Request that the integration daemon restart all the connectors in all the integration services and groups
      *
      * @param serverName name of the integration daemon
+     * @param delegatingUserId external userId making request
      * @param requestBody null request body
      *
      * @return void or
@@ -410,8 +425,8 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
      */
-    @SuppressWarnings(value = "unused")
     public  VoidResponse restartConnectors(String          serverName,
+                                           String          delegatingUserId,
                                            NameRequestBody requestBody)
     {
         final String methodName = "restartConnectors";
@@ -427,7 +442,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             String connectorName = null;
 
@@ -453,12 +468,14 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Return a summary of each of the integration services' and integration groups' status.
      *
      * @param serverName integration daemon name
+     * @param delegatingUserId external userId making request
      * @return list of statuses - on for each assigned integration services or group
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
-    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(String   serverName)
+    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(String serverName,
+                                                                      String delegatingUserId)
     {
         final String methodName = "getIntegrationDaemonStatus";
 
@@ -473,8 +490,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             IntegrationDaemonStatus integrationDaemonStatus = new IntegrationDaemonStatus();
 
@@ -502,6 +518,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * is in use.
      *
      * @param serverName name of the governance server.
+     * @param delegatingUserId external userId making request
      * @param integrationGroupName unique name of the integration group.
      *
      * @return void or
@@ -510,6 +527,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  IntegrationGroupException there was a problem detected by the integration group.
      */
     public  VoidResponse refreshIntegrationGroupConfig(String serverName,
+                                                       String delegatingUserId,
                                                        String integrationGroupName)
     {
         final String        methodName = "refreshIntegrationGroupConfig";
@@ -525,7 +543,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             instanceHandler.refreshIntegrationGroupConfig(userId, serverName, integrationGroupName, methodName);
         }
@@ -544,6 +562,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      * Return a summary of the requested engine's status.
      *
      * @param serverName name of the server tied to the request
+     * @param delegatingUserId external userId making request
      * @param integrationGroupName qualifiedName of the requested integration group
      *
      * @return list of integration group summaries or
@@ -552,6 +571,7 @@ public class IntegrationDaemonRESTServices extends TokenController
      *  PropertyServerException the service name is not known - indicating a logic error
      */
     public IntegrationGroupSummaryResponse getIntegrationGroupSummary(String serverName,
+                                                                      String delegatingUserId,
                                                                       String integrationGroupName)
     {
         final String methodName = "getIntegrationGroupSummary";
@@ -567,7 +587,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             response.setIntegrationGroupSummary(instanceHandler.getIntegrationGroupSummary(userId, serverName, integrationGroupName, methodName));
         }
@@ -582,16 +602,17 @@ public class IntegrationDaemonRESTServices extends TokenController
     }
 
 
-
     /**
      * Return a summary of each of the integration groups' status for all running engine services.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @return list of statuses - on for each assigned integration groups or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
-    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(String   serverName)
+    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(String serverName,
+                                                                          String delegatingUserId)
     {
         final String methodName = "getIntegrationGroupSummaries";
 
@@ -606,7 +627,7 @@ public class IntegrationDaemonRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             response.setIntegrationGroupSummaries(instanceHandler.getIntegrationGroupSummaries(userId, serverName, methodName));
         }

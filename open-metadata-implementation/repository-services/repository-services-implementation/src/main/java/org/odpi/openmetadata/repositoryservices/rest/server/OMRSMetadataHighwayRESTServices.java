@@ -46,9 +46,11 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * Return the details of the cohorts that this server is participating in.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return variety of properties
      */
-    public CohortListResponse getCohortList(String     serverName)
+    public CohortListResponse getCohortList(String serverName,
+                                            String delegatingUserId)
     {
         final  String   methodName = "getCohortList";
 
@@ -63,7 +65,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
@@ -85,9 +87,11 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * No registration time is provided.  Use the cohort specific version to retrieve the registration time.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @return registration properties for server
      */
-    public CohortMembershipResponse getLocalRegistration(String     serverName)
+    public CohortMembershipResponse getLocalRegistration(String serverName,
+                                                         String delegatingUserId)
     {
         final  String   methodName = "getLocalRegistration";
 
@@ -102,7 +106,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
@@ -124,11 +128,13 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * open metadata repository cohort.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return registration properties for server
      */
-    public CohortMembershipResponse getLocalRegistration(String     serverName,
-                                                         String     cohortName)
+    public CohortMembershipResponse getLocalRegistration(String serverName,
+                                                         String delegatingUserId,
+                                                         String cohortName)
     {
         final  String   methodName = "getLocalRegistration (cohort version)";
 
@@ -143,7 +149,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
@@ -167,11 +173,13 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * If the server has already registered in the past, it sends a reregistration request.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return flag indicating that the cohort name was recognized
      */
-    public BooleanResponse connectToCohort(String          serverName,
-                                           String          cohortName)
+    public BooleanResponse connectToCohort(String serverName,
+                                           String delegatingUserId,
+                                           String cohortName)
     {
         final String methodName = "connectToCohort";
 
@@ -186,7 +194,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
@@ -207,11 +215,13 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * Return the list of remote registrations received from a specific cohort.
      *
      * @param serverName name of this server
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return list of remote members
      */
-    public CohortMembershipListResponse getRemoteRegistrations(String     serverName,
-                                                               String     cohortName)
+    public CohortMembershipListResponse getRemoteRegistrations(String serverName,
+                                                               String delegatingUserId,
+                                                               String cohortName)
     {
         final  String   methodName = "getRemoteRegistrations";
 
@@ -226,7 +236,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
@@ -247,10 +257,12 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * Disconnect communications from a specific cohort.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      */
     public BooleanResponse disconnectFromCohort(String serverName,
+                                                String delegatingUserId,
                                                 String cohortName)
     {
         final String methodName = "disconnectFromCohort";
@@ -266,7 +278,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
@@ -287,10 +299,12 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * Unregister from a specific cohort and disconnect from cohort communications.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @param cohortName name of cohort
      * @return boolean flag to indicate success.
      */
     public BooleanResponse unregisterFromCohort(String serverName,
+                                                String delegatingUserId,
                                                 String cohortName)
     {
         final String methodName = "unregisterFromCohort";
@@ -306,7 +320,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 

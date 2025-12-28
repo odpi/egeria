@@ -25,6 +25,7 @@ public class EngineHostClient
 {
     private final String               serverName;               /* Initialized in constructor */
     private final String               serverPlatformRootURL;    /* Initialized in constructor */
+    private final String               delegatingUserId;         /* Initialized in constructor */
     private final EngineHostRESTClient restClient;               /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -39,6 +40,7 @@ public class EngineHostClient
      * @param secretsStoreProvider secrets store connector for bearer token
      * @param secretsStoreLocation secrets store location for bearer token
      * @param secretsStoreCollection secrets store collection for bearer token
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
@@ -47,10 +49,12 @@ public class EngineHostClient
                             String   secretsStoreProvider,
                             String   secretsStoreLocation,
                             String   secretsStoreCollection,
+                            String   delegatingUserId,
                             AuditLog auditLog) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformURLRoot;
         this.serverName            = serverName;
+        this.delegatingUserId      = delegatingUserId;
 
         this.restClient = new EngineHostRESTClient(serverName, serverPlatformRootURL, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
     }
@@ -63,15 +67,18 @@ public class EngineHostClient
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
+     * @param delegatingUserId external userId making request
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public EngineHostClient(String                             serverName,
                             String                             serverPlatformURLRoot,
                             Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                            String                             delegatingUserId,
                             AuditLog                           auditLog) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformURLRoot;
         this.serverName            = serverName;
+        this.delegatingUserId      = delegatingUserId;
 
         this.restClient = new EngineHostRESTClient(serverName, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
     }
@@ -92,12 +99,13 @@ public class EngineHostClient
                                                                                                   PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummary";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/{1}/summary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/{1}/summary?delegatingUserId={2}";
 
         GovernanceEngineSummaryResponse restResult = restClient.callGovernanceEngineSummaryGetRESTCall(methodName,
-                                                                                                           serverPlatformRootURL + urlTemplate,
-                                                                                                           serverName,
-                                                                                                           governanceEngineName);
+                                                                                                       serverPlatformRootURL + urlTemplate,
+                                                                                                       serverName,
+                                                                                                       governanceEngineName,
+                                                                                                       delegatingUserId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(restResult);
         exceptionHandler.detectAndThrowPropertyServerException(restResult);
@@ -120,11 +128,12 @@ public class EngineHostClient
                                                                                PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/summary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/summary?delegatingUserId={1}";
 
         GovernanceEngineSummariesResponse restResult = restClient.callGovernanceEngineSummariesGetRESTCall(methodName,
                                                                                                            serverPlatformRootURL + urlTemplate,
-                                                                                                           serverName);
+                                                                                                           serverName,
+                                                                                                           delegatingUserId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(restResult);
         exceptionHandler.detectAndThrowPropertyServerException(restResult);
@@ -152,14 +161,15 @@ public class EngineHostClient
     {
         final String   methodName = "refreshConfig";
         final String   governanceEngineParameterName = "governanceEngineName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/{1}/refresh-config";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/{1}/refresh-config?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(governanceEngineName, governanceEngineParameterName, methodName);
 
         restClient.callVoidGetRESTCall(methodName,
                                        serverPlatformRootURL + urlTemplate,
                                        serverName,
-                                       governanceEngineName);
+                                       governanceEngineName,
+                                       delegatingUserId);
     }
 
 
@@ -178,11 +188,12 @@ public class EngineHostClient
                                         PropertyServerException
     {
         final String   methodName = "refreshConfig";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/refresh-config";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/governance-engines/refresh-config?delegatingUserId={1}";
 
 
         restClient.callVoidGetRESTCall(methodName,
                                        serverPlatformRootURL + urlTemplate,
-                                       serverName);
+                                       serverName,
+                                       delegatingUserId);
     }
 }
