@@ -28,41 +28,14 @@ import java.util.Set;
  */
 public class OMAGServerPlatformConfigurationClient
 {
-    protected String serverPlatformRootURL;    /* Initialized in constructor */
+    protected final String serverPlatformRootURL;    /* Initialized in constructor */
+    protected final String delegatingUserId;         /* Initialized in the constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private final AdminServicesRESTClient restClient;               /* Initialized in constructor */
 
     private static final String NULL_SERVER_NAME = "<*>";
 
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverPlatformRootURL the network address of the server running the admin services
-     * @param secretsStoreConnectorMap connectors to secrets stores
-     * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                       REST API calls.
-     */
-    public OMAGServerPlatformConfigurationClient(String                             serverPlatformRootURL,
-                                                 Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
-                                                 AuditLog                           auditLog) throws InvalidParameterException
-    {
-        final String methodName = "Client Constructor";
-
-        try
-        {
-            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, methodName);
-
-            this.serverPlatformRootURL = serverPlatformRootURL;
-
-            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
-        }
-    }
 
 
     /**
@@ -73,6 +46,7 @@ public class OMAGServerPlatformConfigurationClient
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -81,6 +55,7 @@ public class OMAGServerPlatformConfigurationClient
                                                  String   secretStoreProvider,
                                                  String   secretStoreLocation,
                                                  String   secretStoreCollection,
+                                                 String   delegatingUserId,
                                                  AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor (with security)";
@@ -90,8 +65,42 @@ public class OMAGServerPlatformConfigurationClient
             invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, methodName);
 
             this.serverPlatformRootURL = serverPlatformRootURL;
+            this.delegatingUserId = delegatingUserId;
 
             this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public OMAGServerPlatformConfigurationClient(String                             serverPlatformRootURL,
+                                                 Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                 String                             delegatingUserId,
+                                                 AuditLog                           auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        try
+        {
+            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, methodName);
+
+            this.serverPlatformRootURL = serverPlatformRootURL;
+            this.delegatingUserId = delegatingUserId;
+
+            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
         }
         catch (InvalidParameterException error)
         {
@@ -116,14 +125,7 @@ public class OMAGServerPlatformConfigurationClient
         final String parameterName = "defaultServerConfig";
         final String urlTemplate   = "/open-metadata/admin-services/stores/default-configuration-document";
 
-        try
-        {
-            invalidParameterHandler.validateObject(defaultServerConfig, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateObject(defaultServerConfig, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
@@ -188,14 +190,7 @@ public class OMAGServerPlatformConfigurationClient
         final String parameterName = "connection";
         final String urlTemplate   = "/open-metadata/admin-services/stores/connection";
 
-        try
-        {
-            invalidParameterHandler.validateConnection(connection, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
@@ -263,14 +258,7 @@ public class OMAGServerPlatformConfigurationClient
         final String parameterName = "connection";
         final String urlTemplate   = "/open-metadata/admin-services/platform/security/connection";
 
-        try
-        {
-            invalidParameterHandler.validateConnection(connection, parameterName, methodName);
-        }
-        catch (InvalidParameterException error)
-        {
-            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         PlatformSecurityRequestBody requestBody = new PlatformSecurityRequestBody();
 

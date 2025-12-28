@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,6 +46,7 @@ public class ConfigConformanceSuiteServicesResource
      * support of the repository services running in the server named tutRepositoryServerName.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param repositoryConformanceWorkbenchConfig configuration for the repository conformance workbench.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -61,9 +63,10 @@ public class ConfigConformanceSuiteServicesResource
                                                    url="https://egeria-project.org/guides/cts/overview/"))
 
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String                               serverName,
+                                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                                   @RequestBody  RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
-        return adminAPI.enableRepositoryConformanceSuiteWorkbench(serverName, repositoryConformanceWorkbenchConfig);
+        return adminAPI.enableRepositoryConformanceSuiteWorkbench(serverName, delegatingUserId, repositoryConformanceWorkbenchConfig);
     }
 
 
@@ -72,6 +75,7 @@ public class ConfigConformanceSuiteServicesResource
      * performance of the repository services running in the server named tutRepositoryServerName.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param repositoryPerformanceWorkbenchConfig configuration for the repository performance workbench.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -88,9 +92,10 @@ public class ConfigConformanceSuiteServicesResource
                                                    url="https://egeria-project.org/guides/cts/overview/"))
 
     public VoidResponse enableRepositoryPerformanceSuiteWorkbench(@PathVariable String                               serverName,
+                                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                                   @RequestBody  RepositoryPerformanceWorkbenchConfig repositoryPerformanceWorkbenchConfig)
     {
-        return adminAPI.enableRepositoryPerformanceSuiteWorkbench(serverName, repositoryPerformanceWorkbenchConfig);
+        return adminAPI.enableRepositoryPerformanceSuiteWorkbench(serverName, delegatingUserId, repositoryPerformanceWorkbenchConfig);
     }
 
 
@@ -99,6 +104,7 @@ public class ConfigConformanceSuiteServicesResource
      * support of the platform services running in the platform at tutPlatformRootURL.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody url of the OMAG platform to test.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -115,9 +121,10 @@ public class ConfigConformanceSuiteServicesResource
                                                    url="https://egeria-project.org/guides/cts/overview/"))
 
     public VoidResponse enablePlatformConformanceSuiteWorkbench(@PathVariable String         serverName,
+                                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                                 @RequestBody  URLRequestBody requestBody)
     {
-        return adminAPI.enablePlatformConformanceSuiteWorkbench(serverName, requestBody);
+        return adminAPI.enablePlatformConformanceSuiteWorkbench(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -125,6 +132,7 @@ public class ConfigConformanceSuiteServicesResource
      * Request that the repository conformance suite tests are deactivated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter or
@@ -138,9 +146,10 @@ public class ConfigConformanceSuiteServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/cts/overview/"))
 
-    public VoidResponse disableRepositoryConformanceSuiteServices(@PathVariable String    serverName)
+    public VoidResponse disableRepositoryConformanceSuiteServices(@PathVariable String    serverName,
+                                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.disableRepositoryConformanceSuiteServices(serverName);
+        return adminAPI.disableRepositoryConformanceSuiteServices(serverName, delegatingUserId);
     }
 
 
@@ -148,6 +157,7 @@ public class ConfigConformanceSuiteServicesResource
      * Request that the platform conformance suite tests are deactivated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter or
@@ -161,9 +171,10 @@ public class ConfigConformanceSuiteServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/cts/overview/"))
 
-    public VoidResponse disablePlatformConformanceSuiteServices(@PathVariable String    serverName)
+    public VoidResponse disablePlatformConformanceSuiteServices(@PathVariable String    serverName,
+                                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.disablePlatformConformanceSuiteServices(serverName);
+        return adminAPI.disablePlatformConformanceSuiteServices(serverName, delegatingUserId);
     }
 
 
@@ -171,6 +182,7 @@ public class ConfigConformanceSuiteServicesResource
      * Request that all the conformance suite services are deactivated in this server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter or
@@ -184,8 +196,9 @@ public class ConfigConformanceSuiteServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/cts/overview/"))
 
-    public VoidResponse disableAllConformanceSuiteWorkbenches(@PathVariable String    serverName)
+    public VoidResponse disableAllConformanceSuiteWorkbenches(@PathVariable String    serverName,
+                                                              @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.disableAllConformanceSuiteWorkbenches(serverName);
+        return adminAPI.disableAllConformanceSuiteWorkbenches(serverName, delegatingUserId);
     }
 }

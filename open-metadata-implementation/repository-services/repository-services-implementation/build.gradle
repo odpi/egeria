@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:metadata-observability')
     implementation project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     testImplementation 'org.testng:testng'

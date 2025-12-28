@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -51,6 +52,7 @@ public class ConfigAccessServicesResource
      * Return the list of access services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return list of access service descriptions
      */
     @GetMapping(path = "/access-services")
@@ -61,9 +63,10 @@ public class ConfigAccessServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String serverName)
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String serverName,
+                                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getConfiguredAccessServices(serverName);
+        return adminAPI.getConfiguredAccessServices(serverName, delegatingUserId);
     }
 
 
@@ -71,6 +74,7 @@ public class ConfigAccessServicesResource
      * Return the configuration for the access services in this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return list of access service configurations
      */
     @GetMapping(path = "/access-services/configuration")
@@ -81,9 +85,10 @@ public class ConfigAccessServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public AccessServicesResponse getAccessServicesConfiguration(@PathVariable String serverName)
+    public AccessServicesResponse getAccessServicesConfiguration(@PathVariable String serverName,
+                                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getAccessServicesConfiguration(serverName);
+        return adminAPI.getAccessServicesConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -91,6 +96,7 @@ public class ConfigAccessServicesResource
      * Enable a single access service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @param serviceURLMarker string indicating which access service it is configuring
      * @return void response or
@@ -108,9 +114,10 @@ public class ConfigAccessServicesResource
 
     public VoidResponse configureAccessService(@PathVariable                   String              serverName,
                                                @PathVariable                   String              serviceURLMarker,
+                                               @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                @RequestBody(required = false)  Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAccessService(serverName, serviceURLMarker, accessServiceOptions);
+        return adminAPI.configureAccessService(serverName, delegatingUserId, serviceURLMarker, accessServiceOptions);
     }
 
 
@@ -119,6 +126,7 @@ public class ConfigAccessServicesResource
      * The access services are set up to use the default event bus.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -135,9 +143,10 @@ public class ConfigAccessServicesResource
 
 
     public VoidResponse configureAllAccessServices(@PathVariable                  String              serverName,
+                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                    @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAllAccessServices(serverName, accessServiceOptions);
+        return adminAPI.configureAllAccessServices(serverName, delegatingUserId, accessServiceOptions);
     }
 
 
@@ -147,6 +156,7 @@ public class ConfigAccessServicesResource
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @param serviceURLMarker string indicating which access service it is configuring
      * @return void response or
@@ -164,9 +174,10 @@ public class ConfigAccessServicesResource
 
     public VoidResponse configureAccessServiceNoTopics(@PathVariable                  String              serverName,
                                                        @PathVariable                  String              serviceURLMarker,
+                                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                        @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAccessServiceNoTopics(serverName, serviceURLMarker, accessServiceOptions);
+        return adminAPI.configureAccessServiceNoTopics(serverName, delegatingUserId, serviceURLMarker, accessServiceOptions);
     }
 
 
@@ -175,6 +186,7 @@ public class ConfigAccessServicesResource
      * This version of the call does not set up the InTopic nor the OutTopic.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServiceOptions  property name/value pairs used to configure the access services
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -190,9 +202,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public VoidResponse configureAllAccessServicesNoTopics(@PathVariable                  String              serverName,
+                                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                            @RequestBody(required = false) Map<String, Object> accessServiceOptions)
     {
-        return adminAPI.configureAllAccessServicesNoTopics(serverName, accessServiceOptions);
+        return adminAPI.configureAllAccessServicesNoTopics(serverName, delegatingUserId, accessServiceOptions);
     }
 
 
@@ -200,6 +213,7 @@ public class ConfigAccessServicesResource
      * Disable the access services.  This removes all configuration for the access services and disables the enterprise repository services.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter or
@@ -213,9 +227,10 @@ public class ConfigAccessServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public VoidResponse clearAllAccessServices(@PathVariable String serverName)
+    public VoidResponse clearAllAccessServices(@PathVariable String serverName,
+                                               @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearAllAccessServices(serverName);
+        return adminAPI.clearAllAccessServices(serverName, delegatingUserId);
     }
 
 
@@ -223,6 +238,7 @@ public class ConfigAccessServicesResource
      * Retrieve the config for an access service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which access service it is configuring
      * @return AccessServiceConfig response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -238,9 +254,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public AccessServiceConfigResponse getAccessServiceConfig(@PathVariable String serverName,
-                                                              @PathVariable String serviceURLMarker)
+                                                              @PathVariable String serviceURLMarker,
+                                                              @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getAccessServiceConfig(serverName, serviceURLMarker);
+        return adminAPI.getAccessServiceConfig(serverName, delegatingUserId, serviceURLMarker);
     }
 
 
@@ -248,6 +265,7 @@ public class ConfigAccessServicesResource
      * Retrieve the topic names for this access service.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which access service it requested
      *
      * @return map of topic names or
@@ -263,9 +281,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public StringMapResponse getAccessServiceTopicNames(@PathVariable String serverName,
-                                                        @PathVariable String serviceURLMarker)
+                                                        @PathVariable String serviceURLMarker,
+                                                        @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getAccessServiceTopicNames(serverName, serviceURLMarker);
+        return adminAPI.getAccessServiceTopicNames(serverName, delegatingUserId, serviceURLMarker);
     }
 
 
@@ -273,6 +292,7 @@ public class ConfigAccessServicesResource
      * Retrieve the topic names for all access services.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      *
      * @return map of topic names or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
@@ -286,9 +306,10 @@ public class ConfigAccessServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omas/"))
 
-    public StringMapResponse  getAllAccessServiceTopicNames(@PathVariable String serverName)
+    public StringMapResponse  getAllAccessServiceTopicNames(@PathVariable String serverName,
+                                                            @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getAllAccessServiceTopicNames(serverName);
+        return adminAPI.getAllAccessServiceTopicNames(serverName, delegatingUserId);
     }
 
 
@@ -296,6 +317,7 @@ public class ConfigAccessServicesResource
      * Update the out topic name for a specific access service.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which access service it requested
      * @param topicName string for new topic name
      *
@@ -313,9 +335,10 @@ public class ConfigAccessServicesResource
 
     public VoidResponse  overrideAccessServiceOutTopicName(@PathVariable String serverName,
                                                            @PathVariable String serviceURLMarker,
+                                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                            @RequestBody  String topicName)
     {
-        return adminAPI.overrideAccessServiceOutTopicName(serverName, serviceURLMarker, topicName);
+        return adminAPI.overrideAccessServiceOutTopicName(serverName, delegatingUserId, serviceURLMarker, topicName);
     }
 
 
@@ -323,6 +346,7 @@ public class ConfigAccessServicesResource
      * Remove the config for an access service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker string indicating which access service to clear
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -338,9 +362,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public VoidResponse clearAccessService(@PathVariable String serverName,
-                                           @PathVariable String serviceURLMarker)
+                                           @PathVariable String serviceURLMarker,
+                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearAccessService(serverName, serviceURLMarker);
+        return adminAPI.clearAccessService(serverName, delegatingUserId, serviceURLMarker);
     }
 
 
@@ -348,6 +373,7 @@ public class ConfigAccessServicesResource
      * Set up the configuration for selected open metadata access services (OMASs).  This overrides the current configured values.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param accessServicesConfig  list of configuration properties for each access service.
      * @return void response or
      * UserNotAuthorizedException     the supplied userId is not authorized to issue this command or
@@ -363,9 +389,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public VoidResponse setAccessServicesConfig(@PathVariable String                    serverName,
+                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                 @RequestBody  List<AccessServiceConfig> accessServicesConfig)
     {
-        return adminAPI.setAccessServicesConfig(serverName, accessServicesConfig);
+        return adminAPI.setAccessServicesConfig(serverName, delegatingUserId, accessServicesConfig);
     }
 
 
@@ -373,6 +400,7 @@ public class ConfigAccessServicesResource
      * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param configurationProperties additional properties for the cohort
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -387,9 +415,10 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public VoidResponse addRemoteEnterpriseTopic(@PathVariable String               serverName,
+                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                  @RequestBody  Map<String, Object>  configurationProperties)
     {
-        return adminAPI.addRemoteEnterpriseTopic(serverName, configurationProperties);
+        return adminAPI.addRemoteEnterpriseTopic(serverName, delegatingUserId, configurationProperties);
     }
 
 
@@ -400,6 +429,7 @@ public class ConfigAccessServicesResource
      * open metadata repository cohorts.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param enterpriseAccessConfig  enterprise repository services configuration properties.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -418,8 +448,9 @@ public class ConfigAccessServicesResource
                                                    url="https://egeria-project.org/services/omas/"))
 
     public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 serverName,
+                                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                   @RequestBody  EnterpriseAccessConfig enterpriseAccessConfig)
     {
-        return adminAPI.setEnterpriseAccessConfig(serverName, enterpriseAccessConfig);
+        return adminAPI.setEnterpriseAccessConfig(serverName, delegatingUserId, enterpriseAccessConfig);
     }
 }

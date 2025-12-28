@@ -247,23 +247,6 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
 
     /**
-     * Retrieve a list of the integration services registered on the platform
-     *
-     * @return List of integration services
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<RegisteredOMAGService> getIntegrationServices() throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        return extractor.getIntegrationServices();
-    }
-
-
-    /**
      * Retrieve a list of the services known on the platform
      *
      * @return List of common services

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -36,6 +37,11 @@ public class OMAGServerConfigurationClient
     protected String serverPlatformRootURL;    /* Initialized in constructor */
 
     /**
+     * UserId initiating the request from another server.
+     */
+    protected final String delegatingUserId;   /* Initialized in the constructor */
+
+    /**
      * Handler for validating parameters passed on requests.
      */
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -57,6 +63,7 @@ public class OMAGServerConfigurationClient
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -66,6 +73,7 @@ public class OMAGServerConfigurationClient
                                          String   secretStoreProvider,
                                          String   secretStoreLocation,
                                          String   secretStoreCollection,
+                                         String   delegatingUserId,
                                          AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor (with security and secrets store)";
@@ -76,8 +84,42 @@ public class OMAGServerConfigurationClient
 
             this.serverName            = serverName;
             this.serverPlatformRootURL = serverPlatformRootURL;
+            this.delegatingUserId = delegatingUserId;
 
             this.restClient = new AdminServicesRESTClient(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public OMAGServerConfigurationClient(String                             serverPlatformRootURL,
+                                         Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                         String                             delegatingUserId,
+                                         AuditLog                           auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor (used by another connector)";
+
+        try
+        {
+            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+
+            this.serverPlatformRootURL = serverPlatformRootURL;
+            this.delegatingUserId = delegatingUserId;
+
+            this.restClient = new AdminServicesRESTClient(serverName, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
         }
         catch (InvalidParameterException error)
         {
@@ -98,11 +140,12 @@ public class OMAGServerConfigurationClient
                                                OMAGConfigurationErrorException
     {
         final String methodName  = "clearOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        serverName);
+                                          serverPlatformRootURL + urlTemplate,
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -119,12 +162,12 @@ public class OMAGServerConfigurationClient
                                                                                 OMAGConfigurationErrorException
     {
         final String methodName    = "getServerTypeClassification";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/server-type-classification";
-
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/server-type-classification?delegatingUserId={1}";
 
         ServerTypeClassificationResponse response = restClient.callServerClassificationGetRESTCall(methodName,
                                                                                                    serverPlatformRootURL + urlTemplate,
-                                                                                                   serverName);
+                                                                                                   serverName,
+                                                                                                   delegatingUserId);
 
         return response.getServerTypeClassification();
     }
@@ -148,7 +191,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "setServerURLRoot";
         final String parameterName = "serverURLRoot";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/server-url-root-for-caller";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/server-url-root-for-caller?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverURLRoot, parameterName, methodName);
 
@@ -158,7 +201,8 @@ public class OMAGServerConfigurationClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -185,7 +229,7 @@ public class OMAGServerConfigurationClient
                                                                                 OMAGConfigurationErrorException
     {
         final String methodName    = "setEventBus";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/event-bus?connectorProvider={1}&topicURLRoot={1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/event-bus?delegatingUserId={1}&connectorProvider={2}&topicURLRoot={3}";
 
         Map<String, Object> requestBody = configurationProperties;
         if (requestBody == null)
@@ -197,6 +241,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
+                                        delegatingUserId,
                                         connectorProvider,
                                         topicURLRoot);
     }
@@ -218,7 +263,7 @@ public class OMAGServerConfigurationClient
                                                            OMAGConfigurationErrorException
     {
         final String methodName    = "setServerType";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/server-type?typeName={1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/server-type?delegatingUserId={1}&typeName={2}";
 
         NullRequestBody requestBody = new NullRequestBody();
 
@@ -226,6 +271,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
+                                        delegatingUserId,
                                         serverType);
     }
 
@@ -244,7 +290,7 @@ public class OMAGServerConfigurationClient
                                                                        OMAGConfigurationErrorException
     {
         final String methodName  = "setOrganizationName";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/organization-name?name={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/organization-name?delegatingUserId={1}&name={2}";
 
         NullRequestBody requestBody = new NullRequestBody();
 
@@ -252,6 +298,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
+                                        delegatingUserId,
                                         organizationName);
     }
 
@@ -269,12 +316,13 @@ public class OMAGServerConfigurationClient
                                                                   OMAGConfigurationErrorException
     {
         final String methodName  = "setServerDescription";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-description";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-description?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         description,
                                         serverName,
+                                        delegatingUserId,
                                         description);
     }
 
@@ -294,7 +342,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName  = "setServerUserId";
         final String parameterName = "serverUserId";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-user-id?id={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-user-id?delegatingUserId={1}&id={2}";
 
         invalidParameterHandler.validateName(serverUserId, parameterName, methodName);
 
@@ -304,6 +352,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
+                                        delegatingUserId,
                                         serverUserId);
     }
 
@@ -322,7 +371,7 @@ public class OMAGServerConfigurationClient
                                                            OMAGConfigurationErrorException
     {
         final String methodName  = "setMaxPageSize";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/max-page-size?limit={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/max-page-size?delegatingUserId={1}&limit={2}";
 
         if (maxPageSize < 0)
         {
@@ -336,6 +385,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        delegatingUserId,
                                         Integer.toString(maxPageSize));
     }
 
@@ -367,7 +417,7 @@ public class OMAGServerConfigurationClient
                                                                     OMAGConfigurationErrorException
     {
         final String methodName  = "setBasicServerProperties";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-properties";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-properties?delegatingUserId={1}";
 
         ServerPropertiesRequestBody requestBody = new ServerPropertiesRequestBody();
 
@@ -383,7 +433,8 @@ public class OMAGServerConfigurationClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -400,11 +451,12 @@ public class OMAGServerConfigurationClient
                                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "getBasicServerProperties";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-properties";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/server-properties?delegatingUserId={1}";
 
         BasicServerPropertiesResponse response = restClient.callBasicServerPropertiesGetRESTCall(methodName,
                                                                                                  serverPlatformRootURL + urlTemplate,
-                                                                                                 serverName);
+                                                                                                 serverName,
+                                                                                                 delegatingUserId);
 
         return response.getBasicServerProperties();
     }
@@ -422,12 +474,13 @@ public class OMAGServerConfigurationClient
                                             OMAGConfigurationErrorException
     {
         final String methodName  = "setDefaultAuditLog";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/default";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/default?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         nullRequestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -444,12 +497,13 @@ public class OMAGServerConfigurationClient
                                                                                        OMAGConfigurationErrorException
     {
         final String methodName  = "addConsoleAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/console";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/console?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -466,12 +520,13 @@ public class OMAGServerConfigurationClient
                                                                                      OMAGConfigurationErrorException
     {
         final String methodName  = "addSLF4JAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/slf4j";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/slf4j?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -488,12 +543,13 @@ public class OMAGServerConfigurationClient
                                                                                     OMAGConfigurationErrorException
     {
         final String methodName  = "addFileAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/files";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/files?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -512,12 +568,13 @@ public class OMAGServerConfigurationClient
                                                                                      OMAGConfigurationErrorException
     {
         final String methodName  = "addFileAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/jdbc?connectionString={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/jdbc?delegatingUserId={1}&connectionString={2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
                                         serverName,
+                                        delegatingUserId,
                                         jdbcConnectionString);
     }
 
@@ -537,12 +594,13 @@ public class OMAGServerConfigurationClient
                                                                                     OMAGConfigurationErrorException
     {
         final String methodName  = "addFileAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/files?directoryName={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/files?delegatingUserId={1}&directoryName={2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
                                         serverName,
+                                        delegatingUserId,
                                         directoryName);
     }
 
@@ -560,12 +618,13 @@ public class OMAGServerConfigurationClient
                                                                                           OMAGConfigurationErrorException
     {
         final String methodName  = "addEventTopicAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/event-topic";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/event-topic?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -585,7 +644,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName  = "addEventTopicAuditLogDestination(with topicName)";
         final String topicNameParameter = "topicName";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/event-topic?topicName={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/event-topic?delegatingUserId={1}&topicName={2}";
 
         invalidParameterHandler.validateName(topicName, topicNameParameter, methodName);
 
@@ -593,6 +652,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         supportedSeverities,
                                         serverName,
+                                        delegatingUserId,
                                         topicName);
     }
 
@@ -611,14 +671,15 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "addAuditLogDestination";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/connection?delegatingUserId={1}";
 
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -640,7 +701,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "UpdateAuditLogDestination";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/connection/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/connection/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
@@ -648,7 +709,8 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
                                         serverName,
-                                        suppliedConnectionName);
+                                        suppliedConnectionName,
+                                        delegatingUserId);
     }
 
 
@@ -666,16 +728,16 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "clearAuditLogDestination";
         final String parameterName = "connectionName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/connection/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/connection/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(connectionName, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        serverName,
-                                        connectionName);
+                                          serverPlatformRootURL + urlTemplate,
+                                          serverName,
+                                          connectionName,
+                                          delegatingUserId);
     }
-
 
 
     /**
@@ -693,7 +755,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "setAuditLogDestinations";
         final String parameterName = "auditLogDestinations";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/audit-log-destinations?delegatingUserId={1}";
 
         if (auditLogDestinations != null)
         {
@@ -706,7 +768,8 @@ public class OMAGServerConfigurationClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         auditLogDestinations,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -722,11 +785,12 @@ public class OMAGServerConfigurationClient
                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "clearAuditLogDestinations";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -744,14 +808,15 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "setConfigurationStoreConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/security/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/security/connection?delegatingUserId={1}";
 
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -768,11 +833,12 @@ public class OMAGServerConfigurationClient
                                                        OMAGConfigurationErrorException
     {
         final String methodName  = "clearServerSecurityConnection";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/security/connection";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/security/connection?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -790,11 +856,12 @@ public class OMAGServerConfigurationClient
                                                            OMAGConfigurationErrorException
     {
         final String methodName  = "getServerSecurityConnection";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/security/connection";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/security/connection?delegatingUserId={1}";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
                                                                              serverPlatformRootURL + urlTemplate,
-                                                                             serverName);
+                                                                             serverName,
+                                                                             delegatingUserId);
 
         return restResult.getConnection();
     }
@@ -814,14 +881,15 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "setOMAGServerConfig";
         final String parameterName = "serverConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/configuration?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(serverConfig, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         serverConfig,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -839,7 +907,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "deployOMAGServerConfig";
         final String parameterName = "destinationPlatformURLRoot";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/configuration/deploy";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/configuration/deploy?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(destinationPlatformURLRoot, parameterName, methodName);
 
@@ -850,7 +918,8 @@ public class OMAGServerConfigurationClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -867,11 +936,12 @@ public class OMAGServerConfigurationClient
                                                          OMAGConfigurationErrorException
     {
         final String methodName  = "getOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/configuration?delegatingUserId={1}";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,
-                                                                                         serverName);
+                                                                                         serverName,
+                                                                                         delegatingUserId);
 
         return restResult.getOMAGServerConfig();
     }
@@ -890,13 +960,13 @@ public class OMAGServerConfigurationClient
                                                                  OMAGConfigurationErrorException
     {
         final String methodName  = "getOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/instance/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/instance/configuration?delegatingUserId={1}";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,
-                                                                                         serverName);
+                                                                                         serverName,
+                                                                                         delegatingUserId);
 
         return restResult.getOMAGServerConfig();
     }
-
 }

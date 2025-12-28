@@ -26,6 +26,7 @@ public class OpenMetadataPlatformSecurityVerifier
      * Override the default location of the configuration documents.
      *
      * @param userId calling user.
+     * @param delegatingUserId external userId making request
      * @param serverPlatformURL URL Root of the server platform.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
@@ -33,6 +34,7 @@ public class OpenMetadataPlatformSecurityVerifier
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
     public static synchronized void setPlatformSecurityConnection(String       userId,
+                                                                  String       delegatingUserId,
                                                                   String       serverPlatformURL,
                                                                   Connection   connection) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException
@@ -45,6 +47,10 @@ public class OpenMetadataPlatformSecurityVerifier
         if (platformSecurityConnector != null)
         {
             platformSecurityConnector.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                platformSecurityConnector.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
         }
 
 
@@ -84,10 +90,12 @@ public class OpenMetadataPlatformSecurityVerifier
      * use the default store.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return connection response
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
-    public static synchronized Connection getPlatformSecurityConnection(String       userId) throws UserNotAuthorizedException
+    public static synchronized Connection getPlatformSecurityConnection(String userId,
+                                                                        String delegatingUserId) throws UserNotAuthorizedException
     {
         /*
          * Validate that someone has authority to retrieve the connector.
@@ -95,6 +103,10 @@ public class OpenMetadataPlatformSecurityVerifier
         if (platformSecurityConnector != null)
         {
             platformSecurityConnector.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                platformSecurityConnector.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
         }
 
         return platformSecurityConnection;
@@ -106,8 +118,10 @@ public class OpenMetadataPlatformSecurityVerifier
      * use the default store.
      *
      * @param userId calling user
-      */
-    public static synchronized void clearPlatformSecurityConnection(String   userId) throws UserNotAuthorizedException
+     * @param delegatingUserId external userId making request
+     */
+    public static synchronized void clearPlatformSecurityConnection(String userId,
+                                                                    String delegatingUserId) throws UserNotAuthorizedException
     {
         /*
          * Validate that someone has authority to override the connector.
@@ -115,6 +129,10 @@ public class OpenMetadataPlatformSecurityVerifier
         if (platformSecurityConnector != null)
         {
             platformSecurityConnector.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                platformSecurityConnector.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
         }
 
         platformSecurityConnection = null;

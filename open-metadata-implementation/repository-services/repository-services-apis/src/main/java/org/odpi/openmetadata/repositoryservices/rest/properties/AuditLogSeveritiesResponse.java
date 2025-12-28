@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReportSeverity;
 
 import java.util.ArrayList;
@@ -23,9 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditLogSeveritiesResponse extends OMRSAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
-    private List<OMRSAuditLogReportSeverity> severities = null;
+    private List<AuditLogRecordSeverity> severities = null;
 
 
     /**
@@ -58,7 +57,7 @@ public class AuditLogSeveritiesResponse extends OMRSAPIResponse
      *
      * @return severities list
      */
-    public List<OMRSAuditLogReportSeverity> getSeverities()
+    public List<AuditLogRecordSeverity> getSeverities()
     {
         if (severities == null)
         {
@@ -80,7 +79,7 @@ public class AuditLogSeveritiesResponse extends OMRSAPIResponse
      *
      * @param severities severities list
      */
-    public void setSeverities(List<OMRSAuditLogReportSeverity> severities)
+    public void setSeverities(List<AuditLogRecordSeverity> severities)
     {
         this.severities = severities;
     }

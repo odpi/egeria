@@ -34,9 +34,10 @@ import io.openlineage.client.OpenLineage;
  */
 public class IntegrationDaemon
 {
-    private final IntegrationDaemonServicesRESTClient restClient;               /* Initialized in constructor */
-    private final String                              serverName;
-    private final String                              serverPlatformRootURL;
+    private final IntegrationDaemonServicesRESTClient restClient;               /* Initialized in the constructor */
+    private final String                              serverName;               /* Initialized in the constructor */
+    private final String                              serverPlatformRootURL;    /* Initialized in the constructor */
+    private final String                              delegatingUserId;         /* Initialized in the constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -45,6 +46,10 @@ public class IntegrationDaemon
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST services
+     * @param secretStoreProvider class name of the secrets store
+     * @param secretStoreLocation location (networkAddress) of the secrets store
+     * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -55,10 +60,12 @@ public class IntegrationDaemon
                              String   secretStoreProvider,
                              String   secretStoreLocation,
                              String   secretStoreCollection,
+                             String   delegatingUserId,
                              AuditLog auditLog) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
+        this.delegatingUserId = delegatingUserId;
 
         this.restClient = new IntegrationDaemonServicesRESTClient(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
@@ -69,16 +76,21 @@ public class IntegrationDaemon
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public IntegrationDaemon(String                             serverName,
                              String                             serverPlatformRootURL,
                              Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                             String                             delegatingUserId,
                              AuditLog                           auditLog) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
+        this.delegatingUserId = delegatingUserId;
 
         this.restClient = new IntegrationDaemonServicesRESTClient(serverName, serverPlatformRootURL, secretsStoreConnectorMap, auditLog);
     }
@@ -100,17 +112,19 @@ public class IntegrationDaemon
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-services/governance-action/validate-connector";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/validate-connector/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
         ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
                                                                                           serverPlatformRootURL + urlTemplate,
                                                                                           serverName,
-                                                                                          connectorProviderClassName);
+                                                                                          connectorProviderClassName,
+                                                                                          delegatingUserId);
 
         return restResult.getConnectorReport();
     }
+
 
     /**
      * Retrieve the configuration properties of the named connector.
@@ -129,14 +143,15 @@ public class IntegrationDaemon
     {
         final String   methodName = "getConfigurationProperties";
         final String   connectorNameParameterName = "connectorName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/{1}/configuration-properties";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/{1}/configuration-properties?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
 
         PropertiesResponse restResult = restClient.callPropertiesGetRESTCall(methodName,
                                                                              serverPlatformRootURL + urlTemplate,
                                                                              serverName,
-                                                                             connectorName);
+                                                                             connectorName,
+                                                                             delegatingUserId);
 
         return restResult.getProperties();
     }
@@ -157,7 +172,7 @@ public class IntegrationDaemon
                                                                                                   PropertyServerException
     {
         final String   methodName = "updateConfigurationProperties";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/configuration-properties";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/configuration-properties?delegatingUserId={1}";
 
         ConnectorConfigPropertiesRequestBody requestBody = new ConnectorConfigPropertiesRequestBody();
 
@@ -168,7 +183,8 @@ public class IntegrationDaemon
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -185,7 +201,7 @@ public class IntegrationDaemon
                                                                                         PropertyServerException
     {
         final String   methodName = "updateEndpointNetworkAddress";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/{1}/endpoint-network-address";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/{1}/endpoint-network-address?delegatingUserId={2}";
 
         StringRequestBody requestBody = new StringRequestBody();
 
@@ -195,7 +211,8 @@ public class IntegrationDaemon
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
-                                        connectorName);
+                                        connectorName,
+                                        delegatingUserId);
     }
 
     /**
@@ -211,13 +228,14 @@ public class IntegrationDaemon
                                                                         PropertyServerException
     {
         final String   methodName = "updateConnectorConnection";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/{1}/connection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/{1}/connection?delegatingUserId={2}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
                                         serverName,
-                                        connectorName);
+                                        connectorName,
+                                        delegatingUserId);
     }
 
 
@@ -233,7 +251,7 @@ public class IntegrationDaemon
                                                               PropertyServerException
     {
         final String   methodName = "refreshConnector";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/refresh";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/refresh?delegatingUserId={1}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -241,7 +259,8 @@ public class IntegrationDaemon
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -257,12 +276,13 @@ public class IntegrationDaemon
                                            PropertyServerException
     {
         final String   methodName = "refreshConnectors";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/refresh";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/refresh?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         new NameRequestBody(),
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -279,7 +299,7 @@ public class IntegrationDaemon
                                                               PropertyServerException
     {
         final String   methodName = "restartConnector";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/restart";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/restart?delegatingUserId={1}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -287,7 +307,8 @@ public class IntegrationDaemon
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -304,12 +325,13 @@ public class IntegrationDaemon
                                            PropertyServerException
     {
         final String   methodName = "restartConnectors";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/restart";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-connectors/restart?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         new NameRequestBody(),
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -327,11 +349,12 @@ public class IntegrationDaemon
                                                                        PropertyServerException
     {
         final String   methodName = "getIntegrationDaemonStatus";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/status";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/status?delegatingUserId={1}";
 
         IntegrationDaemonStatusResponse restResult = restClient.callIntegrationDaemonStatusGetRESTCall(methodName,
                                                                                                        serverPlatformRootURL + urlTemplate,
-                                                                                                       serverName);
+                                                                                                       serverName,
+                                                                                                       delegatingUserId);
 
         return restResult.getIntegrationDaemonStatus();
     }
@@ -352,12 +375,13 @@ public class IntegrationDaemon
                                                                                                   PropertyServerException
     {
         final String   methodName = "getIntegrationGroupSummary";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/{1}/summary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/{1}/summary?delegatingUserId={2}";
 
         IntegrationGroupSummaryResponse restResult = restClient.callIntegrationGroupSummaryGetRESTCall(methodName,
                                                                                                        serverPlatformRootURL + urlTemplate,
                                                                                                        serverName,
-                                                                                                       integrationGroupName);
+                                                                                                       integrationGroupName,
+                                                                                                       delegatingUserId);
 
         return restResult.getIntegrationGroupSummary();
     }
@@ -376,11 +400,12 @@ public class IntegrationDaemon
                                                                                PropertyServerException
     {
         final String   methodName = "getIntegrationGroupSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/summary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/summary?delegatingUserId={1}";
 
         IntegrationGroupSummariesResponse restResult = restClient.callIntegrationGroupSummariesGetRESTCall(methodName,
                                                                                                            serverPlatformRootURL + urlTemplate,
-                                                                                                           serverName);
+                                                                                                           serverName,
+                                                                                                           delegatingUserId);
 
 
         return restResult.getIntegrationGroupSummaries();
@@ -405,14 +430,15 @@ public class IntegrationDaemon
     {
         final String   methodName = "refreshConfig";
         final String   integrationGroupParameterName = "integrationGroupName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/{1}/refresh-config";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/{1}/refresh-config?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(integrationGroupName, integrationGroupParameterName, methodName);
 
         restClient.callVoidGetRESTCall(methodName,
                                        serverPlatformRootURL + urlTemplate,
                                        serverName,
-                                       integrationGroupName);
+                                       integrationGroupName,
+                                       delegatingUserId);
     }
 
 
@@ -432,14 +458,15 @@ public class IntegrationDaemon
     {
         final String methodName = "publishOpenLineageEvent";
         final String eventParameter = "event";
-        final String urlTemplate = "/servers/{0}/open-metadata/integration-daemon/publish-open-lineage-event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-daemon/publish-open-lineage-event?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(event, eventParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         event,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -459,13 +486,14 @@ public class IntegrationDaemon
     {
         final String methodName = "publishOpenLineageEvent";
         final String eventParameter = "event";
-        final String urlTemplate = "/servers/{0}/open-metadata/integration-daemon/publish-open-lineage-event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-daemon/publish-open-lineage-event?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(event, eventParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         event,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 }

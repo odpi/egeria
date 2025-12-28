@@ -39,7 +39,8 @@ public class PlatformServicesClient
     private final PlatformServicesRESTClient restClient;                 /* Initialized in constructor */
 
     private final String                     platformRootURL;            /* Initialized in constructor */
-    protected     AuditLog                   auditLog;                   /* Initialized in constructor */
+    private final String                     delegatingUserId;           /* Initialized in the constructor */
+    private final AuditLog                   auditLog;                   /* Initialized in constructor */
 
     private final String                     retrieveURLTemplatePrefix   = "/open-metadata/platform-services/server-platform";
 
@@ -53,6 +54,7 @@ public class PlatformServicesClient
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -62,10 +64,13 @@ public class PlatformServicesClient
                                   String   secretStoreProvider,
                                   String   secretStoreLocation,
                                   String   secretStoreCollection,
+                                  String   delegatingUserId,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        this.platformRootURL = platformRootURL;
-        this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        this.platformRootURL  = platformRootURL;
+        this.auditLog         = auditLog;
+        this.delegatingUserId = delegatingUserId;
+        this.restClient       = new PlatformServicesRESTClient(platformName, platformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
 
 
@@ -75,6 +80,7 @@ public class PlatformServicesClient
      * @param platformName name of the platform to connect to
      * @param platformRootURL the network address of the server running the OMAS REST services
      * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -82,10 +88,13 @@ public class PlatformServicesClient
     public PlatformServicesClient(String                             platformName,
                                   String                             platformRootURL,
                                   Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                  String                             delegatingUserId,
                                   AuditLog                           auditLog) throws InvalidParameterException
     {
-        this.platformRootURL = platformRootURL;
-        this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL, secretsStoreConnectorMap, auditLog);
+        this.platformRootURL  = platformRootURL;
+        this.delegatingUserId = delegatingUserId;
+        this.auditLog         = auditLog;
+        this.restClient       = new PlatformServicesRESTClient(platformName, platformRootURL, secretsStoreConnectorMap, auditLog);
     }
 
 
@@ -102,10 +111,10 @@ public class PlatformServicesClient
                                               UserNotAuthorizedException
     {
         final String methodName = "getPlatformStartTime";
-        
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/start-time";
 
-        DateResponse restResult = restClient.callDateGetRESTCall(methodName, urlTemplate);
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/start-time?delegatingUserId={0}";
+
+        DateResponse restResult = restClient.callDateGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getDateValue();
     }
@@ -179,9 +188,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getPlatformOrganizationName";
         
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/organization-name";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/organization-name?delegatingUserId={0}";
 
-        StringResponse result = restClient.callStringResponseGetRESTCall(methodName, urlTemplate);
+        StringResponse result = restClient.callStringResponseGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return result.getResultString();
     }
@@ -202,7 +211,7 @@ public class PlatformServicesClient
     {
         final String methodName    = "setPlatformSecurityConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/connection?delegatingUserId={0}";
 
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
         
@@ -210,7 +219,7 @@ public class PlatformServicesClient
 
         requestBody.setPlatformSecurityConnection(connection);
 
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody);
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, delegatingUserId);
     }
 
 
@@ -229,9 +238,9 @@ public class PlatformServicesClient
                                                          PropertyServerException
     {
         final String methodName  = "clearPlatformSecurityConnection";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection?delegatingUserId={0}";
 
-        restClient.callVoidDeleteRESTCall(methodName, urlTemplate);
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, delegatingUserId);
     }
 
 
@@ -249,9 +258,9 @@ public class PlatformServicesClient
                                                              PropertyServerException
     {
         final String methodName  = "getPlatformSecurityConnection";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection?delegatingUserId={0}";
 
-        OCFConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName, urlTemplate);
+        OCFConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getConnection();
     }
@@ -278,9 +287,9 @@ public class PlatformServicesClient
 
         invalidParameterHandler.validateName(connectorProviderClassName, connectorProviderParameterName, methodName);
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/connector-types/{1}";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/connector-types/{0}?delegatingUserId={1}";
 
-        OCFConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName, urlTemplate, connectorProviderClassName);
+        OCFConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName, urlTemplate, connectorProviderClassName, delegatingUserId);
 
         return restResult.getConnectorType();
     }
@@ -301,9 +310,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getAccessServices";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/access-services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/access-services?delegatingUserId={0}";
 
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServices();
     }
@@ -324,9 +333,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getEngineServices";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/engine-services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/engine-services?delegatingUserId={0}";
 
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServices();
     }
@@ -347,9 +356,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getViewServices";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/view-services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/view-services?delegatingUserId={0}";
 
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServices();
     }
@@ -370,32 +379,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getGovernanceServices";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/governance-services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/governance-services?delegatingUserId={0}";
 
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
-
-        return restResult.getServices();
-    }
-
-
-    /**
-     * Retrieve a list of the integration services registered on the platform
-     *
-     * @return List of integration services
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<RegisteredOMAGService> getIntegrationServices() throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        final String methodName = "getIntegrationServices";
-
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/integration-services";
-
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServices();
     }
@@ -417,9 +403,9 @@ public class PlatformServicesClient
         final String methodName = "getCommonServices";
 
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/common-services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/common-services?delegatingUserId={0}";
 
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServices();
     }
@@ -440,9 +426,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getAllServices";
         
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services?delegatingUserId={0}";
 
-        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate);
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServices();
     }
@@ -468,11 +454,11 @@ public class PlatformServicesClient
     {
         final String methodName  = "activateWithStoredConfig";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        SuccessMessageResponse restResult = restClient.callSuccessMessagePostRESTCall(methodName, urlTemplate, null, serverName);
+        SuccessMessageResponse restResult = restClient.callSuccessMessagePostRESTCall(methodName, urlTemplate, null, serverName, delegatingUserId);
 
         return restResult.getSuccessMessage();
     }
@@ -494,14 +480,15 @@ public class PlatformServicesClient
     {
         final String methodName  = "activateWithSuppliedConfig";
         final String parameterName = "configuration";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/configuration";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/configuration?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(configuration, parameterName, methodName);
 
         SuccessMessageResponse restResult = restClient.callSuccessMessagePostRESTCall(methodName,
                                                                                       urlTemplate,
                                                                                       configuration,
-                                                                                      configuration.getLocalServerName());
+                                                                                      configuration.getLocalServerName(),
+                                                                                      delegatingUserId);
 
         return restResult.getSuccessMessage();
     }
@@ -521,11 +508,11 @@ public class PlatformServicesClient
     {
         final String methodName  = "shutdownServer";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, serverName);
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
     }
 
 
@@ -541,10 +528,9 @@ public class PlatformServicesClient
                                             PropertyServerException
     {
         final String methodName  = "shutdownAllServers";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/instance";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/instance?delegatingUserId={0}";
 
-
-        restClient.callVoidDeleteRESTCall(methodName, urlTemplate);
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, delegatingUserId);
     }
 
 
@@ -564,11 +550,11 @@ public class PlatformServicesClient
     {
         final String methodName  = "shutdownAndUnregisterServer";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, serverName);
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
     }
 
 
@@ -585,9 +571,9 @@ public class PlatformServicesClient
                                                          PropertyServerException
     {
         final String methodName  = "shutdownAndUnregisterAllServers";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers?delegatingUserId={0}";
 
-        restClient.callVoidDeleteRESTCall(methodName, urlTemplate);
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, delegatingUserId);
     }
 
 
@@ -603,9 +589,9 @@ public class PlatformServicesClient
                                            PropertyServerException
      {
          final String methodName  = "shutdownPlatform";
-         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/instance";
+         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/instance?delegatingUserId={0}";
 
-         restClient.callVoidDeleteRESTCall(methodName, urlTemplate);
+         restClient.callVoidDeleteRESTCall(methodName, urlTemplate, delegatingUserId);
      }
 
 
@@ -629,9 +615,9 @@ public class PlatformServicesClient
     {
         final String methodName = "getKnownServers";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers?delegatingUserId={0}";
 
-        ServerListResponse restResult = restClient.callServerListGetRESTCall(methodName, urlTemplate);
+        ServerListResponse restResult = restClient.callServerListGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServerList();
     }
@@ -654,9 +640,9 @@ public class PlatformServicesClient
     {
         final String methodName = "isServerKnown";
         
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/is-known";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/is-known?delegatingUserId={1}";
 
-        BooleanResponse restResult = restClient.callBooleanGetRESTCall(methodName, urlTemplate, serverName);
+        BooleanResponse restResult = restClient.callBooleanGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getFlag();
     }
@@ -678,9 +664,9 @@ public class PlatformServicesClient
         final String methodName = "getActiveServers";
 
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/active";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/active?delegatingUserId={0}";
 
-        ServerListResponse restResult = restClient.callServerListGetRESTCall(methodName, urlTemplate);
+        ServerListResponse restResult = restClient.callServerListGetRESTCall(methodName, urlTemplate, delegatingUserId);
 
         return restResult.getServerList();
     }
@@ -702,10 +688,12 @@ public class PlatformServicesClient
                                                                   PropertyServerException
     {
         final String methodName = "getServerStatus";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/status?delegatingUserId={1}";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/"+serverName+"/status";
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        ServerStatusResponse restResult = restClient.callServerStatusGetRESTCall(methodName, urlTemplate);
+        ServerStatusResponse restResult = restClient.callServerStatusGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         ServerStatus serverStatus = new ServerStatus();
         serverStatus.setServerName(restResult.getServerName());
@@ -734,15 +722,14 @@ public class PlatformServicesClient
     {
         final String methodName  = "getActiveConfiguration";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/configuration";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/configuration?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName, urlTemplate, serverName);
+        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getOMAGServerConfig();
     }
-
 
 
     /**
@@ -760,11 +747,11 @@ public class PlatformServicesClient
     {
         final String methodName  = "getActiveServerStatus";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/status";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/status?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        OMAGServerStatusResponse restResult = restClient.callOMAGServerStatusGetRESTCall(methodName, urlTemplate, serverName);
+        OMAGServerStatusResponse restResult = restClient.callOMAGServerStatusGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getServerStatus();
     }
@@ -790,9 +777,9 @@ public class PlatformServicesClient
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/"+serverName+"/services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/services?delegatingUserId={1}";
 
-        ServerServicesListResponse restResult = restClient.callServiceListGetRESTCall(methodName, urlTemplate);
+        ServerServicesListResponse restResult = restClient.callServiceListGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getServerServicesList();
     }
@@ -815,12 +802,12 @@ public class PlatformServicesClient
         final String methodName    = "addOpenMetadataArchiveFile";
         final String parameterName = "fileName";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/file";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/file?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
         invalidParameterHandler.validateName(fileName, parameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, fileName, serverName);
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, fileName, serverName, delegatingUserId);
     }
 
 
@@ -841,11 +828,11 @@ public class PlatformServicesClient
         final String methodName    = "addOpenMetadataArchiveFile";
         final String parameterName = "connection";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/connection";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/connection?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, connection, serverName);
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, connection, serverName, delegatingUserId);
     }
 }

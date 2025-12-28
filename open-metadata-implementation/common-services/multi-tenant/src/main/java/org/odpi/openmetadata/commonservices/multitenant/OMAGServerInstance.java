@@ -202,6 +202,7 @@ class OMAGServerInstance
      * Return the properties for this running service or exceptions if there are problems.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @param serviceName server name
      * @param serviceOperationName calling method (should be top-level method name)
      *
@@ -209,13 +210,20 @@ class OMAGServerInstance
      * @throws UserNotAuthorizedException calling user not authorized to call the request
      * @throws PropertyServerException service is not running in this server
      */
-    synchronized OMAGServerServiceInstance getRegisteredService(String    userId,
-                                                                String    serviceName,
-                                                                String    serviceOperationName) throws UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    synchronized OMAGServerServiceInstance getRegisteredService(String userId,
+                                                                String delegatingUserId,
+                                                                String serviceName,
+                                                                String serviceOperationName) throws UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         securityVerifier.validateUserForService(userId, serviceName);
         securityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
+
+        if (delegatingUserId != null)
+        {
+            securityVerifier.validateUserForService(delegatingUserId, serviceName);
+            securityVerifier.validateUserForServiceOperation(delegatingUserId, serviceName, serviceOperationName);
+        }
 
         OMAGServerServiceInstance serverServiceInstance = serviceInstanceMap.get(serviceName);
 

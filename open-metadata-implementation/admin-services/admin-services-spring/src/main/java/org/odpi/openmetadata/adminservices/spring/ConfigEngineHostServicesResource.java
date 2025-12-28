@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,6 +47,7 @@ public class ConfigEngineHostServicesResource
      * Add another governance engine the list of governance engines for an engine host OMAG server.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param engine  definition of a single engine
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -61,9 +63,10 @@ public class ConfigEngineHostServicesResource
                     url="https://egeria-project.org/concepts/governance-engine/"))
 
     public VoidResponse addEngine(@PathVariable String       serverName,
+                                  @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                   @RequestBody  EngineConfig engine)
     {
-        return adminAPI.addEngine(serverName, engine);
+        return adminAPI.addEngine(serverName, delegatingUserId, engine);
     }
 
 
@@ -71,6 +74,7 @@ public class ConfigEngineHostServicesResource
      * Return the configuration of the specialist services for an Engine Host OMAG Server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return response containing the engine host services configuration
      */
     @GetMapping( "/governance-engines")
@@ -81,9 +85,10 @@ public class ConfigEngineHostServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/engine-host/"))
 
-    public EngineHostServicesResponse getEngineHostServicesConfiguration(@PathVariable String serverName)
+    public EngineHostServicesResponse getEngineHostServicesConfiguration(@PathVariable String serverName,
+                                                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getEngineHostServicesConfiguration(serverName);
+        return adminAPI.getEngineHostServicesConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -91,6 +96,7 @@ public class ConfigEngineHostServicesResource
      * Set up the configuration of the specialist services for an Engine Host OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param governanceEngines full configuration for the engine host server.
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -106,9 +112,10 @@ public class ConfigEngineHostServicesResource
                     url="https://egeria-project.org/concepts/engine-host/"))
 
     public VoidResponse setEngineHostServicesConfig(@PathVariable String             serverName,
+                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                     @RequestBody  List<EngineConfig> governanceEngines)
     {
-        return adminAPI.setEngineHostServicesConfig(serverName, governanceEngines);
+        return adminAPI.setEngineHostServicesConfig(serverName, delegatingUserId, governanceEngines);
     }
 
 
@@ -116,6 +123,7 @@ public class ConfigEngineHostServicesResource
      * Remove the configuration of the specialist services for an Engine Host OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
@@ -129,8 +137,9 @@ public class ConfigEngineHostServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/engine-host/"))
 
-    public VoidResponse clearEngineHostServicesConfig(@PathVariable String serverName)
+    public VoidResponse clearEngineHostServicesConfig(@PathVariable String serverName,
+                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearEngineHostServicesConfig(serverName);
+        return adminAPI.clearEngineHostServicesConfig(serverName, delegatingUserId);
     }
 }

@@ -18,8 +18,6 @@ import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-
 
 /**
  * OMAGServerPlatformActiveServices allow an external caller to determine which servers are active on the
@@ -35,15 +33,15 @@ public class OMAGServerPlatformActiveServices extends TokenController
     private final RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
     private final String serverName        = "<null>";
-    private final static Date   platformStartTime = new Date();
 
 
     /**
      * Return the start time for this instance of the platform.
      *
+     * @param delegatingUserId external userId making request
      * @return start date/time
      */
-    public DateResponse getPlatformStartTime()
+    public DateResponse getPlatformStartTime(String delegatingUserId)
     {
         final String methodName = "getPlatformStartTime";
 
@@ -57,27 +55,26 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setDateValue(platformStartTime);
+            response.setDateValue(serverInstanceMap.getPlatformStartTime(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
             exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
-        restCallLogger.logRESTCallReturn(token, platformStartTime.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
 
 
     /**
      * Return the name of the organization running this platform.
      *
+     * @param delegatingUserId external userId making request
      * @return String description
      * or UserNotAuthorizedException userId is not recognized
      */
-    public StringResponse getServerPlatformOrganizationName()
+    public StringResponse getServerPlatformOrganizationName(String delegatingUserId)
     {
         final String methodName = "getServerPlatformOrganizationName";
 
@@ -91,14 +88,14 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setResultString(serverInstanceMap.getServerPlatformOrganizationName(userId));
+            response.setResultString(serverInstanceMap.getServerPlatformOrganizationName(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
             exceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
         }
 
-        restCallLogger.logRESTCallReturn(token, platformStartTime.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -107,9 +104,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
      * and can be configured in a metadata access point or metadata server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredAccessServices()
+    public RegisteredOMAGServicesResponse getRegisteredAccessServices(String delegatingUserId)
     {
         final String methodName = "getRegisteredAccessServices";
 
@@ -123,7 +121,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServices(serverInstanceMap.getRegisteredAccessServices(userId));
+            response.setServices(serverInstanceMap.getRegisteredAccessServices(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -140,9 +138,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
      * Return the list of engine services that are registered (supported) in this OMAG Server Platform
      * and can be configured in an engine hosting OMAG server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredEngineServices()
+    public RegisteredOMAGServicesResponse getRegisteredEngineServices(String delegatingUserId)
     {
         final String methodName = "getRegisteredEngineServices";
 
@@ -156,7 +155,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServices(serverInstanceMap.getRegisteredEngineServices(userId));
+            response.setServices(serverInstanceMap.getRegisteredEngineServices(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -174,9 +173,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
      * Return the list of view services that are registered (supported) in this OMAG Server Platform
      * and can be configured in a view server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredViewServices()
+    public RegisteredOMAGServicesResponse getRegisteredViewServices(String delegatingUserId)
     {
         final String methodName = "getRegisteredViewServices";
 
@@ -190,7 +190,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServices(serverInstanceMap.getRegisteredViewServices(userId));
+            response.setServices(serverInstanceMap.getRegisteredViewServices(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -207,9 +207,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of a governance server.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices()
+    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices(String delegatingUserId)
     {
         final String methodName = "getRegisteredGovernanceServices";
 
@@ -223,7 +224,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServices(serverInstanceMap.getRegisteredGovernanceServices(userId));
+            response.setServices(serverInstanceMap.getRegisteredGovernanceServices(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -240,9 +241,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
      * Return the list of common services that are registered (supported) in this OMAG Server Platform.
      * These services are use in all types of servers.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
-    public RegisteredOMAGServicesResponse getRegisteredCommonServices()
+    public RegisteredOMAGServicesResponse getRegisteredCommonServices(String delegatingUserId)
     {
         final String methodName = "getRegisteredCommonServices";
 
@@ -256,7 +258,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServices(serverInstanceMap.getRegisteredCommonServices(userId));
+            response.setServices(serverInstanceMap.getRegisteredCommonServices(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -272,9 +274,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
     /**
      * Return the list of all services that are registered (supported) in this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      */
-    public RegisteredOMAGServicesResponse getAllRegisteredServices()
+    public RegisteredOMAGServicesResponse getAllRegisteredServices(String delegatingUserId)
     {
         final String methodName = "getAllRegisteredServices";
 
@@ -288,7 +291,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServices(serverInstanceMap.getAllRegisteredServices(userId));
+            response.setServices(serverInstanceMap.getAllRegisteredServices(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -306,10 +309,12 @@ public class OMAGServerPlatformActiveServices extends TokenController
      * connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring
      * connectors into an Egeria server.  It does not validate that the connector will load and initialize.
      *
+     * @param delegatingUserId external userId making request
      * @param connectorProviderClassName name of the connector provider class
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      */
-    public OCFConnectorTypeResponse getConnectorType(String connectorProviderClassName)
+    public OCFConnectorTypeResponse getConnectorType(String connectorProviderClassName,
+                                                     String delegatingUserId)
     {
         final String methodName = "getConnectorType";
 
@@ -324,6 +329,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             OMAGServerPlatformInstanceMap.validateUserAsInvestigatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsInvestigatorForPlatform(delegatingUserId);
+            }
 
             Class<?> connectorProviderClass     = Class.forName(connectorProviderClassName);
             Object   potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
@@ -355,10 +364,12 @@ public class OMAGServerPlatformActiveServices extends TokenController
     /**
      * Return a flag to indicate if this server has ever run on this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @param serverName server of interest
      * @return flag
      */
-    public BooleanResponse  isServerKnown(String   serverName)
+    public BooleanResponse  isServerKnown(String serverName,
+                                          String delegatingUserId)
     {
         final String   methodName = "isServerKnown";
 
@@ -372,7 +383,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setFlag(serverInstanceMap.isServerKnown(userId, serverName));
+            response.setFlag(serverInstanceMap.isServerKnown(userId, delegatingUserId, serverName));
         }
         catch (Throwable error)
         {
@@ -388,9 +399,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
     /**
      * Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @return list of OMAG server names
      */
-    public ServerListResponse getKnownServerList()
+    public ServerListResponse getKnownServerList(String delegatingUserId)
     {
         final String   methodName = "getKnownServerList";
 
@@ -404,7 +416,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServerList(serverInstanceMap.getKnownServerList(userId));
+            response.setServerList(serverInstanceMap.getKnownServerList(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -420,9 +432,10 @@ public class OMAGServerPlatformActiveServices extends TokenController
     /**
      * Return the list of OMAG Servers that are active on this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @return list of server names
      */
-    public ServerListResponse getActiveServerList()
+    public ServerListResponse getActiveServerList(String delegatingUserId)
     {
         final String   methodName = "getActiveServerList";
 
@@ -436,7 +449,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response.setServerList(serverInstanceMap.getActiveServerList(userId));
+            response.setServerList(serverInstanceMap.getActiveServerList(userId, delegatingUserId));
         }
         catch (Throwable error)
         {
@@ -452,10 +465,12 @@ public class OMAGServerPlatformActiveServices extends TokenController
     /**
      * Return information about when the server has been active.
      *
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server of interest
      * @return details of the server status
      */
-    public ServerStatusResponse getServerStatus(String   serverName)
+    public ServerStatusResponse getServerStatus(String serverName,
+                                                String delegatingUserId)
     {
         final String   methodName = "getServerStatus";
 
@@ -471,7 +486,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
 
             response.setServerName(serverName);
 
-            ServerStatus serverStatus = serverInstanceMap.getServerStatus(userId, serverName, methodName);
+            ServerStatus serverStatus = serverInstanceMap.getServerStatus(userId, delegatingUserId, serverName, methodName);
 
             response.setServerType(serverStatus.getServerType());
             response.setActive(serverStatus.getIsActive());
@@ -493,10 +508,12 @@ public class OMAGServerPlatformActiveServices extends TokenController
     /**
      * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
      *
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server of interest
      * @return List of service names
      */
-    public ServerServicesListResponse getActiveServicesForServer(String    serverName)
+    public ServerServicesListResponse getActiveServicesForServer(String serverName,
+                                                                 String delegatingUserId)
     {
         final String   methodName = "getActiveServerList";
 
@@ -511,7 +528,7 @@ public class OMAGServerPlatformActiveServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             response.setServerName(serverName);
-            response.setServerServicesList(serverInstanceMap.getActiveServicesForServer(userId, serverName));
+            response.setServerServicesList(serverInstanceMap.getActiveServicesForServer(userId, delegatingUserId, serverName));
         }
         catch (Throwable error)
         {

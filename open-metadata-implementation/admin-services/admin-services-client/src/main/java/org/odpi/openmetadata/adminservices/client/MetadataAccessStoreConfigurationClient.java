@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -25,6 +26,7 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -34,9 +36,29 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
                                                   String   secretStoreProvider,
                                                   String   secretStoreLocation,
                                                   String   secretStoreCollection,
+                                                  String   delegatingUserId,
                                                   AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public MetadataAccessStoreConfigurationClient(String                             serverPlatformRootURL,
+                                                  Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                  String                             delegatingUserId,
+                                                  AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
     }
 
 
@@ -53,12 +75,13 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
                                                  InvalidParameterException
     {
         final String methodName  = "setInMemLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/mode/in-memory-repository";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/mode/in-memory-repository?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         nullRequestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -76,14 +99,14 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
                                                     InvalidParameterException
     {
         final String methodName  = "setReadOnlyLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/mode/read-only-repository";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/mode/read-only-repository?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         nullRequestBody,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
-
 
 
     /**
@@ -102,14 +125,14 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
                                                                                            InvalidParameterException
     {
         final String methodName  = "setPostgreSQLLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/mode/postgres-repository";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/local-repository/mode/postgres-repository?delegatingUserId={1}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         storageProperties,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
-
 
 
     /**
@@ -128,14 +151,15 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
     {
         final String methodName    = "setRepositoryConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/mode/plugin-repository/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/mode/plugin-repository/connection?delegatingUserId={1}";
 
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         connection,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -158,7 +182,7 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
         final String methodName    = "setNativeRepositoryConnection";
         final String parameterName = "connectorProvider";
         final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/local-repository/mode/plugin-repository/details" +
-                                             "?connectorProvider={1}";
+                                             "?delegatingUserId={1}&connectorProvider={2}";
 
         invalidParameterHandler.validateName(connectorProvider, parameterName, methodName);
 
@@ -166,8 +190,7 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
                                         serverPlatformRootURL + urlTemplate,
                                         additionalProperties,
                                         serverName,
+                                        delegatingUserId,
                                         connectorProvider);
     }
-
-
 }

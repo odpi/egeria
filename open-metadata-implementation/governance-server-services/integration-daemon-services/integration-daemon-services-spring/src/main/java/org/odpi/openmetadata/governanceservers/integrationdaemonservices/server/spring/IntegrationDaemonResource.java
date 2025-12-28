@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,6 +47,7 @@ public class IntegrationDaemonResource
      * integration daemon.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
@@ -64,9 +66,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/governance-action-service"))
 
     public ConnectorReportResponse validateConnector(@PathVariable String serverName,
-                                                     @PathVariable String connectorProviderClassName)
+                                                     @PathVariable String connectorProviderClassName,
+                                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.validateConnector(serverName, connectorProviderClassName);
+        return restAPI.validateConnector(serverName, delegatingUserId, connectorProviderClassName);
     }
 
 
@@ -75,6 +78,7 @@ public class IntegrationDaemonResource
      * listener for open lineage events.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param event open lineage event to publish.
      */
     @PostMapping(path = "/publish-open-lineage-event")
@@ -87,9 +91,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/features/lineage-management/overview/#the-openlineage-standard"))
 
     VoidResponse publishOpenLineageEvent(@PathVariable String serverName,
+                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                          @RequestBody  String event)
     {
-        return restAPI.publishOpenLineageEvent(serverName, event);
+        return restAPI.publishOpenLineageEvent(serverName, delegatingUserId, event);
     }
 
 
@@ -97,6 +102,7 @@ public class IntegrationDaemonResource
      * Return the status of each of the integration services and integration groups running in the integration daemon.
      *
      * @param serverName integration daemon name
+     * @param delegatingUserId external userId making request
      * @return list of statuses - one for each assigned integration services or integration group
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
@@ -110,9 +116,10 @@ public class IntegrationDaemonResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
-    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(@PathVariable String   serverName)
+    public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(@PathVariable String   serverName,
+                                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getIntegrationDaemonStatus(serverName);
+        return restAPI.getIntegrationDaemonStatus(serverName, delegatingUserId);
     }
 
 
@@ -120,6 +127,7 @@ public class IntegrationDaemonResource
      * Retrieve the configuration properties of the named integration connector running in the integration daemon.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorName name of a specific connector
      *
      * @return properties map or
@@ -136,9 +144,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public PropertiesResponse getConfigurationProperties(@PathVariable String serverName,
-                                                         @PathVariable String connectorName)
+                                                         @PathVariable String connectorName,
+                                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getConfigurationProperties(serverName, connectorName);
+        return restAPI.getConfigurationProperties(serverName, delegatingUserId, connectorName);
     }
 
 
@@ -147,6 +156,7 @@ public class IntegrationDaemonResource
      * connector name is supplied.  This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
      * @return void or
@@ -163,9 +173,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public  VoidResponse updateConfigurationProperties(@PathVariable String                               serverName,
+                                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                        @RequestBody  ConnectorConfigPropertiesRequestBody requestBody)
     {
-        return restAPI.updateConfigurationProperties(serverName, requestBody);
+        return restAPI.updateConfigurationProperties(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -174,6 +185,7 @@ public class IntegrationDaemonResource
      * This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorName name of a specific connector
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
@@ -192,9 +204,10 @@ public class IntegrationDaemonResource
 
     public  VoidResponse updateEndpointNetworkAddress(@PathVariable String            serverName,
                                                       @PathVariable String            connectorName,
+                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                       @RequestBody  StringRequestBody requestBody)
     {
-        return restAPI.updateEndpointNetworkAddress(serverName, connectorName, requestBody);
+        return restAPI.updateEndpointNetworkAddress(serverName, delegatingUserId, connectorName, requestBody);
     }
 
 
@@ -203,6 +216,7 @@ public class IntegrationDaemonResource
      * This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorName name of a specific connector
      * @param requestBody new connection object
      *
@@ -221,9 +235,10 @@ public class IntegrationDaemonResource
 
     public  VoidResponse updateConnectorConnection(@PathVariable String     serverName,
                                                    @PathVariable String     connectorName,
+                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                    @RequestBody  Connection requestBody)
     {
-        return restAPI.updateConnectorConnection(serverName, connectorName,requestBody);
+        return restAPI.updateConnectorConnection(serverName, delegatingUserId, connectorName, requestBody);
     }
 
 
@@ -231,6 +246,7 @@ public class IntegrationDaemonResource
      * Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param requestBody optional name of the connector to target - if no connector name is specified, all
      *                      connectors managed by this integration service are refreshed.
      *
@@ -248,9 +264,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public VoidResponse refreshConnectors(@PathVariable                  String          serverName,
+                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                           @RequestBody(required = false) NameRequestBody requestBody)
     {
-        return restAPI.refreshConnectors(serverName, requestBody);
+        return restAPI.refreshConnectors(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -258,6 +275,7 @@ public class IntegrationDaemonResource
      * Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param requestBody optional name of the connector to target - if no connector name is specified, all
      *                      connectors managed by this integration service are refreshed.
      *
@@ -275,9 +293,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public VoidResponse restartConnectors(@PathVariable                  String          serverName,
+                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                           @RequestBody(required = false) NameRequestBody requestBody)
     {
-        return restAPI.restartConnectors(serverName, requestBody);
+        return restAPI.restartConnectors(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -285,6 +304,7 @@ public class IntegrationDaemonResource
      * Retrieve the description and status of the requested integration group.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param integrationGroupName name of integration group of interest
      * @return list of statuses - on for each assigned integration groups or
      *  InvalidParameterException one of the parameters is null or invalid or
@@ -299,9 +319,10 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public IntegrationGroupSummaryResponse getIntegrationGroupSummary(@PathVariable String serverName,
-                                                                      @PathVariable String integrationGroupName)
+                                                                      @PathVariable String integrationGroupName,
+                                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getIntegrationGroupSummary(serverName, integrationGroupName);
+        return restAPI.getIntegrationGroupSummary(serverName, delegatingUserId, integrationGroupName);
     }
 
 
@@ -309,6 +330,7 @@ public class IntegrationDaemonResource
      * Return a summary of each of the integration groups running in the integration daemon.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @return list of statuses - one for each assigned integration groups
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
@@ -321,9 +343,10 @@ public class IntegrationDaemonResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-daemon/"))
 
-    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(@PathVariable String serverName)
+    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(@PathVariable String serverName,
+                                                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getIntegrationGroupSummaries(serverName);
+        return restAPI.getIntegrationGroupSummaries(serverName, delegatingUserId);
     }
 
 
@@ -335,6 +358,7 @@ public class IntegrationDaemonResource
      * is in use.
      *
      * @param serverName name of the governance server
+     * @param delegatingUserId external userId making request
      * @param integrationGroupName unique name of the integration group
      *
      * @return void or
@@ -355,8 +379,9 @@ public class IntegrationDaemonResource
                     url="https://egeria-project.org/concepts/integration-group/"))
 
     public  VoidResponse refreshIntegrationGroupConfig(@PathVariable String serverName,
-                                                       @PathVariable String integrationGroupName)
+                                                       @PathVariable String integrationGroupName,
+                                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.refreshIntegrationGroupConfig(serverName, integrationGroupName);
+        return restAPI.refreshIntegrationGroupConfig(serverName, delegatingUserId, integrationGroupName);
     }
 }

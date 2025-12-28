@@ -82,7 +82,7 @@ public class ServerConfig
             /*
              * This client is from the platform services module and queries the runtime state of the platform and the servers that are running on it.
              */
-            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             /*
              * This is the first call to the platform and determines the version of the software.
@@ -176,7 +176,7 @@ public class ServerConfig
         {
             System.out.println("Configuring metadata store: " + serverName);
 
-            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             client.setServerDescription("Metadata Access Store called " + serverName + " running on platform " + platformURLRoot);
             client.setServerUserId(systemUserId);
@@ -367,7 +367,7 @@ public class ServerConfig
 
         try
         {
-            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             /*
              * This is the list of configured audit log connections.  Locating the console audit log connection
@@ -444,7 +444,7 @@ public class ServerConfig
         {
             System.out.println("Configuring integration daemon: " + serverName);
 
-            IntegrationDaemonConfigurationClient client = new IntegrationDaemonConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            IntegrationDaemonConfigurationClient client = new IntegrationDaemonConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             client.setServerDescription("Integration daemon called " + serverName + " running on platform " + platformURLRoot);
             client.setServerUserId(systemUserId);
@@ -473,7 +473,7 @@ public class ServerConfig
     {
         try
         {
-            CohortMemberConfigurationClient client = new CohortMemberConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            CohortMemberConfigurationClient client = new CohortMemberConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             client.addCohortRegistration(cohortName, null);
         }
@@ -495,7 +495,7 @@ public class ServerConfig
     {
         try
         {
-            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            MetadataAccessStoreConfigurationClient client = new MetadataAccessStoreConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             client.addStartUpOpenMetadataArchiveFile(archiveFileName);
         }
@@ -517,7 +517,7 @@ public class ServerConfig
     {
         try
         {
-            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             client.setServerUserId(userId);
         }
@@ -537,7 +537,7 @@ public class ServerConfig
     {
         try
         {
-            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             client.clearOMAGServerConfig();
         }

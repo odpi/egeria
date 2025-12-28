@@ -35,6 +35,8 @@ public class OMAGServerPlatformInstanceMap
 
     private static final String   implementationOrigin = "Egeria OMAG Server Platform (version 6.0-SNAPSHOT)";
     private static String   organizationName = null;
+    private final static Date   platformStartTime = new Date();
+
 
     /**
      * Return the platform origin string
@@ -44,16 +46,9 @@ public class OMAGServerPlatformInstanceMap
      */
     public static String getPlatformOrigin(String userId) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
 
-            return implementationOrigin;
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        return implementationOrigin;
     }
 
 
@@ -70,20 +65,19 @@ public class OMAGServerPlatformInstanceMap
      * Return the organization name
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @throws UserNotAuthorizedException calling user not allowed to use these services
      */
-    public static String getOrganizationName(String userId) throws UserNotAuthorizedException
+    public static String getOrganizationName(String userId,
+                                             String delegatingUserId) throws UserNotAuthorizedException
     {
-        try
+        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
         {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
-            return organizationName;
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        return organizationName;
     }
 
 
@@ -104,14 +98,7 @@ public class OMAGServerPlatformInstanceMap
      */
     public static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
     }
 
 
@@ -124,14 +111,7 @@ public class OMAGServerPlatformInstanceMap
      */
     public static synchronized void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
     }
 
 
@@ -190,11 +170,13 @@ public class OMAGServerPlatformInstanceMap
      * Return the name of the organization running this platform.
      *
      * @param userId name of the user making the request
+     * @param delegatingUserId external userId making request
      * @return String description
      */
-    public String getServerPlatformOrganizationName(String userId) throws UserNotAuthorizedException
+    public String getServerPlatformOrganizationName(String userId,
+                                                    String delegatingUserId) throws UserNotAuthorizedException
     {
-        return getOrganizationName(userId);
+        return getOrganizationName(userId, delegatingUserId);
     }
 
 
@@ -214,12 +196,18 @@ public class OMAGServerPlatformInstanceMap
      * and can be configured in a metadata access point or metadata server.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of access service descriptions
      * @throws UserNotAuthorizedException user not authorized
      */
-    public List<RegisteredOMAGService> getRegisteredAccessServices(String userId) throws UserNotAuthorizedException
+    public List<RegisteredOMAGService> getRegisteredAccessServices(String userId,
+                                                                   String delegatingUserId) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(userId);
+        }
 
         List<RegisteredOMAGService> response = new ArrayList<>();
 
@@ -268,12 +256,18 @@ public class OMAGServerPlatformInstanceMap
      * and can be configured in an engine hosting OMAG server.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of engine service descriptions
      * @throws UserNotAuthorizedException user not authorized
      */
-    public List<RegisteredOMAGService> getRegisteredEngineServices(String userId) throws UserNotAuthorizedException
+    public List<RegisteredOMAGService> getRegisteredEngineServices(String userId,
+                                                                   String delegatingUserId) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         List<RegisteredOMAGService> response = new ArrayList<>();
 
@@ -322,12 +316,18 @@ public class OMAGServerPlatformInstanceMap
      * and can be configured in a view server.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of view service descriptions
      * @throws UserNotAuthorizedException user not authorized
      */
-    public List<RegisteredOMAGService> getRegisteredViewServices(String userId) throws UserNotAuthorizedException
+    public List<RegisteredOMAGService> getRegisteredViewServices(String userId,
+                                                                 String delegatingUserId) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         List<RegisteredOMAGService> response = new ArrayList<>();
 
@@ -376,12 +376,18 @@ public class OMAGServerPlatformInstanceMap
      * and can be configured as part of a governance server.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of governance service descriptions
      * @throws UserNotAuthorizedException user not authorized
      */
-    public List<RegisteredOMAGService> getRegisteredGovernanceServices(String userId) throws UserNotAuthorizedException
+    public List<RegisteredOMAGService> getRegisteredGovernanceServices(String userId,
+                                                                       String delegatingUserId) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         List<RegisteredOMAGService> response = new ArrayList<>();
 
@@ -419,12 +425,18 @@ public class OMAGServerPlatformInstanceMap
      * and can be configured as part of a server.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      * @throws UserNotAuthorizedException user not authorized
      */
-    public List<RegisteredOMAGService> getRegisteredCommonServices(String userId) throws UserNotAuthorizedException
+    public List<RegisteredOMAGService> getRegisteredCommonServices(String userId,
+                                                                   String delegatingUserId) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         List<RegisteredOMAGService> response = new ArrayList<>();
 
@@ -461,35 +473,37 @@ public class OMAGServerPlatformInstanceMap
      * and can be configured as part of a server.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of service descriptions
      * @throws UserNotAuthorizedException user not authorized
      */
-    public List<RegisteredOMAGService> getAllRegisteredServices(String userId) throws UserNotAuthorizedException
+    public List<RegisteredOMAGService> getAllRegisteredServices(String userId,
+                                                                String delegatingUserId) throws UserNotAuthorizedException
     {
         List<RegisteredOMAGService> response = new ArrayList<>();
 
-        List<RegisteredOMAGService> services = getRegisteredCommonServices(userId);
+        List<RegisteredOMAGService> services = getRegisteredCommonServices(userId, delegatingUserId);
 
         if ((services != null) && (! services.isEmpty()))
         {
             response.addAll(services);
         }
 
-        services = getRegisteredAccessServices(userId);
+        services = getRegisteredAccessServices(userId, delegatingUserId);
 
         if ((services != null) && (! services.isEmpty()))
         {
             response.addAll(services);
         }
 
-        services = getRegisteredViewServices(userId);
+        services = getRegisteredViewServices(userId, delegatingUserId);
 
         if ((services != null) && (! services.isEmpty()))
         {
             response.addAll(services);
         }
 
-        services = getRegisteredGovernanceServices(userId);
+        services = getRegisteredGovernanceServices(userId, delegatingUserId);
 
         if ((services != null) && (! services.isEmpty()))
         {
@@ -628,6 +642,7 @@ public class OMAGServerPlatformInstanceMap
      * Return the type of server.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @param serviceOperationName calling method
      *
@@ -636,11 +651,16 @@ public class OMAGServerPlatformInstanceMap
      * @throws InvalidParameterException the server name is not known
      */
     private static synchronized ServerStatus getServerInstanceStatus(String  userId,
+                                                                     String  delegatingUserId,
                                                                      String  serverName,
                                                                      String  serviceOperationName) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         OMAGServerInstance serverInstance = activeServerInstanceMap.get(serverName);
         boolean            isActive = true;
@@ -681,15 +701,21 @@ public class OMAGServerPlatformInstanceMap
      * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      *
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     private static synchronized boolean isServerInstanceActive(String  userId,
+                                                               String  delegatingUserId,
                                                                String  serverName) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         return (activeServerInstanceMap.get(serverName) != null);
     }
@@ -701,15 +727,21 @@ public class OMAGServerPlatformInstanceMap
      * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      *
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     private static synchronized boolean isServerInstanceKnown(String  userId,
+                                                              String  delegatingUserId,
                                                               String  serverName) throws UserNotAuthorizedException
     {
         validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
 
         return ((activeServerInstanceMap.get(serverName) != null) ||
                 (inActiveServerInstanceMap.get(serverName) != null));
@@ -720,6 +752,7 @@ public class OMAGServerPlatformInstanceMap
      * Return the instance of this service for this server.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @param serviceName name of the service running on the server
      * @param serviceOperationName calling method
@@ -730,6 +763,7 @@ public class OMAGServerPlatformInstanceMap
      * @throws PropertyServerException the service name is not know - indicating a logic error
      */
     private static synchronized OMAGServerServiceInstance getInstanceForPlatform(String  userId,
+                                                                                 String  delegatingUserId,
                                                                                  String  serverName,
                                                                                  String  serviceName,
                                                                                  String  serviceOperationName) throws InvalidParameterException,
@@ -742,18 +776,18 @@ public class OMAGServerPlatformInstanceMap
         {
             OpenMetadataServerSecurityVerifier serverSecurityVerifier = serverInstance.getSecurityVerifier();
 
-            try
+            serverSecurityVerifier.validateUserForServer(userId);
+            serverSecurityVerifier.validateUserForService(userId, serviceName);
+            serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
+
+            if (delegatingUserId != null)
             {
-                serverSecurityVerifier.validateUserForServer(userId);
-                serverSecurityVerifier.validateUserForService(userId, serviceName);
-                serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
-            }
-            catch (UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
+                serverSecurityVerifier.validateUserForServer(delegatingUserId);
+                serverSecurityVerifier.validateUserForService(delegatingUserId, serviceName);
+                serverSecurityVerifier.validateUserForServiceOperation(delegatingUserId, serviceName, serviceOperationName);
             }
 
-            return serverInstance.getRegisteredService(userId, serviceName, serviceOperationName);
+            return serverInstance.getRegisteredService(userId, delegatingUserId, serviceName, serviceOperationName);
         }
         else
         {
@@ -771,18 +805,17 @@ public class OMAGServerPlatformInstanceMap
      * Return the list of OMAG Servers running in this OMAG Server Platform.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of OMAG server names
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    private static synchronized List<String> getActiveServerListForPlatform(String userId) throws UserNotAuthorizedException
+    private static synchronized List<String> getActiveServerListForPlatform(String userId,
+                                                                            String delegatingUserId) throws UserNotAuthorizedException
     {
-        try
+        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
         {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(delegatingUserId);
         }
 
         Set<String>  activeServerSet = activeServerInstanceMap.keySet();
@@ -802,18 +835,17 @@ public class OMAGServerPlatformInstanceMap
      * Return the list of OMAG Servers running in this OMAG Server Platform.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of OMAG server names
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    private static synchronized List<String> getKnownServerListForPlatform(String userId) throws UserNotAuthorizedException
+    private static synchronized List<String> getKnownServerListForPlatform(String userId,
+                                                                           String delegatingUserId) throws UserNotAuthorizedException
     {
-        try
+        OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
         {
             OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
         }
 
         List<String> knownServerList = new ArrayList<>(activeServerInstanceMap.keySet());
@@ -844,16 +876,30 @@ public class OMAGServerPlatformInstanceMap
         {
             OpenMetadataServerSecurityVerifier serverSecurityVerifier = serverInstance.getSecurityVerifier();
 
-            try
-            {
-                serverSecurityVerifier.validateUserForServer(userId);
-                serverSecurityVerifier.validateUserAsServerInvestigator(userId);
-            }
-            catch (UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
+            serverSecurityVerifier.validateUserForServer(userId);
+            serverSecurityVerifier.validateUserAsServerInvestigator(userId);
         }
+    }
+
+
+    /**
+     * Return the time this platform started.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
+     * @return start time
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static  Date getStartTimeFromPlatform(String  userId,
+                                                  String  delegatingUserId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+        if (delegatingUserId != null)
+        {
+            validateUserAsInvestigatorForPlatform(delegatingUserId);
+        }
+
+        return platformStartTime;
     }
 
 
@@ -861,12 +907,14 @@ public class OMAGServerPlatformInstanceMap
      * Return the time this server instance last started.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return start time
      * @throws InvalidParameterException the serverName is not known.
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     private static synchronized  Date getServerStartTimeFromPlatform(String  userId,
+                                                                     String  delegatingUserId,
                                                                      String  serverName) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException
     {
@@ -882,6 +930,10 @@ public class OMAGServerPlatformInstanceMap
         if (serverInstance != null)
         {
             validateUserAsServerInvestigator(userId, serverInstance);
+            if (delegatingUserId != null)
+            {
+                validateUserAsServerInvestigator(delegatingUserId, serverInstance);
+            }
 
             return serverInstance.getServerStartTime();
         }
@@ -898,12 +950,14 @@ public class OMAGServerPlatformInstanceMap
      * Return the time this server instance last ended (or null if it is still running).
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return end time or null
      * @throws InvalidParameterException the serverName is not known.
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     private static synchronized  Date getServerEndTimeFromPlatform(String  userId,
+                                                                   String  delegatingUserId,
                                                                    String  serverName) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException
     {
@@ -919,6 +973,10 @@ public class OMAGServerPlatformInstanceMap
         if (serverInstance != null)
         {
             validateUserAsServerInvestigator(userId, serverInstance);
+            if (delegatingUserId != null)
+            {
+                validateUserAsServerInvestigator(delegatingUserId, serverInstance);
+            }
 
             return serverInstance.getServerEndTime();
         }
@@ -935,12 +993,14 @@ public class OMAGServerPlatformInstanceMap
      * Return the time this server instance last started.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return start time
      * @throws InvalidParameterException the serverName is not known.
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     private static synchronized  List<OMAGServerInstanceHistory> getServerHistoryFromPlatform(String  userId,
+                                                                                              String  delegatingUserId,
                                                                                               String  serverName) throws InvalidParameterException,
                                                                                                                          UserNotAuthorizedException
     {
@@ -956,6 +1016,10 @@ public class OMAGServerPlatformInstanceMap
         if (serverInstance != null)
         {
             validateUserAsServerInvestigator(userId, serverInstance);
+            if (delegatingUserId != null)
+            {
+                validateUserAsServerInvestigator(delegatingUserId, serverInstance);
+            }
 
             return serverInstance.getServerHistory();
         }
@@ -971,12 +1035,14 @@ public class OMAGServerPlatformInstanceMap
      * Return the list of services running in an OMAG Server that is running on this OMAG Server Platform.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return list on OMAG Services or null if the server is not
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     private static synchronized List<String> getActiveServicesForServerOnPlatform(String userId,
+                                                                                  String delegatingUserId,
                                                                                   String serverName) throws InvalidParameterException,
                                                                                                             UserNotAuthorizedException
     {
@@ -987,6 +1053,10 @@ public class OMAGServerPlatformInstanceMap
         if (serverInstance != null)
         {
             validateUserAsServerInvestigator(userId, serverInstance);
+            if (delegatingUserId != null)
+            {
+                validateUserAsServerInvestigator(delegatingUserId, serverInstance);
+            }
 
             return serverInstance.getConfiguredServices();
         }
@@ -1152,6 +1222,7 @@ public class OMAGServerPlatformInstanceMap
      * Return the type of server.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @param serviceOperationName name of the calling method/request
      *
@@ -1160,11 +1231,12 @@ public class OMAGServerPlatformInstanceMap
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public ServerStatus getServerStatus(String  userId,
+                                        String  delegatingUserId,
                                         String  serverName,
                                         String  serviceOperationName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getServerInstanceStatus(userId, serverName, serviceOperationName);
+        return OMAGServerPlatformInstanceMap.getServerInstanceStatus(userId, delegatingUserId, serverName, serviceOperationName);
     }
 
 
@@ -1173,15 +1245,17 @@ public class OMAGServerPlatformInstanceMap
      * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      *
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public boolean isServerActive(String  userId,
+                                  String  delegatingUserId,
                                   String  serverName) throws UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.isServerInstanceActive(userId, serverName);
+        return OMAGServerPlatformInstanceMap.isServerInstanceActive(userId, delegatingUserId, serverName);
     }
 
 
@@ -1190,15 +1264,34 @@ public class OMAGServerPlatformInstanceMap
      * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      *
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public boolean isServerKnown(String  userId,
+                                 String  delegatingUserId,
                                  String  serverName) throws UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.isServerInstanceKnown(userId, serverName);
+        return OMAGServerPlatformInstanceMap.isServerInstanceKnown(userId, delegatingUserId,  serverName);
+    }
+
+
+    /**
+     * Return the time this platform started.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
+     * @return start time
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public  Date getPlatformStartTime(String  userId,
+                                      String  delegatingUserId) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getStartTimeFromPlatform(userId, delegatingUserId);
     }
 
 
@@ -1206,16 +1299,18 @@ public class OMAGServerPlatformInstanceMap
      * Return the time this server instance last started.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return start time
      * @throws InvalidParameterException the serverName is not known.
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public  Date getServerStartTime(String  userId,
+                                    String  delegatingUserId,
                                     String  serverName) throws InvalidParameterException,
                                                                UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getServerStartTimeFromPlatform(userId, serverName);
+        return OMAGServerPlatformInstanceMap.getServerStartTimeFromPlatform(userId, delegatingUserId, serverName);
     }
 
 
@@ -1223,16 +1318,18 @@ public class OMAGServerPlatformInstanceMap
      * Return the time this server instance last ended (or null if it is still running).
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return end time or null
      * @throws InvalidParameterException the serverName is not known.
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public  Date getServerEndTime(String  userId,
+                                  String  delegatingUserId,
                                   String  serverName) throws InvalidParameterException,
                                                              UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getServerEndTimeFromPlatform(userId, serverName);
+        return OMAGServerPlatformInstanceMap.getServerEndTimeFromPlatform(userId, delegatingUserId, serverName);
     }
 
 
@@ -1240,16 +1337,18 @@ public class OMAGServerPlatformInstanceMap
      * Return the time this server instance last started.
      *
      * @param userId calling user or null if it is an anonymous request
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return start time
      * @throws InvalidParameterException the serverName is not known.
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public  List<OMAGServerInstanceHistory> getServerHistory(String  userId,
+                                                             String  delegatingUserId,
                                                              String  serverName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getServerHistoryFromPlatform(userId, serverName);
+        return OMAGServerPlatformInstanceMap.getServerHistoryFromPlatform(userId, delegatingUserId, serverName);
     }
 
 
@@ -1326,9 +1425,34 @@ public class OMAGServerPlatformInstanceMap
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return OMAGServerPlatformInstanceMap.getInstanceForPlatform(userId, serverName, serviceName, serviceOperationName);
+        return OMAGServerPlatformInstanceMap.getInstanceForPlatform(userId, null, serverName, serviceName, serviceOperationName);
     }
 
+
+
+    /**
+     * Return the instance for this server.
+     *
+     * @param userId calling user
+     * @param delegatingUserId external userId making request
+     * @param serverName name of the server
+     * @param serviceName name of the service running on the server
+     * @param serviceOperationName  name of the calling method (relates to REST operation call)
+     * @return OMAGServerServiceInstance object
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    OMAGServerServiceInstance getServiceInstance(String    userId,
+                                                 String    delegatingUserId,
+                                                 String    serverName,
+                                                 String    serviceName,
+                                                 String    serviceOperationName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return OMAGServerPlatformInstanceMap.getInstanceForPlatform(userId, delegatingUserId, serverName, serviceName, serviceOperationName);
+    }
 
     /**
      * Remove the instance for this server.
@@ -1363,12 +1487,14 @@ public class OMAGServerPlatformInstanceMap
      * Return the list of OMAG Servers running in this OMAG Server Platform.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of OMAG server names
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    public List<String>   getActiveServerList(String userId) throws UserNotAuthorizedException
+    public List<String>   getActiveServerList(String userId,
+                                              String delegatingUserId) throws UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getActiveServerListForPlatform(userId);
+        return OMAGServerPlatformInstanceMap.getActiveServerListForPlatform(userId, delegatingUserId);
     }
 
 
@@ -1376,12 +1502,14 @@ public class OMAGServerPlatformInstanceMap
      * Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @return list of OMAG server names
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    public List<String>   getKnownServerList(String userId) throws UserNotAuthorizedException
+    public List<String>   getKnownServerList(String userId,
+                                             String delegatingUserId) throws UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getKnownServerListForPlatform(userId);
+        return OMAGServerPlatformInstanceMap.getKnownServerListForPlatform(userId, delegatingUserId);
     }
 
 
@@ -1389,15 +1517,17 @@ public class OMAGServerPlatformInstanceMap
      * Return the list of services running in an OMAG Server that is running on this OMAG Server Platform.
      *
      * @param userId calling user
+     * @param delegatingUserId external userId making request
      * @param serverName name of the server
      * @return list on OMAG Services
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
     public List<String> getActiveServicesForServer(String  userId,
+                                                   String  delegatingUserId,
                                                    String  serverName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getActiveServicesForServerOnPlatform(userId, serverName);
+        return OMAGServerPlatformInstanceMap.getActiveServicesForServerOnPlatform(userId, delegatingUserId, serverName);
     }
 }

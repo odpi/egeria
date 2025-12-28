@@ -44,11 +44,12 @@ public class OMAGServerPlatformOperationalServices extends TokenController
     /**
      * Temporarily deactivate any open metadata and governance services for all running servers.
      *
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownAllServers()
+    public VoidResponse shutdownAllServers(String delegatingUserId)
     {
         final String methodName = "shutdownAllServer";
         final String serverName = "<null>";
@@ -63,7 +64,13 @@ public class OMAGServerPlatformOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            List<String> activeServers = platformInstanceMap.getActiveServerList(userId);
+            List<String> activeServers = platformInstanceMap.getActiveServerList(userId, delegatingUserId);
+
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             if (activeServers != null)
             {
@@ -72,7 +79,7 @@ public class OMAGServerPlatformOperationalServices extends TokenController
                     serverOperationalServices.deactivateRunningServiceInstances(userId,
                                                                                 activeServerName,
                                                                                 methodName,
-                                                                                serverOperationalInstanceHandler.getServerServiceInstance(userId, activeServerName, methodName),
+                                                                                serverOperationalInstanceHandler.getServerServiceInstance(userId, delegatingUserId, activeServerName, methodName),
                                                                                 false);
                 }
             }
@@ -92,11 +99,12 @@ public class OMAGServerPlatformOperationalServices extends TokenController
      * Terminate any running open metadata and governance services, remove the server from any open metadata cohorts
      * and delete the server's configuration.
      *
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownAndUnregisterAllServers()
+    public VoidResponse shutdownAndUnregisterAllServers(String delegatingUserId)
     {
         final String methodName = "shutdownAndUnregisterAllServers";
         final String serverName = "<null>";
@@ -111,7 +119,13 @@ public class OMAGServerPlatformOperationalServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            List<String> activeServers = platformInstanceMap.getActiveServerList(userId);
+            List<String> activeServers = platformInstanceMap.getActiveServerList(userId, delegatingUserId);
+
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             if (activeServers != null)
             {
@@ -120,7 +134,7 @@ public class OMAGServerPlatformOperationalServices extends TokenController
                     serverOperationalServices.deactivateRunningServiceInstances(userId,
                                                                                 activeServerName,
                                                                                 methodName,
-                                                                                serverOperationalInstanceHandler.getServerServiceInstance(userId, activeServerName, methodName),
+                                                                                serverOperationalInstanceHandler.getServerServiceInstance(userId, delegatingUserId, activeServerName, methodName),
                                                                                 true);
                 }
             }
@@ -138,11 +152,12 @@ public class OMAGServerPlatformOperationalServices extends TokenController
     /**
      * Terminate this platform.
      *
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
      */
-    public VoidResponse shutdownPlatform()
+    public VoidResponse shutdownPlatform(String delegatingUserId)
     {
         final String methodName = "shutdownPlatform";
         final String serverName = "<null>";
@@ -156,6 +171,12 @@ public class OMAGServerPlatformOperationalServices extends TokenController
             String userId = super.getUser(CommonServicesDescription.PLATFORM_SERVICES.getServiceName(), methodName);
 
             restCallLogger.setUserId(token, userId);
+
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+            if (delegatingUserId != null)
+            {
+                OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(delegatingUserId);
+            }
 
             Runtime.getRuntime().exit(1);
         }

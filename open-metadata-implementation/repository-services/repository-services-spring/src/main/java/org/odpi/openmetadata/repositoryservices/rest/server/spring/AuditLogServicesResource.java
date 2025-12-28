@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -12,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogSeveritiesResponse;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSAuditLogRESTServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -55,6 +53,7 @@ public class AuditLogServicesResource
      * Return the details of the severities that this server supports.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return variety of properties
      */
     @GetMapping(path = "/severity-definitions")
@@ -65,9 +64,10 @@ public class AuditLogServicesResource
                externalDocs=@ExternalDocumentation(description="Audit Log",
                                                    url="https://egeria-project.org/concepts/audit-log/"))
 
-    public AuditLogSeveritiesResponse getSeverityList(@PathVariable String   serverName)
+    public AuditLogSeveritiesResponse getSeverityList(@PathVariable String serverName,
+                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getSeverityList(serverName);
+        return restAPI.getSeverityList(serverName, delegatingUserId);
     }
 
 
@@ -75,6 +75,7 @@ public class AuditLogServicesResource
      * Return the report from the local server's audit log.
      *
      * @param serverName server to query
+     * @param delegatingUserId external userId making request
      * @return registration properties for server
      */
     @GetMapping(path = "/report")
@@ -85,8 +86,9 @@ public class AuditLogServicesResource
                externalDocs=@ExternalDocumentation(description="Audit Log",
                                                    url="https://egeria-project.org/concepts/audit-log/"))
 
-    public AuditLogReportResponse getAuditLogReport(@PathVariable String   serverName)
+    public AuditLogReportResponse getAuditLogReport(@PathVariable String   serverName,
+                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getAuditLogReport(serverName);
+        return restAPI.getAuditLogReport(serverName, delegatingUserId);
     }
 }

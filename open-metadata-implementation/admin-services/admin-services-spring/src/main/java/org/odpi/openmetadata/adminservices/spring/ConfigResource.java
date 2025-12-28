@@ -45,6 +45,7 @@ public class ConfigResource
      * Return the stored configuration document for the server.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig properties or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
@@ -57,9 +58,10 @@ public class ConfigResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String serverName)
+    public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String serverName,
+                                                           @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getStoredConfiguration(serverName);
+        return adminAPI.getStoredConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -67,6 +69,7 @@ public class ConfigResource
      * Return the stored configuration document for the server.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig properties or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName parameter.
@@ -79,9 +82,10 @@ public class ConfigResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public OMAGServerConfigResponse getResolvedConfiguration(@PathVariable String serverName)
+    public OMAGServerConfigResponse getResolvedConfiguration(@PathVariable String serverName,
+                                                             @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getResolvedConfiguration(serverName);
+        return adminAPI.getResolvedConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -89,6 +93,7 @@ public class ConfigResource
      * Set up the configuration properties for an OMAG Server in a single command.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param omagServerConfig  configuration for the server
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -103,9 +108,10 @@ public class ConfigResource
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
     public VoidResponse setOMAGServerConfig(@PathVariable String           serverName,
+                                            @RequestParam(required = false) String delegatingUserId,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
     {
-        return adminAPI.setOMAGServerConfig(serverName, omagServerConfig);
+        return adminAPI.setOMAGServerConfig(serverName, delegatingUserId, omagServerConfig);
     }
 
 
@@ -113,6 +119,7 @@ public class ConfigResource
      * Clear the configuration properties for an OMAG Server in a single command.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or OMAGServerConfig parameter.
@@ -125,9 +132,10 @@ public class ConfigResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearOMAGServerConfig(@PathVariable String serverName)
+    public VoidResponse clearOMAGServerConfig(@PathVariable String serverName,
+                                              @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.clearOMAGServerConfig(serverName);
+        return adminAPI.clearOMAGServerConfig(serverName, delegatingUserId);
     }
 
 
@@ -135,6 +143,7 @@ public class ConfigResource
      * Push the configuration for the server to another OMAG Server Platform.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @param destinationPlatform  location of the platform where the config is to be deployed to
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -150,8 +159,9 @@ public class ConfigResource
                                                    url="https://egeria-project.org/concepts/configuration-document/"))
 
     public VoidResponse deployOMAGServerConfig(@PathVariable String           serverName,
+                                               @RequestParam(required = false) String delegatingUserId,
                                                @RequestBody  URLRequestBody   destinationPlatform)
     {
-        return adminAPI.deployOMAGServerConfig(serverName, destinationPlatform);
+        return adminAPI.deployOMAGServerConfig(serverName, delegatingUserId, destinationPlatform);
     }
 }

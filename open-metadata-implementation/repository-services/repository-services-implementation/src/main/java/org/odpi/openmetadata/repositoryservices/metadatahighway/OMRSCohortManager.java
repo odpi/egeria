@@ -36,8 +36,6 @@ import java.util.List;
 public class OMRSCohortManager
 {
     private String                     cohortName                        = null;
-    private OMRSTopicConnector         cohortSingleTopicConnector        = null;
-    private Connection                 cohortSingleTopicConnection       = null;
     private OMRSTopicConnector         cohortRegistrationTopicConnector  = null;
     private Connection                 cohortRegistrationTopicConnection = null;
     private OMRSTopicConnector         cohortTypesTopicConnector         = null;
@@ -86,8 +84,6 @@ public class OMRSCohortManager
      *                           metadata repository cohort.
      * @param enterpriseTopicConnector Connector to the federated OMRS Topic.
      * @param cohortRegistryStore the cohort registry store where details of members of the cohort are kept
-     * @param cohortSingleTopicConnector Connector to the cohort's single OMRS Topic
-     * @param cohortSingleTopicConnection Connection to the cohort's single OMRS Topic
      * @param cohortRegistrationTopicConnector Connector to the cohort's registration OMRS Topic
      * @param cohortRegistrationTopicConnection Connection to the cohort's registration OMRS Topic
      * @param cohortTypesTopicConnector Connector to the cohort's types OMRS Topic
@@ -107,8 +103,6 @@ public class OMRSCohortManager
                            OMRSConnectionConsumer           connectionConsumer,
                            OMRSTopicConnector               enterpriseTopicConnector,
                            OMRSCohortRegistryStore          cohortRegistryStore,
-                           Connection                       cohortSingleTopicConnection,
-                           OMRSTopicConnector               cohortSingleTopicConnector,
                            Connection                       cohortRegistrationTopicConnection,
                            OMRSTopicConnector               cohortRegistrationTopicConnector,
                            Connection                       cohortTypesTopicConnection,
@@ -135,8 +129,6 @@ public class OMRSCohortManager
              */
             this.cohortConnectionStatus = CohortConnectionStatus.INITIALIZING;
 
-            this.cohortSingleTopicConnection = cohortSingleTopicConnection;
-            this.cohortSingleTopicConnector  = cohortSingleTopicConnector;
             this.cohortRegistrationTopicConnection = cohortRegistrationTopicConnection;
             this.cohortRegistrationTopicConnector  = cohortRegistrationTopicConnector;
             this.cohortTypesTopicConnection = cohortTypesTopicConnection;
@@ -157,11 +149,6 @@ public class OMRSCohortManager
              * Create event publisher(s) for the cohort registry to use to send registration requests.
              */
             List<OMRSTopicConnector> registrationTopicConnectors = new ArrayList<>();
-
-            if (cohortSingleTopicConnector != null)
-            {
-                registrationTopicConnectors.add(cohortSingleTopicConnector);
-            }
 
             if (cohortRegistrationTopicConnector != null)
             {
@@ -206,12 +193,6 @@ public class OMRSCohortManager
                      */
                     List<OMRSTopicConnector> typesTopicConnectors = new ArrayList<>();
                     List<OMRSTopicConnector> instancesTopicConnectors = new ArrayList<>();
-
-                    if (cohortSingleTopicConnector != null)
-                    {
-                        typesTopicConnectors.add(cohortSingleTopicConnector);
-                        instancesTopicConnectors.add(cohortSingleTopicConnector);
-                    }
 
                     if (cohortTypesTopicConnector != null)
                     {
@@ -337,12 +318,6 @@ public class OMRSCohortManager
                                                                           securityVerifier,
                                                                           auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_LISTENER));
 
-            if (cohortSingleTopicConnector != null)
-            {
-                cohortSingleTopicConnector.registerListener(cohortEventListener, cohortName + " (single)");
-                cohortSingleTopicConnector.start();
-            }
-
             if (cohortRegistrationTopicConnector != null)
             {
                 cohortRegistrationTopicConnector.registerListener(cohortEventListener, cohortName + " (registration)");
@@ -440,25 +415,11 @@ public class OMRSCohortManager
      *
      * @return cohort description
      */
-    @SuppressWarnings(value = "deprecation")
     CohortDescription getCohortDescription()
     {
         CohortDescription  description = new CohortDescription();
 
         description.setCohortName(cohortName);
-
-        /*
-         * Support for backward compatibility
-         */
-        if (cohortRegistrationTopicConnection != null)
-        {
-            description.setTopicConnection(cohortRegistrationTopicConnection);
-        }
-        else
-        {
-            description.setTopicConnection(cohortSingleTopicConnection);
-        }
-        description.setSingleTopicConnection(cohortSingleTopicConnection);
         description.setRegistrationTopicConnection(cohortRegistrationTopicConnection);
         description.setTypesTopicConnection(cohortTypesTopicConnection);
         description.setInstancesTopicConnection(cohortInstancesTopicConnection);
@@ -473,7 +434,6 @@ public class OMRSCohortManager
      * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
      * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
      * event has been sent.
-     *
      * If the server has already registered in the past, it sends a reregistration request.
      */
     public synchronized void  connectToCohort()
@@ -547,11 +507,6 @@ public class OMRSCohortManager
             if (cohortRegistry != null)
             {
                 cohortRegistry.disconnectFromCohort(unregister);
-            }
-
-            if (cohortSingleTopicConnector != null)
-            {
-                cohortSingleTopicConnector.disconnect();
             }
 
             if (cohortRegistrationTopicConnector != null)

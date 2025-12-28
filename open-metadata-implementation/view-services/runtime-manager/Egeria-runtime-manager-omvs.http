@@ -24,7 +24,7 @@ Content-Type: application/json
 # Work with platforms.
 # https://egeria-project.org/types/0037-Software-Server-Platforms/
 
-@platformGUID=44bf319f-1e41-4da1-b771-2753b92b631a
+@platformGUID=add guid here
 
 ###
 # @name getPlatformsByName
@@ -166,7 +166,20 @@ Content-Type: application/json
 
 
 ###
-# @name getServersByDeployedImplementationType
+# @name getServersByName (engine-host)
+# Returns the list of servers with a particular name.  The name is specified in the filter.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "engine-host"
+}
+
+
+###
+# @name getServersByDeployedImplementationType (Unity Catalog Servers)
 # Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
 # If it is null, or no request body is supplied, all servers are returned.
 
@@ -176,6 +189,34 @@ Content-Type: application/json
 
 {
   "filter" : "Unity Catalog Server"
+}
+
+
+###
+# @name getServersByDeployedImplementationType (engine hosts)
+# Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
+# If it is null, or no request body is supplied, all servers are returned.
+
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Engine Host Server"
+}
+
+
+###
+# @name getServersByDeployedImplementationType (integration daemons)
+# Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
+# If it is null, or no request body is supplied, all servers are returned.
+
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Integration Daemon"
 }
 
 

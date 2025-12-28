@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -52,6 +53,7 @@ public class ConfigDefaultsResource
      * If it is updated after a subsystem is configured then the new value is ignored.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody  String url.
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -71,9 +73,10 @@ public class ConfigDefaultsResource
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-the-server-url-root"))
 
     public VoidResponse setServerRootURL(@PathVariable String         serverName,
+                                         @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                          @RequestBody  URLRequestBody requestBody)
     {
-        return adminAPI.setServerRootURL(serverName, requestBody);
+        return adminAPI.setServerRootURL(serverName, delegatingUserId, requestBody);
     }
 
 
@@ -87,6 +90,7 @@ public class ConfigDefaultsResource
      * clearOpenMetadataOutTopic
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.
      * @param configurationProperties  property name/value pairs used to configure the connection to the event bus connector
@@ -108,11 +112,12 @@ public class ConfigDefaultsResource
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
     public VoidResponse setEventBus(@PathVariable                   String              serverName,
+                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                     @RequestParam(required = false) String              connectorProvider,
                                     @RequestParam(required = false) String              topicURLRoot,
                                     @RequestBody (required = false) Map<String, Object> configurationProperties)
     {
-        return adminAPI.setEventBus(serverName, connectorProvider, topicURLRoot, configurationProperties);
+        return adminAPI.setEventBus(serverName, delegatingUserId, connectorProvider, topicURLRoot, configurationProperties);
     }
 
 
@@ -120,6 +125,7 @@ public class ConfigDefaultsResource
      * Return the current configuration for the event bus.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @return event bus config response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
@@ -133,9 +139,10 @@ public class ConfigDefaultsResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
-    public EventBusConfigResponse getEventBus(@PathVariable String serverName)
+    public EventBusConfigResponse getEventBus(@PathVariable String serverName,
+                                              @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.getEventBus(serverName);
+        return adminAPI.getEventBus(serverName, delegatingUserId);
     }
 
 
@@ -144,6 +151,7 @@ public class ConfigDefaultsResource
      * This does not impact that existing configuration for the server, only future configuration requests.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
@@ -157,8 +165,9 @@ public class ConfigDefaultsResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
-    public VoidResponse deleteEventBus(@PathVariable String serverName)
+    public VoidResponse deleteEventBus(@PathVariable String serverName,
+                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminAPI.deleteEventBus(serverName);
+        return adminAPI.deleteEventBus(serverName, delegatingUserId);
     }
 }

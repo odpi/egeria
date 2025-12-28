@@ -38,11 +38,13 @@ public class OMAGServerAdminSecurityServices extends TokenController
      * Override the default server security connector.
      *
      * @param serverName server to configure
+     * @param delegatingUserId external userId making request
      * @param connection connection used to create and configure the connector.
      * @return void response
      */
-    public synchronized VoidResponse setServerSecurityConnection(String       serverName,
-                                                                 Connection   connection)
+    public synchronized VoidResponse setServerSecurityConnection(String     serverName,
+                                                                 String     delegatingUserId,
+                                                                 Connection connection)
     {
         final String methodName = "setServerSecurityConnection";
 
@@ -59,7 +61,7 @@ public class OMAGServerAdminSecurityServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             serverConfig.setServerSecurityConnection(connection);
 
@@ -91,9 +93,11 @@ public class OMAGServerAdminSecurityServices extends TokenController
      * Return the connection object for the server security connector.
      *
      * @param serverName server to retrieve configuration from
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
-    public synchronized ConnectionResponse getServerSecurityConnection(String serverName)
+    public synchronized ConnectionResponse getServerSecurityConnection(String serverName,
+                                                                       String delegatingUserId)
     {
         final String methodName = "getServerSecurityConnection";
 
@@ -109,7 +113,7 @@ public class OMAGServerAdminSecurityServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             response.setConnection(serverConfig.getServerSecurityConnection());
         }
@@ -129,9 +133,11 @@ public class OMAGServerAdminSecurityServices extends TokenController
      * This sets the server security back to default.
      *
      * @param serverName server to configure
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
-    public synchronized VoidResponse clearServerSecurityConnection(String   serverName)
+    public synchronized VoidResponse clearServerSecurityConnection(String serverName,
+                                                                   String delegatingUserId)
     {
         final String methodName = "clearServerSecurityConnection";
 
@@ -147,7 +153,7 @@ public class OMAGServerAdminSecurityServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             serverConfig.setServerSecurityConnection(null);
 

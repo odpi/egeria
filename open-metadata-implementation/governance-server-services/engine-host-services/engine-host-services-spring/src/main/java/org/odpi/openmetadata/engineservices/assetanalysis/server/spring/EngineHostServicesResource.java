@@ -4,6 +4,7 @@ package org.odpi.openmetadata.engineservices.assetanalysis.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,10 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummariesResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummaryResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostRESTServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -46,6 +44,7 @@ public class EngineHostServicesResource
      * Retrieve the description and status of the requested governance engine.
      *
      * @param serverName engine host server name
+     * @param delegatingUserId external userId making request
      * @param governanceEngineName name of governance engine of interest
      * @return list of statuses - on for each assigned governance engines or
      *  InvalidParameterException one of the parameters is null or invalid or
@@ -60,17 +59,18 @@ public class EngineHostServicesResource
                     url="https://egeria-project.org/concepts/governance-engine/"))
 
     public GovernanceEngineSummaryResponse getGovernanceEngineSummary(@PathVariable String serverName,
-                                                                      @PathVariable String governanceEngineName)
+                                                                      @PathVariable String governanceEngineName,
+                                                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getGovernanceEngineSummary(serverName, governanceEngineName);
+        return restAPI.getGovernanceEngineSummary(serverName, delegatingUserId, governanceEngineName);
     }
-
 
 
     /**
      * Return a summary of each of the governance engines running in the Engine Host.
      *
      * @param serverName engine host server name
+     * @param delegatingUserId external userId making request
      * @return list of statuses - on for each assigned governance engines or
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
@@ -83,9 +83,10 @@ public class EngineHostServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-engine/"))
 
-    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName)
+    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName,
+                                                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.getGovernanceEngineSummaries(serverName);
+        return restAPI.getGovernanceEngineSummaries(serverName, delegatingUserId);
     }
 
 
@@ -96,6 +97,7 @@ public class EngineHostServicesResource
      * is in use.
      *
      * @param serverName name of the governance server
+     * @param delegatingUserId external userId making request
      * @param governanceEngineName unique name of the governance engine
      *
      * @return void or
@@ -115,9 +117,10 @@ public class EngineHostServicesResource
                     url="https://egeria-project.org/concepts/governance-engine-definition/"))
 
     public  VoidResponse refreshConfig(@PathVariable String serverName,
-                                       @PathVariable String governanceEngineName)
+                                       @PathVariable String governanceEngineName,
+                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.refreshConfig(serverName, governanceEngineName);
+        return restAPI.refreshConfig(serverName, delegatingUserId, governanceEngineName);
     }
 
 
@@ -128,6 +131,7 @@ public class EngineHostServicesResource
      * is in use.
      *
      * @param serverName name of the governance server.
+     * @param delegatingUserId external userId making request
      *
      * @return void or
      *  InvalidParameterException one of the parameters is null or invalid or
@@ -145,8 +149,9 @@ public class EngineHostServicesResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-engine-definition/"))
 
-    public  VoidResponse refreshConfig(@PathVariable String serverName)
+    public  VoidResponse refreshConfig(@PathVariable String serverName,
+                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return restAPI.refreshConfig(serverName);
+        return restAPI.refreshConfig(serverName, delegatingUserId);
     }
 }

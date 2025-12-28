@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
+import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 /**
  * FileBasedServerConfigStoreConnector provides a connector that manages a configuration document for an OMAG Server in a file
  */
-public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStoreRetrieveAll
+public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStore
 {
     /*
      * This is the insert string using in the file name template

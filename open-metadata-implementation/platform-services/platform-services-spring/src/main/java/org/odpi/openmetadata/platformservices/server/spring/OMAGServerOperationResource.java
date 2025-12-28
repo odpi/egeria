@@ -4,6 +4,7 @@ package org.odpi.openmetadata.platformservices.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -17,13 +18,7 @@ import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformOperation
 import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * OMAGServerOperationResource provides the REST API for controlling the start-up, management and
@@ -59,6 +54,7 @@ public class OMAGServerOperationResource
      * Activate the Open Metadata and Governance (OMAG) server using the configuration document stored for this server.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
@@ -72,9 +68,10 @@ public class OMAGServerOperationResource
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
                     url="https://egeria-project.org/concepts/configuration-document"))
 
-    public SuccessMessageResponse activateWithStoredConfig(@PathVariable String serverName)
+    public SuccessMessageResponse activateWithStoredConfig(@PathVariable String serverName,
+                                                           @RequestParam (required = false) String delegatingUserId)
     {
-        return serverOperationalServices.activateWithStoredConfig(serverName);
+        return serverOperationalServices.activateWithStoredConfig(serverName, delegatingUserId);
     }
 
 
@@ -83,6 +80,7 @@ public class OMAGServerOperationResource
      * document.
      *
      * @param configuration  properties used to initialize the services
+     * @param delegatingUserId external userId making request
      * @param serverName  local server name
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -99,9 +97,10 @@ public class OMAGServerOperationResource
                     url="https://egeria-project.org/concepts/configuration-document"))
 
     public SuccessMessageResponse activateWithSuppliedConfig(@PathVariable String           serverName,
+                                                             @RequestParam(required = false) String delegatingUserId,
                                                              @RequestBody  OMAGServerConfig configuration)
     {
-        return serverOperationalServices.activateWithSuppliedConfig(serverName, configuration);
+        return serverOperationalServices.activateWithSuppliedConfig(serverName, delegatingUserId, configuration);
     }
 
 
@@ -119,15 +118,17 @@ public class OMAGServerOperationResource
     @Operation(summary="shutdownServer",
             description="Temporarily shutdown the named OMAG server.  This server can be restarted as a later time.")
 
-    public VoidResponse shutdownServer(@PathVariable String  serverName)
+    public VoidResponse shutdownServer(@PathVariable String  serverName,
+                                       @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return serverOperationalServices.shutdownServer(serverName);
+        return serverOperationalServices.shutdownServer(serverName, delegatingUserId);
     }
 
 
     /**
      * Temporarily shutdown all running servers.
      *
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
@@ -138,9 +139,9 @@ public class OMAGServerOperationResource
     @Operation(summary="shutdownAllServers",
                description="Shutdown all active servers.  They can be restarted as a later time.")
 
-    public VoidResponse shutdownAllServers()
+    public VoidResponse shutdownAllServers(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformOperationalServices.shutdownAllServers();
+        return platformOperationalServices.shutdownAllServers(delegatingUserId);
     }
 
 
@@ -149,6 +150,7 @@ public class OMAGServerOperationResource
      * any cohorts.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
@@ -160,9 +162,10 @@ public class OMAGServerOperationResource
             description="Shutdown the named OMAG server.  The server will also be removed " +
                     "from any open metadata repository cohorts it has registered with.")
 
-    public VoidResponse shutdownAndUnregisterServer(@PathVariable String  serverName)
+    public VoidResponse shutdownAndUnregisterServer(@PathVariable String  serverName,
+                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return serverOperationalServices.shutdownAndUnregisterServer(serverName);
+        return serverOperationalServices.shutdownAndUnregisterServer(serverName, delegatingUserId);
     }
 
 
@@ -170,6 +173,7 @@ public class OMAGServerOperationResource
      * Shutdown any active servers and unregister them from
      * any cohorts.
      *
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
@@ -181,15 +185,16 @@ public class OMAGServerOperationResource
                description="Shutdown all OMAG Servers that are active on the platform.  The servers will also be removed " +
                                    "from any open metadata repository cohorts they are registered with.")
 
-    public VoidResponse shutdownAndUnregisterAllServers()
+    public VoidResponse shutdownAndUnregisterAllServers(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformOperationalServices.shutdownAndUnregisterAllServers();
+        return platformOperationalServices.shutdownAndUnregisterAllServers(delegatingUserId);
     }
 
 
     /**
      * Shutdown the platform.
      *
+     * @param delegatingUserId external userId making request
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
@@ -200,9 +205,9 @@ public class OMAGServerOperationResource
     @Operation(summary="shutdownPlatform",
                description="Shutdown this OMAG Server Platform.")
 
-    public VoidResponse shutdownPlatform()
+    public VoidResponse shutdownPlatform(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return platformOperationalServices.shutdownPlatform();
+        return platformOperationalServices.shutdownPlatform(delegatingUserId);
     }
 
 
@@ -216,6 +221,7 @@ public class OMAGServerOperationResource
      * the server instance is not running.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return configuration properties used to initialize the server or null if not running or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
@@ -231,9 +237,10 @@ public class OMAGServerOperationResource
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
                     url="https://egeria-project.org/concepts/configuration-document"))
 
-    public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           serverName)
+    public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           serverName,
+                                                           @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return serverOperationalServices.getActiveConfiguration(serverName);
+        return serverOperationalServices.getActiveConfiguration(serverName, delegatingUserId);
     }
 
 
@@ -243,6 +250,7 @@ public class OMAGServerOperationResource
      * the server instance is not running.
      *
      * @param serverName  local server name
+     * @param delegatingUserId external userId making request
      * @return status of the server or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or not running or
@@ -258,9 +266,10 @@ public class OMAGServerOperationResource
                externalDocs=@ExternalDocumentation(description="OMAG Server",
                                                    url="https://egeria-project.org/concepts/omag-server"))
 
-    public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String serverName)
+    public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String serverName,
+                                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return serverOperationalServices.getActiveServerStatus(serverName);
+        return serverOperationalServices.getActiveServerStatus(serverName, delegatingUserId);
     }
 
 
@@ -268,6 +277,7 @@ public class OMAGServerOperationResource
      * Add a new open metadata archive to running repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param fileName name of the open metadata archive file.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -284,9 +294,10 @@ public class OMAGServerOperationResource
                     url="https://egeria-project.org/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String serverName,
+                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                    @RequestBody  String fileName)
     {
-        return serverOperationalServices.addOpenMetadataArchiveFile(serverName, fileName);
+        return serverOperationalServices.addOpenMetadataArchiveFile(serverName, delegatingUserId, fileName);
     }
 
 
@@ -294,6 +305,7 @@ public class OMAGServerOperationResource
      * Add a new open metadata archive to running repository.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param connection connection for the open metadata archive.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -310,8 +322,9 @@ public class OMAGServerOperationResource
                     url="https://egeria-project.org/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchive(@PathVariable String     serverName,
+                                               @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
                                                @RequestBody  Connection connection)
     {
-        return serverOperationalServices.addOpenMetadataArchive(serverName, connection);
+        return serverOperationalServices.addOpenMetadataArchive(serverName, delegatingUserId, connection);
     }
 }

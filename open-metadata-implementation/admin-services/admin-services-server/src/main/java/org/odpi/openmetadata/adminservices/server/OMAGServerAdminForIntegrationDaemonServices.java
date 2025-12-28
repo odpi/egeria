@@ -44,10 +44,12 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * Return the list of integration groups that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      *
      * @return list of access service configurations
      */
-    public IntegrationGroupsResponse getIntegrationGroupsConfiguration(String serverName)
+    public IntegrationGroupsResponse getIntegrationGroupsConfiguration(String serverName,
+                                                                       String delegatingUserId)
     {
         final String methodName = "getIntegrationGroupsConfiguration";
 
@@ -66,7 +68,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of Integration Services configured in this server.
@@ -89,6 +91,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * server's config document.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody  minimum values to configure an integration group
      *
      * @return void response or
@@ -97,6 +100,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureIntegrationGroup(String                 serverName,
+                                                  String                 delegatingUserId,
                                                   IntegrationGroupConfig requestBody)
     {
         final String methodName = "configureIntegrationGroup";
@@ -120,11 +124,12 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
             /*
              * Get the configuration information for this integration group.
              */
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<IntegrationGroupConfig> integrationGroupsConfig = serverConfig.getDynamicIntegrationGroupsConfig();
 
             response = this.storeIntegrationGroupsConfig(userId,
+                                                         delegatingUserId,
                                                          serverName,
                                                          requestBody.getIntegrationGroupQualifiedName(),
                                                          updateIntegrationGroupConfig(requestBody, integrationGroupsConfig),
@@ -185,12 +190,14 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * the current values.
      *
      * @param serverName            local server name.
+     * @param delegatingUserId external userId making request
      * @param integrationGroupsConfig  list of configuration properties for each integration group.
      * @return void response or
      * UserNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName or integrationGroupsConfig parameter.
      */
     public VoidResponse setIntegrationGroupsConfig(String                       serverName,
+                                                   String                       delegatingUserId,
                                                    List<IntegrationGroupConfig> integrationGroupsConfig)
     {
         final String methodName = "setIntegrationGroupsConfig";
@@ -205,7 +212,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response = storeIntegrationGroupsConfig(userId, serverName, null, integrationGroupsConfig, methodName);
+            response = storeIntegrationGroupsConfig(userId, delegatingUserId, serverName, null, integrationGroupsConfig, methodName);
         }
         catch (Throwable error)
         {
@@ -223,11 +230,13 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * and disables the enterprise repository services.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAllIntegrationGroups(String serverName)
+    public VoidResponse clearAllIntegrationGroups(String serverName,
+                                                  String delegatingUserId)
     {
         final String methodName = "clearAllIntegrationGroups";
 
@@ -241,7 +250,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            response = this.storeIntegrationGroupsConfig(userId, serverName, null, null, methodName);
+            response = this.storeIntegrationGroupsConfig(userId, delegatingUserId, serverName, null, null, methodName);
         }
         catch (Throwable error)
         {
@@ -258,12 +267,14 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * Remove an integration group.  This removes all configuration for the integration group.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param groupId integration group id
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
     public VoidResponse clearIntegrationGroup(String serverName,
+                                              String delegatingUserId,
                                               String groupId)
     {
         final String methodName = "clearIntegrationGroup";
@@ -283,7 +294,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<IntegrationGroupConfig> currentList = serverConfig.getDynamicIntegrationGroupsConfig();
             List<IntegrationGroupConfig> newList     = new ArrayList<>();
@@ -301,7 +312,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
                     }
                 }
 
-                response = this.storeIntegrationGroupsConfig(userId, serverName, groupId, newList, methodName);
+                response = this.storeIntegrationGroupsConfig(userId, delegatingUserId, serverName, groupId, newList, methodName);
             }
         }
         catch (Throwable error)
@@ -319,6 +330,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * Store the latest set of integration groups in the configuration document for the server.
      *
      * @param userId                     user that is issuing the request.
+     * @param delegatingUserId external userId making request
      * @param serverName                 local server name.
      * @param groupQualifiedName         identifier of specific integration group
      * @param integrationGroupsConfig    list of configuration properties for each integration group.
@@ -328,6 +340,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * InvalidParameterException invalid serverName or integrationGroupsConfig parameter.
      */
     private VoidResponse storeIntegrationGroupsConfig(String                       userId,
+                                                      String                       delegatingUserId,
                                                       String                       serverName,
                                                       String                       groupQualifiedName,
                                                       List<IntegrationGroupConfig> integrationGroupsConfig,
@@ -340,7 +353,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig.getRepositoryServicesConfig() == null)
             {
@@ -389,10 +402,12 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * integration services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      *
      * @return integration daemon services configuration
      */
-    public IntegrationDaemonServicesResponse getIntegrationDaemonServicesConfiguration(String serverName)
+    public IntegrationDaemonServicesResponse getIntegrationDaemonServicesConfiguration(String serverName,
+                                                                                       String delegatingUserId)
     {
         final String methodName = "getIntegrationDaemonServicesConfiguration";
 
@@ -411,7 +426,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of Integration Groups and Services configured in this server.
@@ -437,13 +452,16 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * Set up the configuration for an Integration Daemon OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param servicesConfig full configuration for the integration daemon server.
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse setIntegrationDaemonServicesConfig(String serverName, IntegrationDaemonServicesConfig servicesConfig)
+    public VoidResponse setIntegrationDaemonServicesConfig(String                          serverName,
+                                                           String                          delegatingUserId,
+                                                           IntegrationDaemonServicesConfig servicesConfig)
     {
         final String methodName                       = "setIntegrationDaemonServicesConfig";
         final String serviceConfigParameterName       = "servicesConfig";
@@ -470,7 +488,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
              */
             errorHandler.validatePropertyNotNull(servicesConfig, serviceConfigParameterName, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {
@@ -494,12 +512,14 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
      * Remove the configuration for an Integration Daemon OMAG Server in a single call.  This overrides the current values.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @return void response
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
      * InvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse clearIntegrationDaemonServicesConfig(String serverName)
+    public VoidResponse clearIntegrationDaemonServicesConfig(String serverName,
+                                                             String delegatingUserId)
     {
         final String methodName = "clearIntegrationDaemonServicesConfig";
 
@@ -518,7 +538,7 @@ public class OMAGServerAdminForIntegrationDaemonServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig != null)
             {

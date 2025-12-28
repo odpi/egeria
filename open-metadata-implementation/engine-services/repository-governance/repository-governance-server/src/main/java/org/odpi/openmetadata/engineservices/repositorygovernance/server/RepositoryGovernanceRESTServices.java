@@ -35,6 +35,7 @@ public class RepositoryGovernanceRESTServices extends TokenController
      * Validate the connector and return its connector type.
      *
      * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
@@ -43,6 +44,7 @@ public class RepositoryGovernanceRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the integration service
      */
     public ConnectorReportResponse validateConnector(String serverName,
+                                                     String delegatingUserId,
                                                      String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
@@ -58,7 +60,7 @@ public class RepositoryGovernanceRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
 
             ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
                                                                                 RepositoryGovernanceServiceConnector.class,

@@ -7,10 +7,12 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationG
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.rest.IntegrationGroupsResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * IntegrationDaemonConfigurationClient provides the configuration services for integration daemons.
@@ -26,6 +28,7 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
@@ -35,11 +38,30 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
                                                 String   secretStoreProvider,
                                                 String   secretStoreLocation,
                                                 String   secretStoreCollection,
+                                                String   delegatingUserId,
                                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        super(serverName, serverPlatformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, delegatingUserId, auditLog);
     }
 
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverPlatformRootURL the network address of the server running the admin services
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                       REST API calls.
+     */
+    public IntegrationDaemonConfigurationClient(String                             serverPlatformRootURL,
+                                                Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                                String                             delegatingUserId,
+                                                AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
+    }
 
     /*
      * =============================================================
@@ -60,11 +82,12 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
                                                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "getIntegrationGroupsConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/integration-groups/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/integration-groups/configuration?delegatingUserId={1}";
 
         IntegrationGroupsResponse restResult = restClient.callIntegrationGroupsGetRESTCall(methodName,
-                                                                                             serverPlatformRootURL + urlTemplate,
-                                                                                             serverName);
+                                                                                           serverPlatformRootURL + urlTemplate,
+                                                                                           serverName,
+                                                                                           delegatingUserId);
         return restResult.getGroups();
     }
 
@@ -89,16 +112,16 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
     {
         final String methodName    = "configureIntegrationGroup";
         final String parameterName = "groupConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/integration-groups/configuration";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/integration-groups/configuration?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(groupConfig, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         groupConfig,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
-
 
 
     /**
@@ -111,19 +134,20 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void setIntegrationGroupsConfig(List<IntegrationGroupConfig> integrationGroupConfigs) throws UserNotAuthorizedException,
-                                                                                                              InvalidParameterException,
-                                                                                                              OMAGConfigurationErrorException
+                                                                                                        InvalidParameterException,
+                                                                                                        OMAGConfigurationErrorException
     {
         final String methodName    = "setIntegrationGroupsConfig";
         final String configName    = "integrationGroupConfigs";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/integration-groups/configuration/all";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/integration-groups/configuration/all?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(integrationGroupConfigs, configName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         integrationGroupConfigs,
-                                        serverName);
+                                        serverName,
+                                        delegatingUserId);
     }
 
 
@@ -139,11 +163,12 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
                                                    OMAGConfigurationErrorException
     {
         final String methodName  = "clearAllIntegrationGroups";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/integration-groups";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/integration-groups?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
-                                          serverName);
+                                          serverName,
+                                          delegatingUserId);
     }
 
 
@@ -161,13 +186,14 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
     {
         final String methodName    = "clearIntegrationGroup";
         final String parameterName = "groupQualifiedName";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/integration-groups/{1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/integration-groups/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(groupQualifiedName, parameterName, methodName);
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,
                                           serverName,
-                                          groupQualifiedName);
+                                          groupQualifiedName,
+                                          delegatingUserId);
     }
 }

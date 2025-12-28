@@ -2,10 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.services;
 
+import org.odpi.openmetadata.commonservices.multitenant.AuditableServerServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
@@ -74,11 +76,72 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
                                                                     UserNotAuthorizedException,
                                                                     RepositoryErrorException
     {
+        final String actionDescription = "userMonitoring";
+
         OMRSRepositoryServicesInstance instance = this.getInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getAuditLog();
+            AuditLog auditLog = instance.getAuditLog();
+
+            auditLog.logMessage(actionDescription, OpenMetadataObservabilityAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition(userId,
+                                                                                                                                 serviceOperationName,
+                                                                                                                                 serviceName,
+                                                                                                                                 serverName));
+            return auditLog;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the audit log for this access service and server.
+     *
+     * @param userId calling userId
+     * @param delegatingUserId external userId making request
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return audit log
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws PropertyServerException the service name is not known or the metadata collection is
+     *                                 not available - indicating a logic error
+     */
+    public AuditLog getAuditLog(String userId,
+                                String delegatingUserId,
+                                String serverName,
+                                String serviceOperationName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String actionDescription = "userMonitoring";
+
+        OMRSRepositoryServicesInstance instance = (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                  delegatingUserId,
+                                                                                                                  serverName,
+                                                                                                                  serviceOperationName);
+
+        if (instance != null)
+        {
+            AuditLog auditLog = instance.getAuditLog();
+
+            if (delegatingUserId != null)
+            {
+                auditLog.logMessage(actionDescription, OpenMetadataObservabilityAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition(delegatingUserId,
+                                                                                                                                     serviceOperationName,
+                                                                                                                                     serviceName,
+                                                                                                                                     serverName));
+            }
+            else
+            {
+                auditLog.logMessage(actionDescription, OpenMetadataObservabilityAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition(userId,
+                                                                                                                                     serviceOperationName,
+                                                                                                                                     serviceName,
+                                                                                                                                     serverName));
+            }
+
+            return auditLog;
         }
 
         return null;

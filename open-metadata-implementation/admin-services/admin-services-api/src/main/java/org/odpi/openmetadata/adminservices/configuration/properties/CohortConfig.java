@@ -62,7 +62,6 @@ public class CohortConfig extends AdminServicesConfigHeader
 {
     private String                           cohortName                            = null;
     private Connection                       cohortRegistryConnection              = null;
-    private Connection                       cohortOMRSTopicConnection             = null;
     private Connection                       cohortOMRSRegistrationTopicConnection = null;
     private Connection                       cohortOMRSTypesTopicConnection        = null;
     private Connection                       cohortOMRSInstancesTopicConnection    = null;
@@ -95,7 +94,6 @@ public class CohortConfig extends AdminServicesConfigHeader
         {
             cohortName = template.getCohortName();
             cohortRegistryConnection = template.getCohortRegistryConnection();
-            cohortOMRSTopicConnection = template.getCohortOMRSTopicConnection();
             cohortOMRSRegistrationTopicConnection = template.getCohortOMRSRegistrationTopicConnection();
             cohortOMRSTypesTopicConnection = template.getCohortOMRSTypesTopicConnection();
             cohortOMRSInstancesTopicConnection = template.getCohortOMRSInstancesTopicConnection();
@@ -149,30 +147,6 @@ public class CohortConfig extends AdminServicesConfigHeader
     public void setCohortRegistryConnection(Connection cohortRegistryConnection)
     {
         this.cohortRegistryConnection = cohortRegistryConnection;
-    }
-
-
-    /**
-     * Return the connection to the cohort's single OMRS Topic.  This topic is used for exchanging metadata with back-level servers.
-     * It should be removed if all members of the cohort are able to use the three split cohort topics since it is much more efficient.
-     *
-     * @return Connection object
-     */
-    public Connection getCohortOMRSTopicConnection()
-    {
-        return cohortOMRSTopicConnection;
-    }
-
-
-    /**
-     * Set up the connection to the cohort's single OMRS Topic.  This topic is used for exchanging metadata with back-level servers.
-     * It should be removed if all members of the cohort are able to use the three split cohort topics since it is much more efficient.
-     *
-     * @param cohortOMRSTopicConnection Connection object
-     */
-    public void setCohortOMRSTopicConnection(Connection cohortOMRSTopicConnection)
-    {
-        this.cohortOMRSTopicConnection = cohortOMRSTopicConnection;
     }
 
 
@@ -386,7 +360,6 @@ public class CohortConfig extends AdminServicesConfigHeader
         return "CohortConfig{" +
                        "cohortName='" + cohortName + '\'' +
                        ", cohortRegistryConnection=" + cohortRegistryConnection +
-                       ", cohortOMRSTopicConnection=" + cohortOMRSTopicConnection +
                        ", cohortOMRSRegistrationTopicConnection=" + cohortOMRSRegistrationTopicConnection +
                        ", cohortOMRSTypesTopicConnection=" + cohortOMRSTypesTopicConnection +
                        ", cohortOMRSInstancesTopicConnection=" + cohortOMRSInstancesTopicConnection +
@@ -419,7 +392,6 @@ public class CohortConfig extends AdminServicesConfigHeader
         CohortConfig that = (CohortConfig) objectToCompare;
         return Objects.equals(cohortName, that.cohortName) &&
                        Objects.equals(cohortRegistryConnection, that.cohortRegistryConnection) &&
-                       Objects.equals(cohortOMRSTopicConnection, that.cohortOMRSTopicConnection) &&
                        Objects.equals(cohortOMRSRegistrationTopicConnection, that.cohortOMRSRegistrationTopicConnection) &&
                        Objects.equals(cohortOMRSTypesTopicConnection, that.cohortOMRSTypesTopicConnection) &&
                        Objects.equals(cohortOMRSInstancesTopicConnection, that.cohortOMRSInstancesTopicConnection) &&
@@ -439,7 +411,7 @@ public class CohortConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(cohortName, cohortRegistryConnection, cohortOMRSTopicConnection, cohortOMRSRegistrationTopicConnection,
+        return Objects.hash(cohortName, cohortRegistryConnection, cohortOMRSRegistrationTopicConnection,
                             cohortOMRSTypesTopicConnection, cohortOMRSInstancesTopicConnection, cohortOMRSTopicProtocolVersion, eventsToProcessRule,
                             selectedTypesToProcess, excludedZones, includedZones);
     }

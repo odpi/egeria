@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -47,6 +48,7 @@ public class ConfigStoreResource
     /**
      * Override the default server configuration document.
      *
+     * @param delegatingUserId external userId making request
      * @param defaultServerConfig values to include in every new configured server.
      * @return void response
      */
@@ -58,15 +60,17 @@ public class ConfigStoreResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public  VoidResponse setDefaultOMAGServerConfig(@RequestBody  OMAGServerConfig defaultServerConfig)
+    public  VoidResponse setDefaultOMAGServerConfig(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                                    @RequestBody  OMAGServerConfig defaultServerConfig)
     {
-        return adminStoreAPI.setDefaultOMAGServerConfig(defaultServerConfig);
+        return adminStoreAPI.setDefaultOMAGServerConfig(delegatingUserId, defaultServerConfig);
     }
 
 
     /**
      * Return the default server configuration document.
      *
+     * @param delegatingUserId external userId making request
      * @return OMAGServerConfig response
      */
     @GetMapping(path = "/default-configuration-document")
@@ -77,15 +81,16 @@ public class ConfigStoreResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public OMAGServerConfigResponse getDefaultOMAGServerConfig()
+    public OMAGServerConfigResponse getDefaultOMAGServerConfig(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminStoreAPI.getDefaultOMAGServerConfig();
+        return adminStoreAPI.getDefaultOMAGServerConfig(delegatingUserId);
     }
 
 
     /**
      * Clear the default configuration document.
      *
+     * @param delegatingUserId external userId making request
      * @return void
      */
     @DeleteMapping(path = "/default-configuration-document")
@@ -96,9 +101,9 @@ public class ConfigStoreResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearDefaultOMAGServerConfig()
+    public VoidResponse clearDefaultOMAGServerConfig(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminStoreAPI.clearDefaultOMAGServerConfig();
+        return adminStoreAPI.clearDefaultOMAGServerConfig(delegatingUserId);
     }
 
 
@@ -106,6 +111,7 @@ public class ConfigStoreResource
      * Override the placeholder variables.
      *
      * @param placeholderVariables values to include in every new configured server.
+     * @param delegatingUserId external userId making request
      * @return void response
      */
     @PostMapping(path = "/placeholder-variables")
@@ -116,15 +122,17 @@ public class ConfigStoreResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public  VoidResponse setPlaceholderVariables(@RequestBody  Map<String, String> placeholderVariables)
+    public  VoidResponse setPlaceholderVariables(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                                 @RequestBody  Map<String, String> placeholderVariables)
     {
-        return adminStoreAPI.setPlaceholderVariables(placeholderVariables);
+        return adminStoreAPI.setPlaceholderVariables(delegatingUserId, placeholderVariables);
     }
 
 
     /**
      * Return the placeholder variables.
      *
+     * @param delegatingUserId external userId making request
      * @return string map response
      */
     @GetMapping(path = "/placeholder-variables")
@@ -135,15 +143,16 @@ public class ConfigStoreResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public StringMapResponse getPlaceholderVariables()
+    public StringMapResponse getPlaceholderVariables(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminStoreAPI.getPlaceholderVariables();
+        return adminStoreAPI.getPlaceholderVariables(delegatingUserId);
     }
 
 
     /**
      * Clear the placeholder variables used whenever an OMAG Server is started.
      *
+     * @param delegatingUserId external userId making request
      * @return current setting of default server configuration
      */
     @DeleteMapping(path = "/placeholder-variables")
@@ -154,15 +163,16 @@ public class ConfigStoreResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearPlaceholderVariables()
+    public VoidResponse clearPlaceholderVariables(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminStoreAPI.clearPlaceholderVariables();
+        return adminStoreAPI.clearPlaceholderVariables(delegatingUserId);
     }
 
 
     /**
      * Override the default implementation or configuration of the configuration document store.
      *
+     * @param delegatingUserId external userId making request
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
      * @return void response
@@ -175,15 +185,17 @@ public class ConfigStoreResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
-    public VoidResponse setConfigurationStoreConnection(@RequestBody  Connection connection)
+    public VoidResponse setConfigurationStoreConnection(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                                        @RequestBody  Connection connection)
     {
-        return adminStoreAPI.setConfigurationStoreConnection(connection);
+        return adminStoreAPI.setConfigurationStoreConnection(delegatingUserId, connection);
     }
 
 
     /**
      * Return the connection object for the configuration store.  Null is returned if the server should use the default store.
      *
+     * @param delegatingUserId external userId making request
      * @return connection response
      */
     @GetMapping(path = "/connection")
@@ -194,15 +206,16 @@ public class ConfigStoreResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
-    public ConnectionResponse getConfigurationStoreConnection()
+    public ConnectionResponse getConfigurationStoreConnection(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminStoreAPI.getConfigurationStoreConnection();
+        return adminStoreAPI.getConfigurationStoreConnection(delegatingUserId);
     }
 
 
     /**
      * Clear the connection object for the configuration store which means the platform uses the default store.
      *
+     * @param delegatingUserId external userId making request
      * @return void response
      */
     @DeleteMapping(path = "/connection")
@@ -213,8 +226,8 @@ public class ConfigStoreResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
-    public  VoidResponse clearConfigurationStoreConnection()
+    public  VoidResponse clearConfigurationStoreConnection(@Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
     {
-        return adminStoreAPI.clearConfigurationStoreConnection();
+        return adminStoreAPI.clearConfigurationStoreConnection(delegatingUserId);
     }
 }

@@ -209,7 +209,7 @@ public class OMAGServerPlatform
             log.info("Startup detected for servers: {}", startupServers);
         }
 
-        SuccessMessageResponse response = operationalServices.activateServerListWithStoredConfig(sysUser.trim(), servers);
+        SuccessMessageResponse response = operationalServices.activateAutoStartServerListWithStoredConfig(sysUser.trim(), servers);
 
         if (response.getRelatedHTTPCode() == 200)
         {
@@ -239,7 +239,7 @@ public class OMAGServerPlatform
 
             System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
 
-            operationalServices.deactivateTemporarilyServerList(servers);
+            operationalServices.deactivateTemporarilyServerList(servers, null);
         }
     }
 
@@ -279,19 +279,19 @@ public class OMAGServerPlatform
                         configStoreConnection.setEndpoint(endpoint);
                     }
 
-                    configStoreServices.setConfigurationStoreConnection(sysUser, configStoreConnection);
+                    configStoreServices.setAppPropertiesConfigurationStoreConnection(sysUser, configStoreConnection);
                 }
 
                 OMAGServerConfig defaultConfigurationDocument = this.getDefaultConfigurationDocument();
                 if (defaultConfigurationDocument != null)
                 {
-                    configStoreServices.setDefaultOMAGServerConfig(sysUser, defaultConfigurationDocument);
+                    configStoreServices.setAppPropertiesDefaultOMAGServerConfig(sysUser, defaultConfigurationDocument);
                 }
 
                 Map<String, String> placeholderVariables = this.getPlaceholderVariables();
                 if (placeholderVariables != null)
                 {
-                    configStoreServices.setPlaceholderVariables(sysUser, placeholderVariables);
+                    configStoreServices.setAppPropertiesPlaceholderVariables(sysUser, placeholderVariables);
                 }
 
                 /*
@@ -341,6 +341,7 @@ public class OMAGServerPlatform
                     }
 
                     OpenMetadataPlatformSecurityVerifier.setPlatformSecurityConnection(sysUser,
+                                                                                       null,
                                                                                        platformName,
                                                                                        securityConnection);
                 }

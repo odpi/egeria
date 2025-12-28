@@ -53,9 +53,11 @@ public class OMAGServerAdminForViewServices extends TokenController
      * Return the list of view services that are configured for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return list of view service descriptions
      */
-    public RegisteredOMAGServicesResponse getConfiguredViewServices(String serverName)
+    public RegisteredOMAGServicesResponse getConfiguredViewServices(String serverName,
+                                                                    String delegatingUserId)
     {
         final String methodName = "getConfiguredViewServices";
 
@@ -74,7 +76,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of View Services configured in this server.
@@ -130,9 +132,11 @@ public class OMAGServerAdminForViewServices extends TokenController
      * Return the view services configuration for this server.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @return view services response
      */
-    public ViewServicesResponse getViewServicesConfiguration(String serverName)
+    public ViewServicesResponse getViewServicesConfiguration(String serverName,
+                                                             String delegatingUserId)
     {
         final String methodName = "getViewServicesConfiguration";
 
@@ -151,7 +155,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             /*
              * Get the list of View Services configured in this server.
@@ -198,10 +202,12 @@ public class OMAGServerAdminForViewServices extends TokenController
      * This operation is used for editing existing view service configuration.
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @param viewServiceConfigs list of configured view services
      * @return void
      */
     public VoidResponse setViewServicesConfiguration(String                  serverName,
+                                                     String                  delegatingUserId,
                                                      List<ViewServiceConfig> viewServiceConfigs)
     {
         final String methodName = "setViewServicesConfiguration";
@@ -221,7 +227,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            return this.storeViewServicesConfig(userId, serverName, null, viewServiceConfigs, methodName);
+            return this.storeViewServicesConfig(userId, delegatingUserId, serverName, null, viewServiceConfigs, methodName);
         }
         catch (Throwable error)
         {
@@ -238,10 +244,12 @@ public class OMAGServerAdminForViewServices extends TokenController
      * Return the configuration of a single view service
      *
      * @param serverName name of server
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker server URL marker identifying the view service
      * @return view services response
      */
     public ViewServiceConfigResponse getViewServiceConfig(String serverName,
+                                                          String delegatingUserId,
                                                           String serviceURLMarker)
     {
 
@@ -262,7 +270,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
             List<ViewServiceConfig> currentList = serverConfig.getViewServicesConfig();
 
@@ -295,6 +303,7 @@ public class OMAGServerAdminForViewServices extends TokenController
      * Configure a single view service.
      *
      * @param serverName         local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker   view service name used in URL
      * @param requestBody  view service config
      * @return void response or
@@ -303,6 +312,7 @@ public class OMAGServerAdminForViewServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureViewService(String                 serverName,
+                                             String                 delegatingUserId,
                                              String                 serviceURLMarker,
                                              ViewServiceRequestBody requestBody)
     {
@@ -324,7 +334,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<ViewServiceConfig> viewServiceConfigList = serverConfig.getViewServicesConfig();
 
@@ -335,11 +345,10 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             errorHandler.validateViewServiceIsRegistered(viewServiceRegistration, serviceURLMarker, serverName, methodName);
 
-            viewServiceConfigList = this.updateViewServiceConfig(createViewServiceConfig(viewServiceRegistration,
-                                                                                         requestBody),
+            viewServiceConfigList = this.updateViewServiceConfig(createViewServiceConfig(viewServiceRegistration, requestBody),
                                                                  viewServiceConfigList);
 
-            return this.storeViewServicesConfig(userId, serverName, serviceURLMarker, viewServiceConfigList, methodName);
+            return this.storeViewServicesConfig(userId, delegatingUserId, serverName, serviceURLMarker, viewServiceConfigList, methodName);
         }
         catch (Throwable error)
         {
@@ -357,6 +366,7 @@ public class OMAGServerAdminForViewServices extends TokenController
      * for each view service can be changed from their default using setViewServicesConfig operation.
      *
      * @param serverName   local server name.
+     * @param delegatingUserId external userId making request
      * @param requestBody  requested View Service Config containing the OMAGServerName and OMAGServerRootPlatformURL,
      *                     view service options and resource endpoints
      * @return void response or
@@ -365,6 +375,7 @@ public class OMAGServerAdminForViewServices extends TokenController
      * InvalidParameterException invalid serverName parameter.
      */
     public VoidResponse configureAllViewServices(String                 serverName,
+                                                 String                 delegatingUserId,
                                                  ViewServiceRequestBody requestBody)
     {
         final String methodName = "configureAllViewServices";
@@ -413,7 +424,7 @@ public class OMAGServerAdminForViewServices extends TokenController
                 viewServiceConfigList = null;
             }
 
-            return this.storeViewServicesConfig(userId, serverName, null, viewServiceConfigList, methodName);
+            return this.storeViewServicesConfig(userId, delegatingUserId, serverName, null, viewServiceConfigList, methodName);
         }
         catch (Throwable error)
         {
@@ -497,12 +508,14 @@ public class OMAGServerAdminForViewServices extends TokenController
      * Remove a view service.  This removes all configuration for the view service.
      *
      * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
      * @param serviceURLMarker view service name used in URL
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
     public VoidResponse clearViewService(String serverName,
+                                         String delegatingUserId,
                                          String serviceURLMarker)
     {
         final String methodName = "clearViewService";
@@ -522,7 +535,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             List<ViewServiceConfig> currentList = serverConfig.getViewServicesConfig();
             List<ViewServiceConfig> newList     = new ArrayList<>();
@@ -559,11 +572,13 @@ public class OMAGServerAdminForViewServices extends TokenController
      * and disables the enterprise repository services.
      *
      * @param serverName local server name.
+     * @param delegatingUserId external userId making request
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
      * InvalidParameterException invalid serverName  parameter.
      */
-    public VoidResponse clearAllViewServices(String serverName)
+    public VoidResponse clearAllViewServices(String serverName,
+                                             String delegatingUserId)
     {
         final String methodName = "clearAllViewServices";
 
@@ -582,7 +597,7 @@ public class OMAGServerAdminForViewServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
-            return this.storeViewServicesConfig(userId, serverName, null, null, methodName);
+            return this.storeViewServicesConfig(userId, delegatingUserId, serverName, null, null, methodName);
         }
         catch (Throwable error)
         {
@@ -600,6 +615,7 @@ public class OMAGServerAdminForViewServices extends TokenController
      * the current values.
      *
      * @param userId             user that is issuing the request.
+     * @param delegatingUserId external userId making request
      * @param serverName         local server name.
      * @param serviceURLMarker   identifier of specific view service
      * @param viewServicesConfig list of configuration properties for each view service.
@@ -609,6 +625,7 @@ public class OMAGServerAdminForViewServices extends TokenController
      * InvalidParameterException invalid serverName or viewServicesConfig parameter.
      */
     private VoidResponse storeViewServicesConfig(String                  userId,
+                                                 String                  delegatingUserId,
                                                  String                  serverName,
                                                  String                  serviceURLMarker,
                                                  List<ViewServiceConfig> viewServicesConfig,
@@ -622,7 +639,7 @@ public class OMAGServerAdminForViewServices extends TokenController
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
             if (serverConfig.getRepositoryServicesConfig() == null)
             {

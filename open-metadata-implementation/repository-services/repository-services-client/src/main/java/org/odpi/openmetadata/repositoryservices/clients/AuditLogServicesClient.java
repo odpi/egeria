@@ -8,17 +8,19 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogReportResponse;
+import org.odpi.openmetadata.repositoryservices.rest.properties.AuditLogSeveritiesResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.OMRSAPIResponse;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +44,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
 
     private final RESTClientConnector restClient;                 /* Initialized in constructor */
     private final String              serverName;                 /* Initialized in constructor */
+    private final String              delegatingUserId;           /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -54,6 +57,11 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * @param serverName the name of the remote server
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
+     * @param secretsStoreProvider class name of the secrets store
+     * @param secretsStoreLocation location (networkAddress) of the secrets store
+     * @param secretsStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException bad input parameters
      */
@@ -62,6 +70,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                   String   secretsStoreProvider,
                                   String   secretsStoreLocation,
                                   String   secretsStoreCollection,
+                                  String   delegatingUserId,
                                   AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
@@ -70,8 +79,8 @@ public class AuditLogServicesClient implements AuditLoggingComponent
 
         this.serverName = serverName;
         this.restURLRoot = restURLRoot;
+        this.delegatingUserId = delegatingUserId;
         this.restClient = this.getRESTClientConnector(serverName, restURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, auditLog);
-
     }
 
 
@@ -83,6 +92,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * @param restURLRoot the network address of the server running the repository services.  This is of the form
      *                    serverURLroot + "/servers/" + serverName.
      * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException bad input parameters
@@ -90,6 +100,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
     public AuditLogServicesClient(String                             serverName,
                                   String                             restURLRoot,
                                   Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                  String                             delegatingUserId,
                                   AuditLog                           auditLog) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
@@ -98,10 +109,9 @@ public class AuditLogServicesClient implements AuditLoggingComponent
 
         this.serverName = serverName;
         this.restURLRoot = restURLRoot;
+        this.delegatingUserId = delegatingUserId;
         this.restClient = this.getRESTClientConnector(serverName, restURLRoot, secretsStoreConnectorMap, auditLog);
-
     }
-
 
 
     /**
@@ -133,22 +143,64 @@ public class AuditLogServicesClient implements AuditLoggingComponent
         return null;
     }
 
-
     /**
      * Returns the audit log for the server.
      *
-     * @param userId calling user
      * @return OMRSAuditLogReport report containing audit log
      * @throws InvalidParameterException one of the supplied parameters caused a problem
      * @throws RepositoryErrorException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-    public OMRSAuditLogReport getAuditLogReport(String   userId) throws InvalidParameterException,
-                                                                        RepositoryErrorException,
-                                                                        UserNotAuthorizedException
+    public List<AuditLogRecordSeverity> getSeverityList() throws InvalidParameterException,
+                                                                 RepositoryErrorException,
+                                                                 UserNotAuthorizedException
     {
         final String methodName  = "getAuditLogReport";
-        final String operationSpecificURL = "/audit-log/report";
+        final String operationSpecificURL = "/audit-log/severity-definitions?delegatingUserId={1}";
+
+        AuditLogSeveritiesResponse restResult;
+
+        try
+        {
+            restResult = restClient.callGetRESTCall(methodName,
+                                                    AuditLogSeveritiesResponse.class,
+                                                    restURLRoot + rootServiceNameInURL + operationSpecificURL,
+                                                    serverName,
+                                                    delegatingUserId);
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          serverName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error);
+        }
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+
+        return restResult.getSeverities();
+    }
+
+
+    /**
+     * Returns the audit log for the server.
+     *
+     * @return OMRSAuditLogReport report containing audit log
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public OMRSAuditLogReport getAuditLogReport() throws InvalidParameterException,
+                                                         RepositoryErrorException,
+                                                         UserNotAuthorizedException
+    {
+        final String methodName  = "getAuditLogReport";
+        final String operationSpecificURL = "/audit-log/report?delegatingUserId={1}";
 
         AuditLogReportResponse restResult;
 
@@ -158,7 +210,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                                     AuditLogReportResponse.class,
                                                     restURLRoot + rootServiceNameInURL + operationSpecificURL,
                                                     serverName,
-                                                    userId);
+                                                    delegatingUserId);
         }
         catch (Exception error)
         {
@@ -273,131 +325,11 @@ public class AuditLogServicesClient implements AuditLoggingComponent
     }
 
 
-    /* =====================
-     * Issuing REST Calls
-     * =====================
-     */
-
-
-    /**
-     * Issue a GET REST call that returns a AuditLogReportResponse object.
-     *
-     * @param methodName  name of the method being called
-     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return AttributeTypeDefListResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack. TODO
-     */
-    private AuditLogReportResponse callAuditLogReportGetRESTCall(String    methodName,
-                                                                 String    operationSpecificURL,
-                                                                 Object... params) throws RepositoryErrorException
-    {
-        return this.callGetRESTCall(methodName,
-                                    AuditLogReportResponse.class,
-                                    operationSpecificURL,
-                                    params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns the requested object.
-     *
-     * @param <T> class name
-     * @param methodName  name of the method being called
-     * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
-     * @return TypeDefResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private <T> T callGetRESTCall(String    methodName,
-                                  Class<T>  returnClass,
-                                  String    operationSpecificURL) throws RepositoryErrorException
-    {
-        return this.callGetRESTCall(methodName, returnClass, operationSpecificURL, (Object[])null);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a TypeDefResponse object.
-     *
-     * @param <T> class name
-     * @param methodName  name of the method being called
-     * @param returnClass class name of response object
-     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return TypeDefResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private <T> T callGetRESTCall(String    methodName,
-                                  Class<T>  returnClass,
-                                  String    operationSpecificURL,
-                                  Object... params) throws RepositoryErrorException
-    {
-        try
-        {
-            return restClient.callGetRESTCall(methodName,
-                                              returnClass,
-                                              operationSpecificURL,
-                                              params);
-        }
-        catch (Exception error)
-        {
-            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                             serverName,
-                                                                                                             error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error);
-        }
-    }
-
-    /**
-     * Issue a POST REST call that returns the requested type of object.
-     *
-     * @param <T> class name
-     * @param methodName name of the method being called
-     * @param returnClass class name of response object
-     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
-     * @param request request body object
-     * @param params a list of parameters that are slotted into the url template
-     * @return VoidResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack.
-     */
-    private <T> T callPostRESTCall(String    methodName,
-                                   Class<T>  returnClass,
-                                   String    operationSpecificURL,
-                                   Object    request,
-                                   Object... params) throws RepositoryErrorException
-    {
-        try
-        {
-            return restClient.callPostRESTCall(methodName,
-                                               returnClass,
-                                               operationSpecificURL,
-                                               request,
-                                               params);
-        }
-        catch (Exception error)
-        {
-            throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                             serverName,
-                                                                                                             error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error);
-        }
-    }
-
-
-
-
     /*
      * ===============================
      * Handling exceptions
      * ===============================
      */
-
-
 
 
     /**
@@ -467,35 +399,6 @@ public class AuditLogServicesClient implements AuditLoggingComponent
             }
         }
     }
-
-
-    /**  TODO consider reusing this for invalid cohort detection - or delete
-     * Throw an InvalidRelationshipException if it is encoded in the REST response.
-     *
-     * @param methodName name of the method called
-     * @param restResult response from the rest call.  This generated in the remote server.
-     * @throws InvalidRelationshipException encoded exception from the server
-     */
-    private void detectAndThrowInvalidRelationshipException(String          methodName,
-                                                            OMRSAPIResponse restResult) throws InvalidRelationshipException
-    {
-        final String   exceptionClassName = InvalidRelationshipException.class.getName();
-
-        if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
-        {
-            throw new InvalidRelationshipException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
-        }
-    }
-
 
 
     /**

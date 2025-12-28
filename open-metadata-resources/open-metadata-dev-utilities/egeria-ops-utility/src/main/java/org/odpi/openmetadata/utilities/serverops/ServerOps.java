@@ -65,7 +65,7 @@ public class ServerOps
             /*
              * This client is from the platform services module and queries the runtime state of the platform and the servers that are running on it.
              */
-            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            PlatformServicesClient platformServicesClient = new PlatformServicesClient("MyPlatform", platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             /*
              * This is the first call to the platform and determines the version of the software.
@@ -96,7 +96,7 @@ public class ServerOps
     {
         try
         {
-            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             System.out.println("Starting " + serverName + " ...");
             System.out.println(client.activateWithStoredConfig(serverName));
@@ -138,7 +138,7 @@ public class ServerOps
     {
         try
         {
-            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             System.out.println("Stopping " + serverName + " ...");
 
@@ -182,7 +182,7 @@ public class ServerOps
     {
         try
         {
-            IntegrationDaemon client = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            IntegrationDaemon client = new IntegrationDaemon(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             List<IntegrationGroupSummary> serviceSummaries = client.getIntegrationGroupSummaries();
 
@@ -238,7 +238,7 @@ public class ServerOps
     {
         try
         {
-            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            PlatformServicesClient client = new PlatformServicesClient(serverName, platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             System.out.println("Status of " + serverName + " ...");
 
@@ -382,7 +382,7 @@ public class ServerOps
 
         try
         {
-            ConfigurationManagementClient configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null);
+            ConfigurationManagementClient configurationManagementClient = new ConfigurationManagementClient(platformURLRoot, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, null, null);
 
             if (interactiveMode.equals(mode))
             {

@@ -4,14 +4,17 @@ package org.odpi.openmetadata.engineservices.repositorygovernance.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.engineservices.repositorygovernance.api.RepositoryGovernanceAPI;
 import org.odpi.openmetadata.engineservices.repositorygovernance.client.rest.RepositoryGovernanceRESTClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+
+import java.util.Map;
 
 
 /**
@@ -19,13 +22,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
  */
 public class RepositoryGovernanceClient  implements RepositoryGovernanceAPI
 {
-    private String                         serverName;                     /* Initialized in constructor */
-    private String                         serverPlatformRootURL;          /* Initialized in constructor */
-    private String                         repositoryGovernanceEngineName; /* Initialized in constructor */
+    private final String                   serverName;                     /* Initialized in constructor */
+    private final String                   serverPlatformRootURL;          /* Initialized in constructor */
+    private final String                   delegatingUserId;               /* Initialized in constructor */
     private RepositoryGovernanceRESTClient restClient;                     /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
 
 
     /**
@@ -36,21 +38,56 @@ public class RepositoryGovernanceClient  implements RepositoryGovernanceAPI
      * @param localServerSecretsStoreProvider secrets store connector for bearer token
      * @param localServerSecretsStoreLocation secrets store location for bearer token
      * @param localServerSecretsStoreCollection secrets store collection for bearer token
-     * @param repositoryGovernanceEngineName the unique name of the archive engine.
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public RepositoryGovernanceClient(String serverPlatformRootURL,
-                                      String serverName,
-                                      String localServerSecretsStoreProvider,
-                                      String localServerSecretsStoreLocation,
-                                      String localServerSecretsStoreCollection,
-                                      String repositoryGovernanceEngineName) throws InvalidParameterException
+    public RepositoryGovernanceClient(String   serverPlatformRootURL,
+                                      String   serverName,
+                                      String   localServerSecretsStoreProvider,
+                                      String   localServerSecretsStoreLocation,
+                                      String   localServerSecretsStoreCollection,
+                                      String   delegatingUserId,
+                                      AuditLog auditLog) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName            = serverName;
-        this.repositoryGovernanceEngineName = repositoryGovernanceEngineName;
+        this.delegatingUserId      = delegatingUserId;
 
-        this.restClient = new RepositoryGovernanceRESTClient(serverName, serverPlatformRootURL, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, null);
+        this.restClient = new RepositoryGovernanceRESTClient(serverName,
+                                                             serverPlatformRootURL,
+                                                             localServerSecretsStoreProvider,
+                                                             localServerSecretsStoreLocation,
+                                                             localServerSecretsStoreCollection,
+                                                             auditLog);
+    }
+
+
+    /**
+     * Create a new client with bearer token from supplied secrets store.
+     *
+     * @param serverPlatformRootURL the root url of the platform where the governance action engine is running.
+     * @param serverName the name of the engine host server where the governance action engine is running
+     * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
+     * @param auditLog destination for log messages.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public RepositoryGovernanceClient(String                             serverPlatformRootURL,
+                                      String                             serverName,
+                                      Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                      String                             delegatingUserId,
+                                      AuditLog                           auditLog) throws InvalidParameterException
+    {
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverName            = serverName;
+        this.delegatingUserId      = delegatingUserId;
+
+        this.restClient = new RepositoryGovernanceRESTClient(serverName,
+                                                             serverPlatformRootURL,
+                                                             secretsStoreConnectorMap,
+                                                             auditLog);
     }
 
 
@@ -71,17 +108,16 @@ public class RepositoryGovernanceClient  implements RepositoryGovernanceAPI
     {
         final String methodName = "validateConnector";
         final String nameParameter = "connectorProviderClassName";
-        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/repository-governance/validate-connector";
+        final String urlTemplate = "/servers/{0}/open-metadata/engine-services/repository-governance/validate-connector/{1}?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
         ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
                                                                                           serverPlatformRootURL + urlTemplate,
                                                                                           serverName,
-                                                                                          connectorProviderClassName);
+                                                                                          connectorProviderClassName,
+                                                                                          delegatingUserId);
 
         return restResult.getConnectorReport();
     }
-
-
 }

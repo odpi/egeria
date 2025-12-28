@@ -9,9 +9,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
  * OpenMetadataPlatformSecurity provides the interface for a security connector that validates whether a calling
  * user can access any service on an OMAG Server Platform.  It is called within the context of a specific
  * OMAG Server Platform request.
- *
- * Each OMAG Server can define its own plugin connector implementation and will have its own instance
- * of the connector.
+ * Each OMAG Server can also define its own plugin connector implementation and will have its own instance
+ * of that connector.
  */
 public interface OpenMetadataPlatformSecurity
 {

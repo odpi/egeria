@@ -33,7 +33,8 @@ public class ServerOperationsClient
     private final ServerOperationsRESTClient restClient;                 /* Initialized in constructor */
 
     private final String                     platformRootURL;            /* Initialized in constructor */
-    protected     AuditLog                   auditLog;                   /* Initialized in constructor */
+    private final String                     delegatingUserId;           /* Initialized in the constructor */
+    private final AuditLog                   auditLog;                   /* Initialized in constructor */
 
     private final String                     retrieveURLTemplatePrefix   = "/open-metadata/server-operations";
 
@@ -47,6 +48,7 @@ public class ServerOperationsClient
      * @param secretStoreProvider class name of the secrets store
      * @param secretStoreLocation location (networkAddress) of the secrets store
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -56,10 +58,13 @@ public class ServerOperationsClient
                                   String   secretStoreProvider,
                                   String   secretStoreLocation,
                                   String   secretStoreCollection,
+                                  String   delegatingUserId,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        this.platformRootURL = platformRootURL;
-        this.restClient      = new ServerOperationsRESTClient(platformName, platformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
+        this.platformRootURL  = platformRootURL;
+        this.auditLog         = auditLog;
+        this.delegatingUserId = delegatingUserId;
+        this.restClient       = new ServerOperationsRESTClient(platformName, platformRootURL, secretStoreProvider, secretStoreLocation, secretStoreCollection, auditLog);
     }
 
 
@@ -69,6 +74,7 @@ public class ServerOperationsClient
      * @param platformName name of the platform to connect to
      * @param platformRootURL the network address of the server running the OMAS REST services
      * @param secretsStoreConnectorMap connectors to secrets stores
+     * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -76,10 +82,13 @@ public class ServerOperationsClient
     public ServerOperationsClient(String                             platformName,
                                   String                             platformRootURL,
                                   Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                  String                             delegatingUserId,
                                   AuditLog                           auditLog) throws InvalidParameterException
     {
-        this.platformRootURL = platformRootURL;
-        this.restClient      = new ServerOperationsRESTClient(platformName, platformRootURL, secretsStoreConnectorMap, auditLog);
+        this.platformRootURL  = platformRootURL;
+        this.auditLog         = auditLog;
+        this.delegatingUserId = delegatingUserId;
+        this.restClient       = new ServerOperationsRESTClient(platformName, platformRootURL, secretsStoreConnectorMap, auditLog);
     }
 
 
@@ -104,10 +113,12 @@ public class ServerOperationsClient
                                                                   PropertyServerException
     {
         final String methodName = "getServerStatus";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/status?delegatingUserId={1}";
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/"+serverName+"/status";
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        ServerStatusResponse restResult = restClient.callServerStatusGetRESTCall(methodName, urlTemplate);
+        ServerStatusResponse restResult = restClient.callServerStatusGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         ServerStatus serverStatus = new ServerStatus();
         serverStatus.setServerName(restResult.getServerName());
@@ -136,11 +147,11 @@ public class ServerOperationsClient
     {
         final String methodName  = "getActiveConfiguration";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/configuration";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/configuration?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName, urlTemplate, serverName);
+        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getOMAGServerConfig();
     }
@@ -162,11 +173,11 @@ public class ServerOperationsClient
     {
         final String methodName  = "getActiveServerStatus";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/status";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/status?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        OMAGServerStatusResponse restResult = restClient.callOMAGServerStatusGetRESTCall(methodName, urlTemplate, serverName);
+        OMAGServerStatusResponse restResult = restClient.callOMAGServerStatusGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getServerStatus();
     }
@@ -192,9 +203,9 @@ public class ServerOperationsClient
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/"+serverName+"/services";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/services?delegatingUserId={1}";
 
-        ServerServicesListResponse restResult = restClient.callServiceListGetRESTCall(methodName, urlTemplate);
+        ServerServicesListResponse restResult = restClient.callServiceListGetRESTCall(methodName, urlTemplate, serverName, delegatingUserId);
 
         return restResult.getServerServicesList();
     }
@@ -217,12 +228,12 @@ public class ServerOperationsClient
         final String methodName    = "addOpenMetadataArchiveFile";
         final String parameterName = "fileName";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/file";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/file?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
         invalidParameterHandler.validateName(fileName, parameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, fileName, serverName);
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, fileName, serverName, delegatingUserId);
     }
 
 
@@ -240,10 +251,10 @@ public class ServerOperationsClient
                                                                      InvalidParameterException,
                                                                      PropertyServerException
     {
-        final String methodName    = "addOpenMetadataArchiveFile";
+        final String methodName    = "addOpenMetadataArchive";
         final String parameterName = "connection";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/open-metadata-archives/connection";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/connection?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
@@ -269,11 +280,11 @@ public class ServerOperationsClient
         final String methodName    = "addOpenMetadataArchiveContent";
         final String parameterName = "openMetadataArchive";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/archive-content";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/instance/open-metadata-archives/archive-content?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
         invalidParameterHandler.validateObject(openMetadataArchive, parameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, openMetadataArchive, serverName);
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, openMetadataArchive, serverName, delegatingUserId);
     }
 }
