@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Level
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody;
 import org.odpi.openmetadata.viewservices.classificationexplorer.server.ClassificationExplorerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -818,6 +819,33 @@ public class ClassificationExplorerResource
                                                         ResultsRequestBody requestBody)
     {
         return restAPI.getElements(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-complex-query")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getElements",
+            description="Retrieve elements of the requested type name.  If no type name is specified then any type of element may be returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public OpenMetadataRootElementsResponse findRootElements(@PathVariable String                             serverName,
+                                                             @PathVariable String                             urlMarker,
+                                                             @RequestBody  (required = false) FindRequestBody requestBody)
+    {
+        return restAPI.findRootElements(serverName, urlMarker, requestBody);
     }
 
 

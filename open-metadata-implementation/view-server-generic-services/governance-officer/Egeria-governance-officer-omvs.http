@@ -839,6 +839,13 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "metadataElementTypeName": "GovernanceActionType",
+  "metadataElementSubtypeNames": [],
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "searchString": "xxx",
   "startsWith" : false,
   "endsWith" : false,

@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Seman
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -1856,6 +1857,57 @@ public class ClassificationExplorerRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getElements(userId, requestBody));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findRootElements(String          serverName,
+                                                             String          urlMarker,
+                                                             FindRequestBody requestBody)
+    {
+        final String methodName = "findRootElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findRootElements(userId, requestBody.getSearchProperties(), requestBody.getMatchClassifications(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, FindRequestBody.class.getName());
             }
         }
         catch (Throwable error)

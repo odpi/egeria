@@ -542,6 +542,12 @@ Content-Type: application/json
      }],
      "matchCriteria": "ALL"
   },
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
