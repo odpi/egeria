@@ -13,13 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumn
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidValueDefinitionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
