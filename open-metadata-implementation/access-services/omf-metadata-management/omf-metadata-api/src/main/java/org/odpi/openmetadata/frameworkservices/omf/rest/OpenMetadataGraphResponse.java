@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataGraphResponse extends FFDCResponseBase
 {
-    private OpenMetadataElementGraph elementGraph = null;
+    private OpenMetadataElementGraph element = null;
 
     /**
      * Default constructor
@@ -46,7 +46,7 @@ public class OpenMetadataGraphResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            this.elementGraph = template.getElementGraph();
+            this.element = template.getElement();
         }
     }
 
@@ -56,20 +56,20 @@ public class OpenMetadataGraphResponse extends FFDCResponseBase
      *
      * @return graph object
      */
-    public OpenMetadataElementGraph getElementGraph()
+    public OpenMetadataElementGraph getElement()
     {
-        return elementGraph;
+        return element;
     }
 
 
     /**
      * Set up the graph object.
      *
-     * @param elementGraph - graph object
+     * @param element - graph object
      */
-    public void setElementGraph(OpenMetadataElementGraph elementGraph)
+    public void setElement(OpenMetadataElementGraph element)
     {
-        this.elementGraph = elementGraph;
+        this.element = element;
     }
 
 
@@ -82,7 +82,7 @@ public class OpenMetadataGraphResponse extends FFDCResponseBase
     public String toString()
     {
         return "OpenMetadataGraphResponse{" +
-                "elementGraph=" + elementGraph +
+                "elementGraph=" + element +
                 "} " + super.toString();
     }
 
@@ -108,7 +108,7 @@ public class OpenMetadataGraphResponse extends FFDCResponseBase
         {
             return false;
         }
-        return Objects.equals(getElementGraph(), that.getElementGraph());
+        return Objects.equals(getElement(), that.getElement());
     }
 
 
@@ -120,13 +120,13 @@ public class OpenMetadataGraphResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        if (elementGraph == null)
+        if (element == null)
         {
             return super.hashCode();
         }
         else
         {
-            return elementGraph.hashCode();
+            return element.hashCode();
         }
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.productmanager;
 
 import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductManagerAuditCode;
 import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductManagerErrorCode;
-import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ReferenceDataSetConnectorBase;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.OpenMetadataDataSetConnectorBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
-    private ReferenceDataSetConnectorBase tabularDataSource = null;
+    private OpenMetadataDataSetConnectorBase tabularDataSource = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
     {
         super(catalogTarget, catalogTargetContext, connectorToTarget, connectorName, auditLog);
 
-        if (super.getConnectorToTarget() instanceof ReferenceDataSetConnectorBase readableTabularDataSource)
+        if (super.getConnectorToTarget() instanceof OpenMetadataDataSetConnectorBase readableTabularDataSource)
         {
             this.tabularDataSource = readableTabularDataSource;
             this.tabularDataSource.setLocalEnvironment(catalogTargetContext.getMyUserId(),

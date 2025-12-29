@@ -99,14 +99,6 @@ public enum ProductManagerAuditCode implements AuditLogMessageSet
                             "The connector is setting up the fixed open metadata digital products.",
                             "No action is required.  This message is for monitoring the set up of the fixed digital products."),
 
-    /**
-     * JACQUARD-HARVESTER-0013 - The {0} integration connector has dynamically created a new digital product {1} for valid value set {2}
-     */
-    NEW_VALID_VALUE_PRODUCT("JACQUARD-HARVESTER-0013",
-                            OMRSAuditLogRecordSeverity.INFO,
-                            "The {0} integration connector has dynamically created a new digital product {1} for valid value set {2}",
-                            "The connector is harvesting valid value sets.  Each one becomes a new digital product.",
-                            "No action is required.  This message is for monitoring the set up of the valid value set products."),
 
     /**
      * JACQUARD-HARVESTER-0014 - The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}

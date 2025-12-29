@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataElementsResponse extends OMAGOMFAPIResponse
 {
-    private List<OpenMetadataElement> elementList = null;
+    private List<OpenMetadataElement> elements = null;
 
 
     /**
@@ -45,7 +45,7 @@ public class OpenMetadataElementsResponse extends OMAGOMFAPIResponse
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            elements = template.getElements();
         }
     }
 
@@ -55,20 +55,20 @@ public class OpenMetadataElementsResponse extends OMAGOMFAPIResponse
      *
      * @return result object
      */
-    public List<OpenMetadataElement> getElementList()
+    public List<OpenMetadataElement> getElements()
     {
-        return elementList;
+        return elements;
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param elements result object
      */
-    public void setElementList(List<OpenMetadataElement> elementList)
+    public void setElements(List<OpenMetadataElement> elements)
     {
-        this.elementList = elementList;
+        this.elements = elements;
     }
 
 
@@ -81,7 +81,7 @@ public class OpenMetadataElementsResponse extends OMAGOMFAPIResponse
     public String toString()
     {
         return "OpenMetadataElementsResponse{" +
-                "elementList=" + elementList +
+                "elements=" + elements +
                 "} " + super.toString();
     }
 
@@ -108,7 +108,7 @@ public class OpenMetadataElementsResponse extends OMAGOMFAPIResponse
             return false;
         }
         OpenMetadataElementsResponse that = (OpenMetadataElementsResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -120,6 +120,6 @@ public class OpenMetadataElementsResponse extends OMAGOMFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), elements);
     }
 }

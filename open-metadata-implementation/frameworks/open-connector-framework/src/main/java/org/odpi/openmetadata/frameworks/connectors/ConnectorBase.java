@@ -690,9 +690,69 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     }
 
 
+    /**
+     * Return the camel case form of a canonical name.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromCanonicalToCamelCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        String newName = name.replaceAll("\\s", "");
+
+        return Character.toLowerCase(newName.charAt(0)) + newName.substring(1);
+    }
+
 
     /**
-     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with dashes between
+     * Return the canonical form of a name in camel case.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromCamelToCanonicalCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] c = name.toCharArray();
+
+        for (char value : c)
+        {
+            /*
+             * Skip space characters
+             */
+            if (! Character.isSpaceChar(value))
+            {
+                if (stringBuilder.isEmpty())
+                {
+                    /*
+                     * Make sure first character is lower case
+                     */
+                    stringBuilder.append(Character.toLowerCase(value));
+                }
+                else
+                {
+                    stringBuilder.append(value);
+                }
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+
+
+    /**
+     * Convert a canonical name to a name in kebab case.  Kebab case is all in lower case with dashes between
      * the words.
      *
      * @param name string to convert

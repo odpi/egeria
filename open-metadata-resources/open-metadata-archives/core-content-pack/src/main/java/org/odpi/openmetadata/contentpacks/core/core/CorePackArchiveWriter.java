@@ -19,6 +19,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
@@ -452,6 +454,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(new MetadataAccessServerProvider());
         archiveHelper.addConnectorType(new ViewServerProvider());
 
+        archiveHelper.addConnectorType(new ValidMetadataValueDataSetProvider());
+        archiveHelper.addConnectorType(new ValidMetadataValueSetListProvider());
+
         /*
          * Add catalog templates
          */
@@ -459,8 +464,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
-
-
 
         this.addMacBookProCatalogTemplate();
         this.addFileSystemTemplate();

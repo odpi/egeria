@@ -699,7 +699,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   serverName,
                                                                                                   userId);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -948,7 +948,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                             userId,
                                                                                             elementGUID);
 
-        return restResult.getElementGraph();
+        return restResult.getElement();
     }
 
 
@@ -1057,7 +1057,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   userId,
                                                                                                   elementGUID);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1202,7 +1202,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   serverName,
                                                                                                   userId);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

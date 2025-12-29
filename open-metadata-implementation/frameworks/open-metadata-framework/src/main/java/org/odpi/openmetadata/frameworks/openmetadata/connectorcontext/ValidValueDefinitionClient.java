@@ -564,7 +564,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
 
 
     /**
-     * Returns the list of valid value definitions with a particular name.
+     * Returns the list of validValueDefinitions with a particular name (qualifiedName, identifier, preferredValue or displayName).
      *
      * @param name                   name of the element to return - match is full text match in qualifiedName or name
      * @param queryOptions           multiple options to control the query
@@ -579,6 +579,25 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
                                                                                                           UserNotAuthorizedException
     {
         return validValueDefinitionHandler.getValidValueDefinitionsByName(connectorUserId, name, queryOptions);
+    }
+
+
+    /**
+     * Returns the list of valid value definitions with a particular identifier property.
+     *
+     * @param name                   name of the element to return - match is full text match in qualifiedName or name
+     * @param queryOptions           multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getValidValueDefinitionsByIdentifier(String       name,
+                                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
+    {
+        return validValueDefinitionHandler.getValidValueDefinitionsByIdentifier(connectorUserId, name, queryOptions);
     }
 
 

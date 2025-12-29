@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprin
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The ProductDefinition describes the products (or templates for products) found in the open metadata product catalog.
@@ -142,6 +143,22 @@ public interface ProductDefinition
 
 
     /**
+     * Return the type name to use for the product's asset.
+     *
+     * @return string
+     */
+    String getAssetTypeName();
+
+
+    /**
+     * Return the identifier to use for the asset.
+     *
+     * @return string
+     */
+    String getAssetIdentifier();
+
+
+    /**
      * Return the class for the connector provider that supports this product.
      *
      * @return string
@@ -155,6 +172,14 @@ public interface ProductDefinition
      * @return string
      */
     String getCatalogTargetName();
+
+
+    /**
+     * Return the configuration properties - may be null.
+     *
+     * @return map
+     */
+    Map<String, Object> getConfigurationProperties();
 
 
     /**
