@@ -75,7 +75,7 @@ ext {
     kafkaVersion = '4.1.0'
     lang3Version = '3.19.0'
 //    TODO: logbackVersion = '1.5.8' build break
-    logbackVersion = '1.5.20'
+    logbackVersion = '1.5.23'
     lettuceVersion = '7.0.0.RELEASE'
     //      TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
     luceneVersion = '8.11.3'
