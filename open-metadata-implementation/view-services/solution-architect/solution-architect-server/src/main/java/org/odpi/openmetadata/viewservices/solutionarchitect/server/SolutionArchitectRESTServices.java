@@ -2093,9 +2093,9 @@ public class SolutionArchitectRESTServices extends TokenController
 
             SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getSolutionComponentImplementations(userId,
-                                                                                solutionComponentGUID,
-                                                                                requestBody));
+            response.setElements(handler.getSolutionComponentImplementations(userId,
+                                                                             solutionComponentGUID,
+                                                                             requestBody));
         }
         catch (Throwable error)
         {

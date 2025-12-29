@@ -880,35 +880,35 @@ public class OpenMetadataStoreRESTServices
                     sequencingOrder = HistorySequencingOrder.FORWARDS;
                 }
 
-                response.setElementList(handler.getBeanHistory(userId,
-                                                               elementGUID,
-                                                               guidParameterName,
-                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                               requestBody.getFromTime(),
-                                                               requestBody.getToTime(),
-                                                               requestBody.getStartFrom(),
-                                                               requestBody.getPageSize(),
-                                                               sequencingOrder,
-                                                               requestBody.getForLineage(),
-                                                               requestBody.getForDuplicateProcessing(),
-                                                               requestBody.getEffectiveTime(),
-                                                               methodName));
+                response.setElements(handler.getBeanHistory(userId,
+                                                            elementGUID,
+                                                            guidParameterName,
+                                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                            requestBody.getFromTime(),
+                                                            requestBody.getToTime(),
+                                                            requestBody.getStartFrom(),
+                                                            requestBody.getPageSize(),
+                                                            sequencingOrder,
+                                                            requestBody.getForLineage(),
+                                                            requestBody.getForDuplicateProcessing(),
+                                                            requestBody.getEffectiveTime(),
+                                                            methodName));
             }
             else
             {
-                response.setElementList(handler.getBeanHistory(userId,
-                                                               elementGUID,
-                                                               guidParameterName,
-                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                               null,
-                                                               null,
-                                                               0,
-                                                               0,
-                                                               sequencingOrder,
-                                                               false,
-                                                               false,
-                                                               new Date(),
-                                                               methodName));
+                response.setElements(handler.getBeanHistory(userId,
+                                                            elementGUID,
+                                                            guidParameterName,
+                                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                            null,
+                                                            null,
+                                                            0,
+                                                            0,
+                                                            sequencingOrder,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
             }
         }
         catch (Throwable error)
@@ -1041,46 +1041,46 @@ public class OpenMetadataStoreRESTServices
 
                 if (requestBody.getAnchorGUID() != null)
                 {
-                    response.setElementList(this.findAnchoredElements(userId,
-                                                                      requestBody.getSearchString(),
-                                                                      requestBody,
-                                                                      OpenMetadataProperty.ANCHOR_GUID.name,
-                                                                      requestBody.getAnchorGUID(),
-                                                                      handler));
+                    response.setElements(this.findAnchoredElements(userId,
+                                                                   requestBody.getSearchString(),
+                                                                   requestBody,
+                                                                   OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                   requestBody.getAnchorGUID(),
+                                                                   handler));
                 }
                 else if (requestBody.getAnchorDomainName() != null)
                 {
-                    response.setElementList(this.findAnchoredElements(userId,
-                                                                      requestBody.getSearchString(),
-                                                                      requestBody,
-                                                                      OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
-                                                                      requestBody.getAnchorDomainName(),
-                                                                      handler));
+                    response.setElements(this.findAnchoredElements(userId,
+                                                                   requestBody.getSearchString(),
+                                                                   requestBody,
+                                                                   OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                   requestBody.getAnchorDomainName(),
+                                                                   handler));
                 }
                 else if (requestBody.getAnchorScopeGUID() != null)
                 {
-                    response.setElementList(this.findAnchoredElements(userId,
-                                                                      requestBody.getSearchString(),
-                                                                      requestBody,
-                                                                      OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
-                                                                      requestBody.getAnchorScopeGUID(),
-                                                                      handler));
+                    response.setElements(this.findAnchoredElements(userId,
+                                                                   requestBody.getSearchString(),
+                                                                   requestBody,
+                                                                   OpenMetadataProperty.ANCHOR_SCOPE_GUID.name,
+                                                                   requestBody.getAnchorScopeGUID(),
+                                                                   handler));
                 }
                 else
                 {
-                    response.setElementList(handler.findMetadataElementsWithString(userId,
-                                                                                   propertyHelper.getSearchString(requestBody.getSearchString(), requestBody.getStartsWith(), requestBody.getEndsWith(), requestBody.getIgnoreCase()),
-                                                                                   requestBody.getMetadataElementTypeName(),
-                                                                                   requestBody.getLimitResultsByStatus(),
-                                                                                   requestBody.getAsOfTime(),
-                                                                                   requestBody.getSequencingProperty(),
-                                                                                   requestBody.getSequencingOrder(),
-                                                                                   requestBody.getForLineage(),
-                                                                                   requestBody.getForDuplicateProcessing(),
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   requestBody.getStartFrom(),
-                                                                                   requestBody.getPageSize(),
-                                                                                   methodName));
+                    response.setElements(handler.findMetadataElementsWithString(userId,
+                                                                                propertyHelper.getSearchString(requestBody.getSearchString(), requestBody.getStartsWith(), requestBody.getEndsWith(), requestBody.getIgnoreCase()),
+                                                                                requestBody.getMetadataElementTypeName(),
+                                                                                requestBody.getLimitResultsByStatus(),
+                                                                                requestBody.getAsOfTime(),
+                                                                                requestBody.getSequencingProperty(),
+                                                                                requestBody.getSequencingOrder(),
+                                                                                requestBody.getForLineage(),
+                                                                                requestBody.getForDuplicateProcessing(),
+                                                                                requestBody.getEffectiveTime(),
+                                                                                requestBody.getStartFrom(),
+                                                                                requestBody.getPageSize(),
+                                                                                methodName));
                 }
             }
             else
@@ -1904,36 +1904,36 @@ public class OpenMetadataStoreRESTServices
 
                 if ((requestBody.getSearchProperties() != null) || (requestBody.getMatchClassifications() != null))
                 {
-                    response.setElementList(handler.findMetadataElements(userId,
-                                                                         requestBody.getMetadataElementTypeName(),
-                                                                         requestBody.getMetadataElementSubtypeNames(),
-                                                                         requestBody.getSearchProperties(),
-                                                                         requestBody.getLimitResultsByStatus(),
-                                                                         requestBody.getMatchClassifications(),
-                                                                         requestBody.getAsOfTime(),
-                                                                         requestBody.getSequencingProperty(),
-                                                                         requestBody.getSequencingOrder(),
-                                                                         requestBody.getForLineage(),
-                                                                         requestBody.getForDuplicateProcessing(),
-                                                                         requestBody.getEffectiveTime(),
-                                                                         requestBody.getStartFrom(),
-                                                                         requestBody.getPageSize(),
-                                                                         methodName));
+                    response.setElements(handler.findMetadataElements(userId,
+                                                                      requestBody.getMetadataElementTypeName(),
+                                                                      requestBody.getMetadataElementSubtypeNames(),
+                                                                      requestBody.getSearchProperties(),
+                                                                      requestBody.getLimitResultsByStatus(),
+                                                                      requestBody.getMatchClassifications(),
+                                                                      requestBody.getAsOfTime(),
+                                                                      requestBody.getSequencingProperty(),
+                                                                      requestBody.getSequencingOrder(),
+                                                                      requestBody.getForLineage(),
+                                                                      requestBody.getForDuplicateProcessing(),
+                                                                      requestBody.getEffectiveTime(),
+                                                                      requestBody.getStartFrom(),
+                                                                      requestBody.getPageSize(),
+                                                                      methodName));
                 }
                 else
                 {
-                    response.setElementList(handler.getMetadataElementsByType(userId,
-                                                                              requestBody.getMetadataElementTypeName(),
-                                                                              requestBody.getForLineage(),
-                                                                              requestBody.getForDuplicateProcessing(),
-                                                                              requestBody.getLimitResultsByStatus(),
-                                                                              requestBody.getAsOfTime(),
-                                                                              requestBody.getSequencingProperty(),
-                                                                              requestBody.getSequencingOrder(),
-                                                                              requestBody.getEffectiveTime(),
-                                                                              requestBody.getStartFrom(),
-                                                                              requestBody.getPageSize(),
-                                                                              methodName));
+                    response.setElements(handler.getMetadataElementsByType(userId,
+                                                                           requestBody.getMetadataElementTypeName(),
+                                                                           requestBody.getForLineage(),
+                                                                           requestBody.getForDuplicateProcessing(),
+                                                                           requestBody.getLimitResultsByStatus(),
+                                                                           requestBody.getAsOfTime(),
+                                                                           requestBody.getSequencingProperty(),
+                                                                           requestBody.getSequencingOrder(),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           requestBody.getStartFrom(),
+                                                                           requestBody.getPageSize(),
+                                                                           methodName));
                 }
             }
             else
@@ -2164,7 +2164,7 @@ public class OpenMetadataStoreRESTServices
                 OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGraph);
                 elementGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
 
-                response.setElementGraph(elementGraph);
+                response.setElement(elementGraph);
             }
         }
         catch (Throwable error)

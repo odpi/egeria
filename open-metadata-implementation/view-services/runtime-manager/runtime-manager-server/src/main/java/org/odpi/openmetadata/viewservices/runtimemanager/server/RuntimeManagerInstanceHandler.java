@@ -119,7 +119,7 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns the object for the tenant to use to work with the IT Infrastructure API.
+     * This method returns the object for the tenant to use to work with the OCF services.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

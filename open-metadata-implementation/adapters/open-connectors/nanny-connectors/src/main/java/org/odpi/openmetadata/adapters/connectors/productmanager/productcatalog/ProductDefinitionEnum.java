@@ -3,13 +3,14 @@
 package org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog;
 
 import org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint.ProductRoleDefinition;
-import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListProvider;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The ProductDefinition describes the fixed products and product groups found in the open metadata product catalog.
@@ -36,40 +37,45 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      null,
                      null,
                      null,
+                     null,
+                     null,
                      null),
 
     /**
      * Valid Value Set List
      */
-    VALID_VALUE_SET_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                         new ProductDefinition[]{ProductDefinitionEnum.VALID_VALUE_SETS},
-                         "Valid Value Set List",
-                         "OPEN-METADATA-" + OpenMetadataType.VALID_VALUE_DEFINITION.typeName + "-with-members",
-                         null,
-                         "Valid Value Set List",
-                         "A tabular data set where each record describes an open metadata valid value set.",
-                         ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
-                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
-                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
-                         new ProductSubscriptionDefinition[]{
-                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
-                         "Valid Value Set List",
-                         new ProductDataFieldDefinition[]{
-                                 ProductDataFieldDefinition.GUID},
-                         new ProductDataFieldDefinition[]{
-                                 ProductDataFieldDefinition.QUALIFIED_NAME,
-                                 ProductDataFieldDefinition.DISPLAY_NAME,
-                                 ProductDataFieldDefinition.DESCRIPTION,
-                                 ProductDataFieldDefinition.CATEGORY,
-                                 ProductDataFieldDefinition.NAMESPACE,
-                                 ProductDataFieldDefinition.PREFERRED_VALUE,
-                                 ProductDataFieldDefinition.IS_CASE_SENSITIVE,
-                                 ProductDataFieldDefinition.DATA_TYPE,
-                                 ProductDataFieldDefinition.SCOPE,
-                                 ProductDataFieldDefinition.USAGE},
-                         new ValidValueSetListProvider(),
-                         "ValidValueSetList"),
+    VALID_METADATA_VALUE_SET_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                  new ProductDefinition[]{ProductDefinitionEnum.VALID_VALUE_SETS},
+                                  "Valid Value Set List",
+                                  "OPEN-METADATA-" + OpenMetadataType.VALID_METADATA_VALUE.typeName + "-with-members",
+                                  null,
+                                  "Valid Metadata Value Set List",
+                                  "A tabular data set where each record describes an valid metadata value set.",
+                                  ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                  ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                  ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                                  new ProductSubscriptionDefinition[]{
+                                          ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                          ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                  "Valid Metadata Value Set List",
+                                  new ProductDataFieldDefinition[]{
+                                          ProductDataFieldDefinition.GUID},
+                                  new ProductDataFieldDefinition[]{
+                                          ProductDataFieldDefinition.QUALIFIED_NAME,
+                                          ProductDataFieldDefinition.IDENTIFIER,
+                                          ProductDataFieldDefinition.DISPLAY_NAME,
+                                          ProductDataFieldDefinition.DESCRIPTION,
+                                          ProductDataFieldDefinition.CATEGORY,
+                                          ProductDataFieldDefinition.NAMESPACE,
+                                          ProductDataFieldDefinition.PREFERRED_VALUE,
+                                          ProductDataFieldDefinition.IS_CASE_SENSITIVE,
+                                          ProductDataFieldDefinition.DATA_TYPE,
+                                          ProductDataFieldDefinition.SCOPE,
+                                          ProductDataFieldDefinition.USAGE},
+                                  OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                  "Open Metadata Property List",
+                                  new ValidMetadataValueSetListProvider(),
+                                  "ValidMetadataValueSetList"),
 
 
     /**
@@ -88,6 +94,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         new ProductSubscriptionDefinition[]{
                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
+                        null,
+                        null,
                         null,
                         null,
                         null,
@@ -118,6 +126,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductDataFieldDefinition.DESCRIPTION,
                             ProductDataFieldDefinition.CATEGORY,
                             ProductDataFieldDefinition.DATA_TYPE},
+                    OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                    "Open Metadata Attribute Type List",
                     null,
                     "OpenMetadataAttributes"),
 
@@ -148,6 +158,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        ProductDataFieldDefinition.BEAN_CLASS_NAME,
                        ProductDataFieldDefinition.OPEN_METADATA_SUBTYPES,
                        ProductDataFieldDefinition.OPEN_METADATA_SUPER_TYPES},
+               OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+               "Open Metadata Types List",
                null,
                "OpenMetadataTypes"),
 
@@ -176,6 +188,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                       ProductDataFieldDefinition.DATA_TYPE,
                                       ProductDataFieldDefinition.DESCRIPTION},
                               null,
+                              "Attributes defined for each Open Metadata Type",
+                              null,
                               "OpenMetadataAttributesForTypes"),
 
 
@@ -199,6 +213,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           null,
                           null,
                           null,
+                          null,
+                          null,
                           null),
 
     /**
@@ -206,10 +222,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
      */
     ORGANIZATIONS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                   new ProductDefinition[]{ProductDefinitionEnum.PARTY_PLACES_PRODUCTS},
-                  "Organizations List",
+                  "Organization List",
                   "Organizations",
                   null,
-                  "Organizations List",
+                  "Organization List",
                   "A tabular data set where each record describes an organization interacting with open metadata.",
                   ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
                   ProductGovernanceDefinition.INTERNAL_USE_ONLY,
@@ -226,6 +242,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductDataFieldDefinition.DISPLAY_NAME,
                           ProductDataFieldDefinition.CATEGORY,
                           ProductDataFieldDefinition.DESCRIPTION},
+                  OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                  "Organization List",
                   null,
                   "Organizations"),
 
@@ -253,6 +271,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    ProductDataFieldDefinition.IDENTIFIER,
                    ProductDataFieldDefinition.DISPLAY_NAME,
                    ProductDataFieldDefinition.DESCRIPTION},
+           OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+           "People List",
            null,
            "People"),
 
@@ -264,7 +284,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      "Digital Product Inventory",
                      "DIGITAL-PRODUCTS-INVENTORY",
                      null,
-                     "Digital Products Inventory",
+                     "Digital Product Inventory",
                      "A tabular data set where each record describes a digital product.",
                      ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
                      ProductGovernanceDefinition.INTERNAL_USE_ONLY,
@@ -281,6 +301,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              ProductDataFieldDefinition.DISPLAY_NAME,
                              ProductDataFieldDefinition.DESCRIPTION,
                              ProductDataFieldDefinition.ELEMENT_STATUS},
+                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                     "Digital Product List",
                      null,
                      "DigitalProductsInventory"),
 
@@ -315,6 +337,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductDataFieldDefinition.LOCATION_MAP_PROJECTION,
                       ProductDataFieldDefinition.LOCATION_POSTAL_ADDRESS,
                       ProductDataFieldDefinition.NETWORK_ADDRESS},
+              OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+              "Location List",
               null,
               "Locations"),
 
@@ -333,6 +357,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductGovernanceDefinition.PERSONAL_DATA,
                                ProductCommunityDefinition.OBSERVABILITY_SIG,
                                new ProductSubscriptionDefinition[]{ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION},
+                               null,
+                               null,
                                null,
                                null,
                                null,
@@ -358,6 +384,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              null,
                              null,
                              null,
+                             null,
+                             null,
                              null),
 
 
@@ -379,14 +407,16 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      null,
                      null,
                      null,
+                     null,
+                     null,
                      null),
 
     ;
 
 
-    private final String              typeName;
-    private final ProductDefinition[] productFamilies;
-    private final String              productName;
+    private final String                          typeName;
+    private final ProductDefinition[]             productFamilies;
+    private final String                          productName;
     private final String                          identifier;
     private final ProductFolderDefinition         parent;
     private final String                          displayName;
@@ -399,13 +429,15 @@ public enum ProductDefinitionEnum implements ProductDefinition
     private final String                          dataSpecTableName;
     private final ProductDataFieldDefinition[]    dataSpecIdentifiers;
     private final ProductDataFieldDefinition[]    dataSpecFields;
+    private final String                          assetTypeName;
+    private final String                          assetIdentifier;
     private final ConnectorProvider               connectorProvider;
     private final String                          catalogTargetName;
 
 
 
     ProductDefinitionEnum(String                          typeName,
-                          ProductDefinition[] productFamilies,
+                          ProductDefinition[]             productFamilies,
                           String                          productName,
                           String                          identifier,
                           ProductFolderDefinition         parent,
@@ -418,6 +450,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           String                          dataSpecTableName,
                           ProductDataFieldDefinition[]    dataSpecIdentifiers,
                           ProductDataFieldDefinition[]    dataSpecFields,
+                          String                          assetTypeName,
+                          String                          assetIdentifier,
                           ConnectorProvider               connectorProvider,
                           String                          catalogTargetName)
     {
@@ -436,6 +470,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.dataSpecTableName   = dataSpecTableName;
         this.dataSpecIdentifiers = dataSpecIdentifiers;
         this.dataSpecFields      = dataSpecFields;
+        this.assetTypeName       = assetTypeName;
+        this.assetIdentifier     = assetIdentifier;
         this.connectorProvider   = connectorProvider;
         this.catalogTargetName   = catalogTargetName;
     }
@@ -464,6 +500,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     {
         return typeName;
     }
+
 
     /**
      * Return the list of product groups (if any) that this product belongs to.
@@ -571,6 +608,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return community definition
      */
+    @Override
     public ProductCommunityDefinition getCommunity()
     {
         return community;
@@ -652,6 +690,31 @@ public enum ProductDefinitionEnum implements ProductDefinition
 
 
     /**
+     * Return the type name to use for the product's asset.
+     *
+     * @return string
+     */
+    @Override
+    public String getAssetTypeName()
+    {
+        return assetTypeName;
+    }
+
+
+    /**
+     * Return the identifier to use for the asset.
+     *
+     * @return string
+     */
+    @Override
+    public String getAssetIdentifier()
+    {
+        return assetIdentifier;
+    }
+
+
+
+    /**
      * Return the class for the connector provider that supports this product.
      *
      * @return string
@@ -672,6 +735,18 @@ public enum ProductDefinitionEnum implements ProductDefinition
     public String getCatalogTargetName()
     {
         return catalogTargetName;
+    }
+
+
+    /**
+     * Return the configuration properties - may be null.
+     *
+     * @return map
+     */
+    @Override
+    public Map<String, Object> getConfigurationProperties()
+    {
+        return null;
     }
 
 

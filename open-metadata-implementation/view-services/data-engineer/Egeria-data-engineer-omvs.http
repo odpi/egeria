@@ -19,5 +19,60 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 
+###
+# @name find TabularDataSets
+# Retrieve the list of asset metadata elements that are of type tabular data set.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/assets/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "TabularDataSet",
+  "skipClassifiedElements": ["Template"]
+}
 
 
+
+###
+# @name getAssetsByName
+# Returns the list of assets with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Open Metadata Property List for Valid Metadata Value Set List",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+
+@tabularDataSetGUID=add guid here
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{tabularDataSetGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+###

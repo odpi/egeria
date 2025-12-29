@@ -9,9 +9,9 @@ import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductMana
 import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductManagerErrorCode;
 import org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.*;
 import org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint.*;
-import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListConnector;
-import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListProvider;
-import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListConnector;
+import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -26,7 +26,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActi
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -37,8 +36,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SolutionActorRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
@@ -56,7 +55,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
@@ -80,8 +78,6 @@ import java.util.*;
  */
 public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationConnectorBase
 {
-    private static final String validValueSetListCatalogTargetName = "ValidValueSetList";
-
     /*
      * Set everything to null to catch issue where refresh() is called without start() since
      * It will result in NPEs.  This is not expected.
@@ -208,6 +204,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
     /**
      * Make sure data sources are set up for all valid value sets.
+     * It extracts the valid metadata value list from the catalog targets
      *
      * @param existingDataSources existing data source map
      * @throws ConnectorCheckedException problem access the valid value set list
@@ -216,39 +213,32 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
     {
         final String methodName = "harvestValidValues";
 
-        RequestedCatalogTarget validValueSetList = existingDataSources.get(validValueSetListCatalogTargetName);
+        RequestedCatalogTarget validValueSetList = existingDataSources.get(ProductDefinitionEnum.VALID_METADATA_VALUE_SET_LIST.getCatalogTargetName());
 
         if (validValueSetList != null)
         {
             Connector connectorToTarget = validValueSetList.getConnectorToTarget();
 
-            if (connectorToTarget instanceof ValidValueSetListConnector validValueSetListConnector)
+            if (connectorToTarget instanceof ValidMetadataValueSetListConnector validMetadataValueSetListConnector)
             {
-                long recordCount  = validValueSetListConnector.getRecordCount();
-                int  columnNumber = validValueSetListConnector.getColumnNumber(OpenMetadataProperty.QUALIFIED_NAME.name);
+                long recordCount  = validMetadataValueSetListConnector.getRecordCount();
+                int  columnNumber = validMetadataValueSetListConnector.getColumnNumber(OpenMetadataProperty.PROPERTY_NAME.name);
 
                 if (recordCount > 0)
                 {
                     for (long rowNumber = 0; rowNumber < recordCount; rowNumber++)
                     {
-                        List<String> rowValues = validValueSetListConnector.readRecord(rowNumber);
+                        List<String> rowValues = validMetadataValueSetListConnector.readRecord(rowNumber);
 
                         if ((rowValues != null) && (rowValues.size() > columnNumber))
                         {
-                            String qualifiedName = rowValues.get(columnNumber);
+                            String propertyName = rowValues.get(columnNumber);
 
-                            if ((qualifiedName != null) && (! existingDataSources.containsKey(qualifiedName)))
+                            if ((propertyName != null) && (! existingDataSources.containsKey(propertyName)))
                             {
                                 try
                                 {
-                                    String productGUID = createValidValueDataSet(qualifiedName);
-
-                                    if (productGUID != null)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            ProductManagerAuditCode.NEW_VALID_VALUE_PRODUCT.getMessageDefinition(connectorName, productGUID, qualifiedName));
-
-                                    }
+                                    refreshValidMetadataValueDataSet(propertyName);
                                 }
                                 catch (Exception error)
                                 {
@@ -269,67 +259,78 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
 
 
     /**
-     * Create a product that represents a single valid value set.
+     * Create a product that represents a single valid valid metadata value set.
      *
-     * @param qualifiedName unique name of the valid value set
+     * @param propertyName unique name of the valid value set
      * @return unique identifier of the product
      */
-    private String createValidValueDataSet(String qualifiedName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    private String refreshValidMetadataValueDataSet(String propertyName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        ValidValueDefinitionClient validValueDefinitionClient = integrationContext.getValidValueDefinitionClient();
-
-        List<OpenMetadataRootElement> validValueSets = validValueDefinitionClient.getValidValueDefinitionsByName(qualifiedName,
-                                                                                                                 validValueDefinitionClient.getQueryOptions());
-
         /*
-         * There should be just one valid value set.
+         * Create a dynamic product definition and ass it to the open metadata ecosystem.
          */
-        if (validValueSets != null)
-        {
-            for (OpenMetadataRootElement validValueSet : validValueSets)
-            {
-                if ((validValueSet != null) && (validValueSet.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties))
-                {
-                    ProductDefinition productDefinition = new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                                                                                    new ProductDefinition[]{ ProductDefinitionEnum.VALID_VALUE_SETS },
-                                                                                    "Valid Value Set: " + validValueDefinitionProperties.getDisplayName(),
-                                                                                    "OPEN-METADATA-" + OpenMetadataType.VALID_VALUE_DEFINITION.typeName + "-" + validValueDefinitionProperties.getQualifiedName(),
-                                                                                    null,
-                                                                                    validValueDefinitionProperties.getDisplayName(),
-                                                                                    validValueDefinitionProperties.getDescription(),
-                                                                                    ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
-                                                                                    ProductGovernanceDefinition.INTERNAL_USE_ONLY,
-                                                                                    ProductCommunityDefinition.REFERENCE_DATA_SIG,
-                                                                                    new ProductSubscriptionDefinition[]{
-                                                                                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                                                                                            ProductSubscriptionDefinition.ONGOING_UPDATE},
-                                                                                    "Valid Value Set " + validValueDefinitionProperties.getDisplayName(),
-                                                                                    new ProductDataFieldDefinition[]{
-                                                                                            ProductDataFieldDefinition.GUID},
-                                                                                    new ProductDataFieldDefinition[]{
-                                                                                            ProductDataFieldDefinition.QUALIFIED_NAME,
-                                                                                            ProductDataFieldDefinition.DISPLAY_NAME,
-                                                                                            ProductDataFieldDefinition.DESCRIPTION,
-                                                                                            ProductDataFieldDefinition.CATEGORY,
-                                                                                            ProductDataFieldDefinition.NAMESPACE,
-                                                                                            ProductDataFieldDefinition.PREFERRED_VALUE,
-                                                                                            ProductDataFieldDefinition.IS_CASE_SENSITIVE,
-                                                                                            ProductDataFieldDefinition.DATA_TYPE,
-                                                                                            ProductDataFieldDefinition.SCOPE,
-                                                                                            ProductDataFieldDefinition.USAGE},
-                                                                                    new ValidValueSetListProvider(),
-                                                                                    "ValidValueSet:" + qualifiedName);
+        Map<String, Object> configurationProperties = new HashMap<>();
 
-                    return this.getProduct(productDefinition);
-                }
+        configurationProperties.put(ReferenceDataConfigurationProperty.VALID_METADATA_PROPERTY_NAME.name, propertyName);
+
+        ProductDefinition productDefinition = new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                        new ProductDefinition[]{ ProductDefinitionEnum.VALID_VALUE_SETS },
+                                                                        "Valid Metadata Value Set: " + propertyName,
+                                                                        propertyName,
+                                                                        null,
+                                                                        super.fromCamelToCanonicalCase(propertyName),
+                                                                        this.getPropertyDescription(propertyName),
+                                                                        ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                                                        ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                                                        ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                                                                        new ProductSubscriptionDefinition[]{
+                                                                                ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                                                                ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                                                        "Valid Metadata Value Set: " + propertyName,
+                                                                        new ProductDataFieldDefinition[]{
+                                                                                ProductDataFieldDefinition.GUID},
+                                                                        new ProductDataFieldDefinition[]{
+                                                                                ProductDataFieldDefinition.QUALIFIED_NAME,
+                                                                                ProductDataFieldDefinition.IDENTIFIER,
+                                                                                ProductDataFieldDefinition.DISPLAY_NAME,
+                                                                                ProductDataFieldDefinition.DESCRIPTION,
+                                                                                ProductDataFieldDefinition.CATEGORY,
+                                                                                ProductDataFieldDefinition.NAMESPACE,
+                                                                                ProductDataFieldDefinition.PREFERRED_VALUE,
+                                                                                ProductDataFieldDefinition.IS_CASE_SENSITIVE,
+                                                                                ProductDataFieldDefinition.DATA_TYPE,
+                                                                                ProductDataFieldDefinition.SCOPE,
+                                                                                ProductDataFieldDefinition.USAGE},
+                                                                        OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                                                        "Valid Metadata Values",
+                                                                        new ValidMetadataValueDataSetProvider(),
+                                                                        configurationProperties,
+                                                                        "Valid Metadata Value Set: " + propertyName);
+
+        return this.getProduct(productDefinition);
+    }
+
+
+    /**
+     * Return the property description for this valid values set.
+     *
+     * @param propertyName name of an open metadata property
+     * @return string
+     */
+    private String getPropertyDescription(String propertyName)
+    {
+        for (OpenMetadataProperty openMetadataProperty : OpenMetadataProperty.values())
+        {
+            if (openMetadataProperty.name.equals(propertyName))
+            {
+                return openMetadataProperty.description;
             }
         }
 
-        return null;
+        return "Valid values for open metadata property: " + propertyName;
     }
-
 
 
     /**
@@ -435,7 +436,6 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                             ProductManagerAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
                                                                                                    productGUID,
                                                                                                    productDefinition.getProductName()));
-
         /*
          * Link the product manager
          */
@@ -922,12 +922,19 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
     {
         final String methodName = "addProductAsset";
 
-        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.REFERENCE_CODE_TABLE.typeName);
+        AssetClient assetClient = integrationContext.getAssetClient(productDefinition.getAssetTypeName());
 
-        ReferenceCodeTableProperties dataSetProperties = new ReferenceCodeTableProperties();
+        String qualifiedName = productDefinition.getQualifiedName() + "_" + productDefinition.getAssetIdentifier();
 
-        dataSetProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceCodeTable");
-        dataSetProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
+        TabularDataSetProperties dataSetProperties = new TabularDataSetProperties();
+
+        if (productDefinition.getAssetTypeName() != null)
+        {
+            dataSetProperties.setTypeName(productDefinition.getAssetTypeName());
+        }
+
+        dataSetProperties.setQualifiedName(qualifiedName);
+        dataSetProperties.setDisplayName(productDefinition.getAssetIdentifier() + " for " + productDefinition.getDisplayName());
         dataSetProperties.setDescription("This asset represents the source of data for the digital product.");
         dataSetProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
 
@@ -979,13 +986,17 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
              */
             VirtualConnectionProperties connectionProperties = new VirtualConnectionProperties();
 
-            connectionProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_connection");
+            connectionProperties.setQualifiedName(qualifiedName + "_connection");
             connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
             connectionProperties.setDescription("This connection provides access to the metadata access server that supplied the data for this digital product.");
             connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
             connectionProperties.setUserId(integrationContext.getMyUserId());
 
             Map<String, Object> connectionConfigurationProperties = new HashMap<>();
+            if (productDefinition.getConfigurationProperties() != null)
+            {
+                connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
+            }
             connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
             connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
             connectionProperties.setConfigurationProperties(connectionConfigurationProperties);
@@ -1023,7 +1034,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                  * Create secret store connection
                  */
                 ConnectionProperties secretsStoreConnection = new ConnectionProperties();
-                secretsStoreConnection.setQualifiedName(productDefinition.getQualifiedName() + "::" + purpose + "_secretsStore_connection");
+                secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
                 secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
                 secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
                 secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
@@ -1068,7 +1079,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                  * Add secrets store location as an endpoint.
                  */
                 EndpointProperties secretsStoreEndpoint = new EndpointProperties();
-                secretsStoreEndpoint.setQualifiedName(productDefinition.getQualifiedName() + "::" + purpose + "_secretsStore_locationEndpoint");
+                secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
                 secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
 
                 newElementOptions.setParentAtEnd1(true);
@@ -1162,13 +1173,12 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-
-        ConnectorTypeClient connectorTypeClient = integrationContext.getConnectorTypeClient();
-
         String connectorTypeGUID = null;
 
         if (connectorProvider != null)
         {
+            ConnectorTypeClient connectorTypeClient = integrationContext.getConnectorTypeClient();
+
             /*
              * This is not strictly necessary - but is present to demonstrate how to search for and
              * create Connector Types

@@ -2,7 +2,7 @@
 # The Asset Maker OMVS provides APIs for supporting the creation and editing of assets.
 
 @baseURL=https://localhost:9443
-@viewServer=qs-view-server
+@viewServer=view-server
 
 ###
 # =====================================================================================================================

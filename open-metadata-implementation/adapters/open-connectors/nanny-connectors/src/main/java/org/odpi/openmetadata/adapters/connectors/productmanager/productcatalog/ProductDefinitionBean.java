@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The ProductDefinition describes the products (or templates for products) found in the open metadata product catalog.
@@ -29,8 +30,11 @@ public class ProductDefinitionBean implements ProductDefinition
     private final String                          dataSpecTableName;
     private final ProductDataFieldDefinition[]    dataSpecIdentifiers;
     private final ProductDataFieldDefinition[]    dataSpecFields;
+    private final String                          assetTypeName;
+    private final String                          assetIdentifier;
     private final ConnectorProvider               connectorProvider;
     private final String                          catalogTargetName;
+    private final Map<String, Object>             configurationProperties;
 
 
     /**
@@ -50,7 +54,10 @@ public class ProductDefinitionBean implements ProductDefinition
      * @param dataSpecTableName logical name of the tabular data set
      * @param dataSpecIdentifiers list of data fields that form the unique identifier
      * @param dataSpecFields list of other data fields
+     * @param assetTypeName type name for the associated product asset
+     * @param assetIdentifier identifier for the appropriate asset
      * @param connectorProvider connector provider class (or null)
+     * @param configurationProperties configuration properties for the asset's connection
      * @param catalogTargetName catalog target name for the refresh process
      */
     public ProductDefinitionBean(String                          typeName,
@@ -67,26 +74,32 @@ public class ProductDefinitionBean implements ProductDefinition
                                  String                          dataSpecTableName,
                                  ProductDataFieldDefinition[]    dataSpecIdentifiers,
                                  ProductDataFieldDefinition[]    dataSpecFields,
+                                 String                          assetTypeName,
+                                 String                          assetIdentifier,
                                  ConnectorProvider               connectorProvider,
+                                 Map<String, Object>             configurationProperties,
                                  String                          catalogTargetName)
     {
-        this.typeName            = typeName;
-        this.productGroups       = productGroups;
-        this.productName         = productName;
-        this.identifier          = identifier;
-        this.parent              = parent;
-        this.displayName         = displayName;
-        this.description         = description;
-        this.category            = category;
-        this.license             = license;
-        this.community           = community;
-        this.productManager      = ProductRoleDefinition.PRODUCT_MANAGER;
-        this.subscriptionTypes   = subscriptionTypes;
-        this.dataSpecTableName   = dataSpecTableName;
-        this.dataSpecIdentifiers = dataSpecIdentifiers;
-        this.dataSpecFields      = dataSpecFields;
-        this.connectorProvider   = connectorProvider;
-        this.catalogTargetName   = catalogTargetName;
+        this.typeName                = typeName;
+        this.productGroups           = productGroups;
+        this.productName             = productName;
+        this.identifier              = identifier;
+        this.parent                  = parent;
+        this.displayName             = displayName;
+        this.description             = description;
+        this.category                = category;
+        this.license                 = license;
+        this.community               = community;
+        this.productManager          = ProductRoleDefinition.PRODUCT_MANAGER;
+        this.subscriptionTypes       = subscriptionTypes;
+        this.dataSpecTableName       = dataSpecTableName;
+        this.dataSpecIdentifiers     = dataSpecIdentifiers;
+        this.dataSpecFields          = dataSpecFields;
+        this.assetTypeName           = assetTypeName;
+        this.assetIdentifier         = assetIdentifier;
+        this.connectorProvider       = connectorProvider;
+        this.configurationProperties = configurationProperties;
+        this.catalogTargetName       = catalogTargetName;
     }
 
 
@@ -304,6 +317,30 @@ public class ProductDefinitionBean implements ProductDefinition
 
 
     /**
+     * Return the type name to use for the product's asset.
+     *
+     * @return string
+     */
+    @Override
+    public String getAssetTypeName()
+    {
+        return assetTypeName;
+    }
+
+
+    /**
+     * Return the identifier to use for the asset.
+     *
+     * @return string
+     */
+    @Override
+    public String getAssetIdentifier()
+    {
+        return assetIdentifier;
+    }
+
+
+    /**
      * Return the class for the connector provider that supports this product.
      *
      * @return string
@@ -326,6 +363,17 @@ public class ProductDefinitionBean implements ProductDefinition
         return catalogTargetName;
     }
 
+
+    /**
+     * Return the configuration properties - may be null.
+     *
+     * @return map
+     */
+    @Override
+    public Map<String, Object> getConfigurationProperties()
+    {
+        return configurationProperties;
+    }
 
     /**
      * Return the version identifier.

@@ -231,7 +231,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElementList(handler.getMetadataElementHistory(userId, elementGUID, requestBody));
+            response.setElements(handler.getMetadataElementHistory(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -327,13 +327,13 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.findMetadataElementsWithString(userId,
-                                                                               requestBody.getSearchString(),
-                                                                               requestBody));
+                response.setElements(handler.findMetadataElementsWithString(userId,
+                                                                            requestBody.getSearchString(),
+                                                                            requestBody));
             }
             else
             {
-                response.setElementList(handler.findMetadataElementsWithString(userId, null, null));
+                response.setElements(handler.findMetadataElementsWithString(userId, null, null));
             }
         }
         catch (Throwable error)
@@ -616,7 +616,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElementGraph(handler.getAnchoredElementsGraph(userId, elementGUID, requestBody));
+            response.setElement(handler.getAnchoredElementsGraph(userId, elementGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -718,10 +718,10 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
-                response.setElementList(handler.findMetadataElements(userId,
-                                                                     requestBody.getSearchProperties(),
-                                                                     requestBody.getMatchClassifications(),
-                                                                     requestBody));
+                response.setElements(handler.findMetadataElements(userId,
+                                                                  requestBody.getSearchProperties(),
+                                                                  requestBody.getMatchClassifications(),
+                                                                  requestBody));
             }
             else
             {

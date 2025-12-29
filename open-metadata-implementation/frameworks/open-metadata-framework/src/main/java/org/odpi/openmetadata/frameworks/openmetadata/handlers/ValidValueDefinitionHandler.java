@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -780,7 +781,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Returns the list of validValueDefinitions with a particular name.
+     * Returns the list of validValueDefinitions with a particular name (qualifiedName, identifier, preferredValue or displayName).
      *
      * @param userId                 userId of user making request
      * @param name                   name of the element to return - match is full text match in qualifiedName or name
@@ -802,6 +803,35 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                                    OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.PREFERRED_VALUE.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
+
+        return super.getRootElementsByName(userId,
+                                           name,
+                                           propertyNames,
+                                           queryOptions,
+                                           methodName);
+    }
+
+
+    /**
+     * Returns the list of validValueDefinitions with a particular identifier.
+     *
+     * @param userId                 userId of user making request
+     * @param name                   name of the element to return - match is full text match in qualifiedName or name
+     * @param queryOptions           multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getValidValueDefinitionsByIdentifier(String       userId,
+                                                                              String       name,
+                                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "getValidValueDefinitionsByIdentifier";
+
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.IDENTIFIER.name);
 
         return super.getRootElementsByName(userId,
                                            name,

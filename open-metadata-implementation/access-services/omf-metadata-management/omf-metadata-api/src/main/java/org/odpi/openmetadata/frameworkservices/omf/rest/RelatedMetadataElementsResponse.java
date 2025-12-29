@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementsResponse extends OMAGOMFAPIResponse
 {
-    private List<RelatedMetadataElementSummary> elementList = null;
+    private List<RelatedMetadataElementSummary> elements = null;
 
 
     /**
@@ -45,7 +45,7 @@ public class RelatedMetadataElementsResponse extends OMAGOMFAPIResponse
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            elements = template.getElements();
         }
     }
 
@@ -55,20 +55,20 @@ public class RelatedMetadataElementsResponse extends OMAGOMFAPIResponse
      *
      * @return result object
      */
-    public List<RelatedMetadataElementSummary> getElementList()
+    public List<RelatedMetadataElementSummary> getElements()
     {
-        return elementList;
+        return elements;
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param elements result object
      */
-    public void setElementList(List<RelatedMetadataElementSummary> elementList)
+    public void setElements(List<RelatedMetadataElementSummary> elements)
     {
-        this.elementList = elementList;
+        this.elements = elements;
     }
 
 
@@ -81,7 +81,7 @@ public class RelatedMetadataElementsResponse extends OMAGOMFAPIResponse
     public String toString()
     {
         return "RelatedMetadataElementsResponse{" +
-                "elementList=" + elementList +
+                "elements=" + elements +
                 "} " + super.toString();
     }
 
@@ -108,7 +108,7 @@ public class RelatedMetadataElementsResponse extends OMAGOMFAPIResponse
             return false;
         }
         RelatedMetadataElementsResponse that = (RelatedMetadataElementsResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -120,6 +120,6 @@ public class RelatedMetadataElementsResponse extends OMAGOMFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), elements);
     }
 }
