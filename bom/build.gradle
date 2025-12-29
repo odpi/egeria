@@ -79,7 +79,7 @@ ext {
     lettuceVersion = '7.0.0.RELEASE'
     //      TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
     luceneVersion = '8.11.3'
-    openlineageVersion = '1.37.0'
+    openlineageVersion = '1.41.0'
     ossVersion = '4.16.0'
     //      TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
