@@ -87,9 +87,11 @@ org.odpi.openmetadata.adapters.connectors.productmanager
 org.odpi.openmetadata.adapters.connectors.productmanager.ffdc
 org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog
 org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint
-org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets
-org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls
-org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc
+org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets
+org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.controls
+org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.ffdc
+org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.referencedata
+org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues
 org.odpi.openmetadata.adapters.connectors.reports
 org.odpi.openmetadata.adapters.connectors.reports.ffdc
 org.odpi.openmetadata.adapters.connectors.reports.surveyreport
