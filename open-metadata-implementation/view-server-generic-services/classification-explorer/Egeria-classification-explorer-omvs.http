@@ -635,6 +635,32 @@ Content-Type: application/json
 
 
 ###
+# @name findRootElements (nested condition)
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-complex-query
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "ValidValueDefinition",
+  "searchProperties": {
+    "class" : "SearchProperties",
+    "conditions": [ {
+      "property" : "identifier",
+      "operator": "LIKE",
+      "value": {
+        "class" : "PrimitiveTypePropertyValue",
+        "typeName" : "string",
+        "primitiveValue" : "deployedImplementationType"
+      }
+    }],
+    "matchCriteria": "ANY"
+  }
+}
+
+
+###
 # @name getElementsByPropertyValue
 # Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
 # An open metadata type name may be supplied to restrict the results.

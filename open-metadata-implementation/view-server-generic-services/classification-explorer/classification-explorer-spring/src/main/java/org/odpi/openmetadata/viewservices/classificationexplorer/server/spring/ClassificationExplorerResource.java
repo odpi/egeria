@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Level
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody;
 import org.odpi.openmetadata.viewservices.classificationexplorer.server.ClassificationExplorerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -622,6 +623,10 @@ public class ClassificationExplorerResource
     @PostMapping (path = "/elements/licenses/{licenseTypeGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="getLicensedElements",
+            description="Return information about the elements linked to a license type.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0481-Licenses/"))
+
     public RelatedMetadataElementSummariesResponse  getLicensedElements(@PathVariable String serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String licenseTypeGUID,
@@ -646,6 +651,10 @@ public class ClassificationExplorerResource
      */
     @PostMapping (path = "/elements/{elementGUID}/licenses")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getLicenses",
+            description="Return information about the licenses linked to an element.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0481-Licenses/"))
 
     public RelatedMetadataElementSummariesResponse getLicenses(@PathVariable String serverName,
                                                                @PathVariable String urlMarker,
@@ -672,6 +681,10 @@ public class ClassificationExplorerResource
     @PostMapping (path = "/elements/certifications/{certificationTypeGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="geCertifiedElements",
+            description="Return information about the elements linked to a certification type.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0482-Certifications/"))
+
     public CertificationElementsResponse  geCertifiedElements(@PathVariable String serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @PathVariable String certificationTypeGUID,
@@ -696,6 +709,10 @@ public class ClassificationExplorerResource
      */
     @PostMapping (path = "/elements/{elementGUID}/certifications")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getCertifications",
+            description="Return information about the certifications linked to an element.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0482-Certifications/"))
 
     public CertificationElementsResponse getCertifications(@PathVariable String serverName,
                                                            @PathVariable String urlMarker,
@@ -818,6 +835,33 @@ public class ClassificationExplorerResource
                                                         ResultsRequestBody requestBody)
     {
         return restAPI.getElements(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements that match the complex query.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-complex-query")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findRootElements",
+            description="Retrieve elements that match the complex query.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public OpenMetadataRootElementsResponse findRootElements(@PathVariable String                             serverName,
+                                                             @PathVariable String                             urlMarker,
+                                                             @RequestBody  (required = false) FindRequestBody requestBody)
+    {
+        return restAPI.findRootElements(serverName, urlMarker, requestBody);
     }
 
 

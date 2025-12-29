@@ -228,6 +228,14 @@ Content-Type: application/json
   "filter" : "Add name here",
   "startFrom" : 0,
   "pageSize": 10,
+  "metadataElementTypeName": "GovernanceActionType",
+  "metadataElementSubtypeNames": [],
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -255,7 +263,27 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "metadataElementTypeName": "SoftwareServerPlatform"
+  "searchString": "xxx",
+  "metadataElementTypeName": "GovernanceActionType",
+  "metadataElementSubtypeNames": [],
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -299,6 +327,14 @@ Content-Type: application/json
 
 {
   "class" : "GetRequestBody",
+  "metadataElementTypeName": "",
+  "metadataElementSubtypeNames": [],
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

@@ -2951,7 +2951,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param findProperties details of the search
      *
-     * @return list of related elements
+     * @return list of element summaries
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -2971,6 +2971,41 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
                                                            openMetadataElements,
                                                            methodName);
+    }
+
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param userId calling user
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param matchClassifications Optional list of classifications to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return list of root elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<OpenMetadataRootElement> findRootElements(String                userId,
+                                                          SearchProperties      searchProperties,
+                                                          SearchClassifications matchClassifications,
+                                                          QueryOptions          queryOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName = "findElements";
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
+                                                                                                 searchProperties,
+                                                                                                 matchClassifications,
+                                                                                                 queryOptions);;
+
+        return super.convertRootElements(userId,
+                                         openMetadataElements,
+                                         queryOptions,
+                                         methodName);
     }
 
 
