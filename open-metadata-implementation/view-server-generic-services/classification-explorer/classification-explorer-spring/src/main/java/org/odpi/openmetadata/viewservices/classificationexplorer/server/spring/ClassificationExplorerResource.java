@@ -623,6 +623,10 @@ public class ClassificationExplorerResource
     @PostMapping (path = "/elements/licenses/{licenseTypeGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="getLicensedElements",
+            description="Return information about the elements linked to a license type.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0481-Licenses/"))
+
     public RelatedMetadataElementSummariesResponse  getLicensedElements(@PathVariable String serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String licenseTypeGUID,
@@ -647,6 +651,10 @@ public class ClassificationExplorerResource
      */
     @PostMapping (path = "/elements/{elementGUID}/licenses")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getLicenses",
+            description="Return information about the licenses linked to an element.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0481-Licenses/"))
 
     public RelatedMetadataElementSummariesResponse getLicenses(@PathVariable String serverName,
                                                                @PathVariable String urlMarker,
@@ -673,6 +681,10 @@ public class ClassificationExplorerResource
     @PostMapping (path = "/elements/certifications/{certificationTypeGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="geCertifiedElements",
+            description="Return information about the elements linked to a certification type.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0482-Certifications/"))
+
     public CertificationElementsResponse  geCertifiedElements(@PathVariable String serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @PathVariable String certificationTypeGUID,
@@ -697,6 +709,10 @@ public class ClassificationExplorerResource
      */
     @PostMapping (path = "/elements/{elementGUID}/certifications")
     @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getCertifications",
+            description="Return information about the certifications linked to an element.",
+            externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0482-Certifications/"))
 
     public CertificationElementsResponse getCertifications(@PathVariable String serverName,
                                                            @PathVariable String urlMarker,
@@ -823,7 +839,7 @@ public class ClassificationExplorerResource
 
 
     /**
-     * Retrieve elements of the requested type name.
+     * Retrieve elements that match the complex query.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
@@ -837,8 +853,8 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/elements/by-complex-query")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getElements",
-            description="Retrieve elements of the requested type name.  If no type name is specified then any type of element may be returned.",
+    @Operation(summary="findRootElements",
+            description="Retrieve elements that match the complex query.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
     public OpenMetadataRootElementsResponse findRootElements(@PathVariable String                             serverName,

@@ -1870,7 +1870,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
 
     /**
-     * Retrieve elements of the requested type name.
+     * Retrieve elements that match the complex query.
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
