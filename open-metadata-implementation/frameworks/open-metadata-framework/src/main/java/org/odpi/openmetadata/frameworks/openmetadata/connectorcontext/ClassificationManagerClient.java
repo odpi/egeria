@@ -210,11 +210,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getConfidenceClassifiedElements(boolean             returnSpecificLevel,
-                                                                        int                 levelIdentifier,
-                                                                        QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<OpenMetadataRootElement> getConfidenceClassifiedElements(boolean             returnSpecificLevel,
+                                                                         int                 levelIdentifier,
+                                                                         QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         return stewardshipManagementHandler.getConfidenceClassifiedElements(connectorUserId, returnSpecificLevel, levelIdentifier, queryOptions);
     }
@@ -233,11 +233,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getImpactClassifiedElements(boolean             returnSpecificLevel,
-                                                                    int                 levelIdentifier,
-                                                                    QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public List<OpenMetadataRootElement> getImpactClassifiedElements(boolean             returnSpecificLevel,
+                                                                     int                 levelIdentifier,
+                                                                     QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
     {
         return stewardshipManagementHandler.getImpactClassifiedElements(connectorUserId, returnSpecificLevel, levelIdentifier, queryOptions);
     }
@@ -256,11 +256,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getCriticalityClassifiedElements(boolean             returnSpecificLevel,
-                                                                         int                 levelIdentifier,
-                                                                         QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                  UserNotAuthorizedException,
-                                                                                                                  PropertyServerException
+    public List<OpenMetadataRootElement> getCriticalityClassifiedElements(boolean             returnSpecificLevel,
+                                                                          int                 levelIdentifier,
+                                                                          QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
     {
         return stewardshipManagementHandler.getCriticalityClassifiedElements(connectorUserId, returnSpecificLevel, levelIdentifier, queryOptions);
     }
@@ -279,11 +279,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getConfidentialityClassifiedElements(boolean             returnSpecificLevel,
-                                                                             int                 levelIdentifier,
-                                                                             QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                      UserNotAuthorizedException,
-                                                                                                                      PropertyServerException
+    public List<OpenMetadataRootElement> getConfidentialityClassifiedElements(boolean             returnSpecificLevel,
+                                                                              int                 levelIdentifier,
+                                                                              QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         return stewardshipManagementHandler.getConfidentialityClassifiedElements(connectorUserId, returnSpecificLevel, levelIdentifier, queryOptions);
     }
@@ -302,11 +302,11 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getRetentionClassifiedElements(boolean             returnSpecificLevel,
-                                                                       int                 levelIdentifier,
-                                                                       QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    public List<OpenMetadataRootElement> getRetentionClassifiedElements(boolean             returnSpecificLevel,
+                                                                        int                 levelIdentifier,
+                                                                        QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
         return stewardshipManagementHandler.getRetentionClassifiedElements(connectorUserId, returnSpecificLevel, levelIdentifier, queryOptions);
     }
@@ -326,12 +326,12 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getSecurityTaggedElements(List<String>              securityLabels,
-                                                                  Map<String, Object> securityProperties,
-                                                                  Map<String, List<String>> accessGroups,
-                                                                  QueryOptions              queryOptions) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public List<OpenMetadataRootElement> getSecurityTaggedElements(List<String>              securityLabels,
+                                                                   Map<String, Object>       securityProperties,
+                                                                   Map<String, List<String>> accessGroups,
+                                                                   QueryOptions              queryOptions) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         return stewardshipManagementHandler.getSecurityTaggedElements(connectorUserId, securityLabels, securityProperties, accessGroups, queryOptions);
     }
@@ -349,10 +349,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getOwnersElements(String              owner,
-                                                          QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public List<OpenMetadataRootElement> getOwnersElements(String       owner,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         return stewardshipManagementHandler.getOwnersElements(connectorUserId, owner, queryOptions);
     }
@@ -370,10 +370,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getElementsByOrigin(DigitalResourceOriginProperties properties,
-                                                            QueryOptions                    queryOptions) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public List<OpenMetadataRootElement> getElementsByOrigin(DigitalResourceOriginProperties properties,
+                                                             QueryOptions                    queryOptions) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
 
     {
         return stewardshipManagementHandler.getElementsByOrigin(connectorUserId, properties, queryOptions);
@@ -394,10 +394,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getMembersOfSubjectArea(String              subjectAreaName,
-                                                                QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+    public List<OpenMetadataRootElement> getMembersOfSubjectArea(String              subjectAreaName,
+                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
 
     {
         return stewardshipManagementHandler.getMembersOfSubjectArea(connectorUserId, subjectAreaName, queryOptions);
@@ -424,21 +424,31 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getMeanings(String                       elementGUID,
-                                                         String                       expression,
-                                                         String                       description,
-                                                         TermAssignmentStatus status,
-                                                         boolean                      returnSpecificConfidence,
-                                                         int                          confidence,
-                                                         String                       createdBy,
-                                                         String                       steward,
-                                                         String                       source,
-                                                         QueryOptions                 queryOptions) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> getMeanings(String               elementGUID,
+                                                     String               expression,
+                                                     String               description,
+                                                     TermAssignmentStatus status,
+                                                     boolean              returnSpecificConfidence,
+                                                     int                  confidence,
+                                                     String               createdBy,
+                                                     String               steward,
+                                                     String               source,
+                                                     QueryOptions         queryOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
 
     {
-        return stewardshipManagementHandler.getMeanings(connectorUserId, elementGUID, expression, description, status, returnSpecificConfidence, confidence, createdBy, steward, source, queryOptions);
+        return stewardshipManagementHandler.getMeanings(connectorUserId,
+                                                        elementGUID,
+                                                        expression,
+                                                        description,
+                                                        status,
+                                                        returnSpecificConfidence,
+                                                        confidence,
+                                                        createdBy,
+                                                        steward,
+                                                        source,
+                                                        queryOptions);
     }
 
 
@@ -461,18 +471,18 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getSemanticAssignees(String                       glossaryTermGUID,
-                                                                  String                       expression,
-                                                                  String                       description,
-                                                                  TermAssignmentStatus status,
-                                                                  boolean                      returnSpecificConfidence,
-                                                                  int                          confidence,
-                                                                  String                       createdBy,
-                                                                  String                       steward,
-                                                                  String                       source,
-                                                                  QueryOptions                 queryOptions) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public List<OpenMetadataRootElement> getSemanticAssignees(String               glossaryTermGUID,
+                                                              String               expression,
+                                                              String               description,
+                                                              TermAssignmentStatus status,
+                                                              boolean              returnSpecificConfidence,
+                                                              int                  confidence,
+                                                              String               createdBy,
+                                                              String               steward,
+                                                              String               source,
+                                                              QueryOptions         queryOptions) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
 
     {
         return stewardshipManagementHandler.getSemanticAssignees(connectorUserId, glossaryTermGUID, expression, description, status, returnSpecificConfidence, confidence, createdBy, steward, source, queryOptions);
@@ -490,10 +500,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getGovernedByDefinitions(String              elementGUID,
-                                                                      QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
+    public List<OpenMetadataRootElement> getGovernedByDefinitions(String       elementGUID,
+                                                                  QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
 
     {
         return stewardshipManagementHandler.getGovernedByDefinitions(connectorUserId, elementGUID, queryOptions);
@@ -511,10 +521,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getGovernedElements(String              governanceDefinitionGUID,
-                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<OpenMetadataRootElement> getGovernedElements(String       governanceDefinitionGUID,
+                                                             QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
 
     {
         return stewardshipManagementHandler.getGovernedElements(connectorUserId, governanceDefinitionGUID, queryOptions);
@@ -533,10 +543,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getSourceElements(String              elementGUID,
-                                                               QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public List<OpenMetadataRootElement> getSourceElements(String       elementGUID,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
 
     {
         return stewardshipManagementHandler.getSourceElements(connectorUserId, elementGUID, queryOptions);
@@ -555,10 +565,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getElementsSourcedFrom(String              elementGUID,
-                                                                    QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public List<OpenMetadataRootElement> getElementsSourcedFrom(String       elementGUID,
+                                                                QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
 
     {
         return stewardshipManagementHandler.getElementsSourcedFrom(connectorUserId, elementGUID, queryOptions);
@@ -576,10 +586,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getScopes(String              elementGUID,
-                                                       QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public List<OpenMetadataRootElement> getScopes(String       elementGUID,
+                                                   QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
 
     {
         return stewardshipManagementHandler.getScopes(connectorUserId, elementGUID, queryOptions);
@@ -597,10 +607,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getScopedElements(String              scopeGUID,
-                                                               QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public List<OpenMetadataRootElement> getScopedElements(String       scopeGUID,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
 
     {
         return stewardshipManagementHandler.getCertifiedElements(connectorUserId, scopeGUID, queryOptions);
@@ -618,10 +628,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getResourceList(String              elementGUID,
-                                                             QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<OpenMetadataRootElement> getResourceList(String       elementGUID,
+                                                         QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
 
     {
         return stewardshipManagementHandler.getResourceList(connectorUserId, elementGUID, queryOptions);
@@ -639,10 +649,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getSupportedByResource(String              resourceGUID,
-                                                                    QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public List<OpenMetadataRootElement> getSupportedByResource(String       resourceGUID,
+                                                                QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
 
     {
         return stewardshipManagementHandler.getSupportedByResource(connectorUserId, resourceGUID, queryOptions);
@@ -660,10 +670,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getLicensedElements(String              licenseTypeGUID,
-                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<OpenMetadataRootElement> getLicensedElements(String       licenseTypeGUID,
+                                                             QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         return stewardshipManagementHandler.getLicensedElements(connectorUserId, licenseTypeGUID, queryOptions);
     }
@@ -680,10 +690,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getLicenses(String       elementGUID,
-                                                         QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> getLicenses(String       elementGUID,
+                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         return stewardshipManagementHandler.getLicenses(connectorUserId, elementGUID, queryOptions);
     }
@@ -700,10 +710,10 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getCertifiedElements(String              certificationTypeGUID,
-                                                                  QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> getCertifiedElements(String       certificationTypeGUID,
+                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         return stewardshipManagementHandler.getCertifiedElements(connectorUserId, certificationTypeGUID, queryOptions);
     }
@@ -720,14 +730,13 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getCertifications(String              elementGUID,
-                                                               QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public List<OpenMetadataRootElement> getCertifications(String       elementGUID,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         return stewardshipManagementHandler.getCertifications(connectorUserId, elementGUID, queryOptions);
     }
-
 
 
     /**

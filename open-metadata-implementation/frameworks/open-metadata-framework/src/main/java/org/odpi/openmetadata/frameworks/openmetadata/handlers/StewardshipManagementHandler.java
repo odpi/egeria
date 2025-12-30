@@ -6,14 +6,11 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataElementSummaryConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.RelatedMetadataElementSummaryConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
@@ -37,9 +34,7 @@ import java.util.*;
  */
 public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 {
-    final protected MetadataElementSummaryConverter<MetadataElementSummary> metadataElementSummaryConverter;
-    final protected RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> relatedMetadataElementSummaryConverter;
-    final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary>     metadataRelationshipSummaryConverter;
+    final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary> metadataRelationshipSummaryConverter;
 
     protected final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
     protected final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
@@ -63,12 +58,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
               openMetadataClient,
               OpenMetadataType.OPEN_METADATA_ROOT.typeName);
 
-        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
-                                                                                     localServiceName,
-                                                                                     localServerName);
-        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
-                                                                                                   localServiceName,
-                                                                                                   localServerName);
         this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
                                                                                                localServiceName,
                                                                                                localServerName);
@@ -82,16 +71,10 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param specificTypeName   subtype to control handler
      */
     public StewardshipManagementHandler(StewardshipManagementHandler template,
-                                        String       specificTypeName)
+                                        String                       specificTypeName)
     {
         super(template, specificTypeName);
 
-        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
-                                                                                     localServiceName,
-                                                                                     localServerName);
-        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
-                                                                                                   localServiceName,
-                                                                                                   localServerName);
         this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
                                                                                                localServiceName,
                                                                                                localServerName);
@@ -112,12 +95,12 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getConfidenceClassifiedElements(String              userId,
-                                                                        boolean             returnSpecificLevel,
-                                                                        int                 levelIdentifier,
-                                                                        QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public List<OpenMetadataRootElement> getConfidenceClassifiedElements(String              userId,
+                                                                         boolean             returnSpecificLevel,
+                                                                         int                 levelIdentifier,
+                                                                         QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         final String methodName = "getConfidenceClassifiedElements";
 
@@ -145,7 +128,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getImpactClassifiedElements(String              userId,
+    public List<OpenMetadataRootElement> getImpactClassifiedElements(String              userId,
                                                                     boolean             returnSpecificLevel,
                                                                     int                 levelIdentifier,
                                                                     QueryOptions        queryOptions) throws InvalidParameterException,
@@ -179,7 +162,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getCriticalityClassifiedElements(String              userId,
+    public List<OpenMetadataRootElement> getCriticalityClassifiedElements(String              userId,
                                                                          boolean             returnSpecificLevel,
                                                                          int                 levelIdentifier,
                                                                          QueryOptions        queryOptions) throws InvalidParameterException,
@@ -212,7 +195,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getConfidentialityClassifiedElements(String              userId,
+    public List<OpenMetadataRootElement> getConfidentialityClassifiedElements(String              userId,
                                                                              boolean             returnSpecificLevel,
                                                                              int                 levelIdentifier,
                                                                              QueryOptions        queryOptions) throws InvalidParameterException,
@@ -245,7 +228,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getRetentionClassifiedElements(String              userId,
+    public List<OpenMetadataRootElement> getRetentionClassifiedElements(String              userId,
                                                                        boolean             returnSpecificLevel,
                                                                        int                 levelIdentifier,
                                                                        QueryOptions        queryOptions) throws InvalidParameterException,
@@ -281,15 +264,15 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private List<MetadataElementSummary> getGovernanceDataClassifiedElements(String              userId,
-                                                                             String              classificationName,
-                                                                             String              identifierPropertyName,
-                                                                             boolean             returnSpecificLevel,
-                                                                             int                 levelIdentifier,
-                                                                             QueryOptions        queryOptions,
-                                                                             String              methodName) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    private List<OpenMetadataRootElement> getGovernanceDataClassifiedElements(String              userId,
+                                                                              String              classificationName,
+                                                                              String              identifierPropertyName,
+                                                                              boolean             returnSpecificLevel,
+                                                                              int                 levelIdentifier,
+                                                                              QueryOptions        queryOptions,
+                                                                              String              methodName) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
     {
         if (returnSpecificLevel)
         {
@@ -303,9 +286,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                  getSearchClassifications(propertyConditions, classificationName),
                                                                                                  queryOptions);
 
-            return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                               matchingElements,
-                                                               methodName);
+            return super.convertRootElements(userId, matchingElements, queryOptions, methodName);
         }
         else
         {
@@ -361,13 +342,13 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getSecurityTaggedElements(String                    userId,
-                                                                  List<String>              securityLabels,
-                                                                  Map<String, Object>       securityProperties,
-                                                                  Map<String, List<String>> accessGroups,
-                                                                  QueryOptions              queryOptions) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public List<OpenMetadataRootElement> getSecurityTaggedElements(String                    userId,
+                                                                   List<String>              securityLabels,
+                                                                   Map<String, Object>       securityProperties,
+                                                                   Map<String, List<String>> accessGroups,
+                                                                   QueryOptions              queryOptions) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         final String methodName = "getSecurityTaggedElements";
 
@@ -392,9 +373,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                  getSearchClassifications(propertyConditions, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName),
                                                                                                  queryOptions);
 
-            return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                               matchingElements,
-                                                               methodName);
+            return convertRootElements(userId, matchingElements, queryOptions, methodName);
         }
         else
         {
@@ -418,7 +397,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getOwnersElements(String              userId,
+    public List<OpenMetadataRootElement> getOwnersElements(String              userId,
                                                           String              owner,
                                                           QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
@@ -452,7 +431,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getElementsByOrigin(String                          userId,
+    public List<OpenMetadataRootElement> getElementsByOrigin(String                          userId,
                                                             DigitalResourceOriginProperties properties,
                                                             QueryOptions                    queryOptions) throws InvalidParameterException,
                                                                                                                  UserNotAuthorizedException,
@@ -486,9 +465,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                  getSearchClassifications(propertyConditions, OpenMetadataType.DIGITAL_RESOURCE_ORIGIN_CLASSIFICATION.typeName),
                                                                                                  queryOptions);
 
-            return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                               matchingElements,
-                                                               methodName);
+            return super.convertRootElements(userId, matchingElements, queryOptions, methodName);
         }
         else
         {
@@ -514,7 +491,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<MetadataElementSummary> getMembersOfSubjectArea(String              userId,
+    public List<OpenMetadataRootElement> getMembersOfSubjectArea(String              userId,
                                                                 String              subjectAreaName,
                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
@@ -557,19 +534,19 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getMeanings(String                       userId,
-                                                         String                       elementGUID,
-                                                         String                       expression,
-                                                         String                       description,
-                                                         TermAssignmentStatus status,
-                                                         boolean                      returnSpecificConfidence,
-                                                         int                          confidence,
-                                                         String                       createdBy,
-                                                         String                       steward,
-                                                         String                       source,
-                                                         QueryOptions                 queryOptions) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> getMeanings(String               userId,
+                                                     String               elementGUID,
+                                                     String               expression,
+                                                     String               description,
+                                                     TermAssignmentStatus status,
+                                                     boolean              returnSpecificConfidence,
+                                                     int                  confidence,
+                                                     String               createdBy,
+                                                     String               steward,
+                                                     String               source,
+                                                     QueryOptions         queryOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
 
     {
         final String methodName = "getMeanings";
@@ -611,19 +588,19 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private RelatedMetadataElementSummaryList getSemanticRelationships(String                       userId,
-                                                                       String                       elementGUID,
-                                                                       int                          startingAtEnd,
-                                                                       String                       expression,
-                                                                       String                       description,
-                                                                       TermAssignmentStatus status,
-                                                                       boolean                      returnSpecificConfidence,
-                                                                       int                          confidence,
-                                                                       String                       createdBy,
-                                                                       String                       steward,
-                                                                       String                       source,
-                                                                       QueryOptions                 queryOptions,
-                                                                       String                       methodName) throws InvalidParameterException,
+    private List<OpenMetadataRootElement> getSemanticRelationships(String               userId,
+                                                                   String               elementGUID,
+                                                                   int                  startingAtEnd,
+                                                                   String               expression,
+                                                                   String               description,
+                                                                   TermAssignmentStatus status,
+                                                                   boolean              returnSpecificConfidence,
+                                                                   int                  confidence,
+                                                                   String               createdBy,
+                                                                   String               steward,
+                                                                   String               source,
+                                                                   QueryOptions         queryOptions,
+                                                                   String               methodName) throws InvalidParameterException,
                                                                                                                        UserNotAuthorizedException,
                                                                                                                        PropertyServerException
 
@@ -636,25 +613,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
-            List<RelatedMetadataElement> matchedElements = new ArrayList<>();
-
-            if ((queryOptions == null) || (queryOptions.getMetadataElementTypeName() == null))
-            {
-                matchedElements = relatedMetadataElements.getElementList();
-            }
-            else
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), queryOptions.getMetadataElementTypeName()))
-                        {
-                            matchedElements.add(relatedMetadataElement);
-                        }
-                    }
-                }
-            }
+            List<RelatedMetadataElement> matchedElements = relatedMetadataElements.getElementList();
 
             matchedElements = this.matchElements(matchedElements, OpenMetadataProperty.EXPRESSION.name, expression);
             matchedElements = this.matchElements(matchedElements, OpenMetadataProperty.DESCRIPTION.name, description);
@@ -665,21 +624,10 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
             {
                 matchedElements = this.matchElements(matchedElements, OpenMetadataProperty.CONFIDENCE.name, confidence);
             }
+
             matchedElements = this.matchElements(matchedElements, status);
 
-            RelatedMetadataElementSummaryList summaryList = new RelatedMetadataElementSummaryList();
-
-            summaryList.setElementList(relatedMetadataElementSummaryConverter.getNewBeans(RelatedMetadataElementSummary.class,
-                                                                                          matchedElements,
-                                                                                          methodName));
-
-            if (! matchedElements.isEmpty())
-            {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedMetadataElements.getStartingElement(), matchedElements);
-                summaryList.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return summaryList;
+            return super.convertRelatedRootElements(userId, matchedElements, queryOptions, methodName);
         }
 
         return null;
@@ -845,7 +793,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getSemanticAssignees(String                       userId,
+    public List<OpenMetadataRootElement> getSemanticAssignees(String                       userId,
                                                                   String                       glossaryTermGUID,
                                                                   String                       expression,
                                                                   String                       description,
@@ -890,7 +838,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getGovernedByDefinitions(String              userId,
+    public List<OpenMetadataRootElement> getGovernedByDefinitions(String              userId,
                                                                       String              elementGUID,
                                                                       QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
@@ -926,7 +874,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getGovernedElements(String              userId,
+    public List<OpenMetadataRootElement> getGovernedElements(String              userId,
                                                                  String              governanceDefinitionGUID,
                                                                  QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
@@ -963,7 +911,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getSourceElements(String              userId,
+    public List<OpenMetadataRootElement> getSourceElements(String              userId,
                                                                String              elementGUID,
                                                                QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
@@ -1000,7 +948,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getElementsSourcedFrom(String              userId,
+    public List<OpenMetadataRootElement> getElementsSourcedFrom(String              userId,
                                                                     String              elementGUID,
                                                                     QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
@@ -1036,7 +984,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getScopes(String              userId,
+    public List<OpenMetadataRootElement> getScopes(String              userId,
                                                        String              elementGUID,
                                                        QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
@@ -1072,7 +1020,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getScopedElements(String              userId,
+    public List<OpenMetadataRootElement> getScopedElements(String              userId,
                                                                String              scopeGUID,
                                                                QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
@@ -1108,7 +1056,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getResourceList(String              userId,
+    public List<OpenMetadataRootElement> getResourceList(String              userId,
                                                              String              elementGUID,
                                                              QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
@@ -1144,7 +1092,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getSupportedByResource(String              userId,
+    public List<OpenMetadataRootElement> getSupportedByResource(String              userId,
                                                                     String              resourceGUID,
                                                                     QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
@@ -1179,11 +1127,11 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getLicensedElements(String              userId,
-                                                                 String              licenseTypeGUID,
-                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<OpenMetadataRootElement> getLicensedElements(String              userId,
+                                                             String              licenseTypeGUID,
+                                                             QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         final String methodName = "getLicensedElements";
         final String guidParameterName = "licenseTypeGUID";
@@ -1213,7 +1161,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getLicenses(String       userId,
+    public List<OpenMetadataRootElement> getLicenses(String       userId,
                                                          String       elementGUID,
                                                          QueryOptions queryOptions) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -1247,7 +1195,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getCertifiedElements(String              userId,
+    public List<OpenMetadataRootElement> getCertifiedElements(String              userId,
                                                                   String              certificationTypeGUID,
                                                                   QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
@@ -1282,7 +1230,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getCertifications(String              userId,
+    public List<OpenMetadataRootElement> getCertifications(String              userId,
                                                                String              elementGUID,
                                                                QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
@@ -2264,7 +2212,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Link an element to another element using the MoreInformation relationship.
      *
@@ -2343,12 +2290,12 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummary getMetadataElementByUniqueName(String     userId,
-                                                                 String     uniqueName,
-                                                                 String     uniquePropertyName,
-                                                                 GetOptions getOptions) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public OpenMetadataRootElement getMetadataElementByUniqueName(String     userId,
+                                                                  String     uniqueName,
+                                                                  String     uniquePropertyName,
+                                                                  GetOptions getOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String methodName = "getMetadataElementByUniqueName";
         final String elementGUIDParameterName = "uniqueName";
@@ -2357,9 +2304,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByUniqueName(userId, uniqueName, uniquePropertyName, getOptions);
 
-        return metadataElementSummaryConverter.getNewBean(MetadataElementSummary.class,
-                                                          openMetadataElement,
-                                                          methodName);
+        return super.convertRootElement(userId, openMetadataElement, new QueryOptions(getOptions), methodName);
     }
 
 
@@ -2377,12 +2322,12 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<MetadataElementSummary> getElementsByPropertyValue(String              userId,
-                                                                   String              propertyValue,
-                                                                   List<String>        propertyNames,
-                                                                   QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
+    public List<OpenMetadataRootElement> getElementsByPropertyValue(String       userId,
+                                                                    String       propertyValue,
+                                                                    List<String> propertyNames,
+                                                                    QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         final String methodName = "getElementsByPropertyValue";
         final String propertyValueProperty = "propertyValue";
@@ -2396,9 +2341,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                                propertyValue,
                                                                                                                queryOptions);
 
-        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                           openMetadataElements,
-                                                           methodName);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
 
@@ -2417,10 +2360,10 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<MetadataElementSummary> findElementsByPropertyValue(String              userId,
-                                                                    String              propertyValue,
-                                                                    List<String>        propertyNames,
-                                                                    QueryOptions        queryOptions) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> findElementsByPropertyValue(String              userId,
+                                                                     String              propertyValue,
+                                                                     List<String>        propertyNames,
+                                                                     QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException
     {
@@ -2436,9 +2379,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                                 propertyValue,
                                                                                                                 queryOptions);
 
-        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                           openMetadataElements,
-                                                           methodName);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
 
@@ -2459,14 +2400,14 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<MetadataElementSummary> getElementsByClassification(String              userId,
-                                                                    String              classificationName,
-                                                                    String              propertyValue,
-                                                                    List<String>        propertyNames,
-                                                                    QueryOptions        queryOptions,
-                                                                    String              methodName) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> getElementsByClassification(String              userId,
+                                                                     String              classificationName,
+                                                                     String              propertyValue,
+                                                                     List<String>        propertyNames,
+                                                                     QueryOptions        queryOptions,
+                                                                     String              methodName) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String classificationNameProperty = "classificationName";
         final String propertyValueProperty = "propertyValue";
@@ -2482,7 +2423,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                                  propertyValue,
                                                                                                                  queryOptions);
 
-        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class, elements, methodName);
+        return super.convertRootElements(userId, elements, queryOptions, methodName);
     }
 
 
@@ -2503,13 +2444,13 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<MetadataElementSummary> findElementsByClassificationWithPropertyValue(String              userId,
-                                                                                      String              classificationName,
-                                                                                      String              propertyValue,
-                                                                                      List<String>        propertyNames,
-                                                                                      QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                                               UserNotAuthorizedException,
-                                                                                                                               PropertyServerException
+    public List<OpenMetadataRootElement> findElementsByClassificationWithPropertyValue(String              userId,
+                                                                                       String              classificationName,
+                                                                                       String              propertyValue,
+                                                                                       List<String>        propertyNames,
+                                                                                       QueryOptions        queryOptions) throws InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                PropertyServerException
     {
         final String methodName = "findElementsByClassificationWithPropertyValue";
 
@@ -2525,7 +2466,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                                               propertyValue,
                                                                                                                               queryOptions);
 
-        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class, openMetadataElements, methodName);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
 
@@ -2547,16 +2488,16 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList getRelatedElements(String              userId,
-                                                                String              elementGUID,
-                                                                String              relationshipTypeName,
-                                                                int                 startingAtEnd,
-                                                                String              propertyValue,
-                                                                List<String>        propertyNames,
-                                                                QueryOptions        queryOptions,
-                                                                String              methodName) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    public List<OpenMetadataRootElement> getRelatedElements(String              userId,
+                                                            String              elementGUID,
+                                                            String              relationshipTypeName,
+                                                            int                 startingAtEnd,
+                                                            String              propertyValue,
+                                                            List<String>        propertyNames,
+                                                            QueryOptions        queryOptions,
+                                                            String              methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         RelatedMetadataElementList relatedMetadataElements = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                            elementGUID,
@@ -2623,19 +2564,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                 }
             }
 
-            RelatedMetadataElementSummaryList summaryList = new RelatedMetadataElementSummaryList();
-
-            summaryList.setElementList(relatedMetadataElementSummaryConverter.getNewBeans(RelatedMetadataElementSummary.class,
-                                                                                          matchedElements,
-                                                                                          methodName));
-
-            if (! matchedElements.isEmpty())
-            {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedMetadataElements.getStartingElement(), matchedElements);
-                summaryList.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return summaryList;
+            return super.convertRelatedRootElements(userId, matchedElements, queryOptions, methodName);
         }
 
         return null;
@@ -2660,7 +2589,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummaryList findRelatedElementsWithPropertyValue(String              userId,
+    public List<OpenMetadataRootElement> findRelatedElementsWithPropertyValue(String              userId,
                                                                                   String              elementGUID,
                                                                                   String              relationshipTypeName,
                                                                                   int                 startingAtEnd,
@@ -2733,19 +2662,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                 }
             }
 
-            RelatedMetadataElementSummaryList summaryList = new RelatedMetadataElementSummaryList();
-
-            summaryList.setElementList(relatedMetadataElementSummaryConverter.getNewBeans(RelatedMetadataElementSummary.class,
-                                                                                          matchedElements,
-                                                                                          methodName));
-
-            if (! matchedElements.isEmpty())
-            {
-                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relatedMetadataElements.getStartingElement(), matchedElements);
-                summaryList.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return summaryList;
+            return super.convertRelatedRootElements(userId, matchedElements, queryOptions, methodName);
         }
 
         return null;
@@ -2900,11 +2817,11 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummary getMetadataElementByGUID(String     userId,
-                                                           String     elementGUID,
-                                                           GetOptions getOptions) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public OpenMetadataRootElement getMetadataElementByGUID(String     userId,
+                                                            String     elementGUID,
+                                                            GetOptions getOptions) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "getMetadataElementByGUID";
         final String elementGUIDParameterName = "elementGUID";
@@ -2915,9 +2832,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                               elementGUID,
                                                                                               getOptions);
 
-        return metadataElementSummaryConverter.getNewBean(MetadataElementSummary.class,
-                                                          openMetadataElement,
-                                                          methodName);
+        return super.convertRootElement(userId, openMetadataElement, new QueryOptions(getOptions), methodName);
     }
 
 
@@ -2949,28 +2864,26 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * Retrieve elements of the requested type name.
      *
      * @param userId calling user
-     * @param findProperties details of the search
+     * @param queryOptions details of the search
      *
      * @return list of element summaries
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<MetadataElementSummary> getElements(String        userId,
-                                                    QueryOptions  findProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<OpenMetadataRootElement> getElements(String       userId,
+                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "getElements";
 
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                                  null,
                                                                                                  null,
-                                                                                                 findProperties);;
+                                                                                                 queryOptions);;
 
-        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                           openMetadataElements,
-                                                           methodName);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
 
@@ -3002,10 +2915,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                  matchClassifications,
                                                                                                  queryOptions);;
 
-        return super.convertRootElements(userId,
-                                         openMetadataElements,
-                                         queryOptions,
-                                         methodName);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
 
@@ -3023,11 +2933,11 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<MetadataElementSummary> getElementsByClassification(String       userId,
-                                                                    String       classificationName,
-                                                                    QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<OpenMetadataRootElement> getElementsByClassification(String       userId,
+                                                                     String       classificationName,
+                                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName                 = "getElementsByClassification";
         final String classificationNameProperty = "classificationName";
@@ -3039,11 +2949,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                     classificationName,
                                                                                                     queryOptions);;
 
-        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
-                                                           elements,
-                                                           methodName);
+        return super.convertRootElements(userId, elements, queryOptions, methodName);
     }
-
 
 
     /**

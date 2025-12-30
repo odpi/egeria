@@ -17,19 +17,19 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMer
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * OpenMetadataHandlerBase provides a base class for the handlers.
@@ -609,16 +609,40 @@ public class OpenMetadataHandlerBase
      * @return list of actor roles (or null)
      * @throws PropertyServerException problem with the conversion process
      */
-    List<OpenMetadataRootElement> convertRootElements(String                     userId,
-                                                      RelatedMetadataElementList relatedMetadataElementList,
-                                                      QueryOptions               queryOptions,
-                                                      String                     methodName) throws PropertyServerException
+    List<OpenMetadataRootElement> convertRelatedRootElements(String                     userId,
+                                                             RelatedMetadataElementList relatedMetadataElementList,
+                                                             QueryOptions               queryOptions,
+                                                             String                     methodName) throws PropertyServerException
     {
         if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
         {
+            return convertRelatedRootElements(userId, relatedMetadataElementList.getElementList(), queryOptions, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the open metadata elements retrieve into actor role elements.
+     *
+     * @param userId calling user
+     * @param relatedMetadataElements elements extracted from the repository
+     * @param queryOptions multiple options to control the query
+     * @param methodName calling method
+     * @return list of actor roles (or null)
+     * @throws PropertyServerException problem with the conversion process
+     */
+    List<OpenMetadataRootElement> convertRelatedRootElements(String                       userId,
+                                                             List<RelatedMetadataElement> relatedMetadataElements,
+                                                             QueryOptions                 queryOptions,
+                                                             String                       methodName) throws PropertyServerException
+    {
+        if (relatedMetadataElements != null)
+        {
             List<OpenMetadataRootElement> rootElements = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
             {
                 if (relatedMetadataElement != null)
                 {
@@ -698,6 +722,61 @@ public class OpenMetadataHandlerBase
         }
 
         return null;
+    }
+
+
+    /**
+     * Retrieve details of a requested actor, unless element has already been retrieved.
+     *
+     * @param userId calling user
+     * @param actorName name of actor
+     * @param actorPropertyName property name it represents
+     * @param actorMap map of other actors already received
+     * @param queryOptions               multiple options to control the query
+     */
+    private void getActorSummary(String                              userId,
+                                 String                              actorName,
+                                 String                              actorPropertyName,
+                                 Map<String, MetadataElementSummary> actorMap,
+                                 QueryOptions                        queryOptions)
+    {
+        if (actorName != null)
+        {
+            if (! actorMap.containsKey(actorName))
+            {
+                OpenMetadataElement actorElement;
+
+                if ((actorPropertyName == null) || (actorPropertyName.equals(OpenMetadataProperty.GUID.name)))
+                {
+                    try
+                    {
+                        actorElement = openMetadataClient.getMetadataElementByGUID(userId, actorName, queryOptions);
+                    }
+                    catch (Exception exception)
+                    {
+                        actorElement = null;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        actorElement = openMetadataClient.getMetadataElementByUniqueName(userId, actorName, actorPropertyName, queryOptions);
+                    }
+                    catch (Exception exception)
+                    {
+                        actorElement = null;
+                    }
+                }
+
+                if (actorElement != null)
+                {
+                    MetadataElementSummary actorSummary = propertyHelper.getMetadataElementSummary(actorElement);
+
+                    actorMap.put(actorName, actorSummary);
+                }
+            }
+        }
     }
 
 
@@ -865,8 +944,13 @@ public class OpenMetadataHandlerBase
     }
 
 
-
-
+    /**
+     * Filter element based on zone membership.
+     *
+     * @param classification Anchors or ZoneMembership classification.
+     * @param requiredZones supplied zones to scan for
+     * @return flag to indicate if it passes the test
+     */
     private boolean checkElementZoneMembership(AttachedClassification classification,
                                                List<String>           requiredZones)
     {
@@ -1170,6 +1254,86 @@ public class OpenMetadataHandlerBase
                                                                             OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                             queryOptions,
                                                                             1));
+            }
+
+
+            if (rootElement.getRelatedBy() != null)
+            {
+                /*
+                 * Element has been retrieved through a relationship.  Some of these relationships have actors identified in the properties.
+                 */
+                if (propertyHelper.isTypeOf(rootElement.getRelatedBy().getRelationshipHeader(), OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName))
+                {
+                    if (rootElement.getRelatedBy().getRelationshipProperties() instanceof CertificationProperties certificationProperties)
+                    {
+                        Map<String, MetadataElementSummary> actorMap = new HashMap<>();
+
+                        if (certificationProperties.getCertifiedBy() != null)
+                        {
+                            this.getActorSummary(userId,
+                                                 certificationProperties.getCertifiedBy(),
+                                                 certificationProperties.getCertifiedByPropertyName(),
+                                                 actorMap,
+                                                 queryOptions);
+                        }
+
+                        if (certificationProperties.getRecipient() != null)
+                        {
+                            this.getActorSummary(userId,
+                                                 certificationProperties.getRecipient(),
+                                                 certificationProperties.getRecipientPropertyName(),
+                                                 actorMap,
+                                                 queryOptions);
+                        }
+
+                        if (certificationProperties.getCustodian() != null)
+                        {
+                            this.getActorSummary(userId,
+                                                 certificationProperties.getCustodian(),
+                                                 certificationProperties.getCustodianPropertyName(),
+                                                 actorMap,
+                                                 queryOptions);
+                        }
+
+                        rootElement.getRelatedBy().setAssociatedElements(actorMap);
+                    }
+                }
+                else if (propertyHelper.isTypeOf(rootElement.getRelatedBy().getRelationshipHeader(), OpenMetadataType.LICENSE_RELATIONSHIP.typeName))
+                {
+                    if (rootElement.getRelatedBy().getRelationshipProperties() instanceof LicenseProperties licenseProperties)
+                    {
+                        Map<String, MetadataElementSummary> actorMap = new HashMap<>();
+
+                        if (licenseProperties.getLicensedBy() != null)
+                        {
+                            this.getActorSummary(userId,
+                                                 licenseProperties.getLicensedBy(),
+                                                 licenseProperties.getLicensedByPropertyName(),
+                                                 actorMap,
+                                                 queryOptions);
+                        }
+
+                        if (licenseProperties.getLicensee() != null)
+                        {
+                            this.getActorSummary(userId,
+                                                 licenseProperties.getLicensee(),
+                                                 licenseProperties.getLicenseePropertyName(),
+                                                 actorMap,
+                                                 queryOptions);
+                        }
+
+                        if (licenseProperties.getCustodian() != null)
+                        {
+                            this.getActorSummary(userId,
+                                                 licenseProperties.getCustodian(),
+                                                 licenseProperties.getCustodianPropertyName(),
+                                                 actorMap,
+                                                 queryOptions);
+                        }
+
+                        rootElement.getRelatedBy().setAssociatedElements(actorMap);
+                    }
+                }
             }
 
             return addMermaidToRootElement(userId, rootElement, queryOptions);
@@ -1635,7 +1799,7 @@ public class OpenMetadataHandlerBase
                                                                                                               relationshipTypeName,
                                                                                                               queryOptions);
 
-        return convertRootElements(userId, relatedMetadataElementList, queryOptions, methodName);
+        return convertRelatedRootElements(userId, relatedMetadataElementList, queryOptions, methodName);
     }
 
 
