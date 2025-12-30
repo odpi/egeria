@@ -165,8 +165,6 @@ BASE=../../..
 cp ${rootCA}.p12 ${BASE}/truststore.p12
 cp EgeriaServerChassis.p12 ${BASE}/keystore.p12
 cp EgeriaClient.p12 ${BASE}/EgeriaClient.p12
-cp EgeriaUIChassis.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/keystore.p12
-cp ${rootCA}.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/truststore.p12
 
 # ---
 # output message
