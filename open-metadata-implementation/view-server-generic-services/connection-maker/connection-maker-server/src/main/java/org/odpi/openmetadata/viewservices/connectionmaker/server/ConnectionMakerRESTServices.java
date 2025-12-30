@@ -205,10 +205,10 @@ public class ConnectionMakerRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.updateConnection(userId,
-                                             connectionGUID,
-                                             requestBody,
-                                             null);
+                    response.setFlag(handler.updateConnection(userId,
+                                                              connectionGUID,
+                                                              requestBody,
+                                                              null));
                 }
                 else
                 {
@@ -1649,16 +1649,16 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateEndpoint(String                   serverName,
-                                       String                   urlMarker,
-                                       String                   endpointGUID,
-                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateEndpoint(String                   serverName,
+                                          String                   urlMarker,
+                                          String                   endpointGUID,
+                                          UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateEndpoint";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
+        BooleanResponse response = new BooleanResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1675,17 +1675,17 @@ public class ConnectionMakerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof EndpointProperties endpointProperties)
                 {
-                    handler.updateEndpoint(userId,
-                                           endpointGUID,
-                                           requestBody,
-                                           endpointProperties);
+                    response.setFlag(handler.updateEndpoint(userId,
+                                                            endpointGUID,
+                                                            requestBody,
+                                                            endpointProperties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.updateEndpoint(userId,
-                                           endpointGUID,
-                                           requestBody,
-                                           null);
+                    response.setFlag(handler.updateEndpoint(userId,
+                                                            endpointGUID,
+                                                            requestBody,
+                                                            null));
                 }
                 else
                 {

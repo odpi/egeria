@@ -43,11 +43,11 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws PropertyServerException internal error
      */
     public ConnectionHandler getConnectionHandler(String userId,
-                                                      String serverName,
-                                                      String urlMarker,
-                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+                                                  String serverName,
+                                                  String urlMarker,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         ConnectionMakerInstance instance = (ConnectionMakerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
@@ -73,11 +73,11 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws PropertyServerException internal error
      */
     public ConnectorTypeHandler getConnectorTypeHandler(String userId,
-                                                String serverName,
-                                                String urlMarker,
-                                                String serviceOperationName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+                                                        String serverName,
+                                                        String urlMarker,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         ConnectionMakerInstance instance = (ConnectionMakerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
@@ -103,11 +103,11 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws PropertyServerException internal error
      */
     public EndpointHandler getEndpointHandler(String userId,
-                                                      String serverName,
-                                                      String urlMarker,
-                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+                                              String serverName,
+                                              String urlMarker,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         ConnectionMakerInstance instance = (ConnectionMakerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 

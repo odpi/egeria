@@ -275,10 +275,10 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public VoidResponse updateCollection(@PathVariable String                  serverName,
-                                         @PathVariable String                  urlMarker,
-                                         @PathVariable String                  collectionGUID,
-                                         @RequestBody(required = false)  UpdateElementRequestBody requestBody)
+    public BooleanResponse updateCollection(@PathVariable String                  serverName,
+                                            @PathVariable String                  urlMarker,
+                                            @PathVariable String                  collectionGUID,
+                                            @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateCollection(serverName, urlMarker, collectionGUID, requestBody);
     }

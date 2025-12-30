@@ -24,9 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Data class handler describes how to maintain and query data classes.
- * They are organized into specialized collections called data dictionaries and data specs (supported with the
- * collection manager).
+ * Data class handler describes how to maintain and query data classes..
  */
 public class DataClassHandler extends OpenMetadataHandlerBase
 {

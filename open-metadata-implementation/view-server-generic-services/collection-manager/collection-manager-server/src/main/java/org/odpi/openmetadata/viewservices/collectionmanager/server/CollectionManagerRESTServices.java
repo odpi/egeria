@@ -435,17 +435,17 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateCollection(String                   serverName,
-                                           String                   urlMarker,
-                                           String                   collectionGUID,
-                                           UpdateElementRequestBody requestBody)
+    public BooleanResponse updateCollection(String                   serverName,
+                                            String                   urlMarker,
+                                            String                   collectionGUID,
+                                            UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateCollection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -461,7 +461,7 @@ public class CollectionManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof CollectionProperties properties)
                 {
-                    handler.updateCollection(userId, collectionGUID, requestBody, properties);
+                    response.setFlag(handler.updateCollection(userId, collectionGUID, requestBody, properties));
                 }
                 else
                 {
@@ -481,7 +481,6 @@ public class CollectionManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**

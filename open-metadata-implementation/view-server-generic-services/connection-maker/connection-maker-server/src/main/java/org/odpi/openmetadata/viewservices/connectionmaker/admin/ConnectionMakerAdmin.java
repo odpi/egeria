@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class ConnectionMakerAdmin extends ViewServerGenericServiceAdmin
 {
-    private AuditLog              auditLog   = null;
+    private AuditLog                auditLog   = null;
     private ConnectionMakerInstance instance   = null;
-    private String                serverName = null;
+    private String                  serverName = null;
 
     /**
      * Default constructor

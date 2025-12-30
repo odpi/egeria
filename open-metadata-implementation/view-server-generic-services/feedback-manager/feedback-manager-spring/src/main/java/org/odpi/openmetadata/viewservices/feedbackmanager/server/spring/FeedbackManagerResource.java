@@ -702,10 +702,10 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse   updateComment(@PathVariable String                         serverName,
-                                        @PathVariable String                        urlMarker,
-                                        @PathVariable String                         commentGUID,
-                                        @RequestBody(required = false)  UpdateElementRequestBody requestBody)
+    public BooleanResponse updateComment(@PathVariable String                         serverName,
+                                         @PathVariable String                        urlMarker,
+                                         @PathVariable String                         commentGUID,
+                                         @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateComment(serverName, urlMarker, commentGUID, requestBody);
     }
@@ -894,10 +894,10 @@ public class FeedbackManagerResource
                     url="https://egeria-project.org/concepts/note-log/"))
 
 
-    public VoidResponse   updateNoteLog(@PathVariable String                         serverName,
-                                        @PathVariable String                        urlMarker,
-                                        @PathVariable String                         noteLogGUID,
-                                        @RequestBody UpdateElementRequestBody requestBody)
+    public BooleanResponse updateNoteLog(@PathVariable String                         serverName,
+                                         @PathVariable String                        urlMarker,
+                                         @PathVariable String                         noteLogGUID,
+                                         @RequestBody UpdateElementRequestBody requestBody)
     {
         return restAPI.updateNoteLog(serverName, urlMarker, noteLogGUID, requestBody);
     }

@@ -343,17 +343,14 @@ public class SchemaMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
-    public VoidResponse updateSchemaAttribute(@PathVariable
-                                              String                                  serverName,
-                                              @PathVariable String             urlMarker,
-                                              @PathVariable
-                                              String                                  schemaAttributeGUID,
-                                              @RequestBody (required = false)
-                                              UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSchemaAttribute(@PathVariable String                                  serverName,
+                                                 @PathVariable String             urlMarker,
+                                                 @PathVariable String                                  schemaAttributeGUID,
+                                                 @RequestBody (required = false)
+                                                     UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }
-
 
 
     /**

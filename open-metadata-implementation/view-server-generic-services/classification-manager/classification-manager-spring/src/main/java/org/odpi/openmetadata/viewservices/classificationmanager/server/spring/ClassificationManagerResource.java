@@ -1232,10 +1232,10 @@ public class ClassificationManagerResource
             externalDocs=@ExternalDocumentation(description="Search Keywords",
                     url="https://egeria-project.org/concepts/search-keyword/"))
 
-    public VoidResponse   updateSearchKeyword(@PathVariable String                         serverName,
-                                              @PathVariable String                        urlMarker,
-                                              @PathVariable String                         searchKeywordGUID,
-                                              @RequestBody(required = false)  UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSearchKeyword(@PathVariable String                         serverName,
+                                               @PathVariable String                        urlMarker,
+                                               @PathVariable String                         searchKeywordGUID,
+                                               @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSearchKeyword(serverName, urlMarker, searchKeywordGUID, requestBody);
     }

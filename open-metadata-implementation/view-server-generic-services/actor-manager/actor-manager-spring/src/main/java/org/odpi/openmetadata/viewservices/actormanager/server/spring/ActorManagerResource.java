@@ -390,10 +390,10 @@ public class ActorManagerResource
                     url="https://egeria-project.org/concepts/contribution-record/"))
 
 
-    public VoidResponse   updateContributionRecord(@PathVariable String                         serverName,
-                                                   @PathVariable String                        urlMarker,
-                                                   @PathVariable String                         contributionRecordGUID,
-                                                   @RequestBody UpdateElementRequestBody requestBody)
+    public BooleanResponse updateContributionRecord(@PathVariable String                         serverName,
+                                                    @PathVariable String                        urlMarker,
+                                                    @PathVariable String                         contributionRecordGUID,
+                                                    @RequestBody UpdateElementRequestBody requestBody)
     {
         return restAPI.updateContributionRecord(serverName, urlMarker, contributionRecordGUID, requestBody);
     }

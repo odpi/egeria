@@ -545,7 +545,7 @@ public class SchemaMakerRESTServices extends TokenController
 
 
     /**
-     * Update the properties of a schemaAttribute.
+     * Update the properties of a schema attribute.
      *
      * @param serverName         name of called server.
      * @param urlMarker  view service URL marker
@@ -557,17 +557,17 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateSchemaAttribute(String                   serverName,
-                                              String                   urlMarker,
-                                              String                   schemaAttributeGUID,
-                                              UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSchemaAttribute(String                   serverName,
+                                                 String                   urlMarker,
+                                                 String                   schemaAttributeGUID,
+                                                 UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSchemaAttribute";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -583,10 +583,10 @@ public class SchemaMakerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
                 {
-                    handler.updateSchemaAttribute(userId,
-                                                  schemaAttributeGUID,
-                                                  requestBody,
-                                                  schemaAttributeProperties);
+                    response.setFlag(handler.updateSchemaAttribute(userId,
+                                                                   schemaAttributeGUID,
+                                                                   requestBody,
+                                                                   schemaAttributeProperties));
                 }
                 else
                 {
@@ -609,7 +609,7 @@ public class SchemaMakerRESTServices extends TokenController
 
 
     /**
-     * Delete a schemaAttribute.
+     * Delete a schema attribute.
      *
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker

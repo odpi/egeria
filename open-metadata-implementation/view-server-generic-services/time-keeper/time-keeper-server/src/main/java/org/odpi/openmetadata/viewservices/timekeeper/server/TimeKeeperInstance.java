@@ -2,10 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.timekeeper.server;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ContextEventHandler;
+
+import java.util.List;
 
 /**
  * TimeKeeperInstance caches references to the objects it needs for a specific server.
@@ -16,25 +22,29 @@ public class TimeKeeperInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.TIME_KEEPER;
 
-
+    /*
+     * Cache clients for specific view services/access services.
+     */
+    private final ViewServiceClientMap<ContextEventHandler> contextEventHandlerMap;
 
     /**
      * Set up the Time Keeper OMVS instance
      *
      * @param serverName name of this server
      * @param auditLog logging destination
-     * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
+     * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
-     * @throws InvalidParameterException problem with server name or platform URL
+     * @param activeViewServices list of view services active in this server
      */
-    public TimeKeeperInstance(String       serverName,
-                              AuditLog     auditLog,
-                              String       localServerUserId,
-                              int          maxPageSize,
-                              String       remoteServerName,
-                              String       remoteServerURL) throws InvalidParameterException
+    public TimeKeeperInstance(String                  serverName,
+                              AuditLog                auditLog,
+                              String                  localServerUserId,
+                              int                     maxPageSize,
+                              String                  remoteServerName,
+                              String                  remoteServerURL,
+                              List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
@@ -44,8 +54,27 @@ public class TimeKeeperInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-
+        this.contextEventHandlerMap = new ViewServiceClientMap<>(ContextEventHandler.class,
+                                                                 serverName,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
+                                                                 maxPageSize);
     }
 
-
+    /**
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
+     * context event artifacts.
+     *
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public ContextEventHandler getContextEventHandler(String urlMarker,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                PropertyServerException
+    {
+        return contextEventHandlerMap.getClient(urlMarker, methodName);
+    }
 }

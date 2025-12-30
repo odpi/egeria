@@ -952,13 +952,11 @@ public class ConnectionMakerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/endpoint"))
 
-    public VoidResponse updateEndpoint(@PathVariable
-                                       String                                  serverName,
-                                       @PathVariable String             urlMarker,
-                                       @PathVariable
-                                       String                                  endpointGUID,
-                                       @RequestBody (required = false)
-                                       UpdateElementRequestBody requestBody)
+    public BooleanResponse updateEndpoint(@PathVariable String                                  serverName,
+                                          @PathVariable String             urlMarker,
+                                          @PathVariable String                                  endpointGUID,
+                                          @RequestBody (required = false)
+                                              UpdateElementRequestBody requestBody)
     {
         return restAPI.updateEndpoint(serverName, urlMarker, endpointGUID, requestBody);
     }

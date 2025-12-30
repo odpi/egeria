@@ -2127,17 +2127,17 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateSearchKeyword(String                   serverName,
-                                              String                   urlMarker,
-                                              String                   searchKeywordGUID,
-                                              UpdateElementRequestBody requestBody)
+    public BooleanResponse updateSearchKeyword(String                   serverName,
+                                               String                   urlMarker,
+                                               String                   searchKeywordGUID,
+                                               UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateSearchKeyword";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
+        BooleanResponse  response = new BooleanResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -2153,7 +2153,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 {
                     SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
 
-                    handler.updateSearchKeyword(userId, searchKeywordGUID, requestBody, searchKeywordProperties);
+                    response.setFlag(handler.updateSearchKeyword(userId, searchKeywordGUID, requestBody, searchKeywordProperties));
                 }
                 else
                 {
