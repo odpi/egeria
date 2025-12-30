@@ -986,7 +986,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
         }
         else
         {
-            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
+            handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElement.class.getName(), methodName);
         }
 
         return null;

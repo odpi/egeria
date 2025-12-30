@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,8 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedBy
 {
-    private ElementHeader              relationshipHeader     = null;
-    private RelationshipBeanProperties relationshipProperties = null;
+    private ElementHeader                       relationshipHeader     = null;
+    private RelationshipBeanProperties          relationshipProperties = null;
+    private Map<String, MetadataElementSummary> associatedElements     = null;
 
     /**
      * Default constructor
@@ -44,6 +46,7 @@ public class RelatedBy
         {
             relationshipHeader = template.getRelationshipHeader();
             relationshipProperties = template.getRelationshipProperties();
+            associatedElements = template.getAssociatedElements();
         }
     }
 
@@ -93,6 +96,28 @@ public class RelatedBy
 
 
     /**
+     * Return the map of additional elements identifier in the relationship.
+     *
+     * @return map of property name to element summary.
+     */
+    public Map<String, MetadataElementSummary> getAssociatedElements()
+    {
+        return associatedElements;
+    }
+
+
+    /**
+     * Set up the map of additional elements identifier in the relationship.
+     *
+     * @param associatedElements map of property name to element summary.
+     */
+    public void setAssociatedElements(Map<String, MetadataElementSummary> associatedElements)
+    {
+        this.associatedElements = associatedElements;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -101,9 +126,10 @@ public class RelatedBy
     public String toString()
     {
         return "RelatedBy{" +
-                       "relationshipHeader=" + relationshipHeader +
-                       ", relationshipProperties=" + relationshipProperties +
-                       '}';
+                "relationshipHeader=" + relationshipHeader +
+                ", relationshipProperties=" + relationshipProperties +
+                ", associatedElements=" + associatedElements +
+                '}';
     }
 
 
@@ -116,19 +142,13 @@ public class RelatedBy
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        RelatedBy that = (RelatedBy) objectToCompare;
-        return Objects.equals(getRelationshipHeader(), that.getRelationshipHeader()) &&
-                       Objects.equals(getRelationshipProperties(), that.getRelationshipProperties());
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        RelatedBy relatedBy = (RelatedBy) objectToCompare;
+        return Objects.equals(relationshipHeader, relatedBy.relationshipHeader) &&
+                Objects.equals(relationshipProperties, relatedBy.relationshipProperties) &&
+                Objects.equals(associatedElements, relatedBy.associatedElements);
     }
-
 
     /**
      * Return hash code for this object
@@ -138,6 +158,6 @@ public class RelatedBy
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties);
+        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties, associatedElements);
     }
 }

@@ -144,8 +144,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             this.addValidMetadataValue(resourceUseProperties.getName(),
                                        resourceUseProperties.getDescription(),
-                                       OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                       OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                        null,
                                        resourceUseProperties.getName());
         }

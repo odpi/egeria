@@ -10,12 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -61,7 +57,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getImpactClassifiedElements(String                         serverName,
+    public OpenMetadataRootElementsResponse getImpactClassifiedElements(String                         serverName,
                                                                         String                         urlMarker,
                                                                         LevelIdentifierQueryProperties requestBody)
     {
@@ -69,7 +65,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -118,7 +114,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getConfidenceClassifiedElements(String                         serverName,
+    public OpenMetadataRootElementsResponse getConfidenceClassifiedElements(String                         serverName,
                                                                             String                         urlMarker,
                                                                             LevelIdentifierQueryProperties requestBody)
     {
@@ -126,7 +122,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -175,7 +171,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getCriticalityClassifiedElements(String                         serverName,
+    public OpenMetadataRootElementsResponse getCriticalityClassifiedElements(String                         serverName,
                                                                              String                         urlMarker,
                                                                              LevelIdentifierQueryProperties requestBody)
     {
@@ -183,7 +179,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -232,7 +228,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getConfidentialityClassifiedElements(String                         serverName,
+    public OpenMetadataRootElementsResponse getConfidentialityClassifiedElements(String                         serverName,
                                                                                  String                         urlMarker,
                                                                                  LevelIdentifierQueryProperties requestBody)
     {
@@ -240,7 +236,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -289,7 +285,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getRetentionClassifiedElements(String                         serverName,
+    public OpenMetadataRootElementsResponse getRetentionClassifiedElements(String                         serverName,
                                                                            String                         urlMarker,
                                                                            LevelIdentifierQueryProperties requestBody)
     {
@@ -297,7 +293,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -346,7 +342,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getSecurityTaggedElements(String                     serverName,
+    public OpenMetadataRootElementsResponse getSecurityTaggedElements(String                     serverName,
                                                                       String                     urlMarker,
                                                                       SecurityTagQueryProperties requestBody)
     {
@@ -354,7 +350,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -405,7 +401,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getOwnersElements(String            serverName,
+    public OpenMetadataRootElementsResponse getOwnersElements(String            serverName,
                                                               String            urlMarker,
                                                               FilterRequestBody requestBody)
     {
@@ -413,7 +409,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -456,7 +452,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getMembersOfSubjectArea(String            serverName,
+    public OpenMetadataRootElementsResponse getMembersOfSubjectArea(String            serverName,
                                                                     String            urlMarker,
                                                                     FilterRequestBody requestBody)
     {
@@ -464,7 +460,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -509,7 +505,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getElementsByOrigin(String                              serverName,
+    public OpenMetadataRootElementsResponse getElementsByOrigin(String                              serverName,
                                                                 String                              urlMarker,
                                                                 FindDigitalResourceOriginProperties requestBody)
     {
@@ -517,7 +513,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -563,16 +559,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getMeanings(String                            serverName,
-                                                               String                            urlMarker,
-                                                               String                            elementGUID,
-                                                               SemanticAssignmentQueryProperties requestBody)
+    public OpenMetadataRootElementsResponse getMeanings(String                            serverName,
+                                                        String                            urlMarker,
+                                                        String                            elementGUID,
+                                                        SemanticAssignmentQueryProperties requestBody)
     {
         final String methodName = "getMeanings";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                                auditLog = null;
 
         try
@@ -586,7 +582,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getMeanings(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getMeanings(userId,
                                                                                     elementGUID,
                                                                                     requestBody.getExpression(),
                                                                                     requestBody.getDescription(),
@@ -599,13 +595,13 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                     requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getMeanings(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getMeanings(userId,
                                                                                     elementGUID,
                                                                                     null,
                                                                                     null,
@@ -618,8 +614,8 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                     null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -646,7 +642,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getSemanticAssignees(String                            serverName,
+    public OpenMetadataRootElementsResponse getSemanticAssignees(String                            serverName,
                                                                         String                            urlMarker,
                                                                         String                            glossaryTermGUID,
                                                                         SemanticAssignmentQueryProperties requestBody)
@@ -655,7 +651,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -669,30 +665,30 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSemanticAssignees(userId,
-                                                                                             glossaryTermGUID,
-                                                                                             requestBody.getExpression(),
-                                                                                             requestBody.getDescription(),
-                                                                                             requestBody.getStatus(),
-                                                                                             requestBody.getReturnSpecificConfidence(),
-                                                                                             requestBody.getConfidence(),
-                                                                                             requestBody.getCreatedBy(),
-                                                                                             requestBody.getSteward(),
-                                                                                             requestBody.getSource(),
-                                                                                             requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getSemanticAssignees(userId,
+                                                                                         glossaryTermGUID,
+                                                                                         requestBody.getExpression(),
+                                                                                         requestBody.getDescription(),
+                                                                                         requestBody.getStatus(),
+                                                                                         requestBody.getReturnSpecificConfidence(),
+                                                                                         requestBody.getConfidence(),
+                                                                                         requestBody.getCreatedBy(),
+                                                                                         requestBody.getSteward(),
+                                                                                         requestBody.getSource(),
+                                                                                         requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(glossaryTermGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSemanticAssignees(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getSemanticAssignees(userId,
                                                                                              glossaryTermGUID,
                                                                                              null,
                                                                                              null,
-                                                                                             TermAssignmentStatus.VALIDATED,
+                                                                                             null,
                                                                                              false,
                                                                                              0,
                                                                                              null,
@@ -701,8 +697,8 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                              null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(glossaryTermGUID, summaryList));
                 }
             }
         }
@@ -729,16 +725,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getGovernedElements(String         serverName,
-                                                                       String         urlMarker,
-                                                                       String         governanceDefinitionGUID,
-                                                                       ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getGovernedElements(String             serverName,
+                                                                String             urlMarker,
+                                                                String             governanceDefinitionGUID,
+                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -752,24 +748,24 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getGovernedElements(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getGovernedElements(userId,
                                                                                             governanceDefinitionGUID,
                                                                                             null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(governanceDefinitionGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getGovernedElements(userId,
-                                                                                            governanceDefinitionGUID,
-                                                                                            requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getGovernedElements(userId,
+                                                                                        governanceDefinitionGUID,
+                                                                                        requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(governanceDefinitionGUID, summaryList));
                 }
             }
         }
@@ -796,16 +792,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(String         serverName,
-                                                                            String         urlMarker,
-                                                                            String         elementGUID,
-                                                                            ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getGovernedByDefinitions(String         serverName,
+                                                                     String         urlMarker,
+                                                                     String         elementGUID,
+                                                                     ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernedByDefinitions";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                                auditLog = null;
 
         try
@@ -819,24 +815,24 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getGovernedByDefinitions(userId,
-                                                                                                 elementGUID,
-                                                                                                 null);
+                List<OpenMetadataRootElement> summaryList = handler.getGovernedByDefinitions(userId,
+                                                                                             elementGUID,
+                                                                                             null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getGovernedByDefinitions(userId,
-                                                                                                 elementGUID,
-                                                                                                 requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getGovernedByDefinitions(userId,
+                                                                                             elementGUID,
+                                                                                             requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -864,7 +860,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getSourceElements(String         serverName,
+    public OpenMetadataRootElementsResponse getSourceElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         elementGUID,
                                                                      ResultsRequestBody requestBody)
@@ -873,7 +869,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -887,20 +883,20 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSourceElements(userId, elementGUID, null);
+                List<OpenMetadataRootElement> summaryList = handler.getSourceElements(userId, elementGUID, null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSourceElements(userId, elementGUID, requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getSourceElements(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -928,16 +924,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getElementsSourcedFrom(String         serverName,
-                                                                          String         urlMarker,
-                                                                          String         elementGUID,
-                                                                          ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getElementsSourcedFrom(String         serverName,
+                                                                   String         urlMarker,
+                                                                   String         elementGUID,
+                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getElementsSourceFrom";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -951,20 +947,20 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getElementsSourcedFrom(userId, elementGUID, null);
+                List<OpenMetadataRootElement> summaryList = handler.getElementsSourcedFrom(userId, elementGUID, null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getElementsSourcedFrom(userId, elementGUID, requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getElementsSourcedFrom(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -992,16 +988,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getScopes(String         serverName,
-                                                             String         urlMarker,
-                                                             String         elementGUID,
-                                                             ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getScopes(String         serverName,
+                                                      String         urlMarker,
+                                                      String         elementGUID,
+                                                      ResultsRequestBody requestBody)
     {
         final String methodName = "getScopes";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1015,20 +1011,20 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId, elementGUID, null);
+                List<OpenMetadataRootElement> summaryList = handler.getScopes(userId, elementGUID, null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopes(userId, elementGUID, requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getScopes(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -1055,16 +1051,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getScopedElements(String         serverName,
-                                                                     String         urlMarker,
-                                                                     String         scopeGUID,
-                                                                     ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getScopedElements(String         serverName,
+                                                              String         urlMarker,
+                                                              String         scopeGUID,
+                                                              ResultsRequestBody requestBody)
     {
         final String methodName = "getScopedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1078,20 +1074,20 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId, scopeGUID, null);
+                List<OpenMetadataRootElement> summaryList = handler.getScopedElements(userId, scopeGUID, null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(scopeGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getScopedElements(userId, scopeGUID, requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getScopedElements(userId, scopeGUID, requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(scopeGUID, summaryList));
                 }
             }
         }
@@ -1121,16 +1117,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getResourceList(String         serverName,
-                                                                   String         urlMarker,
-                                                                   String         elementGUID,
-                                                                   ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getResourceList(String             serverName,
+                                                            String             urlMarker,
+                                                            String             elementGUID,
+                                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getResourceList";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1144,20 +1140,20 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getResourceList(userId, elementGUID, null);
+                List<OpenMetadataRootElement> summaryList = handler.getResourceList(userId, elementGUID, null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getResourceList(userId, elementGUID, requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getResourceList(userId, elementGUID, requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -1184,16 +1180,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getSupportedByResource(String         serverName,
-                                                                          String         urlMarker,
-                                                                          String         resourceGUID,
-                                                                          ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSupportedByResource(String             serverName,
+                                                                   String             urlMarker,
+                                                                   String             resourceGUID,
+                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getSupportedByResource";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1207,20 +1203,20 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSupportedByResource(userId, resourceGUID, null);
+                List<OpenMetadataRootElement> summaryList = handler.getSupportedByResource(userId, resourceGUID, null);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(resourceGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getSupportedByResource(userId, resourceGUID, requestBody);
+                List<OpenMetadataRootElement> summaryList = handler.getSupportedByResource(userId, resourceGUID, requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(resourceGUID, summaryList));
                 }
             }
         }
@@ -1247,16 +1243,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getLicensedElements(String             serverName,
-                                                                       String             urlMarker,
-                                                                       String             licenseTypeGUID,
-                                                                       ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getLicensedElements(String             serverName,
+                                                                String             urlMarker,
+                                                                String             licenseTypeGUID,
+                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getLicensedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1268,11 +1264,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            RelatedMetadataElementSummaryList summaryList = handler.getLicensedElements(userId, licenseTypeGUID, requestBody);
+            List<OpenMetadataRootElement> summaryList = handler.getLicensedElements(userId, licenseTypeGUID, requestBody);
             if (summaryList != null)
             {
-                response.setElements(summaryList.getElementList());
-                response.setMermaidGraph(summaryList.getMermaidGraph());
+                response.setElements(summaryList);
+                response.setMermaidGraph(handler.getMermaidGraph(licenseTypeGUID, summaryList));
             }
         }
         catch (Throwable error)
@@ -1298,16 +1294,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedMetadataElementSummariesResponse getLicenses(String             serverName,
-                                                               String             urlMarker,
-                                                               String             elementGUID,
-                                                               ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getLicenses(String             serverName,
+                                                        String             urlMarker,
+                                                        String             elementGUID,
+                                                        ResultsRequestBody requestBody)
     {
         final String methodName = "getLicenses";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1319,11 +1315,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            RelatedMetadataElementSummaryList summaryList = handler.getLicenses(userId, elementGUID, requestBody);
+            List<OpenMetadataRootElement> summaryList = handler.getLicenses(userId, elementGUID, requestBody);
             if (summaryList != null)
             {
-                response.setElements(summaryList.getElementList());
-                response.setMermaidGraph(summaryList.getMermaidGraph());
+                response.setElements(summaryList);
+                response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
             }
         }
         catch (Throwable error)
@@ -1349,16 +1345,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public CertificationElementsResponse getCertifiedElements(String             serverName,
-                                                              String             urlMarker,
-                                                              String             certificationTypeGUID,
-                                                              ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCertifiedElements(String             serverName,
+                                                                 String             urlMarker,
+                                                                 String             certificationTypeGUID,
+                                                                 ResultsRequestBody requestBody)
     {
         final String methodName = "getCertifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CertificationElementsResponse response = new CertificationElementsResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1370,40 +1366,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            /*
-             * Check that the guid is valid and retrieve the associated element.
-             */
-            MetadataElementSummary startingElement = handler.getMetadataElementByGUID(userId, certificationTypeGUID, requestBody);;
-
-            if (startingElement != null)
+            List<OpenMetadataRootElement> summaryList = handler.getCertifiedElements(userId, certificationTypeGUID, requestBody);
+            if (summaryList != null)
             {
-                /*
-                 * Does this element have associated certifications
-                 */
-                RelatedMetadataElementSummaryList summaryList;
-
-                if (requestBody == null)
-                {
-                    summaryList = handler.getCertifiedElements(userId, certificationTypeGUID, null);
-
-                    getCertificationElements(userId,
-                                             startingElement,
-                                             summaryList,
-                                             handler,
-                                             null,
-                                             response);
-                }
-                else
-                {
-                    summaryList = handler.getCertifiedElements(userId, certificationTypeGUID, requestBody);
-
-                    getCertificationElements(userId,
-                                             startingElement,
-                                             summaryList,
-                                             handler,
-                                             requestBody,
-                                             response);
-                }
+                response.setElements(summaryList);
+                response.setMermaidGraph(handler.getMermaidGraph(certificationTypeGUID, summaryList));
             }
         }
         catch (Throwable error)
@@ -1413,153 +1380,6 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-    }
-
-
-    /**
-     * Convert the related metadata element summary into a certification response that includes details of the actors
-     * involved in the certification.
-     *
-     * @param userId calling user
-     * @param startingElement requested starting element
-     * @param summaryList list of related elements
-     * @param handler handler for receiving more metadata
-     * @param queryOptions               multiple options to control the query
-     * @param response response object to populate
-     */
-    private void getCertificationElements(String                            userId,
-                                          MetadataElementSummary            startingElement,
-                                          RelatedMetadataElementSummaryList summaryList,
-                                          StewardshipManagementHandler      handler,
-                                          QueryOptions                      queryOptions,
-                                          CertificationElementsResponse     response)
-    {
-        response.setStartingElement(startingElement);
-
-        List<CertificationElement> certificationElements = new ArrayList<>();
-
-        /*
-         * Set up the list of certified elements
-         */
-        if ((summaryList != null) && (summaryList.getElementList() != null))
-        {
-            /*
-             * Each certification relationship potentially identifies 3 actors.
-             * The code below retrieves the actors to include them in the output.
-             */
-            Map<String, MetadataElementSummary> actorMap              = new HashMap<>(); // only receive each actor once
-
-            for (RelatedMetadataElementSummary relatedMetadataElementSummary : summaryList.getElementList())
-            {
-                if (relatedMetadataElementSummary != null)
-                {
-                    CertificationElement certificationElement = new CertificationElement(relatedMetadataElementSummary);
-
-
-                    if (relatedMetadataElementSummary.getRelationshipProperties() instanceof CertificationProperties certificationProperties)
-                    {
-                        certificationElement.setCertifiedBy(getActorSummary(userId,
-                                                                            certificationProperties.getCertifiedBy(),
-                                                                            certificationProperties.getCertifiedByPropertyName(),
-                                                                            actorMap,
-                                                                            handler,
-                                                                            queryOptions));
-
-                        certificationElement.setCustodian(getActorSummary(userId,
-                                                                          certificationProperties.getCustodian(),
-                                                                          certificationProperties.getCustodianPropertyName(),
-                                                                          actorMap,
-                                                                          handler,
-                                                                          queryOptions));
-
-                        certificationElement.setRecipient(getActorSummary(userId,
-                                                                          certificationProperties.getRecipient(),
-                                                                          certificationProperties.getRecipientPropertyName(),
-                                                                          actorMap,
-                                                                          handler,
-                                                                          queryOptions));
-                    }
-
-                    certificationElements.add(certificationElement);
-                }
-            }
-
-            response.setElements(certificationElements);
-        }
-
-        /*
-         * Set up the mermaid graph
-         */
-        CertificationMermaidGraphBuilder graphBuilder = new CertificationMermaidGraphBuilder(startingElement,
-                                                                                             certificationElements);
-
-        response.setMermaidGraph(graphBuilder.getMermaidGraph());
-    }
-
-
-    /**
-     * Retrieve details of a requested actor, unless element has already been retrieved.
-     *
-     * @param userId calling user
-     * @param actorName name of actor
-     * @param actorPropertyName property name it represents
-     * @param actorMap map of other actors already received
-     * @param handler handler for receiving more metadata
-     * @param queryOptions               multiple options to control the query
-     * @return actor element or null if nothing found
-     */
-    private MetadataElementSummary getActorSummary(String                              userId,
-                                                   String                              actorName,
-                                                   String                              actorPropertyName,
-                                                   Map<String, MetadataElementSummary> actorMap,
-                                                   StewardshipManagementHandler        handler,
-                                                   QueryOptions                        queryOptions)
-    {
-        if (actorName != null)
-        {
-            if (actorMap.containsKey(actorName))
-            {
-                return actorMap.get(actorName);
-            }
-            else
-            {
-                MetadataElementSummary actorSummary;
-
-                if ((actorPropertyName == null) || (actorPropertyName.equals(OpenMetadataProperty.GUID.name)))
-                {
-                    try
-                    {
-                        actorSummary = handler.getMetadataElementByGUID(userId, actorName, queryOptions);
-                    }
-                    catch (Exception exception)
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        actorSummary = handler.getMetadataElementByUniqueName(userId,
-                                                                              actorName,
-                                                                              actorPropertyName,
-                                                                              queryOptions);
-                    }
-                    catch (Exception exception)
-                    {
-                        return null;
-                    }
-                }
-
-                if (actorSummary != null)
-                {
-                    actorMap.put(actorName, actorSummary);
-                    return actorSummary;
-                }
-            }
-        }
-
-        return null;
     }
 
 
@@ -1576,17 +1396,17 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public CertificationElementsResponse getCertifications(String             serverName,
-                                                           String             urlMarker,
-                                                           String             elementGUID,
-                                                           ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCertifications(String             serverName,
+                                                              String             urlMarker,
+                                                              String             elementGUID,
+                                                              ResultsRequestBody requestBody)
     {
         final String methodName = "getCertifications";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CertificationElementsResponse response = new CertificationElementsResponse();
-        AuditLog     auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1597,46 +1417,11 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            /*
-             * Check that the guid is valid and retrieve the associated element.
-             */
-            MetadataElementSummary startingElement;
-            if (requestBody == null)
+            List<OpenMetadataRootElement> summaryList = handler.getCertifications(userId, elementGUID, requestBody);
+            if (summaryList != null)
             {
-                startingElement = handler.getMetadataElementByGUID(userId, elementGUID, null);
-            }
-            else
-            {
-                startingElement = handler.getMetadataElementByGUID(userId, elementGUID, requestBody);
-            }
-
-            if (startingElement != null)
-            {
-                /*
-                 * Does this element have associated certifications
-                 */
-                RelatedMetadataElementSummaryList summaryList;
-
-                if (requestBody == null)
-                {
-                    summaryList = handler.getCertifications(userId, elementGUID, null);
-                    getCertificationElements(userId,
-                                             startingElement,
-                                             summaryList,
-                                             handler,
-                                             null,
-                                             response);
-                }
-                else
-                {
-                    summaryList = handler.getCertifications(userId, elementGUID, requestBody);
-                    getCertificationElements(userId,
-                                             startingElement,
-                                             summaryList,
-                                             handler,
-                                             requestBody,
-                                             response);
-                }
+                response.setElements(summaryList);
+                response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
             }
         }
         catch (Throwable error)
@@ -1662,17 +1447,17 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public MetadataElementSummaryResponse getMetadataElementByGUID(String      serverName,
-                                                                   String      urlMarker,
-                                                                   String      elementGUID,
-                                                                   GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getMetadataElementByGUID(String         serverName,
+                                                                    String         urlMarker,
+                                                                    String         elementGUID,
+                                                                    GetRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummaryResponse response = new MetadataElementSummaryResponse();
-        AuditLog                       auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1707,16 +1492,16 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public MetadataElementSummaryResponse getMetadataElementByUniqueName(String                     serverName,
-                                                                         String                     urlMarker,
-                                                                         FindPropertyNameProperties requestBody)
+    public OpenMetadataRootElementResponse getMetadataElementByUniqueName(String                     serverName,
+                                                                          String                     urlMarker,
+                                                                          FindPropertyNameProperties requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummaryResponse response = new MetadataElementSummaryResponse();
-        AuditLog                       auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1830,15 +1615,15 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse getElements(String         serverName,
-                                                        String         urlMarker,
+    public OpenMetadataRootElementsResponse getElements(String             serverName,
+                                                        String             urlMarker,
                                                         ResultsRequestBody requestBody)
     {
         final String methodName = "getElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -1933,7 +1718,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse getElementsByPropertyValue(String                      serverName,
+    public OpenMetadataRootElementsResponse getElementsByPropertyValue(String                      serverName,
                                                                        String                      urlMarker,
                                                                        FindPropertyNamesProperties requestBody)
     {
@@ -1941,7 +1726,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -1989,7 +1774,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse findElementsByPropertyValue(String                      serverName,
+    public OpenMetadataRootElementsResponse findElementsByPropertyValue(String                      serverName,
                                                                         String                      urlMarker,
                                                                         FindPropertyNamesProperties requestBody)
     {
@@ -1997,7 +1782,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -2046,7 +1831,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse getElementsByClassification(String         serverName,
+    public OpenMetadataRootElementsResponse getElementsByClassification(String         serverName,
                                                                         String         urlMarker,
                                                                         String         classificationName,
                                                                         ResultsRequestBody requestBody)
@@ -2055,7 +1840,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -2094,7 +1879,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse getElementsByClassificationWithPropertyValue(String                      serverName,
+    public OpenMetadataRootElementsResponse getElementsByClassificationWithPropertyValue(String                      serverName,
                                                                                          String                      urlMarker,
                                                                                          String                      classificationName,
                                                                                          FindPropertyNamesProperties requestBody)
@@ -2103,7 +1888,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -2155,7 +1940,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(String                      serverName,
+    public OpenMetadataRootElementsResponse findElementsByClassificationWithPropertyValue(String                      serverName,
                                                                                           String                      urlMarker,
                                                                                           String                      classificationName,
                                                                                           FindPropertyNamesProperties requestBody)
@@ -2164,7 +1949,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -2214,7 +1999,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummariesResponse getRelatedElements(String         serverName,
+    public OpenMetadataRootElementsResponse getRelatedElements(String         serverName,
                                                                       String         urlMarker,
                                                                       String         elementGUID,
                                                                       String         relationshipTypeName,
@@ -2225,7 +2010,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                                auditLog = null;
 
         try
@@ -2239,7 +2024,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getRelatedElements(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getRelatedElements(userId,
                                                                                            elementGUID,
                                                                                            relationshipTypeName,
                                                                                            startingAtEnd,
@@ -2249,13 +2034,13 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                            methodName);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getRelatedElements(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getRelatedElements(userId,
                                                                                            elementGUID,
                                                                                            relationshipTypeName,
                                                                                            startingAtEnd,
@@ -2265,8 +2050,8 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                            methodName);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -2297,7 +2082,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummariesResponse getRelatedElementsWithPropertyValue(String                      serverName,
+    public OpenMetadataRootElementsResponse getRelatedElementsWithPropertyValue(String                      serverName,
                                                                                        String                      urlMarker,
                                                                                        String                      elementGUID,
                                                                                        String                      relationshipTypeName,
@@ -2308,7 +2093,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -2326,7 +2111,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.getRelatedElements(userId,
+                List<OpenMetadataRootElement> summaryList = handler.getRelatedElements(userId,
                                                                                            elementGUID,
                                                                                            relationshipTypeName,
                                                                                            startingAtEnd,
@@ -2336,8 +2121,8 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                            methodName);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }
@@ -2368,7 +2153,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedMetadataElementSummariesResponse findRelatedElementsWithPropertyValue(String                      serverName,
+    public OpenMetadataRootElementsResponse findRelatedElementsWithPropertyValue(String                      serverName,
                                                                                         String                      urlMarker,
                                                                                         String                      elementGUID,
                                                                                         String                      relationshipTypeName,
@@ -2379,7 +2164,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
         AuditLog                         auditLog = null;
 
         try
@@ -2397,7 +2182,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             }
             else
             {
-                RelatedMetadataElementSummaryList summaryList = handler.findRelatedElementsWithPropertyValue(userId,
+                List<OpenMetadataRootElement> summaryList = handler.findRelatedElementsWithPropertyValue(userId,
                                                                                                              elementGUID,
                                                                                                              relationshipTypeName,
                                                                                                              startingAtEnd,
@@ -2406,8 +2191,8 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                                              requestBody);
                 if (summaryList != null)
                 {
-                    response.setElements(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
+                    response.setElements(summaryList);
+                    response.setMermaidGraph(handler.getMermaidGraph(elementGUID, summaryList));
                 }
             }
         }

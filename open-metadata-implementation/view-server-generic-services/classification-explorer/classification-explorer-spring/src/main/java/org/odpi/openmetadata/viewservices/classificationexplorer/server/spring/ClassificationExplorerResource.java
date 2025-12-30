@@ -71,7 +71,7 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Governance data classifications", url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
 
-    public MetadataElementSummariesResponse getImpactClassifiedElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getImpactClassifiedElements(@PathVariable String                      serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @RequestBody(required = false)
                                                                         LevelIdentifierQueryProperties requestBody)
@@ -100,7 +100,7 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Governance data classifications", url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
 
-    public MetadataElementSummariesResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
                                                                             @PathVariable String                        urlMarker,
                                                                             @RequestBody(required = false)
                                                                             LevelIdentifierQueryProperties requestBody)
@@ -128,7 +128,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements classified with the criticality classification.",
             externalDocs=@ExternalDocumentation(description="Governance data classifications", url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
-    public MetadataElementSummariesResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
                                                                              @PathVariable String                        urlMarker,
                                                                              @RequestBody(required = false)
                                                                              LevelIdentifierQueryProperties requestBody)
@@ -156,7 +156,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements classified with the confidentiality classification.",
             externalDocs=@ExternalDocumentation(description="Governance data classifications", url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
-    public MetadataElementSummariesResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
                                                                                  @PathVariable String                        urlMarker,
                                                                                  @RequestBody(required = false)
                                                                                  LevelIdentifierQueryProperties requestBody)
@@ -184,7 +184,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements classified with the retention classification.",
             externalDocs=@ExternalDocumentation(description="Governance data classifications", url="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/"))
 
-    public MetadataElementSummariesResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
                                                                            @PathVariable String                        urlMarker,
                                                                            @RequestBody(required = false)
                                                                            LevelIdentifierQueryProperties requestBody)
@@ -212,7 +212,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements classified with the security tags classification.",
             externalDocs=@ExternalDocumentation(description="Security tags classification", url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
 
-    public MetadataElementSummariesResponse getSecurityTaggedElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getSecurityTaggedElements(@PathVariable String                      serverName,
                                                                       @PathVariable String                        urlMarker,
                                                                       @RequestBody(required = false)
                                                                       SecurityTagQueryProperties requestBody)
@@ -240,7 +240,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements classified with the ownership classification.",
             externalDocs=@ExternalDocumentation(description="Governance roles", url="https://egeria-project.org/types/4/0445-Governance-Roles/"))
 
-    public MetadataElementSummariesResponse getOwnersElements(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getOwnersElements(@PathVariable String                      serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @RequestBody(required = false)
                                                               FilterRequestBody requestBody)
@@ -268,7 +268,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements classified with the subject area classification.",
             externalDocs=@ExternalDocumentation(description="Subject areas", url="https://egeria-project.org/types/4/0425-Subject-Areas/"))
 
-    public MetadataElementSummariesResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
                                                                     @PathVariable String                        urlMarker,
                                                                     @RequestBody(required = false)
                                                                     FilterRequestBody requestBody)
@@ -296,7 +296,7 @@ public class ClassificationExplorerResource
             description="Return information about the digital resources from a specific origin.",
             externalDocs=@ExternalDocumentation(description="Asset Origins", url="https://egeria-project.org/types/4/0440-Organizational-Controls/"))
 
-    public MetadataElementSummariesResponse getElementsByOrigin(@PathVariable String                      serverName,
+    public OpenMetadataRootElementsResponse getElementsByOrigin(@PathVariable String                      serverName,
                                                                 @PathVariable String                        urlMarker,
                                                                 @RequestBody(required = false)
                                                                 FindDigitalResourceOriginProperties requestBody)
@@ -326,10 +326,10 @@ public class ClassificationExplorerResource
             description="Retrieve the glossary terms linked via a SemanticAssignment relationship to the requested element.",
             externalDocs=@ExternalDocumentation(description="Semantic assignment", url="https://egeria-project.org/types/3/0370-Semantic-Assignment/"))
 
-    public RelatedMetadataElementSummariesResponse getMeanings(@PathVariable String                        serverName,
-                                                               @PathVariable String                        urlMarker,
-                                                               @PathVariable String                        elementGUID,
-                                                               SemanticAssignmentQueryProperties requestBody)
+    public OpenMetadataRootElementsResponse getMeanings(@PathVariable String                        serverName,
+                                                        @PathVariable String                        urlMarker,
+                                                        @PathVariable String                        elementGUID,
+                                                        SemanticAssignmentQueryProperties requestBody)
     {
         return restAPI.getMeanings(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -355,10 +355,10 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a SemanticAssignment relationship to the requested glossary term",
             externalDocs=@ExternalDocumentation(description="Semantic assignment", url="https://egeria-project.org/types/3/0370-Semantic-Assignment/"))
 
-    public RelatedMetadataElementSummariesResponse getSemanticAssignees(@PathVariable String                        serverName,
-                                                                        @PathVariable String                        urlMarker,
-                                                                        @PathVariable String                        glossaryTermGUID,
-                                                                        @RequestBody(required = false)
+    public OpenMetadataRootElementsResponse getSemanticAssignees(@PathVariable String                        serverName,
+                                                                 @PathVariable String                        urlMarker,
+                                                                 @PathVariable String                        glossaryTermGUID,
+                                                                 @RequestBody(required = false)
                                                                         SemanticAssignmentQueryProperties requestBody)
     {
         return restAPI.getSemanticAssignees(serverName, urlMarker, glossaryTermGUID, requestBody);
@@ -385,7 +385,7 @@ public class ClassificationExplorerResource
             description="Retrieve the governance definitions linked via a GovernedBy relationship to the requested element.",
             externalDocs=@ExternalDocumentation(description="Governance definitions", url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
 
-    public RelatedMetadataElementSummariesResponse getGovernedElements(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getGovernedElements(@PathVariable String                        serverName,
                                                                        @PathVariable String                        urlMarker,
                                                                        @PathVariable String                        governanceDefinitionGUID,
                                                                        @RequestBody(required = false)
@@ -415,7 +415,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a GovernedBy relationship to the requested governance definition.",
             externalDocs=@ExternalDocumentation(description="Governance definitions", url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
 
-    public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getGovernedByDefinitions(@PathVariable String                        serverName,
                                                                             @PathVariable String                        urlMarker,
                                                                             @PathVariable String                        elementGUID,
                                                                             @RequestBody(required = false)
@@ -446,7 +446,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a SourceFrom relationship to the requested element.  The elements returned were used to create the requested element.  Typically only one element is returned.",
             externalDocs=@ExternalDocumentation(description="Templates", url="https://egeria-project.org/types/0/0011-Managing-Referenceables/"))
 
-    public RelatedMetadataElementSummariesResponse getSourceElements(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getSourceElements(@PathVariable String                        serverName,
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String elementGUID,
                                                                      @RequestBody  (required = false)
@@ -477,7 +477,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.",
             externalDocs=@ExternalDocumentation(description="Templates", url="https://egeria-project.org/types/0/0011-Managing-Referenceables/"))
 
-    public RelatedMetadataElementSummariesResponse getElementsSourcedFrom(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getElementsSourcedFrom(@PathVariable String                        serverName,
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String                        elementGUID,
                                                                           @RequestBody  (required = false)
@@ -507,7 +507,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a ScopedBy relationship to the requested element.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
-    public RelatedMetadataElementSummariesResponse getScopes(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getScopes(@PathVariable String                        serverName,
                                                              @PathVariable String                        urlMarker,
                                                              @PathVariable String                        elementGUID,
                                                              @RequestBody  (required = false)
@@ -537,7 +537,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a ScopedBy relationship to the requested scope.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
-    public RelatedMetadataElementSummariesResponse getScopedElements(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getScopedElements(@PathVariable String                        serverName,
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String scopeGUID,
                                                                      @RequestBody  (required = false)
@@ -567,7 +567,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a ResourceList relationship to the requested element.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/0/0019-More-Information/"))
 
-    public RelatedMetadataElementSummariesResponse getResourceList(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getResourceList(@PathVariable String                        serverName,
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String                        elementGUID,
                                                                    @RequestBody  (required = false)
@@ -597,7 +597,7 @@ public class ClassificationExplorerResource
             description="Retrieve the elements linked via a ResourceList relationship to the requested resource.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/0/0019-More-Information/"))
 
-    public RelatedMetadataElementSummariesResponse getSupportedByResource(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getSupportedByResource(@PathVariable String                        serverName,
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String resourceGUID,
                                                                           @RequestBody  (required = false)
@@ -627,7 +627,7 @@ public class ClassificationExplorerResource
             description="Return information about the elements linked to a license type.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0481-Licenses/"))
 
-    public RelatedMetadataElementSummariesResponse  getLicensedElements(@PathVariable String serverName,
+    public OpenMetadataRootElementsResponse  getLicensedElements(@PathVariable String serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String licenseTypeGUID,
                                                                         @RequestBody(required = false) ResultsRequestBody requestBody)
@@ -656,7 +656,7 @@ public class ClassificationExplorerResource
             description="Return information about the licenses linked to an element.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0481-Licenses/"))
 
-    public RelatedMetadataElementSummariesResponse getLicenses(@PathVariable String serverName,
+    public OpenMetadataRootElementsResponse getLicenses(@PathVariable String serverName,
                                                                @PathVariable String urlMarker,
                                                                @PathVariable String elementGUID,
                                                                @RequestBody(required = false) ResultsRequestBody requestBody)
@@ -685,10 +685,10 @@ public class ClassificationExplorerResource
             description="Return information about the elements linked to a certification type.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0482-Certifications/"))
 
-    public CertificationElementsResponse  geCertifiedElements(@PathVariable String serverName,
-                                                              @PathVariable String                        urlMarker,
-                                                              @PathVariable String certificationTypeGUID,
-                                                              @RequestBody(required = false) ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse  geCertifiedElements(@PathVariable String serverName,
+                                                                 @PathVariable String                        urlMarker,
+                                                                 @PathVariable String certificationTypeGUID,
+                                                                 @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getCertifiedElements(serverName, urlMarker, certificationTypeGUID, requestBody);
     }
@@ -714,10 +714,10 @@ public class ClassificationExplorerResource
             description="Return information about the certifications linked to an element.",
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/4/0482-Certifications/"))
 
-    public CertificationElementsResponse getCertifications(@PathVariable String serverName,
-                                                           @PathVariable String urlMarker,
-                                                           @PathVariable String elementGUID,
-                                                           @RequestBody(required = false) ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getCertifications(@PathVariable String serverName,
+                                                              @PathVariable String urlMarker,
+                                                              @PathVariable String elementGUID,
+                                                              @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getCertifications(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -744,11 +744,11 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/gaf-metadata-management/"))
 
-    public MetadataElementSummaryResponse getMetadataElementByGUID(@PathVariable String  serverName,
-                                                                   @PathVariable String                        urlMarker,
-                                                                   @PathVariable String  elementGUID,
-                                                                   @RequestBody  (required = false)
-                                                                   GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
+                                                                    @PathVariable String                        urlMarker,
+                                                                    @PathVariable String  elementGUID,
+                                                                    @RequestBody  (required = false)
+                                                                    GetRequestBody requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -774,9 +774,9 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/gaf-metadata-management/"))
 
-    public MetadataElementSummaryResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
-                                                                         @PathVariable String                        urlMarker,
-                                                                         @RequestBody (required = false) FindPropertyNameProperties requestBody)
+    public OpenMetadataRootElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
+                                                                           @PathVariable String                        urlMarker,
+                                                                           @RequestBody (required = false) FindPropertyNameProperties requestBody)
     {
         return restAPI.getMetadataElementByUniqueName(serverName, urlMarker, requestBody);
     }
@@ -829,7 +829,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements of the requested type name.  If no type name is specified then any type of element may be returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public MetadataElementSummariesResponse getElements(@PathVariable String                    serverName,
+    public OpenMetadataRootElementsResponse getElements(@PathVariable String                    serverName,
                                                         @PathVariable String                        urlMarker,
                                                         @RequestBody  (required = false)
                                                         ResultsRequestBody requestBody)
@@ -885,7 +885,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements by a value found in one of the properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the results.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public MetadataElementSummariesResponse getElementsByPropertyValue(@PathVariable String                       serverName,
+    public OpenMetadataRootElementsResponse getElementsByPropertyValue(@PathVariable String                       serverName,
                                                                        @PathVariable String                        urlMarker,
                                                                        @RequestBody  (required = false)
                                                                        FindPropertyNamesProperties requestBody)
@@ -916,7 +916,7 @@ public class ClassificationExplorerResource
                     " properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public MetadataElementSummariesResponse findElementsByPropertyValue(@PathVariable String                       serverName,
+    public OpenMetadataRootElementsResponse findElementsByPropertyValue(@PathVariable String                       serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @RequestBody  (required = false)
                                                                         FindPropertyNamesProperties requestBody)
@@ -947,7 +947,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements with the requested classification name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public MetadataElementSummariesResponse getElementsByClassification(@PathVariable String                    serverName,
+    public OpenMetadataRootElementsResponse getElementsByClassification(@PathVariable String                    serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String                    classificationName,
                                                                         @RequestBody  (required = false)
@@ -979,7 +979,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements with the requested classification name and with the requested a value found in one of the classification's properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the types of elements returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public MetadataElementSummariesResponse getElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
+    public OpenMetadataRootElementsResponse getElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
                                                                                          @PathVariable String                        urlMarker,
                                                                                          @PathVariable String                    classificationName,
                                                                                          @RequestBody  (required = false)
@@ -1014,7 +1014,7 @@ public class ClassificationExplorerResource
                     " properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
+    public OpenMetadataRootElementsResponse findElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
                                                                                           @PathVariable String                        urlMarker,
                                                                                           @PathVariable String                    classificationName,
                                                                                           @RequestBody  (required = false)
@@ -1045,7 +1045,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public RelatedMetadataElementSummariesResponse getRelatedElements(@PathVariable String                    serverName,
+    public OpenMetadataRootElementsResponse getRelatedElements(@PathVariable String                    serverName,
                                                                       @PathVariable String                        urlMarker,
                                                                       @PathVariable String                  elementGUID,
                                                                       @RequestParam (required = false, defaultValue = "0")
@@ -1079,7 +1079,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public RelatedMetadataElementSummariesResponse getRelatedElements(@PathVariable String                    serverName,
+    public OpenMetadataRootElementsResponse getRelatedElements(@PathVariable String                    serverName,
                                                                       @PathVariable String                        urlMarker,
                                                                       @PathVariable String                  elementGUID,
                                                                       @PathVariable String       relationshipTypeName,
@@ -1116,7 +1116,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements linked via the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the types of elements returned.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public RelatedMetadataElementSummariesResponse getRelatedElementsWithPropertyValue(@PathVariable String                       serverName,
+    public OpenMetadataRootElementsResponse getRelatedElementsWithPropertyValue(@PathVariable String                       serverName,
                                                                                        @PathVariable String                        urlMarker,
                                                                                        @PathVariable String                  elementGUID,
                                                                                        @PathVariable String       relationshipTypeName,
@@ -1155,7 +1155,7 @@ public class ClassificationExplorerResource
             description="Retrieve elements linked via the requested relationship type name and with the requested value found in one of the relationship's properties specified (or any property if no property names are specified).  The value must only be contained in the properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
-    public RelatedMetadataElementSummariesResponse findRelatedElementsWithPropertyValue(@PathVariable String                       serverName,
+    public OpenMetadataRootElementsResponse findRelatedElementsWithPropertyValue(@PathVariable String                       serverName,
                                                                                         @PathVariable String                        urlMarker,
                                                                                         @PathVariable String                  elementGUID,
                                                                                         @PathVariable String       relationshipTypeName,
