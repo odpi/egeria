@@ -628,16 +628,16 @@ public class ActorManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateContributionRecord(String                   serverName, 
-                                                   String                   urlMarker, 
-                                                   String                   contributionRecordGUID, 
-                                                   UpdateElementRequestBody requestBody)
+    public BooleanResponse   updateContributionRecord(String                   serverName,
+                                                      String                   urlMarker,
+                                                      String                   contributionRecordGUID,
+                                                      UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateContributionRecord";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse  response = new VoidResponse();
+        BooleanResponse  response = new BooleanResponse();
         AuditLog      auditLog = null;
 
         try
@@ -654,7 +654,7 @@ public class ActorManagerRESTServices extends TokenController
                 {
                     ContributionRecordHandler handler = instanceHandler.getContributionRecordHandler(userId, serverName, urlMarker, methodName);
 
-                    handler.updateContributionRecord(userId, contributionRecordGUID, requestBody, contributionRecordProperties);
+                    response.setFlag(handler.updateContributionRecord(userId, contributionRecordGUID, requestBody, contributionRecordProperties));
                 }
                 else
                 {

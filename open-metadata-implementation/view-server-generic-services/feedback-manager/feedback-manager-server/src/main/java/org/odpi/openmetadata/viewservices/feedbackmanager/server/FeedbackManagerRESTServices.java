@@ -428,16 +428,16 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateComment(String                   serverName,
-                                        String                   urlMarker,
-                                        String                   commentGUID,
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse   updateComment(String                   serverName,
+                                           String                   urlMarker,
+                                           String                   commentGUID,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateComment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse  response = new VoidResponse();
+        BooleanResponse  response = new BooleanResponse();
         AuditLog      auditLog = null;
 
         try
@@ -454,7 +454,7 @@ public class FeedbackManagerRESTServices extends TokenController
                 {
                     CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, urlMarker, methodName);
 
-                    handler.updateComment(userId, commentGUID, requestBody, commentProperties);
+                    response.setFlag(handler.updateComment(userId, commentGUID, requestBody, commentProperties));
                 }
                 else
                 {
@@ -849,7 +849,7 @@ public class FeedbackManagerRESTServices extends TokenController
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         BooleanResponse  response = new BooleanResponse();
-        AuditLog      auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -865,7 +865,11 @@ public class FeedbackManagerRESTServices extends TokenController
 
                 if (requestBody.getProperties() instanceof InformalTagProperties informalTagProperties)
                 {
-                    handler.updateTagDescription(userId, tagGUID, requestBody, informalTagProperties);
+                    response.setFlag(handler.updateTagDescription(userId, tagGUID, requestBody, informalTagProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformalTagProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1472,17 +1476,17 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   updateNoteLog(String                   serverName,
-                                        String                   urlMarker,
-                                        String                   noteLogGUID,
-                                        UpdateElementRequestBody requestBody)
+    public BooleanResponse   updateNoteLog(String                   serverName,
+                                           String                   urlMarker,
+                                           String                   noteLogGUID,
+                                           UpdateElementRequestBody requestBody)
     {
         final String methodName = "updateNoteLog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
+        BooleanResponse  response = new BooleanResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1498,7 +1502,7 @@ public class FeedbackManagerRESTServices extends TokenController
                 {
                     NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, urlMarker, methodName);
 
-                    handler.updateNoteLog(userId, noteLogGUID, requestBody, noteLogProperties);
+                    response.setFlag(handler.updateNoteLog(userId, noteLogGUID, requestBody, noteLogProperties));
                 }
                 else
                 {
