@@ -12,10 +12,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import java.util.List;
 
 /**
- * OpenMetadataTypes provides access to the open metadata type definitions used in the metadata repositories.
+ * OpenMetadataTypesClient provides access to the open metadata type definitions used in the metadata repositories.
  * It is possible to retrieve all types or search/retrieve types based on their name and/or unique identifier.
  */
-public class OpenMetadataTypes extends ConnectorContextClientBase
+public class OpenMetadataTypesClient extends ConnectorContextClientBase
 {
     private final OpenMetadataClient openMetadataClient;
 
@@ -32,16 +32,16 @@ public class OpenMetadataTypes extends ConnectorContextClientBase
      * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
-    public OpenMetadataTypes(ConnectorContextBase parentContext,
-                             String               localServerName,
-                             String               localServiceName,
-                             String               connectorUserId,
-                             String               connectorGUID,
-                             String               externalSourceGUID,
-                             String               externalSourceName,
-                             OpenMetadataClient   openMetadataClient,
-                             AuditLog             auditLog,
-                             int                  maxPageSize)
+    public OpenMetadataTypesClient(ConnectorContextBase parentContext,
+                                   String               localServerName,
+                                   String               localServiceName,
+                                   String               connectorUserId,
+                                   String               connectorGUID,
+                                   String               externalSourceGUID,
+                                   String               externalSourceName,
+                                   OpenMetadataClient   openMetadataClient,
+                                   AuditLog             auditLog,
+                                   int                  maxPageSize)
     {
         super(parentContext, localServerName, localServiceName, connectorUserId, connectorGUID, externalSourceGUID, externalSourceName, auditLog, maxPageSize);
 

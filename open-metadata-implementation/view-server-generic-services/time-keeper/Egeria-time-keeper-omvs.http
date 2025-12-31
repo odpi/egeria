@@ -57,10 +57,21 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "ContextEventProperties",
-    "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
+    "category" : "",
+    "url" : "",
+    "eventEffect" : "",
+    "plannedStartDate" : "{{$isoTimestamp}}",
+    "actualStartDate" : "{{$isoTimestamp}}",
+    "plannedDuration" : 5,
+    "actualDuration" : 6,
+    "repeatInterval" : 7,
+    "plannedCompletionDate" : "{{$isoTimestamp}}",
+    "actualCompletionDate" : "{{$isoTimestamp}}",
+    "referenceEffectiveFrom" : "{{$isoTimestamp}}",
+    "referenceEffectiveTo" : "{{$isoTimestamp}}",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -162,10 +173,21 @@ Content-Type: application/json
   "mergeUpdate": true,
   "properties": {
     "class" : "ContextEventProperties",
-    "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
+    "category" : "",
+    "url" : "",
+    "eventEffect" : "",
+    "plannedStartDate" : "{{$isoTimestamp}}",
+    "actualStartDate" : "{{$isoTimestamp}}",
+    "plannedDuration" : 5,
+    "actualDuration" : 6,
+    "repeatInterval" : 7,
+    "plannedCompletionDate" : "{{$isoTimestamp}}",
+    "actualCompletionDate" : "{{$isoTimestamp}}",
+    "referenceEffectiveFrom" : "{{$isoTimestamp}}",
+    "referenceEffectiveTo" : "{{$isoTimestamp}}",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -206,16 +228,18 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DependentContextEventProperties",
+    "label" : "",
+    "description" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "DependentContextEventProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
@@ -271,16 +295,25 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "RelatedContextEventProperties",
+    "label" : "",
+    "description" : "",
+    "statusIdentifier" : 0,
+    "confidence" : 100,
+    "steward" : "",
+    "stewardTypeName" : "",
+    "stewardPropertyName" : "",
+    "source" : "",
+    "notes" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelatedContextEventProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
@@ -335,16 +368,18 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ContextEventEvidenceProperties",
+    "label" : "",
+    "description" : "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ContextEventEvidenceProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
@@ -400,16 +435,19 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ContextEventImpactProperties",
+    "label" : "",
+    "description" : "",
+    "statusIdentifier" : 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ContextEventImpactProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 
@@ -466,6 +504,9 @@ Content-Type: application/json
   "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "ContextEventForTimelineEffectsProperties",
+    "label" : "",
+    "description" : "",
+    "statusIdentifier" : 0,
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },

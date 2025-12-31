@@ -845,7 +845,7 @@ public class ApacheAtlasIntegrationConnector extends IntegrationConnectorBase im
             exclusionList = new ArrayList<>();
         }
 
-        OpenMetadataTypeDefGallery openMetadataTypeDefGallery = myContext.getOpenMetadataTypes().getAllTypes();
+        OpenMetadataTypeDefGallery openMetadataTypeDefGallery = myContext.getOpenMetadataTypesClient().getAllTypes();
 
         if (openMetadataTypeDefGallery != null)
         {

@@ -33,10 +33,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
 {
     private final OpenMetadataClient     openMetadataClient;
     private final ActionControlInterface actionControlInterface;
-    private final String                 userId;
     private final String                 originatorGUID;
-
-
 
 
     /**
@@ -78,7 +75,6 @@ public  class StewardshipAction extends ConnectorContextClientBase
 
         this.openMetadataClient     = openMetadataClient;
         this.actionControlInterface = openGovernanceClient;
-        this.userId                 = connectorUserId;
         this.originatorGUID         = connectorGUID;
     }
 
@@ -104,7 +100,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        return openMetadataClient.createIncidentReport(userId,
+        return openMetadataClient.createIncidentReport(connectorUserId,
                                                        properties,
                                                        impactedResources,
                                                        previousIncidents,
@@ -133,7 +129,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return openMetadataClient.openToDo(userId, properties, assignToGUID, sponsorGUID, originatorGUID, actionTargets);
+        return openMetadataClient.openToDo(connectorUserId, properties, assignToGUID, sponsorGUID, originatorGUID, actionTargets);
     }
 
 
@@ -164,7 +160,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                                                    UserNotAuthorizedException,
                                                                                                                    PropertyServerException
     {
-        return openMetadataClient.registerContextEvent(userId, anchorGUID, parentContextEvents, childContextEvents, relatedContextEvents, impactedElements, effectedDataResourceGUIDs, contextEventEvidenceGUIDs, contextEventProperties);
+        return openMetadataClient.registerContextEvent(connectorUserId, anchorGUID, parentContextEvents, childContextEvents, relatedContextEvents, impactedElements, effectedDataResourceGUIDs, contextEventEvidenceGUIDs, contextEventProperties);
     }
 
 
@@ -214,7 +210,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return actionControlInterface.initiateEngineAction(userId, qualifiedName, domainIdentifier, displayName, description, actionSourceGUIDs, actionCauseGUIDs, actionTargets, receivedGuards, startTime, governanceEngineName, requestType, requestParameters, processName, requestSourceName, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateEngineAction(connectorUserId, qualifiedName, domainIdentifier, displayName, description, actionSourceGUIDs, actionCauseGUIDs, actionTargets, receivedGuards, startTime, governanceEngineName, requestType, requestParameters, processName, requestSourceName, originatorServiceName, originatorEngineName);
     }
 
 
@@ -246,7 +242,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return actionControlInterface.initiateGovernanceActionType(userId, governanceActionTypeQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateGovernanceActionType(connectorUserId, governanceActionTypeQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
     }
 
 
@@ -278,7 +274,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return actionControlInterface.initiateGovernanceActionProcess(userId, processQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateGovernanceActionProcess(connectorUserId, processQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
     }
 
 
@@ -295,7 +291,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        actionControlInterface.cancelEngineAction(userId, engineActionGUID);
+        actionControlInterface.cancelEngineAction(connectorUserId, engineActionGUID);
     }
 
 
@@ -316,6 +312,6 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return actionControlInterface.getActiveEngineActions(userId, startFrom, pageSize);
+        return actionControlInterface.getActiveEngineActions(connectorUserId, startFrom, pageSize);
     }
 }
