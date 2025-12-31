@@ -66,9 +66,9 @@ public class ConnectorContextBase
     private   final FilesListenerManager listenerManager;
 
 
-    protected final OpenMetadataStore              openMetadataStore;
-    protected final OpenMetadataTypes              openMetadataTypes;
-    private final   ActorProfileClient             actorProfileClient;
+    protected final OpenMetadataStore       openMetadataStore;
+    protected final OpenMetadataTypesClient openMetadataTypesClient;
+    private final   ActorProfileClient      actorProfileClient;
     private final   ActorRoleClient                actorRoleClient;
     private final   AnnotationClient               annotationClient;
     private final   AssetClient                    assetClient;
@@ -78,6 +78,8 @@ public class ConnectorContextBase
     private final   CommunityClient                communityClient;
     private final   ConnectionClient               connectionClient;
     private final   ConnectorTypeClient            connectorTypeClient;
+    private final   ContactDetailsClient           contactDetailsClient;
+    private final   ContextEventClient             contextEventClient;
     private final   ContributionRecordClient       contributionRecordClient;
     private final   DataClassClient                dataClassClient;
     private final   DataFieldClient                dataFieldClient;
@@ -171,16 +173,16 @@ public class ConnectorContextBase
                                                        auditLog,
                                                        maxPageSize);
 
-        this.openMetadataTypes = new OpenMetadataTypes(this,
-                                                       localServerName,
-                                                       localServiceName,
-                                                       connectorUserId,
-                                                       connectorGUID,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
-                                                       openMetadataClient,
-                                                       auditLog,
-                                                       maxPageSize);
+        this.openMetadataTypesClient = new OpenMetadataTypesClient(this,
+                                                                   localServerName,
+                                                                   localServiceName,
+                                                                   connectorUserId,
+                                                                   connectorGUID,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   openMetadataClient,
+                                                                   auditLog,
+                                                                   maxPageSize);
 
         this.actorProfileClient = new ActorProfileClient(this,
                                                          localServerName,
@@ -291,6 +293,28 @@ public class ConnectorContextBase
                                                            openMetadataClient,
                                                            auditLog,
                                                            maxPageSize);
+
+        this.contactDetailsClient = new ContactDetailsClient(this,
+                                                             localServerName,
+                                                             localServiceName,
+                                                             connectorUserId,
+                                                             connectorGUID,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             openMetadataClient,
+                                                             auditLog,
+                                                             maxPageSize);
+
+        this.contextEventClient = new ContextEventClient(this,
+                                                         localServerName,
+                                                         localServiceName,
+                                                         connectorUserId,
+                                                         connectorGUID,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         openMetadataClient,
+                                                         auditLog,
+                                                         maxPageSize);
 
         this.contributionRecordClient = new ContributionRecordClient(this,
                                                                      localServerName,
@@ -700,13 +724,13 @@ public class ConnectorContextBase
      * @return connector context client
      * @throws UserNotAuthorizedException connector is disconnected
      */
-    public OpenMetadataTypes getOpenMetadataTypes() throws UserNotAuthorizedException
+    public OpenMetadataTypesClient getOpenMetadataTypesClient() throws UserNotAuthorizedException
     {
-        final String methodName = "getOpenMetadataTypes";
+        final String methodName = "getOpenMetadataTypesClient";
 
         validateIsActive(methodName);
 
-        return openMetadataTypes;
+        return openMetadataTypesClient;
     }
 
 
@@ -902,6 +926,27 @@ public class ConnectorContextBase
     public ConnectorTypeClient getConnectorTypeClient()
     {
         return connectorTypeClient;
+    }
+
+    /**
+     * Return the client for managing an actor's contact details.
+     *
+     * @return connector context client
+     */
+    public ContactDetailsClient getContactDetailsClient()
+    {
+        return contactDetailsClient;
+    }
+
+
+    /**
+     * Return the client for managing context events.
+     *
+     * @return connector context client
+     */
+    public ContextEventClient getContextEventClient()
+    {
+        return contextEventClient;
     }
 
 
