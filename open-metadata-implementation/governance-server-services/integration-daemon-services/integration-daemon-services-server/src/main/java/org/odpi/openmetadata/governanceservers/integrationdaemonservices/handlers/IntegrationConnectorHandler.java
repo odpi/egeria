@@ -393,10 +393,12 @@ public class IntegrationConnectorHandler
                                                                                                                   IntegrationConnector.class.getCanonicalName()));
 
             processConfigException(actionDescription, operationName, error);
+            return;
         }
         catch (Exception  error)
         {
             processConfigException(actionDescription, operationName, error);
+            return;
         }
 
 
@@ -419,6 +421,7 @@ public class IntegrationConnectorHandler
         catch (Exception  error)
         {
             processInitializeException(actionDescription, error);
+            return;
         }
 
         try

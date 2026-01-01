@@ -19,8 +19,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
-import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
-import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;

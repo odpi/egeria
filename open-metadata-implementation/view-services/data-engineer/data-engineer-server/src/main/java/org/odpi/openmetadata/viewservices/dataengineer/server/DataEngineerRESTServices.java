@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.viewservices.dataengineer.server;
 
 
-import org.odpi.openmetadata.adapters.connectors.productmanager.tabulardatasets.OpenMetadataDataSetConnectorBase;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.OpenMetadataDataSetConnectorBase;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
