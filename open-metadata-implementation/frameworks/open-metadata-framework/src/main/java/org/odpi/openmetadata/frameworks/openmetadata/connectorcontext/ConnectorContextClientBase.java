@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;

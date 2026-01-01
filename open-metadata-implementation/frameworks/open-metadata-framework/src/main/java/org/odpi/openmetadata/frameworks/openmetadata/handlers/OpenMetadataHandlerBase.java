@@ -10,8 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelati
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataRootConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.SpecificationPropertyConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;

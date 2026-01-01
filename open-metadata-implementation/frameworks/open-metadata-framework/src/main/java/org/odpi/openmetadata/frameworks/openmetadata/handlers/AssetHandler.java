@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetLineageGraphMermaidGraphBuilder;

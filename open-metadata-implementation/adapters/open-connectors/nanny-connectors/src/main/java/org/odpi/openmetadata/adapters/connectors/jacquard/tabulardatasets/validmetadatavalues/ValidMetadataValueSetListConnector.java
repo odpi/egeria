@@ -251,7 +251,7 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
             {
                 for (OpenMetadataRootElement validValueDefinition : validValueDefinitions)
                 {
-                    if ((validValueDefinition != null) && (validValueDefinition.getProperties() instanceof ValidMetadataValueProperties validMetadataValueProperties))
+                    if ((validValueDefinition != null) && (validValueDefinition.getProperties() instanceof ValidMetadataValueProperties validMetadataValueProperties) && (validMetadataValueProperties.getPreferredValue() != null))
                     {
                         /*
                          * Element is valid - have we seen this property before - this is found in the identifier attribute.

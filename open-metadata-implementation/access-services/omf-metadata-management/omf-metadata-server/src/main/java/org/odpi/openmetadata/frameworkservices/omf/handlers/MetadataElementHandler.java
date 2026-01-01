@@ -12,8 +12,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.converters.RelatedElementConverter;

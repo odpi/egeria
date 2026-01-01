@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;

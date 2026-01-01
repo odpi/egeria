@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSu
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;

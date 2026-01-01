@@ -1,0 +1,1939 @@
+# Egeria-actor-manager-view-service
+# The Actor Manager OMVS provides APIs for supporting the creation and editing of actor profiles, 
+#actor roles and user identities.
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Actor Profiles
+# https://egeria-project.org/concepts/actor-profile
+
+@actorProfileGUID=add guid here
+
+
+###
+# @name createActorProfile
+# Create an actor profile.
+#
+# Request body provides             properties for the actor profile.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ActorProfileProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createActorProfileFromTemplate
+# Create a new metadata element to represent an actor profile using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateActorProfile
+# Update the properties of an actor profile.
+#
+# @param actorProfileGUID unique identifier of the actor profile (returned from create)
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "ActorProfileProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@assetGUID=add guid here
+@itProfileGUID=add guid here
+
+###
+# @name linkAssetToProfile
+# Attach an asset to an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "RelationshipProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssetFromProfile
+# Detach an asset from an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteActorProfile
+# Delete an actor profile.
+#
+# @param actorProfileGUID  unique identifier of the element to delete
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadeDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getActorProfilesByName
+# Returns the list of actor profiles with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findActorProfiles
+# Retrieve the list of actor profile metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getActorProfileByGUID
+# Return the properties of a specific actor profile.
+#
+# @param actorProfileGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# A contribution record describes the contribution of the linked profile.
+# https://egeria-project.org/concepts/contribution-record/
+#
+
+###
+# @name createContributionRecord
+# Creates a new contributionRecord for an element and returns the unique identifier for it.
+#
+# @param serverName   name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param actorProfileGUID unique identifier of the profile to link the contribution record to
+# @param requestBody  contains the name of the tag and (optional) description of the tag
+#
+# @return guid for new tag or
+# InvalidParameterException - one of the parameters is invalid or
+# PropertyServerException - there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/contribution-records
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewAttachmentRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ContributionRecordProperties",
+    "qualifiedName": "add unique name here",
+    "displayName":"add name here",
+    "identifier": "add name here",
+    "description": "add description here",
+    "category": "add category here",
+    "url": "add url here",
+    "karmaPoints" : 0,
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name updateContributionRecord
+# Update an existing contribution record.
+#
+# @param serverName   name of the server instances for this request.
+# @param urlMarker  view service URL marker
+# @param contributionRecordGUID  unique identifier for the contribution record to change.
+# @param requestBody  containing type of comment enum and the text of the comment.
+#
+# @return void or
+# InvalidParameterException one of the parameters is null or invalid.
+# PropertyServerException There is a problem updating the element properties in the metadata repository.
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{contributionRecordGUID}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "ContributionRecordProperties",
+    "qualifiedName": "add unique name here",
+    "displayName":"add name here",
+    "identifier": "add name here",
+    "description": "add description here",
+    "category": "add category here",
+    "url": "add url here",
+    "karmaPoints" : 0,
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteContributionRecord
+# Removes a contribution record from the repository.  All the relationships to referenceables are lost.
+#
+# @param serverName   name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param contributionRecordGUID   unique id for the contribution record.
+# @param requestBody  delete request body.
+#
+# @return void or
+# InvalidParameterException - one of the parameters is invalid or
+# PropertyServerException - there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{contributionRecordGUID}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "cascadeDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findContributionRecords
+# Retrieve the list of contribution record metadata elements that contain the search string.
+#
+# @param serverName name of the server instances for this request.
+# @param urlMarker  view service URL marker
+# @param requestBody search string and effective time.
+#
+# @return list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name find All ContributionRecords
+# Retrieve the list of all contribution record metadata elements organized with the highest contributer first.
+#
+# @param serverName name of the server instances for this request.
+# @param urlMarker  view service URL marker
+# @param requestBody search string and effective time.
+#
+# @return list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "sequencingOrder" : "PROPERTY_DESCENDING",
+  "sequencingProperty" : "karmaPoints"
+}
+
+
+###
+# @name getContributionRecordsByName
+# Retrieve the list of contribution record metadata elements with a matching qualified or display name.
+# There are no wildcards supported on this request.
+#
+# @param serverName   name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param requestBody name to search for and correlators
+#
+# @return list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getContributionRecordByGUID
+# Retrieve the contribution record metadata element with the supplied unique identifier.
+#
+# @param serverName   name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param contributionRecordGUID unique identifier of the requested metadata element
+# @param requestBody optional effective time
+#
+# @return requested metadata element or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{contributionRecordGUID}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# =====================================================================================================================
+# Work with Actor Role
+# https://egeria-project.org/concepts/actor-role
+
+###
+# @name createActorRole
+# Create an actor role.
+#
+# Request body provides             properties for the actor role.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ActorRoleProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName":"add name here",
+    "identifier": "add name here",
+    "description": "add description here",
+    "scope": "add scope here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name createActorRoleFromTemplate
+# Create a new metadata element to represent an actor role using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateActorRole
+# Update the properties of an actor role.
+#
+# @param actorRoleGUID unique identifier of the actor role (returned from create)
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "ActorRoleProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName":"add name here",
+    "identifier": "add name here",
+    "description": "add description here",
+    "scope": "add scope here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@personRoleGUID=add guid here
+@personProfileGUID=add guid here
+
+###
+# @name linkPersonRoleToProfile
+# Attach a person role to a person profile.
+#
+# @param personRoleGUID       unique identifier of the person role
+# @param personProfileGUID            unique identifier of the person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "PersonRoleAppointmentProperties",
+    "isPublic": true,
+    "expectedTimeAllocationPercent": 100,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachPersonRoleFromProfile
+# Detach a person role from a profile.
+#
+# @param personRoleGUID       unique identifier of the person role
+# @param personProfileGUID            unique identifier of the person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@teamRoleGUID=add guid here
+@teamProfileGUID=add guid here
+
+###
+# @name linkTeamRoleToProfile
+# Attach a team role to a team profile.
+#
+# @param teamRoleGUID           unique identifier of the team role
+# @param teamProfileGUID        unique identifier of the team profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "TeamRoleAppointmentProperties",
+    "expectedTimeAllocationPercent": 100,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name Detach a team role from a team profile.
+# Detach a team role from a team profile.
+#
+# @param teamRoleGUID           unique identifier of the team role
+# @param teamProfileGUID        unique identifier of the team profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkITProfileRoleToProfile
+# Attach an IT profile role to an IT profile.
+#
+# @param itProfileRoleGUID      unique identifier of the IT profile role
+# @param itProfileGUID          unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ITProfileRoleAppointmentProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+
+@itProfileRoleGUID=add guid here
+
+###
+# @name detachITProfileRoleFromProfile
+# Detach an IT profile role from an IT profile.
+#
+# @param itProfileRoleGUID      unique identifier of the IT profile role
+# @param itProfileGUID          unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteActorRole
+# Delete an actor role.
+#
+# @param actorRoleGUID  unique identifier of the element to delete
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "cascadeDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getActorRolesByName
+# Returns the list of actor roles with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findActorRoles
+# Retrieve the list of actor role metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+@actorRoleGUID=add guid here
+
+
+###
+# @name getActorRoleByGUID
+# Return the properties of a specific actor role.
+#
+# @param actorRoleGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{actorRoleGUID}}/retrieve"})
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Work with User Identities
+# https://egeria-project.org/concepts/user-identity
+###
+
+@userIdentityGUID=add guid here
+
+###
+# @name createUserIdentity
+# Create a user identity.
+#
+# Request body provides             properties for the user identity.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "UserIdentityProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "userId":"add name here",
+    "distinguishedName": "add name here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name createUserIdentityFromTemplate
+# Create a new metadata element to represent a user identity using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateUserIdentity
+# Update the properties of a user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity (returned from create)
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "UserIdentityProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "userId":"add name here",
+    "distinguishedName": "add name here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkIdentityToProfile
+# Attach a profile to a user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# @param profileGUID unique identifier of the actor profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/profile-identity/{{actorProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ProfileIdentityProperties",
+    "roleTypeName": "",
+    "roleGUID": "",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachProfileIdentity
+# Detach an actor profile from a user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# @param profileGUID unique identifier of the actor profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/profile-identity/{{actorProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+ {
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name addSecurityGroupMembership
+# Add the SecurityGroupMembership classification to the user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/classify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "SecurityGroupMembershipProperties",
+    "groups": [""],
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateSecurityGroupMembership
+# Update the SecurityGroupMembership classification to the user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/reclassify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+{
+  "class" : "UpdateClassificationRequestBody",
+  "mergeUpdate" : true,
+  "properties": {
+    "class": "SecurityGroupMembershipProperties",
+    "groups": [""],
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name removeAllSecurityGroupMembership
+# Remove the SecurityGroupMembership classification from the user identity.
+#
+# @param userIdentityGUID unique identifier of the user identity
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/declassify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteUserIdentity
+# Delete a user identity.
+#
+# @param userIdentityGUID  unique identifier of the element to delete
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadeDelete" : false,
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getUserIdentitiesByName
+# Returns the list of user identities with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findUserIdentities
+# Retrieve the list of user identity metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getUserIdentityByGUID
+# Return the properties of a specific user identity.
+#
+# @param userIdentityGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Work with Contact Details
+# https://egeria-project.org/concepts/contact-method
+
+###
+
+@elementGUID=add guid here
+@contactDetailsGUID=add guid here
+
+###
+# @name createContactDetails
+# Create a contact details element.
+#
+# Request body provides             properties for the contact details.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ContactDetailsProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "contactType" : "add contact type",
+    "contactMethodService" : "",
+    "contactMethodValue" : "",
+    "contactMethodType" : "EMAIL",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name createContactDetailsFromTemplate
+# Create a new metadata element to represent a contact details using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+  }
+}
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class" : "ContactDetailsProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "contactType" : "add contact type",
+    "contactMethodService" : "",
+    "contactMethodValue" : "",
+    "contactMethodType" : "EMAIL"
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateContactDetails
+# Update the properties of a contact details.
+#
+# @param contactDetailsGUID unique identifier of the contact details (returned from create)
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "ContactDetailsProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "contactType" : "add contact type",
+    "contactMethodService" : "",
+    "contactMethodValue" : "",
+    "contactMethodType" : "EMAIL",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+},
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkAssetToProfile
+# Attach an asset to an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "RelationshipProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssetFromProfile
+# Detach an asset from an IT profile.
+#
+# @param assetGUID       unique identifier of the asset
+# @param itProfileGUID            unique identifier of the IT profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteContactDetails
+# Delete a contact details.
+#
+# @param contactDetailsGUID  unique identifier of the element to delete
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadeDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getContactDetailsByName
+# Returns the list of contact details with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findContactDetails
+# Retrieve the list of contact details metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getContactDetailsByGUID
+# Return the properties of a specific contact details.
+#
+# @param contactDetailsGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@actorGUID=add guid here
+@scopeElementGUID=add guid here
+
+###
+# @name linkAssignmentScope
+# Attach an actor to an element that describes its scope. Request body is optional.
+# https://egeria-project.org/concepts/actor/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "AssignmentScopeProperties",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssignmentScope
+# Detach an actor from the element that describes its scope. Request body is optional.
+# https://egeria-project.org/concepts/actor/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

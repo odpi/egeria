@@ -10,8 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -756,7 +756,7 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getMetadataElementTypeName(),
                                                                            null,
                                                                            requestBody.getAsOfTime(),
-                                                                           org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder.CREATION_DATE_RECENT,
+                                                                           SequencingOrder.CREATION_DATE_RECENT,
                                                                            null,
                                                                            requestBody.getForLineage(),
                                                                            requestBody.getForDuplicateProcessing(),
@@ -816,7 +816,7 @@ public class OpenMetadataStoreRESTServices
                                                                             requestBody.getMetadataElementTypeName(),
                                                                             null,
                                                                             requestBody.getAsOfTime(),
-                                                                            org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder.CREATION_DATE_RECENT,
+                                                                            SequencingOrder.CREATION_DATE_RECENT,
                                                                             null,
                                                                             requestBody.getForLineage(),
                                                                             requestBody.getForDuplicateProcessing(),

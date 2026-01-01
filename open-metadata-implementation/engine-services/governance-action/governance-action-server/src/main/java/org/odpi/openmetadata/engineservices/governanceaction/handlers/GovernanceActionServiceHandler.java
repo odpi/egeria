@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.*;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;

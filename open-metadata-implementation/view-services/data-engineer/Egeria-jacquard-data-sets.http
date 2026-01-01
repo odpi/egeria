@@ -71,3 +71,86 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-d
 Authorization: Bearer {{token}}
 
 ###
+# ========================================================================================
+# Work with Open Metadata Type List
+#
+
+###
+# @name get Open Metadata Type List
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Valid Metadata Values for typeName",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("openMetadataTypesGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+###
+# ========================================================================================
+# Work with Deployed Implementation Type (Technology Type) List
+#
+
+###
+# @name get Deployed Implementation Type (Technology Type) List
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Valid Metadata Values for deployedImplementationType",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("deployedImplementationTypesGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{deployedImplementationTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+###
+# ========================================================================================
+# Work with Activity Type List
+#
+
+###
+# @name get Activity Type List
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Valid Metadata Values for type",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("activityTypesGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{activityTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+

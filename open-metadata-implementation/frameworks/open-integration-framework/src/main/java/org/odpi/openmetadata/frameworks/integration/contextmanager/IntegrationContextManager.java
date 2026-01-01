@@ -18,7 +18,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfigur
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;

@@ -2,25 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ConnectorActivityReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.reports.ConnectorActivityReport;
-import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,0 +1,1379 @@
+# Egeria-solution-architect-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Information Supply Chains
+# https://egeria-project.org/concepts/information-supply-chain
+
+@informationSupplyChainGUID=add guid here
+@nestedInformationSupplyChainGUID=add guid here
+
+###
+# @name createInformationSupplyChain
+# Create an information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "InformationSupplyChainProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability.",
+    "purposes": ["purpose1", "purpose2"],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createInformationSupplyChainFromTemplate
+# Create a new metadata element to represent an information supply chain using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateInformationSupplyChain
+# Update the properties of an information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "InformationSupplyChainProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "scope": "add scope of this information supply chain's applicability.",
+    "purposes": ["purpose1", "purpose2"],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@peerOneGUID=add guid here
+@peerTwoGUID=add guid here
+                                                              
+###
+# @name linkPeersInInformationSupplyChain
+# Connect two peer information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{peerOneGUID}}/peer-links/{{peerTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "InformationSupplyChainLinkProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+                                     
+###
+# @name unlinkPeerInformationSupplyChains
+# Detach two peers in an information supply chain from one another.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{peerOneGUID}}/peer-links/{{peerTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+# @name composeInformationSupplyChains
+# Connect a nested information supply chain to its parent. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/compositions/{{nestedInformationSupplyChainGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "InformationSupplyChainCompositionProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name decomposeInformationSupplyChains
+# Detach a nested information supply chain from its parent. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/compositions/{{nestedInformationSupplyChainGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+###
+# @name deleteInformationSupplyChain
+# Delete an information supply chain. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllInformationSupplyChains
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+
+###
+# @name findAllInformationSupplyChains - with full request body
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findInformationSupplyChains
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findInformationSupplyChains - with full request body
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getInformationSupplyChainsByName
+# Returns the list of information supply chains with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getInformationSupplyChainsByName - with full request body
+# Returns the list of information supply chains with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getInformationSupplyChainByGUID
+# Return the properties of a specific information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getInformationSupplyChainByGUID - with request body
+# Return the properties of a specific information supply chain.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/retrieve?addImplementation=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+
+###
+# =====================================================================================================================
+# Work with Solution Blueprints
+# https://egeria-project.org/concepts/solution-blueprint
+
+@solutionBlueprintGUID=add guid here
+@parentSolutionBlueprintGUID=add guid here
+
+###
+# @name createSolutionBlueprint
+# Create a solution blueprint
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "SolutionBlueprintProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "versionIdentifier": "add version for this blueprint",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createSolutionBlueprintFromTemplate
+# Create a new metadata element to represent a solution blueprint using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateSolutionBlueprint
+# Update the properties of a solution blueprint.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "SolutionBlueprintProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "versionIdentifier": "add version for this blueprint",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateSolutionBlueprintStatus
+# Update the status of a solution blueprint.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "AuthoredReferenceableProperties",
+    "contentStatus": "ACTIVE"
+  },
+  "mergeUpdate": true
+}
+
+
+###
+# @name linkSolutionComponentToBlueprint
+# Connect a solution blueprint to a solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/solution-components/{{solutionComponentGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SolutionBlueprintCompositionProperties",
+    "role": "Add role that the component plays in the solution blueprint here",
+    "description": "Add description of the solution component in the context of the solution blueprint.",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSolutionComponentFromBlueprint
+# Detach a solution component from a solution blueprint. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/solution-components/{{solutionComponentGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteSolutionBlueprint
+# Delete a solution blueprint. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllSolutionBlueprints
+# Retrieve the list of solution blueprint metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findAllSolutionBlueprints - with full request body
+# Retrieve the list of solution blueprint metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findSolutionBlueprints
+# Retrieve the list of solution blueprint metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findSolutionBlueprints - with full request body
+# Retrieve the list of solution blueprint metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getSolutionBlueprintsByName
+# Returns the list of solution blueprints with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getSolutionBlueprintsByName - with full request body
+# Returns the list of solution blueprints with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getSolutionBlueprintByGUID
+# Return the properties of a specific solution blueprint.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getSolutionBlueprintByGUID - with request body
+# Return the properties of a specific solution blueprint.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@solutionRoleGUID=add guid here
+
+###
+# @name linkSolutionComponentActor
+# Connect a solution component to an actor role. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/solution-component-actors/{{solutionComponentGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SolutionComponentActorProperties",
+    "role": "Add role here",
+    "description": "Add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSolutionComponentActor
+# Detach an actor role from a solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/solution-component-actors/{{solutionComponentGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteSolutionRole
+# Delete an actor role. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllSolutionRoles
+# Retrieve the list of all defines actor roles.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findAllSolutionRoles - with full request body
+# Retrieve the list of actor roles that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findSolutionRoles
+# Retrieve the list of actor roles that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findSolutionRoles - with full request body
+# Retrieve the list of actor roles that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getSolutionRolesByName
+# Returns the list of actor roles with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getSolutionRolesByName - with full request body
+# Returns the list of actor roles with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getSolutionRoleByGUID
+# Return the properties of a specific data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getSolutionRoleByGUID - with request body
+# Return the properties of a specific data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+
+###
+# =====================================================================================================================
+# Work with Solution Components
+# https://egeria-project.org/concepts/solution-component
+
+@solutionComponentGUID=add guid here
+@parentSolutionComponentGUID=add guid here
+@subcomponentGUID=add guid here
+
+###
+# @name createSolutionComponent
+# Create a solution component
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "SolutionComponentProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "solutionComponentType": "add optional type for this component",
+    "versionIdentifier": "add version for this component",
+    "plannedDeployedImplementationType": "add details of the type of implementation for this component",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+###
+# @name createSolutionComponentFromTemplate
+# Create a new metadata element to represent a solution component using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateSolutionComponent
+# Update the properties of a solution component.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "SolutionComponentProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "solutionComponentType": "add namespace for this component",
+    "plannedDeployedImplementationType": "add details of the type of implementation for this component",
+    "versionIdentifier": "add version for this component",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkSubcomponent
+# Connect a solution component to a subcomponent. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{parentSolutionComponentGUID}}/subcomponents/{{subcomponentGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSubcomponent
+# Detach a subcomponent from a solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{parentSolutionComponentGUID}}/subcomponents/{{subcomponentGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@solutionComponentOneGUID=add guid here
+@solutionComponentTwoGUID=add guid here
+
+###
+# @name linkSolutionLinkingWire
+# Connect a solution component to a peer component in a solution using the SolutionLinkingWore relationship. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentOneGUID}}/wired-to/{{solutionComponentTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+     "class" : "SolutionLinkingWireProperties",
+     "label" : "",
+     "description" : "",
+     "iscQualifiedNames" : []
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSolutionLinkingWire
+# Detach a solution component from a peer solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentOneGUID}}/wired-to/{{solutionComponentTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteSolutionComponent
+# Delete a solution component. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllSolutionComponents
+# Retrieve the list of solution component metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findAllSolutionComponents - with full request body
+# Retrieve the list of solution component metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findSolutionComponents
+# Retrieve the list of solution component metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findSolutionComponents - with full request body
+# Retrieve the list of solution component metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getSolutionComponentsByName
+# Returns the list of solution components with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getSolutionComponentsByName - with full request body
+# Returns the list of solution components with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getSolutionComponentByGUID
+# Return the properties of a specific solution component.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getSolutionComponentByGUID - with request body
+# Return the properties of a specific solution component.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+###
+# =====================================================================================================================
+# Review Solutions
+
+
+###
+# @name findSolutionBlueprints
+# Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.
+# https://egeria-project.org/concepts/solution-blueprint
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findSolutionRoles
+# Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
+# https://egeria-project.org/concepts/actor
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+###
+# @name findSolutionComponents
+# Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.
+# https://egeria-project.org/concepts/solution-components
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+###
+# @name getSolutionComponentImplementations
+# Retrieve the list of metadata elements that are associated with the solution component via the ImplementedBy relationship.
+# https://egeria-project.org/concepts/solution-components
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/implementations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+

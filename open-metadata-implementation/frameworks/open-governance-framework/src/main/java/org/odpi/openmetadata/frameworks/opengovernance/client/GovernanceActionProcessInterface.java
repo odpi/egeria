@@ -3,15 +3,11 @@
 package org.odpi.openmetadata.frameworks.opengovernance.client;
 
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * GovernanceActionProcessInterface maintains Governance Action Processes and their Governance Action Process Steps.

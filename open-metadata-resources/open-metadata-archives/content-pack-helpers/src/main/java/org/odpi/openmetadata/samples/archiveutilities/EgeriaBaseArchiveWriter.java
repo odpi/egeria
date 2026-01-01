@@ -166,27 +166,21 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     /**
      * Find or create the parent set for a valid value.
      *
-     * @param requestedGUID optional guid for the valid value
-     * @param typeName name of the type (can be null)
      * @param propertyName name of the property (can be null)
-     * @param mapName name of the mapName (can be null)
-     * @return unique identifier (guid) of the parent set
+     * @return unique identifier (GUID) of the parent set
      */
-    protected String getParentSet(String requestedGUID,
-                                  String typeName,
-                                  String propertyName,
-                                  String mapName)
+    protected String getParentSet(String propertyName)
     {
         final String parentDescription = "Organizing set for valid metadata values";
 
-        String parentQualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, null);
+        String parentQualifiedName = constructValidValueQualifiedName(null, propertyName, null, null);
         String parentSetGUID = parentValidValueQNameToGUIDMap.get(parentQualifiedName);
 
         if (parentSetGUID == null)
         {
             String parentDisplayName = parentQualifiedName.substring(26);
 
-            parentSetGUID =  archiveHelper.addValidValue(requestedGUID,
+            parentSetGUID =  archiveHelper.addValidValue(null,
                                                          null,
                                                          null,
                                                          OpenMetadataType.VALID_METADATA_VALUE.typeName,
@@ -262,10 +256,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                          String             preferredValue,
                                          Map<String,String> additionalProperties)
     {
-        String validValueSetGUID = this.getParentSet(null,
-                                                     typeName,
-                                                     propertyName,
-                                                     mapName);
+        String validValueSetGUID = this.getParentSet(propertyName);
 
         if (validValueSetGUID != null)
         {

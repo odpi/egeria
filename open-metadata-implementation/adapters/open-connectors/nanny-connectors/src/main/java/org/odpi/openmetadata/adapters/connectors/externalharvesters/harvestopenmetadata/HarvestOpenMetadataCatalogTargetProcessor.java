@@ -33,7 +33,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbed
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;

@@ -67,7 +67,7 @@ import java.util.*;
 
 /**
  * OpenMetadataProductsHarvesterConnector converts metadata from the open metadata ecosystem into useful digital
- * products.  The first phase (in the start() method) is to create all of the contextual metadata that surrounds the
+ * products.  The first phase (in the start() method) is to create all the contextual metadata that surrounds the
  * product catalog.  The remaining phases happen in the refresh() method.  It first surveys open metadata looking for
  * metadata that could be a product.  (For example, a valid value set).  It creates an entry in the product catalog
  * for that product and registers the tabular data set asset for the product as a catalog target.
@@ -196,7 +196,7 @@ public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationCo
         harvestValidValues(existingDataSources);
 
         /*
-         * Refresh all of the harvested tabular data sources, looking for data changes.
+         * Refresh all the harvested tabular data sources, looking for data changes.
          */
         super.refresh();
     }

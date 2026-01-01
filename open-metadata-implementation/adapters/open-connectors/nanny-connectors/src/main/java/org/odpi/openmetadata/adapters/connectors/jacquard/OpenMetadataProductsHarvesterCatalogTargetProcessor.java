@@ -45,7 +45,7 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      * @throws ConnectorCheckedException error
-     * @throws UserNotAuthorizedException connector is disconnected
+     * @throws UserNotAuthorizedException the connector is disconnected
      */
     public OpenMetadataProductsHarvesterCatalogTargetProcessor(CatalogTarget            catalogTarget,
                                                                CatalogTargetContext     catalogTargetContext,

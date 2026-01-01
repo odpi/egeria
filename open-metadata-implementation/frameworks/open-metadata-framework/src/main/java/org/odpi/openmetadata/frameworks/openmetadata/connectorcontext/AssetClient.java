@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;

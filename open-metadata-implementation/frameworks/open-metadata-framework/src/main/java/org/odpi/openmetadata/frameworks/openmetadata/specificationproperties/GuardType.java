@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 
 import java.util.Objects;
 

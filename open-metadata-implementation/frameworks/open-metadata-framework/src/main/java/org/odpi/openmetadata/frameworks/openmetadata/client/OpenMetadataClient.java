@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.api.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;

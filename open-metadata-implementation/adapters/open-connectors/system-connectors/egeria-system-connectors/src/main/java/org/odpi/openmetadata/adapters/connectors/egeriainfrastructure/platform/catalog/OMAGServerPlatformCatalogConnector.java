@@ -25,7 +25,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaSolutionComponent;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
