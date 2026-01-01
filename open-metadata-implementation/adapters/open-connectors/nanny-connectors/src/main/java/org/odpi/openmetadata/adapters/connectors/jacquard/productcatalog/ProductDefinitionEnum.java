@@ -121,7 +121,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductDataFieldDefinition.CATEGORY,
                             ProductDataFieldDefinition.DATA_TYPE},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
-                    "Open Metadata Attribute Type List",
+                    "Data set",
                     null,
                     "OpenMetadataAttributes"),
 
@@ -153,7 +153,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        ProductDataFieldDefinition.OPEN_METADATA_SUBTYPES,
                        ProductDataFieldDefinition.OPEN_METADATA_SUPER_TYPES},
                OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
-               "Open Metadata Types List",
+               "Data set",
                null,
                "OpenMetadataTypes"),
 
@@ -182,13 +182,13 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                       ProductDataFieldDefinition.DATA_TYPE,
                                       ProductDataFieldDefinition.DESCRIPTION},
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
-                              "Attributes defined for each Open Metadata Type",
+                              "Data set",
                               null,
                               "OpenMetadataAttributesForTypes"),
 
 
     /**
-     * Party, Places and Products
+     * Party, Places, and Products
      */
     PARTY_PLACES_PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                           null,
@@ -237,7 +237,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductDataFieldDefinition.CATEGORY,
                           ProductDataFieldDefinition.DESCRIPTION},
                   OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
-                  "Organization List",
+                  "Data set",
                   null,
                   "Organizations"),
 
@@ -266,7 +266,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    ProductDataFieldDefinition.DISPLAY_NAME,
                    ProductDataFieldDefinition.DESCRIPTION},
            OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
-           "People List",
+           "Data set",
            null,
            "People"),
 
@@ -296,7 +296,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              ProductDataFieldDefinition.DESCRIPTION,
                              ProductDataFieldDefinition.ELEMENT_STATUS},
                      OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
-                     "Digital Product List",
+                     "Data set",
                      null,
                      "DigitalProductsInventory"),
 
@@ -332,7 +332,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductDataFieldDefinition.LOCATION_POSTAL_ADDRESS,
                       ProductDataFieldDefinition.NETWORK_ADDRESS},
               OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
-              "Location List",
+              "Data set",
               null,
               "Locations"),
 

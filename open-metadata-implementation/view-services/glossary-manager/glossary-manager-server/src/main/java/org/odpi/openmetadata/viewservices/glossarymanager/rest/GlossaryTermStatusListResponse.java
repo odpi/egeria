@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;

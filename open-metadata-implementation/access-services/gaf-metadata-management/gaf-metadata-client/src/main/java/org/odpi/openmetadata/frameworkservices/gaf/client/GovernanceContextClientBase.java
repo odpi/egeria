@@ -12,10 +12,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceCompletionInterface;
 import org.odpi.openmetadata.frameworks.opengovernance.client.WatchdogEventInterface;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;

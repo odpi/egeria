@@ -1,0 +1,705 @@
+# Egeria-external-links-omvs
+# The External Links OMVS provides APIs for supporting the creation and editing of external references,
+#schema attributes and user identities.
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with external references
+# https://egeria-project.org/concepts/external-reference
+
+@externalReferenceGUID=add guid here
+
+
+###
+# @name createExternalReference
+# Create an external reference.
+#
+# Request body provides             properties for the external reference.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "ExternalReferenceProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name createExternalReference
+# Create an external reference.
+#
+# Request body provides             properties for the external reference.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": true,
+  "properties": {
+    "class" : "ExternalReferenceProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "authors": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
+  }
+}
+
+###
+# @name createExternalReferenceFromTemplate
+# Create a new metadata element to represent an external reference using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new element.
+#
+# Request body provides properties that override the template
+#
+# Returns unique identifier of the new metadata element
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateExternalReference
+# Update the properties of an external reference.
+#
+# @param externalReferenceGUID unique identifier of the external reference (returned from create)
+# Request body provides     properties for the new element.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/{{externalReferenceGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "ExternalReferenceProperties",
+    "typeName" : "enter the type of the element",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@elementGUID=add guid here
+
+###
+# @name linkExternalReference
+# Attach an external reference to an element.
+#
+# @param elementGUID           unique identifier of the element
+# @param externalReferenceGUID       unique identifier of the external reference
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-references/{{externalReferenceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ExternalReferenceLinkProperties",
+    "label": "",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachExternalReference
+# Detach an external reference from an element.
+#
+# @param externalReferenceGUID       unique identifier of the external reference
+# @param elementGUID           unique identifier of the element
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-references/{{externalReferenceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkMediaReference
+# Attach an external media reference to an element.
+#
+# @param elementGUID           unique identifier of the element
+# @param externalReferenceGUID       unique identifier of the external reference
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/media-references/{{externalReferenceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "MediaReferenceProperties",
+    "mediaId": "",
+    "description": "",
+    "mediaUsage": "ICON",
+    "mediaUsageOtherId": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachMediaReference
+# Detach an external media reference from an element.
+#
+# @param externalReferenceGUID       unique identifier of the external reference
+# @param elementGUID           unique identifier of the element
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/media-references/{{externalReferenceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkCitedDocumentReference
+# Attach an element to its external document reference.
+#
+# @param elementGUID           unique identifier of the element
+# @param externalReferenceGUID       unique identifier of the external reference
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/cited-document-references/{{externalReferenceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "CitedDocumentLinkProperties",
+    "referenceId": "",
+    "description": "",
+    "pages": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachCitedDocumentReference
+# Detach an element from its external document reference.
+#
+# @param externalReferenceGUID       unique identifier of the external reference
+# @param elementGUID           unique identifier of the element
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/cited-document-references/{{externalReferenceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteExternalReference
+# Delete an external reference.
+#
+# @param externalReferenceGUID  unique identifier of the element to delete
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/{{externalReferenceGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getExternalReferencesByName
+# Returns the list of external references with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findExternalReferences
+# Retrieve the list of external reference metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx"
+}
+
+
+###
+# @name getExternalReferenceByGUID
+# Return the properties of a specific external reference.
+#
+# @param externalReferenceGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/{{externalReferenceGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# =====================================================================================================================
+# External identifiers originate in third party technologies.  They are linked to the corresponding open metadata elements.
+# https://egeria-project.org/types/0/0017-External-Identifiers/
+###
+
+@externalIdGUID=add guid here
+@externalIdLinkGUID=add guid here
+@externalScopeGUID=add guid here
+@externalScopeName=add qualified name here
+@externalScopeTypeName=add type name
+
+###
+# @name addExternalIdentifier
+# Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope (specified in the request body).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-identifiers/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewExternalIdRequestBody",
+  "externalSourceGUID" : "{{externalScopeGUID}}",
+  "externalSourceName" : "{{externalScopeName}}",
+  "properties": {
+    "class" : "ExternalIdProperties",
+    "key" : "Add external identifier here",
+    "keyPattern": "LOCAL_KEY",
+    "description": "Add optional description here",
+    "displayName": "Add optional name used for the identifier in the third party technology here",
+    "externalInstanceTypeName": "Describe the type name in the external system",
+    "externalInstanceCreatedBy": "Add userId used in third Party",
+    "externalInstanceCreationTime": "When was the instance created in the third party",
+    "externalInstanceLastUpdatedBy": "Add userId used in third Party",
+    "externalInstanceLastUpdateTime": "When was the instance last updated in the third party",
+    "externalInstanceVersion": 1
+  },
+  "parentRelationshipProperties": {
+    "class" : "ExternalIdLinkProperties",
+    "permittedSynchronization" : "BOTH_DIRECTIONS",
+    "usage": "Add how the identifier is used by the third party",
+    "source": "Describe how the identifier was discovered",
+    "lastSynchronized": "{{$isoTimestamp}}",
+    "mappingProperties": {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    }
+  },
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateExternalIdentifier
+# Update the description of a specific external identifier.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/{{externalIdGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "externalSourceGUID" : "{{externalScopeGUID}}",
+  "externalSourceName" : "{{externalScopeName}}",
+  "properties": {
+    "class" : "ExternalIdProperties",
+    "key" : "Add external identifier here",
+    "description": "Add optional description here",
+    "displayName": "Add optional name used for the identifier in the third party technology here",
+    "keyPattern": "LOCAL_KEY",
+    "externalInstanceTypeName": "Describe the type name in the external system",
+    "externalInstanceCreatedBy": "Add userId used in third Party",
+    "externalInstanceCreationTime": "When was the instance created in the third party",
+    "externalInstanceLastUpdatedBy": "Add userId used in third Party",
+    "externalInstanceLastUpdateTime": "When was the instance last updated in the third party",
+    "externalInstanceVersion": 1
+  },
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name deleteExternalIdentifier
+# Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/{{externalIdGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID" : "{{externalScopeGUID}}",
+  "externalSourceName" : "{{externalScopeName}}",
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name confirmSynchronization
+# Confirm that the values of a particular metadata element have been synchronized.  This is important
+# from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/links/{{externalIdLinkGUID}}/synchronized
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "UpdateRelationshipRequestBody",
+    "externalSourceGUID" : "{{externalScopeGUID}}",
+    "externalSourceName" : "{{externalScopeName}}"
+}
+
+
+
+###
+# @name getExternalIdentifiersByName
+# Returns the list of external identifiers with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findExternalIdentifiers
+# Retrieve the list of external identifiers metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getExternalIdentifiersByGUID
+# Return the properties of a specific external identifier.
+#
+# @param externalIdGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/{{externalIdGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

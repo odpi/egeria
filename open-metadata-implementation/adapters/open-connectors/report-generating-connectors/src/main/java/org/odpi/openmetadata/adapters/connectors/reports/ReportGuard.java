@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.reports;
 
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.opengovernance.controls;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 
 import java.util.ArrayList;

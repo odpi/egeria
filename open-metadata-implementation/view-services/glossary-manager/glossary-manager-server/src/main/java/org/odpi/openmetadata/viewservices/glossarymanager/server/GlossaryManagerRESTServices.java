@@ -9,7 +9,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
@@ -21,7 +20,6 @@ import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermRelat
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermStatusListResponse;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

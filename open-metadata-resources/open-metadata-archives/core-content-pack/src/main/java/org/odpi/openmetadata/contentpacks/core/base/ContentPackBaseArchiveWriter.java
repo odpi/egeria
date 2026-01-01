@@ -1282,10 +1282,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                    String                               wikiLink,
                                                    DeployedImplementationTypeDefinition isATypeOf)
     {
-        String parentSetGUID = this.getParentSet(null,
-                                                 associatedTypeName,
-                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                 null);
+        String parentSetGUID = this.getParentSet(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
 
         Map<String, String> additionalProperties = new HashMap<>();
 

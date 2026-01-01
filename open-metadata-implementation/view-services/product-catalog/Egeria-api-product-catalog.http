@@ -1,0 +1,322 @@
+# Egeria-product-catalog-view-service
+# Supporting the use of digital product catalogs
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Listing the digital product catalogs
+#
+
+###
+# @name find DigitalProductCatalogs
+# Returns the list of collections matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName" : "DigitalProductCatalog"
+}
+
+###
+# =====================================================================================================================
+# Understanding the structure of a product catalog
+#
+
+###
+# @name find the open metadata product catalog
+# Returns the list of collections matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Open Metadata Digital Product Catalog",
+  "metadataElementTypeName" : "DigitalProductCatalog"
+}
+
+
+
+###
+# @name find the valid value list digital product
+# Returns the list of collections matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Valid Value Set List",
+  "metadataElementTypeName" : "DigitalProduct"
+}
+
+
+###
+# =====================================================================================================================
+# Understanding the structure of a product
+#
+
+# @name getSolutionBlueprintsByName
+# Returns the list of solution blueprints with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Open Metadata Digital Product Solution Blueprint",
+  "relationshipsPageSize": 500
+}
+
+
+###
+# =====================================================================================================================
+# Subscribe to a product
+#
+
+###
+# @name getTechnologyTypeDetail (PostgreSQL Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL Relational Database"
+}
+
+
+###
+# @name getTechnologyTypeTemplates (CSV Data File)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "CSV Data File"
+}
+
+###
+
+@csvTemplateGUID=13770f93-13c8-42be-9bb8-e0b1b1e52b1f
+@postgresSchemaTemplateGUID=82a5417c-d882-4271-8444-4c6a996a8bfc
+
+###
+# @name createElementFromTemplate
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "{{csvTemplateGUID}}",
+  "isOwnAnchor" : true,
+  "allowRetrieve" : false,
+  "placeholderPropertyValues" : {
+    "fileSystemName" : "Egeria Deployment",
+    "filePathName" : "valid-values-sets-product-data.csv",
+    "fileName" : "valid-values-sets-product-data.csv",
+    "fileType" : "CSV Data File",
+    "fileExtension" : "csv",
+    "fileEncoding" : "csv",
+    "versionIdentifier" : "1.0",
+    "description" : "Data file for list of valid value sets"
+  }
+}
+
+###
+
+@csvFileGUID=adce092b-3f63-4b8e-bb94-1fadbf22f374
+
+
+###
+# @name createElementFromTemplate (PostgreSQL Relational Database Schema)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "{{postgresSchemaTemplateGUID}}",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName" : "LocalPostgreSQL1",
+    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "secretsCollectionName" : "PostgreSQL Server:LocalPostgreSQL1",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "5432",
+    "databaseName" : "egeria",
+    "schemaName" : "open_metadata_products",
+    "schemaDescription" : "Destinations for the Open Metadata Digital Products.",
+    "versionIdentifier" : "V1.0"
+  }
+}
+
+###
+
+@postgresSchemaGUID=add guid here
+
+###
+
+@callieQuartileGUID=55f71ffc-d114-4dd0-8e34-db2d0f8df4fc
+
+###
+
+@createSubscriptionQualifiedName=GovernanceActionProcess::Valid Value Set List::Create Subscription::EVALUATION-SUBSCRIPTION
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter": "{{createSubscriptionQualifiedName}}",
+  "startFrom" : 0,
+  "pageSize": 0
+}
+
+###
+
+@createSubscriptionGUID=17502cea-3506-4b6c-9509-f6d9f394e027
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/{{createSubscriptionGUID}}/graph
+Authorization: Bearer {{token}}
+
+
+###
+# @name initiateGovernanceActionProcess (Create Subscription)
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "{{createSubscriptionQualifiedName}}",
+  "actionTargets": [{
+              "class" : "NewActionTarget",
+              "actionTargetName": "destinationDataSet",
+              "actionTargetGUID": "{{csvFileGUID}}"
+            },
+            {
+              "class" : "NewActionTarget",
+              "actionTargetGUID": "{{callieQuartileGUID}}",
+              "actionTargetName": "digitalSubscriptionRequester"
+            }]
+}
+
+###
+# Full request body for initiate governance action process
+# {
+#   "class" : "InitiateGovernanceActionProcessRequestBody",
+#   "processQualifiedName": "",
+#   "requestParameters": {
+#       "parameterName1" : "parameterValue1",
+#       "parameterName2" : "parameterValue2"
+#   },
+#   "requestSourceGUIDs": [ "" ],
+#   "actionTargets": [
+#     {
+#       "class" : "NewActionTarget",
+#       "actionTargetName" : "",
+#       "actionTargetGUID" : ""
+#     } ],
+#   "startDate": "",
+#   "originatorServiceName": "",
+#   "originatorEngineName": ""
+# }
+#
+###
+
+###
+# @name findSubscriptions
+# Returns the list of collections matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "DigitalSubscription::Evaluation subscription::",
+  "startsWith" : true,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "metadataElementTypeName" : "DigitalSubscription"
+}
+
+
+
+###
+
+@communityName=Community::OpenMetadataProductCatalogReferenceDataSIG
+@notelogName=Notifications for Open Metadata Reference Data special interest group
+
+###
+# @name getCommunitiesByName
+# Returns the list of communities with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/community-matters/communities/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "{{communityName}}",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+
+###
+# @name getNoteLogsByName
+# Retrieve the list of note log metadata elements with an exact matching qualifiedName or name.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "{{notelogName}}",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+

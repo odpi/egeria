@@ -327,10 +327,10 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
                                                                                         mapName,
                                                                                         validMetadataValue.getPreferredValue());
 
-        OpenMetadataElement validValueSet = openMetadataClient.getMetadataElementByUniqueName(userId,
-                                                                                              qualifiedName,
-                                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                              null);
+        OpenMetadataElement validMetadataValueElement = openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                                                          qualifiedName,
+                                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                          null);
 
         /*
          * The valid value set will either be created, or updated depending on whether it exists or not.
@@ -340,7 +340,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
 
         String validValueGUID;
 
-        if (validValueSet == null)
+        if (validMetadataValueElement == null)
         {
             /*
              * The element needs creating.  It is set up as a member of the parent set.
@@ -380,13 +380,13 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
             updateOptions.setMergeUpdate(false);
 
             super.updateElement(userId,
-                                validValueSet.getElementGUID(),
+                                validMetadataValueElement.getElementGUID(),
                                 guidParameterName,
                                 updateOptions,
                                 validMetadataValueProperties,
                                 methodName);
 
-            validValueGUID = validValueSet.getElementGUID();
+            validValueGUID = validMetadataValueElement.getElementGUID();
         }
 
         auditLog.logMessage(methodName, OMFAuditCode.VALID_METADATA_UPDATE.getMessageDefinition(validMetadataValue.getPreferredValue(),

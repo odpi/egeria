@@ -1,0 +1,437 @@
+# Egeria-subject-area-view-service
+# Manage the definition of a subject area
+# Subject Areas: https://egeria-project.org/concepts/subject-area/
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Subject Area Definitions - with governance officer
+# https://egeria-project.org/concepts/subject-area
+
+@subjectAreaGUID=add guid here
+@parentSubjectAreaGUID=add guid here
+@nestedSubjectAreaGUID=add guid here
+
+###
+# @name createSubjectArea (governance officer)
+# Create a subject area.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "SubjectAreaProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "subjectAreaName": "add short name here",
+    "description": "add description here",
+    "usage": "add usage of this subject area",
+    "scope": "add scope of this subject area",
+    "domainIdentifier": 0,
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createSubjectAreaFromTemplate (governance officer)
+# Create a new metadata element to represent a subject area using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateSubjectArea (governance officer)
+# Update the properties of a subject area.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "SubjectAreaProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "subjectAreaName": "add short name here",
+    "description": "add description here",
+    "usage": "add usage of this subject area",
+    "scope": "add scope of this subject area",
+    "domainIdentifier": 0,
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate" : true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkSubjectAreas
+# Connect a subject area to a broader subject area. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{parentSubjectAreaGUID}}/subject-area-hierarchies/{{nestedSubjectAreaGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SubjectAreaHierarchyProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSubjectAreas
+# Detach a nested subject area from a parent subject area. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{parentSubjectAreaGUID}}/subject-area-hierarchies/{{nestedSubjectAreaGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteSubjectArea (governance officer)
+# Delete a subject area. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllSubjectAreas (governance officer)
+# Retrieve the list of subject area metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findAllSubjectAreas - with full request body (governance officer)
+# Retrieve the list of subject area metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "metadataElementSubtypeNames": [],
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findSubjectAreas (governance officer)
+# Retrieve the list of subject area metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+
+###
+# @name findSubjectAreas - with full request body (governance officer)
+# Retrieve the list of subject area metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "metadataElementSubtypeNames": [],
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getSubjectAreasByName (governance officer)
+# Returns the list of subject areas with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here",
+  "metadataElementTypeName": "SubjectAreaDefinition"
+}
+
+
+###
+
+# @name getSubjectAreasByName - with full request body (governance officer)
+# Returns the list of subject areas with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "metadataElementTypeName": "SubjectAreaDefinition",
+  "metadataElementSubtypeNames": [],
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getSubjectAreaByGUID (governance officer)
+# Return the properties of a specific subject area.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getSubjectAreaByGUID - with request body (governance officer)
+# Return the properties of a specific subject area.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/{{subjectAreaGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
+  "graphQueryDepth" : 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Work with subject area classifications
+# The subject area definitions are associated with the elements that are a part of the subject area using the
+# SubjectArea classification
+
+@elementGUID=add guid here
+
+###
+# @name addElementToSubjectArea
+# Classify the element to assert that the definitions it represents are part of a subject area definition.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/elements/{{elementGUID}}/subject-area-member
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "SubjectAreaProperties",
+       "subjectAreaName" : "Add subject area identifier here"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name removeElementFromSubjectArea
+# Remove the subject area designation from the identified element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/elements/{{elementGUID}}/subject-area-member/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###

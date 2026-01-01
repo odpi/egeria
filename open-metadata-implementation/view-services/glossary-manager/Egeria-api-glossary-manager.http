@@ -1,0 +1,279 @@
+# Egeria-glossary-manager-omvs
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+
+@glossaryGUID = add guid here
+
+###
+# @name Create a glossary term in a glossary
+# Add the returned guid as orgGlossaryTerm1GUID variable.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "NewElementRequestBody",
+	"isOwnAnchor": true,
+	"anchorScopeGUID": "{{glossaryGUID}}",
+	"parentGUID": "{{glossaryGUID}}",
+	"parentRelationshipTypeName": "CollectionMembership",
+	"properties" :
+		{
+			"class" : "GlossaryTermProperties",
+			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
+			"displayName" : "term name",
+            "summary" : "This is the short description.",
+			"description" : "This is the long description of the term.",
+            "abbreviation" : "GT",
+            "examples" : "Add examples and descriptions here.",
+            "usage" : "This is how the concept described by the glossary term is used.",
+            "publishVersionIdentifier" : "V1.0",
+            "additionalProperties" :
+            {
+               "propertyName1" : "xxxx",
+               "propertyName2" : "xxxx" 
+            }
+		}
+}
+
+###
+
+@glossaryTermGUID = add guid here
+
+###
+# group: Glossaries
+# @name Create a copy of a glossary term
+# Add the returned guid as adGlossaryTerm1GUID variable.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/from-template/{{glossaryTermGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "GlossaryTemplateRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "TemplateProperties",
+			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
+			"displayName" : "term name",
+            "versionIdentifier" : "V1.0"
+		},
+    "glossaryTermStatus" : "PROPOSED"
+}
+
+
+###
+# group: Glossaries
+# @name Add the confidentiality classification to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{glossaryTermGUID}}/confidentiality
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "NewClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "GovernanceClassificationProperties",
+			"levelIdentifier" : 1
+		}
+}
+
+###
+# group: Glossaries
+# @name Add the subject area classification to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{glossaryTermGUID}}/subject-area-member
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "NewClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "SubjectAreaMemberProperties",
+			"subjectAreaName" : "Healthcare"
+		}
+}
+
+###
+# group: Glossaries
+# @name Update a glossary term in a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "UpdateElementRequestBody",
+    "mergeUpdate": true,
+	"properties" :
+		{
+			"class" : "GlossaryTermProperties",
+			"description" : "This is the long description of the term. And this is some more text."
+		}
+}
+
+###
+# group: Glossaries
+# @name Update a glossary term's version identfier
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties" :
+		{
+			"class" : "GlossaryTermProperties",
+            "publishVersionIdentifier" : "V1.1"
+		}
+}
+
+
+###
+# group: Glossaries
+# @name Change the status of a glossary term in a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "GlossaryTermStatusRequestBody",
+    "glossaryTermStatus" : "ACTIVE"
+}
+
+###
+# group: Glossaries
+# @name Undo an update to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/undo
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+@glossaryTermRevisionLogGUID=add guid here
+
+###
+# group: Glossaries
+# @name Search for term by version identifier
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindRequestBody",
+    "metadataElementTypeName" : "GlossaryTerm",
+    "searchProperties" : {
+        "class" : "SearchProperties",
+        "conditions" : [{
+            "class" : "PropertyCondition",
+            "property" : "publishVersionIdentifier",
+            "operator" : "EQ",
+            "value" : {
+                "class" : "PrimitiveTypePropertyValue",
+                "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
+                "primitiveValue" : "V1.0",
+                "typeName" : "string"
+                }
+        }],
+        "matchCriteria" : "ALL"
+    }
+}
+
+###
+# group: Glossaries
+# @name Delete a glossary term
+# Delete a glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+@glossaryTermOneGUID=add guid here
+@relationshipTypeName=add relationship name here
+@glossaryTermTwoGUID=add guid here
+
+###
+# group: Glossaries
+# @name Set up term relationship
+# Link two terms together using a specialist relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "effectiveTime" : {{@isoTimestamp}},
+  "properties" : {
+     "class" : "GlossaryTermRelationship",
+     "expression" : "",
+     "confidence"  : 0,
+     "description" : "",
+     "status"   : "",
+     "steward"  : "",
+     "source" : "",
+     "effectiveFrom" : "{{@isoTimestamp}}",
+     "effectiveTo" : "{{@isoTimestamp}}",
+     "extendedProperties" : {
+     }
+  }
+}
+
+
+###
+# group: Glossaries
+# @name Update term relationship
+# Update the properties for the two terms linked using a specialist relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "effectiveTime" : {{@isoTimestamp}},
+  "properties" : {
+     "class" : "GlossaryTermRelationship",
+     "expression" : "",
+     "confidence"  : 0,
+     "description" : "",
+     "status"   : "",
+     "steward"  : "",
+     "source" : "",
+     "effectiveFrom" : "{{@isoTimestamp}}",
+     "effectiveTo" : "{{@isoTimestamp}}",
+     "extendedProperties" : {
+     }
+  }
+}
+
+
+###
+# group: Glossaries
+# @name Update term relationship
+# Remove the relationship between two terms.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "EffectiveTimeQueryRequestBody",
+  "effectiveTime" : {{@isoTimestamp}}
+}

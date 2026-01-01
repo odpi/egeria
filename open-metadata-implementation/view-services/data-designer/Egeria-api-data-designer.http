@@ -1,0 +1,1191 @@
+# Egeria-data-designer-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with Data Structures
+# https://egeria-project.org/concepts/data-structure
+
+@dataStructureGUID=add guid here
+@parentDataStructureGUID=add guid here
+@memberDataFieldGUID=add guid here
+
+###
+# @name createDataStructure
+# Create a data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DataStructureProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "namespace": "add namespace for this structure",
+    "versionIdentifier": "add version for this structure",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createDataStructureFromTemplate
+# Create a new metadata element to represent a data structure using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name updateDataStructure
+# Update the properties of a data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "DataStructureProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "namespace": "add namespace for this structure",
+    "versionIdentifier": "add version for this structure",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkMemberDataField
+# Connect a data structure to a data field. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{parentDataStructureGUID}}/member-data-fields/{{memberDataFieldGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "MemberDataFieldProperties",
+    "dataFieldPosition": 0,
+    "minCardinality": 0,
+    "maxCardinality": 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachMemberDataField
+# Detach a data field from a data structure. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{parentDataStructureGUID}}/member-data-fields/{{memberDataFieldGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "cascadedDelete": false,
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteDataStructure
+# Delete a data structure. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete": false,
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllDataStructures
+# Retrieve the list of data structure metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findAllDataStructures - with full request body
+# Retrieve the list of data structure metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findDataStructures
+# Retrieve the list of data structure metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here"
+}
+
+
+###
+# @name findDataStructures - with full request body
+# Retrieve the list of data structure metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getDataStructuresByName
+# Returns the list of data structures with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getDataStructuresByName - with full request body
+# Returns the list of data structures with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getDataStructureByGUID
+# Return the properties of a specific data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getDataStructureByGUID - with request body
+# Return the properties of a specific data structure.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+###
+# =====================================================================================================================
+# Work with Data Fields
+# https://egeria-project.org/concepts/data-field
+
+@dataFieldGUID=add guid here
+@parentDataFieldGUID=add guid here
+@nestedDataFieldGUID=add guid here
+
+###
+# @name createDataField
+# Create a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "add guid here",
+  "anchorScopeGUID" : "add guid here",
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "namespace": "",
+    "description": "add description here",
+    "versionIdentifier": "add version",
+    "aliases": ["alias1", "alias2"],
+    "isDeprecated": false,
+    "isNullable" : false,
+    "defaultValue": "",
+    "dataType": "",
+    "minimumLength": 0,
+    "length": 0,
+    "precision": 0,
+    "orderedValues": false,
+    "sortOrder": "UNSORTED",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+###
+# @name createDataFieldFromTemplate
+# Create a new metadata element to represent a data field using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "isOwnAnchor": false,
+  "anchorGUID" : "add guid here",
+  "anchorScopeGUID" : "add guid here",
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateDataField
+# Update the properties of a data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "DataFieldProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "namespace": "",
+    "description": "add description here",
+    "versionIdentifier": "add version",
+    "aliases": ["alias1", "alias2"],
+    "namePatterns": [],
+    "isDeprecated": false,
+    "isNullable" : false,
+    "defaultValue": "",
+    "dataType": "",
+    "minimumLength": 0,
+    "length": 0,
+    "precision": 0,
+    "orderedValues": false,
+    "sortOrder": "UNSORTED",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkNestedDataFields
+# Connect two data field as parent and child.  Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{parentDataFieldGUID}}/nested-data-fields/{{nestedDataFieldGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "NestedDataFieldProperties",
+    "dataFieldPosition": 0,
+    "minCardinality": 0,
+    "maxCardinality": 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachNestedDataFields
+# Detach two data fields from one another. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{parentDataFieldGUID}}/nested-data-fields/{{nestedDataFieldGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "cascadedDelete": false,
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteDataField
+# Delete a data field. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete": false,
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+###
+# @name findAllDataFields - with full request body
+# Retrieve the list of data field metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findDataFields
+# Retrieve the list of data field metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here"
+}
+
+
+###
+# @name findDataFields - with full request body
+# Retrieve the list of data field metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getDataFieldsByName
+# Returns the list of data fields with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here"
+}
+
+
+###
+
+# @name getDataFieldsByName - with full request body
+# Returns the list of data fields with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getDataFieldByGUID
+# Return the properties of a specific data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getDataFieldByGUID - with request body
+# Return the properties of a specific data field.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+###
+# =====================================================================================================================
+# Work with Data Classes
+# https://egeria-project.org/concepts/data-class
+
+@dataClassGUID=add guid here
+@parentDataClassGUID=add guid here
+@childDataClassGUID=add guid here
+
+###
+# @name createDataClass
+# Create an data class.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DataClassProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "namespace": "add scope of this data class's applicability.",
+    "matchPropertyNames": ["name1", "name2"],
+    "matchThreshold": 0,
+    "specification": "",
+    "specificationDetails": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "dataType": "",
+    "allowsDuplicateValues": true,
+    "isNullable": false,
+    "defaultValue": "",
+    "averageValue": "",
+    "valueList": [],
+    "valueRangeFrom": "",
+    "valueRangeTo": "",
+    "sampleValues": [],
+    "dataPatterns" : [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createDataClassFromTemplate
+# Create a new metadata element to represent an data class using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "allowRetrieve": false,
+  "openMetadataTypeName": "DataClass",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "anchorScopeGUID": "add guid here",
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateDataClass
+# Update the properties of an data class.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class" : "DataClassProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "namespace": "add scope of this data class's applicability.",
+    "matchPropertyNames": ["name1", "name2"],
+    "matchThreshold": 0,
+    "specification": "",
+    "specificationDetails": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "dataType": "",
+    "allowsDuplicateValues": true,
+    "isNullable": false,
+    "defaultValue": "",
+    "averageValue": "",
+    "valueList": [],
+    "valueRangeFrom": "",
+    "valueRangeTo": "",
+    "sampleValues": [],
+    "dataPatterns" : [],
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    }
+  }
+}
+
+
+###
+# @name linkNestedDataClass
+# Connect two data classes to show that one is used by the other when it is validating (typically a complex data item). Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/nested-data-classes/{{childDataClassGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachNestedDataClass
+# Detach two nested data classes from one another. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/nested-data-classes/{{childDataClassGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name linkSpecializedDataClass
+#  Connect two data classes to show that one provides a more specialist evaluation. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specialized-data-classes/{{childDataClassGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+# @name detachSpecializedDataClass
+# Detach two data classes from one another. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{parentDataClassGUID}}/specialized-data-classes/{{childDataClassGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelaitonshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteDataClass
+# Delete an data class. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name findAllDataClasses
+# Retrieve the list of data class metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findAllDataClasses - with full request body
+# Retrieve the list of data class metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findDataClasses
+# Retrieve the list of data class metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here"
+}
+
+
+###
+# @name findDataClasses - with full request body
+# Retrieve the list of data class metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+# @name getDataClassesByName
+# Returns the list of data classes with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getDataClassByGUID
+# Return the properties of a specific data class.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+#################################
+# Assembling a data specification
+# https://egeria-project.org/concepts/data-specification
+###
+
+@dataDefinitionGUID=add guid here
+@glossaryTermGUID=add guid here
+@certificationTypeGUID=add guid here
+
+###
+# @name linkDataClassDefinition
+# Connect an element that is part of a data design to a data class to show that the data class should be used as the specification for the data values when interpreting the data definition.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/data-class-definition/{{dataClassGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachDataClassDefinition
+# Detach a data definition from a data class.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/data-class-definition/{{dataClassGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+###
+# @name linkSemanticDefinition
+# Connect an element that is part of a data design to a glossary term to show that the term should be used as the semantic definition for the data values when interpreting the data definition.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/semantic-definition/{{glossaryTermGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachSemanticDefinition
+# Detach a data definition from a glossary term.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-definitions/{{dataDefinitionGUID}}/semantic-definition/{{glossaryTermGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+###
+# @name linkCertificationTypeToDataStructure
+# Connect a certification type to a data structure to guide the survey action service (that checks the data quality of a data resource as part of certifying it with the supplied certification type) to the definition of the data structure to use as a specification of how the data should be both structured and (if data classes are attached to the associated data fields using the DataClassDefinition relationship) contain the valid values.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/certification-types/{{certificationTypeGUID}}/data-structure-definition/{{dataStructureGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+# @name detachCertificationTypeToDataStructure
+# Detach a data structure from a certification type.
+# Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/certification-types/{{certificationTypeGUID}}/data-structure-definition/{{dataStructureGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

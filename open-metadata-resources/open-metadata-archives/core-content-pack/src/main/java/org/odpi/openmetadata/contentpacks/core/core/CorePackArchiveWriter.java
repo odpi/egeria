@@ -165,6 +165,20 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
+         * Add the valid metadata values used in the projectPhase property of the Project entity.
+         */
+        for (ActionType actionType : ActionType.values())
+        {
+            this.addValidMetadataValue(actionType.getName(),
+                                       actionType.getDescription(),
+                                       OpenMetadataProperty.CATEGORY.name,
+                                       OpenMetadataType.ACTION.typeName,
+                                       null,
+                                       actionType.getName());
+        }
+
+
+        /*
          * Add the valid metadata values used in the projectHealth property of the Project entity.
          */
         for (ProjectHealth projectHealth : ProjectHealth.values())
@@ -214,38 +228,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
-         * Add the valid metadata values used in the portType property of the Port entity.
-         */
-        for (PortType portType : PortType.values())
-        {
-            this.addValidMetadataValue(portType.getName(),
-                                       portType.getDescription(),
-                                       OpenMetadataProperty.PORT_TYPE.name,
-                                       null,
-                                       null,
-                                       portType.getName());
-        }
-
-
-
-        /*
-         * Add the valid metadata values used in the collectionType property of the Collection entity.
-         */
-        for (SolutionPortDirection solutionPortDirection : SolutionPortDirection.values())
-        {
-            super.addValidMetadataValue(solutionPortDirection.getDescriptionGUID(),
-                                        solutionPortDirection.getName(),
-                                        solutionPortDirection.getDescription(),
-                                        OpenMetadataProperty.DIRECTION.name,
-                                        DataType.STRING.getName(),
-                                        null,
-                                        null,
-                                        solutionPortDirection.getName(),
-                                        null);
-        }
-
-
-        /*
          * Add valid metadata values for open metadata types that have been reformatted.
          * The GUIDs are saved in a look-up map
          * to make it easy to link other elements to these valid values later.
@@ -271,6 +253,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataProperty.CRITICALITY_LEVEL_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(CriticalityLevel.values())));
 
+        addOpenMetadataEnumValidIdentifiers(null,
+                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(GovernanceDomain.values())));
+
         addOpenMetadataEnumValidIdentifiers(OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                             OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(RetentionBasis.values())));
@@ -283,29 +269,29 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataProperty.SEVERITY_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(ImpactSeverity.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.BYTE_ORDERING.name,
-                                      ByteOrdering.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ByteOrdering.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                      ActivityStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ActivityStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.DELETE_METHOD.name,
-                                      DeleteMethod.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(DeleteMethod.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.ACTIVITY_TYPE.name,
+                                      ActivityType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ActivityType.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.COVERAGE_CATEGORY.name,
-                                      CoverageCategory.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(CoverageCategory.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
-                                      PermittedSynchronization.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.ANNOTATION_STATUS.name,
+                                      AnnotationStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(AnnotationStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE.name,
                                       BusinessCapabilityType.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(BusinessCapabilityType.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.KEY_PATTERN.name,
-                                      KeyPattern.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(KeyPattern.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.BYTE_ORDERING.name,
+                                      ByteOrdering.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ByteOrdering.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.USE_TYPE.name,
+                                      CapabilityAssetUseType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CapabilityAssetUseType.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataProperty.MEMBERSHIP_STATUS.name,
                                       CollectionMemberStatus.getOpenTypeName(),
@@ -319,6 +305,18 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       ContactMethodType.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ContactMethodType.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.CONTENT_STATUS.name,
+                                      ContentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ContentStatus.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                      CoverageCategory.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CoverageCategory.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.ROLE_TYPE.name,
+                                      CrowdSourcingRole.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CrowdSourcingRole.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
                                       DataClassAssignmentStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DataClassAssignmentStatus.values())));
@@ -327,45 +325,29 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       DataItemSortOrder.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DataItemSortOrder.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                      ActivityStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ActivityStatus.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.CONTENT_STATUS.name,
-                                      ContentStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ContentStatus.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.DELETE_METHOD.name,
+                                      DeleteMethod.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(DeleteMethod.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataProperty.DEPLOYMENT_STATUS.name,
                                       DeploymentStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DeploymentStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.ACTIVITY_TYPE.name,
-                                      ActivityType.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ActivityType.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
-                                      TermAssignmentStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(TermAssignmentStatus.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                      TermRelationshipStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(TermRelationshipStatus.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.USE_TYPE.name,
-                                      CapabilityAssetUseType.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(CapabilityAssetUseType.values())));
-
         addOpenMetadataEnumValidNames(OpenMetadataProperty.INCIDENT_STATUS.name,
                                       IncidentReportStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(IncidentReportStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.STARS.name,
-                                      StarRating.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(StarRating.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.KEY_PATTERN.name,
+                                      KeyPattern.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(KeyPattern.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataProperty.CONTAINMENT_TYPE.name,
-                                      ProcessContainmentType.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ProcessContainmentType.values())));
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.CHANGE_ACTION.name,
+                                      LatestChangeAction.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(LatestChangeAction.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.CHANGE_TARGET.name,
+                                      LatestChangeTarget.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(LatestChangeTarget.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataProperty.MEDIA_TYPE.name,
                                       MediaType.getOpenTypeName(),
@@ -379,9 +361,38 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       MediaUsage.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(MediaUsage.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                      PermittedSynchronization.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.PORT_TYPE.name,
+                                      PortType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(PortType.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.CONTAINMENT_TYPE.name,
+                                      ProcessContainmentType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ProcessContainmentType.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataProperty.DECORATION.name,
                                       RelationshipDecoration.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(RelationshipDecoration.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.DIRECTION.name,
+                                      SolutionPortDirection.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(SolutionPortDirection.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.STARS.name,
+                                      StarRating.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(StarRating.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
+                                      TermAssignmentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(TermAssignmentStatus.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                      TermRelationshipStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(TermRelationshipStatus.values())));
+
 
         /*
          * Add valid metadata values for deployedImplementationType.  The GUIDs are saved in a look-up map
@@ -551,7 +562,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                         enumValue.getName(),
                                         enumValue.getDescription(),
                                         enumConsumingProperty,
-                                        DataType.STRING.getName(),
+                                        enumTypeName,
                                         null,
                                         null,
                                         enumPreferredValue,
@@ -662,8 +673,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     }
 
 
-
-
     /**
      * Add a new valid values record for a deployed implementation type.
      *
@@ -680,10 +689,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             additionalProperties.put("beanClass", openMetadataType.beanClass.getName());
         }
 
-        String parentSetGUID = this.getParentSet(null,
-                                                 null,
-                                                 OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
-                                                 null);
+        String parentSetGUID = this.getParentSet(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name);
 
         String qualifiedName = constructValidValueQualifiedName(null,
                                                                 OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,

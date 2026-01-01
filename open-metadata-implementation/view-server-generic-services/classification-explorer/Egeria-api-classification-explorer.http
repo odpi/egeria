@@ -1,0 +1,1116 @@
+# Egeria-classification-explorer-omvs
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+
+# Optional request options not show on the example requests below:
+# -------------------------------------------------------------------
+# Note: This a generic service which means the URL marker of "classification-explorer" can be replaced with the URL marker
+# of any other active view service.
+# The URL marker is derived from the name of the requested service - take the short two-word service name, convert to
+# lower case and add a hyphen between the two words - so Automated Curation's OMVS's URL Marker is automated-curation.
+#
+
+###
+
+@elementGUID=add guid here
+
+#==================================================
+# Specific Stewardship Queries
+#==================================================
+
+
+###
+# @name getImpactClassifiedElements
+# Return information about the elements classified with the impact classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-impact
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "LevelIdentifierQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "returnSpecificLevel" : true,
+    "levelIdentifier" : 3
+}
+
+
+###
+# @name getConfidenceClassifiedElements
+# Return information about the elements classified with the confidence classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-confidence
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "LevelIdentifierQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "returnSpecificLevel" : true,
+    "levelIdentifier" : 3
+}
+
+###
+# @name getCriticalityClassifiedElements
+# Return information about the elements classified with the criticality classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-criticality
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "LevelIdentifierQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "returnSpecificLevel" : true,
+    "levelIdentifier" : 2
+}
+
+
+###
+# @name getConfidentialityClassifiedElements
+# Return information about the elements classified with the confidentiality classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-confidentiality
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "LevelIdentifierQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "returnSpecificLevel" : true,
+    "levelIdentifier" : 2
+}
+
+
+###
+# @name getRetentionClassifiedElements
+# Return information about the elements classified with the retention classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-retention
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "LevelIdentifierQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "returnSpecificLevel" : true,
+    "levelIdentifier" : 2
+}
+
+
+###
+# @name getSecurityTaggedElements
+# Return information about the elements classified with the security tags classification.
+#
+# https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-security-tags
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "SecurityTagQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "securityLabels" : [ "???" ],
+    "securityProperties" : {
+       "propertyName" : "propertyValue"
+    },
+    "accessGroups" : {
+        "groupName" : [ "???" ]
+    }
+}
+
+
+###
+# @name getOwnersElements
+# Return information about the elements classified with the ownership classification.
+#
+# https://egeria-project.org/types/4/0445-Governance-Roles/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-ownership
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FilterRequestBody",
+    "filter" : "????",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getMembersOfSubjectArea
+# Return information about the elements classified with the subject area classification.
+#
+# https://egeria-project.org/types/4/0425-Subject-Areas/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-subject-area-membership
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FilterRequestBody",
+    "filter" : "????",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getElementsByOrigin
+# Return information about the digital resources from a specific origin.
+#
+# https://egeria-project.org/types/4/0440-Organizational-Controls/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-digital-resource-origin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindDigitalResourceOriginProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "organizationGUID" : "????",
+    "businessCapabilityGUID" : "????",
+    "otherOriginValues" : {
+         "propertyName" : "propertyValue"
+    }
+}
+
+###
+
+@glossaryTermGUID=add guid here
+
+###
+# @name getMeanings
+# Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+#
+# https://egeria-project.org/types/4/0440-Organizational-Controls/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/glossaries/terms/by-semantic-assignment/{{elementGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "SemanticAssignmentQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "expression" : "????",
+    "description" : "????",
+    "status" : "VALIDATED",
+    "returnSpecificConfidence" : true,
+    "confidence" : 100,
+    "createdBy" : "???",
+    "steward" : "??",
+    "source" : "???"
+
+}
+
+
+###
+# @name getSemanticAssignees
+# Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.
+#
+# https://egeria-project.org/types/4/0440-Organizational-Controls/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-semantic-assignment/{{glossaryTermGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "SemanticAssignmentQueryProperties",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT",
+    "expression" : "????",
+    "description" : "????",
+    "status" : "VALIDATED",
+    "returnSpecificConfidence" : true,
+    "confidence" : 100,
+    "createdBy" : "???",
+    "steward" : "??",
+    "source" : "???"
+}
+
+
+###
+
+@governanceDefinitionGUID=add guid here
+
+###
+# @name getGovernedElements
+# Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
+#
+# https://egeria-project.org/types/4/0401-Governance-Definitions/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/governed-by/{{governanceDefinitionGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+# @name getGovernedByDefinitions
+# Retrieve the elements linked via a GovernedBy relationship to the requested governance definition.
+#
+# https://egeria-project.org/types/4/0401-Governance-Definitions/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/governed-by
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getSourceElements
+# Retrieve the elements linked via a SourceFrom relationship to the requested element.  The elements returned were used to create the requested element.  Typically only one element is returned.
+#
+# https://egeria-project.org/types/0/0011-Managing-Referenceables/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/source
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getElementsSourcedFrom
+# Retrieve the elements linked via the SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.
+#
+# https://egeria-project.org/types/0/0011-Managing-Referenceables/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/sourced-from
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+
+@scopeGUID=add guid here
+
+###
+# @name getScopes
+# Retrieve the scopes linked via the ScopedBy relationship to the requested element.
+#
+# Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/scoped-by
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+# @name getScopedElements
+# Retrieve the elements linked via the ScopedBy relationship to the scope.
+#
+# Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/scoped-by/{{scopeGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "metadataElementTypeName" : "GlossaryTerm",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+###
+
+
+@licenseTypeGUID=add guid here
+
+
+###
+# @name getLicensedElements
+# Retrieve the elements linked via a License relationship to the requested LicenseType.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/licenses/{{licenseTypeGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getLicenses
+# Retrieve the license types linked via a License relationship to the requested element.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/licenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+
+@certificationTypeGUID=8a921039-ad5f-454d-ae17-e5a5b69f9333
+
+
+###
+# @name getCertifiedElements
+# Retrieve the elements linked via a Certification relationship to the requested CertificationType.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/certifications/{{certificationTypeGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+# @name getCertifications
+# Retrieve the certification types linked via a Certification relationship to the requested element.
+#
+# https://https://egeria-project.org/types/4/0481-Licenses/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/certifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
+    "sequencingProperty" : "???",
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
+}
+
+
+###
+#==================================================
+# Generic Queries
+#==================================================
+
+###
+# @name getMetadataElementByGUID
+# Retrieve the metadata element using its unique identifier.
+#
+# https://egeria-project.org/types/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "GetRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getMetadataElementByUniqueName
+# Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.
+#
+# https://egeria-project.org/services/gaf-metadata-management/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNameProperties",
+    "propertyValue" : "????",
+    "propertyName" : "qualifiedName",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false
+}
+
+###
+# @name getMetadataElementGUIDByUniqueName
+# Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.
+#
+# https://egeria-project.org/services/gaf-metadata-management/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNameProperties",
+    "propertyValue" : "???",
+    "propertyName" : "qualifiedName",
+    "effectiveTime" : "{{$isoTimestamp}}",
+    "asOfTime" : "{{$isoTimestamp}}",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getElements
+# Retrieve elements of the requested type name. If no type name is specified then any type of element may be returned.
+#
+# https://egeria-project.org/types/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-type
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName" : "CertificationType",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name findRootElements (nested condition)
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-complex-query
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "ValidValueDefinition",
+  "searchProperties": {
+    "class" : "SearchProperties",
+    "conditions": [ {
+      "property" : "identifier",
+      "operator": "LIKE",
+      "value": {
+        "class" : "PrimitiveTypePropertyValue",
+        "typeName" : "string",
+        "primitiveValue" : "deployedImplementationType"
+      }
+    }],
+    "matchCriteria": "ANY"
+  }
+}
+
+
+###
+# @name getElementsByPropertyValue
+# Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+# An open metadata type name may be supplied to restrict the results.
+#
+# https://egeria-project.org/types/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "Project",
+    "propertyValue" : "Campaign:Clinical Trials Management",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name findElementsByPropertyValue
+# Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
+# properties rather than needing to be an exact match.
+# An open metadata type name may be supplied to restrict the results.
+#
+# https://egeria-project.org/types/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-property-value-search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "CertificationType",
+    "propertyValue" : "Approved Hospital",
+    "propertyNames" : ["name", "qualifiedName", "title"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name getElementsByCategory
+# Retrieve elements by a value found in the category property.  The value must match exactly.
+# An open metadata type name may be supplied to restrict the results.
+# A mermaidGraph of the results is also supplied.
+#
+# https://egeria-project.org/types/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add category here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+
+@classificationName=GovernanceProject
+
+###
+# @name getElementsByClassification (any element type)
+# Retrieve elements with the requested classification name. It is also possible to limit the results
+# by specifying a type name for the elements that should be returned. If no type name is specified then
+# any type of element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name getElementsByClassification (specific element type)
+# Retrieve elements with the requested classification name. It is also possible to limit the results
+# by specifying a type name for the elements that should be returned. If no type name is specified then
+# any type of element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName" : "Project",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getElementsByClassificationWithPropertyValue
+# Retrieve elements with the requested classification name and with the requested a value found in one of the
+# classification's properties specified.  The value must match exactly. An open metadata type name may be supplied
+# to restrict the types of elements returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}/with-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "Project",
+    "propertyValue" : "Clinical Trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name findElementsByClassificationWithPropertyValue
+# Retrieve elements with the requested classification name and with the requested a value found in
+# one of the classification's properties specified.  The value must only be contained in the
+# properties rather than needing to be an exact match.
+# An open metadata type name may be supplied to restrict the results.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}/with-property-value-search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "Project",
+    "propertyValue" : "Clinical Trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getRelatedElements (all relationship types; specific element type returned)
+# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
+# specifying a type name for the elements that should be returned. If no type name is specified then any type of
+# element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName" : "Project",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name getRelatedElements (all relationship types, all element types)
+# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
+# specifying a type name for the elements that should be returned. If no type name is specified then any type of
+# element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+
+@relationshipTypeName=GovernedBy
+
+###
+# @name getRelatedElements
+# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
+# specifying a type name for the elements that should be returned. If no type name is specified then any type of
+# element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getRelatedElements (specific element types returned)
+# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
+# specifying a type name for the elements that should be returned. If no type name is specified then any type of
+# element may be returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName" : "CertificationType",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getRelatedElementsWithPropertyValue
+# Retrieve elements linked via the requested relationship type name and with the requested a value found in one of
+# the classification's properties specified.  The value must match exactly. An open metadata type name may be
+# supplied to restrict the types of elements returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-exact-property-value?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "Project",
+    "propertyValue" : "Clinical Trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name findRelatedElementsWithPropertyValue
+# Retrieve elements linked via the requested relationship type name and with the requested value found in one of the
+# relationship's properties specified.  The value must only be contained in the properties rather than needing to be
+# an exact match.  An open metadata type name may be supplied to restrict the results.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-property-value-search?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "Project",
+    "propertyValue" : "Clinical Trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getRelationships (any type)
+# Retrieve all relationships of the any relationship type name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name getRelationships (specific type)
+# Retrieve relationships of the requested relationship type name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name getRelationshipsWithPropertyValue (any type)
+# Retrieve relationships of the requested relationship type name and with the requested a value found in
+# one of the relationship's properties specified.  The value must match exactly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Organization:Hampton Hospital",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getRelationshipsWithPropertyValue (specific type)
+# Retrieve relationships of the requested relationship type name and with the requested a value found in
+# one of the relationship's properties specified.  The value must match exactly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}/with-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Organization:Hampton Hospital",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name findRelationshipsWithPropertyValue (any type)
+# Retrieve relationships of any relationship type name and with the requested a value found in one of
+# the relationship's properties specified.  The value must only be contained in the properties rather than
+# needing to be an exact match.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-property-value-search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Clinical Trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name findRelationshipsWithPropertyValue
+# Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+# the relationship's properties specified.  The value must only be contained in the properties rather than
+# needing to be an exact match.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}/with-property-value-search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Clinical Trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+
+@guid=Add guid here
+
+###
+# @name retrieveInstanceForGUID
+# Retrieve the header for the instance identified by the supplied unique identifier.  It may be an element (entity) or a relationship between elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/guids/{{guid}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "EffectiveTimeRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# =====================================================================================================================
+# Search keyword improve the findability of elements
+#
+# Search keyword:  https://egeria-project.org/concepts/search-keyword/
+
+@searchKeywordGUID=add guid here
+
+
+
+###
+# @name getSearchKeywordByGUID
+# Return the requested search keyword.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/{{searchKeywordGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getSearchKeywordsByKeyword
+# Return the list of search keywords containing the supplied keyword.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/by-keyword
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add value here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findSearchKeywords
+# Return the list of search keywords containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
