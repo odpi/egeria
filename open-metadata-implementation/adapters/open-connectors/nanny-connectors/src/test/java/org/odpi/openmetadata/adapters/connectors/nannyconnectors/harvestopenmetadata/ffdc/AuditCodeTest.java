@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc;
 
+import org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.ffdc.HarvestOpenMetadataAuditCode;
 import org.odpi.openmetadata.test.unittest.utilities.AuditLogMessageSetTest;
 import org.testng.annotations.Test;
 

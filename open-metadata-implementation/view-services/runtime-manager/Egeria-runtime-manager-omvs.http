@@ -166,19 +166,6 @@ Content-Type: application/json
 
 
 ###
-# @name getServersByName (engine-host)
-# Returns the list of servers with a particular name.  The name is specified in the filter.
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "engine-host"
-}
-
-
-###
 # @name getServersByDeployedImplementationType (Unity Catalog Servers)
 # Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
 # If it is null, or no request body is supplied, all servers are returned.
@@ -249,6 +236,67 @@ Content-Type: application/json
 # Returns details about the running OMAG server.
 # https://egeria-project.org/concepts/omag-server/
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance/report
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# ========================================================================================
+# Integration Daemon server report
+#
+
+@integrationDaemonName=integration-daemon
+
+###
+# @name getServersByName for Integration Daemon
+# Returns the list of servers with a particular name.  The name is specified in the filter.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "{{integrationDaemonName}}"
+}
+
+> {% client.global.set("integrationDaemonGUID", response.body.elements[0].elementHeader.guid); %}
+
+
+###
+# @name getOMAGServerReport for Integration Daemon
+# Returns details about the running OMAG server.
+# https://egeria-project.org/concepts/omag-server/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{integrationDaemonGUID}}/instance/report
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# ========================================================================================
+# Engine Host server report
+#
+
+@engineHostName=engine-host
+
+###
+# @name getServersByName for Engine Host
+# Returns the list of servers with a particular name.  The name is specified in the filter.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "{{engineHostName}}"
+}
+
+> {% client.global.set("engineHostGUID", response.body.elements[0].elementHeader.guid); %}
+
+
+###
+# @name getServerReport for Engine Host
+# Returns details about the running OMAG server.
+# https://egeria-project.org/concepts/omag-server/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{engineHostGUID}}/instance/report
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

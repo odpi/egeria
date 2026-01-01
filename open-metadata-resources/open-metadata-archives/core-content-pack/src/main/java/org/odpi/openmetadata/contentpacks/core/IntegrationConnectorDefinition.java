@@ -17,11 +17,11 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegratio
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
-import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider;
-import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider;
+import org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.HarvestOpenMetadataProvider;
+import org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.HarvestSurveysProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
-import org.odpi.openmetadata.adapters.connectors.productmanager.OpenMetadataProductsHarvesterProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.OpenMetadataProductsHarvesterProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
