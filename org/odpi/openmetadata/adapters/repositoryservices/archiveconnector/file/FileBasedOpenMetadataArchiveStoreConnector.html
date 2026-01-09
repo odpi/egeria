@@ -210,7 +210,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connectionDetails)</span></div>
+ <a href="../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connectionDetails)</span>
+                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Retrieve the archive store information from the endpoint.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
@@ -218,6 +219,8 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>connectorInstanceId</code> - unique id for the connector instance   useful for messages etc</dd>
 <dd><code>connectionDetails</code> - POJO for the configuration used to create the connector.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem within the connector.</dd>
 </dl>
 </section>
 </li>
@@ -257,7 +260,7 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
@@ -272,7 +275,7 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#disconnect()">disconnect</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 </dl>
 </section>
 </li>

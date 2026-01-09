@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,6 +60,10 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets</span></div>
+<section class="package-description" id="package-description">
+<div class="block">Package containing the implementation of TabularDataSet connectors that are dynamically populated with data
+ from the open metadata repositories.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -80,23 +84,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">FFDC stands for First Failure Data Capture.</div>
 </div>
-<div class="col-first odd-row-color"><a href="referencedata/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata</a></div>
+<div class="col-first odd-row-color"><a href="openmetadatatypes/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes</a></div>
 <div class="col-last odd-row-color">
+<div class="block">This pack provides tabular data set connectors that describe the open metadata types.</div>
+</div>
+<div class="col-first even-row-color"><a href="referencedata/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata</a></div>
+<div class="col-last even-row-color">
 <div class="block">The connectors that each provide an observability tabular data set.</div>
 </div>
-<div class="col-first even-row-color"><a href="validmetadatavalues/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.ffdc</a></div>
+<div class="col-first odd-row-color"><a href="validmetadatavalues/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues</a></div>
 <div class="col-last odd-row-color">
-<div class="block">FFDC stands for First Failure Data Capture.</div>
-</div>
-<div class="col-first even-row-color"><a href="../productcatalog/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog</a></div>
-<div class="col-last even-row-color">
-<div class="block">These are the definitions used to drive the creation of the open metadata product catalog.</div>
-</div>
-<div class="col-first odd-row-color"><a href="../solutionblueprint/package-summary.html">org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint</a></div>
-<div class="col-last odd-row-color">
-<div class="block">Definitions to build the solution blueprints used in the digital product definitions.</div>
+<div class="block">The valid metadata value set connectors provide tabular data set views of the valid metadata value sets.</div>
 </div>
 </div>
 </div>
@@ -107,9 +105,24 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DynamicOpenMetadataDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">DynamicOpenMetadataDataSetConnectorBase</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DynamicOpenMetadataDataSetConnector is the base class for the dynamic tabular data set to allow the provider
+ to pass the product definition to the open metadata repository.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DynamicOpenMetadataDataSetProviderBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">DynamicOpenMetadataDataSetProviderBase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DynamicOpenMetadataDataSetProviderBase provides a base class for a connector that supplies its own
+ product definition.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">OpenMetadataDataSetConnectorBase</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ReferenceDataSetConnectorBase enables interaction with a valid value set as if it is a tabular data set.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataRootDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">OpenMetadataRootDataSetConnectorBase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DynamicOpenMetadataDataSetConnector is the base class for the dynamic tabular data set to allow the provider
+ to pass the product definition to the open metadata repository.</div>
 </div>
 </div>
 </div>

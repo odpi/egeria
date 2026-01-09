@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
  The EnterpriseOMRSConnectorProvider is the connector provider for the EnterpriseOMRSRepositoryConnector.
  It will return new instances of the EnterpriseOMRSRepositoryConnector as long as it is configured with the connector
  manager.  This should happen at server startup, which means the exception due to a lack of connector
- manager are unexpected.</div>
+ manager is unexpected.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -116,12 +116,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EnterpriseOMRSConnectorProvider</a><wbr>(<a href="../connectormanager/OMRSConnectorManager.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorManager</a>&nbsp;connectorManager,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">EnterpriseOMRSConnectorProvider</a><wbr>(<a href="../connectormanager/OMRSConnectorManager.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorManager</a>&nbsp;connectorManager,
  <a href="../../localrepository/repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owningOrganizationName,
- <a href="../../auditlog/OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a>&nbsp;auditLog,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enterpriseMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enterpriseMetadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId)</code></div>
@@ -171,14 +171,14 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,java.lang.String)">
 <h3>EnterpriseOMRSConnectorProvider</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EnterpriseOMRSConnectorProvider</span><wbr><span class="parameters">(<a href="../connectormanager/OMRSConnectorManager.html" title="interface in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSConnectorManager</a>&nbsp;connectorManager,
  <a href="../../localrepository/repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owningOrganizationName,
- <a href="../../auditlog/OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a>&nbsp;auditLog,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enterpriseMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enterpriseMetadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId)</span></div>

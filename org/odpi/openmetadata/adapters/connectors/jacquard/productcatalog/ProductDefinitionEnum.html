@@ -106,13 +106,21 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ATTRIBUTES_FOR_TYPES_LIST" class="member-name-link">ATTRIBUTES_FOR_TYPES_LIST</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTOR_PLACES_PRODUCTS" class="member-name-link">ACTOR_PLACES_PRODUCTS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Actor, Places, and Products</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ATTRIBUTES_FOR_TYPES_LIST" class="member-name-link">ATTRIBUTES_FOR_TYPES_LIST</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Open Metadata Types List</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ATTRIBUTES_LIST" class="member-name-link">ATTRIBUTES_LIST</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ATTRIBUTES_LIST" class="member-name-link">ATTRIBUTES_LIST</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Attribute List</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATA_TYPES_LIST" class="member-name-link">DATA_TYPES_LIST</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Attributes List</div>
+<div class="block">Open Metadata Data Types List</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#DIGITAL_PRODUCTS" class="member-name-link">DIGITAL_PRODUCTS</a></code></div>
 <div class="col-last even-row-color">
@@ -132,7 +140,8 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 </div>
 <div class="col-first even-row-color"><code><a href="#OPEN_METADATA_TYPES" class="member-name-link">OPEN_METADATA_TYPES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Open Metadata Types</div>
+<div class="block">Open Metadata Types - the type definitions returned by OMF have been enhanced beyond OMRS to
+ directly support this product family.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ORGANIZATION_OBSERVABILITY" class="member-name-link">ORGANIZATION_OBSERVABILITY</a></code></div>
 <div class="col-last odd-row-color">
@@ -142,25 +151,31 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last even-row-color">
 <div class="block">Organizations List</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PARTY_PLACES_PRODUCTS" class="member-name-link">PARTY_PLACES_PRODUCTS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PEOPLE" class="member-name-link">PEOPLE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Party, Places, and Products</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#PEOPLE" class="member-name-link">PEOPLE</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">List of People</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TYPES_LIST" class="member-name-link">TYPES_LIST</a></code></div>
+<div class="col-first even-row-color"><code><a href="#REFERENCE_DATA_SET_LIST" class="member-name-link">REFERENCE_DATA_SET_LIST</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Reference Data Set List - Jacquard dynamically generates a digital product for each reference data set in this list.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REFERENCE_DATA_SETS" class="member-name-link">REFERENCE_DATA_SETS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Reference Data Sets - the product definition for each reference data set is dynamically created
+ when it is retrieved for the first time.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TYPES_LIST" class="member-name-link">TYPES_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Open Metadata Types List</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#VALID_METADATA_VALUE_SET_LIST" class="member-name-link">VALID_METADATA_VALUE_SET_LIST</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Valid Value Set List</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#VALID_VALUE_SETS" class="member-name-link">VALID_VALUE_SETS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_VALUE_SET_LIST" class="member-name-link">VALID_METADATA_VALUE_SET_LIST</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Valid Value Sets</div>
+<div class="block">Valid Metadata Value Set List - Jacquard dynamically generates a digital product for each valid metadata value set.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VALID_METADATA_VALUE_SETS" class="member-name-link">VALID_METADATA_VALUE_SETS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Valid Metadata Value Sets - the product definition for each valid metadata value set is dynamically created
+ when it is retrieved for the first time.</div>
 </div>
 </div>
 </section>
@@ -199,7 +214,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommunity()" class="member-name-link">getCommunity</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the community that provides the forum to discuss this product.</div>
+<div class="block">Return details of the community that provides the forum to discuss this product.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfigurationProperties()" class="member-name-link">getConfigurationProperties</a>()</code></div>
@@ -209,7 +224,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProvider</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorProvider()" class="member-name-link">getConnectorProvider</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the class for the connector provider that supports this product.</div>
+<div class="block">Return the connector provider class that supports this product.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductDataFieldDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDataFieldDefinition</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataSpecFields()" class="member-name-link">getDataSpecFields</a>()</code></div>
@@ -249,7 +264,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLicense()" class="member-name-link">getLicense</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the license that wil lbe granted to data provided through a subscription mechanism.</div>
+<div class="block">Return the licence that will be granted to data provided through a subscription mechanism.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductFamilies()" class="member-name-link">getProductFamilies</a>()</code></div>
@@ -323,31 +338,55 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="VALID_VALUE_SETS">
-<h3>VALID_VALUE_SETS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">VALID_VALUE_SETS</span></div>
-<div class="block">Valid Value Sets</div>
+<section class="detail" id="VALID_METADATA_VALUE_SETS">
+<h3>VALID_METADATA_VALUE_SETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">VALID_METADATA_VALUE_SETS</span></div>
+<div class="block">Valid Metadata Value Sets - the product definition for each valid metadata value set is dynamically created
+ when it is retrieved for the first time.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VALID_METADATA_VALUE_SET_LIST">
 <h3>VALID_METADATA_VALUE_SET_LIST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">VALID_METADATA_VALUE_SET_LIST</span></div>
-<div class="block">Valid Value Set List</div>
+<div class="block">Valid Metadata Value Set List - Jacquard dynamically generates a digital product for each valid metadata value set.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REFERENCE_DATA_SETS">
+<h3>REFERENCE_DATA_SETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">REFERENCE_DATA_SETS</span></div>
+<div class="block">Reference Data Sets - the product definition for each reference data set is dynamically created
+ when it is retrieved for the first time.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REFERENCE_DATA_SET_LIST">
+<h3>REFERENCE_DATA_SET_LIST</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">REFERENCE_DATA_SET_LIST</span></div>
+<div class="block">Reference Data Set List - Jacquard dynamically generates a digital product for each reference data set in this list.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPEN_METADATA_TYPES">
 <h3>OPEN_METADATA_TYPES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">OPEN_METADATA_TYPES</span></div>
-<div class="block">Open Metadata Types</div>
+<div class="block">Open Metadata Types - the type definitions returned by OMF have been enhanced beyond OMRS to
+ directly support this product family.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_TYPES_LIST">
+<h3>DATA_TYPES_LIST</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">DATA_TYPES_LIST</span></div>
+<div class="block">Open Metadata Data Types List</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ATTRIBUTES_LIST">
 <h3>ATTRIBUTES_LIST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ATTRIBUTES_LIST</span></div>
-<div class="block">Attributes List</div>
+<div class="block">Attribute List</div>
 </section>
 </li>
 <li>
@@ -365,10 +404,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PARTY_PLACES_PRODUCTS">
-<h3>PARTY_PLACES_PRODUCTS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">PARTY_PLACES_PRODUCTS</span></div>
-<div class="block">Party, Places, and Products</div>
+<section class="detail" id="ACTOR_PLACES_PRODUCTS">
+<h3>ACTOR_PLACES_PRODUCTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ACTOR_PLACES_PRODUCTS</span></div>
+<div class="block">Actor, Places, and Products</div>
 </section>
 </li>
 <li>
@@ -580,7 +619,7 @@ not permitted.)</div>
 <section class="detail" id="getLicense()">
 <h3>getLicense</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGovernanceDefinition</a></span>&nbsp;<span class="element-name">getLicense</span>()</div>
-<div class="block">Return the license that wil lbe granted to data provided through a subscription mechanism.</div>
+<div class="block">Return the licence that will be granted to data provided through a subscription mechanism.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="ProductDefinition.html#getLicense()">getLicense</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>
@@ -593,7 +632,7 @@ not permitted.)</div>
 <section class="detail" id="getCommunity()">
 <h3>getCommunity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductCommunityDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductCommunityDefinition</a></span>&nbsp;<span class="element-name">getCommunity</span>()</div>
-<div class="block">Return the community that provides the forum to discuss this product.</div>
+<div class="block">Return details of the community that provides the forum to discuss this product.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="ProductDefinition.html#getCommunity()">getCommunity</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>
@@ -697,7 +736,7 @@ not permitted.)</div>
 <section class="detail" id="getConnectorProvider()">
 <h3>getConnectorProvider</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProvider</a></span>&nbsp;<span class="element-name">getConnectorProvider</span>()</div>
-<div class="block">Return the class for the connector provider that supports this product.</div>
+<div class="block">Return the connector provider class that supports this product.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="ProductDefinition.html#getConnectorProvider()">getConnectorProvider</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></dd>

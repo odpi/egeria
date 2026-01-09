@@ -72,16 +72,22 @@ loadScripts(document, 'script');</script>
 <h1 title="Class SubjectAreaProperties" class="title">Class SubjectAreaProperties</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties</a>
-<div class="inheritance"><a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties</a>
+<div class="inheritance"><a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
+<div class="inheritance"><a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
+<div class="inheritance"><a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
+<div class="inheritance"><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties</a>
+<div class="inheritance"><a href="../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SubjectAreaProperties</span>
-<span class="extends-implements">extends <a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></span></div>
+<span class="extends-implements">extends <a href="../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></span></div>
 <div class="block">A subject area defines a group of definitions for governing assets related to a specific topic.  The subject area definition defines
  how the assets related to the topic should be managed.</div>
 </section>
@@ -92,8 +98,8 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></h3>
-<code><a href="../ClassificationBeanProperties.html#typeName">typeName</a></code></div>
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
+<code><a href="../OpenMetadataRootProperties.html#typeName">typeName</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -129,22 +135,42 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return comparison result based on the content of the properties.</div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainIdentifier()" class="member-name-link">getDomainIdentifier</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the identifier of the governance domain that this definition belongs to (0=all).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getScope()" class="member-name-link">getScope</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the organizational scope that this governance definition applies to.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubjectAreaName()" class="member-name-link">getSubjectAreaName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsage()" class="member-name-link">getUsage</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the subject area - this is added to the SubjectArea classification.</div>
+<div class="block">Return details of the usage of this definition.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return hash code for this object</div>
+<div class="block">Return hash code based on properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSubjectAreaName(java.lang.String)" class="member-name-link">setSubjectAreaName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDomainIdentifier(int)" class="member-name-link">setDomainIdentifier</a><wbr>(int&nbsp;domainIdentifier)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the subject area - this is added to the SubjectArea classification.</div>
+<div class="block">Set up the identifier of the governance domain that this definition belongs to (0=all).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setScope(java.lang.String)" class="member-name-link">setScope</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;scope)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the organizational scope that this definition applies to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsage(java.lang.String)" class="member-name-link">setUsage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;usage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the details of the usage of this definition.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -155,11 +181,17 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></h3>
-<code><a href="../ClassificationBeanProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../ClassificationBeanProperties.html#getTypeName()">getTypeName</a>, <a href="../ClassificationBeanProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../ClassificationBeanProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></h3>
+<code><a href="../AuthoredReferenceableProperties.html#getAuthors()">getAuthors</a>, <a href="../AuthoredReferenceableProperties.html#getContentStatus()">getContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#getUserDefinedContentStatus()">getUserDefinedContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setAuthors(java.util.List)">setAuthors</a>, <a href="../AuthoredReferenceableProperties.html#setContentStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus)">setContentStatus</a>, <a href="../AuthoredReferenceableProperties.html#setUserDefinedContentStatus(java.lang.String)">setUserDefinedContentStatus</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a></h3>
-<code><a href="../ClassificationProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../ClassificationProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../ClassificationProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../ClassificationProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
+<code><a href="../ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="../ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="../ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="../ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="../ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="../ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="../ReferenceableProperties.html#getURL()">getURL</a>, <a href="../ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="../ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="../ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="../ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="../ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="../ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
+<code><a href="../OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="../OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a></h3>
+<code><a href="../EntityProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="../EntityProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="../EntityProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="../EntityProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -201,24 +233,68 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getSubjectAreaName()">
-<h3>getSubjectAreaName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSubjectAreaName</span>()</div>
-<div class="block">Return the name of the subject area - this is added to the SubjectArea classification.</div>
+<section class="detail" id="getScope()">
+<h3>getScope</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getScope</span>()</div>
+<div class="block">Return the organizational scope that this governance definition applies to.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string name</dd>
+<dd>String</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setSubjectAreaName(java.lang.String)">
-<h3>setSubjectAreaName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSubjectAreaName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaName)</span></div>
-<div class="block">Set up the name of the subject area - this is added to the SubjectArea classification.</div>
+<section class="detail" id="setScope(java.lang.String)">
+<h3>setScope</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setScope</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;scope)</span></div>
+<div class="block">Set up the organizational scope that this definition applies to.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>subjectAreaName</code> - string name</dd>
+<dd><code>scope</code> - String</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUsage()">
+<h3>getUsage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUsage</span>()</div>
+<div class="block">Return details of the usage of this definition.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>text</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUsage(java.lang.String)">
+<h3>setUsage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUsage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;usage)</span></div>
+<div class="block">Set up the details of the usage of this definition.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>usage</code> - text</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDomainIdentifier()">
+<h3>getDomainIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getDomainIdentifier</span>()</div>
+<div class="block">Return the identifier of the governance domain that this definition belongs to (0=all).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDomainIdentifier(int)">
+<h3>setDomainIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDomainIdentifier</span><wbr><span class="parameters">(int&nbsp;domainIdentifier)</span></div>
+<div class="block">Set up the identifier of the governance domain that this definition belongs to (0=all).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>domainIdentifier</code> - int</dd>
 </dl>
 </section>
 </li>
@@ -229,7 +305,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ClassificationBeanProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></code></dd>
+<dd><code><a href="../collections/CollectionProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../collections/CollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">CollectionProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -239,14 +315,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="equals(java.lang.Object)">
 <h3>equals</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
-<div class="block">Return comparison result based on the content of the properties.</div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ClassificationBeanProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></code></dd>
+<dd><code><a href="../AuthoredReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>objectToCompare</code> - test object</dd>
+<dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
-<dd>result of comparison</dd>
+<dd>boolean result of comparison</dd>
 </dl>
 </section>
 </li>
@@ -254,12 +330,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Return hash code for this object</div>
+<div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../ClassificationBeanProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../ClassificationBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationBeanProperties</a></code></dd>
+<dd><code><a href="../AuthoredReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a></code></dd>
 <dt>Returns:</dt>
-<dd>int hash code</dd>
+<dd>int</dd>
 </dl>
 </section>
 </li>

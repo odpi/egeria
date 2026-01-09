@@ -1,4 +1,5 @@
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
+org.odpi.openmetadata.adapters.connectors
 org.odpi.openmetadata.adapters.connectors.apacheatlas.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc
@@ -17,6 +18,7 @@ org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ffdc
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls
 org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc
+org.odpi.openmetadata.adapters.connectors.controls
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception
@@ -79,6 +81,7 @@ org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc
+org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata
 org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues
 org.odpi.openmetadata.adapters.connectors.organizationinsight.controls
@@ -443,7 +446,6 @@ org.odpi.openmetadata.repositoryservices.archivemanager
 org.odpi.openmetadata.repositoryservices.archiveutilities
 org.odpi.openmetadata.repositoryservices.auditlog
 org.odpi.openmetadata.repositoryservices.clients
-org.odpi.openmetadata.repositoryservices.connectors.auditable
 org.odpi.openmetadata.repositoryservices.connectors.omrstopic
 org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic
 org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore

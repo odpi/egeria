@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">Connector</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block"><p>
- The Connector is the interface for all connector instances.   Connectors are client-side interfaces to assets
+ The Connector is implemented by all connector instances.   Connectors are client-side interfaces to assets
  such as data stores, data sets, APIs, analytical functions.  They handle the communication with the server that
  hosts the assets, along with the communication with the metadata server to serve up metadata (properties) about
  the assets.
@@ -185,7 +185,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatisticCounter(java.lang.String,java.lang.String)" class="member-name-link">getStatisticCounter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;counterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the value for a specific counter statistic.</div>
+<div class="block">Retrieve the value for a specific counter's statistic.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatisticProperty(java.lang.String,java.lang.String)" class="member-name-link">getStatisticProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
@@ -278,12 +278,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
+ <a href="properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span>
+                         throws <span class="exceptions"><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Call made by the ConnectorProvider to initialize the Connector with the base services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connectorInstanceId</code> - unique id for the connector instance   useful for messages etc</dd>
 <dd><code>connection</code> - POJO for the configuration used to create the connector.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - An issue occurred during initialization</dd>
 </dl>
 </section>
 </li>
@@ -321,7 +324,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 <dl class="notes">
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code></dd>
 </dl>
 </section>
@@ -366,7 +369,7 @@ loadScripts(document, 'script');</script>
 <dd><code>counterValue</code> - initial value of the counter</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter name is already in use as a timestamp or property</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter's name is already in use as a timestamp or property</dd>
 </dl>
 </section>
 </li>
@@ -376,13 +379,13 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">incrementStatisticCounter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;counterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                                throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Increment the named counter.  If the counter name is new, it is assumed to be set to zero, resulting in a value of 1.</div>
+<div class="block">Increment the named counter.  If the counter's name is new, it is assumed to be set to zero, resulting in a value of 1.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>counterName</code> - name of counter</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter name is already in use as a timestamp or property</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the counter's name is already in use as a timestamp or property</dd>
 </dl>
 </section>
 </li>
@@ -392,7 +395,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getStatisticCounter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;counterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                         throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Retrieve the value for a specific counter statistic.  If the counter is not known, it is defined in the statistics list with a zero value.</div>
+<div class="block">Retrieve the value for a specific counter's statistic.  If the counter is not known, it is defined in the statistics list with a zero value.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>counterName</code> - name of the counter</dd>
@@ -516,7 +519,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Free up any resources held since the connector is no longer needed.</div>
 <dl class="notes">
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 </dl>
 </section>
 </li>

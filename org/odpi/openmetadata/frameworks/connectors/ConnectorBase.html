@@ -522,7 +522,8 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connectionDetails)</span></div>
+ <a href="properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connectionDetails)</span>
+                throws <span class="exceptions"><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Call made by the ConnectorProvider to initialize the Connector with the base services.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -530,6 +531,8 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <dt>Parameters:</dt>
 <dd><code>connectorInstanceId</code> - unique id for the connector instance   useful for messages etc</dd>
 <dd><code>connectionDetails</code> - POJO for the configuration used to create the connector.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - An issue occurred during initialization</dd>
 </dl>
 </section>
 </li>
@@ -659,7 +662,7 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <dt>Specified by:</dt>
 <dd><code><a href="Connector.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
@@ -1100,7 +1103,7 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <dt>Specified by:</dt>
 <dd><code><a href="Connector.html#disconnect()">disconnect</a></code>&nbsp;in class&nbsp;<code><a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 </dl>
 </section>
 </li>

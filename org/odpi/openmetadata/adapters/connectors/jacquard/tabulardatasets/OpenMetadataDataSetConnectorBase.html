@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="referencedata/ReferenceDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata">ReferenceDataSetConnector</a></code>, <code><a href="referencedata/ReferenceDataSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata">ReferenceDataSetListConnector</a></code>, <code><a href="validmetadatavalues/ValidMetadataValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueDataSetConnector</a></code>, <code><a href="validmetadatavalues/ValidMetadataValueSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueSetListConnector</a></code></dd>
+<dd><code><a href="OpenMetadataRootDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">OpenMetadataRootDataSetConnectorBase</a></code>, <code><a href="openmetadatatypes/OpenMetadataTypesDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes">OpenMetadataTypesDataSetConnector</a></code>, <code><a href="validmetadatavalues/ValidMetadataValueSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueSetListConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenMetadataDataSetConnectorBase</span>
@@ -116,15 +116,18 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-first even-row-color"><code>protected <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
 <div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#columnDescriptions" class="member-name-link">columnDescriptions</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="../../../../frameworks/openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connectorContext" class="member-name-link">connectorContext</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="../../../../frameworks/openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></code></div>
-<div class="col-second even-row-color"><code><a href="#connectorContext" class="member-name-link">connectorContext</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="../productcatalog/ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#productDefinition" class="member-name-link">productDefinition</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
+<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
@@ -141,6 +144,11 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String)" class="member-name-link">OpenMetadataDataSetConnectorBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Constructor used to set up the name of this connector (supplied by the subclasses).</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition)" class="member-name-link">OpenMetadataDataSetConnectorBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="../productcatalog/ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>&nbsp;productDefinition)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Constructor used to set up the name of this connector (supplied by the subclasses).</div>
 </div>
 </div>
@@ -167,18 +175,52 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of column descriptions associated with this data source.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnNumber(java.lang.String)" class="member-name-link">getColumnNumber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnDescriptions(org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition)" class="member-name-link">getColumnDescriptions</a><wbr>(<a href="../productcatalog/ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>&nbsp;productDefinition)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of column descriptions associated with this data source.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnNumber(java.lang.String)" class="member-name-link">getColumnNumber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locate the named column.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorComponentDescription()" class="member-name-link">getConnectorComponentDescription</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorComponentDescription()" class="member-name-link">getConnectorComponentDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the component description  used by this connector in the audit log.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeaderRecordValue(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String,java.util.List)" class="member-name-link">getElementHeaderRecordValue</a><wbr>(<a href="../../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recordValues)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the component description that is used by this connector in the audit log.</div>
+<div class="block">Extracts the record values from the element header based on the specified column name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementRecordValue(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties,java.lang.String,java.util.List)" class="member-name-link">getElementRecordValue</a><wbr>(<a href="../../../../frameworks/openmetadata/properties/OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a>&nbsp;openMetadataRootProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recordValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extracts the record values from the element properties based on the specified column name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecordValues(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)" class="member-name-link">getRecordValues</a><wbr>(<a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;rootElement)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert the root element to a list of column values based on the data spec.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTableDescription()" class="member-name-link">getTableDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the description for this data source.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTableName()" class="member-name-link">getTableName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the table name for this data source.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean,boolean)" class="member-name-link">getTabularColumnDescription</a><wbr>(<a href="../../../../frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a>&nbsp;openMetadataProperty,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTabularColumnDescription(org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition,boolean,boolean)" class="member-name-link">getTabularColumnDescription</a><wbr>(<a href="../productcatalog/ProductDataFieldDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDataFieldDefinition</a>&nbsp;productDataFieldDefinition,
  boolean&nbsp;isNullable,
  boolean&nbsp;isIdentifier)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -187,7 +229,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshCache()" class="member-name-link">refreshCache</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Refresh any cached values,</div>
+<div class="block">Refresh any cached values.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
@@ -225,7 +267,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.connectors.tabulardatasets.<a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></h3>
-<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getRecordCount()">getRecordCount</a>, <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableDescription()">getTableDescription</a>, <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableName()">getTableName</a>, <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#readRecord(long)">readRecord</a></code></div>
+<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getRecordCount()">getRecordCount</a>, <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#readRecord(long)">readRecord</a></code></div>
 </section>
 </li>
 </ul>
@@ -256,9 +298,15 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="columnDescriptions">
-<h3>columnDescriptions</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</span>&nbsp;<span class="element-name">columnDescriptions</span></div>
+<section class="detail" id="propertyHelper">
+<h3>propertyHelper</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="productDefinition">
+<h3>productDefinition</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../productcatalog/ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a></span>&nbsp;<span class="element-name">productDefinition</span></div>
 </section>
 </li>
 </ul>
@@ -273,6 +321,18 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="&lt;init&gt;(java.lang.String)">
 <h3>OpenMetadataDataSetConnectorBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataDataSetConnectorBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</span></div>
+<div class="block">Constructor used to set up the name of this connector (supplied by the subclasses).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connectorName</code> - name of the connector</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition)">
+<h3>OpenMetadataDataSetConnectorBase</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataDataSetConnectorBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="../productcatalog/ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>&nbsp;productDefinition)</span></div>
 <div class="block">Constructor used to set up the name of this connector (supplied by the subclasses).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -306,7 +366,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getConnectorComponentDescription()">
 <h3>getConnectorComponentDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></span>&nbsp;<span class="element-name">getConnectorComponentDescription</span>()</div>
-<div class="block">Return the component description that is used by this connector in the audit log.</div>
+<div class="block">Return the component description  used by this connector in the audit log.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html#getConnectorComponentDescription()">getConnectorComponentDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code></dd>
@@ -341,7 +401,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Overrides:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
@@ -351,7 +411,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3>refreshCache</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshCache</span>()
                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Refresh any cached values,</div>
+<div class="block">Refresh any cached values.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - unable to refresh</dd>
@@ -359,19 +419,68 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean,boolean)">
+<section class="detail" id="getTabularColumnDescription(org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition,boolean,boolean)">
 <h3>getTabularColumnDescription</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a></span>&nbsp;<span class="element-name">getTabularColumnDescription</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a>&nbsp;openMetadataProperty,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a></span>&nbsp;<span class="element-name">getTabularColumnDescription</span><wbr><span class="parameters">(<a href="../productcatalog/ProductDataFieldDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDataFieldDefinition</a>&nbsp;productDataFieldDefinition,
  boolean&nbsp;isNullable,
  boolean&nbsp;isIdentifier)</span></div>
 <div class="block">Convert an open metadata property enum into a tabular column description.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>openMetadataProperty</code> - property enum</dd>
-<dd><code>isNullable</code> - is the field nullable</dd>
+<dd><code>productDataFieldDefinition</code> - property enum</dd>
+<dd><code>isNullable</code> - is the field nullable?</dd>
 <dd><code>isIdentifier</code> - is the filed all or part of the unique identifier for a row/record</dd>
 <dt>Returns:</dt>
 <dd>tabular column description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getColumnDescriptions(org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition)">
+<h3>getColumnDescriptions</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</span>&nbsp;<span class="element-name">getColumnDescriptions</span><wbr><span class="parameters">(<a href="../productcatalog/ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductDefinition</a>&nbsp;productDefinition)</span>
+                                                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the list of column descriptions associated with this data source.  The information
+ should be sufficient to define the schema in a target data store.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a list of column descriptions or null if not available.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTableName()">
+<h3>getTableName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTableName</span>()
+                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the table name for this data source.  This is in canonical name format where each word in the name
+ should be capitalized, with spaces between the words.
+ This format allows easy translation between different naming conventions.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableName()">getTableName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - no product definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTableDescription()">
+<h3>getTableDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTableDescription</span>()
+                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the description for this data source.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableDescription()">getTableDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - no product definition</dd>
 </dl>
 </section>
 </li>
@@ -388,7 +497,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Returns:</dt>
 <dd>a list of column descriptions or null if not available.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - no product definition</dd>
 </dl>
 </section>
 </li>
@@ -421,7 +530,57 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Parameters:</dt>
 <dd><code>columnDescriptions</code> - a list of column descriptions</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementHeaderRecordValue(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String,java.util.List)">
+<h3>getElementHeaderRecordValue</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getElementHeaderRecordValue</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recordValues)</span></div>
+<div class="block">Extracts the record values from the element header based on the specified column name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elementHeader</code> - element header containing the record values</dd>
+<dd><code>columnName</code> - name of the column to extract the value for</dd>
+<dd><code>recordValues</code> - list to store the extracted record values</dd>
+<dt>Returns:</dt>
+<dd>true if the value was successfully extracted, false otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementRecordValue(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties,java.lang.String,java.util.List)">
+<h3>getElementRecordValue</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getElementRecordValue</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/properties/OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a>&nbsp;openMetadataRootProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recordValues)</span></div>
+<div class="block">Extracts the record values from the element properties based on the specified column name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataRootProperties</code> - properties object</dd>
+<dd><code>columnName</code> - name of column to extract</dd>
+<dd><code>recordValues</code> - array of values to append to</dd>
+<dt>Returns:</dt>
+<dd>true if the value was successfully extracted, false otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRecordValues(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">
+<h3>getRecordValues</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRecordValues</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;rootElement)</span>
+                                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Convert the root element to a list of column values based on the data spec.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rootElement</code> - valid value that is a member of the valid value set.</dd>
+<dt>Returns:</dt>
+<dd>list of column value</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - an unexpected exception has occurred</dd>
 </dl>
 </section>
 </li>

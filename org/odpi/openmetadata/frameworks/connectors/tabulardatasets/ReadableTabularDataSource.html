@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionConnector</a></code>, <code><a href="../../../adapters/connectors/datastore/csvfile/CSVTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/OpenMetadataDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">OpenMetadataDataSetConnectorBase</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/referencedata/ReferenceDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata">ReferenceDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/referencedata/ReferenceDataSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata">ReferenceDataSetListConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/validmetadatavalues/ValidMetadataValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/validmetadatavalues/ValidMetadataValueSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueSetListConnector</a></code></dd>
+<dd><code><a href="../../../adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionConnector</a></code>, <code><a href="../../../adapters/connectors/datastore/csvfile/CSVTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/DynamicOpenMetadataDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">DynamicOpenMetadataDataSetConnectorBase</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/OpenMetadataDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">OpenMetadataDataSetConnectorBase</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/OpenMetadataRootDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets">OpenMetadataRootDataSetConnectorBase</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/openmetadatatypes/OpenMetadataTypesDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes">OpenMetadataTypesDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/referencedata/ReferenceDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata">ReferenceDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/referencedata/ReferenceDataSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata">ReferenceDataSetListConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/validmetadatavalues/ValidMetadataValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/jacquard/tabulardatasets/validmetadatavalues/ValidMetadataValueSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues">ValidMetadataValueSetListConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">ReadableTabularDataSource</span></div>
@@ -109,7 +109,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>long</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRecordCount()" class="member-name-link">getRecordCount</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the number of records in the data source.</div>
+<div class="block">Return the record count in the data source.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTableDescription()" class="member-name-link">getTableDescription</a>()</code></div>
@@ -145,12 +145,12 @@ loadScripts(document, 'script');</script>
 <h3>getRecordCount</h3>
 <div class="member-signature"><span class="return-type">long</span>&nbsp;<span class="element-name">getRecordCount</span>()
              throws <span class="exceptions"><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Return the number of records in the data source.</div>
+<div class="block">Return the record count in the data source.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>count</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
+<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
 </dl>
 </section>
 </li>
@@ -166,7 +166,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>string</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
+<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
 </dl>
 </section>
 </li>
@@ -180,7 +180,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>string</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
+<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
 </dl>
 </section>
 </li>
@@ -197,7 +197,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>a list of column descriptions or null if not available.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
+<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
 </dl>
 </section>
 </li>
@@ -229,7 +229,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>list of  values (as strings) where each string is the value from a column.  The order is the same as the columns</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data.</dd>
+<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem occurred accessing the data.</dd>
 </dl>
 </section>
 </li>

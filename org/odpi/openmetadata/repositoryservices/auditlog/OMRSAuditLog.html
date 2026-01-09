@@ -163,39 +163,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clone request is used to create an audit log for a component outside of OMRS.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createNewAuditLog(org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent)" class="member-name-link">createNewAuditLog</a><wbr>(<a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a>&nbsp;reportingComponent)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OMRSAuditLogReport.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogReport</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFullReport()" class="member-name-link">getFullReport</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Constructor used to create the root audit log for OMRS</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OMRSAuditLogReport.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogReport</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFullReport()" class="member-name-link">getFullReport</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a full report for the OMRS Audit log.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logException(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Exception)" class="member-name-link">logException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessageId,
- <a href="OMRSAuditLogRecordSeverity.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a>&nbsp;severity,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;additionalInformation,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;caughtException)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Log details of an unexpected exception detected by the open metadata modules.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logRecord(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">logRecord</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessageId,
- <a href="OMRSAuditLogRecordSeverity.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a>&nbsp;severity,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;additionalInformation,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Log an audit log record for an event, decision, error, or exception detected by the open
- metadata services.</div>
 </div>
 </div>
 </div>
@@ -287,78 +258,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createNewAuditLog(org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent)">
-<h3>createNewAuditLog</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a></span>&nbsp;<span class="element-name">createNewAuditLog</span><wbr><span class="parameters">(<a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a>&nbsp;reportingComponent)</span></div>
-<div class="block">Constructor used to create the root audit log for OMRS</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>reportingComponent</code> - information about the component that will use this instance of the audit log.</dd>
-<dt>Returns:</dt>
-<dd>new logging destination</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="logRecord(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<h3>logRecord</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logRecord</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessageId,
- <a href="OMRSAuditLogRecordSeverity.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a>&nbsp;severity,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;additionalInformation,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction)</span></div>
-<div class="block">Log an audit log record for an event, decision, error, or exception detected by the open
- metadata services.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>actionDescription</code> - description of the activity creating the audit log record</dd>
-<dd><code>logMessageId</code> - id for the audit log record</dd>
-<dd><code>severity</code> - is this an event, decision, error or exception?</dd>
-<dd><code>logMessage</code> - description of the audit log record including specific resources involved</dd>
-<dd><code>additionalInformation</code> - additional data to help resolve issues of verify behavior</dd>
-<dd><code>systemAction</code> - the related action taken by the OMRS.</dd>
-<dd><code>userAction</code> - details of any action that an administrator needs to take.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="logException(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Exception)">
-<h3>logException</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logException</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessageId,
- <a href="OMRSAuditLogRecordSeverity.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a>&nbsp;severity,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessage,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;additionalInformation,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;caughtException)</span></div>
-<div class="block">Log details of an unexpected exception detected by the open metadata modules.  These exceptions typically mean that the local
- server is not configured correctly, or there is a logic error in the code.  When exceptions are logged, it is
- important that they are investigated and the cause corrected since the local repository is not able to operate
- as a proper peer in the open metadata repository cohort whilst these conditions persist.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>actionDescription</code> - description of the activity in progress when the error occurred</dd>
-<dd><code>logMessageId</code> - id for the type of exception caught</dd>
-<dd><code>severity</code> - severity of the error</dd>
-<dd><code>logMessage</code> - description of the exception including specific resources involved</dd>
-<dd><code>additionalInformation</code> - additional data to help resolve issues of verify behavior</dd>
-<dd><code>systemAction</code> - the action taken by the OMRS in response to the error.</dd>
-<dd><code>userAction</code> - details of any action that an administrator needs to take.</dd>
-<dd><code>caughtException</code> - the original exception.</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getFullReport()">
 <h3>getFullReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OMRSAuditLogReport.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogReport</a></span>&nbsp;<span class="element-name">getFullReport</span>()</div>
 <div class="block">Return a full report for the OMRS Audit log.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>details of the originator, children and destinations</dd>
+<dd>details of the originator, children, and destinations</dd>
 </dl>
 </section>
 </li>

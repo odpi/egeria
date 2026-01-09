@@ -74,8 +74,10 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProvider</a>
 <div class="inheritance"><a href="../connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase</a>
+<div class="inheritance"><a href="../connectors/OpenConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase</a>
 <div class="inheritance"><a href="../opengovernance/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider</div>
+</div>
 </div>
 </div>
 </div>
@@ -134,6 +136,12 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">SurveyActionServiceProvider</a>()</code></div>
 <div class="col-last even-row-color">
 <div class="block">Base provider for all survey action services.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition,java.lang.String,java.util.List)" class="member-name-link">SurveyActionServiceProvider</a><wbr>(<a href="../connectors/OpenConnectorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.connectors">OpenConnectorDefinition</a>&nbsp;openConnectorDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recognizedConfigurationPropertyNames)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Constructor for an open connector provider.</div>
 </div>
 </div>
 </section>
@@ -210,6 +218,21 @@ loadScripts(document, 'script');</script>
 <h3>SurveyActionServiceProvider</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionServiceProvider</span>()</div>
 <div class="block">Base provider for all survey action services.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition,java.lang.String,java.util.List)">
+<h3>SurveyActionServiceProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionServiceProvider</span><wbr><span class="parameters">(<a href="../connectors/OpenConnectorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.connectors">OpenConnectorDefinition</a>&nbsp;openConnectorDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;recognizedConfigurationPropertyNames)</span></div>
+<div class="block">Constructor for an open connector provider.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openConnectorDescription</code> - connector definition</dd>
+<dd><code>connectorClassName</code> - connector class name</dd>
+<dd><code>recognizedConfigurationPropertyNames</code> - list of recognized configuration property names</dd>
+</dl>
 </section>
 </li>
 </ul>

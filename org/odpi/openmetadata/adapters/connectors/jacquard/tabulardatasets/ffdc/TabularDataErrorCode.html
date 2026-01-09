@@ -123,31 +123,39 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_ELEMENT" class="member-name-link">INVALID_ELEMENT</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">EGERIA-CONNECTOR-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CLIENT_USER_ID" class="member-name-link">NULL_CLIENT_USER_ID</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">EGERIA-CONNECTOR-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_RECORD" class="member-name-link">NULL_RECORD</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_PRODUCT_DEFINITION" class="member-name-link">NULL_PRODUCT_DEFINITION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">EGERIA-CONNECTOR-400-004 - Reference Data Connector {0} has no data at record {1}.</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_SERVER_NAME" class="member-name-link">NULL_SERVER_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NULL_RECORD" class="member-name-link">NULL_RECORD</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">EGERIA-CONNECTOR-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-004 - Reference Data Connector {0} has no data at record {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_SERVER_NAME" class="member-name-link">NULL_SERVER_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">EGERIA-CONNECTOR-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">EGERIA-CONNECTOR-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">REFERENCE-DATA-CONNECTORS-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNMAPPED_COLUMN" class="member-name-link">UNMAPPED_COLUMN</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">REFERENCE-DATA-CONNECTORS-500-003 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#WRONG_NUMBER_OF_COLUMNS" class="member-name-link">WRONG_NUMBER_OF_COLUMNS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">EGERIA-CONNECTOR-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.</div>
 </div>
 </div>
 </section>
@@ -213,49 +221,63 @@ the order they are declared.</div>
 <section class="detail" id="NULL_URL">
 <h3>NULL_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_URL</span></div>
-<div class="block">EGERIA-CONNECTOR-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_SERVER_NAME">
 <h3>NULL_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_SERVER_NAME</span></div>
-<div class="block">EGERIA-CONNECTOR-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CLIENT_USER_ID">
 <h3>NULL_CLIENT_USER_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_CLIENT_USER_ID</span></div>
-<div class="block">EGERIA-CONNECTOR-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_RECORD">
 <h3>NULL_RECORD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_RECORD</span></div>
-<div class="block">EGERIA-CONNECTOR-400-004 - Reference Data Connector {0} has no data at record {1}.  The data set size is {2}</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-004 - Reference Data Connector {0} has no data at record {1}.  The data set size is {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_NUMBER_OF_COLUMNS">
 <h3>WRONG_NUMBER_OF_COLUMNS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">WRONG_NUMBER_OF_COLUMNS</span></div>
-<div class="block">EGERIA-CONNECTOR-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">EGERIA-CONNECTOR-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_ELEMENT">
 <h3>INVALID_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">INVALID_ELEMENT</span></div>
-<div class="block">EGERIA-CONNECTOR-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">REFERENCE-DATA-CONNECTORS-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNMAPPED_COLUMN">
+<h3>UNMAPPED_COLUMN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">UNMAPPED_COLUMN</span></div>
+<div class="block">REFERENCE-DATA-CONNECTORS-500-003 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_PRODUCT_DEFINITION">
+<h3>NULL_PRODUCT_DEFINITION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_PRODUCT_DEFINITION</span></div>
+<div class="block">REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}</div>
 </section>
 </li>
 </ul>

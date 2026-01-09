@@ -105,13 +105,29 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#CANONICAL_NAME" class="member-name-link">CANONICAL_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Canonical name - name used for the product and table name.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IDENTIFIER_PROPERTY_VALUE" class="member-name-link">IDENTIFIER_PROPERTY_VALUE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Value of the identifier property to process.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#MAX_PAGE_SIZE" class="member-name-link">MAX_PAGE_SIZE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Maximum number of values to retrieve from the metadata store in one call.</div>
+<div class="block">Maximum values to retrieve from the metadata store in one call.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PRODUCT_DESCRIPTION" class="member-name-link">PRODUCT_DESCRIPTION</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Description for the digital product.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier of a server running on the platform.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#STARTING_ELEMENT_GUID" class="member-name-link">STARTING_ELEMENT_GUID</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Unique identifier of the element that is supplying metadata.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#TOP_LEVEL_GUID" class="member-name-link">TOP_LEVEL_GUID</a></code></div>
 <div class="col-last even-row-color">
@@ -124,14 +140,6 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#TOP_LEVEL_TEAM_GUID" class="member-name-link">TOP_LEVEL_TEAM_GUID</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Unique identifier of the top-level team to supply department/team reference information.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_PROPERTY_NAME" class="member-name-link">VALID_METADATA_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Name of the open metadata property that has valid values to turn into a product.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#VALID_VALUE_SET_GUID" class="member-name-link">VALID_VALUE_SET_GUID</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Unique identifier of the valid value set that is supplying metadata.</div>
 </div>
 </div>
 </section>
@@ -265,24 +273,38 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="VALID_VALUE_SET_GUID">
-<h3>VALID_VALUE_SET_GUID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">VALID_VALUE_SET_GUID</span></div>
-<div class="block">Unique identifier of the valid value set that is supplying metadata.</div>
+<section class="detail" id="STARTING_ELEMENT_GUID">
+<h3>STARTING_ELEMENT_GUID</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">STARTING_ELEMENT_GUID</span></div>
+<div class="block">Unique identifier of the element that is supplying metadata.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="VALID_METADATA_PROPERTY_NAME">
-<h3>VALID_METADATA_PROPERTY_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">VALID_METADATA_PROPERTY_NAME</span></div>
-<div class="block">Name of the open metadata property that has valid values to turn into a product.</div>
+<section class="detail" id="IDENTIFIER_PROPERTY_VALUE">
+<h3>IDENTIFIER_PROPERTY_VALUE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">IDENTIFIER_PROPERTY_VALUE</span></div>
+<div class="block">Value of the identifier property to process.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CANONICAL_NAME">
+<h3>CANONICAL_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">CANONICAL_NAME</span></div>
+<div class="block">Canonical name - name used for the product and table name.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PRODUCT_DESCRIPTION">
+<h3>PRODUCT_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">PRODUCT_DESCRIPTION</span></div>
+<div class="block">Description for the digital product.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MAX_PAGE_SIZE">
 <h3>MAX_PAGE_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ReferenceDataConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">ReferenceDataConfigurationProperty</a></span>&nbsp;<span class="element-name">MAX_PAGE_SIZE</span></div>
-<div class="block">Maximum number of values to retrieve from the metadata store in one call.</div>
+<div class="block">Maximum values to retrieve from the metadata store in one call.</div>
 </section>
 </li>
 <li>
