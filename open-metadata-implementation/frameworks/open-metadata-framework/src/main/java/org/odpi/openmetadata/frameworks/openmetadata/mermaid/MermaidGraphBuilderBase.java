@@ -377,7 +377,6 @@ public class MermaidGraphBuilderBase
 
             addClassificationToGraph(elementHeader.getGUID(), elementHeader.getAnchor());
             addClassificationToGraph(elementHeader.getGUID(), elementHeader.getZoneMembership());
-            addClassificationToGraph(elementHeader.getGUID(), elementHeader.getSubjectArea());
             addClassificationToGraph(elementHeader.getGUID(), elementHeader.getImpact());
             addClassificationToGraph(elementHeader.getGUID(), elementHeader.getCriticality());
             addClassificationToGraph(elementHeader.getGUID(), elementHeader.getConfidentiality());

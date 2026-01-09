@@ -3,37 +3,24 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.*;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.DynamicOpenMetadataDataSetProviderBase;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueDataSetProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * ValidValueDataSetProvider is the connector provider for the ValidValueDataSet connector that manages the members of
  * a valid values set as a tabular data set.
  */
-public class ReferenceDataSetProvider extends ConnectorProviderBase
+public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProviderBase
 {
-    /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 707;
-
-    /*
-     * Unique identifier for the connector type.
-     */
-    private static final String connectorTypeGUID      = "2755cb53-91c3-472f-9f3a-2f6f8269fb7e";
-
-    /*
-     * Descriptive information about the connector for the connector type and audit log.
-     */
-    private static final String connectorQualifiedName = "Egeria:ResourceConnector:TabularDataSet:ReferenceDataSet";
-    private static final String connectorDisplayName   = "Reference Data Set Tabular Data Set Connector";
-    private static final String connectorDescription   = "Connector manages an open metadata reference data set as if it was a tabular data set.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/tabular-data-set/reference-data-set/";
-
-
     /*
      * Class of the connector.
      */
@@ -46,36 +33,73 @@ public class ReferenceDataSetProvider extends ConnectorProviderBase
      */
     public ReferenceDataSetProvider()
     {
-        super();
+        super(EgeriaOpenConnectorDefinition.REFERENCE_DATA_TABULAR_DATA_SET,
+              connectorClassName,
+              List.of(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
+                      ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name,
+                      ReferenceDataConfigurationProperty.CANONICAL_NAME.name,
+                      ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.name));
+    }
 
+    /**
+     * Retrieve the product definition base on a supplied identifier.
+     *
+     * @param referenceDataSetGUID unique identifier for the reference data set
+     * @param identifier           unique identifier for the product - stored in open metadata identifier property
+     * @param canonicalName        name used for the product and table name
+     * @param description          description of the product
+     * @return product definition
+     */
+    public ProductDefinition getProductDefinition(String referenceDataSetGUID,
+                                                  String identifier,
+                                                  String canonicalName,
+                                                  String description)
+    {
         /*
-         * Set up the class name of the connector that this provider creates.
+         * Create a dynamic product definition and ass it to the open metadata ecosystem.
          */
-        super.setConnectorClassName(connectorClassName);
+        Map<String, Object> configurationProperties = new HashMap<>();
 
-        /*
-         * Set up the connector type that should be included in a connection used to configure this connector.
-         */
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorQualifiedName);
-        connectorType.setDisplayName(connectorDisplayName);
-        connectorType.setDescription(connectorDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
+        configurationProperties.put(ReferenceDataConfigurationProperty.STARTING_ELEMENT_GUID.name, referenceDataSetGUID);
+        configurationProperties.put(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name, identifier);
+        configurationProperties.put(ReferenceDataConfigurationProperty.CANONICAL_NAME.name, canonicalName);
+        configurationProperties.put(ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name, description);
 
-        super.connectorTypeBean = connectorType;
+        return new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                         new ProductDefinition[]{ProductDefinitionEnum.REFERENCE_DATA_SETS},
+                                         "Reference Data Set: " + identifier,
+                                         identifier,
+                                         null,
+                                         canonicalName,
+                                         description,
+                                         ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                                         new ProductSubscriptionDefinition[]{
+                                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                         canonicalName,
+                                         new ProductDataFieldDefinition[]{
+                                                 ProductDataFieldDefinition.GUID},
+                                         new ProductDataFieldDefinition[]{
+                                                 ProductDataFieldDefinition.CREATE_TIME,
+                                                 ProductDataFieldDefinition.UPDATE_TIME,
+                                                 ProductDataFieldDefinition.QUALIFIED_NAME,
+                                                 ProductDataFieldDefinition.IDENTIFIER,
+                                                 ProductDataFieldDefinition.DISPLAY_NAME,
+                                                 ProductDataFieldDefinition.DESCRIPTION,
+                                                 ProductDataFieldDefinition.CATEGORY,
+                                                 ProductDataFieldDefinition.NAMESPACE,
+                                                 ProductDataFieldDefinition.PREFERRED_VALUE,
+                                                 ProductDataFieldDefinition.IS_CASE_SENSITIVE,
+                                                 ProductDataFieldDefinition.DATA_TYPE,
+                                                 ProductDataFieldDefinition.SCOPE,
+                                                 ProductDataFieldDefinition.USAGE},
+                                         OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                         "Data set",
+                                         new ValidMetadataValueDataSetProvider(),
+                                         configurationProperties,
+                                         "Reference Data Set: " + identifier); // Used in Jacquard's harvestReferenceDataSets method() - change in both places
 
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
-
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorQualifiedName);
-        componentDescription.setComponentDescription(connectorDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
     }
 }

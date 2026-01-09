@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * Ensures CSVFileStoreProvider correctly initializes its superclass.
@@ -16,12 +16,12 @@ public class CSVFileStoreProviderTest
     {
         CSVFileStoreProvider provider = new CSVFileStoreProvider();
 
-        assertTrue(provider.getConnectorClassName().equals(CSVFileStoreConnector.class.getName()));
+        assertEquals(CSVFileStoreConnector.class.getName(), provider.getConnectorClassName());
 
         ConnectorType connectorTypeDetails = provider.getConnectorType();
 
-        assertTrue(connectorTypeDetails != null);
+        assertNotNull(connectorTypeDetails);
 
-        assertTrue(connectorTypeDetails.getConnectorProviderClassName().equals(CSVFileStoreProvider.class.getName()));
+        assertEquals(CSVFileStoreProvider.class.getName(), connectorTypeDetails.getConnectorProviderClassName());
     }
 }

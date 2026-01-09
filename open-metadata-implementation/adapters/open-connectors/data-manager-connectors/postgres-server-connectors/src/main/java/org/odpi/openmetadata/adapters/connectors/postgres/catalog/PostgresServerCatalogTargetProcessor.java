@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -73,7 +73,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -505,7 +505,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public  void disconnect() throws ConnectorCheckedException

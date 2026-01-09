@@ -1007,7 +1007,7 @@ public class ClassificationManagerResource
                                        @PathVariable String         actionGUID,
                                        @PathVariable String         actorGUID,
                                        @RequestBody (required = false)
-                                       UpdateRelationshipRequestBody requestBody)
+                                       NewRelationshipRequestBody requestBody)
     {
         return restAPI.reassignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
     }

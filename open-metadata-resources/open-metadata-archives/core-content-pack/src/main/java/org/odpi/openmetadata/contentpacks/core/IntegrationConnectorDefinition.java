@@ -6,6 +6,7 @@ package org.odpi.openmetadata.contentpacks.core;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
@@ -21,13 +22,12 @@ import org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenm
 import org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.HarvestSurveysProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
-import org.odpi.openmetadata.adapters.connectors.jacquard.OpenMetadataProductsHarvesterProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.JacquardIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
@@ -470,7 +470,7 @@ public enum IntegrationConnectorDefinition
     PRODUCT_HARVESTER("8a3d91da-05a0-49ca-83e0-77f5c48bdf0c",
                       "JacquardHarvesterIntegrationConnector",
                       "Defines and maintains digital products based on the content of the open metadata repositories.",
-                      OpenMetadataProductsHarvesterProvider.class.getName(),
+                      JacquardIntegrationConnectorProvider.class.getName(),
                       "JacquardHarvester",
                       "jacquardnpa",
                       null,

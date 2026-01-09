@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.integration.connectors;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition;
+import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 
@@ -13,12 +15,12 @@ import java.util.List;
 /**
  * The IntegrationConnectorProvider provides a base class for the connector provider supporting
  * Integration Connectors.
- * It extends ConnectorProviderBase which does the creation of connector instances.  The subclasses of
+ * It extends ConnectorProviderBase, which does the creation of connector instances.  The subclasses of
  * IntegrationConnectorProvider must initialize ConnectorProviderBase with the Java class
  * name of their Connector implementation (by calling super.setConnectorClassName(className)).
  * Then the connector provider will work.
  */
-public class IntegrationConnectorProvider extends ConnectorProviderBase
+public class IntegrationConnectorProvider extends OpenConnectorProviderBase
 {
     /**
      * How often should the integration connector be called to refresh the metadata?
@@ -50,13 +52,29 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
 
 
     /**
-     * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * discovery service implementation.
+     * Constructor where subclass sets up the connector provider.
      */
     public IntegrationConnectorProvider()
     {
+        super();
+    }
+
+
+    /**
+     * Constructor for an open connector provider.
+     *
+     * @param openConnectorDescription connector definition
+     * @param connectorClassName       connector class name
+     * @param recognizedConfigurationPropertyNames list of recognized configuration property names
+     */
+    public IntegrationConnectorProvider(OpenConnectorDefinition openConnectorDescription,
+                                        String                  connectorClassName,
+                                        List<String>            recognizedConfigurationPropertyNames)
+    {
+        super(openConnectorDescription, connectorClassName, recognizedConfigurationPropertyNames);
+
         /*
-         * Set up the component description used in the connector's audit log messages.
+         * Set up the default component description used in the connector's audit log messages.
          */
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
@@ -66,13 +84,16 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
-        super.setConnectorComponentDescription(componentDescription);
+        if (super.connectorComponentDescription == null)
+        {
+            super.connectorComponentDescription = componentDescription;
+        }
     }
 
 
     /**
-     * Return the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
-     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
+     * Return the recommended minutes between each call to the connector to refresh the metadata.  Zero means that refresh
+     * is only called at server start-up and whenever the refresh REST API request is made to the integration daemon.
      * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
      *
      * @return minute count
@@ -84,9 +105,9 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
 
 
     /**
-     * Set up the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
-     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
-     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     * Set up the recommended minutes between each call to the connector to refresh the metadata.  Zero means that refresh
+     * is only called at server start-up and whenever the refresh REST API request is made to the integration daemon.
+     * If the refresh time interval is greater than zero, then additional calls to refresh are added spaced out by the refresh time interval.
      *
      * @param refreshTimeInterval minute count
      */

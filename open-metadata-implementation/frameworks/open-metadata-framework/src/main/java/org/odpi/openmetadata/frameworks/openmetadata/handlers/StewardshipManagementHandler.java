@@ -476,44 +476,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     }
 
 
-
-    /**
-     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
-     *
-     * @param userId calling user
-     * @param subjectAreaName unique identifier for the subject area
-     * @param queryOptions multiple options to control the query
-
-     *
-     * @return list of element stubs
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<OpenMetadataRootElement> getMembersOfSubjectArea(String              userId,
-                                                                String              subjectAreaName,
-                                                                QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
-
-    {
-        final String methodName = "getMembersOfSubjectArea";
-
-        final String nameParameterName = "subjectAreaName";
-
-        propertyHelper.validateGUID(subjectAreaName, nameParameterName, methodName);
-
-        return this.getElementsByClassification(userId,
-                                                OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
-                                                subjectAreaName,
-                                                Collections.singletonList(OpenMetadataProperty.SUBJECT_AREA_NAME.name),
-                                                queryOptions,
-                                                methodName);
-    }
-
-
-
     /**
      * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
      *
@@ -2067,7 +2029,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param userId    calling user
      * @param actionGUID  unique identifier of the action
      * @param actorGUID actor to assign the action to
-     * @param updateOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties the properties of the relationship
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -2076,7 +2038,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     public void reassignAction(String                    userId,
                                String                    actionGUID,
                                String                    actorGUID,
-                               UpdateOptions             updateOptions,
+                               MakeAnchorOptions         makeAnchorOptions,
                                AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
@@ -2093,7 +2055,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                   actionGUID,
                                                                                                   2,
                                                                                                   OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                                                  new QueryOptions(updateOptions));
+                                                                                                  new QueryOptions(makeAnchorOptions));
 
         if ((assignedActors != null) && (assignedActors.getElementList() != null))
         {
@@ -2101,7 +2063,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
             {
                 openMetadataClient.deleteRelationshipInStore(userId,
                                                              assignedActor.getRelationshipGUID(),
-                                                             new DeleteOptions(updateOptions));
+                                                             new DeleteOptions(makeAnchorOptions));
             }
         }
 
@@ -2109,7 +2071,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                         actorGUID,
                                                         actionGUID,
-                                                        new MakeAnchorOptions(updateOptions),
+                                                        makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 

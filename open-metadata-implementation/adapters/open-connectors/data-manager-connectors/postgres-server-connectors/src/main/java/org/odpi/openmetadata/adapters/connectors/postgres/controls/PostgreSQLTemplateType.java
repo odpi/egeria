@@ -19,50 +19,50 @@ import java.util.Map;
  */
 public enum PostgreSQLTemplateType implements TemplateDefinition
 {
-    POSTGRES_SERVER_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
-                             "Create a " + PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName() + " asset.",
-                             PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
-                           false,
+    POSTGRES_SERVER_TEMPLATE(org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
+                             "Create a " + org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName() + " asset.",
+                             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+                             false,
                              "542134e6-b9ce-4dce-8aef-22e8daf34fdb",
-                           PostgresDeployedImplementationType.POSTGRESQL_SERVER,
-                           PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
-                           null),
+                             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_SERVER,
+                             PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
+                             null),
 
-    POSTGRES_DATABASE_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
-                               "Create a " + PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName() + " asset.",
-                               PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+    POSTGRES_DATABASE_TEMPLATE(org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+                               "Create a " + org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName() + " asset.",
+                               org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
                                false,
                                "3d398b3f-7ae6-4713-952a-409f3dea8520",
-                               PostgresDeployedImplementationType.POSTGRESQL_DATABASE,
+                               org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE,
                                PostgresPlaceholderProperty.getPostgresDatabasePlaceholderPropertyTypes(),
                                null),
 
-    POSTGRES_SCHEMA_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
-                             "Create a " + PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName() + " asset.",
-                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
+    POSTGRES_SCHEMA_TEMPLATE(org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
+                             "Create a " + org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName() + " asset.",
+                             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
                              false,
                              "82a5417c-d882-4271-8444-4c6a996a8bfc",
-                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
+                             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                              PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
                              null),
 
-    POSTGRES_TABULAR_DATA_SET_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getDeployedImplementationType(),
-                                       "Create a " + PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
-                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName(),
+    POSTGRES_TABULAR_DATA_SET_TEMPLATE(org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getDeployedImplementationType(),
+                                       "Create a " + org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
+                                       org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName(),
                                        false,
                                        "1e76e109-61a5-42d8-a29b-86cb675fc750",
-                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET,
+                                       org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET,
                                        PostgresPlaceholderProperty.getPostgresTablePlaceholderPropertyTypes(),
                                        null),
 
-    POSTGRES_TABULAR_DATA_SET_COLLECTION_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType(),
-                                       "Create a " + PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName() + " asset.",
-                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName(),
-                                       false,
-                                       "3f9a0ab3-072c-4cb1-a14f-6e0492e00dd7",
-                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION,
-                                       PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
-                                       null),
+    POSTGRES_TABULAR_DATA_SET_COLLECTION_TEMPLATE(org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType(),
+                                                  "Create a " + org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName() + " asset.",
+                                                  org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName(),
+                                                  false,
+                                                  "3f9a0ab3-072c-4cb1-a14f-6e0492e00dd7",
+                                                  org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION,
+                                                  PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
+                                                  null),
     ;
 
 
@@ -98,7 +98,7 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
      */
     private final Map<String, String> otherPropertyValues;
 
-    private final PostgresDeployedImplementationType deployedImplementationType;
+    private final org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType deployedImplementationType;
 
     private final List<PlaceholderPropertyType>        placeholderPropertyTypes;
 
@@ -120,7 +120,7 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
                            String                             typeName,
                            boolean                            required,
                            String                             defaultTemplateGUID,
-                           PostgresDeployedImplementationType deployedImplementationType,
+                           org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType deployedImplementationType,
                            List<PlaceholderPropertyType>      placeholderPropertyTypes,
                            Map<String, String>                otherPropertyValues)
     {

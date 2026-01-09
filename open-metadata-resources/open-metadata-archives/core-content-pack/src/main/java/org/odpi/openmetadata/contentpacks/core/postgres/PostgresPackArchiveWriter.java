@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.contentpacks.core.postgres;
 
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionBlueprint;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionComponentActor;
@@ -71,7 +71,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
-         * Integration Connector Types will link to deployedImplementationType valid value element.
+         * Integration Connector Types will link to the deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
         archiveHelper.addConnectorType(new PostgresServerIntegrationProvider());

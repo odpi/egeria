@@ -10,6 +10,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-survey-framework')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')

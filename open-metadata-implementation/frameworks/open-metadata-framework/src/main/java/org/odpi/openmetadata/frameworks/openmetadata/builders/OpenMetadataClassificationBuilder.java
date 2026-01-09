@@ -527,12 +527,6 @@ public class OpenMetadataClassificationBuilder
                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                      stagingCollectionProperties.getDescription());
             }
-            else if (properties instanceof SubjectAreaProperties subjectAreaProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.SUBJECT_AREA_NAME.name,
-                                                                     subjectAreaProperties.getSubjectAreaName());
-            }
             else if (properties instanceof TaxonomyProperties taxonomyProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,

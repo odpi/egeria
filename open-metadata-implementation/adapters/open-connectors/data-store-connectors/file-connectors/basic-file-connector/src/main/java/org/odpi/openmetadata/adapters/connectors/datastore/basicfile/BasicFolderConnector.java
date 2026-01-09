@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.except
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
@@ -38,9 +39,10 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      *
      * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
      * @param connectionDetails - POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException  a problem within the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, Connection connectionDetails)
+    public void initialize(String connectorInstanceId, Connection connectionDetails) throws ConnectorCheckedException
     {
         super.initialize(connectorInstanceId, connectionDetails);
 

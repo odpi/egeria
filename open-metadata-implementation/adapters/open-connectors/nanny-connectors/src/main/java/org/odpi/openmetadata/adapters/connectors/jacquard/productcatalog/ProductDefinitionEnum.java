@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductRoleDefinition;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataTypesDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -17,40 +19,45 @@ import java.util.Map;
  */
 public enum ProductDefinitionEnum implements ProductDefinition
 {
-    /**
-     * Valid Value Sets
+    /*
+     * =============================================================================================
      */
-    VALID_VALUE_SETS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
-                     null,
-                     "Valid Value Sets",
-                     "OPEN-METADATA-VALID-VALUES-FAMILY",
-                     ProductFolderDefinition.PRODUCTS,
-                     "Valid Value Sets",
-                     "Each product in this folder is an extract of the valid values associated with a valid value set.  The valid values are organized into a tabular data set, where each row is a specific valid value.  These products can be used as standard reference values when building other digital products to help consumers join data from multiple products together.",
-                     ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
-                     ProductGovernanceDefinition.INTERNAL_USE_ONLY,
-                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
-                     new ProductSubscriptionDefinition[]{
-                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                             ProductSubscriptionDefinition.ONGOING_UPDATE},
-                     null,
-                     null,
-                     null,
-                     OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
-                     "Data sets",
-                     null,
-                     null),
 
     /**
-     * Valid Value Set List
+     * Valid Metadata Value Sets - the product definition for each valid metadata value set is dynamically created
+     * when it is retrieved for the first time.
+     */
+    VALID_METADATA_VALUE_SETS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                              null,
+                              "Valid Metadata Value Sets",
+                              "OPEN-METADATA-VALID-VALUES-FAMILY",
+                              ProductFolderDefinition.PRODUCTS,
+                              "Valid Metadata Value Sets",
+                              "Each product in this folder is an extract of the valid metadata values.  The valid metadata values are organized into a tabular data set, where each row is a specific valid value.  These products can be used as standard reference values when building other digital products to help consumers join data from multiple products together.",
+                              ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                              ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                              ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                              new ProductSubscriptionDefinition[]{
+                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.ONGOING_UPDATE},
+                              null,
+                              null,
+                              null,
+                              OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                              "Data sets",
+                              null,
+                              null),
+
+    /**
+     * Valid Metadata Value Set List - Jacquard dynamically generates a digital product for each valid metadata value set.
      */
     VALID_METADATA_VALUE_SET_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                                  new ProductDefinition[]{ProductDefinitionEnum.VALID_VALUE_SETS},
+                                  new ProductDefinition[]{ProductDefinitionEnum.VALID_METADATA_VALUE_SETS},
                                   "Valid Metadata Value Set List",
                                   "OPEN-METADATA-" + OpenMetadataType.VALID_METADATA_VALUE.typeName + "-with-members",
                                   null,
                                   "Valid Metadata Value Set List",
-                                  "A tabular data set where each record describes an open metadata property that has a valid metadata value set defined.",
+                                  "A tabular data set where each record describes an open metadata property that has a valid metadata value set defined.  There is a digital product for each open metadata property in this list.",
                                   ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
                                   ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                                   ProductCommunityDefinition.REFERENCE_DATA_SIG,
@@ -64,16 +71,78 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                           ProductDataFieldDefinition.DESCRIPTION,
                                           ProductDataFieldDefinition.CREATE_TIME,
                                           ProductDataFieldDefinition.UPDATE_TIME,
-                                          ProductDataFieldDefinition.DATA_TYPE,
-                                          ProductDataFieldDefinition.EXAMPLE},
+                                          ProductDataFieldDefinition.DATA_TYPE},
                                   OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                                   "Open Metadata Property List",
                                   new ValidMetadataValueSetListProvider(),
                                   "ValidMetadataValueSetList"),
 
+    /*
+     * =============================================================================================
+     */
 
     /**
-     * Open Metadata Types
+     * Reference Data Sets - the product definition for each reference data set is dynamically created
+     * when it is retrieved for the first time.
+     */
+    REFERENCE_DATA_SETS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                              null,
+                              "Reference Data Sets",
+                              "OPEN-METADATA-VALID-VALUES-FAMILY",
+                              ProductFolderDefinition.PRODUCTS,
+                              "Reference Data Sets",
+                              "Each product in this folder is an extract of the reference data values managed by open metadata.  The reference data values are organized into a tabular data set, where each row is a specific valid value.  These products can be used as standard reference values when building other digital products to help consumers join data from multiple products together.",
+                              ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                              ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                              ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                              new ProductSubscriptionDefinition[]{
+                                      ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.ONGOING_UPDATE},
+                              null,
+                              null,
+                              null,
+                              OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                              "Data sets",
+                              null,
+                              null),
+
+    /**
+     * Reference Data Set List - Jacquard dynamically generates a digital product for each reference data set in this list.
+     */
+    REFERENCE_DATA_SET_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                  new ProductDefinition[]{ProductDefinitionEnum.REFERENCE_DATA_SETS},
+                                  "Reference Data Set List",
+                                  "OPEN-METADATA-" + OpenMetadataType.REFERENCE_DATA_SET.typeName + "-with-members",
+                                  null,
+                                  "Reference Data Set List",
+                                  "A tabular data set where each record describes a reference data set stored in open metadata.  There is a digital product for each reference data set in this list.",
+                                  ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                  ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                  ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                                  new ProductSubscriptionDefinition[]{
+                                          ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                          ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                  "Reference Data Set List",
+                                  new ProductDataFieldDefinition[]{
+                                          ProductDataFieldDefinition.GUID},
+                                  new ProductDataFieldDefinition[]{
+                                          ProductDataFieldDefinition.IDENTIFIER,
+                                          ProductDataFieldDefinition.DESCRIPTION,
+                                          ProductDataFieldDefinition.CREATE_TIME,
+                                          ProductDataFieldDefinition.UPDATE_TIME,
+                                          ProductDataFieldDefinition.DATA_TYPE},
+                                  OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                  "Data set",
+                                  new ReferenceDataSetListProvider(),
+                                  "ReferenceDataSetList"),
+
+    /*
+     * =============================================================================================
+     */
+
+    /**
+     * Open Metadata Types - the type definitions returned by OMF have been enhanced beyond OMRS to
+     * directly support this product family.
      */
     OPEN_METADATA_TYPES(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                         null,
@@ -97,12 +166,40 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         null),
 
     /**
-     * Attributes List
+     * Open Metadata Data Types List
+     */
+    DATA_TYPES_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                    new ProductDefinition[]{ProductDefinitionEnum.OPEN_METADATA_TYPES},
+                    "Open Metadata Data Types List",
+                    "OPEN_METADATA-DATA-TYPES",
+                    null,
+                    "Open Metadata Data Types List",
+                    "A tabular data set where each record describes a type of property defined in the open metadata types.  These types map easily to standard programming languages and are also useful when cataloguing various technologies.",
+                    ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                    new ProductSubscriptionDefinition[]{
+                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                    "Open Metadata Data Types List",
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.DATA_TYPE},
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.GUID,
+                            ProductDataFieldDefinition.DESCRIPTION,
+                            ProductDataFieldDefinition.CATEGORY},
+                    OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                    "Data set",
+                    null,
+                    "Open Metadata Data Types"),
+
+    /**
+     * Attribute List
      */
     ATTRIBUTES_LIST(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                     new ProductDefinition[]{ProductDefinitionEnum.OPEN_METADATA_TYPES},
                     "Open Metadata Attributes List",
-                    "OPEN-METADATA-ATTRIBUTES",
+                    "OPEN-METADATA-ATTRIBUTES-LIST",
                     null,
                     "Open Metadata Attributes List",
                     "A tabular data set where each record describes a type of attribute defined in the open metadata types.",
@@ -114,16 +211,16 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductSubscriptionDefinition.ONGOING_UPDATE},
                     "Open Metadata Attributes",
                     new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                             ProductDataFieldDefinition.OPEN_METADATA_ATTRIBUTE_NAME},
                     new ProductDataFieldDefinition[]{
-                            ProductDataFieldDefinition.GUID,
                             ProductDataFieldDefinition.DESCRIPTION,
                             ProductDataFieldDefinition.CATEGORY,
                             ProductDataFieldDefinition.DATA_TYPE},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
                     null,
-                    "OpenMetadataAttributes"),
+                    "Open Metadata Attributes"),
 
     /**
      * Open Metadata Types List
@@ -145,17 +242,20 @@ public enum ProductDefinitionEnum implements ProductDefinition
                new ProductDataFieldDefinition[]{
                        ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME},
                new ProductDataFieldDefinition[]{
-                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_GUID,
+                       ProductDataFieldDefinition.GUID,
                        ProductDataFieldDefinition.DESCRIPTION,
                        ProductDataFieldDefinition.CATEGORY,
-                       ProductDataFieldDefinition.WIKI_LINK,
+                       ProductDataFieldDefinition.URL,
                        ProductDataFieldDefinition.BEAN_CLASS_NAME,
                        ProductDataFieldDefinition.OPEN_METADATA_SUBTYPES,
-                       ProductDataFieldDefinition.OPEN_METADATA_SUPER_TYPES},
+                       ProductDataFieldDefinition.OPEN_METADATA_SUPER_TYPES,
+                       ProductDataFieldDefinition.CREATE_TIME,
+                       ProductDataFieldDefinition.UPDATE_TIME,
+                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_STATUS},
                OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                "Data set",
-               null,
-               "OpenMetadataTypes"),
+               new OpenMetadataTypesDataSetProvider(),
+               "Open Metadata Types"),
 
     /**
      * Open Metadata Types List
@@ -180,23 +280,27 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.IS_NULLABLE,
                                       ProductDataFieldDefinition.DATA_TYPE,
-                                      ProductDataFieldDefinition.DESCRIPTION},
+                                      ProductDataFieldDefinition.DESCRIPTION,
+                                      ProductDataFieldDefinition.OPEN_METADATA_ATTRIBUTE_STATUS},
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
                               null,
-                              "OpenMetadataAttributesForTypes"),
+                              "Open Metadata Attributes for Types"),
 
+    /*
+     * =============================================================================================
+     */
 
     /**
-     * Party, Places, and Products
+     * Actor, Places, and Products
      */
-    PARTY_PLACES_PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+    ACTOR_PLACES_PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                           null,
-                          "Party, Places and Products",
+                          "Actor, Places and Products",
                           "MASTER-DATA-FAMILY",
                           ProductFolderDefinition.PRODUCTS,
-                          "Party, Places and Product Master Data",
-                          "Each product in this folder consolidates information held in the open metadata about people, organizations, users, teams, locations and digital products.  This type of data is called master data because it describes the key entities that the organization operates around.  As such, some form of this data appears in most data sets.  Each product in this folder is organized into a tabular data set, where each row is a specific (master data) entity.   These are designed to be used as standard values that can be used for validation or to ensure that data in digital products is consistent making it easier to join data from multiple products.",
+                          "Actor, Places and Product Master Data",
+                          "Each product in this folder lists information held in the open metadata about people, organizations, users, teams, locations and digital products.  This type of data is called master data because it describes the key entities that the organization operates around.  As such, some form of this data appears in most data sets.  Each product in this folder is organized into a tabular data set, where each row is a specific (master data) entity.   These are designed to be used as standard values that can be used for validation or to ensure that data in digital products is consistent making it easier to join data from multiple products.",
                           ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
                           null,
                           ProductCommunityDefinition.MASTER_DATA_SIG,
@@ -215,7 +319,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * Organizations List
      */
     ORGANIZATIONS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                  new ProductDefinition[]{ProductDefinitionEnum.PARTY_PLACES_PRODUCTS},
+                  new ProductDefinition[]{ProductDefinitionEnum.ACTOR_PLACES_PRODUCTS},
                   "Organization List",
                   "Organizations",
                   null,
@@ -245,7 +349,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * List of People
      */
     PEOPLE(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-           new ProductDefinition[]{ProductDefinitionEnum.PARTY_PLACES_PRODUCTS},
+           new ProductDefinition[]{ProductDefinitionEnum.ACTOR_PLACES_PRODUCTS},
            "List of People",
            "People List",
            null,
@@ -274,7 +378,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * List of Digital Products
      */
     DIGITAL_PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                     new ProductDefinition[]{ProductDefinitionEnum.PARTY_PLACES_PRODUCTS},
+                     new ProductDefinition[]{ProductDefinitionEnum.ACTOR_PLACES_PRODUCTS},
                      "Digital Product Inventory",
                      "DIGITAL-PRODUCTS-INVENTORY",
                      null,
@@ -300,11 +404,15 @@ public enum ProductDefinitionEnum implements ProductDefinition
                      null,
                      "DigitalProductsInventory"),
 
+    /*
+     * =============================================================================================
+     */
+
     /**
      * List of Locations
      */
     LOCATIONS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-              new ProductDefinition[]{ProductDefinitionEnum.PARTY_PLACES_PRODUCTS},
+              new ProductDefinition[]{ProductDefinitionEnum.ACTOR_PLACES_PRODUCTS},
               "Location List",
               "LOCATIONS-LIST",
               null,
@@ -321,7 +429,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductDataFieldDefinition.LOCATION_GUID},
               new ProductDataFieldDefinition[]{
                       ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
-                      ProductDataFieldDefinition.LOCATION_CLASSIFICATION_NAME,
+                      ProductDataFieldDefinition.LOCATION_ROLE,
                       ProductDataFieldDefinition.CATEGORY,
                       ProductDataFieldDefinition.IDENTIFIER,
                       ProductDataFieldDefinition.DISPLAY_NAME,
@@ -336,6 +444,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
               null,
               "Locations"),
 
+    /*
+     * =============================================================================================
+     */
 
     /**
      * Organization Observability
@@ -359,6 +470,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                null,
                                null),
 
+    /*
+     * =============================================================================================
+     */
 
     /**
      * Governance Observability
@@ -382,6 +496,9 @@ public enum ProductDefinitionEnum implements ProductDefinition
                              null,
                              null),
 
+    /*
+     * =============================================================================================
+     */
 
     /**
      * IT Operations Observability
@@ -586,7 +703,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
 
 
     /**
-     * Return the license that wil lbe granted to data provided through a subscription mechanism.
+     * Return the licence that will be granted to data provided through a subscription mechanism.
      *
      * @return license definition
      */
@@ -598,7 +715,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
 
 
     /**
-     * Return the community that provides the forum to discuss this product.
+     * Return details of the community that provides the forum to discuss this product.
      *
      * @return community definition
      */
@@ -707,9 +824,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
     }
 
 
-
     /**
-     * Return the class for the connector provider that supports this product.
+     * Return the connector provider class that supports this product.
      *
      * @return string
      */

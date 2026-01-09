@@ -49,7 +49,7 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "RelationshipProperties",
+    "class": "PeerProperties",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }
@@ -57,7 +57,7 @@ Content-Type: application/json
 
 
 ###
-# @name detachSupportingDefinition
+# @name detachPeerPerson
 # Detach a person profile from one of its peers.
 #
 # @param personOneGUID          unique identifier of the first person profile

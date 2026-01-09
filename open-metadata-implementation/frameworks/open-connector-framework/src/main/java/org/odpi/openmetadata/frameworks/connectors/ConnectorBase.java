@@ -80,15 +80,16 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connectionDetails   POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException An issue occurred during initialization
      */
     @Override
     public void initialize(String     connectorInstanceId,
-                           Connection connectionDetails)
+                           Connection connectionDetails) throws ConnectorCheckedException
     {
         this.connectorInstanceId = connectorInstanceId;
         this.connectionBean      = connectionDetails;
 
-        log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionDetails.getQualifiedName() + "," + connectionDetails.getDisplayName());
+        log.debug("New Connector initialized: {}, {},{}", connectorInstanceId, connectionDetails.getQualifiedName(), connectionDetails.getDisplayName());
     }
 
 
@@ -256,7 +257,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -975,7 +976,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public void disconnect() throws ConnectorCheckedException

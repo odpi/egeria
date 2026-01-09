@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
  */
 public class ErrorCodeTest extends ExceptionMessageSetTest
 {
-    final static String  messageIdPrefix = "JDBC-INTEGRATION-CONNECTOR";
+    final static String  messageIdPrefix = "JDBC-RESOURCE-CONNECTOR";
 
     /**
      * Validated the values of the enum.

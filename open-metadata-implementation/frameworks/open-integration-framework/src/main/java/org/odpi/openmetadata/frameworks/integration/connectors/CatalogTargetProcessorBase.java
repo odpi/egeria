@@ -80,7 +80,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
      * This call can be used to register with non-blocking services, or extract useful metadata
      * values from the catalog target element, connector etc.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
@@ -112,7 +112,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     /**
      * Free up any resources held since the catalog target processor is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     public void disconnect() throws ConnectorCheckedException
     {

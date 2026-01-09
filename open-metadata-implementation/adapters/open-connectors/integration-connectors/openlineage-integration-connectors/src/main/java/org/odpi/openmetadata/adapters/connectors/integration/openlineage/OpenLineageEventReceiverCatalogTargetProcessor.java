@@ -29,7 +29,7 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      * @param listener listener
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public OpenLineageEventReceiverCatalogTargetProcessor(CatalogTarget             template,
@@ -54,7 +54,7 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
      *
      * @param topicConnector connector
      * @param listener event listener
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     private void registerTopicConnector(OpenMetadataTopicConnector topicConnector,

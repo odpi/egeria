@@ -39,7 +39,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveDescription = "Templates for new assets relating to a clinical trial.";
     private static final Date                    creationDate       = new Date(1639984840038L);
 
-    private static final String clinicalTrialsSubjectArea = "SubjectArea::ClinicalTrial:TeddyBearDropFoot";
 
     /**
      * Default constructor initializes the archive.
@@ -83,8 +82,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                         null,
                                                         ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
-        archiveHelper.addSubjectAreaClassification(glossaryGUID, clinicalTrialsSubjectArea);
-
         Map<String, String> categoryLookup = new HashMap<>();
         for (GlossaryCategoryDefinition glossaryCategoryDefinition : GlossaryCategoryDefinition.values())
         {
@@ -94,7 +91,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                             glossaryCategoryDefinition.getQualifiedName(),
                                                                             glossaryCategoryDefinition.getName(),
                                                                             glossaryCategoryDefinition.getDescription(),
-                                                                            clinicalTrialsSubjectArea,
                                                                             null);
 
             categoryLookup.put(glossaryCategoryDefinition.getName(), glossaryCategoryGUID);

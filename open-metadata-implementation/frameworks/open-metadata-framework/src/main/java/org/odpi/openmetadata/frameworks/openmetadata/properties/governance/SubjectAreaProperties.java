@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -20,10 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SubjectAreaProperties extends ClassificationBeanProperties
+public class SubjectAreaProperties extends CollectionProperties
 {
-    private String subjectAreaName  = null;
-
+    private String scope            = null;
+    private String usage            = null;
+    private int    domainIdentifier = 0;
 
     /**
      * Default constructor
@@ -31,7 +32,7 @@ public class SubjectAreaProperties extends ClassificationBeanProperties
     public SubjectAreaProperties()
     {
         super();
-        super.typeName = OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName;
+        super.typeName = OpenMetadataType.SUBJECT_AREA.typeName;
     }
 
 
@@ -46,30 +47,76 @@ public class SubjectAreaProperties extends ClassificationBeanProperties
 
         if (template != null)
         {
-            this.subjectAreaName = template.getSubjectAreaName();
+            this.scope             = template.getScope();
+            this.usage             = template.getUsage();
+            this.domainIdentifier  = template.getDomainIdentifier();
         }
     }
 
 
     /**
-     * Return the name of the subject area - this is added to the SubjectArea classification.
+     * Return the organizational scope that this governance definition applies to.
      *
-     * @return string name
+     * @return String
      */
-    public String getSubjectAreaName()
+    public String getScope()
     {
-        return subjectAreaName;
+        return scope;
     }
 
 
     /**
-     * Set up the name of the subject area - this is added to the SubjectArea classification.
+     * Set up the organizational scope that this definition applies to.
      *
-     * @param subjectAreaName string name
+     * @param scope String
      */
-    public void setSubjectAreaName(String subjectAreaName)
+    public void setScope(String scope)
     {
-        this.subjectAreaName = subjectAreaName;
+        this.scope = scope;
+    }
+
+
+    /**
+     * Return details of the usage of this definition.
+     *
+     * @return text
+     */
+    public String getUsage()
+    {
+        return usage;
+    }
+
+
+    /**
+     * Set up the details of the usage of this definition.
+     *
+     * @param usage text
+     */
+    public void setUsage(String usage)
+    {
+        this.usage = usage;
+    }
+
+
+    /**
+     * Return the identifier of the governance domain that this definition belongs to (0=all).
+     *
+     * @return int
+     */
+    public int getDomainIdentifier()
+    {
+        return domainIdentifier;
+    }
+
+
+    /**
+     * Set up the identifier of the governance domain that this definition belongs to (0=all).
+     *
+     * @param domainIdentifier int
+     */
+    public void setDomainIdentifier(int domainIdentifier)
+    {
+        this.domainIdentifier = domainIdentifier;
     }
 
 
@@ -82,44 +129,41 @@ public class SubjectAreaProperties extends ClassificationBeanProperties
     public String toString()
     {
         return "SubjectAreaProperties{" +
-                "subjectAreaName='" + subjectAreaName + '\'' +
+                "scope='" + getScope() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", domainIdentifier=" + getDomainIdentifier() +
                 "} " + super.toString();
     }
 
 
+
     /**
-     * Return comparison result based on the content of the properties.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof SubjectAreaProperties that))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return Objects.equals(subjectAreaName, that.subjectAreaName);
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        SubjectAreaProperties that = (SubjectAreaProperties) objectToCompare;
+        return domainIdentifier == that.domainIdentifier &&
+                Objects.equals(scope, that.scope) &&
+                Objects.equals(usage, that.usage);
     }
 
 
     /**
-     * Return hash code for this object
+     * Return hash code based on properties.
      *
-     * @return int hash code
+     * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSubjectAreaName());
+        return Objects.hash(super.hashCode(), scope, usage, domainIdentifier);
     }
 }

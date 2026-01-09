@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.contentpacks.core;
 
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 
 import java.util.Arrays;
 import java.util.List;

@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
  * The EnterpriseOMRSConnectorProvider is the connector provider for the EnterpriseOMRSRepositoryConnector.
  * It will return new instances of the EnterpriseOMRSRepositoryConnector as long as it is configured with the connector
  * manager.  This should happen at server startup, which means the exception due to a lack of connector
- * manager are unexpected.
+ * manager is unexpected.
  */
 public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProviderBase
 {
@@ -34,7 +34,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
     private final OMRSRepositoryContentManager repositoryContentManager;
     private final String                       localServerName;
     private final String                       localServerType;
-    private final OMRSAuditLog                 auditLog;
+    private final AuditLog                     auditLog;
     private final String                       owningOrganizationName;
     private final String                       enterpriseMetadataCollectionId;
     private final String                       enterpriseMetadataCollectionName;
@@ -64,7 +64,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
                                            String                       localServerName,
                                            String                       localServerType,
                                            String                       owningOrganizationName,
-                                           OMRSAuditLog                 auditLog,
+                                           AuditLog                     auditLog,
                                            String                       enterpriseMetadataCollectionId,
                                            String                       enterpriseMetadataCollectionName,
                                            String                       localMetadataCollectionId)

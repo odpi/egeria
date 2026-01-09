@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.opengovernance;
 
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition;
+import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * GovernanceServiceProviderBase implements the base class for the connector provider for a governance service.
  */
-public abstract class GovernanceServiceProviderBase extends ConnectorProviderBase
+public abstract class GovernanceServiceProviderBase extends OpenConnectorProviderBase
 {
     /**
      * The type name of the asset that this connector supports.  Initialized to generic type - should be overridden
@@ -98,7 +99,7 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
 
 
     /**
-     * Return list of action targets produced by this governance service, along with their descriptions.
+     * Return action targets produced by this governance service, along with their descriptions.
      *
      * @return list
      */
@@ -119,5 +120,29 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
     public  List<GuardType> getProducedGuards()
     {
         return producedGuards;
+    }
+
+
+    /**
+     * Constructor where subclass sets up the connector provider.
+     */
+    public GovernanceServiceProviderBase()
+    {
+        super();
+    }
+
+
+    /**
+     * Constructor for an open connector provider.
+     *
+     * @param openConnectorDescription             connector definition
+     * @param connectorClassName                   connector class name
+     * @param recognizedConfigurationPropertyNames list of recognized configuration property names
+     */
+    public GovernanceServiceProviderBase(OpenConnectorDefinition openConnectorDescription,
+                                         String                  connectorClassName,
+                                         List<String>            recognizedConfigurationPropertyNames)
+    {
+        super(openConnectorDescription, connectorClassName, recognizedConfigurationPropertyNames);
     }
 }

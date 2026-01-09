@@ -46,7 +46,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -193,7 +193,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
      * The rest of the file is cleared.
      *
      * @param columnDescriptions a list of column descriptions
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     @Override
     public void setColumnDescriptions(List<TabularColumnDescription> columnDescriptions) throws ConnectorCheckedException
@@ -241,7 +241,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
      *
      * @param requestedRowNumber  long
      * @param dataValues Map of column descriptions to strings, each string is the value for the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     @Override
     public void writeRecord(long requestedRowNumber, List<String> dataValues) throws ConnectorCheckedException
@@ -309,7 +309,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
      * Write the requested data record to the end of the data source.
      *
      * @param dataValues Map of column descriptions to strings, each string is the value for the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     @Override
     public void appendRecord(List<String> dataValues) throws ConnectorCheckedException
@@ -344,7 +344,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
      * Remove the requested data record.  The first data record is record 0.
      *
      * @param rowNumber long
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     @Override
     public void deleteRecord(long rowNumber) throws ConnectorCheckedException

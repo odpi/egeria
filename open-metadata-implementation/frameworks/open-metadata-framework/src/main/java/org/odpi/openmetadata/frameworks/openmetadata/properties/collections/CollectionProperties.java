@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductCatalogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -49,6 +50,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ResultsSetProperties.class, name = "ResultsSetProperties"),
                 @JsonSubTypes.Type(value = RootCollectionProperties.class, name = "RootCollectionProperties"),
                 @JsonSubTypes.Type(value = SoftwareArchiveProperties.class, name = "SoftwareArchiveProperties"),
+                @JsonSubTypes.Type(value = SubjectAreaProperties.class, name = "SubjectAreaProperties"),
                 @JsonSubTypes.Type(value = WorkItemListProperties.class, name = "WorkItemListProperties"),
         })
 public class CollectionProperties extends AuthoredReferenceableProperties

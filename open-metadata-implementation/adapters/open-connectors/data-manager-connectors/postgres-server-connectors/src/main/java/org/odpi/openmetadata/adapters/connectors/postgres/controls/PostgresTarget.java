@@ -17,18 +17,18 @@ import java.util.Map;
 public enum PostgresTarget
 {
     SERVER("postgreSQLServer",
-           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDescription(),
-           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
-           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
+           org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDescription(),
+           org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+           org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
            null),
 
     /**
      * PostgreSQL Database.
      */
     DATABASE("postgresDatabase",
-             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDescription(),
-             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
-             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDescription(),
+             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+             org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
              null),
 
     ;;

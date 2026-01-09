@@ -16,10 +16,10 @@ import java.util.List;
 public interface WritableTabularDataSource
 {
     /**
-     * Return the number of records in the data source.
+     * Return the record count in the data source.
      *
      * @return count
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     long     getRecordCount() throws ConnectorCheckedException;
 
@@ -31,7 +31,7 @@ public interface WritableTabularDataSource
      * This allows simple translation between the naming conventions supported by different technologies.
      *
      * @param columnDescriptions   a list of column descriptions
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     void setColumnDescriptions(List<TabularColumnDescription> columnDescriptions) throws ConnectorCheckedException;
 
@@ -41,7 +41,7 @@ public interface WritableTabularDataSource
      *
      * @param rowNumber long
      * @param dataValues  Map of column descriptions to strings, each string is the value for the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     void writeRecord(long          rowNumber,
                      List<String>  dataValues) throws ConnectorCheckedException;
@@ -51,7 +51,7 @@ public interface WritableTabularDataSource
      * Write the requested data record to the end of the data source.
      *
      * @param dataValues  Map of column descriptions to strings, each string is the value for the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     void appendRecord(List<String>  dataValues) throws ConnectorCheckedException;
 
@@ -60,7 +60,7 @@ public interface WritableTabularDataSource
      * Remove the requested data record.  The first data record is record 0.
      *
      * @param rowNumber long
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     void deleteRecord(long rowNumber) throws ConnectorCheckedException;
 }

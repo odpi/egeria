@@ -21,13 +21,6 @@ Content-Type: application/json
 
 
 ###
-# group: Integration Services
-# @name Refresh All integration Connectors
-# Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/integration-connectors/refresh
-Authorization: Bearer {{token}}
-
-###
 # group: Integration Connectors
 # @name Refresh All integration Connectors
 # Refreshes all Integration Connectors running in an integration daemon

@@ -60,12 +60,12 @@ public enum CohortConnectionStatus implements Serializable
                                                            "but they have not exchanged messages with the other members of cohort."),
 
     /**
-     * ConfigurationError - There is an error in the configuration and connection is not possible.
+     * ConfigurationError -  an error in the configuration and connection is not possible.
      */
     CONFIGURATION_ERROR  (3, "ConfigurationError", "There is an error in the configuration and connection is not possible."),
 
     /**
-     * Connected - The server is connected to the metadata highway for this cohort and messages are being exchanged with other members of the cohort.
+     * Connected - The server is connected to the metadata highway for this cohort, and messages are being exchanged with other members of the cohort.
      */
     CONNECTED            (4, "Connected",          "The server is connected to the metadata highway for this cohort and messages " +
                                                            "are being exchanged with other members of the cohort."),
@@ -73,7 +73,7 @@ public enum CohortConnectionStatus implements Serializable
     /**
      * Initializing - The local components for communicating with the cohort are disconnecting.
      */
-    DISCONNECTING        (5, "Initializing",       "The local components for communicating with the cohort are disconnecting."),
+    DISCONNECTING        (5, "Disconnecting",       "The local components for communicating with the cohort are disconnecting."),
 
     /**
      * Disconnected - The server is disconnected from the metadata highway for this cohort.  This may be because the local server is shutting down or the configuration is being adjusted.

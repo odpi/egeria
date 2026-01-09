@@ -35,7 +35,7 @@ public class TabularDataSetReport
 
 
     /**
-     * Return the number of records in the data source.
+     * Return the record count in the data source.
      *
      * @return count
      */

@@ -92,7 +92,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -122,7 +122,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     /**
      * Retrieve new values for the authorization header.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     private void refreshAuthorizationToken() throws ConnectorCheckedException
     {
@@ -245,7 +245,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * any authorisation headers and adds them to the list.
      *
      * @return http headers
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     private HttpHeaders getHttpHeaders() throws ConnectorCheckedException
     {

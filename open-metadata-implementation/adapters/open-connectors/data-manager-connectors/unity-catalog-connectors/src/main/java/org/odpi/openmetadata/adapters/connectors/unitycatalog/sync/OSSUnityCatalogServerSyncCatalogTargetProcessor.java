@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
@@ -87,7 +87,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -270,7 +270,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     public void disconnect() throws ConnectorCheckedException
     {

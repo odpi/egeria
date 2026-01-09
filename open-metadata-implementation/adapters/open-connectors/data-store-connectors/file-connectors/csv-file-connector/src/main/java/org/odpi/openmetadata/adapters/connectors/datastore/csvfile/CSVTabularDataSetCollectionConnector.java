@@ -21,7 +21,7 @@ public class CSVTabularDataSetCollectionConnector extends CSVTabularDataSetConne
      *
      * @param tableName  string
      * @param tableDescription optional description
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     @Override
     public void setTableName(String tableName,

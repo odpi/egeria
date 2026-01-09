@@ -494,6 +494,18 @@ public class OpenMetadataElementBuilder
                                                                                     OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name,
                                                                                     informationSupplyChainProperties.getEstimatedVolumetrics());
                         }
+                        else if (properties instanceof SubjectAreaProperties subjectAreaProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                                 subjectAreaProperties.getScope());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.USAGE.name,
+                                                                                 subjectAreaProperties.getUsage());
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                                              subjectAreaProperties.getDomainIdentifier());
+                        }
                     }
                         else if (properties instanceof DataClassProperties dataClassProperties)
                         {

@@ -102,6 +102,50 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
 
 
     /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param guid unique name for the metadata element
+     * @param getOptions multiple options to control the query
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException unable to access the element
+     * @throws PropertyServerException  problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getRootElementByGUID(String     guid,
+                                                        GetOptions getOptions) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "getRootElementByGUID";
+
+        return stewardshipManagementHandler.getRootElementByGUID(connectorUserId, guid, getOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve metadata elements based on the search string.
+     *
+     * @param searchString  string to search for in the properties - null returns all elements of the type
+     *                      set in the client.
+     * @param searchOptions multiple options to control the query
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException  the unique identifier is null.
+     * @throws UserNotAuthorizedException unable to access the element
+     * @throws PropertyServerException    problem accessing the metadata store
+     */
+    public List<OpenMetadataRootElement> findRootElements(String searchString,
+                                                          SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "findRootElements";
+
+        return stewardshipManagementHandler.findRootElements(connectorUserId, searchString, searchOptions, methodName);
+    }
+
+
+    /**
      * Returns the list of elements of the appropriate type with a particular name.
      * Caller responsible for mermaid graph.
      *
@@ -378,31 +422,6 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     {
         return stewardshipManagementHandler.getElementsByOrigin(connectorUserId, properties, queryOptions);
     }
-
-
-
-    /**
-     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
-     *
-     * @param subjectAreaName unique identifier for the subject area
-     * @param queryOptions multiple options to control the query
-
-     *
-     * @return list of element stubs
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<OpenMetadataRootElement> getMembersOfSubjectArea(String              subjectAreaName,
-                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
-
-    {
-        return stewardshipManagementHandler.getMembersOfSubjectArea(connectorUserId, subjectAreaName, queryOptions);
-    }
-
 
 
     /**

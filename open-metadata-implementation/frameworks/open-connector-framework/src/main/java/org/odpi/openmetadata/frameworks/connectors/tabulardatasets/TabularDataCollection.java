@@ -21,7 +21,7 @@ public interface TabularDataCollection
      * @param tableName name of the table
      * @param tableDescription optional description for the table - useful if the connector needs to set up a
      *                         definition of the table.
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     void setTableName(String tableName,
                       String tableDescription) throws ConnectorCheckedException;

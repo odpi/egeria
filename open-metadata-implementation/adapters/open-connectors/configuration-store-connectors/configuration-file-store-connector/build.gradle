@@ -6,17 +6,27 @@
 
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
+    compileOnly project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation 'org.slf4j:slf4j-api'
     implementation 'commons-io:commons-io'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Configuration File Store Connector'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

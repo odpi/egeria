@@ -49,90 +49,6 @@ public enum ProductDataFieldDefinition
                 false),
 
     /**
-     * Qualified Name
-     */
-    QUALIFIED_NAME("Qualified Name",
-                   "Qualified Name",
-                   OpenMetadataProperty.QUALIFIED_NAME.description,
-                   OpenMetadataProperty.QUALIFIED_NAME.dataType,
-                   null,
-                   null,
-                   false,
-                   false),
-
-    /**
-     * Display Name
-     */
-    DISPLAY_NAME("Display Name",
-                 "Display Name",
-                 OpenMetadataProperty.DISPLAY_NAME.description,
-                 OpenMetadataProperty.DISPLAY_NAME.dataType,
-                 null,
-                 null,
-                 false,
-                 true),
-
-    /**
-     * Property Name
-     */
-    PROPERTY_NAME("Property Name",
-                 "Property Name",
-                 OpenMetadataProperty.PROPERTY_NAME.description,
-                 OpenMetadataProperty.PROPERTY_NAME.dataType,
-                 null,
-                 null,
-                 true,
-                 false),
-
-    /**
-     * Description
-     */
-    DESCRIPTION("Description",
-                "Description",
-                OpenMetadataProperty.DESCRIPTION.description,
-                OpenMetadataProperty.DESCRIPTION.dataType,
-                null,
-                null,
-                false,
-                true),
-
-    /**
-     * Example
-     */
-    EXAMPLE("Example",
-                "Example",
-                OpenMetadataProperty.EXAMPLE.description,
-                OpenMetadataProperty.EXAMPLE.dataType,
-                null,
-                null,
-                false,
-                true),
-
-    /**
-     * Category
-     */
-    CATEGORY("Category",
-             "Category",
-             OpenMetadataProperty.CATEGORY.description,
-             OpenMetadataProperty.CATEGORY.dataType,
-             null,
-             null,
-             false,
-             true),
-
-    /**
-     * Identifier
-     */
-    IDENTIFIER("Identifier",
-               "Identifier",
-               OpenMetadataProperty.IDENTIFIER.description,
-               OpenMetadataProperty.IDENTIFIER.dataType,
-               null,
-               null,
-               false,
-               true),
-
-    /**
      * Element Status
      */
     ELEMENT_STATUS("Element Status",
@@ -156,103 +72,212 @@ public enum ProductDataFieldDefinition
               true,
               false),
 
+    /**
+     * Qualified Name
+     */
+    QUALIFIED_NAME("Qualified Name",
+                   "Qualified Name",
+                   OpenMetadataProperty.QUALIFIED_NAME.description,
+                   OpenMetadataProperty.QUALIFIED_NAME.dataType,
+                   null,
+                   null,
+                   false,
+                   false),
 
     /**
-     * Subtypes
+     * Identifier
      */
-    OPEN_METADATA_SUBTYPES("Open Metadata Subtypes",
-                           "Open Metadata Subtypes",
-                           "A list of subtypes for the open metadata type",
-                           DataType.ARRAY_STRING,
-                           null,
-                           null,
-                           false,
-                           true),
+    IDENTIFIER("Identifier",
+               "Identifier",
+               OpenMetadataProperty.IDENTIFIER.description,
+               OpenMetadataProperty.IDENTIFIER.dataType,
+               null,
+               null,
+               false,
+               true),
 
     /**
-     * Open Metadata Super Types
+     * Property Name - used as identifier property in valid metadata values sets only
      */
-    OPEN_METADATA_SUPER_TYPES("Open Metadata Super Types",
-                              "Open Metadata Super Types",
-                              "A list of the types that this open metadata type inherits from.",
-                              DataType.ARRAY_STRING,
-                              null,
-                              null,
-                              false,
-                              true),
+    PROPERTY_NAME("Property Name",
+                  "Property Name",
+                  OpenMetadataProperty.PROPERTY_NAME.description,
+                  OpenMetadataProperty.PROPERTY_NAME.dataType,
+                  null,
+                  null,
+                  true,
+                  false),
 
     /**
-     * Open Metadata Type Name
+     * Display Name
      */
-    OPEN_METADATA_TYPE_NAME("Open Metadata Type Name",
-                            "Open Metadata Type",
-                            "The unique name of an open metadata type.",
-                            DataType.STRING,
-                            null,
-                            null,
-                            false,
-                            true),
+    DISPLAY_NAME("Display Name",
+                 "Display Name",
+                 OpenMetadataProperty.DISPLAY_NAME.description,
+                 OpenMetadataProperty.DISPLAY_NAME.dataType,
+                 null,
+                 null,
+                 false,
+                 true),
 
 
     /**
-     * Open Metadata Type Name
+     * Version Identifier
      */
-    OPEN_METADATA_TYPE_GUID("Open Metadata Type GUID",
-                            "Open Metadata Type GUID",
-                            "The unique identifier of an open metadata type.",
-                            DataType.STRING,
-                            null,
-                            null,
-                            false,
-                            true),
+    VERSION_IDENTIFIER("Version Identifier",
+                       "Version Identifier",
+                       OpenMetadataProperty.VERSION_IDENTIFIER.description,
+                       OpenMetadataProperty.VERSION_IDENTIFIER.dataType,
+                       null,
+                       null,
+                       false,
+                       true),
 
     /**
-     * Open Metadata Attribute Name
+     * Description
      */
-    OPEN_METADATA_ATTRIBUTE_NAME("Open Metadata Attribute Name",
-                                 "Open Metadata Attribute Name",
-                                 "The unique name of an open metadata attribute.",
-                                 DataType.STRING,
-                                 null,
-                                 null,
-                                 false,
-                                 true),
+    DESCRIPTION("Description",
+                "Description",
+                OpenMetadataProperty.DESCRIPTION.description,
+                OpenMetadataProperty.DESCRIPTION.dataType,
+                null,
+                null,
+                false,
+                true),
+
+    /**
+     * Category
+     */
+    CATEGORY("Category",
+             "Category",
+             OpenMetadataProperty.CATEGORY.description,
+             OpenMetadataProperty.CATEGORY.dataType,
+             null,
+             null,
+             false,
+             true),
 
     /**
      * The url link to documentation.
      */
-    WIKI_LINK("Wiki URL Link",
-              "Wiki Link",
-              "The url link to documentation.",
-              DataType.STRING,
+    URL("URL Link",
+        "URL",
+        "The url link to documentation.",
+        DataType.STRING,
+        null,
+        null,
+        false,
+        true),
+
+    /**
+     * Authors
+     */
+    AUTHORS("Authors",
+            "Authors",
+            OpenMetadataProperty.AUTHORS.description,
+            OpenMetadataProperty.AUTHORS.dataType,
+            null,
+            null,
+            false,
+            true),
+
+    /**
+     * Content Status
+     */
+    CONTENT_STATUS("Content Status",
+                   "Content Status",
+                   OpenMetadataProperty.CONTENT_STATUS.description,
+                   OpenMetadataProperty.CONTENT_STATUS.dataType,
+                   null,
+                   null,
+                   false,
+                   true),
+
+    /**
+     * Deployment Status
+     */
+    DEPLOYMENT_STATUS("Deployment Status",
+                      "Deployment Status",
+                      OpenMetadataProperty.DEPLOYMENT_STATUS.description,
+                      OpenMetadataProperty.DEPLOYMENT_STATUS.dataType,
+                      null,
+                      null,
+                      false,
+                      true),
+    /**
+     * Example
+     */
+    EXAMPLE("Example",
+            "Example",
+            OpenMetadataProperty.EXAMPLE.description,
+            OpenMetadataProperty.EXAMPLE.dataType,
+            null,
+            null,
+            false,
+            true),
+
+    /**
+     * Resource Name
+     */
+    RESOURCE_NAME("Resource Name",
+                  "Resource Name",
+                  OpenMetadataProperty.RESOURCE_NAME.description,
+                  OpenMetadataProperty.RESOURCE_NAME.dataType,
+                  null,
+                  null,
+                  false,
+                  true),
+
+
+    /**
+     * Namespace
+     */
+    NAMESPACE("Namespace",
+              "Namespace",
+              OpenMetadataProperty.NAMESPACE.description,
+              OpenMetadataProperty.NAMESPACE.dataType,
               null,
               null,
               false,
               true),
 
     /**
-     * The name of the properties bean class to use in REST API calls.
+     * Deployed Implementation Type (Technology Type)
      */
-    BEAN_CLASS_NAME("Bean Class Name",
-                    "Bean Class Name",
-                    "The name of the properties bean class to use in REST API calls.",
-                    DataType.STRING,
-                    null,
-                    null,
-                    false,
-                    true),
-
-    /**
-     * The name of the properties bean class to use in REST API calls.
-     */
-    LOCATION_CLASSIFICATION_NAME("Location Classification Name",
-                                 "Location Classification Name",
-                                 "The classification assigned to the location that describes the type of location.",
-                                 DataType.STRING,
+    DEPLOYED_IMPLEMENTATION_TYPE("Deployed Implementation Type (Technology Type)",
+                                 "Deployed Implementation Type",
+                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.dataType,
                                  null,
                                  null,
                                  false,
                                  true),
+
+
+    /**
+     * Expected Behaviour
+     */
+    EXPECTED_BEHAVIOUR("Expected Behaviour",
+                       "Expected Behaviour",
+                       OpenMetadataProperty.EXPECTED_BEHAVIOUR.description,
+                       OpenMetadataProperty.EXPECTED_BEHAVIOUR.dataType,
+                       null,
+                       null,
+                       false,
+                       true),
+
+
+    /**
+     * The name of the properties bean class to use in REST API calls.
+     */
+    LOCATION_ROLE("Location Classification Name",
+                  "Location Classification Name",
+                  "The classification assigned to the location that describes the type of location.",
+                  DataType.STRING,
+                  null,
+                  null,
+                  false,
+                  true),
 
     /**
      * The unique identifier of a location.
@@ -315,19 +340,6 @@ public enum ProductDataFieldDefinition
                     true),
 
     /**
-     * Namespace
-     */
-    NAMESPACE("Namespace",
-              "Namespace",
-              OpenMetadataProperty.NAMESPACE.description,
-              OpenMetadataProperty.NAMESPACE.dataType,
-              null,
-              null,
-              false,
-              true),
-
-
-    /**
      * Preferred Value
      */
     PREFERRED_VALUE("Preferred Value",
@@ -338,6 +350,30 @@ public enum ProductDataFieldDefinition
                     null,
                     false,
                     true),
+
+    /**
+     * User Id
+     */
+    USER_ID("User Identifier (userId)",
+            "User Id",
+            OpenMetadataProperty.USER_ID.description,
+            OpenMetadataProperty.USER_ID.dataType,
+            null,
+            null,
+            false,
+            true),
+
+    /**
+     * Distinguished Name
+     */
+    DISTINGUISHED_NAME("Distinguished Name",
+                       "Distinguished Name",
+                       OpenMetadataProperty.DISTINGUISHED_NAME.description,
+                       OpenMetadataProperty.DISTINGUISHED_NAME.dataType,
+                       null,
+                       null,
+                       false,
+                       true),
 
     /**
      * Is Case Sensitive?
@@ -390,7 +426,6 @@ public enum ProductDataFieldDefinition
           false,
           true),
 
-
     /**
      * Usage
      */
@@ -402,6 +437,19 @@ public enum ProductDataFieldDefinition
           null,
           false,
           true),
+
+
+    /**
+     * Source
+     */
+    SOURCE("Source",
+           "Source",
+           OpenMetadataProperty.SOURCE.description,
+           OpenMetadataProperty.SOURCE.dataType,
+           null,
+           null,
+           false,
+           true),
 
     /**
      * Is Default Value?
@@ -415,6 +463,104 @@ public enum ProductDataFieldDefinition
                      false,
                      true),
 
+    /**
+     * Subtypes
+     */
+    OPEN_METADATA_SUBTYPES("Open Metadata Subtypes",
+                           "Open Metadata Subtypes",
+                           "A list of subtypes for the open metadata type",
+                           DataType.ARRAY_STRING,
+                           null,
+                           null,
+                           false,
+                           true),
+
+    /**
+     * Open Metadata Supertypes
+     */
+    OPEN_METADATA_SUPER_TYPES("Open Metadata Super Types",
+                              "Open Metadata Super Types",
+                              "A list of the types that this open metadata type inherits from.",
+                              DataType.ARRAY_STRING,
+                              null,
+                              null,
+                              false,
+                              true),
+
+    /**
+     * Open Metadata Type Name
+     */
+    OPEN_METADATA_TYPE_NAME("Open Metadata Type Name",
+                            "Open Metadata Type",
+                            "The unique name of an open metadata type.",
+                            DataType.STRING,
+                            null,
+                            null,
+                            false,
+                            true),
+
+
+    /**
+     * Open Metadata Type Status
+     */
+    OPEN_METADATA_TYPE_STATUS("Open Metadata Type Status",
+                              "Open Metadata Type Status",
+                              "The status of an open metadata type.",
+                              DataType.STRING,
+                              null,
+                              null,
+                              false,
+                              true),
+
+    /**
+     * Open Metadata Attribute Name
+     */
+    OPEN_METADATA_ATTRIBUTE_TYPE_NAME("Open Metadata Attribute Type Name",
+                                      "Open Metadata Attribute Type Name",
+                                      "The unique name of a type that can be assigned to an open metadata attribute.",
+                                      DataType.STRING,
+                                      null,
+                                      null,
+                                      false,
+                                      true),
+
+    /**
+     * Open Metadata Attribute Name
+     */
+    OPEN_METADATA_ATTRIBUTE_NAME("Open Metadata Attribute Name",
+                                 "Open Metadata Attribute Name",
+                                 "The property name of an open metadata attribute within a type.",
+                                 DataType.STRING,
+                                 null,
+                                 null,
+                                 false,
+                                 true),
+
+    /**
+     * Open Metadata Attribute Status
+     */
+    OPEN_METADATA_ATTRIBUTE_STATUS("Open Metadata Attribute Status",
+                                   "Open Metadata Attribute Status",
+                                   "The status of an open metadata attribute.",
+                                   DataType.STRING,
+                                   null,
+                                   null,
+                                   false,
+                                   true),
+
+
+
+    /**
+     * The name of the properties bean class to use in REST API calls.
+     */
+    BEAN_CLASS_NAME("Bean Class Name",
+                    "Bean Class Name",
+                    "The name of the properties bean class to use in REST API calls.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    false,
+                    true),
 
     ;
 

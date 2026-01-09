@@ -34,7 +34,7 @@ public interface IntegrationConnector
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector has been disconnected
      */
     void start() throws ConnectorCheckedException, UserNotAuthorizedException;
@@ -47,7 +47,7 @@ public interface IntegrationConnector
      * call engage() again.  This pattern enables the calling thread to detect the shutdown of the integration
      * daemon.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     void engage() throws ConnectorCheckedException;
 
@@ -66,7 +66,7 @@ public interface IntegrationConnector
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     void disconnect() throws ConnectorCheckedException;
 }

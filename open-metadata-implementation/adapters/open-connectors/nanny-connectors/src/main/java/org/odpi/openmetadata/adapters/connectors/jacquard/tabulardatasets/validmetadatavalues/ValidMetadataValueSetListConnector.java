@@ -3,21 +3,18 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues;
 
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinitionEnum;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.OpenMetadataDataSetConnectorBase;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidValueDefinitionClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -30,10 +27,10 @@ import java.util.*;
 public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConnectorBase implements AuditLoggingComponent,
                                                                                                     ReadableTabularDataSource
 {
-    private static final String myConnectorName = "ValidMetadataValueSetListConnector";
-    private static final Logger log = LoggerFactory.getLogger(ValidMetadataValueSetListConnector.class);
+    private static final String myConnectorName = ValidMetadataValueSetListConnector.class.getName();
 
     private final Map<Long, PropertyDetails> records = new HashMap<>();
+
 
     /**
      * Describes the values of a row in the data set
@@ -179,14 +176,15 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
      */
     public ValidMetadataValueSetListConnector()
     {
-        super(myConnectorName);
+        super(myConnectorName,
+              ProductDefinitionEnum.VALID_METADATA_VALUE_SET_LIST);
     }
 
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -194,14 +192,12 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
     {
         super.start();
 
-        final String methodName = "start";
-
-        refreshValidMetadataPropertyNameSet(methodName);
+        refreshCache();
     }
 
 
     /**
-     * Refresh any cached values,
+     * Refresh any cached values.
      *
      * @throws ConnectorCheckedException unable to refresh
      */
@@ -209,28 +205,16 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
     {
         final String methodName = "refreshCache";
 
-        refreshValidMetadataPropertyNameSet(methodName);
-    }
-
-
-    /**
-     * Refresh the list of open metadata properties that have valid value lists associated with them.
-     *
-     * @param methodName calling method
-     * @throws ConnectorCheckedException problems retrieving the valid value set.
-     */
-    private void refreshValidMetadataPropertyNameSet(String methodName) throws ConnectorCheckedException
-    {
         /*
          * Retrieve all valid values definitions and evaluate whether each definition is a top-level valid value
          * set or not.  All top-level valid value sets are stored in the validValueSets list.
          */
         try
         {
-            ValidValueDefinitionClient validValueDefinitionClient = connectorContext.getValidValueDefinitionClient(OpenMetadataType.VALID_METADATA_VALUE.typeName);
+            OpenMetadataStore openMetadataStore = connectorContext.getOpenMetadataStore();
 
             int startFrom = 0;
-            int pageSize = validValueDefinitionClient.getMaxPagingSize();
+            int pageSize = openMetadataStore.getMaxPagingSize();
 
             if (pageSize == 0)
             {
@@ -243,43 +227,58 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
             Map<String, PropertyDetails> properties = new HashMap<>();
 
             /*
-             * Returns all of the valid metadata value elements stored in Egeria - this can be a very large set of queries.
+             * Returns all the valid metadata value elements stored in Egeria - this can be a very large set of queries.
              */
-            List<OpenMetadataRootElement> validValueDefinitions = validValueDefinitionClient.findValidValueDefinitions(null,
-                                                                                                                       validValueDefinitionClient.getSearchOptions(startFrom, pageSize));
+            List<OpenMetadataElement> validValueDefinitions = openMetadataStore.findMetadataElementsWithString(null,
+                                                                                                               openMetadataStore.getSearchOptions(OpenMetadataType.VALID_METADATA_VALUE.typeName,
+                                                                                                                                                  startFrom,
+                                                                                                                                                  pageSize));
             while (validValueDefinitions != null)
             {
-                for (OpenMetadataRootElement validValueDefinition : validValueDefinitions)
+                for (OpenMetadataElement validValueDefinition : validValueDefinitions)
                 {
-                    if ((validValueDefinition != null) && (validValueDefinition.getProperties() instanceof ValidMetadataValueProperties validMetadataValueProperties) && (validMetadataValueProperties.getPreferredValue() != null))
+                    if (validValueDefinition != null)
                     {
+                        String preferredValue = propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.PREFERRED_VALUE.name , validValueDefinition.getElementProperties(), methodName);
+
                         /*
-                         * Element is valid - have we seen this property before - this is found in the identifier attribute.
+                         * Skip the parent set.
                          */
-                        PropertyDetails propertyDetails = properties.get(validMetadataValueProperties.getIdentifier());
-
-                        if (propertyDetails == null)
+                        if (preferredValue != null)
                         {
-                            propertyDetails = new PropertyDetails(validMetadataValueProperties.getIdentifier(),
-                                                                  this.getPropertyDescription(validMetadataValueProperties.getIdentifier()),
-                                                                  validMetadataValueProperties.getDataType(),
-                                                                  validMetadataValueProperties.getPreferredValue(),
-                                                                  validValueDefinition.getElementHeader().getVersions().getCreateTime(),
-                                                                  validValueDefinition.getElementHeader().getVersions().getUpdateTime());
+                            String identifier = propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.IDENTIFIER.name, validValueDefinition.getElementProperties(), methodName);
+                            String dataType   = propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.DATA_TYPE.name, validValueDefinition.getElementProperties(), methodName);
 
-                            properties.put(validMetadataValueProperties.getIdentifier(), propertyDetails);
-                        }
-                        else
-                        {
-                            propertyDetails.setCreateUpdateTime(validValueDefinition.getElementHeader().getVersions().getCreateTime(),
-                                                                validValueDefinition.getElementHeader().getVersions().getUpdateTime());
+                            /*
+                             * Element is valid - have we seen this property before - this is found in the identifier attribute.
+                             */
+                            PropertyDetails propertyDetails = properties.get(identifier);
+
+                            if (propertyDetails == null)
+                            {
+                                propertyDetails = new PropertyDetails(identifier,
+                                                                      this.getPropertyDescription(identifier),
+                                                                      dataType,
+                                                                      preferredValue,
+                                                                      validValueDefinition.getVersions().getCreateTime(),
+                                                                      validValueDefinition.getVersions().getUpdateTime());
+
+                                properties.put(identifier, propertyDetails);
+                            }
+                            else
+                            {
+                                propertyDetails.setCreateUpdateTime(validValueDefinition.getVersions().getCreateTime(),
+                                                                    validValueDefinition.getVersions().getUpdateTime());
+                            }
                         }
                     }
                 }
 
                 startFrom += pageSize;
-                validValueDefinitions = validValueDefinitionClient.findValidValueDefinitions(null,
-                                                                                             validValueDefinitionClient.getSearchOptions(startFrom, pageSize));
+                validValueDefinitions = openMetadataStore.findMetadataElementsWithString(null,
+                                                                                         openMetadataStore.getSearchOptions(OpenMetadataType.VALID_METADATA_VALUE.typeName,
+                                                                                                                            startFrom,
+                                                                                                                            pageSize));
             }
 
             for (String propertyName : properties.keySet())
@@ -306,7 +305,9 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
 
 
     /**
-     * Return the property description for this valid values set.
+     * Return the property description for this valid values set.  All predefined property names will be found.
+     * Any added by new types will return unknown property.  If this becomes a problem, it would be possible
+     * to look up the property description through the type definition.
      *
      * @param propertyName name of an open metadata property
      * @return string
@@ -326,7 +327,7 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
 
 
     /**
-     * Return the number of records in the data source.
+     * Return the records in the data source.
      *
      * @return count
      */
@@ -338,64 +339,11 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
 
 
     /**
-     * Return the table name for this data source.  This is in canonical name format where each word in the name
-     * should be capitalized, with spaces between the words.
-     * This format allows easy translation between different naming conventions.
-     *
-     * @return string
-     * @throws ConnectorCheckedException there is a problem accessing the data
-     */
-    @Override
-    public String getTableName() throws ConnectorCheckedException
-    {
-        return "Valid Metadata Value Set List";
-    }
-
-
-    /**
-     * Return the description for this data source.
-     *
-     * @return string
-     */
-    @Override
-    public String getTableDescription()
-    {
-        return "A list of the open metadata properties that have valid values defined.";
-    }
-
-
-    /**
-     * Return the list of column descriptions associated with this data source.  The information
-     * should be sufficient to define the schema in a target data store.  This list is the default
-     * column descriptions.  The caller can override them.
-     *
-     * @return a list of column descriptions or null if not available.
-     */
-    @Override
-    public List<TabularColumnDescription> getColumnDescriptions()
-    {
-        if (columnDescriptions == null)
-        {
-            columnDescriptions = new ArrayList<>();
-
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PROPERTY_NAME, false, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, false, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, false, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, false, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.EXAMPLE, false, false));
-        }
-
-        return columnDescriptions;
-    }
-
-
-    /**
      * Return the requested data record.  The first record is record 0.
      *
      * @param rowNumber long
      * @return list of  values (as strings) where each string is the value from a column.  The order is the same as the columns
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     public List<String> readRecord(long  rowNumber) throws ConnectorCheckedException
     {
@@ -458,23 +406,5 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
                                                 methodName,
                                                 error);
         }
-    }
-
-
-    /**
-     * Close the file
-     */
-    public void disconnect()
-    {
-        try
-        {
-            super.disconnect();
-        }
-        catch (Exception  exec)
-        {
-            log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
-        }
-
-        log.debug("Closing Valid Value Store");
     }
 }

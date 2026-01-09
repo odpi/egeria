@@ -50,11 +50,6 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "ConfidenceProperties",
        "levelIdentifier" : 0,
@@ -65,7 +60,12 @@ Content-Type: application/json
        "stewardPropertyName" : "Add value here",
        "source" : "Add value here",
        "notes" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -101,11 +101,6 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "CriticalityProperties",
        "levelIdentifier" : 0,
@@ -116,7 +111,12 @@ Content-Type: application/json
        "stewardPropertyName" : "Add value here",
        "source" : "Add value here",
        "notes" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 ###
@@ -155,11 +155,6 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "ConfidentialityProperties",
        "levelIdentifier" : 0,
@@ -170,7 +165,12 @@ Content-Type: application/json
        "stewardPropertyName" : "Add value here",
        "source" : "Add value here",
        "notes" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -209,11 +209,6 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "ImpactProperties",
        "levelIdentifier" : 0,
@@ -224,7 +219,12 @@ Content-Type: application/json
        "stewardPropertyName" : "Add value here",
        "source" : "Add value here",
        "notes" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -263,11 +263,6 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "RetentionClassificationProperties",
        "retentionBasis" : 0,
@@ -281,7 +276,12 @@ Content-Type: application/json
        "stewardPropertyName" : "Add value here",
        "source" : "Add value here",
        "notes" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 ###
@@ -504,11 +504,6 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "SecurityTagsProperties",
        "securityLabels" : [ "Label1", "Label2" ],
@@ -520,7 +515,12 @@ Content-Type: application/json
            "groupName1" : [ "operation1", "operation2" ],
            "groupName2" : [ "operation1", "operation3" ]
        }
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -556,17 +556,17 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "OwnerProperties",
        "owner" : "Add value here",
        "ownerTypeName" : "Add value here",
        "ownerPropertyName" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -602,17 +602,17 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "DigitalResourceOriginProperties",
        "owner" : "Add value here",
        "ownerTypeName" : "Add value here",
        "ownerPropertyName" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -648,17 +648,17 @@ Content-Type: application/json
 
 {
    "class" : "NewClassificationRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties" : {
        "class" : "ZoneMembershipProperties",
        "owner" : "Add value here",
        "ownerTypeName" : "Add value here",
        "ownerPropertyName" : "Add value here"
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -698,7 +698,7 @@ Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
-   "relationshipProperties" : {
+   "properties" : {
      "class": "SemanticAssignmentProperties",
      "expression" : "add value here",
      "description" : "add value here",
@@ -798,6 +798,9 @@ Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
+   "properties": {
+      "class" : "ScopedByProperties"
+   },
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -844,11 +847,6 @@ Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties": {
       "class" : "LicenseProperties",
       "licenseId" : "",
@@ -868,7 +866,12 @@ Content-Type: application/json
       "restrictions" : "",
       "obligations" : "",
       "notes" : ""
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -883,11 +886,6 @@ Content-Type: application/json
 
 {
    "class" : "UpdateRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties": {
       "class" : "LicenseProperties",
       "licenseId" : "",
@@ -907,7 +905,12 @@ Content-Type: application/json
       "restrictions" : "",
       "obligations" : "",
       "notes" : ""
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 ###
@@ -943,11 +946,6 @@ Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties": {
       "class" : "CertificationProperties",
       "certificateId" : "",
@@ -964,7 +962,12 @@ Content-Type: application/json
       "recipientTypeName" : "",
       "recipientPropertyName" : "",
       "notes" : ""
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -978,11 +981,6 @@ Content-Type: application/json
 
 {
    "class" : "UpdateRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "properties": {
       "class" : "CertificationProperties",
       "certificateId" : "",
@@ -999,7 +997,12 @@ Content-Type: application/json
       "recipientTypeName" : "",
       "recipientPropertyName" : "",
       "notes" : ""
-   }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
@@ -1135,7 +1138,7 @@ Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
-   "relationshipProperties" : {
+   "properties" : {
      "class": "PeerDuplicateLinkProperties",
      "statusIdentifier" : 0,
      "steward" : "Add value here",
@@ -1239,7 +1242,7 @@ Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
-   "relationshipProperties" : {
+   "properties" : {
      "class": "ConsolidatedDuplicateLinkProperties"
   },
    "externalSourceGUID": "Add guid here",
@@ -1268,3 +1271,108 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+###
+#==================================================
+# Linking Actors and Actions
+#==================================================
+# https://egeria-project.org/concepts/action
+
+@actionGUID=add guid here
+@actorGUID=add guid here
+
+###
+# @name assignAction
+# Assign an action to an actor. Request body is optional.
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param actionGUID unique identifier of the action
+# @param actorGUID  actor to assign the action to
+# @param requestBody  request body
+#
+# @return void or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/actions/{{actionGUID}}/assign/{{actorGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties" : {
+     "class": "AssignmentScopeProperties",
+     "label" : "add label here",
+     "description" : "Add description here"
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name reassignAction
+# Assign an action to a new actor.  This will unassign all other actors previously assigned to the action.
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param actionGUID unique identifier of the action
+# @param actorGUID  actor to assign the action to
+# @param requestBody  request body
+#
+# @return void or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/actions/{{actionGUID}}/reassign/{{actorGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties" : {
+     "class": "AssignmentScopeProperties",
+     "label" : "add label here",
+     "description" : "Add description here"
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name unassignAction
+# Remove an action from an actor.
+#
+# @param serverName name of the server instances for this request
+# @param urlMarker  view service URL marker
+# @param actionGUID unique identifier of the action
+# @param actorGUID  actor to assign the action to
+# @param requestBody  request body
+#
+# @return void or
+# InvalidParameterException a parameter is invalid
+# PropertyServerException the server is not available
+# UserNotAuthorizedException the calling user is not authorized to issue the call
+#/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/actions/{{actionGUID}}/reassign/{{actorGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}

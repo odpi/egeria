@@ -16,10 +16,10 @@ import java.util.List;
 public interface ReadableTabularDataSource
 {
     /**
-     * Return the number of records in the data source.
+     * Return the record count in the data source.
      *
      * @return count
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     long getRecordCount() throws ConnectorCheckedException;
 
@@ -30,7 +30,7 @@ public interface ReadableTabularDataSource
      * This format allows easy translation between different naming conventions.
      *
      * @return string
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     String getTableName() throws ConnectorCheckedException;
 
@@ -39,7 +39,7 @@ public interface ReadableTabularDataSource
      * Return the description for this data source.
      *
      * @return string
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     String getTableDescription() throws ConnectorCheckedException;
 
@@ -51,7 +51,7 @@ public interface ReadableTabularDataSource
      * This allows simple translation between the naming conventions supported by different technologies.
      *
      * @return a list of column descriptions or null if not available.
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @throws ConnectorCheckedException data access problem
      */
     List<TabularColumnDescription> getColumnDescriptions() throws ConnectorCheckedException;
 
@@ -71,7 +71,7 @@ public interface ReadableTabularDataSource
      *
      * @param rowNumber long
      * @return list of  values (as strings) where each string is the value from a column.  The order is the same as the columns
-     * @throws ConnectorCheckedException there is a problem accessing the data.
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     List<String> readRecord(long rowNumber) throws ConnectorCheckedException;
 }

@@ -28,7 +28,6 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineH
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsAuditCode;
@@ -445,7 +444,7 @@ public class OMAGServerOperationalServices extends TokenController
              * start-up of the different types of subsystems and provide minimal diagnostics for
              * immature subsystems that have not yet developed their logging and error handling.
              */
-            OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(
+            AuditLog auditLog = operationalRepositoryServices.getAuditLog(
                     CommonServicesDescription.SERVER_OPERATIONS.getServiceCode(),
                     CommonServicesDescription.SERVER_OPERATIONS.getServiceDevelopmentStatus(),
                     CommonServicesDescription.SERVER_OPERATIONS.getServiceName(),
@@ -735,9 +734,9 @@ public class OMAGServerOperationalServices extends TokenController
      * @param auditLog logging destination
      * @throws OMAGConfigurationErrorException the max page size is negative.
      */
-    private void validateMaxPageSize(int          maxPageSize,
-                                     String       serverName,
-                                     OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
+    private void validateMaxPageSize(int      maxPageSize,
+                                     String   serverName,
+                                     AuditLog auditLog) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "Validating max page size during server initialization";
 
@@ -791,7 +790,7 @@ public class OMAGServerOperationalServices extends TokenController
                                           String                          localServerSecretsStoreCollection,
                                           String                          localServerName,
                                           List<String>                    activatedServiceList,
-                                          OMRSAuditLog                    auditLog,
+                                          AuditLog                        auditLog,
                                           int                             maxPageSize) throws OMAGConfigurationErrorException
     {
         final String methodName = "initializeAccessServices";
@@ -924,7 +923,7 @@ public class OMAGServerOperationalServices extends TokenController
                                         String                          serverName,
                                         List<String>                    activatedServiceList,
                                         int                             maxPageSize,
-                                        OMRSAuditLog                    auditLog) throws OMAGConfigurationErrorException
+                                        AuditLog                        auditLog) throws OMAGConfigurationErrorException
     {
         final String methodName = "initializeViewServices";
         final String actionDescription = "Initialize View Services";
@@ -1015,7 +1014,7 @@ public class OMAGServerOperationalServices extends TokenController
                         /*
                          * Each view service has its own audit log instance.
                          */
-                        OMRSAuditLog viewServicesAuditLog
+                        AuditLog viewServicesAuditLog
                                 = operationalRepositoryServices.getAuditLog(viewServiceConfig.getViewServiceId(),
                                                                             viewServiceConfig.getViewServiceDevelopmentStatus(),
                                                                             viewServiceConfig.getViewServiceFullName(),
@@ -1128,7 +1127,7 @@ public class OMAGServerOperationalServices extends TokenController
                         /*
                          * Each view service has its own audit log instance.
                          */
-                        OMRSAuditLog viewServicesAuditLog
+                        AuditLog viewServicesAuditLog
                                 = operationalRepositoryServices.getAuditLog(viewServiceConfig.getViewServiceId(),
                                                                             viewServiceConfig.getViewServiceDevelopmentStatus(),
                                                                             viewServiceConfig.getViewServiceFullName(),
@@ -1192,7 +1191,7 @@ public class OMAGServerOperationalServices extends TokenController
      * @throws OMAGConfigurationErrorException if the class is invalid
      */
     private AccessServiceAdmin getAccessServiceAdminClass(AccessServiceConfig   accessServiceConfig,
-                                                          OMRSAuditLog          auditLog,
+                                                          AuditLog              auditLog,
                                                           String                serverName) throws OMAGConfigurationErrorException
     {
         final String methodName = "getAccessServiceAdminClass";
@@ -1247,10 +1246,10 @@ public class OMAGServerOperationalServices extends TokenController
      * @return Admin class for the view service
      * @throws OMAGConfigurationErrorException if the class is invalid
      */
-    private Object getViewServiceAdminClass(String       viewServiceName,
-                                            String       viewServiceAdminClassName,
-                                            OMRSAuditLog auditLog,
-                                            String       serverName) throws OMAGConfigurationErrorException
+    private Object getViewServiceAdminClass(String   viewServiceName,
+                                            String   viewServiceAdminClassName,
+                                            AuditLog auditLog,
+                                            String   serverName) throws OMAGConfigurationErrorException
     {
         final String methodName = "getViewServiceAdminClass";
 
@@ -1415,7 +1414,7 @@ public class OMAGServerOperationalServices extends TokenController
 
         if (instance != null)
         {
-            OMRSAuditLog auditLog = instance.getAuditLog();
+            AuditLog auditLog = instance.getAuditLog();
 
             if (auditLog != null)
             {

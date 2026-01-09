@@ -3,13 +3,11 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
@@ -19,22 +17,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
  */
 public class PostgresServerSurveyActionProvider extends SurveyActionServiceProvider
 {
-    /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 673;
-
-    /*
-     * Unique identifier for the connector type.
-     */
-    private static final String connectorTypeGUID = "3e47db62-5407-4cbd-ba54-1ce6612af6f9";
-    private static final String connectorQualifiedName = "Egeria:SurveyActionService:RelationalDatabaseServer:PostgreSQL";
-    private static final String connectorDisplayName = "Survey for a PostgreSQL Database Server";
-    private static final String connectorTypeDescription = "Surveys the databases, their tables and columns, found in a PostgreSQL database server";
-    private static final String connectorWikiPage = "https://egeria-project.org/connectors/databases/postgres-database-server-survey-action-service/";
-
-
-    /*
+    /**
      * Class of the connector.
      */
     private static final String connectorClassName = PostgresServerSurveyActionService.class.getName();
@@ -45,43 +28,9 @@ public class PostgresServerSurveyActionProvider extends SurveyActionServiceProvi
      */
     public PostgresServerSurveyActionProvider()
     {
-        super();
-
-        /*
-         * Set up the class name of the connector that this provider creates.
-         */
-        super.setConnectorClassName(connectorClassName);
-
-        /*
-         * Set up the connector type that should be included in a connection used to configure this connector.
-         */
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorQualifiedName);
-        connectorType.setDisplayName(connectorDisplayName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-
-        /*
-         * Information about the type of assets this type of connector works with and the interface it supports.
-         */
-        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
-
-        super.connectorTypeBean = connectorType;
-
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
-
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorDisplayName);
-        componentDescription.setComponentDescription(connectorTypeDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
+        super(EgeriaOpenConnectorDefinition.POSTGRES_SERVER_SURVEY_ACTION_SERVICE,
+              connectorClassName,
+              null);
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{PostgresDeployedImplementationType.POSTGRESQL_SERVER});
         super.supportedActionTargetTypes = PostgresTarget.getPostgresServerActionTargetTypes();

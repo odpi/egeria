@@ -15,6 +15,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
     compileOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')

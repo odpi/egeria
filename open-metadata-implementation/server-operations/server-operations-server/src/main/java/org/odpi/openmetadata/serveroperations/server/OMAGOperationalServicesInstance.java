@@ -9,10 +9,10 @@ import org.odpi.openmetadata.adminservices.registration.ViewServerGenericService
 import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
@@ -33,14 +33,14 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private final ServerTypeClassification        serverTypeClassification;
 
     private OMAGServerConfig                     operationalConfiguration                     = null;
-    private OMRSOperationalServices operationalRepositoryServices  = null;
-    private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
+    private OMRSOperationalServices              operationalRepositoryServices                = null;
+    private List<AccessServiceAdmin>             operationalAccessServiceAdminList            = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList              = new ArrayList<>();
     private List<ViewServerGenericServiceAdmin>  operationalViewServerGenericServiceAdminList = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices          = null;
     private EngineHostOperationalServices        operationalEngineHost                        = null;
     private IntegrationDaemonOperationalServices operationalIntegrationDaemon                 = null;
-    private OMRSAuditLog                         auditLog                                     = null;
+    private AuditLog                             auditLog                                     = null;
 
 
     /**
@@ -333,7 +333,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return logging destination
      */
-    OMRSAuditLog getAuditLog()
+    AuditLog getAuditLog()
     {
         return auditLog;
     }
@@ -344,7 +344,7 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @param auditLog logging destination
      */
-    void setAuditLog(OMRSAuditLog auditLog)
+    void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
     }

@@ -1701,11 +1701,11 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public VoidResponse reassignAction(String                        serverName,
-                                       String                        urlMarker,
-                                       String                        actionGUID,
-                                       String                        actorGUID,
-                                       UpdateRelationshipRequestBody requestBody)
+    public VoidResponse reassignAction(String                     serverName,
+                                       String                     urlMarker,
+                                       String                     actionGUID,
+                                       String                     actorGUID,
+                                       NewRelationshipRequestBody requestBody)
     {
         final String methodName = "reassignAction";
 

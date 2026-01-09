@@ -18,7 +18,7 @@ import org.odpi.openmetadata.conformance.workbenches.platform.PlatformConformanc
 import org.odpi.openmetadata.conformance.workbenches.platform.PlatformConformanceWorkbench;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkbench;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSEnterpriseConnectorManager;
 
@@ -32,12 +32,12 @@ public class ConformanceSuiteOperationalServices
 {
     private final ConformanceServicesInstanceMap instanceMap = new ConformanceServicesInstanceMap();
 
-    private final String localServerName;               /* Initialized in constructor */
-    private final String localServerUserId;             /* Initialized in constructor */
+    private final String localServerName;                  /* Initialized in constructor */
+    private final String localServerUserId;                /* Initialized in constructor */
     private final String localServerSecretStoreProvider;   /* Initialized in constructor */
     private final String localServerSecretStoreLocation;   /* Initialized in constructor */
     private final String localServerSecretStoreCollection; /* Initialized in constructor */
-    private final int    maxPageSize;                   /* Initialized in constructor */
+    private final int    maxPageSize;                      /* Initialized in constructor */
 
 
     /**
@@ -48,7 +48,7 @@ public class ConformanceSuiteOperationalServices
      * @param localServerSecretsStoreProvider secrets store connector for bearer token
      * @param localServerSecretsStoreLocation secrets store location for bearer token
      * @param localServerSecretsStoreCollection secrets store collection for bearer token
-     * @param maxPageSize       maximum number of records that can be requested on the pageSize parameter
+     * @param maxPageSize       maximum records that can be requested on the pageSize parameter
      */
     public ConformanceSuiteOperationalServices(String localServerName,
                                                String localServerUserId,
@@ -79,7 +79,7 @@ public class ConformanceSuiteOperationalServices
     public void initialize(ConformanceSuiteConfig         conformanceSuiteConfig,
                            OMRSTopicConnector             enterpriseTopicConnector,
                            OMRSEnterpriseConnectorManager enterpriseConnectorManager,
-                           OMRSAuditLog                   auditLog) throws OMAGConfigurationErrorException
+                           AuditLog                       auditLog) throws OMAGConfigurationErrorException
     {
         final String  methodName = "initialize";
 

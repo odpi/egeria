@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * <p>
- * The Connector is the interface for all connector instances.   Connectors are client-side interfaces to assets
+ * The Connector is implemented by all connector instances.   Connectors are client-side interfaces to assets
  * such as data stores, data sets, APIs, analytical functions.  They handle the communication with the server that
  * hosts the assets, along with the communication with the metadata server to serve up metadata (properties) about
  * the assets.
@@ -67,11 +67,12 @@ public abstract class Connector
     /**
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
-     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connection   POJO for the configuration used to create the connector.
+     * @param connectorInstanceId unique id for the connector instance   useful for messages etc
+     * @param connection          POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException An issue occurred during initialization
      */
     public abstract void initialize(String     connectorInstanceId,
-                                    Connection connection);
+                                    Connection connection) throws ConnectorCheckedException;
 
 
     /**
@@ -96,7 +97,7 @@ public abstract class Connector
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     public abstract void start() throws ConnectorCheckedException, UserNotAuthorizedException;
 
@@ -156,7 +157,7 @@ public abstract class Connector
      * @param counterValue initial value of the counter
      * @param methodName calling method
      *
-     * @throws InvalidParameterException the counter name is already in use as a timestamp or property
+     * @throws InvalidParameterException the counter's name is already in use as a timestamp or property
      */
     public void initializeStatisticCounter(String   counterName,
                                            int      counterValue,
@@ -191,11 +192,11 @@ public abstract class Connector
 
 
     /**
-     * Increment the named counter.  If the counter name is new, it is assumed to be set to zero, resulting in a value of 1.
+     * Increment the named counter.  If the counter's name is new, it is assumed to be set to zero, resulting in a value of 1.
      *
      * @param counterName name of counter
      * @param methodName calling method
-     * @throws InvalidParameterException the counter name is already in use as a timestamp or property
+     * @throws InvalidParameterException the counter's name is already in use as a timestamp or property
      */
     public void incrementStatisticCounter(String   counterName,
                                           String   methodName) throws InvalidParameterException
@@ -236,7 +237,7 @@ public abstract class Connector
 
 
     /**
-     * Retrieve the value for a specific counter statistic.  If the counter is not known, it is defined in the statistics list with a zero value.
+     * Retrieve the value for a specific counter's statistic.  If the counter is not known, it is defined in the statistics list with a zero value.
      *
      * @param counterName name of the counter
      * @param methodName calling method
@@ -514,7 +515,7 @@ public abstract class Connector
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     public abstract void disconnect() throws ConnectorCheckedException;
 }
