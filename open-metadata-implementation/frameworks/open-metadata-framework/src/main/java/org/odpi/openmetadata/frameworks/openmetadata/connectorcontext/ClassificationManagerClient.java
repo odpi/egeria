@@ -10,9 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -1371,7 +1369,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param actionGUID  unique identifier of the action
      * @param actorGUID actor to assign the action to
-     * @param updateOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties the properties of the relationship
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -1379,12 +1377,12 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      */
     public void reassignAction(String                    actionGUID,
                                String                    actorGUID,
-                               UpdateOptions             updateOptions,
+                               MakeAnchorOptions         makeAnchorOptions,
                                AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        stewardshipManagementHandler.reassignAction(connectorUserId, actionGUID, actorGUID, updateOptions, relationshipProperties);
+        stewardshipManagementHandler.reassignAction(connectorUserId, actionGUID, actorGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
