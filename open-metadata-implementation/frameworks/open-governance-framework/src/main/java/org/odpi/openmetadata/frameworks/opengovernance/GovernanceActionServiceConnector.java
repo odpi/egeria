@@ -260,7 +260,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public void disconnect() throws ConnectorCheckedException

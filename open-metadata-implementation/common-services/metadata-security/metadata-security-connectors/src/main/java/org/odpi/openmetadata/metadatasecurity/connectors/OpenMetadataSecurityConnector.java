@@ -551,7 +551,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -1692,7 +1692,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public  void disconnect() throws ConnectorCheckedException

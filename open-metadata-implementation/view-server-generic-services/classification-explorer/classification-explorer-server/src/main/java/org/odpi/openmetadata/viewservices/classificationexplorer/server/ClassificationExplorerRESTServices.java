@@ -441,59 +441,6 @@ public class ClassificationExplorerRESTServices extends TokenController
 
 
     /**
-     * Return information about the elements classified with the confidence classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param requestBody properties for the request
-     *
-     * @return void or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    public OpenMetadataRootElementsResponse getMembersOfSubjectArea(String            serverName,
-                                                                    String            urlMarker,
-                                                                    FilterRequestBody requestBody)
-    {
-        final String methodName = "getMembersOfSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                     requestBody.getFilter(),
-                                                                     requestBody));
-            }
-            else
-            {
-                response.setElements(handler.getMembersOfSubjectArea(userId, null, null));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Return information about the elements from a specific origin.
      *
      * @param serverName  name of the server instance to connect to
@@ -501,7 +448,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */

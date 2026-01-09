@@ -33,27 +33,46 @@ public enum ReferenceDataConfigurationProperty
                           false),
 
     /**
-     * Unique identifier of the valid value set that is supplying metadata.
+     * Unique identifier of the element that is supplying metadata.
      */
-    VALID_VALUE_SET_GUID ("validValueSetGUID",
-                 "Unique identifier of the valid value set that is supplying metadata.",
-                 "string",
-                 "fc29b307-67a9-4ebc-a8e7-baed96612e52",
-                 false),
+    STARTING_ELEMENT_GUID("startingElementGUID",
+                          "Unique identifier of the element that is supplying metadata.",
+                          "string",
+                          "fc29b307-67a9-4ebc-a8e7-baed96612e52",
+                          false),
 
 
     /**
-     * Name of the open metadata property that has valid values to turn into a product.
+     * Value of the identifier property to process.
      */
-    VALID_METADATA_PROPERTY_NAME ("validValuePropertyName",
-                                  "Name of the open metadata property that has valid values to turn into a product.",
-                                  "string",
-                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                  false),
+    IDENTIFIER_PROPERTY_VALUE("identifierPropertyValue",
+                              "Value of the identifier property to process.",
+                              "string",
+                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                              false),
+
+    /**
+     * Canonical name - name used for the product and table name.
+     */
+    CANONICAL_NAME("canonicalName",
+                              "Value of the identifier property to process.",
+                              "string",
+                              "Deployed Implementation Type",
+                              false),
 
 
     /**
-     * Maximum number of values to retrieve from the metadata store in one call.
+     * Description for the digital product.
+     */
+    PRODUCT_DESCRIPTION("productDescription",
+                   "Description for the digital product.",
+                   "string",
+                   OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                   false),
+
+
+    /**
+     * Maximum values to retrieve from the metadata store in one call.
      */
     MAX_PAGE_SIZE ("maxPageSize",
                           "Maximum number of values to retrieve from the metadata store in one call.  Zero means retrieve the maximum allowed by the server.  This is the default value.",

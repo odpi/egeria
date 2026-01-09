@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc.FileBasedRegistryStoreConnectorAuditCode;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
@@ -56,9 +57,11 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      *
      * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
      * @param connectionDetails - POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException  a problem within the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, Connection connectionDetails)
+    public void initialize(String     connectorInstanceId,
+                           Connection connectionDetails) throws ConnectorCheckedException
     {
         super.initialize(connectorInstanceId, connectionDetails);
 

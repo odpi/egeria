@@ -41,7 +41,7 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override
@@ -82,7 +82,7 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public void disconnect() throws ConnectorCheckedException

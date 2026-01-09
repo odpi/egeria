@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -162,7 +163,7 @@ public class TestFileBasedRegistryStoreConnector
     }
 
 
-    @Test public void testFileManagement()
+    @Test public void testFileManagement() throws ConnectorCheckedException
     {
         FileBasedRegistryStoreConnector connector = new FileBasedRegistryStoreConnector();
 

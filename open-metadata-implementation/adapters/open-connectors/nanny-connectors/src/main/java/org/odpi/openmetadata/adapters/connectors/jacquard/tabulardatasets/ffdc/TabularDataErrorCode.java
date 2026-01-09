@@ -26,7 +26,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum TabularDataErrorCode implements ExceptionMessageSet
 {
     /**
-     * EGERIA-CONNECTOR-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform
+     * REFERENCE-DATA-CONNECTORS-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform
      */
     NULL_URL(400, "REFERENCE-DATA-CONNECTORS-400-001",
                      "Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform",
@@ -35,7 +35,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
 
 
     /**
-     * EGERIA-CONNECTOR-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call
+     * REFERENCE-DATA-CONNECTORS-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call
      */
     NULL_SERVER_NAME(400, "REFERENCE-DATA-CONNECTORS-400-002",
              "Reference Data Connector {0} has been configured without the name of the OMAG Server to call",
@@ -43,7 +43,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
              "The server's name is configured in the connector's connection additionalProperties in the serverName property."),
 
     /**
-     * EGERIA-CONNECTOR-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.
+     * REFERENCE-DATA-CONNECTORS-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.
      */
     NULL_CLIENT_USER_ID(400, "REFERENCE-DATA-CONNECTORS-400-003",
                      "Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.",
@@ -51,7 +51,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
                      "The default userId is configured in the connector's connection userId property.  The parent connector may also supply a userId with the setEnvironment() call."),
 
     /**
-     * EGERIA-CONNECTOR-400-004 - Reference Data Connector {0} has no data at record {1}.  The data set size is {2}
+     * REFERENCE-DATA-CONNECTORS-400-004 - Reference Data Connector {0} has no data at record {1}.  The data set size is {2}
      */
     NULL_RECORD(400, "REFERENCE-DATA-CONNECTORS-400-004",
                         "Reference Data Connector {0} has no data at record {1}.  The data set size is {2}",
@@ -59,7 +59,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
                         "Request data from the connector with record numbers from '0' to the 'data set size minus 1'."),
 
     /**
-     * EGERIA-CONNECTOR-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}
+     * REFERENCE-DATA-CONNECTORS-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}
      */
     WRONG_NUMBER_OF_COLUMNS(400, "REFERENCE-DATA-CONNECTORS-400-005",
                 "Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}",
@@ -68,7 +68,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
 
 
     /**
-     * EGERIA-CONNECTOR-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * REFERENCE-DATA-CONNECTORS-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "REFERENCE-DATA-CONNECTORS-500-001",
                          "The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
@@ -76,12 +76,29 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * EGERIA-CONNECTOR-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * REFERENCE-DATA-CONNECTORS-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     INVALID_ELEMENT(500, "REFERENCE-DATA-CONNECTORS-500-002",
                          "The {0} Reference Data Connector received an invalid element from the metadata store: {1}",
                          "The connector is unable to continue to work with this element.",
                          "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved."),
+
+    /**
+     * REFERENCE-DATA-CONNECTORS-500-003 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     */
+    UNMAPPED_COLUMN(500, "REFERENCE-DATA-CONNECTORS-500-003",
+                    "The {0} Reference Data Connector is unable to map column {1}",
+                    "The connector is unable to continue to work with this element.",
+                    "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved."),
+
+
+    /**
+     * REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}
+     */
+    NULL_PRODUCT_DEFINITION(500, "REFERENCE-DATA-CONNECTORS-500-004",
+                    "Product definition is null for connector {0} in method {1}",
+                    "The connector is unable to continue to work without the product definition.",
+                    "This is a timing issue.  The connector should set up a valid product definition either in its constructor or start() method.  The calls to retrieve the table name/description should occur after start()."),
 
     ;
 

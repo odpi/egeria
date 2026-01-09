@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,21 +11,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * A subject area defines a group of definitions for governing assets related to a specific topic.  The subject area definition defines
- * how the assets related to the topic should be managed.
+ * ReferenceDataSetProperties provides the properties for a top level reference data set.
+ * This element indicates that the elements linked below are part of a collections that should be synchronized together.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SubjectAreaDefinitionProperties extends GovernanceControlProperties
+public class ReferenceDataSetProperties extends ReferenceDataValueProperties
 {
     /**
-     * Default constructor
+     * Constructor
      */
-    public SubjectAreaDefinitionProperties()
+    public ReferenceDataSetProperties()
     {
         super();
-        super.typeName = OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName;
+        super.typeName = OpenMetadataType.REFERENCE_DATA_SET.typeName;
     }
 
 
@@ -34,21 +34,20 @@ public class SubjectAreaDefinitionProperties extends GovernanceControlProperties
      *
      * @param template object to copy
      */
-    public SubjectAreaDefinitionProperties(GovernanceControlProperties template)
+    public ReferenceDataSetProperties(ValidValueDefinitionProperties template)
     {
         super(template);
     }
 
 
     /**
-     * JSON-style toString
+     * Generate a string containing the properties.
      *
-     * @return return string containing the property names and values
+     * @return string value
      */
     @Override
     public String toString()
     {
-        return "SubjectAreaDefinitionProperties{" +
-                "} " + super.toString();
+        return "ReferenceDataSetProperties{" + '}';
     }
 }

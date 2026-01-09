@@ -501,7 +501,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public  synchronized void disconnect() throws ConnectorCheckedException

@@ -53,8 +53,10 @@ public class RelatedMediaProperties extends ExternalReferenceProperties
 
         if (template != null)
         {
-            mediaType         = template.getMediaType();
-            defaultMediaUsage = template.getDefaultMediaUsage();
+            mediaType                = template.getMediaType();
+            mediaTypeOtherId         = template.getMediaTypeOtherId();
+            defaultMediaUsage        = template.getDefaultMediaUsage();
+            defaultMediaUsageOtherId = template.getDefaultMediaUsageOtherId();
         }
     }
 

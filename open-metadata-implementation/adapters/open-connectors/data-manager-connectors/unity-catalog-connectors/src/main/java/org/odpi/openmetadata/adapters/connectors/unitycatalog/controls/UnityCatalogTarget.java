@@ -18,15 +18,15 @@ import java.util.Map;
 public enum UnityCatalogTarget
 {
     UNITY_CATALOG_SERVER_TARGET("unityCatalogServer",
-                                UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDescription(),
-                                UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
-                                UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDescription(),
+                                org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                 null),
 
     UNITY_CATALOG_CATALOG_TARGET("unityCatalogCatalog",
-                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDescription(),
-                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
-                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+                                 org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDescription(),
+                                 org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+                                 org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
                                  null),
 
     UNITY_CATALOG_CONNECTOR_TARGET("unityCatalogConnector",

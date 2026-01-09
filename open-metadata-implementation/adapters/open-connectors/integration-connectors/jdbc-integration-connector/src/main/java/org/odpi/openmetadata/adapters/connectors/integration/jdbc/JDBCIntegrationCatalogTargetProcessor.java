@@ -57,7 +57,7 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      */
     @Override
     public void refresh() throws ConnectorCheckedException

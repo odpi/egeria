@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.jacquard;
 
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardErrorCode;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.OpenMetadataDataSetConnectorBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -31,7 +32,7 @@ import java.util.Map;
  * the last refresh (or this is the first refresh), the GovernanceMeasurements classification is updated with the latest update time.
  * This will be detected as a change to the catalog target by any monitoring process.
  */
-public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends CatalogTargetProcessorBase
+public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
     private OpenMetadataDataSetConnectorBase tabularDataSource = null;
 
@@ -47,11 +48,11 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
      * @throws ConnectorCheckedException error
      * @throws UserNotAuthorizedException the connector is disconnected
      */
-    public OpenMetadataProductsHarvesterCatalogTargetProcessor(CatalogTarget            catalogTarget,
-                                                               CatalogTargetContext     catalogTargetContext,
-                                                               Connector                connectorToTarget,
-                                                               String                   connectorName,
-                                                               AuditLog                 auditLog) throws ConnectorCheckedException,
+    public JacquardCatalogTargetProcessor(CatalogTarget            catalogTarget,
+                                          CatalogTargetContext     catalogTargetContext,
+                                          Connector                connectorToTarget,
+                                          String                   connectorName,
+                                          AuditLog                 auditLog) throws ConnectorCheckedException,
                                                                                                          UserNotAuthorizedException
     {
         super(catalogTarget, catalogTargetContext, connectorToTarget, connectorName, auditLog);
@@ -98,7 +99,7 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
                  * Locate the lastUpdate column, no action is taken if the last update column is not present in the
                  * data set.
                  */
-                int lastUpdateColumnNumber = tabularDataSource.getColumnNumber(OpenMetadataProperty.UPDATE_TIME.name);
+                int lastUpdateColumnNumber = tabularDataSource.getColumnNumber(ProductDataFieldDefinition.UPDATE_TIME.getDisplayName());
 
                 if (lastUpdateColumnNumber < 0)
                 {

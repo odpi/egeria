@@ -107,11 +107,14 @@ public class OMRSAuditLogRESTServices extends TokenController
              * Validate that the serverName and userId permit the request.
              */
             OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
-            OMRSAuditLog                   masterAuditLog = instance.getMasterAuditLog();
+            AuditLog                       masterAuditLog = instance.getMasterAuditLog();
 
-            if (masterAuditLog != null)
+            if (masterAuditLog instanceof OMRSAuditLog omrsAuditLog)
             {
-                response.setReport(masterAuditLog.getFullReport());
+                /*
+                 * OMRS Adds support for multiple destinations for audit log messages.
+                 */
+                response.setReport(omrsAuditLog.getFullReport());
             }
         }
         catch (Throwable  error)

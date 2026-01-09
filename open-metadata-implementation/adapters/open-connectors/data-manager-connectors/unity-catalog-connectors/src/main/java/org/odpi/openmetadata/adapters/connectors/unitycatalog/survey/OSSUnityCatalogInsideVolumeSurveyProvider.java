@@ -2,13 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFolderAnnotationType;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
@@ -23,20 +21,6 @@ import java.util.ArrayList;
 public class OSSUnityCatalogInsideVolumeSurveyProvider extends SurveyActionServiceProvider
 {
     /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 696;
-
-    /*
-     * Descriptive information about the connector for the connector type and audit log.
-     */
-    private static final String  connectorTypeGUID = "5a9f3813-2cc7-46ac-a1a8-b2b508d07100";
-    private static final String  connectorTypeQualifiedName = "Egeria:SurveyActionService:FileFolder:UnityCatalogVolumeSurveyService";
-    private static final String  connectorTypeName = "OSS Unity Catalog (UC) Inside a Volume Survey Service";
-    private static final String  connectorTypeDescription = "Connector supports the surveying of files in a Unity Catalog Volume's directory (folder) and the directories beneath it.";
-    private static final String  connectorWikiPage  = "https://egeria-project.org/connectors/survey-action/unity-catalog/volume-survey-service/";
-
-    /*
      * Class of the connector.
      */
     private static final String connectorClass = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyService";
@@ -50,20 +34,9 @@ public class OSSUnityCatalogInsideVolumeSurveyProvider extends SurveyActionServi
      */
     public OSSUnityCatalogInsideVolumeSurveyProvider()
     {
-        super();
-
-        super.setConnectorClassName(connectorClass);
-
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeQualifiedName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(SurveyActionServiceProvider.supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
-
-        super.connectorTypeBean = connectorType;
+        super(EgeriaOpenConnectorDefinition.OSS_UNITY_CATALOG_INSIDE_VOLUME_SURVEY_ACTION_SERVICE,
+              connectorClass,
+              null);
 
         supportedActionTargetTypes = new ArrayList<>();
         ActionTargetType actionTargetType = new ActionTargetType();
@@ -80,18 +53,10 @@ public class OSSUnityCatalogInsideVolumeSurveyProvider extends SurveyActionServi
         super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();
 
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PRODUCE_ACTIONS, AnalysisStep.PRODUCE_INVENTORY});
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PRODUCE_ACTIONS,
+                AnalysisStep.PRODUCE_INVENTORY});
 
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorTypeName);
-        componentDescription.setComponentDescription(connectorTypeDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
     }
 }

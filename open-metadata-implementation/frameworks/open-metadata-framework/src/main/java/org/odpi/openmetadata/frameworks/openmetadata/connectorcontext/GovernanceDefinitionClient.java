@@ -600,48 +600,6 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
     }
 
 
-
-    /**
-     * Classify the element to assert that the definitions it represents are part of a subject area definition.
-     *
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param properties qualified name of subject area
-     * @param metadataSourceOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addElementToSubjectArea(String                elementGUID,
-                                        SubjectAreaProperties properties,
-                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
-    {
-        governanceDefinitionHandler.addElementToSubjectArea(connectorUserId, elementGUID, properties, metadataSourceOptions);
-    }
-
-
-    /**
-     * Remove the subject area designation from the identified element.
-     *
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param metadataSourceOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeElementFromSubjectArea(String                elementGUID,
-                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        governanceDefinitionHandler.removeElementFromSubjectArea(connectorUserId, elementGUID, metadataSourceOptions);
-    }
-
-
-
     /**
      * Create a link between a license type and an element that has achieved the license.
      *

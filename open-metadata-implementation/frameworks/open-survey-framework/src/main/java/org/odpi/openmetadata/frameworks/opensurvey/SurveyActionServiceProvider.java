@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.opensurvey;
 
+import org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
@@ -31,6 +32,24 @@ public abstract class SurveyActionServiceProvider extends GovernanceServiceProvi
      */
     public SurveyActionServiceProvider()
     {
+        super.supportedRequestParameters = SurveyRequestParameter.getRequestParameterTypes();
+        super.producedGuards = SurveyActionGuard.getSimpleSurveyGuardTypes();
+        super.producedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
+    }
+
+    /**
+     * Constructor for an open connector provider.
+     *
+     * @param openConnectorDescription             connector definition
+     * @param connectorClassName                   connector class name
+     * @param recognizedConfigurationPropertyNames list of recognized configuration property names
+     */
+    public SurveyActionServiceProvider(OpenConnectorDefinition openConnectorDescription,
+                                       String                  connectorClassName,
+                                       List<String>            recognizedConfigurationPropertyNames)
+    {
+        super(openConnectorDescription, connectorClassName, recognizedConfigurationPropertyNames);
+
         super.supportedRequestParameters = SurveyRequestParameter.getRequestParameterTypes();
         super.producedGuards = SurveyActionGuard.getSimpleSurveyGuardTypes();
         super.producedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();

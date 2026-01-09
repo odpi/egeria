@@ -22,6 +22,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-survey-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')

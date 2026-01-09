@@ -44,9 +44,9 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      */
     UNEXPECTED_ROW_COUNT_FROM_DATABASE("JDBC-RESOURCE-CONNECTOR-0003",
                                        AuditLogRecordSeverityLevel.INFO,
-                                    "The JDBC resource connector for database {0} has received {1} results from query {2}",
-                                    "The connector is designed provide a standard interface to a relational database that supports Java Database Connectivity (JDBC).  This message confirms that the connector has successfully connected to the database.  The number of times that this message is emitted by a connector indicates how many database connections it is using.",
-                                    "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
+                                       "The JDBC resource connector for database {0} has received {1} results from query {2}",
+                                    "The connector has detected that the row count on the SQL requests is incorrect.",
+                                    "Check the code where this error occurred to determine if the connector code is wrong - or the caller.  Correct whichever has the problem."),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-0004 - The JDBC resource connector for database {0} has issued a rollback after receiving SQL Exception with message {1}

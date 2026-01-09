@@ -830,58 +830,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     }
 
 
-
-    /**
-     * Classify the element to assert that the definitions it represents are part of a subject area definition.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param properties qualified name of subject area
-     * @param metadataSourceOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addElementToSubjectArea(String                userId,
-                                        String                elementGUID,
-                                        SubjectAreaProperties properties,
-                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
-    {
-        openMetadataClient.classifyMetadataElementInStore(userId,
-                                                          elementGUID,
-                                                          OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
-                                                          metadataSourceOptions,
-                                                          classificationBuilder.getNewElementProperties(properties));
-    }
-
-
-    /**
-     * Remove the subject area designation from the identified element.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param metadataSourceOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeElementFromSubjectArea(String                userId,
-                                             String                elementGUID,
-                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        openMetadataClient.declassifyMetadataElementInStore(userId,
-                                                            elementGUID,
-                                                            OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
-                                                            metadataSourceOptions);
-    }
-
-
     /**
      * Link a governance action to the element it is to work on (action target).
      *

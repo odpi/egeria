@@ -250,34 +250,6 @@ public class ClassificationExplorerResource
 
 
     /**
-     * Return information about the elements classified with the subject area classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-subject-area-membership")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getMembersOfSubjectArea",
-            description="Return information about the elements classified with the subject area classification.",
-            externalDocs=@ExternalDocumentation(description="Subject areas", url="https://egeria-project.org/types/4/0425-Subject-Areas/"))
-
-    public OpenMetadataRootElementsResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
-                                                                    @PathVariable String                        urlMarker,
-                                                                    @RequestBody(required = false)
-                                                                    FilterRequestBody requestBody)
-    {
-        return restAPI.getMembersOfSubjectArea(serverName, urlMarker, requestBody);
-    }
-
-
-    /**
      * Return information about the digital resources from a specific origin.
      *
      * @param serverName  name of the server instance to connect to

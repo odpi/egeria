@@ -37,6 +37,9 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "metadataElementTypeName": "TabularDataSet",
+  "searchString": "Attributes",
+  "startsWith" : false,
+  "endsWith": false,
   "skipClassifiedElements": ["Template"]
 }
 
@@ -70,13 +73,9 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{validMetadataValueSetListGUID}}/report?startFromRow=0&maxRowCount=5000
 Authorization: Bearer {{token}}
 
-###
-# ========================================================================================
-# Work with Open Metadata Type List
-#
 
 ###
-# @name get Open Metadata Type List
+# @name get Valid Values for contentStatus
 # Retrieve the element, extract the guid and then request the data set report.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
@@ -86,22 +85,18 @@ Content-Type: application/json
 {
   "class" : "FilterRequestBody",
   "metadataElementTypeName": "ReferenceCodeTable",
-  "filter" : "Valid Metadata Values for typeName",
+  "filter" : "Valid Metadata Values for contentStatus",
   "startFrom" : 0,
   "pageSize": 10
 }
 
-> {% client.global.set("openMetadataTypesGUID", response.body.elements[0].elementHeader.guid); %}
+> {% client.global.set("contentStatusesGUID", response.body.elements[0].elementHeader.guid); %}
 
 ###
 
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{contentStatusesGUID}}/report?startFromRow=0&maxRowCount=5000
 Authorization: Bearer {{token}}
 
-###
-# ========================================================================================
-# Work with Deployed Implementation Type (Technology Type) List
-#
 
 ###
 # @name get Deployed Implementation Type (Technology Type) List
@@ -128,11 +123,11 @@ Authorization: Bearer {{token}}
 
 ###
 # ========================================================================================
-# Work with Activity Type List
+# Work with Digital products about open metadata types
 #
 
 ###
-# @name get Activity Type List
+# @name get Open Metadata Type List
 # Retrieve the element, extract the guid and then request the data set report.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
@@ -142,15 +137,62 @@ Content-Type: application/json
 {
   "class" : "FilterRequestBody",
   "metadataElementTypeName": "ReferenceCodeTable",
-  "filter" : "Valid Metadata Values for type",
+  "filter" : "Data set for Open Metadata Types List",
   "startFrom" : 0,
   "pageSize": 10
 }
 
-> {% client.global.set("activityTypesGUID", response.body.elements[0].elementHeader.guid); %}
+> {% client.global.set("openMetadataTypesGUID", response.body.elements[0].elementHeader.guid); %}
 
 ###
 
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{activityTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataTypesGUID}}/report?startFromRow=0&maxRowCount=5000
 Authorization: Bearer {{token}}
 
+
+###
+# @name get Open Metadata Attributes List
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "ReferenceCodeTable",
+  "filter" : "Data set for Open Metadata Attributes List",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("openMetadataAttributesGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataAttributesGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}
+
+
+###
+# @name get Open Metadata Attributes For Types List
+# Retrieve the element, extract the guid and then request the data set report.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "TabularDataSet",
+  "filter" : "Data set for Open Metadata Attributes For Types List",
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+> {% client.global.set("openMetadataAttributesForTypesGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{openMetadataAttributesForTypesGUID}}/report?startFromRow=0&maxRowCount=5000
+Authorization: Bearer {{token}}

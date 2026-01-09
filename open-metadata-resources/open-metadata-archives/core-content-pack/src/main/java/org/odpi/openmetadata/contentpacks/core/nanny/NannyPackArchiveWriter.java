@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.contentpacks.core.nanny;
 
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.contentpacks.core.ContentPackDefinition;
 import org.odpi.openmetadata.contentpacks.core.IntegrationGroupDefinition;
 import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;

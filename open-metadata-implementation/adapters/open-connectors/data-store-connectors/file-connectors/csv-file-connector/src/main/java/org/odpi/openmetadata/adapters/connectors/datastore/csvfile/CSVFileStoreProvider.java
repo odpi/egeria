@@ -3,39 +3,22 @@
 
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
+
+import java.util.Collections;
 
 
 /**
  * CSVFileStoreProvider is the OCF connector provider for the structured file store connector.
  */
-public class CSVFileStoreProvider extends ConnectorProviderBase
+public class CSVFileStoreProvider extends OpenConnectorProviderBase
 {
-    /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 96;
-
-    /*
-     * Unique identifier for the connector type.
-     */
-    private static final String  connectorTypeGUID = "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14";
-    private static final String  connectorQualifiedName = "Egeria:ResourceConnector:CSVFile";
-    private static final String  connectorTypeName = "CSV File Connector";
-    private static final String  connectorTypeDescription = "Connector supports reading of structured (CSV) files.";
-    private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/csv-file-resource-connector/";
-
-
     private static final String  connectorClass = CSVFileStoreConnector.class.getName();
-
-
     private static final String  expectedDataFormat = "csv";
 
 
@@ -45,40 +28,11 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
      */
     public CSVFileStoreProvider()
     {
-        super();
-
-        super.setConnectorClassName(connectorClass);
-
-        connectorInterfaces.add(CSVFileStore.class.getName());
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorQualifiedName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
-        connectorType.setExpectedDataFormat(expectedDataFormat);
-        connectorType.setConnectorInterfaces(connectorInterfaces);
-
-        connectorType.setRecognizedConfigurationProperties(CSVFileConfigurationProperty.getCSVFileStoreConfigPropertyNames());
-
-        super.connectorTypeBean = connectorType;
-
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
-
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorTypeName);
-        componentDescription.setComponentDescription(connectorTypeDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
+        super(EgeriaOpenConnectorDefinition.CSV_FILE_STORE_CONNECTOR,
+              connectorClass,
+              CSVFileConfigurationProperty.getCSVFileStoreConfigPropertyNames(),
+              Collections.singletonList(CSVFileStore.class.getName()),
+              expectedDataFormat);
 
         super.supportedConfigurationProperties = CSVFileConfigurationProperty.getCSVFileStoreConfigConfigurationPropertyTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.CSV_FILE});

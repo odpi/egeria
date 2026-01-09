@@ -365,7 +365,7 @@ public enum OpenMetadataType
 
 
     /**
-     * Images, video or sound media.
+     * Images, video, or sound media.
      */
     RELATED_MEDIA("747f8b86-fe7c-4c9b-ba75-979e093cc307",
                   "RelatedMedia",
@@ -3350,32 +3350,22 @@ public enum OpenMetadataType
     /**
      * Defines a collection of glossary elements that are related to a topic.
      */
-    SUBJECT_AREA_DEFINITION("d28c3839-bc6f-41ad-a882-5667e01fea72",
-                            "SubjectAreaDefinition",
-                            OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
-                            "067951d2-40d3-43da-a8c4-612ddbe5b7d8",
-                            "Defines a collection of glossary elements that are related to a topic.",
-                            SubjectAreaDefinitionProperties.class),
+    SUBJECT_AREA("a7e80da0-1e38-43d3-a63b-1051529f1c07",
+                 "SubjectArea",
+                 OpenMetadataWikiPages.MODEL_0425_SUBJECT_AREAS,
+                 "6b14dde0-b55f-4f33-9ac0-c270b30215b3",
+                 "Defines a collection of elements that are related to a topic.",
+                 SubjectAreaProperties.class),
 
     /**
      * Creates a controlling hierarchy for subject areas.
      */
     SUBJECT_AREA_HIERARCHY_RELATIONSHIP("fd3b7eaf-969c-4c26-9e1e-f31c4c2d1e4b",
                                         "SubjectAreaHierarchy",
-                                        OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
+                                        OpenMetadataWikiPages.MODEL_0425_SUBJECT_AREAS,
                                         "b5fd6a99-8a4f-44cb-87e9-359b14b75e4b",
                                         "Creates a controlling hierarchy for subject areas.",
                                         SubjectAreaHierarchyProperties.class),
-
-    /**
-     * Identifies an element as part of a subject area definition.
-     */
-    SUBJECT_AREA_CLASSIFICATION("480e6993-35c5-433a-b50b-0f5c4063fb5d",
-                                "SubjectArea",
-                                OpenMetadataWikiPages.MODEL_0425_SUBJECT_AREAS,
-                                "11857716-4f6c-4a31-bf4b-e99ac09ba0f5",
-                                "Identifies an element as part of a subject area definition.",
-                                SubjectAreaProperties.class),
 
     /**
      * Technical control expressed as a logic expression.
@@ -4925,6 +4915,16 @@ public enum OpenMetadataType
                          "f98b8166-c23e-4280-b1b5-2365baa32099",
                          "A reference data value defined by a valid value definition.",
                          ReferenceDataValueProperties.class),
+
+    /**
+     * A reference data value defined by a valid value definition.
+     */
+    REFERENCE_DATA_SET("7e269621-5dee-41be-9f04-e57c52b60221",
+                         "ReferenceDataSet",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "98eec679-b279-4aae-acdc-a85afee48883",
+                         "A reference data set defined by a valid value definition.",
+                         ReferenceDataSetProperties.class),
 
     /**
      * A valid metadata value defined by a valid value definition.

@@ -68,7 +68,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends DynamicIntegra
      * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override

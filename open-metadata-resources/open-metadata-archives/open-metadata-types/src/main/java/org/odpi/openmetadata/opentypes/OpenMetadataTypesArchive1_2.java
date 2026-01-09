@@ -1006,9 +1006,10 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.MEDIA_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEDIA_TYPE_OTHER_ID));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEDIA_TYPE_OTHER_ID));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -5518,7 +5519,6 @@ public class OpenMetadataTypesArchive1_2
     private void addArea3Types()
     {
         this.add0310Glossary();
-        this.add0320CategoryHierarchy();
         this.add0330Terms();
         this.add0340Dictionary();
         this.add0350RelatedTerms();
@@ -5604,41 +5604,6 @@ public class OpenMetadataTypesArchive1_2
         return classificationDef;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * 0320 Category Hierarchy adds categories to the glossary that allow terms to be defined in taxonomies
-     * or hierarchies of folders.
-     */
-    private void add0320CategoryHierarchy()
-    {
-        this.archiveBuilder.addClassificationDef(getSubjectAreaClassification());
-    }
-
-
-
-    private ClassificationDef getSubjectAreaClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SUBJECT_AREA_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUBJECT_AREA_NAME));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
-    }
 
 
     /*
@@ -9464,6 +9429,7 @@ public class OpenMetadataTypesArchive1_2
 
         this.archiveBuilder.addEntityDef(getValidValueDefinitionEntity());
         this.archiveBuilder.addEntityDef(getReferenceDataValueEntity());
+        this.archiveBuilder.addEntityDef(getReferenceDataSetEntity());
         this.archiveBuilder.addEntityDef(getSpecificationPropertyValueEntity());
         this.archiveBuilder.addEntityDef(getValidMetadataValueEntity());
         this.archiveBuilder.addEntityDef(getTechnologyTypeEntity());
@@ -9485,6 +9451,12 @@ public class OpenMetadataTypesArchive1_2
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_DATA_VALUE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
+    }
+
+    private EntityDef getReferenceDataSetEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_DATA_SET,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCE_DATA_VALUE.typeName));
     }
 
 

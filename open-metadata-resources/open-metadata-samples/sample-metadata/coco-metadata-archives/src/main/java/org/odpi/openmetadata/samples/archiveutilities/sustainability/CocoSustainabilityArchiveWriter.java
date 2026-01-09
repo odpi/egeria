@@ -78,15 +78,15 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeFacilityTypeValidValueSet()
     {
-        String validValueSetQName = OpenMetadataType.VALID_VALUE_DEFINITION.typeName + "::" + FacilityTypeDefinition.validValueSetName;
+        String validValueSetQName = OpenMetadataType.REFERENCE_DATA_SET.typeName + "::" + FacilityTypeDefinition.validValueSetName;
 
         String validValueSetGUID = archiveHelper.addValidValue(null,
                                                                null,
                                                                null,
-                                                               OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
-                                                               OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                                               OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                null,
-                                                               OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                                               OpenMetadataType.REFERENCE_DATA_SET.typeName,
                                                                validValueSetQName,
                                                                Category.SUSTAINABILITY.getName(),
                                                                FacilityTypeDefinition.validValueSetPropertyName,
@@ -103,17 +103,15 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
         if (validValueSetGUID != null)
         {
-            archiveHelper.addSubjectAreaClassification(validValueSetGUID, sustainabilitySubjectArea);
-
             for (FacilityTypeDefinition facilityTypeDefinition : FacilityTypeDefinition.values())
             {
                 archiveHelper.addValidValue(null,
                                             validValueSetGUID,
                                             validValueSetGUID,
-                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                            OpenMetadataType.REFERENCE_DATA_SET.typeName,
+                                            OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                             null,
-                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                            OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
                                             facilityTypeDefinition.getQualifiedName(),
                                             Category.SUSTAINABILITY.getName(),
                                             FacilityTypeDefinition.validValueSetPropertyName,
@@ -309,16 +307,13 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                         null,
                                                         ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
-        archiveHelper.addSubjectAreaClassification(glossaryGUID, sustainabilitySubjectArea);
-
         Map<String, String> categoryLookup = new HashMap<>();
         for (GlossaryCategoryDefinition glossaryCategoryDefinition : GlossaryCategoryDefinition.values())
         {
             String glossaryCategoryGUID = archiveHelper.addGlossaryCategory(glossaryGUID,
                                                                             glossaryCategoryDefinition.getQualifiedName(),
                                                                             glossaryCategoryDefinition.getName(),
-                                                                            glossaryCategoryDefinition.getDescription(),
-                                                                            null);
+                                                                            glossaryCategoryDefinition.getDescription());
 
             categoryLookup.put(glossaryCategoryDefinition.getName(), glossaryCategoryGUID);
         }

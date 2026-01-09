@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -325,10 +326,11 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connection   POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException  a problem within the connector.
      */
     @SuppressWarnings("unchecked")
     public void initialize(String     connectorInstanceId,
-                           Connection connection)
+                           Connection connection) throws ConnectorCheckedException
     {
         super.initialize(connectorInstanceId, connection);
 

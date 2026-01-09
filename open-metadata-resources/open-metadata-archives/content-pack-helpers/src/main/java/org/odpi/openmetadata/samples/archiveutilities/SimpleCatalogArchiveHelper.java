@@ -2848,7 +2848,7 @@ public class SimpleCatalogArchiveHelper
 
         classifications.add(getAnchorClassification(null,
                                                     typeName,
-                                                    OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
+                                                    OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                     null,
                                                     methodName));
 
@@ -3247,7 +3247,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
-        EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.SUBJECT_AREA_DEFINITION.typeName,
+        EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.SUBJECT_AREA.typeName,
                                                                idToGUIDMap.getGUID(qualifiedName),
                                                                properties,
                                                                InstanceStatus.ACTIVE,
@@ -3281,34 +3281,6 @@ public class SimpleCatalogArchiveHelper
                                                                      end1,
                                                                      end2));
     }
-
-
-    /**
-     * Add the subject area classification to the requested element.
-     *
-     * @param referenceableGUID unique identifier of the element to classify
-     * @param subjectAreaName name of the subject area.  The suggestion is that the name used is the qualified name.
-     */
-    public void addSubjectAreaClassification(String referenceableGUID,
-                                             String subjectAreaName)
-    {
-        final String methodName = "addSubjectAreaClassification";
-
-        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
-
-        EntityProxy referenceableEntityProxy = archiveHelper.getEntityProxy(referenceableEntity);
-
-        Classification  subjectAreaClassification = archiveHelper.getClassification(OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
-                                                                                    archiveHelper.addStringPropertyToInstance(archiveRootName,
-                                                                                                                              null,
-                                                                                                                              OpenMetadataProperty.SUBJECT_AREA_NAME.name,
-                                                                                                                              subjectAreaName,
-                                                                                                                              methodName),
-                                                                                    InstanceStatus.ACTIVE);
-
-        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(referenceableEntityProxy, subjectAreaClassification));
-    }
-
 
 
     /**
@@ -3428,7 +3400,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> entityClassifications = new ArrayList<>();
 
-        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.COLLECTION.typeName, null, methodName));
+        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, null, methodName));
 
         if (classificationName != null)
         {
@@ -3509,7 +3481,7 @@ public class SimpleCatalogArchiveHelper
 
             entityClassifications.add(this.getAnchorClassification(designModelGUID,
                                                                    designModelTypeName,
-                                                                   OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName,
+                                                                   OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                    null,
                                                                    methodName));
         }
@@ -5780,7 +5752,7 @@ public class SimpleCatalogArchiveHelper
 
         Classification anchorClassification = this.getAnchorClassification(guid,
                                                                            OpenMetadataType.GLOSSARY.typeName,
-                                                                           OpenMetadataType.COLLECTION.typeName,
+                                                                           OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                            null,
                                                                            methodName);
         classifications.add(anchorClassification);
@@ -5804,17 +5776,15 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the category.
      * @param displayName display name for the category.
      * @param description description of the category.
-     * @param subjectArea name of the subject area if this category contains terms for the subject area.
      *
      * @return identifier of the category
      */
     public String addGlossaryCategory(String              glossaryGUID,
                                       String              qualifiedName,
                                       String              displayName,
-                                      String              description,
-                                      String              subjectArea)
+                                      String              description)
     {
-        return addGlossaryCategory(glossaryGUID, false, null, qualifiedName, displayName, description, subjectArea, null);
+        return addGlossaryCategory(glossaryGUID, false, null, qualifiedName, displayName, description, null);
     }
 
 
@@ -5827,7 +5797,6 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the category.
      * @param displayName display name for the category.
      * @param description description of the category.
-     * @param subjectArea name of the subject area if this category contains terms for the subject area.
      * @param additionalProperties any other properties.
      *
      * @return identifier of the category
@@ -5838,7 +5807,6 @@ public class SimpleCatalogArchiveHelper
                                       String              qualifiedName,
                                       String              displayName,
                                       String              description,
-                                      String              subjectArea,
                                       Map<String, String> additionalProperties)
     {
         final String methodName = "addCategory";
@@ -5850,19 +5818,6 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
         List<Classification> classifications = new ArrayList<>();
-
-        if (subjectArea != null)
-        {
-            Classification  subjectAreaClassification = archiveHelper.getClassification(OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName,
-                                                                                        archiveHelper.addStringPropertyToInstance(archiveRootName,
-                                                                                                                                  null,
-                                                                                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                                                                                  subjectArea,
-                                                                                                                                  methodName),
-                                                                                        InstanceStatus.ACTIVE);
-
-            classifications.add(subjectAreaClassification);
-        }
 
         classifications.add(this.getAnchorClassification(null,
                                                          OpenMetadataType.COLLECTION_FOLDER.typeName,
@@ -6002,7 +5957,7 @@ public class SimpleCatalogArchiveHelper
 
         classifications.add(this.getAnchorClassification(null,
                                                          OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                         OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                          glossaryGUID,
                                                          methodName));
 
@@ -6693,7 +6648,7 @@ public class SimpleCatalogArchiveHelper
             }
             else
             {
-                entityClassifications.add(getAnchorClassification(validValueGUID, typeName, OpenMetadataType.VALID_VALUE_DEFINITION.typeName, null, methodName));
+                entityClassifications.add(getAnchorClassification(validValueGUID, typeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, null, methodName));
             }
 
             EntityDetail validValueEntity = archiveHelper.getEntityDetail(typeName,
@@ -7284,11 +7239,11 @@ public class SimpleCatalogArchiveHelper
 
         if ((parentInformationSupplyChainGUID != null) && (isParentAnchor))
         {
-            classifications.add(this.getAnchorClassification(parentInformationSupplyChainGUID, typeName, OpenMetadataType.COLLECTION.typeName, anchorScopeGUID, methodName));
+            classifications.add(this.getAnchorClassification(parentInformationSupplyChainGUID, typeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, anchorScopeGUID, methodName));
         }
         else
         {
-            classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.COLLECTION.typeName, anchorScopeGUID, methodName));
+            classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, anchorScopeGUID, methodName));
         }
 
         if (owner != null)
@@ -7470,7 +7425,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.COLLECTION.typeName, null, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
@@ -7533,7 +7488,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName, null, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),

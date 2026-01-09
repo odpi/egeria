@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 
 /**
@@ -20,9 +20,9 @@ public class InstanceGraphAccumulator extends QueryAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    InstanceGraphAccumulator(String                            localMetadataCollectionId,
-                             OMRSAuditLog                      auditLog,
-                             OMRSRepositoryValidator           repositoryValidator)
+    InstanceGraphAccumulator(String                  localMetadataCollectionId,
+                             AuditLog                auditLog,
+                             OMRSRepositoryValidator repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }

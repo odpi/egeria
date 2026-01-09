@@ -9,9 +9,11 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')

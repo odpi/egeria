@@ -2635,13 +2635,13 @@ public class ActorManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ContactThroughProperties memberDataFieldProperties)
+                if (requestBody.getProperties() instanceof ContactThroughProperties contactThroughProperties)
                 {
                     handler.linkContactDetails(userId,
                                                 elementGUID,
                                                 contactDetailsGUID,
                                                 requestBody,
-                                                memberDataFieldProperties);
+                                                contactThroughProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {

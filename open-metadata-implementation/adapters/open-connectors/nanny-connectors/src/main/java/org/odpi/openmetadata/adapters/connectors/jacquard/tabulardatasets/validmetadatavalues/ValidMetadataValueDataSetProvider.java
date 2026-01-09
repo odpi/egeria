@@ -3,41 +3,27 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.*;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.DynamicOpenMetadataDataSetProviderBase;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.ReferenceDataConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * ValidValueDataSetProvider is the connector provider for the ValidValueDataSet connector that manages the members of
  * a valid values set as a tabular data set.
  */
-public class ValidMetadataValueDataSetProvider extends ConnectorProviderBase
+public class ValidMetadataValueDataSetProvider extends DynamicOpenMetadataDataSetProviderBase
 {
-    /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 716;
-
-    /*
-     * Unique identifier for the connector type.
-     */
-    private static final String connectorTypeGUID      = "381d1d1a-d498-4e47-a555-7004984a63c7";
-
-    /*
-     * Descriptive information about the connector for the connector type and audit log.
-     */
-    private static final String connectorQualifiedName = "Egeria:ResourceConnector:TabularDataSet:ValidMetadataValues";
-    private static final String connectorDisplayName   = "Valid Metadata Values Tabular Data Set Connector";
-    private static final String connectorDescription   = "Connector manages an open metadata valid value set for a particular property as if it was a tabular data set.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/tabular-data-set/valid-metadata-values/";
-
-
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName      = ValidMetadataValueDataSetConnector.class.getName();
+    private static final String connectorClassName = ValidMetadataValueDataSetConnector.class.getName();
 
 
     /**
@@ -46,36 +32,72 @@ public class ValidMetadataValueDataSetProvider extends ConnectorProviderBase
      */
     public ValidMetadataValueDataSetProvider()
     {
-        super();
+        super(EgeriaOpenConnectorDefinition.VALID_METADATA_VALUE_TABULAR_DATA_SET,
+              connectorClassName,
+              List.of(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
+                      ReferenceDataConfigurationProperty.CANONICAL_NAME.name,
+                      ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name));
+    }
 
+
+    /**
+     * Retrieve the product definition base on a supplied identifier.
+     *
+     * @param identifier unique identifier for the product - stored in open metadata identifier property
+     * @param canonicalName name used for the product and table name
+     * @param description description of the product
+     *
+     * @return product definition
+     */
+    public ProductDefinition getProductDefinition(String identifier,
+                                                  String canonicalName,
+                                                  String description)
+    {
         /*
-         * Set up the class name of the connector that this provider creates.
+         * Create a dynamic product definition and add it to the open metadata ecosystem.
+         * The configuration properties enable the connector to retrieve the product definition when it runs.
          */
-        super.setConnectorClassName(connectorClassName);
+        Map<String, Object> configurationProperties = new HashMap<>();
 
-        /*
-         * Set up the connector type that should be included in a connection used to configure this connector.
-         */
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorQualifiedName);
-        connectorType.setDisplayName(connectorDisplayName);
-        connectorType.setDescription(connectorDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
+        configurationProperties.put(ReferenceDataConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name, identifier);
+        configurationProperties.put(ReferenceDataConfigurationProperty.CANONICAL_NAME.name, canonicalName);
+        configurationProperties.put(ReferenceDataConfigurationProperty.PRODUCT_DESCRIPTION.name, description);
 
-        super.connectorTypeBean = connectorType;
+        return new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                         new ProductDefinition[]{ ProductDefinitionEnum.VALID_METADATA_VALUE_SETS},
+                                         "Valid Metadata Value Set: " + identifier,
+                                         identifier,
+                                         null,
+                                         canonicalName,
+                                         description,
+                                         ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                                         new ProductSubscriptionDefinition[]{
+                                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                         canonicalName,
+                                         new ProductDataFieldDefinition[]{
+                                                 ProductDataFieldDefinition.GUID},
+                                         new ProductDataFieldDefinition[]{
+                                                 ProductDataFieldDefinition.CREATE_TIME,
+                                                 ProductDataFieldDefinition.UPDATE_TIME,
+                                                 ProductDataFieldDefinition.QUALIFIED_NAME,
+                                                 ProductDataFieldDefinition.IDENTIFIER,
+                                                 ProductDataFieldDefinition.DISPLAY_NAME,
+                                                 ProductDataFieldDefinition.DESCRIPTION,
+                                                 ProductDataFieldDefinition.CATEGORY,
+                                                 ProductDataFieldDefinition.NAMESPACE,
+                                                 ProductDataFieldDefinition.PREFERRED_VALUE,
+                                                 ProductDataFieldDefinition.IS_CASE_SENSITIVE,
+                                                 ProductDataFieldDefinition.DATA_TYPE,
+                                                 ProductDataFieldDefinition.SCOPE,
+                                                 ProductDataFieldDefinition.USAGE},
+                                         OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
+                                         "Data set",
+                                         new ValidMetadataValueDataSetProvider(),
+                                         configurationProperties,
+                                         "Valid Metadata Value Set: " + identifier); // Value used in Jacquard's havestValidMetadataValues() method - change in both places
 
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
-
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorQualifiedName);
-        componentDescription.setComponentDescription(connectorDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
     }
 }

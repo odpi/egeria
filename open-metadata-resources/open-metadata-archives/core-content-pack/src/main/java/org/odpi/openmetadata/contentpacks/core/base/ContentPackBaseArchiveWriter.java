@@ -929,7 +929,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
 
     /**
-     * Create a template for a type of asset and link it to the associated deployed implementation type.
+     * Create a template for an asset type and link it to the associated deployed implementation type.
      * The template consists of an asset linked to a connection, that is in turn linked
      * to the supplied connector type and an endpoint, along with a nested secrets store
      *

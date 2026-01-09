@@ -122,7 +122,7 @@ public class OMRSRepositoryRESTServices
      * @param maxPageSize                   max number of results to return on single request.
      */
     public static void setServerRepositories(String                       localServerName,
-                                             OMRSAuditLog                 masterAuditLog,
+                                             AuditLog                     masterAuditLog,
                                              LocalOMRSRepositoryConnector localRepositoryConnector,
                                              OMRSRepositoryConnector      enterpriseRepositoryConnector,
                                              Connection                   remoteEnterpriseTopicConnection,

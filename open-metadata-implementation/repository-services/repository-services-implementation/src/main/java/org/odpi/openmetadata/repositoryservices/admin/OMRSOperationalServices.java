@@ -2,9 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.admin;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
@@ -21,7 +23,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.LocalReposit
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManager;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
@@ -97,7 +98,7 @@ public class OMRSOperationalServices
     private LocalOMRSRepositoryConnector   localRepositoryConnector            = null;
     private OMRSArchiveManager             archiveManager                      = null;
     private OMRSAuditLogDestination        auditLogDestination                 = null;
-    private OMRSAuditLog                   auditLog                            = null;
+    private AuditLog                       auditLog                            = null;
 
 
 
@@ -226,11 +227,11 @@ public class OMRSOperationalServices
      * @param componentWikiURL link to more information
      * @return new audit log object
      */
-    public OMRSAuditLog  getAuditLog(int                        componentId,
-                                     ComponentDevelopmentStatus componentDevelopmentStatus,
-                                     String                     componentName,
-                                     String                     componentDescription,
-                                     String                     componentWikiURL)
+    public AuditLog  getAuditLog(int                        componentId,
+                                 ComponentDevelopmentStatus componentDevelopmentStatus,
+                                 String                     componentName,
+                                 String                     componentDescription,
+                                 String                     componentWikiURL)
     {
         return auditLog.createNewAuditLog(componentId, componentDevelopmentStatus, componentName, componentDescription, componentWikiURL);
     }

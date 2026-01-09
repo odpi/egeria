@@ -5,7 +5,6 @@ package org.odpi.openmetadata.repositoryservices.rest.services;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHighwayManager;
@@ -16,13 +15,13 @@ import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHigh
  */
 public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
 {
-    private final OMRSAuditLog                 masterAuditLog;
-    private OMRSMetadataCollection       localMetadataCollection;
-    private OMRSMetadataCollection       enterpriseMetadataCollection;
-    private final Connection                   remoteEnterpriseOMRSTopicConnection;
-    private final OMRSMetadataHighwayManager   metadataHighwayManager;
-    private final String                       localServerURL;
-    private final AuditLog                     auditLog;
+    private final AuditLog                   masterAuditLog;
+    private       OMRSMetadataCollection     localMetadataCollection;
+    private       OMRSMetadataCollection     enterpriseMetadataCollection;
+    private final Connection                 remoteEnterpriseOMRSTopicConnection;
+    private final OMRSMetadataHighwayManager metadataHighwayManager;
+    private final String                     localServerURL;
+    private final AuditLog                   auditLog;
 
 
     /**
@@ -41,7 +40,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      * @param maxPageSize max number of results to return on single request.
      */
     public OMRSRepositoryServicesInstance(String                       localServerName,
-                                          OMRSAuditLog                 masterAuditLog,
+                                          AuditLog                     masterAuditLog,
                                           OMRSRepositoryConnector      localRepositoryConnector,
                                           OMRSRepositoryConnector      enterpriseRepositoryConnector,
                                           Connection                   remoteEnterpriseTopicConnection,
@@ -110,7 +109,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      *
      * @return audit log at the top of the tree
      */
-    public OMRSAuditLog getMasterAuditLog()
+    public AuditLog getMasterAuditLog()
     {
         return masterAuditLog;
     }

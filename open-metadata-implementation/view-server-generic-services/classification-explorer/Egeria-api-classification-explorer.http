@@ -209,29 +209,6 @@ Content-Type: application/json
 
 
 ###
-# @name getMembersOfSubjectArea
-# Return information about the elements classified with the subject area classification.
-#
-# https://egeria-project.org/types/4/0425-Subject-Areas/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-subject-area-membership
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FilterRequestBody",
-    "filter" : "????",
-    "effectiveTime" : "{{$isoTimestamp}}",
-    "asOfTime" : "{{$isoTimestamp}}",
-    "forLineage" : false,
-    "forDuplicateProcessing" : false,
-    "metadataElementTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DELETED"],
-    "sequencingProperty" : "???",
-    "sequencingOrder" : "LAST_UPDATE_RECENT"
-}
-
-
-###
 # @name getElementsByOrigin
 # Return information about the digital resources from a specific origin.
 #

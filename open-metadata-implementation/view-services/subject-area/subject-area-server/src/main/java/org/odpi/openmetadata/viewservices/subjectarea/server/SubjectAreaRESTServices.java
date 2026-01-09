@@ -10,7 +10,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaHierarchyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -148,109 +147,6 @@ public class SubjectAreaRESTServices extends TokenController
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
             handler.detachSubjectAreas(userId, subjectAreaGUID, nestedSubjectAreaGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Classify the element to assert that the definitions it represents are part of a subject area definition.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param requestBody properties for classification request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse addElementToSubjectArea(String                    serverName,
-                                                String                    elementGUID,
-                                                NewClassificationRequestBody requestBody)
-    {
-        final String methodName = "addElementToSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof SubjectAreaProperties properties)
-                {
-                    GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
-
-                    handler.addElementToSubjectArea(userId, elementGUID, properties, requestBody);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the subject area designation from the identified element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param requestBody properties for classification request
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    public VoidResponse removeElementFromSubjectArea(String                          serverName,
-                                                     String                          elementGUID,
-                                                     DeleteClassificationRequestBody requestBody)
-    {
-        final String   methodName = "removeElementFromSubjectArea";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
-
-            handler.removeElementFromSubjectArea(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {

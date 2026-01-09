@@ -495,6 +495,22 @@ public class ConnectorContextClientBase
     /**
      * Return the default search options.
      *
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @return default values
+     */
+    public SearchOptions getSearchOptions(String metadataElementTypeName,
+                                          int    startFrom,
+                                          int    pageSize)
+    {
+        return new SearchOptions(getQueryOptions(metadataElementTypeName, startFrom, pageSize));
+    }
+
+
+    /**
+     * Return the default search options.
+     *
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @return default values

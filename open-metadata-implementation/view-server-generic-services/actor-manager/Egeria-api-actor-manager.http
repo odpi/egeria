@@ -215,7 +215,7 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "RelationshipProperties",
+    "class": "ITInfrastructureProfileProperties",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   }
@@ -368,6 +368,9 @@ Content-Type: application/json
 # A contribution record describes the contribution of the linked profile.
 # https://egeria-project.org/concepts/contribution-record/
 #
+###
+
+@contributionRecordGUID=add guid here
 
 ###
 # @name createContributionRecord
@@ -445,7 +448,7 @@ Content-Type: application/json
 # PropertyServerException There is a problem updating the element properties in the metadata repository.
 # UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{contributionRecordGUID}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{{contributionRecordGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -494,7 +497,7 @@ Content-Type: application/json
 # PropertyServerException - there is a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{contributionRecordGUID}/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{{contributionRecordGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -617,7 +620,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{contributionRecordGUID}/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contribution-records/{{contributionRecordGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1719,11 +1722,11 @@ Content-Type: application/json
 
 
 ###
-# @name linkAssetToProfile
-# Attach an asset to an IT profile.
+# @name linkContactDetails
+# Attach an element to its contact details.
 #
-# @param assetGUID       unique identifier of the asset
-# @param itProfileGUID            unique identifier of the IT profile
+# @param elementGUID unique identifier of the parent element
+# @param contactDetailsGUID      unique identifier of the contact details
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -1731,30 +1734,30 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{elementGUID}}/contact-details/{{contactDetailsGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ContactThroughProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelationshipProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 ###
-# @name detachAssetFromProfile
-# Detach an asset from an IT profile.
+# @name detachContactDetails
+# Detach an element from its contact details.
 #
-# @param assetGUID       unique identifier of the asset
-# @param itProfileGUID            unique identifier of the IT profile
+# @param elementGUID unique identifier of the parent element
+# @param contactDetailsGUID      unique identifier of the contact details
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -1762,7 +1765,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{elementGUID}}/contact-details/{{contactDetailsGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

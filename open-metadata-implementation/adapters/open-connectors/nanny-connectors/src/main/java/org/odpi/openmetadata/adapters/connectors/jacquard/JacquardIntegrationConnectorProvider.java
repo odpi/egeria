@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
  * OpenMetadataProductsHarvesterProvider is the connector provider for the OpenMetadataProductsHarvester connector
  * harvests open metadata as useful digital products.
  */
-public class OpenMetadataProductsHarvesterProvider extends IntegrationConnectorProvider
+public class JacquardIntegrationConnectorProvider extends IntegrationConnectorProvider
 {
     /*
      * Unique identifier of the connector for the audit log.
@@ -28,22 +28,22 @@ public class OpenMetadataProductsHarvesterProvider extends IntegrationConnectorP
     /*
      * Descriptive information about the connector for the connector type and audit log.
      */
-    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Harvester:OpenMetadataProducts";
-    private static final String connectorDisplayName   = "Harvest Open Metadata Digital Products Integration Connector";
-    private static final String connectorDescription   = "Connector extracts open metadata into useful digital products.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/harvest-open-metadata-as-digital-products/";
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:JacquardDigitalProductsLoom";
+    private static final String connectorDisplayName   = "Jacquard Digital Products Loom Integration Connector";
+    private static final String connectorDescription   = "Connector extracts open metadata collections into useful digital products.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/jacquard-digital-products-loom/";
 
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName      = OpenMetadataProductsHarvesterConnector.class.getName();
+    private static final String connectorClassName      = JacquardIntegrationConnector.class.getName();
 
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
      * store implementation.
      */
-    public OpenMetadataProductsHarvesterProvider()
+    public JacquardIntegrationConnectorProvider()
     {
         super();
 

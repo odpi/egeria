@@ -6,7 +6,7 @@ package org.odpi.openmetadata.conformance.server;
 import org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
 import org.odpi.openmetadata.conformance.beans.TechnologyUnderTestWorkPad;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class ConformanceServicesInstance
 {
-    private final OMRSAuditLog               auditLog;                       /* Initialized in constructor */
-    private final ConformanceSuiteConfig     conformanceSuiteConfig;         /* Initialized in constructor */
+    private final AuditLog               auditLog;                       /* Initialized in constructor */
+    private final ConformanceSuiteConfig conformanceSuiteConfig;         /* Initialized in constructor */
 
     private final TechnologyUnderTestWorkPad workPad;                        /* Initialized in constructor */
     private final List<OpenMetadataConformanceWorkbench> runningWorkbenches; /* Initialized in constructor */
@@ -31,7 +31,7 @@ public class ConformanceServicesInstance
      */
     public ConformanceServicesInstance(TechnologyUnderTestWorkPad             workPad,
                                        List<OpenMetadataConformanceWorkbench> runningWorkbenches,
-                                       OMRSAuditLog                           auditLog,
+                                       AuditLog                               auditLog,
                                        ConformanceSuiteConfig                 conformanceSuiteConfig)
     {
         this.conformanceSuiteConfig = conformanceSuiteConfig;
@@ -57,7 +57,7 @@ public class ConformanceServicesInstance
      *
      * @return audit log object
      */
-    public OMRSAuditLog getAuditLog()
+    public AuditLog getAuditLog()
     {
         return auditLog;
     }

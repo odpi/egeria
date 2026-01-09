@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 /**
  * PropertyHelper is used by the governance actions services to manage the contents of the ElementProperties structure.
- * It is a stateless object and so there are no threading concerns with declaring it as a static variable.
+ * It is a stateless object and so no threading concerns arise with declaring it as a static variable.
  */
 public class PropertyHelper
 {
@@ -34,7 +34,7 @@ public class PropertyHelper
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param userId      user name to validate
+     * @param userId      user  to validate
      * @param methodName  name of the method making the call.
      *
      * @throws InvalidParameterException the userId is null
@@ -502,7 +502,8 @@ public class PropertyHelper
             List<ElementClassification> executionPoints            = new ArrayList<>();
             List<ElementClassification> duplicateClassifications   = new ArrayList<>();
             List<ElementClassification> collectionRoles            = new ArrayList<>();
-            List<ElementClassification> projectCategories          = new ArrayList<>();
+            List<ElementClassification> locationRoles              = new ArrayList<>();
+            List<ElementClassification> projectRoles               = new ArrayList<>();
             List<ElementClassification> otherClassifications       = new ArrayList<>();
 
             for (AttachedClassification attachedClassification : classifications)
@@ -520,10 +521,6 @@ public class PropertyHelper
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName))
                     {
                         elementHeader.setZoneMembership(this.getElementClassification(attachedClassification));
-                    }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName))
-                    {
-                        elementHeader.setSubjectArea(this.getElementClassification(attachedClassification));
                     }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.IMPACT_CLASSIFICATION.typeName))
                     {
@@ -627,7 +624,14 @@ public class PropertyHelper
                     }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.PROJECT_ROLE_CLASSIFICATION.typeName))
                     {
-                        projectCategories.add(this.getElementClassification(attachedClassification));
+                        projectRoles.add(this.getElementClassification(attachedClassification));
+                    }
+                    else if ((this.isTypeOf(attachedClassification, OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName)) ||
+                             (this.isTypeOf(attachedClassification, OpenMetadataType.SECURE_LOCATION_CLASSIFICATION.typeName)) ||
+                             (this.isTypeOf(attachedClassification, OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName)) ||
+                             (this.isTypeOf(attachedClassification, OpenMetadataType.MOBILE_RESOURCE_CLASSIFICATION.typeName)))
+                    {
+                        locationRoles.add(this.getElementClassification(attachedClassification));
                     }
                     else
                     {
@@ -651,9 +655,14 @@ public class PropertyHelper
                 elementHeader.setCollectionRoles(collectionRoles);
             }
 
-            if (! projectCategories.isEmpty())
+            if (! locationRoles.isEmpty())
             {
-                elementHeader.setProjectRoles(projectCategories);
+                elementHeader.setLocationRoles(locationRoles);
+            }
+
+            if (! projectRoles.isEmpty())
+            {
+                elementHeader.setProjectRoles(projectRoles);
             }
 
             if (! otherClassifications.isEmpty())
@@ -4238,10 +4247,6 @@ public class PropertyHelper
             if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return elementHeader.getTemplate();
-            }
-            if (OpenMetadataType.SUBJECT_AREA_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return elementHeader.getSubjectArea();
             }
             if (OpenMetadataType.IMPACT_CLASSIFICATION.typeName.equals(classificationName))
             {

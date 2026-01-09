@@ -10,9 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -98,6 +96,50 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
                                                                                             PropertyServerException
     {
         return stewardshipManagementHandler.getRootElementByUniqueName(connectorUserId, uniqueName, uniquePropertyName, getOptions);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param guid unique name for the metadata element
+     * @param getOptions multiple options to control the query
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException unable to access the element
+     * @throws PropertyServerException  problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getRootElementByGUID(String     guid,
+                                                        GetOptions getOptions) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "getRootElementByGUID";
+
+        return stewardshipManagementHandler.getRootElementByGUID(connectorUserId, guid, getOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve metadata elements based on the search string.
+     *
+     * @param searchString  string to search for in the properties - null returns all elements of the type
+     *                      set in the client.
+     * @param searchOptions multiple options to control the query
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException  the unique identifier is null.
+     * @throws UserNotAuthorizedException unable to access the element
+     * @throws PropertyServerException    problem accessing the metadata store
+     */
+    public List<OpenMetadataRootElement> findRootElements(String searchString,
+                                                          SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "findRootElements";
+
+        return stewardshipManagementHandler.findRootElements(connectorUserId, searchString, searchOptions, methodName);
     }
 
 
@@ -378,31 +420,6 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     {
         return stewardshipManagementHandler.getElementsByOrigin(connectorUserId, properties, queryOptions);
     }
-
-
-
-    /**
-     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
-     *
-     * @param subjectAreaName unique identifier for the subject area
-     * @param queryOptions multiple options to control the query
-
-     *
-     * @return list of element stubs
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<OpenMetadataRootElement> getMembersOfSubjectArea(String              subjectAreaName,
-                                                                 QueryOptions        queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
-
-    {
-        return stewardshipManagementHandler.getMembersOfSubjectArea(connectorUserId, subjectAreaName, queryOptions);
-    }
-
 
 
     /**
@@ -1352,7 +1369,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @param actionGUID  unique identifier of the action
      * @param actorGUID actor to assign the action to
-     * @param updateOptions  options to control access to open metadata
+     * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties the properties of the relationship
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -1360,12 +1377,12 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      */
     public void reassignAction(String                    actionGUID,
                                String                    actorGUID,
-                               UpdateOptions             updateOptions,
+                               MakeAnchorOptions         makeAnchorOptions,
                                AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        stewardshipManagementHandler.reassignAction(connectorUserId, actionGUID, actorGUID, updateOptions, relationshipProperties);
+        stewardshipManagementHandler.reassignAction(connectorUserId, actionGUID, actorGUID, makeAnchorOptions, relationshipProperties);
     }
 
 

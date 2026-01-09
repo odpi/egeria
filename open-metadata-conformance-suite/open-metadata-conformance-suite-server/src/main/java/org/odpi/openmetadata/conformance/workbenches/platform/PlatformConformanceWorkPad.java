@@ -4,7 +4,7 @@ package org.odpi.openmetadata.conformance.workbenches.platform;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.PlatformConformanceWorkbenchConfig;
 import org.odpi.openmetadata.conformance.beans.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import java.util.*;
 
@@ -20,8 +20,8 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
     private static final String tutType                = "Open Metadata and Governance Platform";
 
 
-    private final OMRSAuditLog auditLog;
-    private       String       tutPlatformURLRoot = null;
+    private final AuditLog auditLog;
+    private       String   tutPlatformURLRoot = null;
 
 
     /**
@@ -40,7 +40,7 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
                                       String                                localServerSecretsStoreLocation,
                                       String                                localServerSecretsStoreCollection,
                                       int                                   maxPageSize,
-                                      OMRSAuditLog                          auditLog,
+                                      AuditLog                              auditLog,
                                       PlatformConformanceWorkbenchConfig    configuration)
     {
         super(workbenchId,
@@ -68,7 +68,7 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
      *
      * @return audit log object.
      */
-    public OMRSAuditLog getAuditLog()
+    public AuditLog getAuditLog()
     {
         return auditLog;
     }

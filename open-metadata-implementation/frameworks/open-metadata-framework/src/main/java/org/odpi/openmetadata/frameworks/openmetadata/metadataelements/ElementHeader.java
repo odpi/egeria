@@ -38,7 +38,6 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       anchor                   = null;
     private ElementClassification       latestChange             = null;
     private ElementClassification       zoneMembership           = null;
-    private ElementClassification       subjectArea              = null;
     private ElementClassification       impact                   = null;
     private ElementClassification       criticality              = null;
     private ElementClassification       confidentiality          = null;
@@ -61,6 +60,7 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       knownDuplicate           = null;
     private ElementClassification       consolidateDuplicate     = null;
     private List<ElementClassification> collectionRoles          = null;
+    private List<ElementClassification> locationRoles            = null;
     private List<ElementClassification> projectRoles             = null;
     private List<ElementClassification> otherClassifications     = null;
 
@@ -88,7 +88,6 @@ public class ElementHeader extends ElementControlHeader
             this.anchor                   = template.getAnchor();
             this.latestChange             = template.getLatestChange();
             this.zoneMembership           = template.getZoneMembership();
-            this.subjectArea              = template.getSubjectArea();
             this.impact                   = template.getImpact();
             this.criticality              = template.getCriticality();
             this.confidentiality          = template.getConfidentiality();
@@ -111,6 +110,7 @@ public class ElementHeader extends ElementControlHeader
             this.knownDuplicate           = template.getKnownDuplicate();
             this.consolidateDuplicate     = template.getConsolidateDuplicate();
             this.collectionRoles          = template.getCollectionRoles();
+            this.locationRoles            = template.getLocationRoles();
             this.projectRoles             = template.getProjectRoles();
             this.otherClassifications     = template.getOtherClassifications();
         }
@@ -213,28 +213,6 @@ public class ElementHeader extends ElementControlHeader
     public void setZoneMembership(ElementClassification zoneMembership)
     {
         this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the subject area.
-     *
-     * @return classification
-     */
-    public ElementClassification getSubjectArea()
-    {
-        return subjectArea;
-    }
-
-
-    /**
-     * Set up the subject area.
-     *
-     * @param subjectArea classification
-     */
-    public void setSubjectArea(ElementClassification subjectArea)
-    {
-        this.subjectArea = subjectArea;
     }
 
 
@@ -726,6 +704,28 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the classifications associated with locations.
+     *
+     * @return list of classifications
+     */
+    public List<ElementClassification> getLocationRoles()
+    {
+        return locationRoles;
+    }
+
+
+    /**
+     * Set up the classifications associated with locations.
+     *
+     * @param locationRoles list of classifications
+     */
+    public void setLocationRoles(List<ElementClassification> locationRoles)
+    {
+        this.locationRoles = locationRoles;
+    }
+
+
+    /**
      * Return the optional list of category classifications found on a project entity that indicate how a collection is being used.
      *
      * @return list of classifications
@@ -782,7 +782,6 @@ public class ElementHeader extends ElementControlHeader
                 ", anchor=" + anchor +
                 ", latestChange=" + latestChange +
                 ", zoneMembership=" + zoneMembership +
-                ", subjectArea=" + subjectArea +
                 ", impact=" + impact +
                 ", criticality=" + criticality +
                 ", confidentiality=" + confidentiality +
@@ -801,7 +800,8 @@ public class ElementHeader extends ElementControlHeader
                 ", dataAssetEncoding=" + dataAssetEncoding +
                 ", calculatedValue=" + calculatedValue +
                 ", primaryKey=" + primaryKey +
-                ", collectionCategories=" + collectionRoles +
+                ", collectionRoles=" + collectionRoles +
+                ", locationRoles=" + locationRoles +
                 ", projectRoles=" + projectRoles +
                 ", otherClassifications=" + otherClassifications +
                 ", GUID='" + getGUID() + '\'' +
@@ -826,7 +826,6 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(anchor, that.anchor) &&
                 Objects.equals(latestChange, that.latestChange) &&
                 Objects.equals(zoneMembership, that.zoneMembership) &&
-                Objects.equals(subjectArea, that.subjectArea) &&
                 Objects.equals(impact, that.impact) &&
                 Objects.equals(criticality, that.criticality) &&
                 Objects.equals(confidentiality, that.confidentiality) &&
@@ -849,6 +848,7 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(knownDuplicate, that.knownDuplicate) &&
                 Objects.equals(consolidateDuplicate, that.consolidateDuplicate) &&
                 Objects.equals(collectionRoles, that.collectionRoles) &&
+                Objects.equals(locationRoles, that.locationRoles) &&
                 Objects.equals(projectRoles, that.projectRoles) &&
                 Objects.equals(otherClassifications, that.otherClassifications);
     }
@@ -862,12 +862,12 @@ public class ElementHeader extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, anchor, latestChange, zoneMembership, subjectArea, impact, criticality,
+        return Objects.hash(super.hashCode(), guid, anchor, latestChange, zoneMembership, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
                             dataScope, dataAssetEncoding,
                             template, templateSubstitute, schemaType, calculatedValue, primaryKey,
                             knownDuplicate, consolidateDuplicate,
-                            collectionRoles, projectRoles, otherClassifications);
+                            collectionRoles, locationRoles, projectRoles, otherClassifications);
     }
 }

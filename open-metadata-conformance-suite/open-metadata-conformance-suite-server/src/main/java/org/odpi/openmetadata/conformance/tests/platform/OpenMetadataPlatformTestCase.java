@@ -7,7 +7,6 @@ import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase;
 import org.odpi.openmetadata.conformance.workbenches.platform.PlatformConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.platform.PlatformConformanceWorkPad;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 /**
  * OpenMetadataTestCase is the superclass for an open metadata conformance test.  It manages the

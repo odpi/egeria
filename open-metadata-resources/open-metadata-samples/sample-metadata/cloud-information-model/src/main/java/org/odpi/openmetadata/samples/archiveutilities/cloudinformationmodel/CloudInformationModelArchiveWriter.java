@@ -450,7 +450,6 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                                                                 "GlossaryCategory::PropertyGroups-" + model.getModelTechnicalName(),
                                                                                 "Property Groups for the " + model.getModelName(),
                                                                                 "Collections of properties found in the CIM Model.",
-                                                                                null,
                                                                                 null);
 
             Map<String, PropertyGroup> propertyGroupMap = model.getPropertyGroupMap();
@@ -472,7 +471,6 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                                                                        "GlossaryCategory::" + propertyGroup.getGUID() + "::" + propertyGroup.getTechnicalName(),
                                                                                        propertyGroup.getDisplayName(),
                                                                                        propertyGroup.getDescription(),
-                                                                                       null,
                                                                                        null);
 
                     archiveHelper.addCategoryToCategory(propertyGroupsCategoryId, propertyGroupCategoryId);

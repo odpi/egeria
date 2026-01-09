@@ -101,7 +101,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
     /**
      * Return the organizational scope that this governance definition applies to.
      *
-     * @return String organization, department or team name
+     * @return String organization, department, or team name
      */
     public String getScope()
     {
@@ -112,7 +112,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
     /**
      * Set up the organizational scope that this governance definition applies to.
      *
-     * @param scope String organization, department or team name
+     * @param scope String organization, department, or team name
      */
     public void setScope(String scope)
     {

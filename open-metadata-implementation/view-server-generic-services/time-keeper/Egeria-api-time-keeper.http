@@ -34,7 +34,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -106,7 +106,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/from-template")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -164,7 +164,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/update")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -222,7 +222,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{parentContextEventGUID}/dependent-context-events/{childContextEventGUID}/attach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{parentContextEventGUID}/dependent-context-events/{childContextEventGUID}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -258,7 +258,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{parentContextEventGUID}/dependent-context-events/{childContextEventGUID}/detach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{parentContextEventGUID}/dependent-context-events/{childContextEventGUID}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -289,7 +289,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventOneGUID}/related-context-events/{contextEventTwoGUID}/attach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventOneGUID}/related-context-events/{contextEventTwoGUID}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -332,7 +332,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventOneGUID}/related-context-events/{contextEventTwoGUID}/detach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventOneGUID}/related-context-events/{contextEventTwoGUID}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -362,7 +362,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/evidence/{evidenceGUID}/attach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/evidence/{evidenceGUID}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -398,7 +398,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/evidence/{evidenceGUID}/detach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/evidence/{evidenceGUID}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -429,7 +429,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/impacts/{impactedElementGUID}/attach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/impacts/{impactedElementGUID}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -466,7 +466,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/impacts/{impactedElementGUID}/detach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/impacts/{impactedElementGUID}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -496,7 +496,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/elements/{timelineAffectedElementGUID}/context-events-describing-timeline-effects/{contextEventGUID}/attach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/elements/{timelineAffectedElementGUID}/context-events-describing-timeline-effects/{contextEventGUID}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -533,7 +533,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/elements/{timelineAffectedElementGUID}/context-events-describing-timeline-effect/{contextEventGUID}/detach")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/elements/{timelineAffectedElementGUID}/context-events-describing-timeline-effect/{contextEventGUID}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -562,7 +562,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/delete")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -591,7 +591,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/by-name")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -622,7 +622,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/by-search-string")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -658,7 +658,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/retrieve")
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
