@@ -66,7 +66,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param properties                   properties for the new element.
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createInformalTag(NewElementOptions                     newElementOptions,
@@ -129,7 +129,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateInformalTag(String                informalTagGUID,
@@ -155,7 +155,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      *
      * @param informalTagGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteInformalTag(String        informalTagGUID,
@@ -179,7 +179,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getInformalTagsByName(String       name,
@@ -198,7 +198,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getInformalTagByGUID(String     informalTagGUID,
@@ -306,7 +306,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      *
      * @return element guid list
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getElementsByTag(String       tagGUID,

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -91,7 +92,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createCollection(NewElementOptions                     newElementOptions,
@@ -155,7 +156,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateCollection(String               collectionGUID,
@@ -184,7 +185,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions options to control access to open metadata
      * @param properties        description of how the collection will be used.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void attachCollection(String                 collectionGUID,
@@ -205,7 +206,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachCollection(String        collectionGUID,
@@ -228,7 +229,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions options to control access to open metadata
      * @param properties        description of how the collection will be used.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void attachDataDescription(String                    parentGUID,
@@ -249,7 +250,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDataDescription(String        parentGUID,
@@ -271,7 +272,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSolutionDesign(String                   parentGUID,
@@ -292,7 +293,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSolutionDesign(String        parentGUID,
@@ -314,7 +315,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions      options to control access to open metadata
      * @param relationshipProperties     description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDigitalProductDependency(String                             consumerDigitalProductGUID,
@@ -335,7 +336,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
      * @param deleteOptions              options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDigitalProductDependency(String        consumerDigitalProductGUID,
@@ -356,7 +357,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions   options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSubscriber(String                      digitalSubscriberGUID,
@@ -377,7 +378,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
      * @param deleteOptions           options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSubscriber(String        digitalSubscriberGUID,
@@ -398,7 +399,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkProductManager(String                    digitalProductGUID,
@@ -419,7 +420,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param digitalProductManagerGUID unique identifier of the product manager role
      * @param deleteOptions             options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachProductManager(String        digitalProductGUID,
@@ -441,7 +442,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param relationshipProperties description of the relationship.
      * @return unique identifier of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String linkAgreementActor(String                   agreementGUID,
@@ -461,7 +462,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param agreementActorRelationshipGUID unique identifier of the element being described
      * @param deleteOptions                  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAgreementActor(String        agreementActorRelationshipGUID,
@@ -481,7 +482,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAgreementItem(String                  agreementGUID,
@@ -502,7 +503,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param agreementItemGUID unique identifier of the agreement item
      * @param deleteOptions     options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAgreementItem(String        agreementGUID,
@@ -523,7 +524,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkContract(String                 agreementGUID,
@@ -544,7 +545,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param externalReferenceGUID unique identifier of the external reference describing the location of the contract
      * @param deleteOptions         options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachContract(String        agreementGUID,
@@ -565,7 +566,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkBusinessCapabilityDependency(String                                 supportedBusinessCapabilityGUID,
@@ -586,7 +587,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param supportingBusinessCapabilityGUID  unique identifier of the business capability that is supporting
      * @param deleteOptions         options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachBusinessCapabilityDependency(String        supportedBusinessCapabilityGUID,
@@ -607,7 +608,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDigitalSupport(String                   businessCapabilityGUID,
@@ -628,7 +629,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param elementGUID  unique identifier of the element
      * @param deleteOptions         options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDigitalSupport(String        businessCapabilityGUID,
@@ -648,7 +649,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setBusinessSignificant(String                        elementGUID,
@@ -667,7 +668,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param elementGUID    unique identifier of the element.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearBusinessSignificance(String                elementGUID,
@@ -687,7 +688,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setEditingCollection(String                      collectionGUID,
@@ -706,7 +707,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param collectionGUID    unique identifier of the collection.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearEditingCollection(String                collectionGUID,
@@ -726,7 +727,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setStagingCollection(String                      collectionGUID,
@@ -745,7 +746,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param collectionGUID    unique identifier of the collection.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearStagingCollection(String                collectionGUID,
@@ -764,7 +765,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setScopingCollection(String                      collectionGUID,
@@ -783,7 +784,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param collectionGUID    unique identifier of the collection.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearScopingCollection(String                collectionGUID,
@@ -806,7 +807,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setGlossaryAsTaxonomy(String                glossaryGUID,
@@ -825,7 +826,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param glossaryGUID    unique identifier of the glossary.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearGlossaryAsTaxonomy(String                glossaryGUID,
@@ -848,7 +849,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setGlossaryAsCanonical(String                        glossaryGUID,
@@ -867,7 +868,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param glossaryGUID    unique identifier of the glossary.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearGlossaryAsCanonical(String                glossaryGUID,
@@ -884,7 +885,7 @@ public class CollectionClient extends ConnectorContextClientBase
      *
      * @param collectionGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteCollection(String        collectionGUID,
@@ -908,7 +909,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCollectionsByName(String       name,
@@ -927,7 +928,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getCollectionByGUID(String     collectionGUID,
@@ -957,6 +958,48 @@ public class CollectionClient extends ConnectorContextClientBase
                                                                                              PropertyServerException
     {
         return collectionHandler.findCollections(connectorUserId, searchString, searchOptions);
+    }
+
+
+    /**
+     * Retrieve the digital products that match the search string and optional status.
+     *
+     * @param searchString string to search for (may include RegExs)
+     * @param deploymentStatus   optional  status
+     * @param searchOptions   multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findDigitalProducts(String           searchString,
+                                                             DeploymentStatus deploymentStatus,
+                                                             SearchOptions    searchOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        return collectionHandler.findDigitalProducts(connectorUserId, searchString, deploymentStatus, searchOptions);
+    }
+
+
+    /**
+     * Retrieve the digital products that match the category name and status.
+     *
+     * @param category   type to search for
+     * @param deploymentStatus optional status
+     * @param queryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getDigitalProductByCategory(String           category,
+                                                                     DeploymentStatus deploymentStatus,
+                                                                     QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        return collectionHandler.getDigitalProductByCategory(connectorUserId, category, deploymentStatus, queryOptions);
     }
 
 
@@ -1028,7 +1071,7 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param queryOptions   options for query
      * @return list of member details
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCollectionMembers(String collectionGUID,

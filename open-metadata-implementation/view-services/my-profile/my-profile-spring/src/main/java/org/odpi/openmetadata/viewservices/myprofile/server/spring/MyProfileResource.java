@@ -67,9 +67,110 @@ public class MyProfileResource
 
 
     /**
+     * Return the list of actors linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actors")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMyActors",
+            description="Return the list of actors linked to the user's profile.",
+            externalDocs=@ExternalDocumentation(description="Personal Profiles",
+                    url="https://egeria-project.org/concepts/personal-profile"))
+
+    public OpenMetadataRootElementsResponse getMyActors(@PathVariable String serverName,
+                                                        @RequestBody (required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getMyActors(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the list of user identities linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actors/user-identities")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMyUserIdentities",
+            description="Return the list of user identities linked to the user's profile.",
+            externalDocs=@ExternalDocumentation(description="Personal Profiles",
+                    url="https://egeria-project.org/concepts/personal-profile"))
+
+    public OpenMetadataRootElementsResponse getMyUserIdentities(@PathVariable String serverName,
+                                                                @RequestBody (required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getMyUserIdentities(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the list of assigned roles linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/actors/assigned-roles")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMyRoles",
+            description="Return the list of assigned roles linked to the user's profile.",
+            externalDocs=@ExternalDocumentation(description="Personal Profiles",
+                    url="https://egeria-project.org/concepts/personal-profile"))
+
+    public OpenMetadataRootElementsResponse getMyRoles(@PathVariable String serverName,
+                                                       @RequestBody (required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getMyRoles(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the list of assigned resources linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/assigned-resources")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMyResources",
+            description="Return the list of assigned resources linked to the user's profile.",
+            externalDocs=@ExternalDocumentation(description="Personal Profiles",
+                    url="https://egeria-project.org/concepts/personal-profile"))
+
+    public OpenMetadataRootElementsResponse getMyResources(@PathVariable String serverName,
+                                                           @RequestBody (required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getMyResources(serverName, requestBody);
+    }
+
+
+    /**
      * Add the profile for this user.
      *
      * @param serverName name of the server instances for this request
+     * @param requestBody details of the user profile to add
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or

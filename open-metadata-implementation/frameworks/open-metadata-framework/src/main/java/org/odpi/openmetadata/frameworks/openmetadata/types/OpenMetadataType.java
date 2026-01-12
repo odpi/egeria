@@ -281,7 +281,7 @@ public enum OpenMetadataType
 
 
     /**
-     * The source of the action, such as a person, meeting or a governance action.
+     * The source of the action, such as a person, meeting, or a governance action.
      */
     ACTION_REQUESTER_RELATIONSHIP("a0b7ba50-4c97-4b76-9a7d-c6a00e1be646",
                                   "ActionRequester",

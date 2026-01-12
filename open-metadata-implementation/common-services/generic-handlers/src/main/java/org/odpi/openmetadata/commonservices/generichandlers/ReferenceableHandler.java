@@ -82,7 +82,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
      * @return matching B bean
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String getBeanGUIDByQualifiedName(String       userId,

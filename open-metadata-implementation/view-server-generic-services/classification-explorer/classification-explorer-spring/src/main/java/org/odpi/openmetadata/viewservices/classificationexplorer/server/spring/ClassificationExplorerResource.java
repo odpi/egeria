@@ -898,6 +898,64 @@ public class ClassificationExplorerResource
 
 
     /**
+     * Returns the list of authored elements matching the search string and optional content status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of authored elements
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/authored-elements/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findAuthoredElements",
+            description="Returns the list of authored elements matching the search string and optional content status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public OpenMetadataRootElementsResponse findAuthoredElements(@PathVariable String            serverName,
+                                                           @PathVariable String             urlMarker,
+                                                           @RequestBody  (required = false)
+                                                           ContentStatusSearchString requestBody)
+    {
+        return restAPI.findAuthoredElements(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Returns the list of authored elements matching the category and optional content status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of authored elements
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/authored-elements/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getAuthoredElementsByCategory",
+            description="Returns the list of authored elements matching the search string and optional content status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public OpenMetadataRootElementsResponse getAuthoredElementsByCategory(@PathVariable String            serverName,
+                                                                          @PathVariable String             urlMarker,
+                                                                          @RequestBody  (required = false)
+                                                                              ContentStatusFilterRequestBody requestBody)
+    {
+        return restAPI.getAuthoredElementsByCategory(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
      * Retrieve elements with the requested classification name. It is also possible to limit the results
      * by specifying a type name for the elements that should be returned. If no type name is specified then
      * any type of element may be returned.

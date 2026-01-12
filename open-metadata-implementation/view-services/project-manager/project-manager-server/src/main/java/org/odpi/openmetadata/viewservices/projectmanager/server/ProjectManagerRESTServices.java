@@ -51,7 +51,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getLinkedProjects(String            serverName,
@@ -103,7 +103,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getProjectTeam(String            serverName,
@@ -154,7 +154,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getClassifiedProjects(String            serverName,
@@ -204,7 +204,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse findProjects(String                  serverName,
@@ -256,7 +256,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getProjectsByName(String            serverName,
@@ -311,7 +311,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return project properties
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getProject(String         serverName,
@@ -356,7 +356,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a graph of projects or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getProjectGraph(String             serverName,
@@ -403,7 +403,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return a graph of projects or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getProjectHierarchy(String             serverName,
@@ -449,7 +449,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return unique identifier of the newly created Project
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createProject(String                serverName,
@@ -514,7 +514,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return unique identifier of the newly created Project
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createTaskForProject(String            serverName,
@@ -638,7 +638,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateProject(String                   serverName,
@@ -698,7 +698,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteProject(String                   serverName,

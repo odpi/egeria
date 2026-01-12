@@ -56,7 +56,7 @@ public class RuntimeManagerResource
      * @param requestBody qualified name or display name of the platform
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/platforms/by-name")
@@ -83,7 +83,7 @@ public class RuntimeManagerResource
      * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/platforms/by-deployed-implementation-type")
@@ -111,7 +111,7 @@ public class RuntimeManagerResource
      * @param requestBody effective time
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/platforms/{platformGUID}")
@@ -138,7 +138,7 @@ public class RuntimeManagerResource
      * @param platformGUID unique identifier of the platform
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping("/platforms/{platformGUID}/report")
@@ -163,7 +163,7 @@ public class RuntimeManagerResource
      * @param requestBody qualified name or display name of the server
      * @return a list of servers
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/software-servers/by-name")
@@ -190,7 +190,7 @@ public class RuntimeManagerResource
      * @param getTemplates boolean indicating whether templates or non-template servers should be returned.
      * @return a list of servers
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/software-servers/by-deployed-implementation-type")
@@ -218,7 +218,7 @@ public class RuntimeManagerResource
      * @param requestBody effective time
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/software-servers/{serverGUID}")
@@ -245,7 +245,7 @@ public class RuntimeManagerResource
      * @param serverGUID unique identifier of the server to call
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping("/omag-servers/{serverGUID}/instance/report")
@@ -352,7 +352,7 @@ public class RuntimeManagerResource
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-repository-cohorts")
@@ -409,7 +409,7 @@ public class RuntimeManagerResource
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-repository-cohorts/{metadataRepositoryCohortGUID}/update")
@@ -438,7 +438,7 @@ public class RuntimeManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-repository-cohorts/{metadataRepositoryCohortGUID}/delete")
@@ -557,7 +557,7 @@ public class RuntimeManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-repository-cohorts/{cohortGUID}/cohort-members/{cohortMemberGUID}/attach")
@@ -591,7 +591,7 @@ public class RuntimeManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-repository-cohorts/{cohortGUID}/cohort-members/{cohortMemberGUID}/detach")

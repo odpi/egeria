@@ -35,7 +35,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-discovery/annotations
@@ -150,7 +150,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-discovery/annotations/{{annotationGUID}}/update
@@ -196,7 +196,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-discovery/annotations/{{annotationGUID}}/delete

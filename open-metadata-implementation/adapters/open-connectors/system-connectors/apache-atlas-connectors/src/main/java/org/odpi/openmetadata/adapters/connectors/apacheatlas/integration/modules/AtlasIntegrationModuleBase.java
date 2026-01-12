@@ -317,7 +317,7 @@ public abstract class AtlasIntegrationModuleBase
      * @param metadataElement retrieved metadata element
      * @return string guid
      * @throws InvalidParameterException retrieved element is null
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected String getAtlasGUID(OpenMetadataRootElement metadataElement) throws InvalidParameterException,
@@ -357,7 +357,7 @@ public abstract class AtlasIntegrationModuleBase
      * @param metadataElement retrieved metadata element
      * @return string guid
      * @throws InvalidParameterException retrieved element is null
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected String getAtlasGUID(RelatedMetadataElementSummary metadataElement) throws InvalidParameterException,

@@ -1,4 +1,7 @@
 # Egeria-my-profile-view-service
+# Work with a user's personal profile - this API is designed for retrieving the logged on user's personal profile.
+# Updates to the actors associate with a user are made using the Actor Manager API.
+# https://egeria-project.org/concepts/personal-profile
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -21,9 +24,112 @@ Content-Type: application/json
 
 ###
 # @name Get My Profile
+# Return the profile for this user.
+#
+# @param serverName name of the server instances for this request
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
 Authorization: Bearer {{token}}
 
+
+###
+# @name getMyActors
+# Return the list of actors linked to the user's profile.
+#
+# @param serverName name of the server instances for this request
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getMyUserIdentities
+# Return the list of user identities linked to the user's profile.
+#
+# @param serverName name of the server instances for this request
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actors/user-identities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getMyRoles
+# Return the list of assigned roles linked to the user's profile.
+#
+# @param serverName name of the server instances for this request
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actors/assigned-roles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getMyResources
+# Return the list of assigned resources linked to the user's profile.
+#
+# @param serverName name of the server instances for this request
+#
+# @return profile response object or
+# InvalidParameterException the userId is null or invalid or
+# PropertyServerException there is a problem retrieving information from the property server(s) or
+# UserNotAuthorizedException the requesting user is not authorized to issue this request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/assigned-resources
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# If a userId does not have a user profile
 
 ###
 # @name Add My Profile

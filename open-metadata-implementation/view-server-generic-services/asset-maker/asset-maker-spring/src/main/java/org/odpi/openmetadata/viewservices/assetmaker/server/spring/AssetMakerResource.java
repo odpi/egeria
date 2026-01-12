@@ -53,7 +53,7 @@ public class AssetMakerResource
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets")
@@ -112,7 +112,7 @@ public class AssetMakerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/update")
@@ -144,7 +144,7 @@ public class AssetMakerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/delete")
@@ -215,10 +215,10 @@ public class AssetMakerResource
                     url="https://egeria-project.org/concepts/asset"))
 
     public OpenMetadataRootElementsResponse findAssets(@PathVariable
-                                                            String                  serverName,
-                                                            @PathVariable String             urlMarker,
-                                                            @RequestBody (required = false)
-                                                            SearchStringRequestBody requestBody)
+                                                           String                  serverName,
+                                                       @PathVariable String             urlMarker,
+                                                       @RequestBody (required = false)
+                                                           SearchStringRequestBody requestBody)
     {
         return restAPI.findAssets(serverName, urlMarker,  requestBody);
     }
@@ -256,9 +256,128 @@ public class AssetMakerResource
     }
 
 
+
+    /**
+     * Retrieve the processes that match the search string and activity status.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody     status of the action (null means current active)
+     *
+     * @return list of action beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @PostMapping(path = "/processes/find-by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findProcesses",
+            description="Retrieve the actions that match the search string and optional status.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
+
+    public OpenMetadataRootElementsResponse findProcesses(@PathVariable String                          serverName,
+                                                          @PathVariable String             urlMarker,
+                                                          @RequestBody (required = false)
+                                                          ActivityStatusSearchString requestBody)
+    {
+        return restAPI.findProcesses(serverName, urlMarker, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve the actions that match the category name and status.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody     status of the action (null means current active)
+     *
+     * @return list of action beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @PostMapping(path = "/processes/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getProcessesByCategory",
+            description="Retrieve the actions that match the supplied category.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
+
+    public OpenMetadataRootElementsResponse getProcessesByCategory(@PathVariable String                serverName,
+                                                                   @PathVariable String             urlMarker,
+                                                                   @RequestBody  (required = false)
+                                                                   ActivityStatusFilterRequestBody requestBody)
+    {
+        return restAPI.getProcessesByCategory(serverName, urlMarker, requestBody);
+    }
+
+
     /* =====================================================================================================================
      * Working with infrastructure
      */
+
+
+    /**
+     * Returns the list of infrastructure assets matching the search string and optional deployment status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of infrastructure assets
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/infrstructure-assets/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findInfrastructure",
+            description="Returns the list of infrastructure assets matching the search string and optional deployment status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public OpenMetadataRootElementsResponse findInfrastructure(@PathVariable String            serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @RequestBody  (required = false)
+                                                                   DeploymentStatusSearchString requestBody)
+    {
+        return restAPI.findInfrastructure(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Returns the list of infrastructure assets matching the category and optional deployment status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of infrastructure assets
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/infrastructure-assets/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getInfrastructureByCategory",
+            description="Returns the list of infrastructure assets matching the search string and optional deployment status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public OpenMetadataRootElementsResponse getInfrastructureByCategory(@PathVariable String            serverName,
+                                                                        @PathVariable String             urlMarker,
+                                                                        @RequestBody  (required = false)
+                                                                        DeploymentStatusFilterRequestBody requestBody)
+    {
+        return restAPI.getInfrastructureByCategory(serverName, urlMarker, requestBody);
+    }
+
 
     /**
      * Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).
@@ -397,6 +516,64 @@ public class AssetMakerResource
      */
 
     /**
+     * Returns the list of data assets matching the search string and optional content status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of data assets
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-assets/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findDataAssets",
+            description="Returns the list of data assets matching the search string and optional content status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public OpenMetadataRootElementsResponse findDataAssets(@PathVariable String            serverName,
+                                                           @PathVariable String             urlMarker,
+                                                           @RequestBody  (required = false)
+                                                               ContentStatusSearchString requestBody)
+    {
+        return restAPI.findDataAssets(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Returns the list of data assets matching the category and optional content status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of data assets
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-assets/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getDataAssetsByCategory",
+            description="Returns the list of data assets matching the search string and optional content status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public OpenMetadataRootElementsResponse getDataAssetsByCategory(@PathVariable String            serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @RequestBody  (required = false)
+                                                                        ContentStatusFilterRequestBody requestBody)
+    {
+        return restAPI.getDataAssetsByCategory(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
      * Attach a data set to another asset (typically a data store) that is supplying the data.
      *
      * @param serverName name of the server to route the request to
@@ -465,7 +642,6 @@ public class AssetMakerResource
      * Actions are special types of processes
      */
 
-
     /**
      * Create a new action and link it to the supplied actor and targets (if applicable).
      *
@@ -494,7 +670,6 @@ public class AssetMakerResource
     }
 
 
-
     /**
      * Add an element to an action's workload.
      *
@@ -509,7 +684,7 @@ public class AssetMakerResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the catalog target definition.
      */
-    @PostMapping(path = "/actions/{actionGUID}/action-targets/{metadataElementGUID}")
+    @PostMapping(path = "/actions/{actionGUID}/action-targets/{metadataElementGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addActionTarget",
@@ -527,7 +702,6 @@ public class AssetMakerResource
     }
 
 
-
     /**
      * Update the properties associated with an Action Target for an action.
      *
@@ -541,7 +715,7 @@ public class AssetMakerResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/actions/action-targets/{actionTargetGUID}")
+    @PostMapping(path = "/actions/action-targets/{actionTargetGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateActionTargetProperties",
@@ -558,13 +732,12 @@ public class AssetMakerResource
     }
 
 
-
     /**
      * Retrieve a specific action target associated with an action.
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param relationshipGUID unique identifier of the relationship
+     * @param actionTargetGUID unique identifier of the relationship
      * @param requestBody details of how the retrieve should be processed
      *
      * @return details of the governance service and the asset types it is registered for or
@@ -572,7 +745,7 @@ public class AssetMakerResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
-    @PostMapping(path = "/action-targets/{relationshipGUID}")
+    @PostMapping(path = "/actions/action-targets/{actionTargetGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getActionTarget",
@@ -582,11 +755,11 @@ public class AssetMakerResource
 
     public OpenMetadataRelationshipResponse getActionTarget(@PathVariable String serverName,
                                                              @PathVariable String             urlMarker,
-                                                             @PathVariable String relationshipGUID,
+                                                             @PathVariable String actionTargetGUID,
                                                              @RequestBody (required = false)
                                                              GetRequestBody requestBody)
     {
-        return restAPI.getActionTarget(serverName, urlMarker, relationshipGUID, requestBody);
+        return restAPI.getActionTarget(serverName, urlMarker, actionTargetGUID, requestBody);
     }
 
 
@@ -603,7 +776,7 @@ public class AssetMakerResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
-    @GetMapping(path = "/actions/{actionGUID}/action-targets")
+    @PostMapping(path = "/actions/{actionGUID}/action-targets")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getActionTargets",
@@ -614,7 +787,7 @@ public class AssetMakerResource
     public OpenMetadataRootElementsResponse getActionTargets(@PathVariable String serverName,
                                                               @PathVariable String             urlMarker,
                                                               @PathVariable String actionGUID,
-                                                              @RequestBody (required = false) ResultsRequestBody requestBody)
+                                                              @RequestBody (required = false) ActivityStatusRequestBody requestBody)
     {
         return restAPI.getActionTargets(serverName, urlMarker, actionGUID, requestBody);
     }
@@ -645,9 +818,109 @@ public class AssetMakerResource
                                                                       @PathVariable String             urlMarker,
                                                                       @PathVariable String                elementGUID,
                                                                       @RequestBody  (required = false)
-                                                                      ActivityStatusRequestBody requestBody)
+                                                                          ActivityStatusRequestBody requestBody)
     {
         return restAPI.getActionsForActionTarget(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+
+    /**
+     * Assign an action to an actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the action
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody  request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @PostMapping(path = "/actions/{actionGUID}/assign/{actorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="assignAction",
+            description="Assign a action to an actor.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
+
+    public VoidResponse assignAction(@PathVariable String         serverName,
+                                     @PathVariable String             urlMarker,
+                                     @PathVariable String         actionGUID,
+                                     @PathVariable String         actorGUID,
+                                     @RequestBody (required = false)
+                                     NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.assignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
+    }
+
+
+    /**
+     * Assign an action to a new actor.  This will unassign all other actors previously assigned to the action.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the action
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody  request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @PostMapping(path = "/actions/{actionGUID}/reassign/{actorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="reassignAction",
+            description="Assign a action to a new actor.  This will unassign all other actors previously assigned to the action.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
+
+    public VoidResponse reassignAction(@PathVariable String         serverName,
+                                       @PathVariable String             urlMarker,
+                                       @PathVariable String         actionGUID,
+                                       @PathVariable String         actorGUID,
+                                       @RequestBody (required = false)
+                                       NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.reassignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
+    }
+
+
+    /**
+     * Remove an action from an actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param actionGUID unique identifier of the action
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody  request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @PostMapping(path = "/actions/{actionGUID}/unassign/{actorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="unassignAction",
+            description="Remove an action from an actor.",
+            externalDocs=@ExternalDocumentation(description="Actions",
+                    url="https://egeria-project.org/concepts/action"))
+
+    public VoidResponse unassignAction(@PathVariable String         serverName,
+                                       @PathVariable String             urlMarker,
+                                       @PathVariable String         actionGUID,
+                                       @PathVariable String         actorGUID,
+                                       @RequestBody (required = false)
+                                       DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.unassignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
     }
 
 
@@ -710,64 +983,6 @@ public class AssetMakerResource
                                                                ActivityStatusRequestBody requestBody)
     {
         return restAPI.getAssignedActions(serverName, urlMarker, actorGUID, requestBody);
-    }
-
-
-    /**
-     * Retrieve the processes that match the search string and activity status.
-     *
-     * @param serverName name of the server instances for this request
-     * @param urlMarker  view service URL marker
-     * @param requestBody     status of the action (null means current active)
-     *
-     * @return list of action beans or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    @PostMapping(path = "/processes/find-by-search-string")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="findProcesses",
-            description="Retrieve the actions that match the search string and optional status.",
-            externalDocs=@ExternalDocumentation(description="Actions",
-                    url="https://egeria-project.org/concepts/action"))
-
-    public OpenMetadataRootElementsResponse findProcesses(@PathVariable String                          serverName,
-                                                          @PathVariable String             urlMarker,
-                                                          @RequestBody (required = false)
-                                                              ActivityStatusSearchString requestBody)
-    {
-        return restAPI.findProcesses(serverName, urlMarker, requestBody);
-    }
-
-
-    /**
-     * Retrieve the actions that match the category name and status.
-     *
-     * @param serverName name of the server instances for this request
-     * @param urlMarker  view service URL marker
-     * @param requestBody     status of the action (null means current active)
-     *
-     * @return list of action beans or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    @PostMapping(path = "/processes/by-category")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getActionsByCategory",
-            description="Retrieve the actions that match the supplied category.",
-            externalDocs=@ExternalDocumentation(description="Actions",
-                    url="https://egeria-project.org/concepts/action"))
-
-    public OpenMetadataRootElementsResponse getProcessesByCategory(@PathVariable String                serverName,
-                                                                   @PathVariable String             urlMarker,
-                                                                   @RequestBody  (required = false)
-                                                                   ActivityStatusFilterRequestBody requestBody)
-    {
-        return restAPI.getProcessesByCategory(serverName, urlMarker, requestBody);
     }
 
 

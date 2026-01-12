@@ -948,103 +948,69 @@ public class ClassificationManagerResource
 
 
     /**
-     * Assign an action to an actor.
+     * Attach an actor to an element.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param actionGUID unique identifier of the action
-     * @param actorGUID  actor to assign the action to
-     * @param requestBody  request body
+     * @param elementGUID            unique identifier of the element (project, product, etc.)
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/actions/{actionGUID}/assign/{actorGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/assigned-to-actor/{actorGUID}/attach")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="assignAction",
-            description="Assign a action to an actor.",
-            externalDocs=@ExternalDocumentation(description="Actions",
-                    url="https://egeria-project.org/concepts/action"))
+    @Operation(summary="assignActorToElement",
+            description="Attach an actor to an element.",
+            externalDocs=@ExternalDocumentation(description="Assignments",
+                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
-    public VoidResponse assignAction(@PathVariable String         serverName,
-                                       @PathVariable String             urlMarker,
-                                       @PathVariable String         actionGUID,
-                                       @PathVariable String         actorGUID,
-                                       @RequestBody (required = false)
-                                       NewRelationshipRequestBody requestBody)
+    public VoidResponse assignActorToElement(@PathVariable String                  serverName,
+                                          @PathVariable String                    urlMarker,
+                                          @PathVariable String                  elementGUID,
+                                          @PathVariable String actorGUID,
+                                          @RequestBody  (required = false)
+                                          NewRelationshipRequestBody requestBody)
     {
-        return restAPI.assignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
+        return restAPI.assignActorToElement(serverName, urlMarker, elementGUID, actorGUID, requestBody);
     }
 
 
     /**
-     * Assign an action to a new actor.  This will unassign all other actors previously assigned to the action.
+     * Detach an actor from an element.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param actionGUID unique identifier of the action
-     * @param actorGUID  actor to assign the action to
-     * @param requestBody  request body
+     * @param elementGUID            unique identifier of the element (project, product, etc.)
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/actions/{actionGUID}/reassign/{actorGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/assigned-to-actor/{actorGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="reassignAction",
-            description="Assign a action to a new actor.  This will unassign all other actors previously assigned to the action.",
-            externalDocs=@ExternalDocumentation(description="Actions",
-                    url="https://egeria-project.org/concepts/action"))
+    @Operation(summary="unassignActorFromElement",
+            description="Detach an actor from an element.",
+            externalDocs=@ExternalDocumentation(description="Assignments",
+                    url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
 
-    public VoidResponse reassignAction(@PathVariable String         serverName,
-                                       @PathVariable String             urlMarker,
-                                       @PathVariable String         actionGUID,
-                                       @PathVariable String         actorGUID,
-                                       @RequestBody (required = false)
-                                       NewRelationshipRequestBody requestBody)
+    public VoidResponse unassignActorFromElement(@PathVariable String                        serverName,
+                                               @PathVariable String                    urlMarker,
+                                               @PathVariable String                        elementGUID,
+                                               @PathVariable String                        actorGUID,
+                                               @RequestBody  (required = false)
+                                               DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.reassignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
+        return restAPI.unassignActorFromElement(serverName, urlMarker, elementGUID, actorGUID, requestBody);
     }
-
-
-    /**
-     * Remove an action from an actor.
-     *
-     * @param serverName name of the server instances for this request
-     * @param urlMarker  view service URL marker
-     * @param actionGUID unique identifier of the action
-     * @param actorGUID  actor to assign the action to
-     * @param requestBody  request body
-     *
-     * @return void or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    @PostMapping(path = "/actions/{actionGUID}/unassign/{actorGUID}")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="unassignAction",
-            description="Remove an action from an actor.",
-            externalDocs=@ExternalDocumentation(description="Actions",
-                    url="https://egeria-project.org/concepts/action"))
-
-    public VoidResponse unassignAction(@PathVariable String         serverName,
-                                       @PathVariable String             urlMarker,
-                                       @PathVariable String         actionGUID,
-                                       @PathVariable String         actorGUID,
-                                       @RequestBody (required = false)
-                                       DeleteRelationshipRequestBody requestBody)
-    {
-        return restAPI.unassignAction(serverName, urlMarker, actionGUID, actorGUID, requestBody);
-    }
-
 
 
     /**

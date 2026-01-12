@@ -34,7 +34,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/attach
@@ -66,7 +66,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/detach
@@ -98,7 +98,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{superTeamGUID}}/team-structures/{{subteamGUID}}/attach
@@ -131,7 +131,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/people-organizer/actor-profiles/{{superTeamGUID}}/team-structures/{{subteamGUID}}/detach

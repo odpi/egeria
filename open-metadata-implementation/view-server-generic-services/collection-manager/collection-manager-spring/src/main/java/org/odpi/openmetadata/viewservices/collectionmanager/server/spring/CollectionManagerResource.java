@@ -60,7 +60,7 @@ public class CollectionManagerResource
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{parentGUID}/collections")
@@ -90,7 +90,7 @@ public class CollectionManagerResource
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/by-search-string")
@@ -111,6 +111,66 @@ public class CollectionManagerResource
 
 
     /**
+     * Returns the list of digital products matching the search string and optional deployment status.
+     * (Use findAuthoredElements() in Classification Explorer for retrieving by content status.)
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of digital products
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/digital-products/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findDigitalProducts",
+            description="Returns the list of digital products matching the search string and optional deployment status. (Use findAuthoredElements() in Classification Explorer for retrieving by content status.)",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public OpenMetadataRootElementsResponse findDigitalProducts(@PathVariable String            serverName,
+                                                                @PathVariable String             urlMarker,
+                                                                @RequestBody  (required = false)
+                                                                DeploymentStatusSearchString requestBody)
+    {
+        return restAPI.findDigitalProducts(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Returns the list of digital products matching the category and optional deployment status.
+     * (Use getAuthoredElementsByCategory() in Classification Explorer for retrieving by content status.)
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of digital products
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/digital-products/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getDigitalProductByCategory",
+            description="Returns the list of digital products matching the search string and optional deployment status. (Use findAuthoredElements() in Classification Explorer for retrieving by content status.)",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-product"))
+
+    public OpenMetadataRootElementsResponse getDigitalProductByCategory(@PathVariable String            serverName,
+                                                                        @PathVariable String             urlMarker,
+                                                                        @RequestBody  (required = false)
+                                                                            DeploymentStatusFilterRequestBody requestBody)
+    {
+        return restAPI.getDigitalProductByCategory(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
      * Returns the list of collections with a particular name.
      *
      * @param serverName    name of called server
@@ -120,7 +180,7 @@ public class CollectionManagerResource
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/by-name")
@@ -129,7 +189,7 @@ public class CollectionManagerResource
     @Operation(summary="getCollectionsByName",
             description="Returns the list of collections with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/collection"))
+                    url="https://egeria-project.org/concepts/digital-product"))
 
     public OpenMetadataRootElementsResponse getCollectionsByName(@PathVariable String            serverName,
                                                                  @PathVariable String             urlMarker,
@@ -148,7 +208,7 @@ public class CollectionManagerResource
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/by-collection-category")
@@ -176,7 +236,7 @@ public class CollectionManagerResource
      *
      * @return collection properties
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/retrieve")
@@ -205,7 +265,7 @@ public class CollectionManagerResource
      *
      * @return unique identifier of the newly created Collection
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections")
@@ -264,7 +324,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/update")
@@ -295,7 +355,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{parentGUID}/collections/{collectionGUID}/attach")
@@ -327,7 +387,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{parentGUID}/collections/{collectionGUID}/detach")
@@ -360,7 +420,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{parentGUID}/data-descriptions/{collectionGUID}/attach")
@@ -392,7 +452,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{parentGUID}/data-descriptions/{collectionGUID}/detach")
@@ -426,7 +486,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/subscribers/{digitalSubscriberGUID}/subscriptions/{digitalSubscriptionGUID}/attach")
@@ -462,7 +522,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/subscribers/{digitalSubscriberGUID}/subscriptions/{digitalSubscriptionGUID}/detach")
@@ -498,7 +558,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/agreements/{agreementGUID}/agreement-actors/{actorGUID}/attach")
@@ -533,7 +593,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collection/agreements/agreement-actors/{agreementActorRelationshipGUID}/detach")
@@ -567,7 +627,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/agreements/{agreementGUID}/agreement-items/{agreementItemGUID}/attach")
@@ -603,7 +663,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/agreements/{agreementGUID}/agreement-items/{agreementItemGUID}/detach")
@@ -639,7 +699,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/agreements/{agreementGUID}/contract-links/{externalReferenceGUID}/attach")
@@ -675,7 +735,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/agreements/{agreementGUID}/contract-links/{externalReferenceGUID}/detach")
@@ -899,7 +959,7 @@ public class CollectionManagerResource
      * @param requestBody delete options
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/delete")
@@ -933,7 +993,7 @@ public class CollectionManagerResource
      *
      * @return list of collection details
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/members")
@@ -964,7 +1024,7 @@ public class CollectionManagerResource
      *
      * @return graph of collection details
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/hierarchy")

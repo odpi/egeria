@@ -26,9 +26,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -37,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMet
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SolutionActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -170,7 +169,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * First make sure that all possible tabular data sets have been harvested.  These are set up as catalog targets.
      * Then process each catalog target.  It will record details of any changes to the catalog target's data.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException  a problem with the connector.  It cannot refresh the metadata.
      * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override
@@ -451,6 +450,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                 existingProduct.getElementHeader().getGUID(),
                                                                                                                 productDefinition.getProductName()));
 
+                    refreshProductDefinition(collectionClient, existingProduct, productDefinition);
                     return existingProduct.getElementHeader().getGUID();
                 }
             }
@@ -459,16 +459,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * First time, so the product needs to be created, along with its subscription options,
          * solution blueprint, data spec, notification type and asset.  The asset needs to be
-         * registered as a catalog target.
+         * registered as a catalog-target.
          */
-        DigitalProductProperties digitalProductProperties = new DigitalProductProperties();
-
-        digitalProductProperties.setTypeName(productDefinition.getTypeName()); // may be family or product
-        digitalProductProperties.setQualifiedName(productDefinition.getQualifiedName());
-        digitalProductProperties.setDisplayName(productDefinition.getDisplayName());
-        digitalProductProperties.setDescription(productDefinition.getDescription());
-        digitalProductProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
-        digitalProductProperties.setCategory(productDefinition.getCategory());
+        DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
+        digitalProductProperties.setIntroductionDate(new Date());
 
         NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
 
@@ -497,12 +491,46 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         String productManagerGUID = null;
         if (productDefinition.getProductManager() != null)
         {
+            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+
+            assignmentScopeProperties.setAssignmentType("product manager");
             productManagerGUID = productRoles.get(productDefinition.getProductManager().getQualifiedName());
 
             collectionClient.linkProductManager(productGUID,
                                                 productManagerGUID,
                                                 new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                null);
+                                                assignmentScopeProperties);
+        }
+
+        /*
+         * Link the product developer
+         */
+        if (productDefinition.getProductDeveloper() != null)
+        {
+            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+
+            assignmentScopeProperties.setAssignmentType("product developer");
+            String productDeveloperGUID = productRoles.get(productDefinition.getProductDeveloper().getQualifiedName());
+            classificationManagerClient.assignActorToElement(productGUID,
+                                                             productDeveloperGUID,
+                                                             new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                             assignmentScopeProperties);
+        }
+
+        /*
+         * Link the product support
+         */
+        if (productDefinition.getProductSupport() != null)
+        {
+            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+
+            assignmentScopeProperties.setAssignmentType("product support");
+            String productSupportGUID = productRoles.get(productDefinition.getProductSupport().getQualifiedName());
+
+            classificationManagerClient.assignActorToElement(productGUID,
+                                                             productSupportGUID,
+                                                             new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                             assignmentScopeProperties);
         }
 
 
@@ -697,6 +725,63 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 }
             }
         }
+    }
+
+
+    /**
+     * Make any changes to the product description that have occurred since the product was created.
+     *
+     * @param collectionClient  client to update product
+     * @param existingProduct   current product definition
+     * @param productDefinition new description of product
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void refreshProductDefinition(CollectionClient        collectionClient,
+                                          OpenMetadataRootElement existingProduct,
+                                          ProductDefinition       productDefinition) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
+
+        collectionClient.updateCollection(existingProduct.getElementHeader().getGUID(),
+                                          collectionClient.getUpdateOptions(true),
+                                          digitalProductProperties);
+    }
+
+    /**
+     * Create a DigitalProductProperties object from a ProductDefinition.
+     *
+     * @param productDefinition product definition
+     * @return DigitalProductProperties object
+     */
+    private DigitalProductProperties getDigitalProductProperties(ProductDefinition productDefinition)
+    {
+        DigitalProductProperties digitalProductProperties = new DigitalProductProperties();
+
+        digitalProductProperties.setTypeName(productDefinition.getTypeName()); // may be family or product
+        digitalProductProperties.setQualifiedName(productDefinition.getQualifiedName());
+        digitalProductProperties.setDisplayName(productDefinition.getDisplayName());
+        digitalProductProperties.setDescription(productDefinition.getDescription());
+        digitalProductProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+        digitalProductProperties.setCategory(productDefinition.getCategory());
+        digitalProductProperties.setProductName(productDefinition.getProductName());
+
+        if (productDefinition.getConnectorProvider() != null)
+        {
+            digitalProductProperties.setContentStatus(ContentStatus.ACTIVE);
+            digitalProductProperties.setDeploymentStatus(DeploymentStatus.ACTIVE);
+        }
+        else
+        {
+            digitalProductProperties.setContentStatus(ContentStatus.APPROVED);
+            digitalProductProperties.setDeploymentStatus(DeploymentStatus.UNDER_DEVELOPMENT);
+        }
+
+        return digitalProductProperties;
     }
 
 

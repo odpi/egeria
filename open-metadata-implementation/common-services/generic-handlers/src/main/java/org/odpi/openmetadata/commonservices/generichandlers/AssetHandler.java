@@ -290,7 +290,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param methodName calling method
      * @return an asset bean (with embedded connection details if available)
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public B getAssetWithConnection(String       userId,

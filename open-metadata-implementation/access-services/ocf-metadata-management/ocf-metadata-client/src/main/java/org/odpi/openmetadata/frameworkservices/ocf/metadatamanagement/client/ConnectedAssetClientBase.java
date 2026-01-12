@@ -116,7 +116,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @return connection instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected Connection getConnectionByGUID(OCFRESTClient  restClient,
@@ -180,7 +180,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @return   connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public Connection getConnectionForAsset(OCFRESTClient  restClient,
@@ -302,7 +302,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -342,7 +342,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -370,7 +370,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -421,7 +421,7 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override

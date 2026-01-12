@@ -328,7 +328,7 @@ public class GovernanceLeadershipSample
      * @param workLocation where they work
      * @return unique identifier of the profile
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException  a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private String createPersonalProfile(ActorProfileHandler     orgClient,
@@ -426,7 +426,7 @@ public class GovernanceLeadershipSample
      * @param clientUserId user id to call the server
      * @param actorUserId user id of the individual
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException  a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void deleteUserIdentity(UserIdentityHandler uidClient,
@@ -452,7 +452,7 @@ public class GovernanceLeadershipSample
      * This method runs the sample.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException  a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void run() throws InvalidParameterException,

@@ -1763,6 +1763,111 @@ public class ClassificationExplorerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Retrieve the authored elements that match the search string and optional status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of elements
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse findAuthoredElements(String                    serverName,
+                                                                 String                    urlMarker,
+                                                                 ContentStatusSearchString requestBody)
+    {
+        final String methodName = "findAuthoredElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findAuthoredElements(userId, requestBody.getSearchString(), requestBody.getContentStatus(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findAuthoredElements(userId, null, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the authored elements that match the category name and status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of elements
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse getAuthoredElementsByCategory(String                         serverName,
+                                                                          String                         urlMarker,
+                                                                          ContentStatusFilterRequestBody requestBody)
+    {
+        final String methodName = "getAuthoredElementsByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getAuthoredElementsByCategory(userId, requestBody.getFilter(), requestBody.getContentStatus(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getAuthoredElementsByCategory(userId, null, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Retrieve elements with the requested classification name. It is also possible to limit the results
      * by specifying a type name for the elements that should be returned. If no type name is specified then

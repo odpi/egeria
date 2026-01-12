@@ -81,7 +81,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createSchemaAttribute(NewElementOptions                     newElementOptions,
@@ -146,7 +146,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateSchemaAttribute(String                    schemaAttributeGUID,
@@ -174,7 +174,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkNestedSchemaAttribute(String                          schemaAttributeGUID,
@@ -195,7 +195,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param nestedSchemaAttributeGUID            unique identifier of the nested schema attribute
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachNestedSchemaAttribute(String        schemaAttributeGUID,
@@ -216,7 +216,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAttributeForSchema(String                          schemaTypeGUID,
@@ -237,7 +237,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param nestedSchemaAttributeGUID            unique identifier of the nested schema attribute
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAttributeForSchema(String        schemaTypeGUID,
@@ -258,7 +258,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkForeignKey(String                primaryKeyColumnGUID,
@@ -279,7 +279,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param foreignKeyColumnGUID             unique identifier of the foreign key
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachForeignKey(String        primaryKeyColumnGUID,
@@ -302,7 +302,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkExternalSchemaType(String                              schemaElementGUID,
@@ -323,7 +323,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaTypeGUID             unique identifier of the foreign key
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachExternalSchemaType(String        schemaElementGUID,
@@ -345,7 +345,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkMapFromSchemaType(String                      schemaElementGUID,
@@ -366,7 +366,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaTypeGUID             unique identifier of the foreign key
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachMapFromSchemaType(String        schemaElementGUID,
@@ -388,7 +388,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkMapToSchemaType(String                      schemaElementGUID,
@@ -409,7 +409,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaTypeGUID             unique identifier of the foreign key
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachMapToSchemaType(String        schemaElementGUID,
@@ -431,7 +431,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkGraphEdge(String                   graphEdgeGUID,
@@ -452,7 +452,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param graphVertexGUID             unique identifier of the foreign key
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachGraphEdge(String        graphEdgeGUID,
@@ -474,7 +474,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkQueryTarget(String                                 schemaElementGUID,
@@ -495,7 +495,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaTypeGUID             unique identifier of the foreign key
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachQueryTarget(String        schemaElementGUID,
@@ -515,7 +515,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addPrimaryKeyClassification(String                relationalColumnGUID,
@@ -534,7 +534,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param relationalColumnGUID    unique identifier of the schema attribute.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removePrimaryKeyClassification(String                relationalColumnGUID,
@@ -553,7 +553,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addTypeEmbeddedAttribute(String                          schemaAttributeGUID,
@@ -573,7 +573,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param updateOptions provides a structure for the additional options when updating a classification.
      * @param properties            properties for the classification
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateTypeEmbeddedAttribute(String                          schemaAttributeGUID,
@@ -592,7 +592,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaAttributeGUID    unique identifier of the schema attribute.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeTypeEmbeddedAttribute(String                schemaAttributeGUID,
@@ -611,7 +611,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addCalculatedValue(String                    schemaAttributeGUID,
@@ -631,7 +631,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param updateOptions provides a structure for the additional options when updating a classification.
      * @param properties            properties for the classification
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateCalculatedValue(String                    schemaAttributeGUID,
@@ -650,7 +650,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaAttributeGUID    unique identifier of the schema attribute.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeCalculatedValue(String                schemaAttributeGUID,
@@ -668,7 +668,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param schemaAttributeGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteSchemaAttribute(String        schemaAttributeGUID,
@@ -687,7 +687,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param queryOptions multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getSchemaAttributesByName(String       name,
@@ -706,7 +706,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getSchemaAttributeByGUID(String     schemaAttributeGUID,
@@ -745,7 +745,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAttributesForSchemaType(String       schemaTypeGUID,
@@ -764,7 +764,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getNestedSchemaAttributes(String       schemaAttributeGUID,

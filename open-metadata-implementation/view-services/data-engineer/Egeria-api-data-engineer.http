@@ -35,7 +35,7 @@ Content-Type: application/json
 #
 # @return a list of projects
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-data-sets/{{tabularDataSetGUID}}/report?startFromRow=0&maxRowCount=5000

@@ -36,7 +36,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations
@@ -151,7 +151,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/update
@@ -201,7 +201,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationOneGUID}}/adjacent-locations/{{locationTwoGUID}}/attach
@@ -235,7 +235,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationOneGUID}}/adjacent-locations/{{locationTwoGUID}}/detach
@@ -266,7 +266,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/nested-locations/{{nestedLocationGUID}}/attach
@@ -300,7 +300,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/nested-locations/{{nestedLocationGUID}}/detach
@@ -331,7 +331,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/elements/{{elementGUID}}/known-locations/{{locationGUID}}/attach
@@ -364,7 +364,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/elements/{{elementGUID}}/known-locations/{{locationGUID}}/detach
@@ -391,7 +391,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/delete

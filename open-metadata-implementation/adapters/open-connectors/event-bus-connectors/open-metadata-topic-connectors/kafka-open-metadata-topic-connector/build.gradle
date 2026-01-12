@@ -10,6 +10,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly 'org.slf4j:slf4j-api'
     implementation 'org.apache.kafka:kafka-clients'
     testImplementation 'org.testng:testng'

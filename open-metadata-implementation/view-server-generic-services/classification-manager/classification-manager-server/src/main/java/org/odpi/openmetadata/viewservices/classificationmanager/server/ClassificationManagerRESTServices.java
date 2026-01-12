@@ -1626,28 +1626,27 @@ public class ClassificationManagerRESTServices extends TokenController
     }
 
 
-
     /**
-     * Assign an action to a new actor.
+     * Attach an actor to an element.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
-     * @param actionGUID unique identifier of the to do
-     * @param actorGUID  actor to assign the action to
-     * @param requestBody null request body
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param actorGUID identifier of the actor to link
+     * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    public VoidResponse assignAction(String                     serverName,
-                                     String                     urlMarker,
-                                     String                     actionGUID,
-                                     String                     actorGUID,
-                                     NewRelationshipRequestBody requestBody)
+    public VoidResponse assignActorToElement(String                  serverName,
+                                          String                   urlMarker,
+                                          String                  elementGUID,
+                                          String                  actorGUID,
+                                          NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "assignAction";
+        final String methodName = "assignActorToElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1663,17 +1662,36 @@ public class ClassificationManagerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+            if (requestBody != null)
             {
-                handler.assignAction(userId, actionGUID, actorGUID, requestBody, assignmentScopeProperties);
-            }
-            else if (requestBody.getProperties() == null)
-            {
-                handler.assignAction(userId, actionGUID, actorGUID, requestBody, null);
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+                {
+                    handler.assignActorToElement(userId,
+                                              elementGUID,
+                                              actorGUID,
+                                              requestBody,
+                                              assignmentScopeProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.assignActorToElement(userId,
+                                              elementGUID,
+                                              actorGUID,
+                                              requestBody,
+                                              null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ScopedByProperties.class.getName(), methodName);
+                }
             }
             else
             {
-                restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
+                handler.assignActorToElement(userId,
+                                          elementGUID,
+                                          actorGUID,
+                                          null,
+                                          null);
             }
         }
         catch (Throwable error)
@@ -1688,26 +1706,25 @@ public class ClassificationManagerRESTServices extends TokenController
 
 
     /**
-     * Assign an action to a new actor.
+     * Detach an actor from an element.
      *
-     * @param serverName name of the server instances for this request
-     * @param urlMarker  view service URL marker
-     * @param actionGUID unique identifier of the to do
-     * @param actorGUID  actor to assign the action to
-     * @param requestBody null request body
-     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker   view service URL marker
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param actorGUID   identifier of the actor to detach
+     * @param requestBody properties for relationship request
      * @return void or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
      */
-    public VoidResponse reassignAction(String                     serverName,
-                                       String                     urlMarker,
-                                       String                     actionGUID,
-                                       String                     actorGUID,
-                                       NewRelationshipRequestBody requestBody)
+    public VoidResponse unassignActorFromElement(String serverName,
+                                                 String urlMarker,
+                                                 String elementGUID,
+                                                 String actorGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
     {
-        final String methodName = "reassignAction";
+        final String methodName = "unassignActorFromElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1723,18 +1740,7 @@ public class ClassificationManagerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
-            {
-                handler.reassignAction(userId, actionGUID, actorGUID, requestBody, assignmentScopeProperties);
-            }
-            else if (requestBody.getProperties() == null)
-            {
-                handler.reassignAction(userId, actionGUID, actorGUID, requestBody, null);
-            }
-            else
-            {
-                restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
-            }
+            handler.unassignActorFromElement(userId, elementGUID, actorGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1742,56 +1748,6 @@ public class ClassificationManagerRESTServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Remove an action from an actor.
-     *
-     * @param serverName name of the server instances for this request
-     * @param urlMarker  view service URL marker
-     * @param actionGUID unique identifier of the to do
-     * @param actorGUID  actor to assign the action to
-     * @param requestBody null request body
-     *
-     * @return void or
-     * InvalidParameterException a parameter is invalid
-     * PropertyServerException the server is not available
-     * UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    public VoidResponse unassignAction(String                        serverName,
-                                       String                        urlMarker,
-                                       String                        actionGUID,
-                                       String                        actorGUID,
-                                       DeleteRelationshipRequestBody requestBody)
-    {
-        final String methodName = "unassignAction";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
-
-            handler.unassignAction(userId, actionGUID, actorGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
         return response;
     }
 

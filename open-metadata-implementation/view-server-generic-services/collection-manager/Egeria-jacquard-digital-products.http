@@ -1,0 +1,1120 @@
+# Egeria-collection-manager-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# Retrieving Digital Products: https://egeria-project.org/concepts/digital-product
+#
+
+@digitalProductGUID=add guid here
+
+
+###
+# @name findDigitalProducts
+# https://egeria-project.org/concepts/digital-product
+# Returns the list of digital products matching the search string and optional deployment status.
+# (Use findAuthoredElements() in Classification Explorer for retrieving by content status.)
+#
+# @param serverName name of the service to route the request to
+# @param urlMarker  view service URL marker
+# @param requestBody string to find in the properties
+#
+# @return a list of digital products
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusSearchString",
+  "searchString" : "Data Product Development Journey",
+  "deploymentStatus" : "ACTIVE",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getDigitalProductByCategory
+# https://egeria-project.org/concepts/digital-product
+# Returns the list of digital products matching the category and optional deployment status.
+# (Use getAuthoredElementsByCategory() in Classification Explorer for retrieving by content status.)
+#
+# @param serverName name of the service to route the request to
+# @param urlMarker  view service URL marker
+# @param requestBody string to find in the properties
+#
+# @return a list of digital products
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/by-category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusFilterRequestBody",
+  "filter" : "xxx",
+  "deploymentStatus" : "ACTIVE",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getCollectionsByName
+# Returns the list of collections with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "xxx",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getCollectionsByName (restricted by classificationName)
+# Returns the list of collections with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "DataJourneyProject:Data Acquisition Journey:{{projectName}}:ActivityFolder:Potential Data Sources",
+  "includeOnlyClassifiedElements" : ["RootCollection"],
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getCollectionsByCategory
+# Returns the list of collections with a particular category.  This is an optional text field in the collection element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add category here",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getCollectionsByCategory (restricted by classificationName and type name)
+# Returns the list of collections with a particular category.  This is an optional text field in the collection element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add collection category here",
+  "metadataElementTypeName": "DataSpec",
+  "includeOnlyClassifiedElements" : ["ResultsSet"],
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+
+@collectionGUID=dcec6ddb-317e-4c64-907e-be508ceba6d9
+
+###
+# @name getCollectionByGUID
+# Return the properties of a specific collection. Request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getCollectionMembers
+# Return a list of elements that are a member of a collection.  Prequest body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# @name getCollectionHierarchy
+# Return a hierarchy of nested collections. Request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# =====================================================================================================================
+# Create Collections: https://egeria-project.org/concepts/collection
+# These requests use the following parameters:
+#
+# anchorGUID - the unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+# or if this collection is to be its own anchor.
+#
+# isOwnAnchor -this element should be classified as its own anchor or not.  The default is false.
+#
+# parentGUID - the optional unique identifier for an element that should be connected to the newly created element.
+# If this property is specified, parentRelationshipTypeName must also be specified
+#
+# parentRelationshipTypeName - the name of the relationship, if any, that should be established between the new element and the parent element.
+# Examples could be "ResourceList" or "DigitalServiceProduct".
+#
+# parentAtEnd1 -identifies which end any parent entity sits on the relationship.
+#
+
+
+###
+# @name createCollection (own anchor)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  }
+}
+
+
+###
+# @name createClassifiedCollection (own anchor)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "initialClassifications" : {
+    "Folder" : {
+      "class": "FolderProperties"
+    }
+  },
+
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Folder::another",
+    "displayName" : "Another",
+    "description" : "Folder description",
+    "category": "Folder-Category"
+  }
+
+}
+
+###
+# @name createCollection (anchored to parent)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createRootCollection
+# Create a new collection with the RootCollection classification.  Used to identify the top of a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "initialClassifications" : {
+    "RootCollection" : { "class" :  "RootCollectionProperties" }
+     },
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name createDataSpecCollection
+# Create a new collection with the DataSpec type.  Used to identify a collection of data structures and
+# data fields used to define data requirements for a project or initiative.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataSpecProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createDataDictionaryCollection
+# Create a new collection with the Data Dictionary type.  Used to identify a collection of
+# data fields/classes that represent a collection of common data types.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DataDictionaryProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createFolderCollection
+# Create a new collection with the Folder classification.  This is used to identify the organizing collections in a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "initialClassifications" : {
+    "Folder" : {
+      "class": "FolderProperties"
+    }
+  },
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createCollectionFromTemplate
+# Create a new metadata element to represent a collection using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "TemplateRequestBody",
+  "anchorGUID": "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor": false,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID": "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName": "open metadata type name",
+  "parentAtEnd1": true,
+  "templateGUID": "template GUID",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "propertyName" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
+        "primitiveValue" : "value of property"
+      }
+    }
+  },
+  "placeholderPropertyValues" : {
+    "placeholderProperty1Name" : "property1Value",
+    "placeholderProperty2Name" : "property2Value"
+  }
+}
+
+
+###
+# @name updateCollection
+# Update the properties of a collection.  
+# Use the correct properties object (CollectionProperties, DigitalProductProperties, AgreementProperties)
+# That is appropriate for your element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "displayName" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "category": "Add appropriate valid value for type"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+
+@agreementGUID=xxx
+
+###
+# @name createAgreement
+# Create a new collection that represents an agreement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "xxx",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement::Add agreement name here",
+    "displayName" : "display name",
+    "description" : "Add description of the agreement here",
+    "identifier" : "Add agreement identifier here",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+###
+# @name createDataSharingAgreementCollection 
+# Create a new collection with the DataSharingAgreement classification.  The collection is typically an agreement
+# which may use the NewElementRequestBody, or the NewAgreementRequestBody if the initial status needs to be set.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-sharing-agreement
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "xxx",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement::Add agreement name here",
+    "displayName" : "display name",
+    "description" : "Add description of the agreement here",
+    "userDefinedStatus" : "NEW",
+    "identifier" : "Add agreement identifier here",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name updateAgreement
+# Update the properties of the Agreement collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{agreementGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "AgreementProperties",
+    "qualifiedName": "Agreement::Add agreement name here",
+    "displayName" : "display name",
+    "description" : "Add description of the agreement here",
+    "userDefinedStatus" : "OBSOLETE",
+    "identifier" : "Add agreement identifier here",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateAgreementStatus
+# Update the status of the Agreement collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{agreementGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "AgreementProperties",
+    "contentStatus": "APPROVED"
+  },
+  "mergeUpdate": true
+}
+
+###
+
+@actorGUID=add guid here
+
+###
+# @name linkAgreementActor
+# Attach an actor to an agreement.  The actor element may be an actor profile (person, team or IT profile);
+# actor role (person role, team role or IT profile role); or user identity. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/agreement-actors/{{actorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "AgreementActorProperties",
+    "actorName": "add name of actor used in agreement text",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachAgreementActor
+# Detach an actor from an agreement. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/agreement-actors/{{actorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@agreementItemGUID=add guid here
+
+###
+# @name linkAgreementItem
+# Attach an agreement to an element referenced in its definition.
+# The agreement item  element is of type 'Referenceable' to allow the
+# agreement to refer to many things. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/agreement-items/{{agreementItemGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "AgreementItemProperties",
+    "agreementItemId": "add label here",
+    "agreementStart": "{{$isoTimestamp}}",
+    "agreementEnd": "{{$isoTimestamp}}",
+    "restrictions": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "obligations" : {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "entitlements" : {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "usageMeasurements" : {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachAgreementItem
+# Detach an agreement from an element involved in its definition. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/agreement-items/{{agreementItemGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@externalReferenceGUID=add guid here
+
+###
+# @name linkContract
+# Attach an agreement to an external reference element that describes the location of the contract documents. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/contract-links/{{externalReferenceGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "ContractLinkProperties",
+    "contractId": "add id here",
+    "contractLiaison": "add identifier of actor here",
+    "contractLiaisonTypeName": "add type of actor here",
+    "contractLiaisonPropertyName": "add property of actor's identifier here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachContract
+# Detach an agreement from an external reference describing the location of the contract documents. Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/agreements/{{agreementGUID}}/contract-links/{{externalReferenceGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# Digital Subscriptions
+
+@digitalSubscriberGUID=add guid here
+@digitalSubscriptionGUID=add guid here
+
+###
+# @name createDigitalSubscription
+# Create a new collection that represents a type of agreement called a DigitalSubscription.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "anchorScopeGUID" : "optional GUID of search scope",
+  "parentGUID" : "xxx",
+  "parentRelationshipTypeName" : "CollectionMembership",
+  "parentAtEnd1": true,
+  "properties": {
+    "class" : "DigitalSubscriptionProperties",
+    "qualifiedName": "DigitalSubscription::Add subscription name here",
+    "displayName" : "display name",
+    "description" : "Add description of the subscription here",
+    "userDefinedStatus" : "OBSOLETE",
+    "identifier" : "Add subscription identifier here",
+    "supportLevel" : "Add the level of support agreed/requested",
+    "serviceLevels" : {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+     }
+   },
+   "externalSourceGUID": "add guid here",
+   "externalSourceName": "add qualified name here",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "forLineage" : false,
+   "forDuplicateProcessing" : false
+}
+
+###
+# @name updateDigitalSubscription
+# Update the properties of the digital subscription collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalSubscriptionGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "DigitalSubscriptionProperties",
+    "qualifiedName": "DigitalSubscription::Add subscription name here",
+    "displayName" : "display name",
+    "description" : "Add description of the subscription here",
+    "userDefinedStatus" : "OBSOLETE",
+    "identifier" : "Add subscription identifier here",
+    "supportLevel" : "Add the level of support agreed/requested",
+    "serviceLevels" : {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateDigitalSubscriptionStatus
+# Update the status of the digital subscription collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalSubscriptionGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "DigitalSubscriptionProperties",
+    "contentStatus": "ACTIVE"
+  },
+  "mergeUpdate": true
+}
+
+###
+# @name linkSubscriber
+# Attach a subscriber to a subscription.  The subscriber is of type 'Referenceable' to allow digital
+# products, team or business capabilities to be the subscriber.
+# The subscription is an element of type DigitalSubscription.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/subscribers/{{digitalSubscriberGUID}}/subscriptions/{{digitalSubscriptionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "DigitalSubscriberProperties",
+    "subscriberId": "add id here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachSubscriber
+# Detach a subscriber from a subscription.  Request body is optional.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/subscribers/{{digitalSubscriberGUID}}/subscriptions/{{digitalSubscriptionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name attachCollection
+# Connect an existing collection to an element using the ResourceList relationship (0019).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/attach?makeAnchor=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ResourceListProperties",
+    "resourceUse": "Add valid value here",
+    "resourceUseDescription": "Add description here",
+    "watchResource": false,
+    "resourceUseProperties": {
+      "property1Name": "property1Value",
+      "property2Name": "property2Value"
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachCollection
+# Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+###
+# @name attachDataDescription
+# Connect an existing data describing collection to an element using the DataDescription relationship (0580).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/attach?makeAnchor=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DataDescriptionProperties",
+    "label": "Add label here",
+    "description": "Add description here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDataDescription
+# Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name deleteCollection
+# Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection
+# then they are also deleted; otherwise they are just detached. The option cascadedDelete (default value=false)
+# controls how nested collections are handled.  If it is false then the delete fails if there are nested collections.
+# If true then nested collections are deleted, irrespective of their anchor.  However, any elements anchored to these
+# nested collections are deleted as well. (Use this option wisely :)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+
+@elementGUID="guid that is to be a member of the collection"
+
+###
+# @name addToCollection
+# Add an element to a collection.  The request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "xxx",
+    "createdBy": "user id here",
+    "expression": "expression that described why the element is a part of this collection",
+    "confidence": 100,
+    "membershipStatus": "PROPOSED",
+    "userDefinedStatus": "Add valid value here",
+    "steward": "identifier of steward that validated this member",
+    "stewardTypeName": "type name of element identifying the steward",
+    "stewardPropertyName": "property name if the steward's identifier",
+    "source": "source of the member",
+    "notes": "Add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateCollectionMembership
+# Update an element's membership to a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "properties" : {
+    "class": "CollectionMembershipProperties",
+    "membershipRationale": "xxx",
+    "createdBy": "user id here",
+    "expression": "expression that described why the element is a part of this collection",
+    "confidence": 100,
+    "membershipStatus": "PROPOSED",
+    "userDefinedStatus": "Add valid value here",
+    "steward": "identifier of steward that validated this member",
+    "stewardTypeName": "type name of element identifying the steward",
+    "stewardPropertyName": "property name if the steward's identifier",
+    "source": "source of the member",
+    "notes": "Add notes here"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name removeFromCollection
+# Remove an element from a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

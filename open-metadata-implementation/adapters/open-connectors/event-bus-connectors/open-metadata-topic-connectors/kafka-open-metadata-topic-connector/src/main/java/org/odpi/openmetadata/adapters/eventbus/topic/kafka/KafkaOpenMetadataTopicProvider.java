@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -21,24 +22,6 @@ import java.util.List;
 public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
 {
     /*
-     * Unique identifier of the connector for the audit log.
-     */
-    private static final int    connectorComponentId   = 90;
-
-    /*
-     * Unique identifier for the connector type.
-     */
-    private static final String connectorTypeGUID      = "3851e8d0-e343-400c-82cb-3918fed81da6";
-
-    /*
-     * Descriptive information about the connector for the connector type and audit log.
-     */
-    private static final String connectorQualifiedName = "Egeria:OpenMetadataTopicConnector:Kafka";
-    private static final String connectorDisplayName   = "Apache Kafka Open Metadata Topic Connector";
-    private static final String connectorDescription   = "Apache Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/kafka-open-metadata-topic-connector/";
-
-    /*
      * Class of the connector.
      */
     private static final String connectorClassName       = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicConnector";
@@ -57,54 +40,16 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
      */
     public KafkaOpenMetadataTopicProvider()
     {
-        super();
-
-        /*
-         * Set up the class name of the connector that this provider creates.
-         */
-        super.setConnectorClassName(connectorClassName);
-
-        /*
-         * Set up the connector type that should be included in a connection used to configure this connector.
-         */
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorQualifiedName);
-        connectorType.setDisplayName(connectorDisplayName);
-        connectorType.setDescription(connectorDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
-        connectorType.setExpectedDataFormat(expectedDataFormat);
-
-        connectorInterfaces.add(OpenMetadataTopic.class.getName());
-        connectorInterfaces.add(AuditLoggingComponent.class.getName());
-        connectorType.setConnectorInterfaces(connectorInterfaces);
-
-        List<String>  recognizedPropertyNames = new ArrayList<>();
-        recognizedPropertyNames.add(producerPropertyName);
-        recognizedPropertyNames.add(consumerPropertyName);
-        recognizedPropertyNames.add(serverIdPropertyName);
-        recognizedPropertyNames.add(sleepTimeProperty);
-        recognizedPropertyNames.add(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME);
-
-        connectorType.setRecognizedConfigurationProperties(recognizedPropertyNames);
-
-        super.connectorTypeBean = connectorType;
-
-        /*
-         * Set up the component description used in the connector's audit log messages.
-         */
-        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
-
-        componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorDisplayName);
-        componentDescription.setComponentDescription(connectorDescription);
-        componentDescription.setComponentWikiURL(connectorWikiPage);
-
-        super.setConnectorComponentDescription(componentDescription);
+        super(EgeriaOpenConnectorDefinition.KAFKA_TOPIC_CONNECTOR,
+              connectorClassName,
+              List.of(producerPropertyName,
+                      consumerPropertyName,
+                      serverIdPropertyName,
+                      sleepTimeProperty,
+                      OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME),
+              List.of(OpenMetadataTopic.class.getName(),
+                      AuditLoggingComponent.class.getName()),
+              expectedDataFormat);
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.APACHE_KAFKA_TOPIC});
 

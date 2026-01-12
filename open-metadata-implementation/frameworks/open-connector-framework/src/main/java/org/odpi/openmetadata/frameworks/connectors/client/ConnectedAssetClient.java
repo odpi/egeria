@@ -114,7 +114,7 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -138,7 +138,7 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -163,7 +163,7 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -188,7 +188,7 @@ public abstract class ConnectedAssetClient implements ConnectorFactoryInterface
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override

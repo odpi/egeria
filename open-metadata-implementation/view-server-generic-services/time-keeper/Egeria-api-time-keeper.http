@@ -31,7 +31,7 @@ Content-Type: application/json
 #
 # @return unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events
@@ -161,7 +161,7 @@ Content-Type: application/json
 #
 # @return boolean or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/update
@@ -219,7 +219,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{parentContextEventGUID}/dependent-context-events/{childContextEventGUID}/attach
@@ -255,7 +255,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{parentContextEventGUID}/dependent-context-events/{childContextEventGUID}/detach
@@ -286,7 +286,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventOneGUID}/related-context-events/{contextEventTwoGUID}/attach
@@ -329,7 +329,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventOneGUID}/related-context-events/{contextEventTwoGUID}/detach
@@ -359,7 +359,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/evidence/{evidenceGUID}/attach
@@ -395,7 +395,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/evidence/{evidenceGUID}/detach
@@ -426,7 +426,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/impacts/{impactedElementGUID}/attach
@@ -463,7 +463,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/impacts/{impactedElementGUID}/detach
@@ -493,7 +493,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/elements/{timelineAffectedElementGUID}/context-events-describing-timeline-effects/{contextEventGUID}/attach
@@ -530,7 +530,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/elements/{timelineAffectedElementGUID}/context-events-describing-timeline-effect/{contextEventGUID}/detach
@@ -559,7 +559,7 @@ Content-Type: application/json
 #
 # @return void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/time-keeper/context-events/{contextEventGUID}/delete

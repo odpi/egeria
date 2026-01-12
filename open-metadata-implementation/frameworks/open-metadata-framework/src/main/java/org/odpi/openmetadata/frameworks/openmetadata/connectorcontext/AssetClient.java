@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -90,7 +92,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createAsset(NewElementOptions                     newElementOptions,
@@ -210,7 +212,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateAsset(String          assetGUID,
@@ -238,7 +240,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deployITAsset(String                assetGUID,
@@ -259,7 +261,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param destinationGUID           unique identifier of the destination asset
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void unDeployITAsset(String        assetGUID,
@@ -280,7 +282,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSoftwareCapability(String                                assetGUID,
@@ -301,7 +303,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param capabilityGUID           unique identifier of the destination asset
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSoftwareCapability(String        assetGUID,
@@ -322,7 +324,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDataSetContent(String                   dataSetGUID,
@@ -343,7 +345,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param dataContentAssetGUID          unique identifier of the second person profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDataSetContent(String        dataSetGUID,
@@ -364,7 +366,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAPIEndpoint(String                deployedAPIGUID,
@@ -385,7 +387,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param endpointGUID            unique identifier of the endpoint
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAPIEndpoint(String        deployedAPIGUID,
@@ -406,7 +408,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkProcessHierarchy(String                     parentProcessGUID,
@@ -427,7 +429,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param childProcessGUID          unique identifier of the child process
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachProcessHierarchy(String        parentProcessGUID,
@@ -448,7 +450,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkNestedFiles(String                folderGUID,
@@ -469,7 +471,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param fileGUID         unique identifier of the associated file
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachNestedFile(String        folderGUID,
@@ -491,7 +493,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkLinkedFiles(String                folderGUID,
@@ -512,7 +514,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param fileGUID         unique identifier of the associated file
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachLinkedFile(String        folderGUID,
@@ -533,7 +535,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkFolderHierarchy(String                    parentFolderGUID,
@@ -554,7 +556,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param childFolderGUID         unique identifier of the associated child folder
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachFolderHierarchy(String        parentFolderGUID,
@@ -572,7 +574,7 @@ public class AssetClient extends ConnectorContextClientBase
      *
      * @param assetGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteAsset(String        assetGUID,
@@ -596,7 +598,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAssetsByName(String       name,
@@ -615,7 +617,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAssetsByDeployedImplementationType(String       name,
@@ -628,17 +630,100 @@ public class AssetClient extends ConnectorContextClientBase
 
 
     /**
-     * Returns the list of assets with a particular assetGUID.
+     * Retrieve the data assets that match the search string and optional content status.
      *
-     * @param assetGUID              unique identifier of the starting element
-     * @param queryOptions           multiple options to control the query
+     * @param searchString string to search for (may include RegExs)
+     * @param contentStatus   optional  status
+     * @param searchOptions   multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findDataAssets(String        searchString,
+                                                        ContentStatus contentStatus,
+                                                        SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        return assetHandler.findDataAssets(connectorUserId, searchString, contentStatus, searchOptions);
+    }
 
+
+    /**
+     * Retrieve the data sets that match the category name and status.
+     *
+     * @param category   type to search for
+     * @param contentStatus optional status
+     * @param queryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getDataAssetsByCategory(String        category,
+                                                                 ContentStatus contentStatus,
+                                                                 QueryOptions  queryOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        return assetHandler.getDataAssetsByCategory(connectorUserId, category, contentStatus, queryOptions);
+    }
+
+
+    /**
+     * Retrieve the data sets that match the search string and optional content status.
+     *
+     * @param searchString string to search for (may include RegExs)
+     * @param deploymentStatus   optional  status
+     * @param searchOptions   multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findInfrastructure(String           searchString,
+                                                            DeploymentStatus deploymentStatus,
+                                                            SearchOptions    searchOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        return assetHandler.findInfrastructure(connectorUserId, searchString, deploymentStatus, searchOptions);
+    }
+
+
+    /**
+     * Retrieve the infrastructure elements that match the category name and status.
+     *
+     * @param category   type to search for
+     * @param deploymentStatus optional status
+     * @param queryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getInfrastructureByCategory(String           category,
+                                                                     DeploymentStatus deploymentStatus,
+                                                                     QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        return assetHandler.getInfrastructureByCategory(connectorUserId, category, deploymentStatus, queryOptions);
+    }
+
+
+    /**
+     * Returns the list of assets deployed on a particular infrastructure destination.
+     *
+     * @param assetGUID    unique identifier of the starting element
+     * @param queryOptions multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getDeployedITAssets(String       assetGUID,
+    public List<OpenMetadataRootElement> getDeployedITAssets(String assetGUID,
                                                              QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
@@ -647,24 +732,22 @@ public class AssetClient extends ConnectorContextClientBase
     }
 
 
-
-
     /**
-     * Returns the list of assets providing data to the data set.
+     * Returns the list of elements providing data to the data set.
      *
-     * @param assetGUID              unique identifier of the starting element
+     * @param dataSetGUID              unique identifier of the starting element
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getDataSetContents(String       assetGUID,
+    public List<OpenMetadataRootElement> getDataSetContents(String       dataSetGUID,
                                                             QueryOptions queryOptions) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-        return assetHandler.getDataSetContents(connectorUserId, assetGUID, queryOptions);
+        return assetHandler.getDataSetContents(connectorUserId, dataSetGUID, queryOptions);
     }
 
 
@@ -675,7 +758,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getSupportedDataSets(String       assetGUID,
@@ -694,7 +777,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getFilesInFolder(String       folderGUID,
@@ -715,7 +798,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param pageSize maximum results that can be returned
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getFilesInFolder(String folderGUID,
@@ -736,7 +819,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getAssetByGUID(String     assetGUID,
@@ -756,7 +839,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param getOptions  multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getAssetByUniqueName(String       name,
@@ -862,7 +945,7 @@ public class AssetClient extends ConnectorContextClientBase
      * @param queryOptions   options for query
      * @return list of member details
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCatalogTargets(String       integrationConnectorGUID,
@@ -910,6 +993,4 @@ public class AssetClient extends ConnectorContextClientBase
     {
         assetHandler.removeCatalogTarget(connectorUserId, relationshipGUID, deleteOptions);
     }
-
-
 }

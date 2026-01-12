@@ -69,7 +69,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the newly created Project
      *
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createProject(String                                userId,
@@ -428,7 +428,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @return a list of projects
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getLinkedProjects(String       userId,
@@ -698,7 +698,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @param queryOptions multiple options to control the query
      * @return project hierarchy for the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootHierarchy getProjectHierarchy(String       userId,
@@ -747,7 +747,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @return a list of projects
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getClassifiedProjects(String       userId,
@@ -792,7 +792,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @return list of team members
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getProjectMembers(String       userId,
