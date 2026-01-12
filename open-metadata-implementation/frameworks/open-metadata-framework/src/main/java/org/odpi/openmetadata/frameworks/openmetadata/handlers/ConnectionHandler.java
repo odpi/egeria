@@ -53,7 +53,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createConnection(String                                userId,
@@ -119,7 +119,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateConnection(String               userId,
@@ -150,7 +150,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkConnectionConnectorType(String                            userId,
@@ -186,7 +186,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param connectorTypeGUID           unique identifier of the connector type
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachConnectionConnectorType(String        userId,
@@ -222,7 +222,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkConnectionEndpoint(String                      userId,
@@ -258,7 +258,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param endpointGUID          unique identifier of the endpoint
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachConnectionEndpoint(String        userId,
@@ -293,7 +293,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkEmbeddedConnection(String                       userId,
@@ -329,7 +329,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param embeddedConnectionGUID unique identifier of the embedded connection
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachEmbeddedConnection(String        userId,
@@ -364,7 +364,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAssetToConnection(String                    userId,
@@ -400,7 +400,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param connectionGUID          unique identifier of the connection
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAssetFromConnection(String        userId,
@@ -433,7 +433,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param connectionGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteConnection(String        userId,
@@ -460,7 +460,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getConnectionsByName(String       userId,
@@ -491,7 +491,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getConnectionByGUID(String     userId,

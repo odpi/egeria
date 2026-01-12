@@ -289,7 +289,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      *
      * @return specificationPropertyType list
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getSpecificationPropertiesByType(String                    userId,
@@ -323,7 +323,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      *
      * @return name list
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getSpecificationPropertiesByName(String       userId,

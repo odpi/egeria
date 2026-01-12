@@ -71,7 +71,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createAnnotation(String                                userId,
@@ -138,7 +138,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateAnnotation(String               userId,
@@ -170,7 +170,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void attachAnnotationToReport(String                       userId,
@@ -206,7 +206,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param annotationGUID           unique identifier of the annotation
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAnnotationFromReport(String        userId,
@@ -242,7 +242,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAnnotationToDescribedElement(String                         userId,
@@ -278,7 +278,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param annotationGUID          unique identifier of the annotation
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAnnotationFromDescribedElement(String        userId,
@@ -313,7 +313,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAnnotationToItsPredecessor(String                        userId,
@@ -349,7 +349,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param newAnnotationGUID            unique identifier of the annotation from this run of the survey
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAnnotationFromItsPredecessor(String        userId,
@@ -384,7 +384,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDiscoveredSchemaType(String                         userId,
@@ -420,7 +420,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param schemaTypeGUID          unique identifier of the child process
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDiscoveredSchemaType(String        userId,
@@ -455,7 +455,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkResourceProfileData(String                        userId,
@@ -491,7 +491,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param assetGUID         unique identifier of the associated asset
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachResourceProfileData(String        userId,
@@ -526,7 +526,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDataClassMatch(String                   userId,
@@ -562,7 +562,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param dataClassGUID         unique identifier of the associated data class
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDataClassMatch(String        userId,
@@ -597,7 +597,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkRequestForActionTarget(String                           userId,
@@ -633,7 +633,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param elementGUID         unique identifier of the associated element
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachRequestForActionTarget(String        userId,
@@ -666,7 +666,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param annotationGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteAnnotation(String        userId,
@@ -693,7 +693,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAnnotationsByName(String       userId,
@@ -725,7 +725,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAnnotationsByAnalysisStep(String       userId,
@@ -754,7 +754,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAnnotationsByAnnotationType(String       userId,
@@ -784,7 +784,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getNewAnnotations(String       userId,
@@ -815,7 +815,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAnnotationsForElement(String       userId,
@@ -846,7 +846,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAnnotationExtensions(String       userId,
@@ -877,7 +877,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getPreviousAnnotations(String       userId,
@@ -908,7 +908,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getAnnotationByGUID(String     userId,

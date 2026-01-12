@@ -53,7 +53,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createGovernanceDefinition(String                serverName,
@@ -175,7 +175,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateGovernanceDefinition(String                   serverName,
@@ -241,7 +241,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkPeerDefinitions(String                  serverName,
@@ -327,7 +327,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachPeerDefinitions(String                   serverName,
@@ -383,7 +383,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse attachSupportingDefinition(String                  serverName,
@@ -466,7 +466,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachSupportingDefinition(String                   serverName,
@@ -1125,7 +1125,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteGovernanceDefinition(String                   serverName,
@@ -1417,7 +1417,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkDesignToImplementation(String                  serverName,
@@ -1495,7 +1495,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachDesignFromImplementation(String                   serverName,
@@ -1545,7 +1545,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkImplementationResource(String                  serverName,
@@ -1623,7 +1623,7 @@ public class GovernanceOfficerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachImplementationResource(String                   serverName,

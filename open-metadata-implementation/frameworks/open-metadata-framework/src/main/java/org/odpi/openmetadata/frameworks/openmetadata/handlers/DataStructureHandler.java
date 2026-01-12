@@ -55,7 +55,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createDataStructure(String                                userId,
@@ -122,7 +122,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateDataStructure(String                  userId,
@@ -153,7 +153,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkMemberDataField(String                    userId,
@@ -189,7 +189,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param dataFieldGUID    unique identifier of the nested data field.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachMemberDataField(String        userId,
@@ -223,7 +223,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param dataStructureGUID      unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteDataStructure(String        userId,
@@ -250,7 +250,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getDataStructuresByName(String       userId,
@@ -286,7 +286,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getDataStructureByGUID(String  userId,
@@ -338,7 +338,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDataClassDefinition(String                        userId,
@@ -374,7 +374,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param dataClassGUID          unique identifier of the data class
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDataClassDefinition(String        userId,
@@ -411,7 +411,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSemanticDefinition(String                       userId,
@@ -447,7 +447,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param glossaryTermGUID       unique identifier of the glossary term
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSemanticDefinition(String        userId,
@@ -487,7 +487,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties the properties of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkCertificationTypeToDataStructure(String                            userId,
@@ -523,7 +523,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @param dataStructureGUID      unique identifier of the data structure
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachCertificationTypeToDataStructure(String        userId,

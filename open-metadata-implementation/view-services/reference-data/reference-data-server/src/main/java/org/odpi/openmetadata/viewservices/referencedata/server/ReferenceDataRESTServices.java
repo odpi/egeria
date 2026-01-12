@@ -45,7 +45,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createValidValueDefinition(String                serverName,
@@ -163,7 +163,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateValidValueDefinition(String                   serverName,
@@ -226,7 +226,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkValidValueImplementation(String                     serverName,
@@ -302,7 +302,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachValidValueImplementation(String                        serverName,
@@ -349,7 +349,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkValidValuesAssignment(String                     serverName,
@@ -425,7 +425,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachValidValuesAssignment(String                        serverName,
@@ -473,7 +473,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkReferenceValueAssignment(String                     serverName,
@@ -549,7 +549,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachReferenceValueAssignment(String                        serverName,
@@ -596,7 +596,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAssociatedValidValues(String                     serverName,
@@ -672,7 +672,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAssociatedValidValues(String                        serverName,
@@ -720,7 +720,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkConsistentValidValues(String                     serverName,
@@ -796,7 +796,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachConsistentValidValues(String                        serverName,
@@ -843,7 +843,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkMappedValidValues(String                     serverName,
@@ -919,7 +919,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachMappedValidValues(String                        serverName,
@@ -966,7 +966,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkValidValueMember(String                     serverName,
@@ -1042,7 +1042,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachValidValueMember(String                        serverName,
@@ -1089,7 +1089,7 @@ public class ReferenceDataRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteValidValueDefinition(String                   serverName,

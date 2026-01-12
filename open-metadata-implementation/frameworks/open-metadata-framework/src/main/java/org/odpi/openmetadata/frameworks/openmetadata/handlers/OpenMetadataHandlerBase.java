@@ -238,7 +238,7 @@ public class OpenMetadataHandlerBase
      * @param methodName                   calling method
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected String createNewElement(String                                userId,
@@ -334,7 +334,7 @@ public class OpenMetadataHandlerBase
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected boolean updateElement(String                     userId,
@@ -377,7 +377,7 @@ public class OpenMetadataHandlerBase
      * @param queryOptions             multiple options to control the query
      * @return list of all the relevant related elements of the open metadata element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected List<RelatedMetadataElement> getElementRelatedElements(String              userId,
@@ -1048,7 +1048,7 @@ public class OpenMetadataHandlerBase
      * @param queryOptions options from the caller
      * @return root element with graph
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected OpenMetadataRootElement populateRootElement(String                  userId,
@@ -1369,7 +1369,7 @@ public class OpenMetadataHandlerBase
      * @param queryOptions options from the caller
      * @return root element with graph
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
@@ -1441,7 +1441,7 @@ public class OpenMetadataHandlerBase
      * @param rootElement new root element
      * @param queryOptions options from the caller
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected void addGovernanceDefinitionFamily(String                  userId,
@@ -1542,7 +1542,7 @@ public class OpenMetadataHandlerBase
      * @param currentDepth how far away are we from the original element?
      * @return the hierarchy under/over this element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
@@ -1570,7 +1570,7 @@ public class OpenMetadataHandlerBase
      * @param currentDepth how far away are we from the original element?
      * @return the hierarchy under/over this element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
@@ -1624,7 +1624,7 @@ public class OpenMetadataHandlerBase
      * @param coveredRelationshipsGUIDs do not revisit relationships already processed
      * @return the hierarchy under/over this element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected RelatedMetadataElementSummary getElementHierarchy(String                        userId,
@@ -1762,7 +1762,7 @@ public class OpenMetadataHandlerBase
      * @param methodName               calling method
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getRelatedRootElements(String       userId,
@@ -1919,7 +1919,7 @@ public class OpenMetadataHandlerBase
      * @param methodName               calling method
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getRootElementsByName(String       userId,
@@ -1966,7 +1966,7 @@ public class OpenMetadataHandlerBase
      * @param methodName               calling method
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getRootElementsByUniqueName(String     userId,
@@ -2016,7 +2016,7 @@ public class OpenMetadataHandlerBase
      * @param suppliedGetOptions  multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getRootElementByGUID(String       userId,
@@ -2077,7 +2077,7 @@ public class OpenMetadataHandlerBase
      * @param suppliedGetOptions  multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getRootElementByUniqueName(String       userId,
@@ -2130,7 +2130,7 @@ public class OpenMetadataHandlerBase
      * @param methodName   calling method
      * @return a list of collections
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> findRootElements(String        userId,

@@ -37,7 +37,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles
@@ -151,7 +151,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/update
@@ -200,7 +200,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
@@ -231,7 +231,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
@@ -258,7 +258,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/delete
@@ -646,7 +646,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles
@@ -762,7 +762,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/update
@@ -813,7 +813,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/attach
@@ -847,7 +847,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/detach
@@ -879,7 +879,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/attach
@@ -912,7 +912,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/detach
@@ -940,7 +940,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/attach
@@ -975,7 +975,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/detach
@@ -1001,7 +1001,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/delete
@@ -1126,7 +1126,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities
@@ -1240,7 +1240,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/update
@@ -1285,7 +1285,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/profile-identity/{{actorProfileGUID}}/attach
@@ -1320,7 +1320,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/profile-identity/{{actorProfileGUID}}/detach
@@ -1347,7 +1347,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/classify
@@ -1380,7 +1380,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/reclassify
@@ -1413,7 +1413,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/security-group-memberships/declassify
@@ -1439,7 +1439,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/{{userIdentityGUID}}/delete
@@ -1563,7 +1563,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details
@@ -1682,7 +1682,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/update
@@ -1731,7 +1731,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{elementGUID}}/contact-details/{{contactDetailsGUID}}/attach
@@ -1762,7 +1762,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/elements/{{elementGUID}}/contact-details/{{contactDetailsGUID}}/detach
@@ -1789,7 +1789,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/contact-details/{{contactDetailsGUID}}/delete

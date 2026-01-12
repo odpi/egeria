@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -95,7 +96,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions multiple options to control the query
      * @return a list of collections
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAttachedCollections(String userId,
@@ -129,7 +130,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param searchOptions multiple options to control the query
      * @return a list of collections
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> findCollections(String        userId,
@@ -145,6 +146,114 @@ public class CollectionHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Retrieve the digital products that match the search string and optional status.
+     *
+     * @param userId       calling user
+     * @param searchString string to search for (may include RegExs)
+     * @param deploymentStatus   optional  status
+     * @param suppliedSearchOptions   multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findDigitalProducts(String           userId,
+                                                             String           searchString,
+                                                             DeploymentStatus deploymentStatus,
+                                                             SearchOptions    suppliedSearchOptions) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "findDigitalProducts";
+
+        SearchOptions searchOptions = new SearchOptions(suppliedSearchOptions);
+
+        if (searchOptions.getMetadataElementTypeName() == null)
+        {
+            searchOptions.setMetadataElementTypeName(OpenMetadataType.DIGITAL_PRODUCT.typeName);
+        }
+
+        List<OpenMetadataRootElement> openMetadataElements = this.findRootElements(userId,
+                                                                                   searchString,
+                                                                                   suppliedSearchOptions,
+                                                                                   methodName);
+
+        return filterDigitalProduct(openMetadataElements, deploymentStatus);
+    }
+
+
+    /**
+     * Retrieve the digital products that match the category name and status.
+     *
+     * @param userId     calling user
+     * @param category   type to search for
+     * @param deploymentStatus optional status
+     * @param suppliedQueryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getDigitalProductByCategory(String           userId,
+                                                                     String           category,
+                                                                     DeploymentStatus deploymentStatus,
+                                                                     QueryOptions     suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "getDigitalProductByCategory";
+
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
+        if (queryOptions.getMetadataElementTypeName() == null)
+        {
+            queryOptions.setMetadataElementTypeName(OpenMetadataType.DIGITAL_PRODUCT.typeName);
+        }
+
+        List<OpenMetadataRootElement> openMetadataElements = super.getRootElementsByName(userId,
+                                                                                         category,
+                                                                                         List.of(OpenMetadataProperty.CATEGORY.name),
+                                                                                         queryOptions,
+                                                                                         methodName);
+
+        return filterDigitalProduct(openMetadataElements, deploymentStatus);
+    }
+
+
+    /**
+     * Filter digital products by deployment status.
+     *
+     * @param openMetadataRootElements retrieved elements
+     * @param deploymentStatus           optional  status
+     * @return list of process elements
+     */
+    private List<OpenMetadataRootElement> filterDigitalProduct(List<OpenMetadataRootElement> openMetadataRootElements,
+                                                               DeploymentStatus deploymentStatus)
+    {
+        if (openMetadataRootElements != null)
+        {
+            List<OpenMetadataRootElement> rootElements = new ArrayList<>();
+
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                if ((openMetadataRootElement != null) &&
+                        (openMetadataRootElement.getProperties() instanceof DigitalProductProperties digitalProductProperties))
+                {
+                    if ((deploymentStatus == null) || (deploymentStatus == digitalProductProperties.getDeploymentStatus()))
+                    {
+                        rootElements.add(openMetadataRootElement);
+                    }
+                }
+            }
+
+            return rootElements;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Returns the list of collections with a particular name.
      *
      * @param userId       userId of user making request
@@ -152,7 +261,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions multiple options to control the query
      * @return a list of collections
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCollectionsByName(String       userId,
@@ -183,7 +292,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions multiple options to control the query
      * @return a list of collections
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCollectionsByCategory(String       userId,
@@ -216,7 +325,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param getOptions     multiple options to control the query
      * @return collection properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getCollectionByGUID(String     userId,
@@ -241,7 +350,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created Collection
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createCollection(String                                userId,
@@ -307,7 +416,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties     properties for the collection.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateCollection(String               userId,
@@ -338,7 +447,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions options to control access to open metadata
      * @param properties        description of how the collection will be used.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void attachCollection(String userId,
@@ -374,7 +483,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachCollection(String userId,
@@ -411,7 +520,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions options to control access to open metadata
      * @param properties        description of how the collection will be used.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void attachDataDescription(String                    userId,
@@ -447,7 +556,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDataDescription(String        userId,
@@ -485,7 +594,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSolutionDesign(String                   userId,
@@ -521,7 +630,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param solutionBlueprintGUID      unique identifier of the  solution blueprint
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSolutionDesign(String        userId,
@@ -557,7 +666,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions      options to control access to open metadata
      * @param relationshipProperties     description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDigitalProductDependency(String                             userId,
@@ -593,7 +702,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
      * @param deleteOptions              options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDigitalProductDependency(String userId,
@@ -629,7 +738,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions   options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSubscriber(String                      userId,
@@ -665,7 +774,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param digitalSubscriptionGUID unique identifier of the  digital subscription agreement
      * @param deleteOptions           options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSubscriber(String        userId,
@@ -701,7 +810,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkProductManager(String                    userId,
@@ -737,7 +846,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param digitalProductManagerGUID unique identifier of the product manager role
      * @param deleteOptions             options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachProductManager(String        userId,
@@ -763,6 +872,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         deleteOptions);
     }
 
+
     /**
      * Attach an actor to an agreement.
      *
@@ -773,7 +883,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param relationshipProperties description of the relationship.
      * @return unique identifier of the relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String linkAgreementActor(String                   userId,
@@ -808,7 +918,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param agreementActorRelationshipGUID unique identifier of the element being described
      * @param deleteOptions                  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAgreementActor(String        userId,
@@ -839,7 +949,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAgreementItem(String                  userId,
@@ -875,7 +985,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param agreementItemGUID unique identifier of the agreement item
      * @param deleteOptions     options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAgreementItem(String        userId,
@@ -911,7 +1021,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkContract(String                 userId,
@@ -947,7 +1057,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param externalReferenceGUID unique identifier of the external reference describing the location of the contract
      * @param deleteOptions         options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachContract(String        userId,
@@ -983,7 +1093,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkBusinessCapabilityDependency(String                                 userId,
@@ -1019,7 +1129,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param supportingBusinessCapabilityGUID  unique identifier of the business capability that is supporting
      * @param deleteOptions         options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachBusinessCapabilityDependency(String        userId,
@@ -1055,7 +1165,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDigitalSupport(String                   userId,
@@ -1091,7 +1201,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param elementGUID  unique identifier of the element
      * @param deleteOptions         options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDigitalSupport(String        userId,
@@ -1126,7 +1236,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setBusinessSignificant(String                        userId,
@@ -1159,7 +1269,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param elementGUID    unique identifier of the element.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearBusinessSignificance(String                userId,
@@ -1190,7 +1300,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setEditingCollection(String                      userId,
@@ -1223,7 +1333,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param collectionGUID    unique identifier of the collection.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearEditingCollection(String                userId,
@@ -1253,7 +1363,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setStagingCollection(String                    userId,
@@ -1286,7 +1396,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param collectionGUID    unique identifier of the collection.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearStagingCollection(String                userId,
@@ -1316,7 +1426,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setScopingCollection(String                      userId,
@@ -1349,7 +1459,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param collectionGUID    unique identifier of the collection.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearScopingCollection(String                userId,
@@ -1383,7 +1493,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setGlossaryAsTaxonomy(String                userId,
@@ -1416,7 +1526,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param glossaryGUID    unique identifier of the glossary.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearGlossaryAsTaxonomy(String                userId,
@@ -1450,7 +1560,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setGlossaryAsCanonical(String                       userId,
@@ -1483,7 +1593,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param glossaryGUID    unique identifier of the glossary.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearGlossaryAsCanonical(String                userId,
@@ -1513,7 +1623,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param collectionGUID unique identifier of the collection
      * @param deleteOptions  options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteCollection(String userId,
@@ -1540,7 +1650,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions   options for query
      * @return list of member details
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCollectionMembers(String userId,
@@ -1577,7 +1687,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions   multiple options to control the query
      * @return list of member details
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootHierarchy getCollectionHierarchy(String       userId,
@@ -1623,7 +1733,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param currentDepth current depth of this query
      * @return nested hierarchy of collections
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private OpenMetadataRootHierarchy convertToCollectionGraph(String                  userId,
@@ -1696,7 +1806,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param queryOptions   multiple options to control the query
      * @return unique identifier for the relationship between the two elements
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private String getMembershipRelationshipGUID(String       userId,

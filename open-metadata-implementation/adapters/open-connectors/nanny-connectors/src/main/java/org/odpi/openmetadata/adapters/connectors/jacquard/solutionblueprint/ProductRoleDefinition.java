@@ -16,6 +16,20 @@ public enum ProductRoleDefinition
                     "Open Metadata Product Manager",
                     "The product manager role covering the digital products built around open metadata."),
 
+    PRODUCT_DEVELOPER("14d45536-19a5-42a0-820d-8cb82cb9d162",
+                      OpenMetadataType.PERSON_ROLE.typeName,
+                      "OpenMetadataProductDeveloperRole",
+                      "Open Metadata Product Developer",
+                      "The product developer role covers the implementation of the digital products built around open metadata."),
+
+
+    PRODUCT_SUPPORT("744d0310-2d88-4044-bfa3-775e6186576c",
+                    OpenMetadataType.PERSON_ROLE.typeName,
+                    "OpenMetadataProductSupportRole",
+                    "Open Metadata Product Support Role",
+                    "The product support role covering the support of the digital products built around open metadata.  This includes the contents and subscription issues."),
+
+
     PRODUCT_CONSUMER("f36d049c-5a49-4131-9615-afbfcbf0c08a",
                      OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
                      "OpenMetadataProductConsumer",

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITInfrastructureProfileProperties;
@@ -18,13 +19,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
- * ActorProfileHandler provides methods to define actor profiles
- * The interface supports the following types of objects
+ * ActorProfileHandler provides methods to manage actor profiles.
+ * This handler supports the following types of objects
  * <ul>
  *     <li>ActorProfile</li>
  *     <li>Person</li>
@@ -34,6 +36,10 @@ import java.util.Map;
  */
 public class ActorProfileHandler extends OpenMetadataHandlerBase
 {
+    private final UserIdentityHandler userIdentityHandler;
+    private final ActorRoleHandler    actorRoleHandler;
+    private final StewardshipManagementHandler stewardshipManagementHandler;
+
 
     /**
      * Create a new handler.
@@ -53,6 +59,10 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
               localServiceName,
               openMetadataClient,
               OpenMetadataType.ACTOR_PROFILE.typeName);
+
+        userIdentityHandler = new UserIdentityHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        actorRoleHandler = new ActorRoleHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        stewardshipManagementHandler = new StewardshipManagementHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
@@ -63,9 +73,13 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param specificTypeName   subtype to control handler
      */
     public ActorProfileHandler(ActorProfileHandler template,
-                               String       specificTypeName)
+                               String              specificTypeName)
     {
         super(template, specificTypeName);
+
+        userIdentityHandler = new UserIdentityHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        actorRoleHandler = new ActorRoleHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        stewardshipManagementHandler = new StewardshipManagementHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
@@ -79,7 +93,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createActorProfile(String                                userId,
@@ -147,7 +161,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateActorProfile(String                 userId,
@@ -178,7 +192,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkPeerPerson(String            userId,
@@ -214,7 +228,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param personTwoGUID          unique identifier of the second person profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachPeerPerson(String        userId,
@@ -249,7 +263,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkTeamStructure(String                  userId,
@@ -285,7 +299,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param subteamGUID            unique identifier of the subteam
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachTeamStructure(String        userId,
@@ -320,7 +334,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAssetToProfile(String                            userId,
@@ -356,7 +370,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param itProfileGUID          unique identifier of the IT profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAssetFromProfile(String        userId,
@@ -389,7 +403,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param actorProfileGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteActorProfile(String        userId,
@@ -416,7 +430,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getActorProfilesByName(String       userId,
@@ -447,7 +461,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getActorProfileByGUID(String     userId,
@@ -473,7 +487,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getActorProfileByUserId(String     userId,
@@ -512,6 +526,121 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
                                           new QueryOptions(getOptions),
                                           methodName);
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the actor roles of a specific actor profile retrieved using an associated userId.
+     *
+     * @param userId                 userId of user making request
+     * @param requiredUserId         identifier of user
+     * @param includeRoles         include the assigned actor roles
+     * @param includeUserIdentities include the associated user identities
+     * @param getOptions multiple options to control the query
+     * @return retrieved properties
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getActorsByUserId(String     userId,
+                                                           String     requiredUserId,
+                                                           boolean    includeUserIdentities,
+                                                           boolean    includeRoles,
+                                                           GetOptions getOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "getActorsByUserId";
+        final String nameParameterName = "requiredUserId";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateMandatoryName(requiredUserId, nameParameterName, methodName);
+
+        OpenMetadataRootElement userProfile = this.getActorProfileByUserId(userId, requiredUserId, getOptions);
+
+        if (userProfile != null)
+        {
+            List<OpenMetadataRootElement> actors = new ArrayList<>();
+
+            if ((includeUserIdentities) && (userProfile.getUserIdentities() != null))
+            {
+                for (RelatedMetadataElementSummary userIdentity : userProfile.getUserIdentities())
+                {
+                    if (userIdentity != null)
+                    {
+                        actors.add(userIdentityHandler.getUserIdentityByGUID(userId,
+                                                                             userIdentity.getRelatedElement().getElementHeader().getGUID(),
+                                                                             getOptions));
+                    }
+                }
+            }
+
+            if ((includeRoles) && (userProfile.getPerformsRoles() != null))
+            {
+                for (RelatedMetadataElementSummary actorRole : userProfile.getPerformsRoles())
+                {
+                    if (actorRole != null)
+                    {
+                        actors.add(actorRoleHandler.getActorRoleByGUID(userId,
+                                                                       actorRole.getRelatedElement().getElementHeader().getGUID(),
+                                                                       getOptions));
+                    }
+                }
+            }
+
+            return actors;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the resources of a specific actor profile retrieved using an associated userId.
+     *
+     * @param userId                 userId of user making request
+     * @param requiredUserId         identifier of user
+     * @param getOptions multiple options to control the query
+     * @return retrieved properties
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getResourcesByUserId(String     userId,
+                                                              String     requiredUserId,
+                                                              GetOptions getOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName        = "getResourcesByUserId";
+        final String nameParameterName = "requiredUserId";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateMandatoryName(requiredUserId, nameParameterName, methodName);
+
+        OpenMetadataRootElement userProfile = this.getActorProfileByUserId(userId, requiredUserId, getOptions);
+
+        if (userProfile != null)
+        {
+            List<OpenMetadataRootElement> resources = new ArrayList<>();
+
+            if (userProfile.getResourceList() != null)
+            {
+                for (RelatedMetadataElementSummary resource : userProfile.getResourceList())
+                {
+                    if (resource != null)
+                    {
+                        resources.add(stewardshipManagementHandler.getMetadataElementByGUID(userId,
+                                                                                            resource.getRelatedElement().getElementHeader().getGUID(),
+                                                                                            getOptions));
+                    }
+                }
+            }
+
+            return resources;
         }
 
         return null;

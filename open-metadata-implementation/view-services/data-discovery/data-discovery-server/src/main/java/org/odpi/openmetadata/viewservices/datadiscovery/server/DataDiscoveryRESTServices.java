@@ -44,7 +44,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createAnnotation(String                serverName,
@@ -162,7 +162,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateAnnotation(String                   serverName,
@@ -226,7 +226,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse attachAnnotationToReport(String                     serverName,
@@ -302,7 +302,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAnnotationFromReport(String                        serverName,
@@ -349,7 +349,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAnnotationToDescribedElement(String                     serverName,
@@ -425,7 +425,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAnnotationFromDescribedElement(String                        serverName,
@@ -472,7 +472,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAnnotationToItsPredecessor(String                     serverName,
@@ -548,7 +548,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAnnotationFromItsPredecessor(String                        serverName,
@@ -595,7 +595,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkDiscoveredSchemaType(String                     serverName,
@@ -671,7 +671,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachDiscoveredSchemaType(String                        serverName,
@@ -719,7 +719,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkResourceProfileData(String                     serverName,
@@ -795,7 +795,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachResourceProfileData(String                        serverName,
@@ -843,7 +843,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkDataClassMatch(String                     serverName,
@@ -919,7 +919,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachDataClassMatch(String                        serverName,
@@ -967,7 +967,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkRequestForActionTarget(String                     serverName,
@@ -1043,7 +1043,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachRequestForActionTarget(String                        serverName,
@@ -1089,7 +1089,7 @@ public class DataDiscoveryRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteAnnotation(String                   serverName,

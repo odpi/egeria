@@ -51,7 +51,7 @@ public class ReferenceDataResource
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-value-definitions")
@@ -108,7 +108,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-value-definitions/{validValueDefinitionGUID}/update")
@@ -140,7 +140,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/implementation/elements/{elementGUID}/attach")
@@ -171,7 +171,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/implementation/elements/{elementGUID}/detach")
@@ -202,7 +202,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/valid-values-assignment/{validValueDefinitionGUID}/attach")
@@ -236,7 +236,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/valid-values-assignment/{validValueDefinitionGUID}/detach")
@@ -271,7 +271,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/reference-value-assignment/{validValueDefinitionGUID}/attach")
@@ -302,7 +302,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/reference-value-assignment/{validValueDefinitionGUID}/detach")
@@ -334,7 +334,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/associated-valid-values/{validValueDefinitionTwoGUID}/attach")
@@ -365,7 +365,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/associated-valid-values/{validValueDefinitionTwoGUID}/detach")
@@ -397,7 +397,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/consistent-valid-values/{validValueDefinitionTwoGUID}/attach")
@@ -428,7 +428,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/consistent-valid-values/{validValueDefinitionTwoGUID}/detach")
@@ -459,7 +459,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/mapped-valid-values/{validValueDefinitionTwoGUID}/attach")
@@ -490,7 +490,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/mapped-valid-values/{validValueDefinitionTwoGUID}/detach")
@@ -521,7 +521,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/members/{nestedValidValueDefinitionGUID}/attach")
@@ -552,7 +552,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/members/{nestedValidValueDefinitionGUID}/detach")
@@ -583,7 +583,7 @@ public class ReferenceDataResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-value-definitions/{validValueDefinitionGUID}/delete")

@@ -37,7 +37,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references
@@ -92,7 +92,7 @@ Content-Type: application/json
 #
 # Returns unique identifier of the newly created element
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references
@@ -176,7 +176,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/{{externalReferenceGUID}}/update
@@ -224,7 +224,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-references/{{externalReferenceGUID}}/attach
@@ -258,7 +258,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-references/{{externalReferenceGUID}}/detach
@@ -284,7 +284,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/media-references/{{externalReferenceGUID}}/attach
@@ -320,7 +320,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/media-references/{{externalReferenceGUID}}/detach
@@ -347,7 +347,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/cited-document-references/{{externalReferenceGUID}}/attach
@@ -382,7 +382,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/cited-document-references/{{externalReferenceGUID}}/detach
@@ -408,7 +408,7 @@ Content-Type: application/json
 #
 # Returns void or
 #  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references/{{externalReferenceGUID}}/delete

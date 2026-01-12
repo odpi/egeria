@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductRoleDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +108,22 @@ public interface ProductDefinition
      * @return description of the product manager
      */
     ProductRoleDefinition getProductManager();
+
+
+    /**
+     * Return the project developer for the product.
+     *
+     * @return description of the product developer
+     */
+    ProductRoleDefinition getProductDeveloper();
+
+
+    /**
+     * Return the project support for the product.
+     *
+     * @return description of the product support
+     */
+    ProductRoleDefinition getProductSupport();
 
 
     /**

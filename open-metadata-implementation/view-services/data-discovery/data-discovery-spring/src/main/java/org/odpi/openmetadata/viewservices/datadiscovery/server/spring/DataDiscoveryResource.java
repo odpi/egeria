@@ -50,7 +50,7 @@ public class DataDiscoveryResource
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations")
@@ -107,7 +107,7 @@ public class DataDiscoveryResource
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/update")
@@ -140,7 +140,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/survey-reports/{surveyReportGUID}/new-annotations/{newAnnotationGUID}/attach")
@@ -175,7 +175,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/survey-reports/{surveyReportGUID}/new-annotations/{newAnnotationGUID}/detach")
@@ -209,7 +209,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/associated-annotations/{annotationGUID}/attach")
@@ -240,7 +240,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/associated-annotations/{annotationGUID}/detach")
@@ -271,7 +271,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{previousAnnotationGUID}/later-annotations/{newAnnotationGUID}/attach")
@@ -302,7 +302,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{previousAnnotationGUID}/later-annotations/{newAnnotationGUID}/detach")
@@ -333,7 +333,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/discovered-schema-type/{schemaTypeGUID}/attach")
@@ -364,7 +364,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/discovered-schema-type/{schemaTypeGUID}/detach")
@@ -395,7 +395,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/resource-profile-data-assets/{assetGUID}/attach")
@@ -426,7 +426,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/resource-profile-data-assets/{assetGUID}/detach")
@@ -457,7 +457,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/matched-data-classes/{dataClassGUID}/attach")
@@ -488,7 +488,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/matched-data-classes/{dataClassGUID}/detach")
@@ -519,7 +519,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/request-for-action-targets/{elementGUID}/attach")
@@ -550,7 +550,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/request-for-action-targets/{elementGUID}/detach")
@@ -580,7 +580,7 @@ public class DataDiscoveryResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/delete")

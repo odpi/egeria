@@ -9,6 +9,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
     compileOnly project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-api')
@@ -20,6 +21,7 @@ dependencies {
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }

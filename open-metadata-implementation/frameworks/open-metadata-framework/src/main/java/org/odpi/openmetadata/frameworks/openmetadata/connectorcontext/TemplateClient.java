@@ -147,7 +147,7 @@ public class TemplateClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSourcedFrom(String                elementGUID,
@@ -168,7 +168,7 @@ public class TemplateClient extends ConnectorContextClientBase
      * @param templateGUID unique identifier of the agreement item
      * @param deleteOptions     options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSourcedFrom(String        elementGUID,
@@ -189,7 +189,7 @@ public class TemplateClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkCatalogTemplate(String                    elementGUID,
@@ -214,7 +214,7 @@ public class TemplateClient extends ConnectorContextClientBase
      * @param templateGUID unique identifier of the agreement item
      * @param deleteOptions     options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachCatalogTemplate(String        elementGUID,

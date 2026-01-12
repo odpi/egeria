@@ -86,7 +86,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createActorProfile(NewElementOptions                     newElementOptions,
@@ -150,7 +150,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateActorProfile(String                 actorProfileGUID,
@@ -178,7 +178,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkPeerPerson(String            personOneGUID,
@@ -199,7 +199,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param personTwoGUID          unique identifier of the second person profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachPeerPerson(String        personOneGUID,
@@ -220,7 +220,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkTeamStructure(String                  superTeamGUID,
@@ -241,7 +241,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param subteamGUID            unique identifier of the subteam
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachTeamStructure(String        superTeamGUID,
@@ -262,7 +262,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAssetToProfile(String                            assetGUID,
@@ -283,7 +283,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param itProfileGUID          unique identifier of the IT profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAssetFromProfile(String        assetGUID,
@@ -301,7 +301,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      *
      * @param actorProfileGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteActorProfile(String        actorProfileGUID,
@@ -325,7 +325,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getActorProfilesByName(String       name,
@@ -344,7 +344,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getActorProfileByGUID(String     actorProfileGUID,
@@ -363,7 +363,7 @@ public class ActorProfileClient extends ConnectorContextClientBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getActorProfileByUserId(String     requiredUserId,

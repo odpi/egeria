@@ -89,11 +89,82 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Data Product Development Journey",
+  "searchString" : "Add search string here",
   "includeOnlyClassifiedElements" : ["RootCollection"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findDigitalProducts
+# https://egeria-project.org/concepts/digital-product
+# Returns the list of digital products matching the search string and optional deployment status.
+# (Use findAuthoredElements() in Classification Explorer for retrieving by content status.)
+#
+# @param serverName name of the service to route the request to
+# @param urlMarker  view service URL marker
+# @param requestBody string to find in the properties
+#
+# @return a list of digital products
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusSearchString",
+  "searchString" : "add search string here",
+  "deploymentStatus" : "ACTIVE",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getDigitalProductsByCategory
+# https://egeria-project.org/concepts/digital-product
+# Returns the list of digital products matching the category and optional deployment status.
+# (Use getAuthoredElementsByCategory() in Classification Explorer for retrieving by content status.)
+#
+# @param serverName name of the service to route the request to
+# @param urlMarker  view service URL marker
+# @param requestBody string to find in the properties
+#
+# @return a list of digital products
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/by-category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeploymentStatusFilterRequestBody",
+  "filter" : "xxx",
+  "deploymentStatus" : "ACTIVE",
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -115,7 +186,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "DataJourneyProject:Data Acquisition Journey:{{projectName}}:ActivityFolder:Potential Data Sources",
+  "filter" : "xxx",
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -668,17 +739,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "AgreementActorProperties",
     "actorName": "add name of actor used in agreement text",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 

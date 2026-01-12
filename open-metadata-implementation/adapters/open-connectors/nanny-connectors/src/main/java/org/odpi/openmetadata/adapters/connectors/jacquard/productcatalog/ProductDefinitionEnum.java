@@ -536,6 +536,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
     private final ProductGovernanceDefinition     license;
     private final ProductCommunityDefinition      community;
     private final ProductRoleDefinition           productManager;
+    private final ProductRoleDefinition           productDeveloper;
+    private final ProductRoleDefinition           productSupport;
     private final ProductSubscriptionDefinition[] subscriptionTypes;
     private final String                          dataSpecTableName;
     private final ProductDataFieldDefinition[]    dataSpecIdentifiers;
@@ -577,6 +579,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.license             = license;
         this.community           = community;
         this.productManager      = ProductRoleDefinition.PRODUCT_MANAGER;
+        this.productDeveloper    = ProductRoleDefinition.PRODUCT_DEVELOPER;
+        this.productSupport      = ProductRoleDefinition.PRODUCT_SUPPORT;
         this.subscriptionTypes   = subscriptionTypes;
         this.dataSpecTableName   = dataSpecTableName;
         this.dataSpecIdentifiers = dataSpecIdentifiers;
@@ -735,6 +739,30 @@ public enum ProductDefinitionEnum implements ProductDefinition
     public ProductRoleDefinition getProductManager()
     {
         return productManager;
+    }
+
+
+    /**
+     * Return the project developer for the product.
+     *
+     * @return description of the product developer
+     */
+    @Override
+    public ProductRoleDefinition getProductDeveloper()
+    {
+        return productDeveloper;
+    }
+
+
+    /**
+     * Return the project support for the product.
+     *
+     * @return description of the product support
+     */
+    @Override
+    public ProductRoleDefinition getProductSupport()
+    {
+        return productSupport;
     }
 
 

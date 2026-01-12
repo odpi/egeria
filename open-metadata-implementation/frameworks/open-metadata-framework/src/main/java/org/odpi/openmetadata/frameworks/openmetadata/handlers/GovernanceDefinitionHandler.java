@@ -92,7 +92,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createGovernanceDefinition(String                                userId,
@@ -159,7 +159,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateGovernanceDefinition(String                         userId,
@@ -191,7 +191,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkPeerDefinitions(String                    userId,
@@ -229,7 +229,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param relationshipTypeName name of the relationship to use
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachPeerDefinitions(String        userId,
@@ -267,7 +267,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void attachSupportingDefinition(String                         userId,
@@ -305,7 +305,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param governanceDefinitionTwoGUID unique identifier of the child governance definition
      * @param relationshipTypeName name of the relationship to use
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSupportingDefinition(String        userId,
@@ -407,7 +407,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAssignmentScope(String                    userId,
@@ -443,7 +443,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param actorGUID                   unique identifier of the actor
      * @param deleteOptions               options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAssignmentScope(String        userId,
@@ -479,7 +479,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkMonitoredResource(String                      userId,
@@ -515,7 +515,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param elementGUID             unique identifier of the element to monitor
      * @param deleteOptions               options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachMonitoredResource(String        userId,
@@ -551,7 +551,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkNotificationSubscriber(String                           userId,
@@ -587,7 +587,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param elementGUID             unique identifier of the subscriber element
      * @param deleteOptions               options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachNotificationSubscriber(String        userId,
@@ -623,7 +623,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkGovernanceResults(String                      userId,
@@ -659,7 +659,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param dataSourceGUID                   unique identifier of the asset
      * @param deleteOptions               options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachGovernanceResults(String        userId,
@@ -695,7 +695,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkGovernanceZones(String                  userId,
@@ -731,7 +731,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param nestedGovernanceZoneGUID            unique identifier of the nested actor profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachGovernanceZones(String        userId,
@@ -767,7 +767,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSubjectAreas(String                         userId,
@@ -803,7 +803,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param nestedSubjectAreaGUID            unique identifier of the nested actor profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSubjectAreas(String        userId,
@@ -839,7 +839,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkTargetForGovernanceAction(String                              userId,
@@ -875,7 +875,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param elementGUID             unique identifier of the target
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachTargetForGovernanceAction(String        userId,
@@ -912,7 +912,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkGovernanceActionExecutor(String                             userId,
@@ -948,7 +948,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param governanceEngineGUID             unique identifier of the governance engine to call
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachGovernanceActionExecutor(String        userId,
@@ -985,7 +985,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkGovernanceActionProcessFlow(String                                userId,
@@ -1021,7 +1021,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param firstProcessStepGUID             unique identifier of the first step in the process
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachGovernanceActionProcessFlow(String        userId,
@@ -1288,7 +1288,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param governanceDefinitionGUID      unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteGovernanceDefinition(String        userId,
@@ -1315,7 +1315,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getGovernanceDefinitionsByName(String       userId,
@@ -1365,7 +1365,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getGovernanceDefinitionByGUID(String     userId,
@@ -1389,7 +1389,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties  additional properties for the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDesignToImplementation(String                  userId,
@@ -1425,7 +1425,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param implementationGUID     unique identifier of the implementation
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDesignFromImplementation(String        userId,
@@ -1461,7 +1461,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param relationshipProperties  additional properties for the relationship.
      * @param makeAnchorOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkImplementationResource(String                           userId,
@@ -1497,7 +1497,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param implementationResourceGUID     unique identifier of the implementation
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachImplementationResource(String        userId,

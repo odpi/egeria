@@ -53,7 +53,7 @@ public class DataEngineerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public TabularDataSetReportResponse getTabularDataSetReport(String serverName,

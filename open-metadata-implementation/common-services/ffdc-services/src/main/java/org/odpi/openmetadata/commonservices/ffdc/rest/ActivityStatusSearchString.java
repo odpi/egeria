@@ -68,7 +68,7 @@ public class ActivityStatusSearchString extends SearchStringRequestBody
     public String toString()
     {
         return "ActivityStatusSearchString{" +
-                "toDoStatus=" + activityStatus +
+                "activityStatus=" + activityStatus +
                 "} " + super.toString();
     }
 

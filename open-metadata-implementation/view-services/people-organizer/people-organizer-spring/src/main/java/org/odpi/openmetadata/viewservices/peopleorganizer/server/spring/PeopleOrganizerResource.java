@@ -54,7 +54,7 @@ public class PeopleOrganizerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{personOneGUID}/peer-persons/{personTwoGUID}/attach")
@@ -88,7 +88,7 @@ public class PeopleOrganizerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{personOneGUID}/peer-persons/{personTwoGUID}/detach")
@@ -122,7 +122,7 @@ public class PeopleOrganizerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{superTeamGUID}/team-structures/{subteamGUID}/attach")
@@ -156,7 +156,7 @@ public class PeopleOrganizerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{superTeamGUID}/team-structures/{subteamGUID}/detach")

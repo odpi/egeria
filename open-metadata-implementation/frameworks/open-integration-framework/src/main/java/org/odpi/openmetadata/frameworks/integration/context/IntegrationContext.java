@@ -140,7 +140,7 @@ public class IntegrationContext extends ConnectorContextBase
      * @param requestedCatalogTarget details of the catalog target configuration
      * @return new context with the correct external source
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public CatalogTargetContext getCatalogTargetContext(CatalogTarget requestedCatalogTarget) throws InvalidParameterException,
@@ -290,7 +290,7 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param listener listener object
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void registerListener(OpenMetadataEventListener listener) throws InvalidParameterException,

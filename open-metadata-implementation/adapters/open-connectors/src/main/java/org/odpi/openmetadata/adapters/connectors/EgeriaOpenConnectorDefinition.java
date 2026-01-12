@@ -28,6 +28,28 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                             OpenMetadataType.JSON_FILE.typeName,
                             null),
 
+    IN_MEMORY_TOPIC_CONNECTOR(89,
+                             "ed8e682b-2fec-4403-b551-02f8c46322ef",
+                             "Egeria:RuntimeConnector:OpenMetadataTopicConnector:InMemory",
+                             "In Memory Open Metadata Topic Connector",
+                             "Connector supports publishing and subscribing to string based events using an in-memory topic.",
+                             "https://egeria-project.org/connectors/resource/in-mem-open-metadata-topic-connector/",
+                             "org.odpi.openmetadata.adapters.eventbus.inmemory.InMemoryOpenMetadataTopicProvider",
+                              ComponentDevelopmentStatus.STABLE,
+                              DeployedImplementationType.TOPIC.getAssociatedTypeName(),
+                              DeployedImplementationType.TOPIC.getDeployedImplementationType()),
+
+    KAFKA_TOPIC_CONNECTOR(90,
+                          "3851e8d0-e343-400c-82cb-3918fed81da6",
+                          "Egeria:OpenMetadataTopicConnector:Kafka",
+                          "Apache Kafka Open Metadata Topic Connector",
+                          "Apache Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.",
+                          "https://egeria-project.org/connectors/resource/kafka-open-metadata-topic-connector/",
+                          "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider",
+                          ComponentDevelopmentStatus.STABLE,
+                          DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName(),
+                          DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType()),
+
     JDBC_RESOURCE_CONNECTOR(93,
                             "64463b01-92f6-4d7b-9737-f1d20b2654f4",
                             "Egeria:ResourceConnector:RelationalDatabase:JDBC",
@@ -62,12 +84,12 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                            DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType()),
 
     CSV_FILE_STORE_CONNECTOR(96,
-                            "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14",
-                            "Egeria:ResourceConnector:DataFile:CSV",
-                            "CSV File Store Connector",
-                            "Connector supports reading of CSV files.",
-                            "https://egeria-project.org/connectors/resource/csv-file-resource-connector/",
-                            "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider",
+                             "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14",
+                             "Egeria:ResourceConnector:DataFile:CSV",
+                             "CSV File Store Connector",
+                             "Connector supports reading of CSV files.",
+                             "https://egeria-project.org/connectors/resource/csv-file-resource-connector/",
+                             "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider",
                              ComponentDevelopmentStatus.STABLE,
                              DeployedImplementationType.CSV_FILE.getAssociatedTypeName(),
                              DeployedImplementationType.CSV_FILE.getDeployedImplementationType()),
@@ -82,6 +104,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                           ComponentDevelopmentStatus.STABLE,
                           DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName(),
                           DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType()),
+
+    GLOSSARY_DYNAMIC_ARCHIVER_CONNECTOR(150,
+                                        "02cfb290-43cb-497c-928e-267bd3d69324",
+                                        "Egeria:ArchiveService:Glossary",
+                                        "Glossary Dynamic Archiver Connector",
+                                        "Connector supports dynamically archiving a glossary into an open metadata archive.",
+                                        "https://egeria-project.org/connectors/resource/glossary-dynamic-archiver-connector/",
+                                        "org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary.GlossaryDynamicArchiverProvider",
+                                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                        DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                        DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
     JDBC_INTEGRATION_CONNECTOR(661,
                                "49cd6772-1efd-40bb-a1d9-cc9460962ff6",
@@ -111,10 +144,10 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                           "Survey for a PostgreSQL Database Server",
                                           "Surveys the databases, their tables and columns, found in a PostgreSQL database server",
                                           "https://egeria-project.org/connectors/databases/postgres-database-server-survey-action-service/",
-                                            "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider",
-                                            ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
-                                            DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
-                                            DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+                                          "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider",
+                                          ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                          DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                          DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
     POSTGRES_DATABASE_SURVEY_ACTION_SERVICE(674,
                                             "225f53a4-be5e-4008-b3a9-5dcf25f92514",
@@ -194,12 +227,12 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
     OSS_UNITY_CATALOG_INSIDE_SCHEMA_SURVEY_ACTION_SERVICE(695,
-                                                         "cde2cd15-500c-4f30-b54b-99b29e7e9cb6",
-                                                         "Egeria:SurveyActionService:DataManagerCatalog:UnityCatalog:InsideSchema",
-                                                         "OSS Unity Catalog (UC) Inside Schema Survey Action Service",
-                                                         "Surveys the contents of a schema found in a Unity Catalog Server.",
-                                                         "https://egeria-project.org/connectors/unity-catalog/schema-survey-service/",
-                                                         "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider",
+                                                          "cde2cd15-500c-4f30-b54b-99b29e7e9cb6",
+                                                          "Egeria:SurveyActionService:DataManagerCatalog:UnityCatalog:InsideSchema",
+                                                          "OSS Unity Catalog (UC) Inside Schema Survey Action Service",
+                                                          "Surveys the contents of a schema found in a Unity Catalog Server.",
+                                                          "https://egeria-project.org/connectors/unity-catalog/schema-survey-service/",
+                                                          "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider",
                                                           ComponentDevelopmentStatus.STABLE,
                                                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
@@ -249,12 +282,12 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                    PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType()),
 
     CSV_TABULAR_DATA_SET_COLLECTION_CONNECTOR(712,
-                                               "32c25bc2-e0bf-4d78-87ab-ed3c5aead169",
-                                               "Egeria:ResourceConnector:TabularDataSetCollection:CSVFile",
-                                               "CSV Tabular Data Set Collection Connector",
-                                               "Connector manages a collection of tabular data sets stored in CSV files.",
-                                               "https://egeria-project.org/connectors/resource/tabular-data-set-collection/csv/",
-                                               "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider",
+                                              "32c25bc2-e0bf-4d78-87ab-ed3c5aead169",
+                                              "Egeria:ResourceConnector:TabularDataSetCollection:CSVFile",
+                                              "CSV Tabular Data Set Collection Connector",
+                                              "Connector manages a collection of tabular data sets stored in CSV files.",
+                                              "https://egeria-project.org/connectors/resource/tabular-data-set-collection/csv/",
+                                              "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider",
                                               ComponentDevelopmentStatus.STABLE,
                                               DeployedImplementationType.CSV_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName(),
                                               DeployedImplementationType.CSV_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType()),
@@ -342,27 +375,27 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
     /**
      * Constructor for an open connector definition.
      *
-     * @param connectorComponentId       connector component identifier
-     * @param connectorTypeGUID          connector type unique identifier
-     * @param connectorQualifiedName     connector type qualified name
-     * @param connectorDisplayName       connector type display name
-     * @param connectorDescription       connector type description
-     * @param connectorWikiPage          connector wiki page
-     * @param connectorProviderClassName connector provider class name
-     * @param connectorDevelopmentStatus connector development status
-     * @param supportedAssetTypeName     connector supported asset type name
+     * @param connectorComponentId                connector component identifier
+     * @param connectorTypeGUID                   connector type unique identifier
+     * @param connectorQualifiedName              connector type qualified name
+     * @param connectorDisplayName                connector type display name
+     * @param connectorDescription                connector type description
+     * @param connectorWikiPage                   connector wiki page
+     * @param connectorProviderClassName          connector provider class name
+     * @param connectorDevelopmentStatus          connector development status
+     * @param supportedAssetTypeName              connector supported asset type name
      * @param supportedDeployedImplementationType connector supported deployed implementation type
      */
-    EgeriaOpenConnectorDefinition(int                        connectorComponentId,
-                                  String                     connectorTypeGUID,
-                                  String                     connectorQualifiedName,
-                                  String                     connectorDisplayName,
-                                  String                     connectorDescription,
-                                  String                     connectorWikiPage,
-                                  String                     connectorProviderClassName,
+    EgeriaOpenConnectorDefinition(int connectorComponentId,
+                                  String connectorTypeGUID,
+                                  String connectorQualifiedName,
+                                  String connectorDisplayName,
+                                  String connectorDescription,
+                                  String connectorWikiPage,
+                                  String connectorProviderClassName,
                                   ComponentDevelopmentStatus connectorDevelopmentStatus,
-                                  String                     supportedAssetTypeName,
-                                  String                     supportedDeployedImplementationType)
+                                  String supportedAssetTypeName,
+                                  String supportedDeployedImplementationType)
     {
         this.connectorComponentId                = connectorComponentId;
         this.connectorTypeGUID                   = connectorTypeGUID;

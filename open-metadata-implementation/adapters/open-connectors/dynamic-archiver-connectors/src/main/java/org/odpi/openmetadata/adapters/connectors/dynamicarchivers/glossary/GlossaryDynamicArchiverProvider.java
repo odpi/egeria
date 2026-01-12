@@ -4,27 +4,21 @@
 package org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary;
 
 
+import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.dynamicarchivers.DynamicArchiveProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GlossaryDynamicArchiverProvider is the OCF connector provider for the Glossary Dynamic Archiving Service.
- * This is an Archive Service as defined by the Archive Manager OMES.
+ * This is an Archive Service as defined by the Repository Governance OMES.
  */
 public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
 {
-    private static final String  connectorTypeGUID          = "02cfb290-43cb-497c-928e-267bd3d69324";
-    private static final String  connectorTypeQualifiedName = "Egeria:ArchiveService:Glossary";
-    private static final String  connectorTypeDisplayName   = "Glossary Dynamic Archive Service";
-    private static final String  connectorTypeDescription   = "Archive Service that writes a glossary to an archive as the glossary is developed.";
-
-
     private static final String connectorClassName = GlossaryDynamicArchiverConnector.class.getName();
-
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -32,8 +26,10 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
      */
     public GlossaryDynamicArchiverProvider()
     {
-        super();
-        super.setConnectorClassName(connectorClassName);
+        super(EgeriaOpenConnectorDefinition.GLOSSARY_DYNAMIC_ARCHIVER_CONNECTOR,
+              connectorClassName,
+              List.of(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getName()));
+
 
         supportedRequestParameters = DynamicGlossaryArchiveRequestParameter.getRequestParameterTypes();
 
@@ -45,26 +41,5 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
         actionTargetType.setOpenMetadataTypeName(OpenMetadataType.GLOSSARY.typeName);
 
         super.supportedActionTargetTypes.add(actionTargetType);
-
-        super.setConnectorClassName(connectorClassName);
-
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeQualifiedName);
-        connectorType.setDisplayName(connectorTypeDisplayName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
-
-        if (recognizedConfigurationProperties == null)
-        {
-            recognizedConfigurationProperties = new ArrayList<>();
-        }
-        recognizedConfigurationProperties.add(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getName());
-
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
-
-        super.connectorTypeBean = connectorType;
     }
 }

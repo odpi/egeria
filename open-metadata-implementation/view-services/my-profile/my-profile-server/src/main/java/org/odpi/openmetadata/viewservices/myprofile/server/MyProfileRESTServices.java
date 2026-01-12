@@ -6,9 +6,7 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.OpenMetadataRootElementResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
@@ -74,6 +72,174 @@ public class MyProfileRESTServices extends TokenController
             ActorProfileHandler client = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
 
             response.setElement(client.getActorProfileByUserId(userId, userId, null));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of actors linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or null or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse getMyActors(String         serverName,
+                                                        GetRequestBody requestBody)
+    {
+        final String methodName = "getMyActors";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ActorProfileHandler client = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            response.setElements(client.getActorsByUserId(userId, userId, true, true, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of user identities linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or null or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse getMyUserIdentities(String         serverName,
+                                                                GetRequestBody requestBody)
+    {
+        final String methodName = "getMyUserIdentities";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ActorProfileHandler client = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            response.setElements(client.getActorsByUserId(userId, userId, true, false, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of assigned roles linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or null or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse getMyRoles(String         serverName,
+                                                       GetRequestBody requestBody)
+    {
+        final String methodName = "getMyRoles";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ActorProfileHandler client = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            response.setElements(client.getActorsByUserId(userId, userId, false, true, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of assigned resources linked to the user's profile.
+     *
+     * @param serverName name of the server instances for this request
+     *
+     * @return profile response object or null or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse getMyResources(String         serverName,
+                                                           GetRequestBody requestBody)
+    {
+        final String methodName = "getMyResources";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ActorProfileHandler client = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
+
+            response.setElements(client.getResourcesByUserId(userId, userId, requestBody));
         }
         catch (Throwable error)
         {

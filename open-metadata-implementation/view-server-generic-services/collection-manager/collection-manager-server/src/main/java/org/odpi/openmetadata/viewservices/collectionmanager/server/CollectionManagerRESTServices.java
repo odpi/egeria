@@ -8,7 +8,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
@@ -56,7 +55,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getAttachedCollections(String             serverName,
@@ -102,7 +101,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse findCollections(String                  serverName,
@@ -146,6 +145,110 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
+     * Retrieve the digital products that match the search string and optional status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of collections
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse findDigitalProducts(String                       serverName,
+                                                                String                       urlMarker,
+                                                                DeploymentStatusSearchString requestBody)
+    {
+        final String methodName = "findDigitalProducts";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findDigitalProducts(userId, requestBody.getSearchString(), requestBody.getDeploymentStatus(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findDigitalProducts(userId, null, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the digital products that match the category name and status.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return a list of collections
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElementsResponse getDigitalProductByCategory(String                            serverName,
+                                                                        String                            urlMarker,
+                                                                        DeploymentStatusFilterRequestBody requestBody)
+    {
+        final String methodName = "getDigitalProductByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getDigitalProductByCategory(userId, requestBody.getFilter(), requestBody.getDeploymentStatus(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getDigitalProductByCategory(userId, null, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Returns the list of collections with a particular name.
      *
      * @param serverName    name of called server
@@ -155,7 +258,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getCollectionsByName(String            serverName,
@@ -207,7 +310,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return a list of collections
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getCollectionsByCategory(String            serverName,
@@ -264,7 +367,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return collection properties
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getCollectionByGUID(String             serverName,
@@ -310,7 +413,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return unique identifier of the newly created Collection
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createCollection(String                serverName,
@@ -432,7 +535,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateCollection(String                   serverName,
@@ -494,7 +597,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse attachCollection(String                     serverName,
@@ -573,7 +676,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachCollection(String                   serverName,
@@ -623,7 +726,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse attachDataDescription(String                     serverName,
@@ -702,7 +805,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachDataDescription(String            serverName,
@@ -751,7 +854,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkSubscriber(String                  serverName,
@@ -829,7 +932,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachSubscriber(String                   serverName,
@@ -881,7 +984,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse linkAgreementActor(String                  serverName,
@@ -958,7 +1061,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAgreementActor(String                   serverName,
@@ -1006,7 +1109,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAgreementItem(String                  serverName,
@@ -1084,7 +1187,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAgreementItem(String                   serverName,
@@ -1133,7 +1236,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkContract(String                  serverName,
@@ -1211,7 +1314,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachContract(String                   serverName,
@@ -1605,7 +1708,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteCollection(String            serverName,
@@ -1651,7 +1754,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return list of asset details
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getCollectionMembers(String             serverName,
@@ -1699,7 +1802,7 @@ public class CollectionManagerRESTServices extends TokenController
      *
      * @return list of collection details
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getCollectionHierarchy(String             serverName,

@@ -61,7 +61,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * @param queryOptions options to control the query
      * @return list of resources to monitor
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getMonitoredResources(String       userId,
@@ -283,7 +283,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * @param queryOptions options to control the query
      * @return list of resources to monitor
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getNotificationSubscribers(String        userId,

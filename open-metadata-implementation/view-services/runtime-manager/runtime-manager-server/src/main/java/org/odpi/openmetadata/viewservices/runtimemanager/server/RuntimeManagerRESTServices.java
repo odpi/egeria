@@ -65,7 +65,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getPlatformsByName(String            serverName,
@@ -116,7 +116,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(String            serverName,
@@ -206,7 +206,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param requestBody effective time
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getPlatformByGUID(String             serverName,
@@ -249,7 +249,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param platformGUID unique identifier of the platform
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public PlatformReportResponse getPlatformReport(String serverName,
@@ -309,7 +309,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getServersByName(String            serverName,
@@ -360,7 +360,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return a list of projects
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementsResponse getServersByDeployedImplType(String            serverName,
@@ -430,7 +430,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param requestBody effective time
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
 
@@ -474,7 +474,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverGUID unique identifier of the server
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public ServerReportResponse getServerReport(String serverName,
@@ -710,7 +710,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return unique identifier of the newly created element
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createMetadataRepositoryCohort(String                serverName,
@@ -828,7 +828,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return boolean or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateMetadataRepositoryCohort(String                   serverName,
@@ -890,7 +890,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteMetadataRepositoryCohort(String                   serverName,
@@ -1081,7 +1081,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkCohortMember(String                     serverName,
@@ -1157,7 +1157,7 @@ public class RuntimeManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachCohortMember(String                        serverName,

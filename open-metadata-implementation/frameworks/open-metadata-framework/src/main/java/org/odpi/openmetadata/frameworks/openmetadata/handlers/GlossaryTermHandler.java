@@ -58,7 +58,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createGlossaryTerm(String                                userId,
@@ -125,7 +125,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateGlossaryTerm(String                 userId,
@@ -185,7 +185,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryGUID           unique identifier of the location
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void moveGlossaryTerm(String            userId,
@@ -231,7 +231,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setupTermRelationship(String                             userId,
@@ -272,7 +272,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param updateOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateTermRelationship(String                   userId,
@@ -312,7 +312,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearTermRelationship(String        userId,
@@ -350,7 +350,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setTermAsAbstractConcept(String                    userId,
@@ -383,7 +383,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryTermGUID    unique identifier of the term.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearTermAsAbstractConcept(String                userId,
@@ -413,7 +413,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setTermAsDataValue(String                    userId,
@@ -446,7 +446,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryTermGUID    unique identifier of the term.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearTermAsDataValue(String                userId,
@@ -476,7 +476,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setTermAsActivity(String                    userId,
@@ -509,7 +509,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryTermGUID    unique identifier of the term.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearTermAsActivity(String                userId,
@@ -539,7 +539,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param properties            properties for the classification
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setTermAsContext(String                    userId,
@@ -572,7 +572,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryTermGUID    unique identifier of the term.
      * @param metadataSourceOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void clearTermAsContext(String                userId,
@@ -601,7 +601,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param glossaryTermGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteGlossaryTerm(String        userId,
@@ -628,7 +628,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getGlossaryTermsByName(String       userId,
@@ -655,7 +655,7 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getGlossaryTermByGUID(String     userId,

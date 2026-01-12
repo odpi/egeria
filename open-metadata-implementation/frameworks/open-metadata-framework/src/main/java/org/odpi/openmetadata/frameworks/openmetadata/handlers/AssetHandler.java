@@ -7,6 +7,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
@@ -139,7 +141,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param parentRelationshipProperties properties to include in parent relationship
      * @return unique identifier of the newly created element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createAsset(String                                userId,
@@ -636,7 +638,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Create a new metadata element to represent an asset using an existing element as a template.
      * The template defines additional classifications and relationships that should be added to the new asset.
@@ -671,7 +672,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                placeholderProperties,
                                                parentRelationshipProperties);
     }
-
 
 
     /**
@@ -779,14 +779,15 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions   options for query
      * @return list of member details
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getActionTargets(String       userId,
-                                                          String       actionGUID,
-                                                          QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getActionTargets(String         userId,
+                                                          String         actionGUID,
+                                                          ActivityStatus activityStatus,
+                                                          QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
         final String methodName             = "getActionTargets";
         final String assetGUIDParameterName = "actionGUID";
@@ -795,14 +796,174 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(actionGUID, assetGUIDParameterName, methodName);
         propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        return super.getRelatedRootElements(userId,
-                                            actionGUID,
-                                            assetGUIDParameterName,
-                                            1,
-                                            OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                            queryOptions,
-                                            methodName);
+        List<OpenMetadataRootElement> actionTargets = super.getRelatedRootElements(userId,
+                                                                                   actionGUID,
+                                                                                   assetGUIDParameterName,
+                                                                                   1,
+                                                                                   OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                   queryOptions,
+                                                                                   methodName);
+
+        return filterActionTargets(actionTargets, activityStatus);
+    }
+
+
+    /**
+     * Retrieve the actions that are chained from an action target element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the element to start with
+     * @param activityStatus  optional activity status
+     * @param queryOptions           multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getActionsForActionTarget(String         userId,
+                                                                   String         elementGUID,
+                                                                   ActivityStatus activityStatus,
+                                                                   QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName        = "getActionsForActionTarget";
+        final String guidParameterName = "elementGUID";
+
+        List<OpenMetadataRootElement> relatedMetadataElements = super.getRelatedRootElements(userId,
+                                                                                             elementGUID,
+                                                                                             guidParameterName,
+                                                                                             2,
+                                                                                             OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                             OpenMetadataType.ACTION.typeName,
+                                                                                             queryOptions,
+                                                                                             methodName);
+
+        return this.filterActionTargets(relatedMetadataElements, activityStatus);
+    }
+
+    /**
+     * Assign an action to an actor.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void assignAction(String                    userId,
+                             String                    actionGUID,
+                             String                    actorGUID,
+                             MakeAnchorOptions         makeAnchorOptions,
+                             AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName              = "assignAction";
+        final String actionGUIDParameterName   = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, actionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Assign an action to a new actor - removing all other assignees.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties the properties of the relationship
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void reassignAction(String                    userId,
+                               String                    actionGUID,
+                               String                    actorGUID,
+                               MakeAnchorOptions         makeAnchorOptions,
+                               AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName              = "reassignAction";
+        final String actionGUIDParameterName   = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, actionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        RelatedMetadataElementList assignedActors = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                  actionGUID,
+                                                                                                  2,
+                                                                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                                                  new QueryOptions(makeAnchorOptions));
+
+        if ((assignedActors != null) && (assignedActors.getElementList() != null))
+        {
+            for (RelatedMetadataElement assignedActor : assignedActors.getElementList())
+            {
+                openMetadataClient.deleteRelationshipInStore(userId,
+                                                             assignedActor.getRelationshipGUID(),
+                                                             new DeleteOptions(makeAnchorOptions));
+            }
+        }
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove an action from an actor.
+     *
+     * @param userId    calling user
+     * @param actionGUID  unique identifier of the action
+     * @param actorGUID actor to assign the action to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public void unassignAction(String        userId,
+                               String        actionGUID,
+                               String        actorGUID,
+                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName              = "unassignAction";
+        final String actionGUIDParameterName = "actionGUID";
+        final String parentGUIDParameterName = "actorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(actionGUID, actionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(actorGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                        actorGUID,
+                                                        actionGUID,
+                                                        deleteOptions);
     }
 
 
@@ -815,7 +976,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param properties             properties for the element.
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateAsset(String          userId,
@@ -846,7 +1007,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deployITAsset(String                userId,
@@ -882,7 +1043,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param destinationGUID           unique identifier of the destination asset
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void unDeployITAsset(String        userId,
@@ -919,7 +1080,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkSoftwareCapability(String                                userId,
@@ -955,7 +1116,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param capabilityGUID           unique identifier of the destination asset
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachSoftwareCapability(String        userId,
@@ -991,7 +1152,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkDataSetContent(String                   userId,
@@ -1027,7 +1188,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachDataSetContent(String        userId,
@@ -1149,7 +1310,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions   options for query
      * @return list of member details
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCatalogTargets(String       userId,
@@ -1246,7 +1407,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAPIEndpoint(String                 userId,
@@ -1282,7 +1443,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param endpointGUID            unique identifier of the endpoint
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAPIEndpoint(String        userId,
@@ -1317,7 +1478,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkProcessHierarchy(String                     userId,
@@ -1353,7 +1514,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param childProcessGUID          unique identifier of the child process
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachProcessHierarchy(String        userId,
@@ -1388,7 +1549,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkNestedFiles(String                userId,
@@ -1424,7 +1585,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param fileGUID         unique identifier of the associated file
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachNestedFile(String        userId,
@@ -1460,7 +1621,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkLinkedFiles(String                userId,
@@ -1496,7 +1657,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param fileGUID         unique identifier of the associated file
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachLinkedFile(String        userId,
@@ -1531,7 +1692,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkFolderHierarchy(String                    userId,
@@ -1567,7 +1728,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param childFolderGUID         unique identifier of the associated child folder
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachFolderHierarchy(String        userId,
@@ -1600,7 +1761,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param assetGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteAsset(String        userId,
@@ -1627,7 +1788,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAssetsByName(String       userId,
@@ -1659,7 +1820,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getAssetsByDeployedImplementationType(String       userId,
@@ -1678,7 +1839,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                            queryOptions,
                                            methodName);
     }
-
 
 
     /**
@@ -1710,41 +1870,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                            queryOptions,
                                            methodName);
     }
-
-
-    /**
-     * Retrieve the actions that are chained off of an action target element.
-     *
-     * @param userId      calling user
-     * @param elementGUID unique identifier of the element to start with
-     * @param activityStatus  optional activity status
-     * @param queryOptions           multiple options to control the query
-     * @return list of action beans
-     * @throws InvalidParameterException  a parameter is invalid
-     * @throws PropertyServerException    the server is not available
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
-     */
-    public List<OpenMetadataRootElement> getActionsForActionTarget(String         userId,
-                                                                   String         elementGUID,
-                                                                   ActivityStatus activityStatus,
-                                                                   QueryOptions   queryOptions) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException
-    {
-        final String methodName        = "getActionsForActionTarget";
-        final String guidParameterName = "elementGUID";
-
-        return getFilteredActions(userId,
-                                  elementGUID,
-                                  guidParameterName,
-                                  activityStatus,
-                                  OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                  2,
-                                  queryOptions,
-                                  methodName);
-    }
-
-
 
 
     /**
@@ -1858,8 +1983,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @param userId       calling user
      * @param searchString string to search for (may include RegExs)
-     * @param activityStatus   optional activity status
-     * @param searchOptions           multiple options to control the query
+     * @param activityStatus   optional  status
+     * @param suppliedSearchOptions           multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -1868,11 +1993,18 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public List<OpenMetadataRootElement> findProcesses(String         userId,
                                                        String         searchString,
                                                        ActivityStatus activityStatus,
-                                                       SearchOptions  searchOptions) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+                                                       SearchOptions  suppliedSearchOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
         final String methodName = "findProcesses";
+
+        SearchOptions searchOptions = new SearchOptions(suppliedSearchOptions);
+
+        if (searchOptions.getMetadataElementTypeName() == null)
+        {
+            searchOptions.setMetadataElementTypeName(OpenMetadataType.PROCESS.typeName);
+        }
 
         List<OpenMetadataRootElement> openMetadataElements = this.findRootElements(userId,
                                                                                    searchString,
@@ -1884,12 +2016,12 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the actions that match the type name and status.
+     * Retrieve the processes that match the category name and status.
      *
      * @param userId     calling user
      * @param category   type to search for
-     * @param activityStatus optional activity status
-     * @param queryOptions multiple options to control the query
+     * @param activityStatus optional status
+     * @param suppliedQueryOptions multiple options to control the query
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
@@ -1898,12 +2030,19 @@ public class AssetHandler extends OpenMetadataHandlerBase
     public List<OpenMetadataRootElement> getProcessesByCategory(String         userId, 
                                                                 String         category, 
                                                                 ActivityStatus activityStatus, 
-                                                                QueryOptions   queryOptions) throws InvalidParameterException, 
-                                                                                                    PropertyServerException, 
-                                                                                                    UserNotAuthorizedException
+                                                                QueryOptions   suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
     {
         final String methodName = "getProcessesByCategory";
-        
+
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
+        if (queryOptions.getMetadataElementTypeName() == null)
+        {
+            queryOptions.setMetadataElementTypeName(OpenMetadataType.PROCESS.typeName);
+        }
+
         List<OpenMetadataRootElement> openMetadataElements = super.getRootElementsByName(userId,
                                                                                          category,
                                                                                          List.of(OpenMetadataProperty.CATEGORY.name),
@@ -1947,6 +2086,241 @@ public class AssetHandler extends OpenMetadataHandlerBase
     }
 
 
+
+    /**
+     * Filter process objects by activity status.
+     *
+     * @param openMetadataRootElements retrieved elements
+     * @param activityStatus           optional activity status
+     * @return list of process elements
+     */
+    private List<OpenMetadataRootElement> filterActionTargets(List<OpenMetadataRootElement> openMetadataRootElements,
+                                                              ActivityStatus                activityStatus)
+    {
+        if (openMetadataRootElements != null)
+        {
+            List<OpenMetadataRootElement> rootElements = new ArrayList<>();
+
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                if ((openMetadataRootElement != null) && (openMetadataRootElement.getRelatedBy() != null) && (openMetadataRootElement.getRelatedBy().getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties))
+                {
+                    if ((activityStatus == null) || (activityStatus == actionTargetProperties.getActivityStatus()))
+                    {
+                        rootElements.add(openMetadataRootElement);
+                    }
+                }
+            }
+
+            return rootElements;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the data assets that match the search string and optional content status.
+     *
+     * @param userId       calling user
+     * @param searchString string to search for (may include RegExs)
+     * @param contentStatus   optional  status
+     * @param suppliedSearchOptions   multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findDataAssets(String         userId,
+                                                        String         searchString,
+                                                        ContentStatus  contentStatus,
+                                                        SearchOptions  suppliedSearchOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "findDataAssets";
+
+        SearchOptions searchOptions = new SearchOptions(suppliedSearchOptions);
+
+        if (searchOptions.getMetadataElementTypeName() == null)
+        {
+            searchOptions.setMetadataElementTypeName(OpenMetadataType.DATA_ASSET.typeName);
+        }
+
+        List<OpenMetadataRootElement> openMetadataElements = this.findRootElements(userId,
+                                                                                   searchString,
+                                                                                   searchOptions,
+                                                                                   methodName);
+
+        return filterDataSets(openMetadataElements, contentStatus);
+    }
+
+
+    /**
+     * Retrieve the data assets that match the category name and status.
+     *
+     * @param userId     calling user
+     * @param category   type to search for
+     * @param contentStatus optional status
+     * @param suppliedQueryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getDataAssetsByCategory(String        userId,
+                                                                 String        category,
+                                                                 ContentStatus contentStatus,
+                                                                 QueryOptions  suppliedQueryOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "getDataAssetsByCategory";
+
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
+        if (queryOptions.getMetadataElementTypeName() == null)
+        {
+            queryOptions.setMetadataElementTypeName(OpenMetadataType.DATA_ASSET.typeName);
+        }
+
+        List<OpenMetadataRootElement> openMetadataElements = super.getRootElementsByName(userId,
+                                                                                         category,
+                                                                                         List.of(OpenMetadataProperty.CATEGORY.name),
+                                                                                         queryOptions,
+                                                                                         methodName);
+
+        return filterDataSets(openMetadataElements, contentStatus);
+    }
+
+
+    /**
+     * Filter data set objects by content status.
+     *
+     * @param openMetadataRootElements retrieved elements
+     * @param contentStatus           optional  status
+     * @return list of process elements
+     */
+    private List<OpenMetadataRootElement> filterDataSets(List<OpenMetadataRootElement> openMetadataRootElements,
+                                                         ContentStatus                 contentStatus)
+    {
+        if (openMetadataRootElements != null)
+        {
+            List<OpenMetadataRootElement> rootElements = new ArrayList<>();
+
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                if ((openMetadataRootElement != null) &&
+                        (openMetadataRootElement.getProperties() instanceof DataAssetProperties dataAssetProperties))
+                {
+                    if ((contentStatus == null) || (contentStatus == dataAssetProperties.getContentStatus()))
+                    {
+                        rootElements.add(openMetadataRootElement);
+                    }
+                }
+            }
+
+            return rootElements;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the data sets that match the search string and optional content status.
+     *
+     * @param userId       calling user
+     * @param searchString string to search for (may include RegExs)
+     * @param deploymentStatus   optional  status
+     * @param searchOptions   multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> findInfrastructure(String           userId,
+                                                            String           searchString,
+                                                            DeploymentStatus deploymentStatus,
+                                                            SearchOptions    searchOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "findInfrastructure";
+
+        List<OpenMetadataRootElement> openMetadataElements = this.findRootElements(userId,
+                                                                                   searchString,
+                                                                                   searchOptions,
+                                                                                   methodName);
+
+        return filterInfrastructure(openMetadataElements, deploymentStatus);
+    }
+
+
+    /**
+     * Retrieve the infrastructure elements that match the category name and status.
+     *
+     * @param userId     calling user
+     * @param category   type to search for
+     * @param deploymentStatus optional status
+     * @param queryOptions multiple options to control the query
+     * @return list of action beans
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public List<OpenMetadataRootElement> getInfrastructureByCategory(String           userId,
+                                                                     String           category,
+                                                                     DeploymentStatus deploymentStatus,
+                                                                     QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "getInfrastructureByCategory";
+
+        List<OpenMetadataRootElement> openMetadataElements = super.getRootElementsByName(userId,
+                                                                                         category,
+                                                                                         List.of(OpenMetadataProperty.CATEGORY.name),
+                                                                                         queryOptions,
+                                                                                         methodName);
+
+        return filterInfrastructure(openMetadataElements, deploymentStatus);
+    }
+
+
+    /**
+     * Filter infrastructure objects by deployment status.
+     *
+     * @param openMetadataRootElements retrieved elements
+     * @param deploymentStatus           optional  status
+     * @return list of process elements
+     */
+    private List<OpenMetadataRootElement> filterInfrastructure(List<OpenMetadataRootElement> openMetadataRootElements,
+                                                               DeploymentStatus              deploymentStatus)
+    {
+        if (openMetadataRootElements != null)
+        {
+            List<OpenMetadataRootElement> rootElements = new ArrayList<>();
+
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                if ((openMetadataRootElement != null) &&
+                        (openMetadataRootElement.getProperties() instanceof InfrastructureProperties infrastructureProperties))
+                {
+                    if ((deploymentStatus == null) || (deploymentStatus == infrastructureProperties.getDeploymentStatus()))
+                    {
+                        rootElements.add(openMetadataRootElement);
+                    }
+                }
+            }
+
+            return rootElements;
+        }
+
+        return null;
+    }
+
+
     /**
      * Returns the list of assets with a particular assetGUID.
      *
@@ -1955,7 +2329,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getDeployedITAssets(String       userId,
@@ -1987,7 +2361,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getDataSetContents(String       userId,
@@ -2014,24 +2388,24 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Returns the list of assets providing data to the data set.
      *
      * @param userId                 userId of user making request
-     * @param assetGUID              unique identifier of the starting element
+     * @param elementGUID              unique identifier of the starting element
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getSupportedDataSets(String       userId,
-                                                              String       assetGUID,
+                                                              String       elementGUID,
                                                               QueryOptions queryOptions) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
         final String methodName = "getSupportedDataSets";
-        final String guidPropertyName = "assetGUID";
+        final String guidPropertyName = "elementGUID";
 
         return super.getRelatedRootElements(userId,
-                                            assetGUID,
+                                            elementGUID,
                                             guidPropertyName,
                                             2,
                                             OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
@@ -2050,7 +2424,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getFilesInFolder(String       userId,
@@ -2081,7 +2455,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getAssetByGUID(String     userId,
@@ -2105,7 +2479,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param getOptions  multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getAssetByUniqueName(String       userId,

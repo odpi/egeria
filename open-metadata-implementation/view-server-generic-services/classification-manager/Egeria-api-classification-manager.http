@@ -557,7 +557,7 @@ Content-Type: application/json
 {
    "class" : "NewClassificationRequestBody",
    "properties" : {
-       "class" : "OwnerProperties",
+       "class" : "OwnershipProperties",
        "owner" : "Add value here",
        "ownerTypeName" : "Add value here",
        "ownerPropertyName" : "Add value here"
@@ -814,7 +814,6 @@ Content-Type: application/json
 # Remove the ScopedBy relationship between a scope and an element.
 #
 # Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -827,6 +826,71 @@ Content-Type: application/json
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
+
+###
+
+@actorGUID=add guid here
+
+###
+# @name assignActorToElement
+# Attach an actor to an element.
+#
+# @param serverName  name of the server instance to connect to
+# @param urlMarker  view service URL marker
+# @param elementGUID            unique identifier of the element (project, product, etc.)
+# @param actorGUID unique identifier of the actor
+# @param requestBody properties for relationship request
+#
+# @return void or
+# InvalidParameterException full path or userId is null or
+# PropertyServerException problem accessing property server or
+# UserNotAuthorizedException security access problem
+#
+# assignments: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/assigned-to-actor/{{actorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties" : {},
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name unassignActorFromElement
+# Detach an actor from an element.
+#
+# @param serverName  name of the server instance to connect to
+# @param urlMarker  view service URL marker
+# @param elementGUID            unique identifier of the element (project, product, etc.)
+# @param actorGUID unique identifier of the actor
+# @param requestBody properties for relationship request
+#
+# @return void or
+# InvalidParameterException full path or userId is null or
+# PropertyServerException problem accessing property server or
+# UserNotAuthorizedException security access problem
+#
+# Assignments: https://egeria-project.org/types/1/0120-Assignment-Scopes/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/assigned-to-actor/{{scopeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteRelationshipRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
 
 
 ### =======================================
@@ -1271,108 +1335,3 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
-
-###
-#==================================================
-# Linking Actors and Actions
-#==================================================
-# https://egeria-project.org/concepts/action
-
-@actionGUID=add guid here
-@actorGUID=add guid here
-
-###
-# @name assignAction
-# Assign an action to an actor. Request body is optional.
-#
-# @param serverName name of the server instances for this request
-# @param urlMarker  view service URL marker
-# @param actionGUID unique identifier of the action
-# @param actorGUID  actor to assign the action to
-# @param requestBody  request body
-#
-# @return void or
-# InvalidParameterException a parameter is invalid
-# PropertyServerException the server is not available
-# UserNotAuthorizedException the calling user is not authorized to issue the call
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/actions/{{actionGUID}}/assign/{{actorGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "NewRelationshipRequestBody",
-   "properties" : {
-     "class": "AssignmentScopeProperties",
-     "label" : "add label here",
-     "description" : "Add description here"
-  },
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name reassignAction
-# Assign an action to a new actor.  This will unassign all other actors previously assigned to the action.
-#
-# @param serverName name of the server instances for this request
-# @param urlMarker  view service URL marker
-# @param actionGUID unique identifier of the action
-# @param actorGUID  actor to assign the action to
-# @param requestBody  request body
-#
-# @return void or
-# InvalidParameterException a parameter is invalid
-# PropertyServerException the server is not available
-# UserNotAuthorizedException the calling user is not authorized to issue the call
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/actions/{{actionGUID}}/reassign/{{actorGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "NewRelationshipRequestBody",
-   "properties" : {
-     "class": "AssignmentScopeProperties",
-     "label" : "add label here",
-     "description" : "Add description here"
-  },
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name unassignAction
-# Remove an action from an actor.
-#
-# @param serverName name of the server instances for this request
-# @param urlMarker  view service URL marker
-# @param actionGUID unique identifier of the action
-# @param actorGUID  actor to assign the action to
-# @param requestBody  request body
-#
-# @return void or
-# InvalidParameterException a parameter is invalid
-# PropertyServerException the server is not available
-# UserNotAuthorizedException the calling user is not authorized to issue the call
-#/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/actions/{{actionGUID}}/reassign/{{actorGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "DeleteRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}

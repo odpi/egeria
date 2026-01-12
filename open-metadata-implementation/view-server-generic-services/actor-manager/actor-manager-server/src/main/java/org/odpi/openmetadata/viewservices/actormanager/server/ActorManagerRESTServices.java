@@ -45,7 +45,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody properties for the actor profile.
      * @return unique identifier of the newly created element
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createActorProfile(String                serverName,
@@ -165,7 +165,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      properties for the new element.
      * @return boolean or
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateActorProfile(String                   serverName,
@@ -229,7 +229,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody   description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAssetToProfile(String                     serverName,
@@ -306,7 +306,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody   description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAssetFromProfile(String                        serverName,
@@ -353,7 +353,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteActorProfile(String                   serverName,
@@ -889,7 +889,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody properties for the actor role.
      * @return unique identifier of the newly created element
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createActorRole(String                serverName,
@@ -1009,7 +1009,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody   properties for the new element.
      * @return boolean or
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateActorRole(String                   serverName,
@@ -1073,7 +1073,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody       description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkPersonRoleToProfile(String                     serverName,
@@ -1143,7 +1143,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody       description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachPersonRoleFromProfile(String                        serverName,
@@ -1191,7 +1191,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody     description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkTeamRoleToProfile(String                  serverName,
@@ -1260,7 +1260,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody     description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachTeamRoleFromProfile(String                        serverName,
@@ -1308,7 +1308,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody       description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkITProfileRoleToProfile(String                    serverName,
@@ -1386,7 +1386,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody       description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachITProfileRoleFromProfile(String                        serverName,
@@ -1433,7 +1433,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody   description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteActorRole(String                   serverName,
@@ -1630,7 +1630,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody properties for the user identity.
      * @return unique identifier of the newly created element
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createUserIdentity(String                serverName,
@@ -1750,7 +1750,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      properties for the new element.
      * @return boolean or
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateUserIdentity(String                   serverName,
@@ -1814,7 +1814,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkIdentityToProfile(String                     serverName,
@@ -1883,7 +1883,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachProfileIdentity(String                        serverName,
@@ -1930,7 +1930,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse addSecurityGroupMembership(String                       serverName,
@@ -1989,7 +1989,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateSecurityGroupMembership(String                          serverName,
@@ -2048,7 +2048,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse removeAllSecurityGroupMembership(String                    serverName,
@@ -2094,7 +2094,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteUserIdentity(String                   serverName,
@@ -2290,7 +2290,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAssignmentScope(String                     serverName,
@@ -2367,7 +2367,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody      description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAssignmentScope(String                        serverName,
@@ -2416,7 +2416,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody properties for the contact details.
      * @return unique identifier of the newly created element
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createContactDetails(String                serverName,
@@ -2544,7 +2544,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody        properties for the new element.
      * @return boolean or
      * InvalidParameterException  one of the parameters is invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateContactDetails(String                   serverName,
@@ -2608,7 +2608,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody        description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkContactDetails(String                     serverName,
@@ -2685,7 +2685,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody        description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachContactDetails(String                        serverName,
@@ -2732,7 +2732,7 @@ public class ActorManagerRESTServices extends TokenController
      * @param requestBody        description of the relationship.
      * @return void or
      * InvalidParameterException  one of the parameters is null or invalid.
-     * PropertyServerException    there is a problem retrieving information from the property server(s).
+     * PropertyServerException    a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteContactDetails(String                   serverName,

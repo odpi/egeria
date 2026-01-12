@@ -61,7 +61,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @param linkProperties   description of the relationship.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkPeersInInformationSupplyChain(String                               userId,
@@ -99,7 +99,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @param deleteOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void unlinkPeersInInformationSupplyChain(String        userId,
@@ -137,7 +137,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @return a list of elements
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getInformationSupplyChainsByName(String       userId,
@@ -181,7 +181,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @return retrieved properties
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public InformationSupplyChainElement getInformationSupplyChainByGUID(String     userId,
