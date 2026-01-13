@@ -262,14 +262,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/ActorProfileHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ActorProfileHandler</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">ActorProfileHandler provides methods to define actor profiles
- The interface supports the following types of objects
- 
-     ActorProfile
-     Person
-     Team
-     ITProfile
- </div>
+<div class="block">ActorProfileHandler provides methods to manage actor profiles.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/ActorProfileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ActorProfileProperties</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -2670,710 +2663,734 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The ContentStatus defines the status of an authored referenceable or data asset element in the metadata collection.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/glossaries/ContextDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">ContextDefinitionProperties</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/ContentStatusFilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ContentStatusFilterRequestBody</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">ContentStatusFilterRequestBody provides a structure for passing the status.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/ContentStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ContentStatusRequestBody</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">ContentStatusRequestBody provides a structure for passing the status.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/ContentStatusSearchString.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ContentStatusSearchString</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">A request body that allows the status of an authored referenceable to be included in the search criteria.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/glossaries/ContextDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">ContextDefinitionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContextDefinitionProperties describes a type of context that a glossary term represents.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/ContextEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContextEventClient</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/ContextEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContextEventClient</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Provides services for connectors to work with context event elements.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/collections/ContextEventCollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">ContextEventCollectionProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/collections/ContextEventCollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">ContextEventCollectionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContextEventCollectionProperties is a java bean used to classify a collection.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventEvidenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventEvidenceProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventEvidenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventEvidenceProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DependentContextEventProperties is a java bean used to describe a link between a context event and the evidence that it occurred.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventForTimelineEffectsProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventForTimelineEffectsProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventForTimelineEffectsProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventForTimelineEffectsProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContextEventForTimelineEffectsProperties is a java bean used to describe a link between a context event and
  the data that is effected by it.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/ContextEventHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ContextEventHandler</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/ContextEventHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ContextEventHandler</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContextEvent handler describes how to maintain and query context events and the relationships used to associate
  then with elements that were affected..</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventImpactProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventImpactProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventImpactProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventImpactProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContextEventImpactProperties is a java bean used to describe a link between a context event and elements that
  describe its impact.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContextEventProperties holds properties that are used for displaying details of
  context event.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/digitalbusiness/ContractLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">ContractLinkProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/digitalbusiness/ContractLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">ContractLinkProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">AgreementActorProperties describes a relationship between an actor and an agreement.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/ContributionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ContributionProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/ContributionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ContributionProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContributionProperties describes the properties for the Contribution relationship between an actor profile and
  a contribution record element.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/ContributionRecordClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContributionRecordClient</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/ContributionRecordClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContributionRecordClient</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Provides services for connectors to work with contribution record elements.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/ContributionRecordHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ContributionRecordHandler</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/ContributionRecordHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ContributionRecordHandler</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ContributionRecordHandler provides methods to define contribution records</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/ContributionRecordProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ContributionRecordProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/ContributionRecordProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">ContributionRecordProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The ContributionRecordProperties holds the information about an individual's contribution to the open metadata
  ecosystem.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/ControlFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ControlFlowProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/ControlFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ControlFlowProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ControlFlowProperties describe the properties for a control flow relationship.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/repositoryservices/postgres/repositoryconnector/mappers/ControlMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ControlMapper</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/contentpacks/core/core/CorePackArchiveWriter.html" title="class in org.odpi.openmetadata.contentpacks.core.core">CorePackArchiveWriter</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/repositoryservices/postgres/repositoryconnector/mappers/ControlMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ControlMapper</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/contentpacks/core/core/CorePackArchiveWriter.html" title="class in org.odpi.openmetadata.contentpacks.core.core">CorePackArchiveWriter</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CorePackArchiveWriter creates an open metadata archive that includes the connector type
  information for the default open connectors supplied by the egeria project.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/contentpacks/core/CorePacksArchivesWriter.html" title="class in org.odpi.openmetadata.contentpacks.core">CorePacksArchivesWriter</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/contentpacks/core/CorePacksArchivesWriter.html" title="class in org.odpi.openmetadata.contentpacks.core">CorePacksArchivesWriter</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CocoArchivesWriter provides the main method to run the open metadata archive writers
  that create each of the open metadata archives used in the open metadata labs and
  other scenarios with Coco Pharmaceuticals.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/organization/CountryCodeDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.organization">CountryCodeDefinition</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/organization/CountryCodeDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.organization">CountryCodeDefinition</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The CountryCodeDefinition is used to feed the definition of the CountryCode valid value set for Coco Pharmaceuticals' employees and locations.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">Used to describe how a collection of data values for an attribute cover the domain of the possible values to the linked attribute.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/CreateAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateAssetGovernanceActionConnector</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/CreateAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateAssetGovernanceActionConnector</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CreateSubscriptionGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/CreateAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateAssetGovernanceActionProvider</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/CreateAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateAssetGovernanceActionProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CreateSubscriptionGovernanceActionProvider is the OCF connector provider for the "Create Asset"
  Governance Action Service.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/resource/rest/CreateFunctionRequestBody.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.rest">CreateFunctionRequestBody</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/resource/rest/CreateFunctionRequestBody.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.rest">CreateFunctionRequestBody</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Payload for creating a function - maps to CreatFunctionRequest.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/subscriptions/CreateSubscriptionGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions">CreateSubscriptionGovernanceActionConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/subscriptions/CreateSubscriptionGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions">CreateSubscriptionGovernanceActionConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CreateSubscriptionGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/subscriptions/CreateSubscriptionGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions">CreateSubscriptionGovernanceActionProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/subscriptions/CreateSubscriptionGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions">CreateSubscriptionGovernanceActionProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CreateSubscriptionGovernanceActionProvider is the OCF connector provider for the "Create Asset"
  Governance Action Service.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CriticalityLevel</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CriticalityLevel</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">CriticalityLevel defines how important a data item is to the organization.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/CriticalityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">CriticalityProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/CriticalityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">CriticalityProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Defines the properties for a criticality classification.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/communities/CrowdSourcingContributionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.communities">CrowdSourcingContributionProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/communities/CrowdSourcingContributionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.communities">CrowdSourcingContributionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CrowdSourcingContributionProperties provides details of the role played by an actor in building new contribution.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/communities/CrowdSourcingContributorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.communities">CrowdSourcingContributorProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/communities/CrowdSourcingContributorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.communities">CrowdSourcingContributorProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CrowdSourcingContributorProperties describes a role for a person engages in crowdsourcing new content.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/CrowdSourcingRole.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CrowdSourcingRole</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/CrowdSourcingRole.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CrowdSourcingRole</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">CrowdSourcingRole specifies the role an actor plays in crowd-sourcing the contents of an element such as a
  glossary term.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/controls/CSVFileConfigurationProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.controls">CSVFileConfigurationProperty</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/controls/CSVFileConfigurationProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.controls">CSVFileConfigurationProperty</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">CSVFileConfigurationProperty provides definitions for the configuration properties used with the CSV File connectors.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/ffdc/CSVFileConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorAuditCode</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/ffdc/CSVFileConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorAuditCode</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The CSVFileConnectorAuditCode is used to define audi log messages.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/ffdc/CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/ffdc/CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The CSVFileConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the CSV File Connector.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/CSVFileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">CSVFileProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/CSVFileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">CSVFileProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVFileProperties carries the parameters for maintaining a CSV file asset.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">CSVFileStore defines the specific connector api for working with
  CSV files.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVFileStoreConnector works with structured files to retrieve simple tables of data.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVFileStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVFileStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVFileStoreProvider is the OCF connector provider for the structured file store connector.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/controls/CSVFileTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls">CSVFileTemplateType</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/controls/CSVFileTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls">CSVFileTemplateType</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">TemplateTypeEnum characterises the type of templates supported by an integration connector.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/ffdc/CSVLineageImporterAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc">CSVLineageImporterAuditCode</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/ffdc/CSVLineageImporterAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc">CSVLineageImporterAuditCode</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The CSVLineageImporterAuditCode is used to define the message content for the OMRS Audit Log.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/CSVLineageImporterConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter">CSVLineageImporterConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/ffdc/CSVLineageImporterErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc">CSVLineageImporterErrorCode</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/CSVLineageImporterConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter">CSVLineageImporterConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/ffdc/CSVLineageImporterErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc">CSVLineageImporterErrorCode</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The CSVLineageImporterErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Basic File Connector.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/CSVLineageImporterProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter">CSVLineageImporterProvider</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/csvlineageimporter/CSVLineageImporterProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter">CSVLineageImporterProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVSurveyService is a survey action service implementation for analysing CSV Files to
  columns and profile the data in them.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/surveycsv/CSVSurveyServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyServiceProvider</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/surveycsv/CSVSurveyServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyServiceProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVSurveyServiceProvider provides the connector provider for the CSV Survey Action Service</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionConnector</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionConnector</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVTabularDataSetCollectionConnector works with collections of structured CSV files to write/retrieve simple tables of data.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionProvider</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVTabularDataSetCollectionProvider is the OCF connector provider for the Tabular Data Set Collection connector
  that manages multiple CSV tabular data sets.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetConnector</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetConnector</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVFileStoreConnector works with structured files to retrieve simple tables of data.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetProvider</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/CSVTabularDataSetProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetProvider</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CSVTabularDataSetProvider is the OCF connector provider for the Tabular Data Set connector that manages data in a CSV File.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/locations/CyberLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">CyberLocationProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/locations/CyberLocationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.locations">CyberLocationProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">CyberLocationProperties carries the parameters for marking a location as a digital (cyber) location.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataAccessManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataAccessManagerProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataAccessManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataAccessManagerProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataAccessManagerProperties describes the capability of a data access manager</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataAssetEncodingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetEncodingProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataAssetEncodingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetEncodingProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataAssetEncodingProperties provides the JavaBean for describing a data asset's encoding.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataAssetProperties is a java bean used to create assets associated with data.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/contentpacks/core/DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/contentpacks/core/DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">DataAssetTemplateDefinition</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">A description of the templates for technology specific data assets.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/DatabaseIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">DatabaseIntegrationModuleBase</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/DatabaseIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">DatabaseIntegrationModuleBase</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DatabaseIntegrationModuleBase abstracts the process of synchronizing relational metadata from Apache Atlas, so it is
  independent of the actual Apache Atlas types.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DatabaseManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DatabaseManagerProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DatabaseManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DatabaseManagerProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DatabaseManagerProperties describes the DBMS capability of a database server</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/databases/DatabaseProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases">DatabaseProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/databases/DatabaseProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases">DatabaseProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DatabaseProperties is a class for representing a generic database.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/repositoryservices/postgres/repositoryconnector/database/DatabaseStore.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">DatabaseStore</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/repositoryservices/postgres/repositoryconnector/database/DatabaseStore.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">DatabaseStore</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Manages the connection between the repository connector and the database.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/jdbc/transfer/DatabaseTransfer.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer">DatabaseTransfer</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/jdbc/transfer/DatabaseTransfer.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer">DatabaseTransfer</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Creates the database root of the metadata structure the follows</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/surveyreports/DataClassAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataClassAnnotationProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/surveyreports/DataClassAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataClassAnnotationProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataClassAnnotationProperties recommends a data class that potentially matches this data field.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassAssignmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassAssignmentProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassAssignmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassAssignmentProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">SemanticAssignmentProperties links an element to a glossary term to indicate that the glossary term describes its meaning.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DataClassAssignmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataClassAssignmentStatus</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DataClassAssignmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataClassAssignmentStatus</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataClassAssignmentStatus defines the status of the relationship between a data class and an element that represents data.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/DataClassClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataClassClient</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/DataClassClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataClassClient</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Provides services for connectors to work with data class elements.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassCompositionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassCompositionProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassCompositionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassCompositionProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataClassCompositionProperties describes the link between two data classes.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassDefinitionProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassDefinitionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataClassDefinitionProperties describes the link between an element and the related data class
  that identifies the intended associated data values.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/DataClassHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">DataClassHandler</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/DataClassHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">DataClassHandler</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Data class handler describes how to maintain and query data classes..</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassHierarchyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassHierarchyProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassHierarchyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassHierarchyProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataClassHierarchyProperties describes the inheritance link between two data classes.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/surveyreports/DataClassMatchProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataClassMatchProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/surveyreports/DataClassMatchProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataClassMatchProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataClassMatchProperties is used to link an annotation from a data class and identify how closely it matches.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataClassProperties is used to provide the characterizations of the data values stored in a data field
  described by the attached element.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/schema/display/DataContainerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataContainerProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/schema/display/DataContainerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display">DataContainerProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">SchemaAttributeProperties represents a data field that is part of a complex schema type.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataDescriptionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataDescriptionProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataDescriptionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataDescriptionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDescriptionProperties describes the properties for the DataDescription relationship.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/admin/DataDesignerAdmin.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.admin">DataDesignerAdmin</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/admin/DataDesignerAdmin.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.admin">DataDesignerAdmin</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDesignerAdmin is the class that is called by the View Server to initialize and terminate
  the Data Designer OMVS.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/datadesigner/ffdc/DataDesignerAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.datadesigner.ffdc">DataDesignerAuditCode</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/datadesigner/ffdc/DataDesignerAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.datadesigner.ffdc">DataDesignerAuditCode</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataDesignerAuditCode is used to define the message content for the OMRS Audit Log.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerInstance.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerInstance</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerInstance.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerInstance</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDesignerInstance caches references to the objects it needs for a specific server.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerInstanceHandler</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerInstanceHandler</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDesignerInstanceHandler retrieves information from the instance map for the
  view service instances.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerRegistration.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerRegistration</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerRegistration.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerRegistration</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDesignerRegistration registers the view service with the OMAG Server administration services.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/spring/DataDesignerResource.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server.spring">DataDesignerResource</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/spring/DataDesignerResource.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server.spring">DataDesignerResource</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataDesignerResource provides part of the server-side implementation of the Data Designer OMVS.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerRESTServices</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadesigner/server/DataDesignerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.datadesigner.server">DataDesignerRESTServices</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataDesignerRESTServices provides the server-side implementation of the Data Designer Open Metadata
  View Service (OMVS).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataDictionaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataDictionaryProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataDictionaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataDictionaryProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDictionaryProperties describes the core properties of a data dictionary.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/admin/DataDiscoveryAdmin.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.admin">DataDiscoveryAdmin</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/admin/DataDiscoveryAdmin.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.admin">DataDiscoveryAdmin</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDiscoveryAdmin is the class that is called by the View Server to initialize and terminate
  the Data Discovery OMVS.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/datadiscovery/ffdc/DataDiscoveryAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.datadiscovery.ffdc">DataDiscoveryAuditCode</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/datadiscovery/ffdc/DataDiscoveryAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.datadiscovery.ffdc">DataDiscoveryAuditCode</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataDiscoveryAuditCode is used to define the message content for the OMRS Audit Log.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryInstance.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryInstance</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryInstance.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryInstance</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDiscoveryInstance caches references to the objects it needs for a specific server.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryInstanceHandler</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryInstanceHandler</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDiscoveryInstanceHandler retrieves information from the instance map for the
  view service instances.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryRegistration.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryRegistration</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryRegistration.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryRegistration</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataDiscoveryRegistration registers the view service with the OMAG Server administration services.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/spring/DataDiscoveryResource.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server.spring">DataDiscoveryResource</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/spring/DataDiscoveryResource.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server.spring">DataDiscoveryResource</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataDiscoveryResource provides part of the server-side implementation of the Data Discovery OMVS.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryRESTServices.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryRESTServices</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/datadiscovery/server/DataDiscoveryRESTServices.html" title="class in org.odpi.openmetadata.viewservices.datadiscovery.server">DataDiscoveryRESTServices</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataDiscoveryRESTServices provides the server-side implementation of the Data Discovery Open Metadata
  View Service (OMVS).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/admin/DataEngineerAdmin.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.admin">DataEngineerAdmin</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/admin/DataEngineerAdmin.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.admin">DataEngineerAdmin</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataEngineerAdmin is the class that is called by the View Server to initialize and terminate
  the Data Engineer OMVS.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/dataengineer/ffdc/DataEngineerAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.dataengineer.ffdc">DataEngineerAuditCode</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/dataengineer/ffdc/DataEngineerAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.dataengineer.ffdc">DataEngineerAuditCode</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataEngineerAuditCode is used to define the message content for the OMRS Audit Log.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerInstance.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerInstance</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerInstance.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerInstance</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataEngineerInstance caches references to the objects it needs for a specific server.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerInstanceHandler</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerInstanceHandler</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataEngineerInstanceHandler retrieves information from the instance map for the
  view service instances.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerRegistration.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerRegistration</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerRegistration.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerRegistration</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataEngineerRegistration registers the view service with the OMAG Server administration services.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/spring/DataEngineerResource.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server.spring">DataEngineerResource</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/spring/DataEngineerResource.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server.spring">DataEngineerResource</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataEngineerResource provides part of the server-side implementation of the Data Engineer OMVS.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerRESTServices</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataengineer/server/DataEngineerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.dataengineer.server">DataEngineerRESTServices</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataEngineerRESTServices provides the server-side implementation of the Data Engineer Open Metadata
  View Service (OMVS).</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataFeedProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataFeedProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataFeedProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataFeedProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFeedProperties is a java bean used to create assets associated data in motion.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/surveyreports/DataFieldAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataFieldAnnotationProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/surveyreports/DataFieldAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">DataFieldAnnotationProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFieldAnnotationProperties is a common base class for annotations that are attached to a data field.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/DataFieldClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataFieldClient</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/DataFieldClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataFieldClient</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Provides services for connectors to work with data field elements.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/DataFieldHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">DataFieldHandler</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/DataFieldHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">DataFieldHandler</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Data field handler describes how to maintain and query data fields.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/DataFieldInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">DataFieldInfo</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/DataFieldInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">DataFieldInfo</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Common properties of a data field.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataFieldProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataFieldProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A description of a data field.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/DataFileCollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFileCollectionProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/DataFileCollectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFileCollectionProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFileCollectionProperties describes a collection of related files.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/DataFileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFileProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/DataFileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFileProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFileProperties describes the property of a single data file.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorForTarget</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorForTarget</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Manages the cataloguing of data files for a specific catalog target.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFilesMonitorIntegrationConnector monitors a file directory and catalogues the files it finds.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFilesMonitorIntegrationProvider is the OCF connector provider for the Data Files Monitor Integration Connector.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/DataFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataFlowProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/DataFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataFlowProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFlowProperties describe the properties for a data flow relationship.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/datafolder/DataFolderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.datafolder">DataFolderConnector</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/datafolder/DataFolderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.datafolder">DataFolderConnector</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFolderConnector works with folders to retrieve simple objects.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/datafolder/ffdc/DataFolderConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc">DataFolderConnectorErrorCode</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/datastore/datafolder/ffdc/DataFolderConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc">DataFolderConnectorErrorCode</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataFolderConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Data Folder Connector.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFolderMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorForTarget</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFolderMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorForTarget</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFolderMonitorIntegrationConnector monitors a file directory that is linked to a DataFolder asset and
  maintains the update time of the DataFolder each time one of the files or embedded directories change in some way.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFolderMonitorIntegrationProvider is the OCF connector provider for the Data Folder Monitor Integration Connector.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/DataFolderProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFolderProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/DataFolderProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFolderProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFolderProperties describes a folder where the files mak up a data set.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/datafolder/DataFolderProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.datafolder">DataFolderProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/datastore/datafolder/DataFolderProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.datafolder">DataFolderProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataFolderProvider is the OCF connector provider for the data folder connector.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/DataItemOwnerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">DataItemOwnerProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/actors/DataItemOwnerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.actors">DataItemOwnerProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataItemOwnerProperties describes a role for a person who is responsible for a data item as it flows between systems.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataItemSortOrder</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DataItemSortOrder</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">DataItemSortOrder is used for schema attributes that may have multiple instances.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataManagerProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataManagerProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">EngineProperties describes the properties of an engine.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/DataMappingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataMappingProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/DataMappingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataMappingProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataMappingProperties describe the properties for a data mapping relationship.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataMovementEngineProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataMovementEngineProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataMovementEngineProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataMovementEngineProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataMovementEngineProperties describes the Data Movement engine capability of a server</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/admin/DataOfficerAdmin.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.admin">DataOfficerAdmin</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/admin/DataOfficerAdmin.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.admin">DataOfficerAdmin</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataOfficerAdmin is the class that is called by the View Server to initialize and terminate
  the Data Officer OMVS.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/dataofficer/ffdc/DataOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.dataofficer.ffdc">DataOfficerAuditCode</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/viewservices/dataofficer/ffdc/DataOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.viewservices.dataofficer.ffdc">DataOfficerAuditCode</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataOfficerAuditCode is used to define the message content for the OMRS Audit Log.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerInstance.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerInstance</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerInstance.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerInstance</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataOfficerInstance caches references to the objects it needs for a specific server.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerInstanceHandler</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerInstanceHandler</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataOfficerInstanceHandler retrieves information from the instance map for the
  view service instances.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerRegistration.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerRegistration</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerRegistration.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerRegistration</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataOfficerRegistration registers the view service with the OMAG Server administration services.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/spring/DataOfficerResource.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server.spring">DataOfficerResource</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/spring/DataOfficerResource.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server.spring">DataOfficerResource</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataOfficerResource provides part of the server-side implementation of the Data Officer OMVS.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerRESTServices</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/viewservices/dataofficer/server/DataOfficerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.dataofficer.server">DataOfficerRESTServices</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The DataOfficerRESTServices provides the server-side implementation of the Data Officer Open Metadata
  View Service (OMVS).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/dataprocessing/DataProcessingActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingActionProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/dataprocessing/DataProcessingActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingActionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataProcessingActionProperties describes some specific processing that is being performed on
  one or more data targets.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/dataprocessing/DataProcessingDescriptionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingDescriptionProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/dataprocessing/DataProcessingDescriptionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingDescriptionProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">
  DataProcessingDescriptionProperties describes a data processing routine.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/governanceprogram/DataProcessingPurposeDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceprogram">DataProcessingPurposeDefinition</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/governanceprogram/DataProcessingPurposeDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceprogram">DataProcessingPurposeDefinition</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataProcessingPurposeDefinition is used to feed the definition of the data processing purposes for
  Coco Pharmaceuticals scenarios.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/dataprocessing/DataProcessingPurposeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingPurposeProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/dataprocessing/DataProcessingPurposeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing">DataProcessingPurposeProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A data processing purpose describes an allowable type of processing that can occur on the attached data asset.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataScopeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataScopeProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataScopeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataScopeProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataAssetEncodingProperties provides the JavaBean for describing a data asset's encoding.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetContentProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetContentProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataSetContentProperties defines a query on an asset that returns all or part of the values for a dataset.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataSetProperties is a class for representing a generic data set.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/DataSourceFormat.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">DataSourceFormat</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/DataSourceFormat.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">DataSourceFormat</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">Data source format</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataSpecProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataSpecProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataSpecProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataSpecProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataSpecProperties describes the core properties of a data specification.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/businesssystems/DataStoreDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.businesssystems">DataStoreDefinition</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/businesssystems/DataStoreDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.businesssystems">DataStoreDefinition</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DataStoreDefinition is used to feed the definition of the organization's data stores for Coco Pharmaceuticals scenarios.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataStoreProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataStoreProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataStoreProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataStoreProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataStoreProperties provides the JavaBean for describing a data store.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/DataStructureClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataStructureClient</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/DataStructureClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataStructureClient</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Provides services for connectors to work with data structure elements.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataStructureDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataStructureDefinitionProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataStructureDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataStructureDefinitionProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataStructureDefinitionProperties describes the link between a data quality certification type and the
  data structure it uses to validate data.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/DataStructureHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">DataStructureHandler</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/DataStructureHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">DataStructureHandler</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Data structure handler describes how to maintain and query data structures.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataStructureProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataStructureProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataStructureProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataStructureProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Defines the root structure for a data structure within a data specification.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">DataType identifies the type for a data item.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/samples/archiveutilities/cloudinformationmodel/properties/DataType.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">DataType</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/samples/archiveutilities/cloudinformationmodel/properties/DataType.html" title="class in org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties">DataType</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataType describes a primitive data type in the model.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/glossaries/DataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">DataValueProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/glossaries/DataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">DataValueProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataValueProperties is used to provide the properties for a DataValue classification.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataVirtualizationEngineProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataVirtualizationEngineProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/softwarecapabilities/DataVirtualizationEngineProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">DataVirtualizationEngineProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataVirtualizationEngineProperties describes the Data Virtualization engine capability of a server</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DateResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DateResponse</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DateResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DateResponse</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DateResponse is the response structure used on OMAG REST API calls that return a date response.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DaysOfWeekGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGovernanceActionConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DaysOfWeekGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGovernanceActionConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DaysOfWeekGovernanceActionConnector uses the current time to output the day of the week as a guard.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DaysOfWeekGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGovernanceActionProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DaysOfWeekGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGovernanceActionProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DaysOfWeekGovernanceActionProvider is the OCF connector provider for the "Days Of the Week" Governance Action Service.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DaysOfWeekGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGuard</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DaysOfWeekGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGuard</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adminservices/properties/DedicatedTopicList.html" title="class in org.odpi.openmetadata.adminservices.properties">DedicatedTopicList</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adminservices/properties/DedicatedTopicList.html" title="class in org.odpi.openmetadata.adminservices.properties">DedicatedTopicList</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DedicatedTopicList returns the names of the topics used for the dedicated topic structure.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adminservices/rest/DedicatedTopicListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">DedicatedTopicListResponse</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adminservices/rest/DedicatedTopicListResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">DedicatedTopicListResponse</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DedicatedTopicListResponse returns the names of the topics used for the dedicated topic structure.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/repositoryservices/events/future/DelegatableFuture.html" title="class in org.odpi.openmetadata.repositoryservices.events.future">DelegatableFuture</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/repositoryservices/events/future/DelegatableFuture.html" title="class in org.odpi.openmetadata.repositoryservices.events.future">DelegatableFuture</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Future that starts out as unfinished can can be delegated
  to a different Future once processing takes place.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DeleteAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DeleteAssetGovernanceActionConnector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DeleteAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DeleteAssetGovernanceActionConnector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeleteAssetGovernanceActionConnector deleted an asset and passes its GUID as an action target for follow on work.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DeleteAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DeleteAssetGovernanceActionProvider</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/DeleteAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DeleteAssetGovernanceActionProvider</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeleteAssetGovernanceActionProvider is the OCF connector provider for the "Delete Asset"
  Governance Action Service.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteClassificationRequestBody</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">DeleteElementRequestBody carries the options for a delete element.</div>
-</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteElementRequestBody</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteClassificationRequestBody</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeleteElementRequestBody carries the options for a delete element.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteElementRequestBody</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">DeleteElementRequestBody carries the options for a delete element.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">Defines the type of delete method to use.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">UpdateOptions provides a structure for the additional options when updating an element.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeleteRelationshipRequestBody carries the options for a delete element.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeleteRequestBody carries the options for a delete element.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/Dependency.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">Dependency</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/Dependency.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">Dependency</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Describes a dependency of a SQL object.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/DependencyList.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">DependencyList</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/DependencyList.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">DependencyList</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Dependency list</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DependentContextEventProperties is a java bean used to describe a link between context events.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/analytics/DeployedAnalyticsModelProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics">DeployedAnalyticsModelProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/analytics/DeployedAnalyticsModelProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics">DeployedAnalyticsModelProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeployedAnalyticsModelProperties describes an analytics model.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/apis/DeployedAPIProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis">DeployedAPIProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/apis/DeployedAPIProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis">DeployedAPIProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeployedAPIProperties is a class for representing an API deployed to an API Gateway or supported by an application.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/connectors/DeployedConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors">DeployedConnectorProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/connectors/DeployedConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors">DeployedConnectorProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeployedConnectorProperties defines the properties of a connector that is in a runnable state.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/databases/DeployedDatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases">DeployedDatabaseSchemaProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/databases/DeployedDatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases">DeployedDatabaseSchemaProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeployedDatabaseSchemaProperties is a class for representing the top level database schema.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">DeployedImplementationType describes the standard deployed implementation types supplied with Egeria.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationTypeDefinition</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">DeployedImplementationType describes the standard deployed implementation types supplied with Egeria.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/infrastructure/DeployedOnProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure">DeployedOnProperties</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/infrastructure/DeployedOnProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure">DeployedOnProperties</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeployedOnProperties describes the properties for the DeployedOn relationship between an IT Infrastructure asset
  and a destination asset.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedSoftwareComponentProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/DeployedSoftwareComponentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">DeployedSoftwareComponentProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DeployedSoftwareComponentProperties defines the properties of a software component that is in a runnable state.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/DeploymentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeploymentStatus</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The DeploymentStatus defines the status of an infrastructure element in the metadata collection.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeploymentStatusFilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeploymentStatusFilterRequestBody</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">DeploymentStatusFilterRequestBody provides a structure for passing the status.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeploymentStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeploymentStatusRequestBody</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">DeploymentStatusRequestBody provides a structure for passing the status.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeploymentStatusSearchString.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeploymentStatusSearchString</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">A request body that allows the status of an authored referenceable to be included in the search criteria.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/samples/archiveutilities/organization/DeptDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.organization">DeptDefinition</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab3">
