@@ -14,12 +14,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * A specifies common values for the assignmentType attribute of
  * the AssignmentScope relationship.
  * <ul>
- *     <li>CONTRIBUTOR - Individual is able to be a contributing member of the initiative.  This is the default.</li>
- *     <li>ADMINISTRATOR - Individual is able to administer the initiative.</li>
+ *     <li>CONTRIBUTOR - Individual is a contributing member of the initiative.  This is the default.</li>
+ *     <li>ADMINISTRATOR - Individual administers the initiative.</li>
  *     <li>LEADER - Individual leads the activity of the initiative.</li>
  *     <li>OWNER - Individual sets the direction of the initiative.</li>
  *     <li>OBSERVER - Individual is observing the work of the initiative, but has no special responsibilities.</li>
  *     <li>SPONSOR - Individual is funding/supporting the work of the initiative.</li>
+ *     <li>DISCUSSION_LEADER - Individual responsible for leading discussions about a topic area within the initiative.</li>
+ *     <li>TECHNICAL_SUPPORT - Individual responsible for managing technical aspects of the initiative.  This can include investigating and fixing technical issues.</li>
  *     <li>OTHER - Another meaning.</li>
  * </ul>
  */
@@ -28,13 +30,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AssignmentType implements OpenMetadataEnum
 {
-    CONTRIBUTOR   (0,  "959cae9b-218f-4254-8a79-721d568372bd",  "Contributor",   "Individual is able to be a contributing member of the initiative.", true),
-    ADMINISTRATOR (1,  "35201771-3ca2-4b7a-9dd1-77aa0224abe8",  "Administrator", "Individual is able to administer the initiative.", false),
-    LEADER        (2,  "d4f5dfdc-39d6-47c1-8dfb-077b5f7244d7",  "Leader",        "Individual leads the activity of the initiative.", false),
-    OWNER         (3,  "6abc57c6-1979-4265-852e-ad8b782a3cb5",  "Owner",        "Individual sets the direction of the initiative.", false),
-    OBSERVER      (4,  "c1bd838c-f5be-4464-aee9-bcf0ff07ec32",  "Observer",      "Individual is observing the  work of the initiative, but has no special responsibilities.", false),
-    SPONSOR       (5,  "9549988d-5a40-4734-ba72-4d6cf6e1fffb",  "Sponsor",      "Individual is funding/supporting the work of the initiative.", false),
-    OTHER         (99, "1c9fd81c-d22a-4aca-b2f3-469088ff7887",  "Other",         "Another meaning.", false);
+    CONTRIBUTOR       (0,  "959cae9b-218f-4254-8a79-721d568372bd",  "Contributor",       "Individual is a contributing member of the initiative.", true),
+    ADMINISTRATOR     (1,  "35201771-3ca2-4b7a-9dd1-77aa0224abe8",  "Administrator",     "Individual administers the initiative.", false),
+    LEADER            (2,  "d4f5dfdc-39d6-47c1-8dfb-077b5f7244d7",  "Leader",            "Individual leads the initiative.", false),
+    OWNER             (3,  "6abc57c6-1979-4265-852e-ad8b782a3cb5",  "Owner",             "Individual sets the direction of the initiative.", false),
+    OBSERVER          (4,  "c1bd838c-f5be-4464-aee9-bcf0ff07ec32",  "Observer",          "Individual is observing the work of the initiative, but has no special responsibilities.", false),
+    SPONSOR           (5,  "9549988d-5a40-4734-ba72-4d6cf6e1fffb",  "Sponsor",           "Individual is funding/supporting the work of the initiative.", false),
+    DISCUSSION_LEADER (6,  "7d2d6d51-da67-40d3-99d2-03ca3760175f",  "Discussion Leader", "Individual responsible for leading discussions about a topic area within the initiative.", false),
+    TECHNICAL_SUPPORT (7,  "744915c2-638c-4ac0-af96-2910299bed4b",  "Technical Support", "Individual responsible for managing technical aspects of the initiative.  This can include investigating and fixing technical issues.", false),
+    OTHER             (99, "1c9fd81c-d22a-4aca-b2f3-469088ff7887",  "Other",             "Another assignment type.", false);
 
 
     private final String         descriptionGUID;

@@ -1,0 +1,142 @@
+# Egeria-jacquard-actors
+# This client collection explores and updates the actors associated with the Jacquard Digital Product Loom.
+# Note: this assumes that the CocoComboArchive.omarchive content pack is loaded since it has the actor
+# information for the Coco Pharmaceuticals actors.
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# Find all of the roles associated with the Open Metadata Digital Product Catalog
+# https://egeria-project.org/concepts/actor-role
+
+###
+# @name find all ActorRoles for the Open Metadata Digital Product Catalog
+# Retrieve the list of actor profile metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "OpenMetadataDigitalProduct",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "skipRelationships" : [ "ActionTarget", "NotificationSubscriber", "TargetForGovernanceAction"],
+  "startFrom" : 0,
+  "pageSize": 100
+}
+
+###
+# @name get the Product Manager for the Valid Metadata Value Set List
+# Returns the product manager for the named product
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Product Manager for Valid Metadata Value Set List"
+}
+
+###
+# =====================================================================================================================
+# Appoint someone to an Open Metadata Digital Product Catalog Role
+
+@personRoleGUID=add guid here
+@personProfileGUID=add guid here
+
+###
+# @name linkPersonRoleToProfile
+# Attach a person role to a person profile.
+#
+# @param personRoleGUID       unique identifier of the person role
+# @param personProfileGUID            unique identifier of the person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "PersonRoleAppointmentProperties",
+    "isPublic": true,
+    "expectedTimeAllocationPercent": 100,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# @name detachPersonRoleFromProfile
+# Detach a person role from a profile.
+#
+# @param personRoleGUID       unique identifier of the person role
+# @param personProfileGUID            unique identifier of the person profile
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "deleteMethod": "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

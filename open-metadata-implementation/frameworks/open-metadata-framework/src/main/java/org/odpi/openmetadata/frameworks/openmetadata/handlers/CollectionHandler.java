@@ -1708,10 +1708,17 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                                                       queryOptions,
                                                                                       0);
 
+        String membershipName = "Collection Hierarchy";
+
+        if ((queryOptions != null) && (queryOptions.getGraphQueryDepth() != 0))
+        {
+            membershipName = membershipName + " - query depth=" + queryOptions.getGraphQueryDepth();
+        }
+
         if (collectionHierarchy != null)
         {
             OpenMetadataRootHierarchyMermaidGraphBuilder graphBuilder = new OpenMetadataRootHierarchyMermaidGraphBuilder(collectionHierarchy,
-                                                                                                                         "Collection Membership",
+                                                                                                                         membershipName,
                                                                                                                          VisualStyle.COLLECTION);
 
             collectionHierarchy.setMermaidGraph(graphBuilder.getMermaidGraph());

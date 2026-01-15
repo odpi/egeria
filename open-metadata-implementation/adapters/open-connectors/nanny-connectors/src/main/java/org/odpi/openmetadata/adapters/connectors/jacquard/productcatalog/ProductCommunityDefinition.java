@@ -62,7 +62,7 @@ public enum ProductCommunityDefinition
      */
     public String getQualifiedName()
     {
-        return "Community::OpenMetadataProductCatalog" + identifier;
+        return "Community::OpenMetadataDigitalProduct::" + identifier;
     }
 
     /**

@@ -20,8 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchOptions extends QueryOptions
 {
-    private boolean startsWith = true;
-    private boolean endsWith   = true;
+    private boolean startsWith = false;
+    private boolean endsWith   = false;
     private boolean ignoreCase = true;
 
 

@@ -323,8 +323,8 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
 
 
     /**
-     * This is the point where the platforms are queried for servers.  The aim is to catalog all servers only once,
-     * irrespective of how many platforms it is deployed to.  Hence, the server does not have platform information
+     * This is the point where the platforms are queried for servers.  The aim is to catalog each server only once,
+     * even if it is deployed to multiple platforms.  Hence, the server does not have platform information
      * included in its properties.
      */
     private synchronized void processPlatforms()

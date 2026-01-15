@@ -67,16 +67,6 @@ public enum ProductSubscriptionDefinition
     }
 
 
-    /**
-     * Returns the unique name for the subject area entity.
-     *
-     * @return qualified name
-     */
-    public String getQualifiedName()
-    {
-        return "OpenMetadataProductCatalog::DigitalSubscription::" + identifier + "::" + displayName;
-    }
-
 
     /**
      * Returns the unique identifier for the subscription manager's governance action type.
@@ -148,7 +138,7 @@ public enum ProductSubscriptionDefinition
     public String toString()
     {
         return "ProductSubscriptionDefinition{" +
-                "connectorProviderClassName='" + governanceActionTypeGUID + '\'' +
+                "governanceActionTypeGUID='" + governanceActionTypeGUID + '\'' +
                 ", identifier='" + identifier + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +

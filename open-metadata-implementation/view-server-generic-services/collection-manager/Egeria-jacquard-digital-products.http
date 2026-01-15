@@ -27,6 +27,20 @@ Content-Type: application/json
 
 
 ###
+# @name getCollectionsByName
+# Returns the list of collections with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Open Metadata Digital Product Catalog"
+}
+
+> {% client.global.set("digitalProductCatalogGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
 # @name findDigitalProducts
 # https://egeria-project.org/concepts/digital-product
 # Returns the list of digital products matching the search string and optional deployment status.
@@ -41,27 +55,47 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/by-search-string
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "DeploymentStatusSearchString",
-  "searchString" : "Data Product Development Journey",
-  "deploymentStatus" : "ACTIVE",
+  "metadataElementTypeName" : "DigitalProductCatalog",
   "startsWith" : false,
   "endsWith" : false,
-  "ignoreCase" : true,
-  "startFrom" : 0,
-  "pageSize": 0,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
+  "ignoreCase" : true
 }
+
+> {% set("digitalProductGUID", response.body.elements); %}
+
+
+###
+# @name getCollectionHierarchy
+# Return a hierarchy of nested collections. Request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalProductCatalogGUID}}/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "graphQueryDepth" : 2
+}
+
+
+###
+# @name getCollectionHierarchy
+# Return a hierarchy of nested collections. Request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalProductCatalogGUID}}/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "graphQueryDepth" : 3
+}
+
+
 
 ###
 # @name getDigitalProductByCategory
@@ -84,40 +118,10 @@ Content-Type: application/json
 
 {
   "class" : "DeploymentStatusFilterRequestBody",
-  "filter" : "xxx",
-  "deploymentStatus" : "ACTIVE",
-  "startFrom" : 0,
-  "pageSize": 0,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
+  "filter" : "Reference Data",
+  "pageSize" : 10
 }
 
-
-###
-# @name getCollectionsByName
-# Returns the list of collections with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FilterRequestBody",
-  "filter" : "xxx",
-  "startFrom" : 0,
-  "pageSize": 0,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
-}
 
 
 ###
