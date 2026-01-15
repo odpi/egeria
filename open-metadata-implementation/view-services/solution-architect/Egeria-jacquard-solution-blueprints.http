@@ -1,0 +1,95 @@
+# Egeria-jacquard-solution-blueprints
+# This scenario extracts different views of the solution blueprints associated with the
+# Open Metadata Digital Product Catalog.
+# https://egeria-project.org/concepts/solution-blueprint
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Retrieve the Solution Blueprints
+
+
+###
+# @name find all Open Metadata Digital Product Catalog solution blueprints
+# This solution blueprint shows an overview of the processing to set up, search and manage subscriptions to
+# Digital Products built from open metadata.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Open Metadata Digital Product Catalog Solution Blueprint",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+###
+# @name get Open Metadata Digital Product Catalog Overview solution blueprint
+# This solution blueprint shows an overview of the processing to set up, search and manage subscriptions to
+# Digital Products built from open metadata.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Open Metadata Digital Product Catalog Solution Blueprint"
+}
+
+
+###
+# @name get Jacquard Digital Product Loom Solution Blueprint
+# Retrieve the solution bluprint that focuses on Jacquard's behaviour.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Jacquard Digital Product Loom Solution Blueprint"
+}
+
+###
+
+# @name get Open Metadata Digital Product Subscriptions Solution Blueprint
+# Returns the list of solution blueprints with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Open Metadata Digital Product Subscriptions Solution Blueprint"
+}
+
+
+###
+
+# @name get Open Metadata Digital Product Community Solution Blueprint
+# Returns the list of solution blueprints with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Open Metadata Digital Product Community Solution Blueprint"
+}

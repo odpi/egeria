@@ -30,13 +30,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SolutionActorRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
@@ -56,6 +57,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
@@ -301,6 +303,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         return "Valid values for open metadata property: " + propertyName;
     }
 
+
     /**
      * Make sure data sources are set up for all valid value sets.
      * It extracts the valid metadata value list from the catalog targets
@@ -459,7 +462,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * First time, so the product needs to be created, along with its subscription options,
          * solution blueprint, data spec, notification type and asset.  The asset needs to be
-         * registered as a catalog-target.
+         * registered as a Catalog Target.
          */
         DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
         digitalProductProperties.setIntroductionDate(new Date());
@@ -485,34 +488,48 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                             JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
                                                                                              productGUID,
                                                                                              productDefinition.getProductName()));
-        /*
-         * Link the product manager
-         */
-        String productManagerGUID = null;
-        if (productDefinition.getProductManager() != null)
-        {
-            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
 
-            assignmentScopeProperties.setAssignmentType("product manager");
-            productManagerGUID = productRoles.get(productDefinition.getProductManager().getQualifiedName());
-
-            collectionClient.linkProductManager(productGUID,
-                                                productManagerGUID,
-                                                new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                assignmentScopeProperties);
-        }
+        OpenMetadataRootElement productElement = collectionClient.getCollectionByGUID(productGUID, collectionClient.getGetOptions());
 
         /*
-         * Link the product developer
+         * Link the product manager - each product needs its own product manager.  This project manager is a member
+         * of the appropriate community
          */
-        if (productDefinition.getProductDeveloper() != null)
-        {
-            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+        ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
 
-            assignmentScopeProperties.setAssignmentType("product developer");
-            String productDeveloperGUID = productRoles.get(productDefinition.getProductDeveloper().getQualifiedName());
-            classificationManagerClient.assignActorToElement(productGUID,
-                                                             productDeveloperGUID,
+        PersonRoleProperties personRoleProperties = new PersonRoleProperties();
+
+        personRoleProperties.setQualifiedName(productDefinition.getQualifiedName() + "_productManager");
+        personRoleProperties.setDisplayName("Product Manager for " + productDefinition.getProductName());
+        personRoleProperties.setDescription(ProductRoleDefinition.PRODUCT_MANAGER.getDescription());
+
+        AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+
+        assignmentScopeProperties.setAssignmentType(AssignmentType.OWNER.getName());
+        assignmentScopeProperties.setDescription(AssignmentType.OWNER.getDescription());
+
+        NewElementOptions roleOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+
+        roleOptions.setIsOwnAnchor(false);
+        roleOptions.setAnchorGUID(productGUID);
+        roleOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+
+        roleOptions.setParentGUID(productGUID);
+        roleOptions.setParentAtEnd1(false);
+        roleOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
+
+        String productManagerGUID = actorRoleClient.createActorRole(roleOptions,
+                                                                    null,
+                                                                    personRoleProperties,
+                                                                    assignmentScopeProperties);
+
+        if ((productManagerGUID != null) && (productDefinition.getCommunity() != null))
+        {
+            assignmentScopeProperties.setAssignmentType(AssignmentType.DISCUSSION_LEADER.getName());
+            assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
+
+            classificationManagerClient.assignActorToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
+                                                             productManagerGUID,
                                                              new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                              assignmentScopeProperties);
         }
@@ -522,9 +539,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         if (productDefinition.getProductSupport() != null)
         {
-            AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+            assignmentScopeProperties = new AssignmentScopeProperties();
 
-            assignmentScopeProperties.setAssignmentType("product support");
+            assignmentScopeProperties.setAssignmentType(AssignmentType.TECHNICAL_SUPPORT.getName());
+            assignmentScopeProperties.setDescription(AssignmentType.TECHNICAL_SUPPORT.getDescription());
+
             String productSupportGUID = productRoles.get(productDefinition.getProductSupport().getQualifiedName());
 
             classificationManagerClient.assignActorToElement(productGUID,
@@ -553,37 +572,48 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Link the community to the product family if defined
          */
-        String communityNoteLogGUID = null;
-        if ((OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName.equals(productDefinition.getTypeName())) && (productDefinition.getCommunity() != null))
+        if ((propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName)) && (productDefinition.getCommunity() != null))
         {
-            communityNoteLogGUID = communityNoteLogs.get(productDefinition.getCommunity().getQualifiedName());
-
-            classificationManagerClient.addScopeToElement(communityNoteLogGUID,
+            classificationManagerClient.addScopeToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
                                                           productGUID,
                                                           new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
                                                           null);
         }
 
         /*
-         * The data specification lists all of the data fields for this product.
+         * Extract the note log if there is a community for this product
+         */
+        String communityNoteLogGUID = null;
+        if (productDefinition.getCommunity() != null)
+        {
+            communityNoteLogGUID = communityNoteLogs.get(productDefinition.getCommunity().getQualifiedName());
+        }
+
+        /*
+         * The data specification lists all the data fields for this product.
          */
         this.addDataSpec(productDefinition, productGUID);
 
         /*
          * This asset has a connector to a connector that is able to mine open metadata to create a particular product.
+         * Product families do not have an asset.
          */
-        String productAssetGUID = this.addProductAsset(productDefinition, productGUID);
+        String productAssetGUID = null;
+        if (! propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))
+        {
+            productAssetGUID = this.addProductAsset(productDefinition, productGUID);
+        }
 
         /*
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productGUID, productAssetGUID, communityNoteLogGUID, productManagerGUID);
+        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, communityNoteLogGUID, productManagerGUID);
 
         /*
          * Register each product as a catalog target, so it is refreshed.
          */
-        if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(productDefinition.getTypeName()))
+        if (productAssetGUID != null)
         {
             AssetClient assetClient = integrationContext.getAssetClient();
 
@@ -752,6 +782,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                           digitalProductProperties);
     }
 
+
     /**
      * Create a DigitalProductProperties object from a ProductDefinition.
      *
@@ -791,7 +822,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * actor.
      *
      * @param productDefinition description of product
-     * @param productGUID unique identifier of the product
+     * @param productHeader unique identifier and type for the product
      * @param productAssetGUID unique identifier for the asset that represents the product
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
@@ -802,7 +833,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected.
      */
     private void addSubscriptionTypes(ProductDefinition productDefinition,
-                                      String            productGUID,
+                                      ElementHeader     productHeader,
                                       String            productAssetGUID,
                                       String            communityNoteLogGUID,
                                       String            productManagerGUID) throws InvalidParameterException,
@@ -816,7 +847,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 if (productAssetGUID != null)
                 {
                     addNotificationType(productSubscriptionDefinition,
-                                        productGUID,
+                                        productHeader,
                                         productDefinition.getProductName(),
                                         productAssetGUID,
                                         communityNoteLogGUID,
@@ -824,7 +855,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 }
 
                 addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
-                                                       productGUID,
+                                                       productHeader.getGUID(),
                                                        productSubscriptionDefinition,
                                                        productManagerGUID);
             }
@@ -838,7 +869,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * actor.
      *
      * @param productSubscriptionDefinition description of the subscription type that is supported by the product
-     * @param productGUID unique identifier of the product
+     * @param productHeader unique identifier and type for the product
      * @param productName name of the product
      * @param productAssetGUID unique identifier for the asset that represents the product
      * @param communityNoteLogGUID unique identifier of the community's note log
@@ -850,7 +881,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected.
      */
     private void addNotificationType(ProductSubscriptionDefinition productSubscriptionDefinition,
-                                     String                        productGUID,
+                                     ElementHeader                 productHeader,
                                      String                        productName,
                                      String                        productAssetGUID,
                                      String                        communityNoteLogGUID,
@@ -866,15 +897,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
 
-        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productGUID + "::" + productSubscriptionDefinition.getIdentifier());
+        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productHeader.getGUID() + "::" + productSubscriptionDefinition.getIdentifier());
         notificationTypeProperties.setIdentifier(productSubscriptionDefinition.getIdentifier());
-        notificationTypeProperties.setDisplayName("Notification type for " + productSubscriptionDefinition.getDisplayName());
+        notificationTypeProperties.setDisplayName("Notification type for '" + productSubscriptionDefinition.getDisplayName() + "' for product '" + productName + "'");
         notificationTypeProperties.setDescription(productSubscriptionDefinition.getDescription());
 
         NewElementOptions newElementOptions = new NewElementOptions(notificationTypeClient.getMetadataSourceOptions());
 
-        newElementOptions.setAnchorGUID(productGUID);
-        newElementOptions.setAnchorScopeGUID(productGUID);
+        newElementOptions.setAnchorGUID(productHeader.getGUID());
+        newElementOptions.setAnchorScopeGUID(productHeader.getGUID());
         newElementOptions.setIsOwnAnchor(false);
 
         String notificationTypeGUID = notificationTypeClient.createGovernanceDefinition(newElementOptions,
@@ -887,7 +918,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * and subscribers are attached to ensure the notification watchdog sees their attachment events and
          * sends out the welcome messages.
          */
-        String engineActionGUID = this.activateNotificationWatchdog(productGUID, productManagerGUID, productSubscriptionDefinition, notificationTypeGUID);
+        String engineActionGUID = this.activateNotificationWatchdog(productHeader.getGUID(), productManagerGUID, productSubscriptionDefinition, notificationTypeGUID);
 
         MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
@@ -898,7 +929,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
 
-        if (communityNoteLogGUID != null)
+        /*
+         * Link any note log only to leaf products.
+         */
+        if ((communityNoteLogGUID != null) && (propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName)))
         {
             notificationSubscriberProperties.setLabel("community notifications");
             notificationSubscriberProperties.setDescription("A note log collects the notifications from the notification watchdog manager: " + engineActionGUID);
@@ -1156,7 +1190,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                      connectionProperties.getDisplayName(), connectionGUID));
 
             /*
-             * Pass on all of the secrets stores to the product asset.  These secret stores are set up
+             * Pass on all the secrets stores to the product asset.  These secret stores are set up
              * initially in the content pack for this connector.
              */
             for (String purpose : secretsStoreConnectorMap.keySet())
@@ -1220,6 +1254,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                  */
                 EndpointProperties secretsStoreEndpoint = new EndpointProperties();
                 secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
+                secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
                 secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
 
                 newElementOptions.setParentAtEnd1(true);
@@ -1455,7 +1490,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
         /*
-         * All of the digital products use the same solution design, so it is attached at the top.
+         * All the digital products use the same solution design, so it is attached at the top.
          */
         CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
         solutionBlueprintClient.linkSolutionDesign(topLevelGUID,
@@ -1751,7 +1786,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         CommunityClient communityClient = integrationContext.getCommunityClient();
 
         /*
-         * If the community is already present then return its GUID
+         * If the community exists, then return its GUID
          */
         List<OpenMetadataRootElement> existingCommunities = communityClient.getCommunitiesByName(productCommunityDefinition.getQualifiedName(), null);
 
@@ -1785,10 +1820,22 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
         newElementOptions.setIsOwnAnchor(true);
 
+        /*
+         * Add the Jacquard support role as a member of each community.
+         * Product managers are also added later when the product is created.
+         */
+        newElementOptions.setParentAtEnd1(false);
+        newElementOptions.setParentGUID(productRoles.get(ProductRoleDefinition.JACQUARD_SUPPORT.getQualifiedName()));
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
+
+        AssignmentScopeProperties assignmentScopeProperties = new AssignmentScopeProperties();
+        assignmentScopeProperties.setAssignmentType(AssignmentType.DISCUSSION_LEADER.getName());
+        assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
+
         String communityGUID = communityClient.createCommunity(newElementOptions,
                                                                null,
                                                                communityProperties,
-                                                               null);
+                                                               assignmentScopeProperties);
 
         auditLog.logMessage(methodName,
                             JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
@@ -1801,7 +1848,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Add all of the defined communities.
+     * Add all the defined communities.
      *
      * @return map of qualified names to GUIDs
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -2180,23 +2227,200 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
     /**
      * Locates/creates the solution blueprint for the open metadata digital products.
+     * All solution components are added to the top-level solution blueprint.  They are anchored to it as well.
+     * Other solution blueprints are also anchored to the top-level solution blueprint and become collection members.
+     * Their membership is determined by the definitions in the solution component enum.
      *
      * @return guid of the blueprint or null if no blueprint can be created
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
      */
     private String getSolutionBlueprint() throws InvalidParameterException,
-                                                 PropertyServerException,
-                                                 UserNotAuthorizedException
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         final String methodName = "getSolutionBlueprint";
 
-        String blueprintQualifiedName = ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getQualifiedName();
+        CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
+
+        NewElementOptions newElementOptions = new NewElementOptions(solutionBlueprintClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+        newElementOptions.setIsOwnAnchor(true);
+
+        String blueprintGUID = findSolutionBlueprint(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER, newElementOptions);
+
+        if (blueprintGUID != null)
+        {
+            /*
+             * This ensures all the solution components and nested blueprints are anchored to the top level
+             * solution blueprint - and are linked with the collection membership relationship,
+             */
+            newElementOptions.setAnchorGUID(blueprintGUID);
+            newElementOptions.setParentGUID(blueprintGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+            newElementOptions.setParentAtEnd1(true);
+
+            SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
+            Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
+
+            /*
+             * Add the solution components to the blueprints.  A map of qualifiedNames to GUIDs is maintained to
+             * enable the components to be linked together - and to their solution roles.
+             */
+            for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
+            {
+                String componentQualifiedName = solutionComponentDefinition.getQualifiedName();
+                String componentGUID          = null;
+
+                List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, null);
+
+                if (solutionComponents != null)
+                {
+                    for (OpenMetadataRootElement solutionComponent : solutionComponents)
+                    {
+                        if (solutionComponent != null)
+                        {
+                            /*
+                             * Component already exists
+                             */
+                            componentGUID = solutionComponent.getElementHeader().getGUID();
+                            break;
+                        }
+                    }
+                }
+
+                if (componentGUID == null)
+                {
+                    SolutionComponentProperties solutionComponentProperties = new SolutionComponentProperties();
+
+                    solutionComponentProperties.setQualifiedName(componentQualifiedName);
+                    solutionComponentProperties.setDisplayName(solutionComponentDefinition.getDisplayName());
+                    solutionComponentProperties.setDescription(solutionComponentDefinition.getDescription());
+                    solutionComponentProperties.setVersionIdentifier(solutionComponentDefinition.getVersionIdentifier());
+                    solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
+                    solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
+
+                    componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions,
+                                                                                    null,
+                                                                                    solutionComponentProperties,
+                                                                                    null);
+
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                             OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                                             solutionComponentDefinition.getDisplayName(),
+                                                                                                             componentGUID));
+                }
+
+                qualifiedNameToGUIDMap.put(componentQualifiedName, componentGUID);
+            }
+
+            /*
+             * Link the components together
+             */
+
+            for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
+            {
+                SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
+
+                solutionLinkingWireProperties.setLabel(solutionComponentWire.getLabel());
+                solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
+
+                solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
+                                                                qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
+                                                                new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
+                                                                solutionLinkingWireProperties);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                            OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                            solutionComponentWire.getComponent1().getQualifiedName(),
+                                                                                            OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                            solutionComponentWire.getComponent2().getQualifiedName(),
+                                                                                            OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
+            }
+
+            /*
+             * Connect Actor Roles to Solution Components
+             */
+            for (SolutionComponentActor solutionComponentActor : SolutionComponentActor.values())
+            {
+                SolutionComponentActorProperties solutionComponentActorProperties = new SolutionComponentActorProperties();
+
+                solutionComponentActorProperties.setRole(solutionComponentActor.getRole());
+                solutionComponentActorProperties.setDescription(solutionComponentActor.getDescription());
+
+                solutionComponentClient.linkSolutionComponentActor(productRoles.get(solutionComponentActor.getSolutionRole().getQualifiedName()),
+                                                                   qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
+                                                                   new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
+                                                                   solutionComponentActorProperties);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                            solutionComponentActor.getSolutionRole().getTypeName(),
+                                                                                            solutionComponentActor.getSolutionRole().getQualifiedName(),
+                                                                                            OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                            solutionComponentActor.getSolutionComponent().getQualifiedName(),
+                                                                                            OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName));
+            }
+
+            /*
+             * Process the nested solution blueprints.
+             */
+            for (ProductSolutionBlueprint productSolutionBlueprint : ProductSolutionBlueprint.values())
+            {
+                /*
+                 * Ignore the top level blueprint.
+                 */
+                if (!ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getQualifiedName().equals(productSolutionBlueprint.getQualifiedName()))
+                {
+                    String nestedBlueprint_GUID = findSolutionBlueprint(productSolutionBlueprint, newElementOptions);
+
+                    for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
+                    {
+                        if ((solutionComponentDefinition.getConsumingBlueprints() != null) && (solutionComponentDefinition.getConsumingBlueprints().contains(productSolutionBlueprint)))
+                        {
+                            CollectionClient collectionClient = integrationContext.getCollectionClient();
+
+                            collectionClient.addToCollection(nestedBlueprint_GUID,
+                                                             qualifiedNameToGUIDMap.get(solutionComponentDefinition.getQualifiedName()),
+                                                             null,
+                                                             null);
+                        }
+                     }
+                }
+            }
+        }
+
+        return blueprintGUID;
+    }
+
+
+    /**
+     * Return the guid of a solution blueprint.  If it is not found, a null is returned.
+     *
+     * @param productSolutionBlueprint unique name of the
+     * @return guid
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String findSolutionBlueprint(ProductSolutionBlueprint productSolutionBlueprint,
+                                         NewElementOptions        newElementOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "findSolutionBlueprint";
 
         CollectionClient solutionBlueprintClient = integrationContext.getCollectionClient(OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
 
         /*
          * If the solution blueprint is already present then return its GUID,
          */
-        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getCollectionsByName(blueprintQualifiedName, null);
+        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getCollectionsByName(productSolutionBlueprint.getQualifiedName(), null);
 
         if (solutionBlueprints != null)
         {
@@ -2207,7 +2431,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                     auditLog.logMessage(methodName,
                                         JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
                                                                                                                 OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
-                                                                                                                ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName(),
+                                                                                                                productSolutionBlueprint.getDisplayName(),
                                                                                                                 solutionBlueprint.getElementHeader().getGUID()));
                     return solutionBlueprint.getElementHeader().getGUID();
                 }
@@ -2217,135 +2441,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Create the blueprint as this is the first time through
          */
-        SolutionBlueprintProperties solutionBlueprintProperties = new SolutionBlueprintProperties();
-
-        solutionBlueprintProperties.setQualifiedName(blueprintQualifiedName);
-        solutionBlueprintProperties.setDisplayName(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName());
-        solutionBlueprintProperties.setDescription(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDescription());
-        solutionBlueprintProperties.setVersionIdentifier(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getVersionIdentifier());
-
-        NewElementOptions newElementOptions = new NewElementOptions(solutionBlueprintClient.getMetadataSourceOptions());
-        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
-        newElementOptions.setIsOwnAnchor(true);
+        SolutionBlueprintProperties solutionBlueprintProperties = this.getSolutionBlueprintProperties(productSolutionBlueprint);
 
         String blueprintGUID = solutionBlueprintClient.createCollection(newElementOptions,
                                                                         null,
                                                                         solutionBlueprintProperties,
                                                                         null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
-                                                                                                 ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName(),
-                                                                                                 blueprintGUID));
-
-        newElementOptions.setAnchorGUID(blueprintGUID);
-        newElementOptions.setParentGUID(blueprintGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
-        newElementOptions.setParentAtEnd1(true);
-
-        SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
-        Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
-
-        /*
-         * Add the solution components to the blueprints.  A map of qualifiedNames to GUIDs is maintained to
-         * enable the components to be linked together - and to their solution roles.
-         */
-        for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
+        if (blueprintGUID != null)
         {
-            String componentQualifiedName = solutionComponentDefinition.getQualifiedName();
-            String componentGUID          = null;
-
-            List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, null);
-
-            if (solutionComponents != null)
-            {
-                for (OpenMetadataRootElement solutionComponent : solutionComponents)
-                {
-                    if (solutionComponent != null)
-                    {
-                        /*
-                         * Component already exists
-                         */
-                        componentGUID = solutionComponent.getElementHeader().getGUID();
-                        break;
-                    }
-                }
-            }
-
-            if (componentGUID == null)
-            {
-                SolutionComponentProperties solutionComponentProperties = new SolutionComponentProperties();
-
-                solutionComponentProperties.setQualifiedName(componentQualifiedName);
-                solutionComponentProperties.setDisplayName(solutionComponentDefinition.getDisplayName());
-                solutionComponentProperties.setDescription(solutionComponentDefinition.getDescription());
-                solutionComponentProperties.setVersionIdentifier(solutionComponentDefinition.getVersionIdentifier());
-                solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
-                solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
-
-                componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions,
-                                                                                null,
-                                                                                solutionComponentProperties,
-                                                                                null);
-
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                                         solutionComponentDefinition.getDisplayName(),
-                                                                                                         componentGUID));
-            }
-
-            qualifiedNameToGUIDMap.put(componentQualifiedName, componentGUID);
-        }
-
-        /*
-         * Link the components together
-         */
-
-        for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
-        {
-            SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
-
-            solutionLinkingWireProperties.setLabel(solutionComponentWire.getLabel());
-            solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
-
-            solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
-                                                            qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
-                                                            new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
-                                                            solutionLinkingWireProperties);
-
             auditLog.logMessage(methodName,
-                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                        OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                        solutionComponentWire.getComponent1().getQualifiedName(),
-                                                                                        OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                        solutionComponentWire.getComponent2().getQualifiedName(),
-                                                                                        OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
-        }
-
-        /*
-         * Connect Actor Roles to Solution Components
-         */
-        for (SolutionComponentActor solutionComponentActor : SolutionComponentActor.values())
-        {
-            SolutionComponentActorProperties solutionComponentActorProperties = new SolutionComponentActorProperties();
-
-            solutionComponentActorProperties.setRole(solutionComponentActor.getRole());
-            solutionComponentActorProperties.setDescription(solutionComponentActor.getDescription());
-
-            solutionComponentClient.linkSolutionComponentActor(productRoles.get(solutionComponentActor.getSolutionRole().getQualifiedName()),
-                                                               qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
-                                                               new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
-                                                               solutionComponentActorProperties);
-
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                        solutionComponentActor.getSolutionRole().getTypeName(),
-                                                                                        solutionComponentActor.getSolutionRole().getQualifiedName(),
-                                                                                        OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                        solutionComponentActor.getSolutionComponent().getQualifiedName(),
-                                                                                        OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName));
+                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                     OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
+                                                                                                     productSolutionBlueprint.getDisplayName(),
+                                                                                                     blueprintGUID));
         }
 
         return blueprintGUID;
@@ -2353,7 +2462,27 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Add all of the defined roles for this solution.
+     * Create a solution blueprint properties from a solution blueprint enum.
+     *
+     * @param productSolutionBlueprint enum
+     * @return properties
+     */
+    private SolutionBlueprintProperties getSolutionBlueprintProperties(ProductSolutionBlueprint productSolutionBlueprint)
+    {
+        SolutionBlueprintProperties solutionBlueprintProperties = new SolutionBlueprintProperties();
+
+        solutionBlueprintProperties.setQualifiedName(productSolutionBlueprint.getQualifiedName());
+        solutionBlueprintProperties.setDisplayName(productSolutionBlueprint.getDisplayName());
+        solutionBlueprintProperties.setDescription(productSolutionBlueprint.getDescription());
+        solutionBlueprintProperties.setVersionIdentifier(productSolutionBlueprint.getVersionIdentifier());
+
+        return solutionBlueprintProperties;
+    }
+
+
+
+    /**
+     * Add all the defined roles for this solution.
      *
      * @return map of qualified names to GUIDs
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -2373,6 +2502,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             roleMap.put(productRoleDefinition.getQualifiedName(), roleGUID);
         }
+
+
+        /*
+         * Link the Jacquard Support Role to the Jacquard Digital Product Loom connector.
+         * There is no need to check whether the relationship is already there since this check is handled by the OMF.
+         */
+        String productDeveloperRoleGUID = roleMap.get(ProductRoleDefinition.JACQUARD_SUPPORT.getQualifiedName());
+
+        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+
+        classificationManagerClient.addScopeToElement(productDeveloperRoleGUID,
+                                                      integrationContext.getIntegrationConnectorGUID(),
+                                                      new MakeAnchorOptions(classificationManagerClient.getMetadataSourceOptions()),
+                                                      null);
 
         return roleMap;
     }
@@ -2415,8 +2558,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (roleGUID == null)
         {
-
-            ActorRoleProperties actorRoleProperties = new SolutionActorRoleProperties();
+            ActorRoleProperties actorRoleProperties = new ActorRoleProperties();
 
             actorRoleProperties.setTypeName(productRoleDefinition.getTypeName());
             actorRoleProperties.setQualifiedName(roleQualifiedName);

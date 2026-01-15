@@ -14,9 +14,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  */
 public abstract class DynamicOpenMetadataDataSetConnectorBase extends OpenMetadataRootDataSetConnectorBase
 {
-    protected  String  identifierPropertyValue = null;
-    protected String canonicalName = null;
-    protected String description = null;
+    protected String identifierPropertyValue = null;
+    protected String canonicalName           = null;
+    protected String description             = null;
 
     /**
      * Constructor used to set up the name of this connector (supplied by the subclasses).
@@ -35,7 +35,7 @@ public abstract class DynamicOpenMetadataDataSetConnectorBase extends OpenMetada
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connectionDetails   POJO for the configuration used to create the connector
      */
-    public void initialize(String                                 connectorInstanceId,
+    public void initialize(String     connectorInstanceId,
                            Connection connectionDetails) throws ConnectorCheckedException
     {
         super.initialize(connectorInstanceId, connectionDetails);

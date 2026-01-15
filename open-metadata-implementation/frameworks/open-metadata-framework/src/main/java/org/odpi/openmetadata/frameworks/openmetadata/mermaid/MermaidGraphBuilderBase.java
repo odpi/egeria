@@ -2025,6 +2025,10 @@ public class MermaidGraphBuilderBase
         {
             label = roledRelationshipProperties.getRole();
         }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+        {
+            label = assignmentScopeProperties.getAssignmentType();
+        }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof AgreementActorProperties agreementActorProperties)
         {
             label = agreementActorProperties.getActorName();

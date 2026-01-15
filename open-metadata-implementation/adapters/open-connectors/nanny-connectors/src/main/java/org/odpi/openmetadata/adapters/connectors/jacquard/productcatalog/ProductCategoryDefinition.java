@@ -40,11 +40,7 @@ public enum ProductCategoryDefinition
 
     ;
 
-    public static final String validValueSetName         = "Category";
-    public static final String validValueSetPropertyName = "category";
-    public static final String validValueSetDescription  = "Identifies the category names in use across Coco Pharmaceuticals.";
-    public static final String validValueSetUsage        = "Used in cross-type querying of open metadata.";
-    public static final String validValueSetScope        = "All metadata.";
+
 
     private final String preferredValue;
     private final String displayName;

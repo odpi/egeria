@@ -93,8 +93,8 @@ public class ProductDefinitionBean implements ProductDefinition
         this.license                 = license;
         this.community               = community;
         this.productManager          = ProductRoleDefinition.PRODUCT_MANAGER;
-        this.productDeveloper        = ProductRoleDefinition.PRODUCT_MANAGER;
-        this.productSupport          = ProductRoleDefinition.PRODUCT_MANAGER;
+        this.productDeveloper        = ProductRoleDefinition.PRODUCT_DEVELOPER;
+        this.productSupport          = ProductRoleDefinition.JACQUARD_SUPPORT;
         this.subscriptionTypes       = subscriptionTypes;
         this.dataSpecTableName       = dataSpecTableName;
         this.dataSpecIdentifiers     = dataSpecIdentifiers;
@@ -107,7 +107,6 @@ public class ProductDefinitionBean implements ProductDefinition
     }
 
 
-
     /**
      * Returns the unique name for the product entity.
      *
@@ -116,7 +115,7 @@ public class ProductDefinitionBean implements ProductDefinition
     @Override
     public String getQualifiedName()
     {
-        return "OpenMetadataProductCatalog::DigitalProduct::" + identifier + "::" + displayName;
+        return typeName + "::OpenMetadataDigitalProduct::" + identifier + "::" + displayName;
     }
 
 

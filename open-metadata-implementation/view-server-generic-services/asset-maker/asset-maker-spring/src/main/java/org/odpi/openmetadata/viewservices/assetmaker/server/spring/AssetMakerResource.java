@@ -333,7 +333,7 @@ public class AssetMakerResource
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/infrstructure-assets/by-search-string")
+    @PostMapping(path = "/infrastructure-assets/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findInfrastructure",

@@ -44,6 +44,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
                                                                      OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
                                                                      OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName);
 
+    private static final List<String> roleAppointments = List.of(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                 OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+                                                                 OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
+
 
     /**
      * Constructor
@@ -199,17 +203,9 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setAssetsUsingProfile(super.getRelatedElements(OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setPerformsRoles(super.getRelatedElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setRolePerformers(super.getRelatedElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setPerformsRoles(super.getRelatedElements(OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setRolePerformers(super.getRelatedElements(OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setPerformsRoles(super.getRelatedElements(OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setRolePerformers(super.getRelatedElements(OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
+            attributedMetadataElement.setRolePerformers(super.getRelatedElements(roleAppointments, relatedMetadataElements, false));
+            attributedMetadataElement.setPerformsRoles(super.getRelatedElements(roleAppointments, relatedMetadataElements, true));
+            processedRelationshipTypes.addAll(roleAppointments);
 
             attributedMetadataElement.setContributionRecord(super.getRelatedElement(OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setContributorProfile(super.getRelatedElement(OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName, relatedMetadataElements, true));

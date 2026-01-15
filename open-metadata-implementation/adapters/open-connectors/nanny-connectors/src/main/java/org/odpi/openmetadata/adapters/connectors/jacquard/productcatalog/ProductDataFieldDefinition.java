@@ -613,7 +613,7 @@ public enum ProductDataFieldDefinition
      */
     public String getQualifiedName()
     {
-        return "DataField::OpenMetadataDigitalProducts::" + displayName;
+        return "DataField::OpenMetadataDigitalProduct::" + displayName;
     }
 
 

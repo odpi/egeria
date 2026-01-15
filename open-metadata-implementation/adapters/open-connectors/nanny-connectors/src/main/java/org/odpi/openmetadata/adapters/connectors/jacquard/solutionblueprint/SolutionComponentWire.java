@@ -15,29 +15,39 @@ public enum SolutionComponentWire
     MAINTAIN_PRODUCT(ProductSolutionComponent.OPEN_METADATA_HARVESTER,
                      ProductSolutionComponent.OPEN_METADATA_PRODUCT,
                      "maintain catalog entry",
-                     "The harvester is responsible for the description of each product in the product catalog."),
+                     "Jacquard is responsible for the description of each product in the product catalog."),
 
     MONITOR_METADATA(ProductSolutionComponent.OPEN_METADATA_HARVESTER,
                      ProductSolutionComponent.METADATA_ACCESS_STORE,
                      "monitor for changes",
-                     "The harvester monitors the content of the open metadata repositories looking for possible new products and updates to existing products."),
+                     "Jacquard monitors the content of the open metadata repositories looking for possible new products and updates to existing products."),
+
+    BUILD_CATALOG(ProductSolutionComponent.OPEN_METADATA_HARVESTER,
+                     ProductSolutionComponent.PRODUCT_CATALOG,
+                     "add products to catalog",
+                     "Jacquard links the digital products it creates into appropriate folders in the Open Metadata Digital Catalog."),
+
+    SETUP_SUB_MANAGER(ProductSolutionComponent.OPEN_METADATA_HARVESTER,
+                      ProductSolutionComponent.SUBSCRIPTION_MANAGER,
+                      "set up subscription managers",
+                      "Jacquard creates the engine action for each subscription manager.  Th engine action will run a watchdog action service to monitor for product changes and notify the different subscribers.  This includes running the provisioning pipeline for each product subscriber."),
 
     QUERY_METADATA(ProductSolutionComponent.OPEN_METADATA_PRODUCT,
                    ProductSolutionComponent.METADATA_ACCESS_STORE,
                    "query metadata",
                    "The open metadata product is implemented as an open metadata query."),
 
-    MONITOR_PRODUCT_CHANGES(ProductSolutionComponent.OPEN_METADATA_WATCHDOG,
+    MONITOR_PRODUCT_CHANGES(ProductSolutionComponent.SUBSCRIPTION_MANAGER,
                             ProductSolutionComponent.OPEN_METADATA_PRODUCT,
                             "monitor product changes",
                             "Each product has a watchdog to manage the distribution of notifications to subscribers when the product description changes.  These subscribers may be individuals, communities or provisioning pipelines servicing different product consumers."),
 
-    NOTIFY_COMMUNITY(ProductSolutionComponent.OPEN_METADATA_WATCHDOG,
+    NOTIFY_COMMUNITY(ProductSolutionComponent.SUBSCRIPTION_MANAGER,
                      ProductSolutionComponent.PRODUCT_COMMUNITY_COMPONENT,
                      "notify when product changes",
                      "Notify the subscribing community when a product changes."),
 
-    INITIATE_PIPELINE(ProductSolutionComponent.OPEN_METADATA_WATCHDOG,
+    INITIATE_PIPELINE(ProductSolutionComponent.SUBSCRIPTION_MANAGER,
                       ProductSolutionComponent.PROVISIONING_PIPELINE,
                       "initiate when product changes",
                       "Initiate the subscribing pipelines when a product changes.  They push the data changes to downstream product consumers."),
@@ -58,12 +68,12 @@ public enum SolutionComponentWire
                            "When a new subscription is set up, the requirements and details of the pipeline to configure are retrieved from the product description."),
 
     CONFIGURE_SUBSCRIPTION(ProductSolutionComponent.NEW_PRODUCT_SUBSCRIPTION,
-                           ProductSolutionComponent.OPEN_METADATA_WATCHDOG,
+                           ProductSolutionComponent.SUBSCRIPTION_MANAGER,
                            "configure subscription",
                            "The product's watchdog is configured with details of the new pipeline that supports the subscription."),
 
     REMOVE_SUBSCRIPTION(ProductSolutionComponent.CANCEL_PRODUCT_SUBSCRIPTION,
-                           ProductSolutionComponent.OPEN_METADATA_WATCHDOG,
+                           ProductSolutionComponent.SUBSCRIPTION_MANAGER,
                            "remove subscription",
                            "The pipeline subscription is removed from the product's watchdog so it is no longer called when the product changes."),
 

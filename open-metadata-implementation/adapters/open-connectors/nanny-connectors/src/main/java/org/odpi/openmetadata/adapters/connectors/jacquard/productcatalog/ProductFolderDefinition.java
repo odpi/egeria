@@ -124,7 +124,7 @@ public enum ProductFolderDefinition
      */
     public String getQualifiedName()
     {
-        return "OpenMetadataProductCatalog::" + typeName + "::" + displayName;
+        return typeName + "::OpenMetadataDigitalProductCatalog::" + displayName;
     }
 
 

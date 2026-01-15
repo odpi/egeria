@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.UUID;
@@ -88,6 +89,20 @@ public class OpenMetadataRootHierarchyMermaidGraphBuilder extends OpenMetadataRo
                               parentNodeName,
                               this.addSpacesToTypeName(openMetadataRootHierarchy.getElementHeader().getType().getTypeName()),
                               openMetadataRootHierarchy.getElementHeader().getGUID());
+        }
+
+        if (openMetadataRootHierarchy.getCollectionMembers() != null)
+        {
+            String membershipGUID = UUID.randomUUID().toString();
+            super.appendNewMermaidNode(membershipGUID,
+                                       Integer.toString(openMetadataRootHierarchy.getCollectionMembers().size()),
+                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                       VisualStyle.MORE_ELEMENTS);
+
+            appendMermaidDottedLine(UUID.randomUUID().toString(),
+                                    openMetadataRootHierarchy.getElementHeader().getGUID(),
+                                    null,
+                                    membershipGUID);
         }
 
         addHierarchyMembers(openMetadataRootHierarchy.getElementHeader().getGUID(),

@@ -580,7 +580,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.community           = community;
         this.productManager      = ProductRoleDefinition.PRODUCT_MANAGER;
         this.productDeveloper    = ProductRoleDefinition.PRODUCT_DEVELOPER;
-        this.productSupport      = ProductRoleDefinition.PRODUCT_SUPPORT;
+        this.productSupport      = ProductRoleDefinition.JACQUARD_SUPPORT;
         this.subscriptionTypes   = subscriptionTypes;
         this.dataSpecTableName   = dataSpecTableName;
         this.dataSpecIdentifiers = dataSpecIdentifiers;
@@ -601,7 +601,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     @Override
     public String getQualifiedName()
     {
-        return "OpenMetadataProductCatalog::DigitalProduct::" + identifier + "::" + displayName;
+        return typeName + "::OpenMetadataDigitalProduct::" + identifier + "::" + displayName;
     }
 
 

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
 /**
  * The ProductGlossaryTermDefinition is used to populate the sustainability glossary.
  */
@@ -61,7 +63,7 @@ public enum ProductGlossaryTermDefinition
 
     public String getQualifiedName()
     {
-        return "OpenMetadataProductCatalog::GlossaryTerm::" + displayName;
+        return OpenMetadataType.GLOSSARY_TERM.typeName + "::OpenMetadataProductCatalog::" + displayName;
     }
 
 

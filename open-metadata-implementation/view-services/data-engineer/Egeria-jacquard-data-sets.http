@@ -37,9 +37,9 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "metadataElementTypeName": "TabularDataSet",
-  "searchString": "Attributes",
   "startsWith" : false,
   "endsWith": false,
+  "pageSize" : 0,
   "skipClassifiedElements": ["Template"]
 }
 

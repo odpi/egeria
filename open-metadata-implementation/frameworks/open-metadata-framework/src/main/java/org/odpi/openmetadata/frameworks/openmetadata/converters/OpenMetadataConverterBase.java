@@ -706,7 +706,10 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                 }
             }
 
-            return matchingElements;
+            if (! matchingElements.isEmpty())
+            {
+                return matchingElements;
+            }
         }
 
         return null;

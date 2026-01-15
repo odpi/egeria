@@ -4,45 +4,43 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint;
 
 /**
- * A description of the predefined solution blueprints.  Solution blueprints identify the key solution oriented
+ * A description of the predefined solution blueprints.  Solution blueprints identify the key solution-oriented
  * investments.  They may be used to document both the as-is and to-be solutions.
  */
 public enum ProductSolutionBlueprint
 {
     /**
-     * Description of the processing used to create the content packs shipped with Egeria.
+     * Description of the processing used to create and manage the digital products derived from open metadata.
      */
-    OPEN_METADATA_CONTENT_PACK("Open Metadata Archive Solution Blueprint",
-                          "Description of the processing used to create the content packs shipped with Egeria.  These content packs contain open metadata that is generally useful to teams starting to use Egeria.  The core content pack and the open metadata types are loaded automatically when the metadata access store starts up.  The other content packs are loaded on demand.",
-                          "6.0-SNAPSHOT",
-                          false),
-
-    /**
-     * Description of the processing used to create the content packs shipped with Egeria.
-     */
-    AUTO_PRODUCT_MANAGER("Open Metadata Digital Product Solution Blueprint",
-                               "Description of the processing used to manage the digital products derived from open metadata.",
+    AUTO_PRODUCT_MANAGER("Open Metadata Digital Product Catalog Solution Blueprint",
+                               "Description of the processing used to create and manage the digital products derived from open metadata.",
                                "6.0-SNAPSHOT",
                                false),
 
-
     /**
-     * Description of the simple open metadata deployment environment used for evaluation and small team deployments.
+     * escription of the processing used to create and manage the digital products derived from open metadata in the Open Metadata Digital Product Catalog.
      */
-    EGERIA_WORKSPACES("Egeria Workspaces Solution Blueprint",
-                         "Description of the simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset",
+    JACQUARD("Jacquard Digital Product Loom Solution Blueprint",
+                         "Description of the processing used to create and manage the digital products derived from open metadata in the Open Metadata Digital Product Catalog.",
                          "6.0-SNAPSHOT",
                          false),
 
 
     /**
-     * Description of the services configured by Egeria's build process to create a simple open metadata deployment environment used for evaluation.
+     * Description of the processing used to create and manage subscriptions to Open Metadata Digital Products.
      */
-    DEFAULT_RUNTIME("Egeria Default Runtime Solution Blueprint",
-                      "Description of the services configured by Egeria's build process to create a simple open metadata deployment environment used for evaluation.",
-                      "6.0-SNAPSHOT",
-                      false),
+    SUBSCRIPTION_MANAGEMENT("Open Metadata Digital Product Subscriptions Solution Blueprint",
+             "Description of the processing used to create and manage subscriptions to Open Metadata Digital Products.",
+             "6.0-SNAPSHOT",
+             false),
 
+    /**
+     * Description of the organization of the open metadata digital product communities.
+     */
+    PRODUCT_COMMUNITY("Open Metadata Digital Product Community Solution Blueprint",
+                            "Description of the organization of the open metadata digital product communities.",
+                            "6.0-SNAPSHOT",
+                            false),
 
     ;
 
@@ -125,7 +123,7 @@ public enum ProductSolutionBlueprint
      */
     public String getQualifiedName()
     {
-        return "SolutionBlueprint::" + displayName + "::" + versionIdentifier;
+        return "SolutionBlueprint::OpenMetadataDigitalProduct::" + displayName + "::" + versionIdentifier;
     }
 
 

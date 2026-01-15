@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorC
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
@@ -30,12 +31,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -397,6 +398,23 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
 
 
     /**
+     * Extract the update time from the element header
+     *
+     * @param elementHeader header
+     * @return date
+     */
+    private Date getUpdateTime(ElementControlHeader elementHeader)
+    {
+        if (elementHeader.getVersions().getUpdateTime() == null)
+        {
+            return elementHeader.getVersions().getCreateTime();
+        }
+
+        return elementHeader.getVersions().getUpdateTime();
+    }
+
+
+    /**
      * Extracts the record values from the element header based on the specified column name.
      *
      * @param elementHeader element header containing the record values
@@ -426,25 +444,32 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         }
         else if (ProductDataFieldDefinition.CREATE_TIME.getDisplayName().equals(columnName))
         {
-            long time = elementHeader.getVersions().getCreateTime().getTime();
+            Date createTime = elementHeader.getVersions().getCreateTime();
 
-            recordValues.add(Long.toString(time));
+            if (elementHeader.getLatestChange() != null)
+            {
+                if (createTime.before(elementHeader.getLatestChange().getVersions().getCreateTime()))
+                {
+                    createTime = elementHeader.getLatestChange().getVersions().getCreateTime();
+                }
+            }
+
+            recordValues.add(Long.toString(createTime.getTime()));
             return true;
         }
         else if (ProductDataFieldDefinition.UPDATE_TIME.getDisplayName().equals(columnName))
         {
-            long time;
+            Date updateTime = this.getUpdateTime(elementHeader);
 
-            if (elementHeader.getVersions().getUpdateTime() == null)
+            if (elementHeader.getLatestChange() != null)
             {
-                time = elementHeader.getVersions().getCreateTime().getTime();
-            }
-            else
-            {
-                time = elementHeader.getVersions().getUpdateTime().getTime();
+                if (updateTime.before(this.getUpdateTime(elementHeader.getLatestChange())))
+                {
+                    updateTime = this.getUpdateTime(elementHeader.getLatestChange());
+                }
             }
 
-            recordValues.add(Long.toString(time));
+            recordValues.add(Long.toString(updateTime.getTime()));
             return true;
         }
         else if (ProductDataFieldDefinition.LOCATION_ROLE.getDisplayName().equals(columnName))
