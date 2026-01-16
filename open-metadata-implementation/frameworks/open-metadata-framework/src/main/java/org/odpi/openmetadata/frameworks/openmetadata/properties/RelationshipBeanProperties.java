@@ -87,6 +87,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssociatedSecurityGroupProperties.class, name = "AssociatedSecurityGroupProperties"),
                 @JsonSubTypes.Type(value = AttachedCommentProperties.class, name = "AttachedCommentProperties"),
                 @JsonSubTypes.Type(value = AttachedLikeProperties.class, name = "AttachedLikeProperties"),
+                @JsonSubTypes.Type(value = AttachedNoteLogProperties.class, name = "AttachedNoteLogProperties"),
+                @JsonSubTypes.Type(value = AttachedNoteLogEntryProperties.class, name = "AttachedNoteLogEntryProperties"),
                 @JsonSubTypes.Type(value = AttachedRatingProperties.class, name = "AttachedRatingProperties"),
                 @JsonSubTypes.Type(value = AttachedTagProperties.class, name = "AttachedTagProperties"),
                 @JsonSubTypes.Type(value = CapabilityAssetUseProperties.class, name = "CapabilityAssetUseProperties"),

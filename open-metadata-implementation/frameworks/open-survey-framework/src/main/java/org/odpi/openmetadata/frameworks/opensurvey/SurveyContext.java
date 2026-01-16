@@ -244,7 +244,7 @@ public class SurveyContext extends ConnectorContextBase
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     public void recordCompletionStatus(CompletionStatus          status,
                                        List<String>              outputGuards,

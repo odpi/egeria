@@ -48,7 +48,7 @@ public class OCFRESTServices
      * @return connection object or
      * InvalidParameterException - one of the parameters is null or invalid or
      * UnrecognizedConnectionGUIDException - the supplied GUID is not recognized by the metadata repository or
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
+     * PropertyServerException - a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OCFConnectionResponse getConnectionByGUID(String     serverName,
@@ -99,7 +99,7 @@ public class OCFRESTServices
      * InvalidParameterException - one of the parameters is null or invalid or
      * UnrecognizedConnectionNameException - there is no connection defined for this name or
      * AmbiguousConnectionNameException - there is more than one connection defined for this name or
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
+     * PropertyServerException - a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OCFConnectionResponse getConnectionByName(String   serverName,
@@ -154,7 +154,7 @@ public class OCFRESTServices
      * @return connection object or
      * InvalidParameterException one of the parameters is null or invalid or
      * UnrecognizedConnectionNameException there is no connection defined for this name or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * PropertyServerException a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OCFConnectionResponse getConnectionForAsset(String   serverName,
@@ -205,7 +205,7 @@ public class OCFRESTServices
      * @return connection object or
      * InvalidParameterException one of the parameters is null or invalid or
      * UnrecognizedConnectionNameException there is no connection defined for this name or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * PropertyServerException a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse saveConnectionForAsset(String     serverName,

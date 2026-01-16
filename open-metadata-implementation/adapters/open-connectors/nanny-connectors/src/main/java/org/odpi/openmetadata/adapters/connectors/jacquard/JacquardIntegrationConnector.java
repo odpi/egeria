@@ -535,25 +535,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
 
         /*
-         * Link the product support
-         */
-        if (productDefinition.getProductSupport() != null)
-        {
-            assignmentScopeProperties = new AssignmentScopeProperties();
-
-            assignmentScopeProperties.setAssignmentType(AssignmentType.TECHNICAL_SUPPORT.getName());
-            assignmentScopeProperties.setDescription(AssignmentType.TECHNICAL_SUPPORT.getDescription());
-
-            String productSupportGUID = productRoles.get(productDefinition.getProductSupport().getQualifiedName());
-
-            classificationManagerClient.assignActorToElement(productGUID,
-                                                             productSupportGUID,
-                                                             new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                             assignmentScopeProperties);
-        }
-
-
-        /*
          * Link in the license type to the product to show what type of license is granted to the subscriber.
          */
         String licenseTypeGUID = null;

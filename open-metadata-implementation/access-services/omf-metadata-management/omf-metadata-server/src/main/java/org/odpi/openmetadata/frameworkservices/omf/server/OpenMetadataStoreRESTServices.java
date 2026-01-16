@@ -172,7 +172,7 @@ public class OpenMetadataStoreRESTServices
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefGalleryResponse getAllTypes(String   serverName,
@@ -212,7 +212,7 @@ public class OpenMetadataStoreRESTServices
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse findTypeDefsByCategory(String                      serverName,
@@ -274,7 +274,7 @@ public class OpenMetadataStoreRESTServices
      * @return AttributeTypeDefListResponse:
      * AttributeTypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                               serverName,
@@ -335,7 +335,7 @@ public class OpenMetadataStoreRESTServices
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse findTypesByExternalId(String    serverName,
@@ -406,7 +406,7 @@ public class OpenMetadataStoreRESTServices
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the typeName is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse getSubTypes(String serverName,
@@ -485,7 +485,7 @@ public class OpenMetadataStoreRESTServices
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -532,7 +532,7 @@ public class OpenMetadataStoreRESTServices
      * @return AttributeTypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -577,7 +577,7 @@ public class OpenMetadataStoreRESTServices
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -620,7 +620,7 @@ public class OpenMetadataStoreRESTServices
      * @return AttributeTypeDefResponse:
      * AttributeTypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -665,7 +665,7 @@ public class OpenMetadataStoreRESTServices
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
                                                                 String             userId,
@@ -728,7 +728,7 @@ public class OpenMetadataStoreRESTServices
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementResponse getMetadataElementByUniqueName(String                serverName,
                                                                       String                userId,
@@ -788,7 +788,7 @@ public class OpenMetadataStoreRESTServices
      * @return metadata element unique identifier (guid) or
      *  InvalidParameterException the unique identifier is null or not known or
      *  UserNotAuthorizedException the governance action service is not able to access the element or
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String          serverName,
                                                            String          userId,
@@ -850,7 +850,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
                                                                   String             userId,
@@ -933,7 +933,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of matching classifications (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public AttachedClassificationsResponse getClassificationHistory(String             serverName,
                                                                     String             userId,
@@ -1018,7 +1018,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  userId,
@@ -1110,7 +1110,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of matching elements
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     private List<OpenMetadataElement> findAnchoredElements(String                                      userId,
                                                            String                                      searchString,
@@ -1182,7 +1182,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     public AnchorSearchMatchesResponse findElementsForAnchor(String                  serverName,
@@ -1259,7 +1259,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     public AnchorSearchMatchesListResponse findElementsInAnchorDomain(String                  serverName,
@@ -1336,7 +1336,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     public AnchorSearchMatchesListResponse findElementsInAnchorScope(String                  serverName,
@@ -1677,7 +1677,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public RelatedMetadataElementListResponse getRelatedMetadataElements(String             serverName,
                                                                          String             userId,
@@ -1795,7 +1795,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse getMetadataElementRelationships(String             serverName,
                                                                                 String             userId,
@@ -1881,7 +1881,7 @@ public class OpenMetadataStoreRESTServices
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse findMetadataElements(String          serverName,
                                                              String          userId,
@@ -1961,7 +1961,7 @@ public class OpenMetadataStoreRESTServices
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
@@ -2187,7 +2187,7 @@ public class OpenMetadataStoreRESTServices
      * @return a list of relationships - null means no matching relationships - or
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(String                      serverName,
                                                                                          String                      userId,
@@ -2277,7 +2277,7 @@ public class OpenMetadataStoreRESTServices
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @SuppressWarnings(value = "unused")
     public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
@@ -2357,7 +2357,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
                                                                        String             userId,
@@ -2445,7 +2445,7 @@ public class OpenMetadataStoreRESTServices
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse createMetadataElementInStore(String                            serverName,
                                                      String                            userId,
@@ -2510,7 +2510,7 @@ public class OpenMetadataStoreRESTServices
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse createMetadataElementFromTemplate(String                          serverName,
                                                           String                          userId,
@@ -2581,7 +2581,7 @@ public class OpenMetadataStoreRESTServices
      * @return boolean or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public BooleanResponse updateMetadataElementInStore(String                      serverName,
                                                         String                      userId,
@@ -2640,7 +2640,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse publishMetadataElement(String                    serverName,
                                                String                    userId,
@@ -2704,7 +2704,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse withdrawMetadataElement(String                    serverName,
                                                 String                    userId,
@@ -2767,7 +2767,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateMetadataElementEffectivityInStore(String                            serverName,
                                                                 String                            userId,
@@ -2826,7 +2826,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @SuppressWarnings(value = "unused")
     public  VoidResponse deleteMetadataElementInStore(String                        serverName,
@@ -2892,7 +2892,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public  VoidResponse archiveMetadataElementInStore(String            serverName,
                                                        String            userId,
@@ -2961,7 +2961,7 @@ public class OpenMetadataStoreRESTServices
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse classifyMetadataElementInStore(String                       serverName,
                                                        String                       userId,
@@ -3023,7 +3023,7 @@ public class OpenMetadataStoreRESTServices
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the user is not authorized to update this element/classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse reclassifyMetadataElementInStore(String                      serverName,
                                                          String                      userId,
@@ -3086,7 +3086,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateClassificationEffectivityInStore(String                            serverName,
                                                                String                            userId,
@@ -3148,7 +3148,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse declassifyMetadataElementInStore(String                    serverName,
                                                          String                    userId,
@@ -3211,7 +3211,7 @@ public class OpenMetadataStoreRESTServices
      *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse createRelatedElementsInStore(String                        serverName,
                                                      String                        userId,
@@ -3273,7 +3273,7 @@ public class OpenMetadataStoreRESTServices
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateRelatedElementsInStore(String                      serverName,
                                                      String                      userId,
@@ -3333,7 +3333,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateRelatedElementsEffectivityInStore(String                            serverName,
                                                                 String                            userId,
@@ -3392,7 +3392,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse deleteRelationshipInStore(String                        serverName,
                                                   String                        userId,
@@ -3450,7 +3450,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      * InvalidParameterException  the unique identifier is null or not known.
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse setTranslation(String            serverName,
                                        String            userId,
@@ -3484,7 +3484,7 @@ public class OpenMetadataStoreRESTServices
      * @return void or
      * InvalidParameterException  the language is null or not known or not unique (add locale)
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public VoidResponse clearTranslation(String          serverName,
                                          String          userId,
@@ -3519,7 +3519,7 @@ public class OpenMetadataStoreRESTServices
      * @return the properties of the translation or null if there is none or
      * InvalidParameterException  the unique identifier is null or not known.
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public TranslationDetailResponse getTranslation(String serverName,
                                                     String userId,
@@ -3553,7 +3553,7 @@ public class OpenMetadataStoreRESTServices
      * @return list of translation properties or null if there are none or
      * InvalidParameterException  the unique identifier is null or not known.
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     public TranslationListResponse getTranslations(String serverName,
                                                    String userId,

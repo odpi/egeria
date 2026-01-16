@@ -39,7 +39,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException a problem within the discovery service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override

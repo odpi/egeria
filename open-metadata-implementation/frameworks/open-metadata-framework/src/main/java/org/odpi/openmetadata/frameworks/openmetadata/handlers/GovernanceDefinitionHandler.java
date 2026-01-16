@@ -130,7 +130,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createGovernanceDefinitionFromTemplate(String                 userId,
                                                          TemplateOptions        templateOptions,
@@ -344,7 +344,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addGovernanceDefinitionToElement(String                userId,
                                                  String                elementGUID,
@@ -373,7 +373,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeGovernanceDefinitionFromElement(String        userId,
                                                       String        elementGUID,
@@ -1060,7 +1060,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @return guid of license relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String linkNextProcessStep(String                                    userId,
                                       String                                    processStepGUID,
@@ -1088,7 +1088,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param properties properties of the relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateNextProcessStep(String                                    userId,
                                       String                                    relationshipGUID,
@@ -1113,7 +1113,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void detachNextProcessStep(String        userId,
                                       String        relationshipGUID,
@@ -1137,7 +1137,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @return guid of license relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String licenseElement(String            userId,
                                  String            elementGUID,
@@ -1165,7 +1165,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @param properties properties of the relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateLicense(String            userId,
                               String            licenseGUID,
@@ -1190,7 +1190,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void unlicenseElement(String        userId,
                                  String        licenseGUID,
@@ -1214,7 +1214,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @return guid of certification relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String certifyElement(String                  userId,
                                  String                  elementGUID,
@@ -1243,7 +1243,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateCertification(String                  userId,
                                     String                  certificationGUID,
@@ -1268,7 +1268,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void decertifyElement(String        userId,
                                  String        certificationGUID,
@@ -1343,7 +1343,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findGovernanceDefinitions(String        userId,
                                                                    String        searchString,

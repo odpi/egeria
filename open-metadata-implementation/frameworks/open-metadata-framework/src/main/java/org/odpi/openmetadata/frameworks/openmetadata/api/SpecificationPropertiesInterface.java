@@ -5,18 +5,15 @@ package org.odpi.openmetadata.frameworks.openmetadata.api;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * ExternalIdentifiersInterface provides the interface for managing external identifiers.
+ * SpecificationPropertiesInterface shares the retrieval of specification properties for an element.
  */
-public interface ExternalIdentifiersInterface
+public interface SpecificationPropertiesInterface
 {
     /**
      * Retrieve the specification for this element and a list of nested maps.  This method is used by the REST APIs.

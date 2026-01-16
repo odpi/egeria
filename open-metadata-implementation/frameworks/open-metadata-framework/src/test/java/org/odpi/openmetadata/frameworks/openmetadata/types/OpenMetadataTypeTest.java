@@ -26,8 +26,7 @@ import java.util.Map;
 import static org.testng.Assert.*;
 
 /**
- * Verify the OMFErrorCode enum contains unique message ids, non-null names and descriptions and can be
- * serialized to JSON and back again.
+ * Verify the type definition matches the bean implementation.
  */
 public class OpenMetadataTypeTest
 {

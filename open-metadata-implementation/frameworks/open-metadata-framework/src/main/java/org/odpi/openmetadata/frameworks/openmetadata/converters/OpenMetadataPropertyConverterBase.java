@@ -11893,6 +11893,14 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new AttachedLikeProperties();
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new AttachedNoteLogProperties();
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new AttachedNoteLogEntryProperties();
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new AttachedRatingProperties();
@@ -12545,6 +12553,7 @@ public class OpenMetadataPropertyConverterBase
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((NotificationSubscriberProperties)relationshipBeanProperties).setActivityStatus(this.removeActivityStatus(elementProperties));
+                ((NotificationSubscriberProperties)relationshipBeanProperties).setZoneMembership(this.removeZoneMembership(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PEER_RELATIONSHIP.typeName))
             {
@@ -13955,6 +13964,10 @@ public class OpenMetadataPropertyConverterBase
 
                                 ((GovernanceRoleProperties) beanProperties).setDomainIdentifier(this.removeDomainIdentifier(elementProperties));
                             }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTE_LOG_AUTHOR.typeName))
+                            {
+                                beanProperties = new NoteLogAuthorProperties();
+                            }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROJECT_MANAGER.typeName))
                             {
                                 beanProperties = new ProjectManagerProperties();
@@ -14997,7 +15010,7 @@ public class OpenMetadataPropertyConverterBase
      * @param beanClassName class name of bean
      * @param elementClassName class name that the converter is able to process
      * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     protected void handleMissingMetadataInstance(String          beanClassName,

@@ -80,7 +80,7 @@ public class ReferenceDataResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -614,7 +614,7 @@ public class ReferenceDataResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -642,7 +642,7 @@ public class ReferenceDataResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -671,7 +671,7 @@ public class ReferenceDataResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/{validValueDefinitionGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

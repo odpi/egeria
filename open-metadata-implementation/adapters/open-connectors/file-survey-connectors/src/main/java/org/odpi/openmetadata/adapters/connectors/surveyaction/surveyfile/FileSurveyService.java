@@ -23,7 +23,7 @@ public class FileSurveyService extends SurveyActionServiceConnector
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException a problem within the discovery service.
      * @throws UserNotAuthorizedException the service was disconnected before/during start
      */
     @Override

@@ -95,7 +95,7 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
      * @return boolean flag
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
-     * @throws PropertyServerException there is a problem in the repository
+     * @throws PropertyServerException a problem in the repository
      */
     public abstract boolean  moreToReceive() throws InvalidParameterException,
                                                     UserNotAuthorizedException,
@@ -108,7 +108,7 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
      * @return relationship or null
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
-     * @throws PropertyServerException there is a problem in the repository
+     * @throws PropertyServerException a problem in the repository
      */
     public EntityDetail getNext() throws InvalidParameterException,
                                          UserNotAuthorizedException,

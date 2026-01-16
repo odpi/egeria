@@ -246,7 +246,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                    "This is the connector that receives events from the OMRS Topic.  It is vital for the server's" +
                                            "ability to register with the open metadata repository cohort, validate its types and " +
                                            "replicate metadata.  Verify that these types of events are flowing.  If the server " +
-                                           "appears to be buffering events it means there is a problem with the topic definition or " +
+                                           "appears to be buffering events it means a problem with the topic definition or " +
                                            "the event bus supporting it."),
 
     /**

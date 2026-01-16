@@ -45,7 +45,7 @@ public class GovernanceServiceCache
      * @param governanceEngineName name of this engine
      * @param element registered properties of the governance services
      * @param auditLog logging destination for governance services
-     * @throws InvalidParameterException there is a problem with the connection used to create the
+     * @throws InvalidParameterException a problem with the connection used to create the
      * governance service instance or the governance service properties are null
      * @throws PropertyServerException problem with the governance service connector or related config
      */

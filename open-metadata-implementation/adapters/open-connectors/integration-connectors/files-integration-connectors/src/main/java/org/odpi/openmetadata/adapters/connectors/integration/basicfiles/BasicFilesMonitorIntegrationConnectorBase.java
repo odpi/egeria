@@ -404,7 +404,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * If the directory does not exist the connector waits for the directory to be created.
      *
      * @param dataFolderFile the directory to retrieve the folder from
-     * @throws ConnectorCheckedException there is a problem retrieving the folder element.
+     * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
     abstract OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException;
 
@@ -417,7 +417,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * @param dataFolderFile the directory to retrieve the folder from
      * @param assetTypeName name of the asset type to use if the folder is not catalogued
      * @param deployedImplementationType deployed implementation type to use if the folder is not catalogued
-     * @throws ConnectorCheckedException there is a problem retrieving the folder element.
+     * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
     OpenMetadataRootElement getFolderElement(File   dataFolderFile, 
                                              String assetTypeName, 
@@ -506,7 +506,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * there are no files defined in the folder.  The connector waits for the folder to be created.
      *
      * @param folderElementGUID the unique identifier of the folder
-     * @throws ConnectorCheckedException there is a problem retrieving the folder element.
+     * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
     synchronized OpenMetadataRootElement getFolderElement(String folderElementGUID) throws ConnectorCheckedException
     {

@@ -111,7 +111,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException
@@ -336,7 +336,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private   void catalogDatabase(String              databaseName,
                                    String              databaseServerGUID,

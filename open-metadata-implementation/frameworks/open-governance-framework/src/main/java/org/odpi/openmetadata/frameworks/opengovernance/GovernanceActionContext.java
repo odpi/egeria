@@ -255,7 +255,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public void updateActionTargetStatus(String             actionTargetGUID,
@@ -279,7 +279,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public  void recordCompletionStatus(CompletionStatus    status,
@@ -303,7 +303,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public  void recordCompletionStatus(CompletionStatus      status,
@@ -329,7 +329,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public  void recordCompletionStatus(CompletionStatus      status,
@@ -355,7 +355,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public  void recordCompletionStatus(CompletionStatus      status,
@@ -401,7 +401,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws InvalidParameterException  the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                    action service completion status
-     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
     @Override
     public void recordCompletionStatus(CompletionStatus          status,
@@ -493,7 +493,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public String createAsset(String assetTypeName,
@@ -527,7 +527,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException  the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
     @Override
     public String createAsset(String            assetTypeName,
@@ -563,7 +563,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public String createAssetFromTemplate(String templateGUID,
@@ -614,7 +614,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException  the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
-     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
     @Override
     public String createAssetFromTemplate(String            assetTypeName,
@@ -663,7 +663,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public String createProcess(String        processTypeName,
@@ -698,7 +698,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException  the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
     @Override
     public String createProcess(String            processTypeName,
@@ -736,7 +736,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public String createProcessFromTemplate(String        templateGUID,
@@ -780,7 +780,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException  the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
     @Override
     public String createProcessFromTemplate(String            templateGUID,
@@ -826,7 +826,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     @Override
     public String createChildProcess(String        processTypeName,
@@ -882,7 +882,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException  the type name or qualified name is null or invalid
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
-     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
     @Override
     public String createChildProcess(String             processTypeName,
@@ -938,7 +938,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException the processGUID or qualified name is null or is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String createPort(String   processGUID,
@@ -991,7 +991,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException one of the GUIDs is null or is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String createLineageRelationship(String sourceElementGUID,
@@ -1036,7 +1036,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException  one of the GUIDs is null or is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public String createLineageRelationship(String relationshipName,
@@ -1152,7 +1152,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String initiateEngineAction(String                qualifiedName,
@@ -1211,7 +1211,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String initiateEngineAction(String                qualifiedName,
@@ -1263,7 +1263,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
                                                List<String>          actionSourceGUIDs,
@@ -1302,7 +1302,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String initiateGovernanceActionProcess(String                processQualifiedName,

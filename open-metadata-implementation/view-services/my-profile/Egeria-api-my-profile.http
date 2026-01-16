@@ -30,7 +30,7 @@ Content-Type: application/json
 #
 # @return profile response object or
 # InvalidParameterException the userId is null or invalid or
-# PropertyServerException there is a problem retrieving information from the property server(s) or
+# PropertyServerException a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException the requesting user is not authorized to issue this request.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
 Authorization: Bearer {{token}}
@@ -44,7 +44,7 @@ Authorization: Bearer {{token}}
 #
 # @return profile response object or
 # InvalidParameterException the userId is null or invalid or
-# PropertyServerException there is a problem retrieving information from the property server(s) or
+# PropertyServerException a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actors
@@ -68,7 +68,7 @@ Content-Type: application/json
 #
 # @return profile response object or
 # InvalidParameterException the userId is null or invalid or
-# PropertyServerException there is a problem retrieving information from the property server(s) or
+# PropertyServerException a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException the requesting user is not authorized to issue this request.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actors/user-identities
 Authorization: Bearer {{token}}
@@ -91,7 +91,7 @@ Content-Type: application/json
 #
 # @return profile response object or
 # InvalidParameterException the userId is null or invalid or
-# PropertyServerException there is a problem retrieving information from the property server(s) or
+# PropertyServerException a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException the requesting user is not authorized to issue this request.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/actors/assigned-roles
 Authorization: Bearer {{token}}
@@ -113,7 +113,7 @@ Content-Type: application/json
 #
 # @return profile response object or
 # InvalidParameterException the userId is null or invalid or
-# PropertyServerException there is a problem retrieving information from the property server(s) or
+# PropertyServerException a problem retrieving information from the property server(s) or
 # UserNotAuthorizedException the requesting user is not authorized to issue this request.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/assigned-resources
 Authorization: Bearer {{token}}

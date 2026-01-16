@@ -167,7 +167,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @param relationships         relationships linking the entities
      * @param methodName            calling method
      * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     protected Connection getEmbeddedConnection(Class<B>           beanClass,
                                                EntityDetail       primaryEntity,
@@ -223,7 +223,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @param relationships         relationships linking the entities
      * @param methodName            calling method
      * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     private Connection getNewVirtualConnection(Class<B>           beanClass,
                                                EntityDetail       primaryEntity,
@@ -345,7 +345,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @param relationships         relationships linking the entities
      * @param methodName            calling method
      * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     private Connection getNewConnection(Class<B>           beanClass,
                                         EntityDetail       primaryEntity,

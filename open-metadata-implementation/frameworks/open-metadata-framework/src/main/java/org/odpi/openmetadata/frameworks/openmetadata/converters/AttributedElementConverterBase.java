@@ -698,7 +698,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @param relatedMetadataElement relatedMetadataElement containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the relatedMetadataElement supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public B getNewBean(Class<B>               beanClass,
                         RelatedMetadataElement relatedMetadataElement,
@@ -724,7 +724,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public B getNewBean(Class<B>                 beanClass,
                         OpenMetadataElement      element,
@@ -752,7 +752,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public B getNewComplexBean(Class<B>                     beanClass,
                                OpenMetadataElement          primaryElement,
@@ -780,7 +780,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public B getNewComplexBean(Class<B>                     beanClass,
                                RelatedMetadataElement       primaryElement,

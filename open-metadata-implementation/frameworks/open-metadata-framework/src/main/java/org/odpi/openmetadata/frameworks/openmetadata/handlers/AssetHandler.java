@@ -9,6 +9,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurati
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
@@ -444,6 +448,114 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Create an incident report to capture the situation detected by the caller.
+     * This incident report will be processed by other governance activities.
+     *
+     * @param userId caller's userId
+     * @param initialClassifications initial classifications to add to the incident report
+     * @param properties unique identifier to give this new incident report and description of the situation
+     * @param impactedResources details of the resources impacted by this situation
+     * @param previousIncidents links to previous incident reports covering this situation
+     * @param originatorGUID the unique identifier of the person or process that created the incident
+     *
+     * @return unique identifier of the resulting incident report
+     * @throws InvalidParameterException null or non-unique qualified name for the incident report
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    public  String createIncidentReport(String                                  userId,
+                                        Map<String, ClassificationProperties>   initialClassifications,
+                                        IncidentReportProperties                properties,
+                                        Map<String, ImpactedResourceProperties> impactedResources,
+                                        Map<String, ReportDependencyProperties> previousIncidents,
+                                        String                                  originatorGUID) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName = "createIncidentReport";
+        final String propertiesParameterName = "properties";
+        final String originatorParameterName = "originatorGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(originatorGUID, originatorParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+        propertyHelper.validateMandatoryName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        /*
+         * Set up the API options
+         */
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
+        makeAnchorOptions.setEffectiveTime(new Date());
+        makeAnchorOptions.setForLineage(true);
+        makeAnchorOptions.setMakeAnchor(false);
+
+
+        /*
+         * Create the incident report entity
+         */
+        ElementProperties elementProperties = elementBuilder.getElementProperties(properties);
+
+        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(originatorGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORT_ORIGINATOR.typeName);
+
+        String incidentReportGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                                    OpenMetadataType.INCIDENT_REPORT.typeName,
+                                                                                    newElementOptions,
+                                                                                    classificationBuilder.getInitialClassifications(initialClassifications),
+                                                                                    new NewElementProperties(elementProperties),
+                                                                                    null);
+
+        if (incidentReportGUID != null)
+        {
+            if (impactedResources != null)
+            {
+                for (String resourceGUID : impactedResources.keySet())
+                {
+                    if (resourceGUID != null)
+                    {
+                        ImpactedResourceProperties relationshipProperties = impactedResources.get(resourceGUID);
+
+                        openMetadataClient.createRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName,
+                                                                        resourceGUID,
+                                                                        incidentReportGUID,
+                                                                        makeAnchorOptions,
+                                                                        new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
+                    }
+                }
+            }
+
+            if (previousIncidents != null)
+            {
+                for (String previousIncidentGUID : previousIncidents.keySet())
+                {
+                    if (previousIncidentGUID != null)
+                    {
+                        ReportDependencyProperties relationshipProperties = previousIncidents.get(previousIncidentGUID);
+
+                        openMetadataClient.createRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                                        previousIncidentGUID,
+                                                                        incidentReportGUID,
+                                                                        makeAnchorOptions,
+                                                                        new NewElementProperties(relationshipBuilder.getElementProperties(relationshipProperties)));
+                    }
+                }
+            }
+        }
+
+        return incidentReportGUID;
+    }
+
+
+
+
+    /**
      * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
      * for this service.
      *
@@ -457,7 +569,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
      * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     * @throws PropertyServerException a problem in the remote server running the partner OMAS
      */
     public String setUpMetadataSource(String                userId,
                                       String                metadataSourceQualifiedName,
@@ -532,28 +644,28 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Create a new action and link it to the supplied role and targets (if applicable).
      *
      * @param userId                    calling user
+     * @param initialClassifications    map of classifications to add to the new action
+     * @param properties                properties of the  action
      * @param originatorGUID            optional originator element (such as a person or Governance Service)
      * @param actionSponsorGUID         optional element that maintains the action on their list
      * @param assignToActorGUID         optional actor to assign the action to
      * @param anchorOptions             how should the new action be anchored?
-     * @param initialClassifications    map of classifications to add to the new action
      * @param newActionTargets optional list of elements that the action is to target
-     * @param properties                properties of the  action
      * @return unique identifier of the action
      * @throws InvalidParameterException  a parameter is invalid
      * @throws PropertyServerException    the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public String createAction(String                            userId,
-                               String                            originatorGUID,
-                               String                            actionSponsorGUID,
-                               String                               assignToActorGUID,
-                               AnchorOptions                         anchorOptions,
+    public String createAction(String                                userId,
                                Map<String, ClassificationProperties> initialClassifications,
-                               List<NewActionTarget>             newActionTargets,
-                               ActionProperties                  properties) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+                               ActionProperties                      properties,
+                               String                                originatorGUID,
+                               String                                actionSponsorGUID,
+                               String                                assignToActorGUID,
+                               AnchorOptions                         anchorOptions,
+                               List<NewActionTarget>                 newActionTargets) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
         final String methodName                 = "createAction";
         final String toDoPropertiesName         = "properties";
@@ -638,6 +750,345 @@ public class AssetHandler extends OpenMetadataHandlerBase
     }
 
 
+
+
+    /**
+     * Create an action request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param initialClassifications classification to add to the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
+     */
+    public String createActorAction(String                                userId,
+                                    String                                openMetadataTypeName,
+                                    Map<String, ClassificationProperties> initialClassifications,
+                                    ActionProperties                      properties,
+                                    String                                actionSourceGUID,
+                                    List<String>                          actionCauseGUIDs,
+                                    String                                assignToGUID,
+                                    List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        return this.createAction(userId,
+                                 openMetadataTypeName,
+                                 initialClassifications,
+                                 properties,
+                                 actionSourceGUID,
+                                 actionCauseGUIDs,
+                                 assignToGUID,
+                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                 actionTargets);
+    }
+
+
+    /**
+     * Create an entry in a note log.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param noteLogGUID unique identifier of the note log
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
+     */
+    public String createNoteLogEntry(String                                userId,
+                                     String                                openMetadataTypeName,
+                                     Map<String, ClassificationProperties> initialClassifications,
+                                     ActionProperties                      properties,
+                                     String                                actionSourceGUID,
+                                     List<String>                          actionCauseGUIDs,
+                                     String                                noteLogGUID,
+                                     List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return this.createAction(userId,
+                                 openMetadataTypeName,
+                                 initialClassifications,
+                                 properties,
+                                 actionSourceGUID,
+                                 actionCauseGUIDs,
+                                 noteLogGUID,
+                                 OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                 actionTargets);
+    }
+
+
+
+    /**
+     * Create an action request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param initialClassifications classification to add to the action
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param assignToRelationshipTypeName typeName of the relationship
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
+     */
+    private String createAction(String                                userId,
+                                String                                openMetadataTypeName,
+                                Map<String, ClassificationProperties> initialClassifications,
+                                ActionProperties                      properties,
+                                String                                actionSourceGUID,
+                                List<String>                          actionCauseGUIDs,
+                                String                                assignToGUID,
+                                String                                assignToRelationshipTypeName,
+                                List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName = "createAction";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        /*
+         * Set up the API options
+         */
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
+        makeAnchorOptions.setEffectiveTime(new Date());
+        makeAnchorOptions.setForLineage(true);
+        makeAnchorOptions.setMakeAnchor(false);
+
+        /*
+         * Create the action entity
+         */
+
+        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
+
+        if (actionSourceGUID != null)
+        {
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(actionSourceGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentGUID(actionSourceGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
+        }
+        else
+        {
+            newElementOptions.setIsOwnAnchor(true);
+        }
+
+        String actionGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                            openMetadataTypeName,
+                                                                            newElementOptions,
+                                                                            classificationBuilder.getInitialClassifications(initialClassifications),
+                                                                            elementBuilder.getNewElementProperties(properties),
+                                                                            null);
+
+        if (actionGUID != null)
+        {
+            if (actionTargets != null)
+            {
+                /*
+                 * Link the action to the items to work on
+                 */
+                for (NewActionTarget actionTarget : actionTargets)
+                {
+                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
+                    {
+                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                    actionTarget.getActionTargetName());
+
+                        openMetadataClient.createRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                        actionGUID,
+                                                                        actionTarget.getActionTargetGUID(),
+                                                                        makeAnchorOptions,
+                                                                        new NewElementProperties(relationshipProperties));
+                    }
+                }
+            }
+
+            if (assignToGUID != null)
+            {
+                /*
+                 * Link the action and the person assigned to complete the work
+                 */
+                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                assignToRelationshipTypeName,
+                                                                assignToGUID,
+                                                                actionGUID,
+                                                                makeAnchorOptions,
+                                                                new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                                          OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                                          AssignmentType.CONTRIBUTOR.getName())));
+            }
+
+            if (actionCauseGUIDs != null)
+            {
+                for (String actionCauseGUID : actionCauseGUIDs)
+                {
+                    if (actionCauseGUID != null)
+                    {
+                        /*
+                         * Link the action and its cause.
+                         */
+                        openMetadataClient.createRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
+                                                                        actionCauseGUID,
+                                                                        actionGUID,
+                                                                        makeAnchorOptions,
+                                                                        null);
+                    }
+                }
+            }
+        }
+
+        return actionGUID;
+    }
+
+
+    /**
+     * Create a "To-Do" request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param initialClassifications classification to add to the action
+     * @param properties unique name for the to do plus additional  properties
+     * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param originatorGUID unique identifier of the source of the to do
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new to do element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException a problem connecting to (or inside) the metadata store
+     */
+    public String openToDo(String                                userId,
+                           Map<String, ClassificationProperties> initialClassifications,
+                           ToDoProperties                        properties,
+                           String                                assignToGUID,
+                           String                                sponsorGUID,
+                           String                                originatorGUID,
+                           List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String methodName                 = "openToDo";
+        final String assignToParameterName      = "assignToGUID";
+        final String propertiesParameterName    = "properties";
+        final String originatorParameterName    = "originatorGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(originatorGUID, originatorParameterName, methodName);
+        propertyHelper.validateMandatoryName(assignToGUID, assignToParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+        propertyHelper.validateMandatoryName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+
+        /*
+         * Set up the API options
+         */
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions();
+        makeAnchorOptions.setEffectiveTime(new Date());
+        makeAnchorOptions.setForLineage(true);
+        makeAnchorOptions.setMakeAnchor(false);
+
+
+        /*
+         * Create the to do entity
+         */
+        NewElementOptions newElementOptions = new NewElementOptions(makeAnchorOptions);
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(assignToGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
+
+        String toDoGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                          OpenMetadataType.TO_DO.typeName,
+                                                                          newElementOptions,
+                                                                          classificationBuilder.getInitialClassifications(initialClassifications),
+                                                                          new NewElementProperties(elementBuilder.getElementProperties(properties)),
+                                                                          null);
+
+        if (toDoGUID != null)
+        {
+            if (actionTargets != null)
+            {
+                for (NewActionTarget actionTarget : actionTargets)
+                {
+                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
+                    {
+                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                    actionTarget.getActionTargetName());
+
+                        openMetadataClient.createRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                        toDoGUID,
+                                                                        actionTarget.getActionTargetGUID(),
+                                                                        makeAnchorOptions,
+                                                                        new NewElementProperties(relationshipProperties));
+                    }
+                }
+            }
+
+            if (sponsorGUID != null)
+            {
+                /*
+                 * Link the "to do" and the sponsor
+                 */
+                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                sponsorGUID,
+                                                                toDoGUID,
+                                                                makeAnchorOptions,
+                                                                new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                                          OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                                          AssignmentType.SPONSOR.getName())));
+            }
+
+            if (originatorGUID != null)
+            {
+                /*
+                 * Link the "to do" and the originator
+                 */
+                openMetadataClient.createRelatedElementsInStore(userId,
+                                                                OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
+                                                                originatorGUID,
+                                                                toDoGUID,
+                                                                makeAnchorOptions,
+                                                                null);
+            }
+        }
+
+        return toDoGUID;
+    }
+
+
     /**
      * Create a new metadata element to represent an asset using an existing element as a template.
      * The template defines additional classifications and relationships that should be added to the new asset.
@@ -654,7 +1105,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createAssetFromTemplate(String                 userId,
                                           TemplateOptions        templateOptions,
@@ -684,7 +1135,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param elementGUID           unique identifier of the target element.
      * @return relationship GUID
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addActionTarget(String                  userId,
@@ -1224,7 +1675,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param elementGUID           unique identifier of the target element.
      * @return relationship GUID
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addCatalogTarget(String                  userId,
@@ -1346,7 +1797,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param elementGUID    unique identifier of the element.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeCatalogTarget(String        userId,
@@ -1379,7 +1830,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param relationshipGUID unique identifier of the relationship.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws PropertyServerException    a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeCatalogTarget(String        userId,
@@ -1851,7 +2302,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @return list of unique identifiers of assets with matching name.
      *
      * @throws InvalidParameterException the name is invalid
-     * @throws PropertyServerException there is a problem access in the property server
+     * @throws PropertyServerException a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
     public List<OpenMetadataRootElement> getAssetsByMetadataCollectionId(String       userId,
@@ -2504,7 +2955,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findAssets(String        userId,
                                                     String        searchString,
@@ -2526,7 +2977,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param searchOptions options to control the search
      * @return found elements organized by asset
      * @throws InvalidParameterException the searchString is invalid
-     * @throws PropertyServerException there is a problem access in the property server
+     * @throws PropertyServerException a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
     public List<OpenMetadataRootElement> findAssetsInDomain(String        userId,
@@ -2598,7 +3049,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      *
      * @return graph of elements or
      * @throws InvalidParameterException - one of the parameters is null or invalid or
-     * @throws PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * @throws PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public AssetLineageGraph getAssetLineageGraph(String       userId,
@@ -3226,7 +3677,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param queryOptions options to control the query
      * @return graph of elements
      * @throws InvalidParameterException the name is invalid
-     * @throws PropertyServerException there is a problem access in the property server
+     * @throws PropertyServerException a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
     public AssetGraph getAssetGraph(String       userId,

@@ -108,7 +108,7 @@ public class VerifyAttributeTypeDefExecutor extends RepositoryExecutorBase
      *
      * @return boolean true means the TypeDef matches the local definition false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.

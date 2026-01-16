@@ -731,42 +731,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
 
 
     /**
-     * Return the project manager for the product.
-     *
-     * @return description of the product manager
-     */
-    @Override
-    public ProductRoleDefinition getProductManager()
-    {
-        return productManager;
-    }
-
-
-    /**
-     * Return the project developer for the product.
-     *
-     * @return description of the product developer
-     */
-    @Override
-    public ProductRoleDefinition getProductDeveloper()
-    {
-        return productDeveloper;
-    }
-
-
-    /**
-     * Return the project support for the product.
-     *
-     * @return description of the product support
-     */
-    @Override
-    public ProductRoleDefinition getProductSupport()
-    {
-        return productSupport;
-    }
-
-
-    /**
      * Return the list of subscription types supported by this product.
      *
      * @return list

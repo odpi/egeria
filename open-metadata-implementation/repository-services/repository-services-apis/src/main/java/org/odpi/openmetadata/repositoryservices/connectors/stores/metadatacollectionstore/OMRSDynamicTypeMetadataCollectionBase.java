@@ -56,7 +56,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param userId unique identifier for requesting user.
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefKnownException the TypeDef is already stored in the repository.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
@@ -101,7 +101,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param userId unique identifier for requesting user.
      * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
      * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefKnownException the TypeDef is already stored in the repository.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
@@ -147,7 +147,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param typeDef TypeDef structure describing the TypeDef to test.
      * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
@@ -199,7 +199,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
      * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
@@ -250,7 +250,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param typeDefPatch TypeDef patch describing change to TypeDef.
      * @return updated TypeDef
      * @throws InvalidParameterException the TypeDefPatch is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
      * @throws PatchErrorException the TypeDef can not be updated because the supplied patch is incompatible
@@ -287,7 +287,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
      * @param obsoleteTypeDefName String unique name for the TypeDef.
      * @throws InvalidParameterException the one of TypeDef identifiers is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
      * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
@@ -340,7 +340,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param obsoleteTypeDefGUID String unique identifier for the AttributeTypeDef.
      * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
      * @throws InvalidParameterException the one of AttributeTypeDef identifiers is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
      * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
@@ -397,7 +397,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param newTypeDefName new name for this TypeDef.
      * @return typeDef - new values for this TypeDef, including the new guid/name.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the TypeDef identified by the original guid/name is not found
      *                                    in the metadata collection.
@@ -468,7 +468,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param newAttributeTypeDefName new name for this AttributeTypeDef.
      * @return attributeTypeDef - new values for this AttributeTypeDef, including the new guid/name.
      * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the AttributeTypeDef identified by the original guid/name is not
      *                                    found in the metadata collection.
@@ -535,7 +535,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity is not recognized by this repository
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
@@ -581,7 +581,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity is not recognized by this repository
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata

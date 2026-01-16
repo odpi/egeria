@@ -53,7 +53,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @return guid of new comment.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addCommentToElement(String                                userId,
@@ -118,7 +118,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateComment(String            userId,
@@ -146,7 +146,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupAcceptedAnswer(String            userId,
                                     String            questionCommentGUID,
@@ -174,7 +174,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearAcceptedAnswer(String        userId,
                                     String        questionCommentGUID,
@@ -216,7 +216,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @param deleteOptions options for a delete request
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public void deleteComment(String        userId,
@@ -237,7 +237,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @param getOptions multiple options to control the query
      * @return comment properties
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElement getCommentByGUID(String     userId,
@@ -261,7 +261,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      *
      * @return list of comments
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement> getAttachedComments(String       userId,
@@ -294,7 +294,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findComments(String        userId,
                                                       String        searchString,

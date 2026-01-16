@@ -133,7 +133,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createSoftwareCapabilityFromTemplate(String                 userId,
                                                        TemplateOptions        templateOptions,
@@ -355,7 +355,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
      * @return list of unique identifiers of softwareCapabilities with matching name.
      *
      * @throws InvalidParameterException the name is invalid
-     * @throws PropertyServerException there is a problem access in the property server
+     * @throws PropertyServerException a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
     public List<OpenMetadataRootElement> getSoftwareCapabilitiesByMetadataCollectionId(String       userId,
@@ -503,7 +503,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSoftwareCapabilitiesForInfrastructure(String       userId,
                                                                                   String       infrastructureGUID,
@@ -537,7 +537,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findSoftwareCapabilities(String        userId,
                                                                   String        searchString,

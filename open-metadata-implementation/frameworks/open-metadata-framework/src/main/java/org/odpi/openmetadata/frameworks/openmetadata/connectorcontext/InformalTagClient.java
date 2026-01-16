@@ -100,7 +100,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createInformalTagFromTemplate(TemplateOptions        templateOptions,
                                                 String                 templateGUID,
@@ -220,7 +220,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findInformalTags(String        searchString,
                                                           SearchOptions searchOptions) throws InvalidParameterException,
@@ -241,7 +241,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findMyInformalTags(String        searchString,
                                                             SearchOptions searchOptions) throws InvalidParameterException,
@@ -262,7 +262,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param metadataSourceOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   addTagToElement(String                elementGUID,
@@ -283,7 +283,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param deleteOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   removeTagFromElement(String        elementGUID,
@@ -326,7 +326,7 @@ public class InformalTagClient extends ConnectorContextClientBase
      * @param queryOptions multiple options to control the query
      * @return list of tags
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement>  getAttachedTags(String       elementGUID,

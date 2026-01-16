@@ -143,7 +143,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Free up any resources held since the connector is no longer needed.
      *
-     * @throws ConnectorCheckedException there is a problem disconnecting the connector.
+     * @throws ConnectorCheckedException a problem disconnecting the connector.
      */
     @Override
     public void disconnect() throws ConnectorCheckedException

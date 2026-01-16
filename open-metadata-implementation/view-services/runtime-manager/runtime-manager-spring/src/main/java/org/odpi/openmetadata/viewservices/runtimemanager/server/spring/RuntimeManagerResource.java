@@ -276,7 +276,7 @@ public class RuntimeManagerResource
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     @PostMapping(path = "/omag-servers/{serverGUID}/instance")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -381,7 +381,7 @@ public class RuntimeManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/metadata-repository-cohorts/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -469,7 +469,7 @@ public class RuntimeManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/metadata-repository-cohorts/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -497,7 +497,7 @@ public class RuntimeManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/metadata-repository-cohorts/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -526,7 +526,7 @@ public class RuntimeManagerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/metadata-repository-cohorts/{metadataRepositoryCohortGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

@@ -79,7 +79,7 @@ public class DataDiscoveryResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -611,7 +611,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -639,7 +639,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-analysis-step")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -667,7 +667,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-annotation-type")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -696,7 +696,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/associated-annotations")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -725,7 +725,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/survey-reports/{surveyReportGUID}/new-annotations")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -756,7 +756,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/{annotationGUID}/annotation-extensions")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -787,7 +787,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/{annotationGUID}/previous-annotations")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -817,7 +817,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -846,7 +846,7 @@ public class DataDiscoveryResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/{annotationGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

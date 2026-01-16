@@ -23,7 +23,7 @@
 * `RelationshipConflictException` - a new relationship conflicts with an existing relationship.
 * `RelationshipNotDeletedException` - the requested relationship is not in DELETED status.
 * `RelationshipNotKnownException` - the metadata collection does not have a relationship with the requested GUID stored.
-* `RepositoryErrorException` - there is a problem communicating with the metadata repository.
+* `RepositoryErrorException` - a problem communicating with the metadata repository.
 This may be caused by a configuration error, or a server outage.
 * `StatusNotSupportedException` - the metadata repository hosting the metadata collection does not support the requested status.
 * `TypeDefConflictException` - the new TypeDef conflicts with an existing TypeDef.

@@ -76,7 +76,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setUpValidMetadataValue(String             typeName,
                                         String             propertyName,
@@ -101,7 +101,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setUpValidMetadataMapName(String             typeName,
                                           String             propertyName,
@@ -127,7 +127,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setUpValidMetadataMapValue(String             typeName,
                                            String             propertyName,
@@ -150,7 +150,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearValidMetadataValue(String        typeName,
                                         String        propertyName,
@@ -173,7 +173,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearValidMetadataMapName(String        typeName,
                                           String        propertyName,
@@ -197,7 +197,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearValidMetadataMapValue(String        typeName,
                                            String        propertyName,
@@ -222,7 +222,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public boolean validateMetadataValue(String typeName,
                                          String propertyName,
@@ -245,7 +245,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public boolean validateMetadataMapName(String typeName,
                                            String propertyName,
@@ -269,7 +269,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public boolean validateMetadataMapValue(String typeName,
                                             String propertyName,
@@ -293,7 +293,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueDetail getValidMetadataValue(String typeName,
                                                           String propertyName,
@@ -316,7 +316,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueDetail getValidMetadataMapName(String typeName,
                                                             String propertyName,
@@ -340,7 +340,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueDetail getValidMetadataMapValue(String typeName,
                                                              String propertyName,
@@ -365,7 +365,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<ValidMetadataValueDetail> getValidMetadataValues(String typeName,
                                                                  String propertyName,
@@ -392,7 +392,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<ValidMetadataValueDetail> getConsistentMetadataValues(String typeName,
                                                                       String propertyName,

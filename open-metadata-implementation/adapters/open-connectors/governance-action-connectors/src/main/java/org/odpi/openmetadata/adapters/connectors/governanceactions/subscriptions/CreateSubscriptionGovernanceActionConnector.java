@@ -58,7 +58,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -232,7 +232,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      * @return unique identifier of the new subscription
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private String setUpSubscription(String                    subscriptionName,
                                      String                    subscriptionIdentifier,
@@ -372,7 +372,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      * @return guid of the subscription element
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private String createSubscription(String                    subscriptionName,
                                       String                    subscriptionIdentifier,
@@ -449,7 +449,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      *
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void setUpCancellationProcess(String                              subscriptionGUID,
                                           String                              targetAssetGUID,
@@ -536,7 +536,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      *
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void addServiceLevelObjectives(String                    subscriptionGUID,
                                            List<ActionTargetElement> serviceLevelObjectives) throws InvalidParameterException,
@@ -580,7 +580,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
      *
      * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void   setUpProvisioningPipeline(String                              sourceAssetGUID,
                                              String                              targetAssetGUID,

@@ -944,7 +944,7 @@ public class DesignModelArchiveBuilder
 
 
     /**
-     * Throws an exception if there is a problem building the archive.
+     * Throws an exception if a problem building the archive.
      *
      * @param methodName calling method
      */

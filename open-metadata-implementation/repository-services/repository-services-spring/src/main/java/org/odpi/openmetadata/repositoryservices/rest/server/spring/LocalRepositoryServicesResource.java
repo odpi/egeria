@@ -63,7 +63,7 @@ public class LocalRepositoryServicesResource
      * @param serverName unique identifier for requested server.
      * @param userId calling user
      * @return String metadata collection id
-     * or RepositoryErrorException if there is a problem communicating with the metadata repository.
+     * or RepositoryErrorException if a problem communicating with the metadata repository.
      */
     @GetMapping(path = "/metadata-collection-id")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -90,7 +90,7 @@ public class LocalRepositoryServicesResource
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/all")
@@ -113,7 +113,7 @@ public class LocalRepositoryServicesResource
      * @param name name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation or
      * InvalidParameterException the name of the TypeDef is null.
      */
@@ -137,7 +137,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/typedefs/by-category")
@@ -160,7 +160,7 @@ public class LocalRepositoryServicesResource
      * @return AttributeTypeDefListResponse:
      * AttributeTypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @PostMapping(path = "/types/attribute-typedefs/by-category")
@@ -183,7 +183,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the matchCriteria is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedefs/by-property")
@@ -208,7 +208,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedefs/by-external-id")
@@ -233,7 +233,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the searchCriteria is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/types/typedefs/by-property-value")
@@ -256,7 +256,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -281,7 +281,7 @@ public class LocalRepositoryServicesResource
      * @return AttributeTypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -307,7 +307,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -332,7 +332,7 @@ public class LocalRepositoryServicesResource
      * @return AttributeTypeDefResponse:
      * AttributeTypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -357,7 +357,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the new TypeDef is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotSupportedException the repository is not able to support this TypeDef or
      * TypeDefKnownException the TypeDef is already stored in the repository or
@@ -386,7 +386,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the new TypeDef is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotSupportedException the repository is not able to support this TypeDef or
      * TypeDefKnownException the TypeDef is already stored in the repository or
@@ -415,7 +415,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the new TypeDef is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotSupportedException the repository is not able to support this TypeDef or
      * TypeDefKnownException the TypeDef is already stored in the repository or
@@ -444,7 +444,7 @@ public class LocalRepositoryServicesResource
      * @return BooleanResponse:
      * boolean true means the TypeDef matches the local definition false means the TypeDef is not known or
      * InvalidParameterException the TypeDef is null.
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
@@ -471,7 +471,7 @@ public class LocalRepositoryServicesResource
      * @return BooleanResponse:
      * boolean true means the TypeDef matches the local definition false means the TypeDef is not known or
      * InvalidParameterException the TypeDef is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotSupportedException the repository is not able to support this TypeDef or
      * TypeDefConflictException the new TypeDef conflicts with an existing TypeDef or
@@ -499,7 +499,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefResponse:
      * updated TypeDef or
      * InvalidParameterException the TypeDefPatch is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * PatchErrorException the TypeDef can not be updated because the supplied patch is incompatible
@@ -529,7 +529,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the one of TypeDef identifiers is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in
@@ -561,7 +561,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the one of AttributeTypeDef identifiers is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
      * TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in
@@ -595,7 +595,7 @@ public class LocalRepositoryServicesResource
      * @return TypeDefResponse:
      * typeDef: new values for this TypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the TypeDef identified by the original guid/name is not found
      *                                    in the metadata collection or
@@ -629,7 +629,7 @@ public class LocalRepositoryServicesResource
      * @return AttributeTypeDefResponse:
      * attributeTypeDef new values for this AttributeTypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeDefNotKnownException the AttributeTypeDef identified by the original guid/name is not
      *                                    found in the metadata collection or
@@ -664,7 +664,7 @@ public class LocalRepositoryServicesResource
      * @param guid String unique identifier for the entity
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * InvalidParameterException the guid is null.
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -688,7 +688,7 @@ public class LocalRepositoryServicesResource
      * @param guid String unique identifier for the entity
      * @return EntitySummary structure or
      * InvalidParameterException the guid is null.
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -713,7 +713,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail structure or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored or
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
@@ -740,7 +740,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail structure or
      * InvalidParameterException the guid or date is null or the asOfTime property is for a future time or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored or
      * EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
@@ -770,7 +770,7 @@ public class LocalRepositoryServicesResource
      * @param historyRangeRequest detailing the range of times and paging for the results
      * @return EntityList structure or
      * InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
@@ -801,7 +801,7 @@ public class LocalRepositoryServicesResource
      * @param historyRangeRequest detailing the range of times and paging for the results
      * @return EntityList structure or
      * InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
@@ -833,7 +833,7 @@ public class LocalRepositoryServicesResource
      * Relationships list.  Null means no relationships associated with the entity or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * PropertyErrorException the sequencing property is not valid for the attached classifications or
@@ -866,7 +866,7 @@ public class LocalRepositoryServicesResource
      * Relationships list.  Null means no relationships associated with the entity or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * PropertyErrorException the sequencing property is not valid for the attached classifications or
@@ -899,7 +899,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
@@ -929,7 +929,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
@@ -960,7 +960,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
@@ -991,7 +991,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
@@ -1022,7 +1022,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * ClassificationErrorException the classification request is not known to the metadata collection.
      * PropertyErrorException the properties specified are not valid for the requested type of
@@ -1055,7 +1055,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * ClassificationErrorException the classification request is not known to the metadata collection.
      * PropertyErrorException the properties specified are not valid for the requested type of
@@ -1089,7 +1089,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
@@ -1122,7 +1122,7 @@ public class LocalRepositoryServicesResource
      * collection or
      * InvalidParameterException a parameter is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
@@ -1151,7 +1151,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * relationship details if the relationship is found in the metadata collection; otherwise return null or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -1175,7 +1175,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * a relationship structure or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the metadata collection does not have a relationship with
      *                                         the requested GUID stored or
@@ -1202,7 +1202,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * a relationship structure or
      * InvalidParameterException the guid or date is null or the asOfTime property is for a future time or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored or
      * RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
@@ -1231,7 +1231,7 @@ public class LocalRepositoryServicesResource
      * @param historyRangeRequest detailing the range of times and paging for the results
      * @return RelationshipList structure or
      * InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
      *                                   at the time requested.
@@ -1261,7 +1261,7 @@ public class LocalRepositoryServicesResource
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
@@ -1290,7 +1290,7 @@ public class LocalRepositoryServicesResource
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
@@ -1320,7 +1320,7 @@ public class LocalRepositoryServicesResource
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
@@ -1350,7 +1350,7 @@ public class LocalRepositoryServicesResource
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
@@ -1380,9 +1380,9 @@ public class LocalRepositoryServicesResource
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
-     * PropertyErrorException there is a problem with one of the other parameters  or
+     * PropertyErrorException a problem with one of the other parameters  or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1410,9 +1410,9 @@ public class LocalRepositoryServicesResource
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
      * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
-     * PropertyErrorException there is a problem with one of the other parameters  or
+     * PropertyErrorException a problem with one of the other parameters  or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1443,7 +1443,7 @@ public class LocalRepositoryServicesResource
      * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                              hosting the metadata collection or
@@ -1481,7 +1481,7 @@ public class LocalRepositoryServicesResource
      * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                              hosting the metadata collection or
@@ -1514,7 +1514,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the entity proxy is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -1548,7 +1548,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -1576,7 +1576,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * FunctionNotSupportedException the repository does not support undo or
@@ -1606,7 +1606,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse
      * details of the deleted entity or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
@@ -1635,7 +1635,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
@@ -1662,7 +1662,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the restored entity header, properties and classifications or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * EntityNotDeletedException the entity is currently not in DELETED status and so it can not be restored or
@@ -1691,7 +1691,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * ClassificationErrorException the requested classification is either not known or not valid
@@ -1723,7 +1723,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * ClassificationErrorException the requested classification is either not known or not valid
@@ -1755,7 +1755,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * ClassificationErrorException the requested classification is either not known or not valid
@@ -1788,7 +1788,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * ClassificationErrorException the requested classification is either not known or not valid
@@ -1821,7 +1821,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * ClassificationErrorException the requested classification is not set on the entity or
@@ -1851,7 +1851,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * ClassificationErrorException the requested classification is not set on the entity or
@@ -1880,7 +1880,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * ClassificationErrorException the requested classification is not attached to the classification or
@@ -1911,7 +1911,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * ClassificationErrorException the requested classification is not attached to the classification or
@@ -1940,7 +1940,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -1975,7 +1975,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2008,7 +2008,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * Resulting relationship structure with the new properties set or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -2036,7 +2036,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * Relationship structure with the new current header, requested entities and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * FunctionNotSupportedException the repository does not support undo or
@@ -2065,7 +2065,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * Updated relationship or
      * InvalidParameterException one of the parameters is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored or
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
@@ -2094,7 +2094,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
@@ -2122,7 +2122,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * Relationship structure with the restored header, requested entities and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      * the metadata collection is stored or
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
@@ -2158,7 +2158,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * FunctionNotSupportedException the repository does not support instance re-identification or
@@ -2189,7 +2189,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2226,7 +2226,7 @@ public class LocalRepositoryServicesResource
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * FunctionNotSupportedException the repository does not support instance re-homing or
@@ -2266,7 +2266,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection or
@@ -2298,7 +2298,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2335,7 +2335,7 @@ public class LocalRepositoryServicesResource
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection or
@@ -2379,7 +2379,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the entity is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2412,7 +2412,7 @@ public class LocalRepositoryServicesResource
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @return list of all the classifications for this entity that are homed in this repository or
      * InvalidParameterException the entity is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity is not recognized by this repository or
      * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
@@ -2439,7 +2439,7 @@ public class LocalRepositoryServicesResource
      * @param requestBody the time used to determine which version of the entity that is desired.
      * @return list of all the classifications for this entity that are homed in this repository or
      * InvalidParameterException the entity is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity is not recognized by this repository or
      * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
@@ -2468,7 +2468,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * HomeEntityException the entity belongs to the local repository so creating a reference
@@ -2498,7 +2498,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the entity is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2535,7 +2535,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * HomeEntityException the entity belongs to the local repository so creating a reference
@@ -2568,7 +2568,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * HomeEntityException the entity belongs to the local repository so creating a reference
@@ -2602,7 +2602,7 @@ public class LocalRepositoryServicesResource
      *
      * @return void response or
      * InvalidParameterException one of the parameters is invalid or null.
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                          the metadata collection is stored.
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                        characteristics in the TypeDef for this classification type.
@@ -2639,7 +2639,7 @@ public class LocalRepositoryServicesResource
      * InvalidParameterException one of the parameters is invalid or null.
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                        characteristics in the TypeDef for this classification type.
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                          the metadata collection is stored.
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                    hosting the metadata collection.
@@ -2669,7 +2669,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the relationship is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2707,7 +2707,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the relationship is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2744,7 +2744,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException the relationship is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or
@@ -2783,7 +2783,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the relationship identifier is not recognized or
      * HomeRelationshipException the relationship belongs to the local repository so creating a reference
@@ -2820,7 +2820,7 @@ public class LocalRepositoryServicesResource
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the relationship identifier is not recognized or
      * HomeRelationshipException the relationship belongs to the local repository so creating a reference
@@ -2854,7 +2854,7 @@ public class LocalRepositoryServicesResource
      * @param instances instances to save
      * @return void response or
      * InvalidParameterException the relationship is null or
-     * RepositoryErrorException  there is a problem communicating with the metadata repository where
+     * RepositoryErrorException  a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
      * TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection or

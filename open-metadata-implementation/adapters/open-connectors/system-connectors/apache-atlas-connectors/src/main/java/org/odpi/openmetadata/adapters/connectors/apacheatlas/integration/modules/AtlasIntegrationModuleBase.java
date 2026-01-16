@@ -591,7 +591,7 @@ public abstract class AtlasIntegrationModuleBase
      *
      * @param atlasEntity entity retrieved from Apache Atlas
      * @return string guid
-     * @throws PropertyServerException there is a problem calling Apache Atlas
+     * @throws PropertyServerException a problem calling Apache Atlas
      */
     protected String getEgeriaGUID(AtlasEntityWithExtInfo  atlasEntity) throws PropertyServerException
     {
@@ -616,7 +616,7 @@ public abstract class AtlasIntegrationModuleBase
      * Remove the requested entity.
      *
      * @param atlasEntity entity retrieved from Apache Atlas
-     * @throws PropertyServerException there is a problem calling Apache Atlas
+     * @throws PropertyServerException a problem calling Apache Atlas
      */
     protected void removeEgeriaGUID(AtlasEntityWithExtInfo  atlasEntity) throws PropertyServerException
     {

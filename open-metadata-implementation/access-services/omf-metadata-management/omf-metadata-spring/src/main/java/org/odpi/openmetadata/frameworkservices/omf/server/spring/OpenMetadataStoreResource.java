@@ -77,7 +77,7 @@ public class OpenMetadataStoreResource
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types")
@@ -103,7 +103,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/entity-defs")
@@ -129,7 +129,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/relationship-defs")
@@ -155,7 +155,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/classification-defs")
@@ -184,7 +184,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/external-id")
@@ -215,7 +215,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefsGalleryResponse:
      * A list of types or
      * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * RepositoryErrorException a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/sub-types")
@@ -243,7 +243,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -273,7 +273,7 @@ public class OpenMetadataStoreResource
      * @return AttributeTypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the guid is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -303,7 +303,7 @@ public class OpenMetadataStoreResource
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -333,7 +333,7 @@ public class OpenMetadataStoreResource
      * @return AttributeTypeDefResponse:
      * AttributeTypeDef structure describing its category and properties or
      * InvalidParameterException the name is null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     * RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored or
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -367,7 +367,7 @@ public class OpenMetadataStoreResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @GetMapping(path = "/metadata-elements/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -412,7 +412,7 @@ public class OpenMetadataStoreResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -442,7 +442,7 @@ public class OpenMetadataStoreResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -470,7 +470,7 @@ public class OpenMetadataStoreResource
      * @return metadata element unique identifier (guid) or
      *  InvalidParameterException the unique identifier is null or not known or
      *  UserNotAuthorizedException the governance action service is not able to access the element or
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/guid-by-unique-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -497,7 +497,7 @@ public class OpenMetadataStoreResource
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  PropertyServerException a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/history")
@@ -528,7 +528,7 @@ public class OpenMetadataStoreResource
      * @param requestBody the time window required
      * @return list of classifications or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  PropertyServerException a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/classifications/{classificationName}/history")
@@ -560,7 +560,7 @@ public class OpenMetadataStoreResource
      * @return list of matching metadata elements (or null if no elements match the name) or
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -590,7 +590,7 @@ public class OpenMetadataStoreResource
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/for-anchor/{anchorGUID}")
@@ -622,7 +622,7 @@ public class OpenMetadataStoreResource
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-domain/{anchorDomainName}")
@@ -654,7 +654,7 @@ public class OpenMetadataStoreResource
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
 
@@ -687,7 +687,7 @@ public class OpenMetadataStoreResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/any-type")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -727,7 +727,7 @@ public class OpenMetadataStoreResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/type/{relationshipTypeName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -768,7 +768,7 @@ public class OpenMetadataStoreResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -807,7 +807,7 @@ public class OpenMetadataStoreResource
      * @return list of related elements
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -844,7 +844,7 @@ public class OpenMetadataStoreResource
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-conditions")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -873,7 +873,7 @@ public class OpenMetadataStoreResource
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
@@ -899,7 +899,7 @@ public class OpenMetadataStoreResource
      * @return a list of relationships - null means no matching relationships - or
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-search-conditions")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -930,7 +930,7 @@ public class OpenMetadataStoreResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @GetMapping(path = "/relationships/by-guid/{relationshipGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -977,7 +977,7 @@ public class OpenMetadataStoreResource
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
-     *  PropertyServerException there is a problem accessing the metadata store
+     *  PropertyServerException a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-guid/{relationshipGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1006,7 +1006,7 @@ public class OpenMetadataStoreResource
      * @param requestBody the time window required
      * @return list of beans or
      *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  PropertyServerException a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/relationships/{relationshipGUID}/history")
@@ -1040,7 +1040,7 @@ public class OpenMetadataStoreResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1064,7 +1064,7 @@ public class OpenMetadataStoreResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1090,7 +1090,7 @@ public class OpenMetadataStoreResource
      * @return boolean or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1115,7 +1115,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/publish")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1141,7 +1141,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/withdraw")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1167,7 +1167,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-effectivity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1192,7 +1192,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1218,7 +1218,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/archive")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1247,7 +1247,7 @@ public class OpenMetadataStoreResource
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1275,7 +1275,7 @@ public class OpenMetadataStoreResource
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1303,7 +1303,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-effectivity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1330,7 +1330,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1357,7 +1357,7 @@ public class OpenMetadataStoreResource
      *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1382,7 +1382,7 @@ public class OpenMetadataStoreResource
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1408,7 +1408,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-effectivity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1433,7 +1433,7 @@ public class OpenMetadataStoreResource
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1458,7 +1458,7 @@ public class OpenMetadataStoreResource
      * @return void or
      * InvalidParameterException  the unique identifier is null or not known.
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/multi-language/set-translation/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1485,7 +1485,7 @@ public class OpenMetadataStoreResource
      * @return void or
      * InvalidParameterException  the language is null or not known or not unique (add locale)
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @PostMapping(path = "/multi-language/clear-translation/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1516,7 +1516,7 @@ public class OpenMetadataStoreResource
      * @return the properties of the translation or null if there is none or
      * InvalidParameterException  the unique identifier is null or not known.
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/multi-language/get-translation/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1545,7 +1545,7 @@ public class OpenMetadataStoreResource
      * @return list of translation properties or null if there are none or
      * InvalidParameterException  the unique identifier is null or not known.
      * UserNotAuthorizedException the service is not able to access the element
-     * PropertyServerException    there is a problem accessing the metadata store
+     * PropertyServerException    a problem accessing the metadata store
      */
     @GetMapping(path = "/multi-language/get-translations/{elementGUID}")
     @SecurityRequirement(name = "BearerAuthorization")

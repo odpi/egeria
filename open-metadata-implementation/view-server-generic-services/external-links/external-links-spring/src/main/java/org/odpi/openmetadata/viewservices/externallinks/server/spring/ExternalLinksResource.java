@@ -83,7 +83,7 @@ public class ExternalLinksResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -394,7 +394,7 @@ public class ExternalLinksResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -424,7 +424,7 @@ public class ExternalLinksResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -455,7 +455,7 @@ public class ExternalLinksResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/{externalReferenceGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -616,7 +616,7 @@ public class ExternalLinksResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-identifiers/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -646,7 +646,7 @@ public class ExternalLinksResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-identifiers/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -677,7 +677,7 @@ public class ExternalLinksResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-identifiers/{externalIdGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")

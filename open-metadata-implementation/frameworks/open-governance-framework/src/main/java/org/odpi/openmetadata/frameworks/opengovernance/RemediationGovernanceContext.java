@@ -35,7 +35,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createMetadataElement(String            metadataElementTypeName,
                                  ElementProperties properties) throws InvalidParameterException,
@@ -58,7 +58,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createMetadataElement(String            metadataElementTypeName,
                                  ElementStatus     initialStatus,
@@ -84,7 +84,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateMetadataElement(String            metadataElementGUID,
                                boolean           replaceProperties,
@@ -109,7 +109,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateMetadataElementStatus(String        metadataElementGUID,
                                      boolean       forLineage,
@@ -134,7 +134,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateMetadataElementEffectivity(String        metadataElementGUID,
                                           boolean       forLineage,
@@ -157,7 +157,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void deleteMetadataElement(String  metadataElementGUID,
                                boolean cascadedDelete,
@@ -178,7 +178,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void deleteMetadataElement(OpenMetadataElement metadataElement,
                                boolean             cascadedDelete,
@@ -204,7 +204,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void classifyMetadataElement(String            metadataElementGUID,
                                  String            classificationName,
@@ -233,7 +233,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void classifyMetadataElement(String            metadataElementGUID,
                                  String            classificationName,
@@ -262,7 +262,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void reclassifyMetadataElement(String            metadataElementGUID,
                                    String            classificationName,
@@ -289,7 +289,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateClassificationStatus(String  metadataElementGUID,
                                     String  classificationName,
@@ -313,7 +313,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void declassifyMetadataElement(String  metadataElementGUID,
                                    String  classificationName,
@@ -342,7 +342,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createRelatedElements(String            relationshipTypeName,
                                  String            metadataElement1GUID,
@@ -375,7 +375,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String createRelatedElements(String            relationshipTypeName,
                                  String            metadataElement1GUID,
@@ -404,7 +404,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateRelatedElements(String            relationshipGUID,
                                boolean           replaceProperties,
@@ -429,7 +429,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void updateRelatedElementsStatus(String  relationshipGUID,
                                      boolean forLineage,
@@ -451,7 +451,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     void deleteRelatedElements(String  relationshipGUID,
                                boolean forLineage,

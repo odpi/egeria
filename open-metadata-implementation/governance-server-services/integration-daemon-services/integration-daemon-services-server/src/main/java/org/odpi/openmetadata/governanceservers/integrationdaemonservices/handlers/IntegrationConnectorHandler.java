@@ -639,7 +639,7 @@ public class IntegrationConnectorHandler
      * @param actionDescription external caller's activity
      * @throws InvalidParameterException an invalid property has been passed
      * @throws UserNotAuthorizedException the user is not authorized
-     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
      */
     private synchronized boolean prepareForRefresh(String actionDescription) throws InvalidParameterException,
                                                                                     PropertyServerException,

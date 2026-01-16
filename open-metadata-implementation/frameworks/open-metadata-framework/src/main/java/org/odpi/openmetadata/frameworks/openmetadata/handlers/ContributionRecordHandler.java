@@ -95,7 +95,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
      * @return guid of new contribution record.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addContributionRecordToElement(String                                userId,
@@ -138,7 +138,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createContributionRecordFromTemplate(String                 userId,
                                                        TemplateOptions        templateOptions,
@@ -346,7 +346,7 @@ public class ContributionRecordHandler extends OpenMetadataHandlerBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findContributionRecords(String        userId,
                                                                  String        searchString,

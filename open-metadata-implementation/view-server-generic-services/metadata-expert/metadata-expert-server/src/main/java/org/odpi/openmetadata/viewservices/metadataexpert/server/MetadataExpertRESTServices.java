@@ -50,7 +50,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse createMetadataElementInStore(String                            serverName,
                                                      String                            urlMarker,
@@ -107,7 +107,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse createMetadataElementFromTemplate(String                          serverName,
                                                           String                          urlMarker,
@@ -167,7 +167,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return boolean or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public BooleanResponse updateMetadataElementInStore(String                      serverName,
                                                         String                      urlMarker,
@@ -223,7 +223,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse publishMetadataElement(String                    serverName,
                                                String                    urlMarker,
@@ -269,7 +269,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the user is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse withdrawMetadataElement(String                    serverName,
                                                 String                    urlMarker,
@@ -315,7 +315,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateMetadataElementEffectivityInStore(String                            serverName,
                                                                 String                            urlMarker,
@@ -372,7 +372,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public  VoidResponse deleteMetadataElementInStore(String                        serverName,
                                                       String                        urlMarker,
@@ -425,7 +425,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public  VoidResponse archiveMetadataElementInStore(String                   serverName,
                                                        String                   urlMarker,
@@ -484,7 +484,7 @@ public class MetadataExpertRESTServices extends TokenController
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse classifyMetadataElementInStore(String                       serverName,
                                                        String                       urlMarker,
@@ -544,7 +544,7 @@ public class MetadataExpertRESTServices extends TokenController
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse reclassifyMetadataElementInStore(String                      serverName,
                                                          String                      urlMarker,
@@ -604,7 +604,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateClassificationEffectivityInStore(String                            serverName,
                                                                String                            urlMarker,
@@ -664,7 +664,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse declassifyMetadataElementInStore(String                    serverName,
                                                          String                    urlMarker,
@@ -722,7 +722,7 @@ public class MetadataExpertRESTServices extends TokenController
      *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse createRelatedElementsInStore(String                        serverName,
                                                      String                        urlMarker,
@@ -780,7 +780,7 @@ public class MetadataExpertRESTServices extends TokenController
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateRelatedElementsInStore(String                      serverName,
                                                      String                      urlMarker,
@@ -837,7 +837,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse updateRelatedElementsEffectivityInStore(String                            serverName,
                                                                 String                            urlMarker,
@@ -894,7 +894,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse deleteRelatedElementsInStore(String                        serverName,
                                                      String                        urlMarker,
@@ -952,7 +952,7 @@ public class MetadataExpertRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public VoidResponse detachRelatedElementsInStore(String                        serverName,
                                                      String                        urlMarker,

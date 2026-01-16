@@ -537,7 +537,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @return success message response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     public SuccessMessageResponse activateWithStoredConfig(String serverName,
                                                            String serverGUID)
@@ -773,7 +773,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createMetadataRepositoryCohortFromTemplate(String              serverName,
                                                                    TemplateRequestBody requestBody)
@@ -935,7 +935,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getMetadataRepositoryCohortsByName(String            serverName,
                                                                                FilterRequestBody requestBody)
@@ -986,7 +986,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getMetadataRepositoryCohortByGUID(String         serverName,
                                                                              String         metadataRepositoryCohortGUID,
@@ -1030,7 +1030,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findMetadataRepositoryCohorts(String                  serverName,
                                                                           SearchStringRequestBody requestBody)

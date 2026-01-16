@@ -76,7 +76,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateEngineAction(String                qualifiedName,
                                 int                   domainIdentifier,
@@ -115,7 +115,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateEngineAction(String                qualifiedName,
                                 int                   domainIdentifier,
@@ -147,7 +147,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
                                         List<String>          actionSourceGUIDs,
@@ -174,7 +174,7 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateGovernanceActionProcess(String                processQualifiedName,
                                            Map<String, String>   requestParameters,

@@ -56,7 +56,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @return GUID for new tag.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createInformalTag(String                                userId,
@@ -97,7 +97,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createTagFromTemplate(String                 userId,
                                         TemplateOptions        templateOptions,
@@ -127,7 +127,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateTagDescription(String                userId,
@@ -154,7 +154,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @param deleteOptions options for a delete request
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   deleteTag(String        userId,
@@ -298,7 +298,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @param metadataSourceOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   addTagToElement(String                userId,
@@ -326,7 +326,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @param deleteOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   removeTagFromElement(String        userId,
@@ -398,7 +398,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
      * @param queryOptions multiple options to control the query
      * @return list of tags
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement>  getAttachedTags(String       userId,

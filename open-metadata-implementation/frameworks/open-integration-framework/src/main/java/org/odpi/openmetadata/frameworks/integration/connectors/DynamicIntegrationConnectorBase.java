@@ -33,7 +33,7 @@ public abstract class DynamicIntegrationConnectorBase extends IntegrationConnect
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override
@@ -101,7 +101,7 @@ public abstract class DynamicIntegrationConnectorBase extends IntegrationConnect
      * @param catalogTargetContext specialized context for this catalog target
      * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
-     * @throws ConnectorCheckedException there is a problem with setting up the catalog target.
+     * @throws ConnectorCheckedException a problem with setting up the catalog target.
      * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override

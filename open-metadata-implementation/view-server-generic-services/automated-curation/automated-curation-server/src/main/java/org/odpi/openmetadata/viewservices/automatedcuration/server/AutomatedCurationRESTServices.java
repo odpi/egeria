@@ -62,7 +62,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public TechnologyTypeSummaryListResponse findTechnologyTypes(String                  serverName,
                                                                  String                  urlMarker,
@@ -114,7 +114,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
 
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String             serverName,
@@ -180,7 +180,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public TechnologyTypeReportResponse getTechnologyTypeDetail(String            serverName,
                                                                 String            urlMarker,
@@ -242,7 +242,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public TechnologyTypeHierarchyResponse getTechnologyTypeHierarchy(String            serverName,
                                                                       String            urlMarker,
@@ -306,7 +306,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getTechnologyTypeElements(String            serverName,
                                                                       String            urlMarker,
@@ -373,7 +373,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createElementFromTemplate(String              serverName,
                                                   String              urlMarker,
@@ -534,7 +534,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return unique identifier of the governance action or
      *  InvalidParameterException null qualified name
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse initiateEngineAction(String                          serverName,
                                              String                urlMarker,
@@ -603,7 +603,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return unique identifier of the first governance action of the process or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionType(String                          serverName,
                                                      String                urlMarker,
@@ -663,7 +663,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return unique identifier of the governance action process instance or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
                                                         String                urlMarker,

@@ -105,7 +105,7 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createExternalReferenceFromTemplate(TemplateOptions        templateOptions,
                                                       String                 templateGUID,
@@ -352,7 +352,7 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findExternalReferences(String        searchString,
                                                                 SearchOptions searchOptions) throws InvalidParameterException,

@@ -82,7 +82,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @param schemaTypeTypeName type name of the schema type to create, if needed
      * @return schema type element
      * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s),
+     * @throws PropertyServerException    a problem retrieving information from the property server(s),
      *                                    or there are multiple schemas attached.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -139,7 +139,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createSchemaTypeFromTemplate(TemplateOptions        templateOptions,
                                                String                 templateGUID,
@@ -319,7 +319,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findSchemaTypes(String        searchString,
                                                          SearchOptions searchOptions) throws InvalidParameterException,

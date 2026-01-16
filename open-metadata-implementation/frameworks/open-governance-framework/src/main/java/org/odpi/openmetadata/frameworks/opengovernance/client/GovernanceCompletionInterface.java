@@ -90,7 +90,7 @@ public interface GovernanceCompletionInterface
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     void updateActionTargetStatus(String             userId,
                                   String             actionTargetGUID,
@@ -118,7 +118,7 @@ public interface GovernanceCompletionInterface
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     void recordCompletionStatus(String                userId,
                                 String                engineActionGUID,

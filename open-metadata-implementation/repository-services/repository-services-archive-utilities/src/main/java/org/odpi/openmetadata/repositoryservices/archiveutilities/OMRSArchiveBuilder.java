@@ -1687,7 +1687,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
 
     /**
-     * Throws an exception if there is a problem retrieving the archive.
+     * Throws an exception if a problem retrieving the archive.
      *
      * @param methodName calling method
      */

@@ -88,7 +88,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getRootElementByUniqueName(String     uniqueName,
                                                               String     uniquePropertyName,
@@ -220,7 +220,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getLineageElementByUniqueName(String     uniqueName,
                                                                  String     uniquePropertyName,
@@ -244,7 +244,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataRootElement getDeletedElementByUniqueName(String     uniqueName,
                                                                  String     uniquePropertyName,
@@ -482,7 +482,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getMeanings(String               elementGUID,
                                                      String               expression,
@@ -529,7 +529,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSemanticAssignees(String               glossaryTermGUID,
                                                               String               expression,
@@ -558,7 +558,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getGovernedByDefinitions(String       elementGUID,
                                                                   QueryOptions queryOptions) throws InvalidParameterException,
@@ -579,7 +579,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getGovernedElements(String       governanceDefinitionGUID,
                                                              QueryOptions queryOptions) throws InvalidParameterException,
@@ -601,7 +601,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSourceElements(String       elementGUID,
                                                            QueryOptions queryOptions) throws InvalidParameterException,
@@ -623,7 +623,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getElementsSourcedFrom(String       elementGUID,
                                                                 QueryOptions queryOptions) throws InvalidParameterException,
@@ -644,7 +644,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getScopes(String       elementGUID,
                                                    QueryOptions queryOptions) throws InvalidParameterException,
@@ -665,7 +665,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getScopedElements(String       scopeGUID,
                                                            QueryOptions queryOptions) throws InvalidParameterException,
@@ -686,7 +686,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getResourceList(String       elementGUID,
                                                          QueryOptions queryOptions) throws InvalidParameterException,
@@ -707,7 +707,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getSupportedByResource(String       resourceGUID,
                                                                 QueryOptions queryOptions) throws InvalidParameterException,
@@ -728,7 +728,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getLicensedElements(String       licenseTypeGUID,
                                                              QueryOptions queryOptions) throws InvalidParameterException,
@@ -748,7 +748,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getLicenses(String       elementGUID,
                                                      QueryOptions queryOptions) throws InvalidParameterException,
@@ -768,7 +768,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getCertifiedElements(String       certificationTypeGUID,
                                                               QueryOptions queryOptions) throws InvalidParameterException,
@@ -788,7 +788,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> getCertifications(String       elementGUID,
                                                            QueryOptions queryOptions) throws InvalidParameterException,
@@ -811,7 +811,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setImpactClassification(String                             elementGUID,
                                         GovernanceClassificationProperties properties,
@@ -831,7 +831,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearImpactClassification(String                elementGUID,
                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
@@ -853,7 +853,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setConfidenceClassification(String                             elementGUID,
                                             GovernanceClassificationProperties properties,
@@ -874,7 +874,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearConfidenceClassification(String                elementGUID,
                                               MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
@@ -895,7 +895,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setCriticalityClassification(String                             elementGUID,
                                              GovernanceClassificationProperties properties,
@@ -916,7 +916,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearCriticalityClassification(String                 elementGUID,
                                                MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
@@ -939,7 +939,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setConfidentialityClassification(String                             elementGUID,
                                                  GovernanceClassificationProperties properties,
@@ -960,7 +960,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearConfidentialityClassification(String                elementGUID,
                                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
@@ -983,7 +983,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setRetentionClassification(String                            elementGUID,
                                            RetentionProperties properties,
@@ -1004,7 +1004,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearRetentionClassification(String                elementGUID,
                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
@@ -1309,7 +1309,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setupSemanticAssignment(String                       elementGUID,
                                         String                       glossaryTermGUID,
@@ -1331,7 +1331,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearSemanticAssignment(String        elementGUID,
                                         String        glossaryTermGUID,
@@ -1352,7 +1352,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addScopeToElement(String             elementGUID,
                                   String             scopeGUID,
@@ -1374,7 +1374,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeScopeFromElement(String        elementGUID,
                                        String        scopeGUID,
@@ -1395,7 +1395,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addResourceListToElement(String                 elementGUID,
                                          String                 resourceGUID,
@@ -1417,7 +1417,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeResourceListFromElement(String        elementGUID,
                                               String        resourceGUID,
@@ -1438,7 +1438,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addMoreInformationToElement(String                    elementGUID,
                                             String                    moreInformationGUID,
@@ -1460,7 +1460,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeMoreInformationFromElement(String        elementGUID,
                                                  String        moreInformationGUID,
@@ -1523,7 +1523,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setConsolidatedDuplicateClassification(String                          elementGUID,
                                                        ConsolidatedDuplicateProperties properties,
@@ -1543,7 +1543,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearConsolidatedDuplicateClassification(String                elementGUID,
                                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
@@ -1564,7 +1564,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void linkConsolidatedDuplicateToSourceElement(String                              elementGUID,
                                                          String                              sourceElementGUID,
@@ -1590,7 +1590,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void unlinkConsolidatedDuplicateFromSourceElement(String        elementGUID,
                                                              String        sourceElementGUID,
@@ -1611,7 +1611,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void setKnownDuplicateClassification(String                   elementGUID,
                                                 KnownDuplicateProperties properties,
@@ -1631,7 +1631,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void clearKnownDuplicateClassification(String                elementGUID,
                                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
@@ -1653,7 +1653,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void linkElementsAsPeerDuplicates(String                      elementGUID,
                                              String                      peerDuplicateGUID,
@@ -1679,7 +1679,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void unlinkElementsAsPeerDuplicates(String        elementGUID,
                                                String        peerDuplicateGUID,

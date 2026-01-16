@@ -79,7 +79,7 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
      * Check whether the data set has changed since the last refresh.  If it has then update the asset's
      * GovernanceMeasurement classification.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException

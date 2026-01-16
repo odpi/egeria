@@ -59,7 +59,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * If the directory does not exist the connector waits for the directory to be created.
      *
      * @param dataFolderFile the directory to retrieve the folder from
-     * @throws ConnectorCheckedException there is a problem retrieving the folder element.
+     * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
     OpenMetadataRootElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
     {
@@ -78,7 +78,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * catalog - adding or updating them if necessary.  The second sweep is to ensure that all the assets catalogued
      * in this directory actually exist on the file system.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException

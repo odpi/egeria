@@ -22,9 +22,8 @@ import java.util.regex.Pattern;
  */
 public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                     MetadataElementInterface,
-                                                    StewardshipRequestInterface,
                                                     MultiLanguageInterface,
-                                                    ExternalIdentifiersInterface
+                                                    SpecificationPropertiesInterface
 {
     protected final String serverName;               /* Initialized in constructor */
     protected final String serverPlatformURLRoot;    /* Initialized in constructor */
@@ -84,7 +83,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return TypeDefGallery  List of different categories of type definitions.
      *
      * @throws InvalidParameterException  the userId is null
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -101,7 +100,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return TypeDefs list.
      *
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -120,7 +119,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return AttributeTypeDefs list.
      *
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -142,7 +141,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * describing the TypeDef's category and properties.
      *
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -165,7 +164,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * has no known subtypes
      *
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
@@ -184,7 +183,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the guid is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -204,7 +203,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the guid is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -224,7 +223,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the name is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -244,7 +243,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the name is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -265,7 +264,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract OpenMetadataElement getMetadataElementByGUID(String     userId,
@@ -286,7 +285,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract OpenMetadataElement getMetadataElementByUniqueName(String     userId,
@@ -309,7 +308,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public OpenMetadataElement getDeletedElementByUniqueName(String  userId,
                                                              String  uniqueName,
@@ -369,7 +368,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException the unique name is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract String getMetadataElementGUIDByUniqueName(String     userId,
@@ -392,7 +391,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> getMetadataElementsByPropertyValue(String                userId,
                                                                         String                propertyName,
@@ -422,7 +421,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> findMetadataElementsByPropertyValue(String                userId,
                                                                          String                propertyName,
@@ -453,7 +452,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> getMetadataElementsByPropertyValue(String                userId,
                                                                         List<String>          propertyNames,
@@ -482,7 +481,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> findMetadataElementsByPropertyValue(String       userId,
                                                                          List<String> propertyNames,
@@ -511,7 +510,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String                userId,
                                                                                       String                classificationName,
@@ -573,7 +572,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> getMetadataElementsByClassification(String                userId,
                                                                          String                classificationName,
@@ -613,7 +612,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String                userId,
                                                                                       String                classificationName,
@@ -678,7 +677,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> findMetadataElementsByClassificationPropertyValue(String                userId,
                                                                                        String                classificationName,
@@ -743,7 +742,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String       userId,
                                                                                       String       classificationName,
@@ -814,7 +813,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<OpenMetadataElement> findMetadataElementsByClassificationPropertyValue(String                userId,
                                                                                        String                classificationName,
@@ -881,7 +880,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract List<OpenMetadataElement> findMetadataElementsWithString(String        userId,
@@ -904,7 +903,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract AnchorSearchMatches findElementsForAnchor(String       userId,
@@ -928,7 +927,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract List<AnchorSearchMatches> findElementsInAnchorDomain(String        userId,
@@ -952,7 +951,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract List<AnchorSearchMatches> findElementsInAnchorScope(String              userId,
@@ -975,7 +974,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract RelatedMetadataElementList getRelatedMetadataElements(String       userId,
@@ -998,7 +997,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     @Override
     public abstract OpenMetadataElementGraph getAnchoredElementsGraph(String       userId,
@@ -1021,7 +1020,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem accessing the metadata store or multiple relationships have been returned
+     * @throws PropertyServerException    a problem accessing the metadata store or multiple relationships have been returned
      */
     @Override
     public abstract  RelatedMetadataElement getRelatedMetadataElement(String     userId,
@@ -1042,7 +1041,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  abstract List<OpenMetadataElement> getMetadataElementHistory(String                 userId,
@@ -1063,7 +1062,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract List<AttachedClassification> getClassificationHistory(String                 userId,
@@ -1085,7 +1084,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public abstract OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
@@ -1107,7 +1106,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  abstract List<OpenMetadataElement> findMetadataElements(String                userId,
@@ -1130,7 +1129,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  abstract OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
@@ -1151,7 +1150,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return relationship properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  abstract OpenMetadataRelationship getRelationshipByGUID(String     userId,
@@ -1171,7 +1170,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
     public  abstract OpenMetadataRelationshipList getRelationshipHistory(String                 userId,
@@ -1195,7 +1194,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String createMetadataElementInStore(String               userId,
@@ -1229,7 +1228,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public String createMetadataElementInStore(String               userId,
@@ -1271,7 +1270,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract String createMetadataElementInStore(String                            userId,
@@ -1304,7 +1303,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract String createMetadataElementFromTemplate(String               userId,
@@ -1331,7 +1330,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract boolean updateMetadataElementInStore(String            userId,
@@ -1351,7 +1350,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public abstract void publishMetadataElement(String                userId,
@@ -1370,7 +1369,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException    there is a problem with the metadata store
+     * @throws PropertyServerException    a problem with the metadata store
      */
     @Override
     public abstract void withdrawMetadataElement(String                userId,
@@ -1391,7 +1390,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void updateMetadataElementEffectivityInStore(String                userId,
@@ -1412,7 +1411,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void deleteMetadataElementInStore(String        userId,
@@ -1431,7 +1430,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void archiveMetadataElementInStore(String        userId,
@@ -1455,7 +1454,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void classifyMetadataElementInStore(String                userId,
@@ -1479,7 +1478,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void reclassifyMetadataElementInStore(String            userId,
@@ -1504,7 +1503,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void updateClassificationEffectivityInStore(String                userId,
@@ -1527,7 +1526,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void declassifyMetadataElementInStore(String                userId,
@@ -1555,7 +1554,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract String createRelatedElementsInStore(String                userId,
@@ -1579,7 +1578,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void updateRelationshipInStore(String            userId,
@@ -1604,7 +1603,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void updateRelatedElementsInStore(String            userId,
@@ -1629,7 +1628,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void updateRelationshipEffectivityInStore(String                userId,
@@ -1650,7 +1649,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void deleteRelationshipInStore(String        userId,
@@ -1672,7 +1671,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     @Override
     public abstract void detachRelatedElementsInStore(String        userId,

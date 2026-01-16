@@ -90,7 +90,7 @@ public class SurveyAssetStore
      * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
+     * @throws PropertyServerException a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getAssetProperties() throws InvalidParameterException,
@@ -107,7 +107,7 @@ public class SurveyAssetStore
      * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
+     * @throws PropertyServerException a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String getQualifiedName() throws InvalidParameterException,

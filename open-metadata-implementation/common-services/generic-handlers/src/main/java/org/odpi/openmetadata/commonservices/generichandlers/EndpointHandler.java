@@ -282,7 +282,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @return GUID for new endpoint
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the endpoint properties to the property server.
+     * @throws PropertyServerException a problem adding the endpoint properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createEndpoint(String              userId,
@@ -385,7 +385,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @return GUID for endpoint
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the endpoint properties to the property server.
+     * @throws PropertyServerException a problem adding the endpoint properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     String getEndpointForConnection(String              userId,
@@ -491,7 +491,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the endpoint properties to the property server.
+     * @throws PropertyServerException a problem adding the endpoint properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   updateEndpoint(String              userId,

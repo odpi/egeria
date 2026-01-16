@@ -82,7 +82,7 @@ public class SolutionArchitectResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -308,7 +308,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -339,7 +339,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -372,7 +372,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -433,7 +433,7 @@ public class SolutionArchitectResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -661,7 +661,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -688,7 +688,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -718,7 +718,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -842,7 +842,7 @@ public class SolutionArchitectResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1068,7 +1068,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1096,7 +1096,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1125,7 +1125,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1157,7 +1157,7 @@ public class SolutionArchitectResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/implementations")
     @SecurityRequirement(name = "BearerAuthorization")

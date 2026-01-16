@@ -595,7 +595,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with the entity guid
+     * Throw an exception if a problem with the entity guid
      *
      * @param error  caught exception (or null)
      * @param entityGUID  unique identifier for the requested entity
@@ -642,7 +642,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with and elements effectivity dates
+     * Throw an exception if a problem with and elements effectivity dates
      *
      * @param elementGUID  unique identifier for the requested entity
      * @param elementTypeName expected type of element
@@ -697,7 +697,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with the relationship guid
+     * Throw an exception if a problem with the relationship guid
      *
      * @param error  caught exception
      * @param relationshipGUID  unique identifier for the requested entity
@@ -736,7 +736,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with the asset guid
+     * Throw an exception if a problem with the asset guid
      *
      * @param error  caught exception
      * @param entityGUID  unique identifier for the requested entity

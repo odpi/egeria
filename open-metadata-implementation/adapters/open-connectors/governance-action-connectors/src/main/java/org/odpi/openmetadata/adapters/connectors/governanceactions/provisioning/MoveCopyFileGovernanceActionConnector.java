@@ -207,7 +207,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -636,7 +636,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
      * @return network address from the endpoint, null or exception
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     private String getPathNameFromConnection(String                 assetGUID,
                                              RelatedMetadataElement connectionLink) throws InvalidParameterException,
@@ -743,7 +743,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
      *
      * @throws InvalidParameterException one of the parameters passed to open metadata is invalid (probably a bug in this code)
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
-     * @throws PropertyServerException there is a problem with the metadata server(s)
+     * @throws PropertyServerException a problem with the metadata server(s)
      * @throws IOException problem accessing the file
      */
     private String createLineage(String destinationFilePathName) throws InvalidParameterException,
@@ -1148,7 +1148,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
      * @return unique identifier of the folder
      * @throws InvalidParameterException one of the parameters passed to open metadata is invalid (probably a bug in this code)
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
-     * @throws PropertyServerException there is a problem with the metadata server(s)
+     * @throws PropertyServerException a problem with the metadata server(s)
      */
     private String getFolderGUID(String  fileGUID) throws InvalidParameterException,
                                                           UserNotAuthorizedException,

@@ -166,7 +166,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param isExplicitGetRequest is this entity requested explicitly
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
+     * @throws PropertyServerException a problem adding the asset properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void validateRetrievedEntityIsVisible(String       userId,
@@ -240,7 +240,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName       calling method
      * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
+     * @throws PropertyServerException a problem adding the asset properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public EntityDetail validateEntityAndAnchorForRead(String       userId,
@@ -313,7 +313,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * caller to set the LatestChange classification
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public EntityDetail validateEntityAndAnchorForRead(String        userId,
@@ -582,7 +582,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName       calling method
      * @return anchor entity (this may be the connectToEntity if it is its own anchor or null if the element is unanchored)
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public EntityDetail validateAnchorGUID(String            userId,
@@ -657,7 +657,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param isUpdate         is this an update request?
      * @param methodName       calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void validateAnchorEntity(String       userId,
@@ -793,7 +793,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
-     * @throws PropertyServerException there is a problem with the repositories
+     * @throws PropertyServerException a problem with the repositories
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void setClassificationInRepository(String             userId,
@@ -862,7 +862,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
-     * @throws PropertyServerException there is a problem with the repositories
+     * @throws PropertyServerException a problem with the repositories
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void setClassificationInRepository(String             userId,
@@ -1085,7 +1085,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
-     * @throws PropertyServerException there is a problem with the repositories
+     * @throws PropertyServerException a problem with the repositories
      * @throws UserNotAuthorizedException the user is not allowed to update the security tags
      */
     public void removeClassificationFromRepository(String       userId,
@@ -1233,7 +1233,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateClassificationEffectivityDates(String       userId,
                                                      String       externalSourceGUID,
@@ -1388,7 +1388,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateBeanEffectivityDates(String       userId,
                                            String       externalSourceGUID,
@@ -1663,7 +1663,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method for exceptions and error messages
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void validateUniqueProperty(String entityGUID,
@@ -1773,7 +1773,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method for exceptions and error messages
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void validateUniqueProperties(String             entityGUID,
@@ -1830,7 +1830,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
+     * @throws PropertyServerException a problem adding the asset properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void validateNewEntityRequest(String               userId,
@@ -1873,7 +1873,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param actionDescription Description of the change
      * @param methodName calling method
      * @return instance properties object to null
-     * @throws TypeErrorException there is a problem with one of the types used in this method - probably a logic error.
+     * @throws TypeErrorException a problem with one of the types used in this method - probably a logic error.
      */
     private InstanceProperties getLatestChangeClassificationProperties(int    latestChangeTargetOrdinal,
                                                                        int    latestChangeActionOrdinal,
@@ -2127,7 +2127,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      * @return unique identifier of new entity
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the properties to the repositories.
+     * @throws PropertyServerException a problem adding the properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createBeanInRepository(String                        userId,
@@ -2171,7 +2171,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      * @return unique identifier of new entity
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the properties to the repositories.
+     * @throws PropertyServerException a problem adding the properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createBeanInRepository(String                        userId,
@@ -2284,7 +2284,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the properties tin the repositories.
+     * @throws PropertyServerException a problem updating the properties tin the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateBeanPropertyInRepository(String  userId,
@@ -2343,7 +2343,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the properties in the repositories.
+     * @throws PropertyServerException a problem updating the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateBeanInRepository(String             userId,
@@ -2395,7 +2395,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws PropertyServerException a problem adding the new properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateBeanInRepository(String             userId,
@@ -2459,7 +2459,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return boolean - true if an update occurred
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws PropertyServerException a problem adding the new properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public boolean updateBeanInRepository(String             userId,
@@ -2853,7 +2853,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return recovered bean
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws PropertyServerException a problem adding the new properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public B    undoBeanUpdateInRepository(String             userId,
@@ -3093,7 +3093,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws PropertyServerException a problem removing the properties from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void archiveBeanInRepository(String             userId,
@@ -3219,7 +3219,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      * @return GUID of archived entity
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repository.
+     * @throws PropertyServerException a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private EntityDetail archiveBeanInRepository(String               userId,
@@ -3468,7 +3468,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws PropertyServerException a problem removing the properties from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteBeanInRepository(String       userId,
@@ -3605,7 +3605,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repository.
+     * @throws PropertyServerException a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteAnchoredBeanInRepository(String       userId,
@@ -5136,7 +5136,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateRelationshipEffectivityDates(String       userId,
                                                    String       externalSourceGUID,
@@ -5204,7 +5204,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
 
      */
     protected void validateRelationship(String       userId,
@@ -5254,7 +5254,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName calling method
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     private void validateEntityProxyAnchor(String       userId,
                                            EntityProxy  entityProxy,
@@ -5338,7 +5338,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void validateRelationshipChange(String       userId,
                                             Relationship relationship,
@@ -5557,7 +5557,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void updateRelationshipProperties(String             userId,
                                              String             externalSourceGUID,
@@ -6175,7 +6175,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return list of beans
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws PropertyServerException a problem removing the properties from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<Relationship> getRelationshipHistory(String                 userId,
@@ -6253,7 +6253,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<Relationship> findAttachmentLinks(String                userId,
                                                   String                relationshipTypeName,
@@ -7125,7 +7125,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return retrieved entity
      * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public EntityDetail getEntityFromRepository(String       userId,
@@ -7162,7 +7162,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return retrieved entity
      * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public EntityDetail getEntityFromRepository(String       userId,
@@ -7299,7 +7299,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return new bean
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public B getBeanFromRepository(String       userId,
@@ -7351,7 +7351,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return new bean
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public B getBeanFromRepository(String       userId,
@@ -7444,7 +7444,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return unique identifier of the requested entity/bean
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String getBeanGUIDByUniqueName(String               userId,
@@ -7580,7 +7580,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of beans
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public B getBeanByUniqueName(String               userId,
@@ -7714,7 +7714,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return list of beans
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws PropertyServerException a problem removing the properties from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<B> getBeanHistory(String                 userId,
@@ -7795,7 +7795,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return list of beans
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws PropertyServerException a problem removing the properties from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<AttachedClassification> getClassificationHistory(String                 userId,
@@ -7953,7 +7953,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of beans
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<B> findBeans(String               userId,
@@ -8021,7 +8021,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<B> findBeans(String                userId,
                              String                metadataElementTypeName,
@@ -8105,7 +8105,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
-     * @throws PropertyServerException there is a problem accessing the metadata store
+     * @throws PropertyServerException a problem accessing the metadata store
      */
     public List<EntityDetail> findEntities(String                userId,
                                            String                metadataElementTypeName,
@@ -8236,7 +8236,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of beans
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<B> getBeansByValue(String               userId,
@@ -8325,7 +8325,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of entities
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<EntityDetail> getEntitiesByType(String               userId,
@@ -8397,7 +8397,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of entities
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<EntityDetail> findEntities(String               userId,
@@ -8475,7 +8475,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of entities
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<EntityDetail> getEntitiesByValue(String               userId,
@@ -8575,7 +8575,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return list of beans
      * @throws InvalidParameterException bad starting entity
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<EntityDetail> getValidatedEntities(String             userId,
@@ -8790,7 +8790,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the repositories.
+     * @throws PropertyServerException a problem updating the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
 
     public String linkElementToElement(String              userId,
@@ -8875,7 +8875,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws PropertyServerException a problem adding the relationship to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String linkElementToElement(String             userId,
@@ -9326,7 +9326,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws PropertyServerException a problem adding the relationship to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String uncheckedLinkElementToElement(String             userId,
@@ -9387,7 +9387,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      *
      * @return unique identifier of the new relationship
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws PropertyServerException a problem adding the relationship to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String multiLinkElementToElement(String             userId,
@@ -9726,7 +9726,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws PropertyServerException a problem adding the relationship to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateElementToElementLink(String             userId,
@@ -9977,7 +9977,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating relationship in the repositories.
+     * @throws PropertyServerException a problem updating relationship in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void unlinkElementFromElement(String       userId,
@@ -10063,7 +10063,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating relationship in the repositories.
+     * @throws PropertyServerException a problem updating relationship in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void unlinkElementFromElement(String       userId,
@@ -10389,7 +10389,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the relationships in the repositories.
+     * @throws PropertyServerException a problem updating the relationships in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void unlinkAllElements(String       userId,

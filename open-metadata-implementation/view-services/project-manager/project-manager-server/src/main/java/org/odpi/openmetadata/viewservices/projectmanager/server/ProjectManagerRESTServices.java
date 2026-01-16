@@ -583,7 +583,7 @@ public class ProjectManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createProjectFromTemplate(String              serverName,
                                                   TemplateRequestBody requestBody)
@@ -744,7 +744,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse addToProjectTeam(String                  serverName,
@@ -809,7 +809,7 @@ public class ProjectManagerRESTServices extends TokenController
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse removeFromProjectTeam(String                        serverName,
@@ -857,7 +857,7 @@ public class ProjectManagerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setupProjectDependency(String                  serverName,
                                                String                  projectGUID,
@@ -934,7 +934,7 @@ public class ProjectManagerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearProjectDependency(String                        serverName,
                                                String                        projectGUID,
@@ -981,7 +981,7 @@ public class ProjectManagerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setupProjectHierarchy(String                  serverName,
                                               String                  projectGUID,
@@ -1058,7 +1058,7 @@ public class ProjectManagerRESTServices extends TokenController
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse clearProjectHierarchy(String                        serverName,
                                               String                        projectGUID,

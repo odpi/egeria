@@ -24,7 +24,7 @@ public class JDBCIntegrationConnector extends DynamicIntegrationConnectorBase
      * @param catalogTargetContext   specialized context for this catalog target
      * @param connectorToTarget      connector to access the target resource
      * @return new processor based on the catalog target information
-     * @throws ConnectorCheckedException  there is a problem with setting up the catalog target.
+     * @throws ConnectorCheckedException  a problem with setting up the catalog target.
      * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override

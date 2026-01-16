@@ -225,7 +225,7 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findInformationSupplyChains(String        userId,
                                                                      String        searchString,

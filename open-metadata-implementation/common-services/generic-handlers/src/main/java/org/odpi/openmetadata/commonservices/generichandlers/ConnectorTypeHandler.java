@@ -315,7 +315,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @return GUID for new connectorType
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws PropertyServerException a problem adding the connectorType properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String createConnectorType(String              userId,
@@ -427,7 +427,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @return GUID for new connectorType
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws PropertyServerException a problem adding the connectorType properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String getConnectorTypeForAsset(String  userId,
@@ -543,7 +543,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @return GUID for new connectorType
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws PropertyServerException a problem adding the connectorType properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String getConnectorTypeForConnection(String              userId,
@@ -685,7 +685,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws PropertyServerException a problem adding the connectorType properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   updateConnectorType(String              userId,

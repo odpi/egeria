@@ -575,7 +575,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @return list of supported zones for the user
      * @throws InvalidParameterException one of the parameter values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
+     * @throws PropertyServerException a problem calculating the zones
      * @throws UserNotAuthorizedException unknown user
      */
     public List<String> getSupportedZonesForUser(List<String>  supportedZones,
@@ -600,7 +600,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @return list of default zones for the user
      * @throws InvalidParameterException one of the parameter values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
+     * @throws PropertyServerException a problem calculating the zones
      * @throws UserNotAuthorizedException unknown user
      */
     public List<String> getDefaultZonesForUser(List<String>  initialZones,
@@ -625,7 +625,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @return list of published zones for the user
      * @throws InvalidParameterException one of the parameter values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
+     * @throws PropertyServerException a problem calculating the zones
      * @throws UserNotAuthorizedException unknown user
      */
     public List<String> getPublishZonesForUser(List<String>  currentZones,
@@ -650,7 +650,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @return list of published zones for the user
      * @throws InvalidParameterException one of the parameter values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
+     * @throws PropertyServerException a problem calculating the zones
      * @throws UserNotAuthorizedException unknown user
      */
     protected List<String> getWithdrawZonesForUser(List<String>  currentZones,

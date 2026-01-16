@@ -209,6 +209,10 @@ public class OpenMetadataRelationshipBuilder
                                                                            ActivityStatus.getOpenTypeName(),
                                                                            notificationSubscriberProperties.getActivityStatus().getName());
                     }
+
+                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                              OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                              notificationSubscriberProperties.getZoneMembership());
                 }
                 else if (properties instanceof ReferenceableFacetProperties referenceableFacetProperties)
                 {

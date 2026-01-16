@@ -49,7 +49,7 @@ public class EgeriaOpenMetadataEventClient extends OpenMetadataEventClient
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
      * @param callerId unique identifier of the caller
-     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     * @throws InvalidParameterException a problem with the information about the remote OMAS
      */
     public EgeriaOpenMetadataEventClient(String   serverName,
                                          String   serverPlatformURLRoot,

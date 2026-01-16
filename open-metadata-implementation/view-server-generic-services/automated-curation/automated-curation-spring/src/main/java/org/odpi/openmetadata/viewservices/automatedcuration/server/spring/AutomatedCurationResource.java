@@ -68,7 +68,7 @@ public class AutomatedCurationResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/technology-types/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -97,7 +97,7 @@ public class AutomatedCurationResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/open-metadata-types/{typeName}/technology-types")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -127,7 +127,7 @@ public class AutomatedCurationResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/technology-types/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -155,7 +155,7 @@ public class AutomatedCurationResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/technology-types/hierarchy")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -184,7 +184,7 @@ public class AutomatedCurationResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/technology-types/elements")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -217,7 +217,7 @@ public class AutomatedCurationResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/catalog-templates/new-element")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -253,7 +253,7 @@ public class AutomatedCurationResource
      * @return unique identifier of the engine action or
      *  InvalidParameterException null qualified name
      *  UserNotAuthorizedException the caller is not authorized to create an engine action
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/governance-engines/{governanceEngineName}/engine-actions/initiate")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -282,7 +282,7 @@ public class AutomatedCurationResource
      * @return unique identifier of the first engine action of the process or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException the caller is not authorized to create a governance action process
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/governance-action-types/initiate")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -310,7 +310,7 @@ public class AutomatedCurationResource
      * @return unique identifier of the governance action process instance or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException the caller is not authorized to create a governance action process
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/governance-action-processes/initiate")
     @SecurityRequirement(name = "BearerAuthorization")

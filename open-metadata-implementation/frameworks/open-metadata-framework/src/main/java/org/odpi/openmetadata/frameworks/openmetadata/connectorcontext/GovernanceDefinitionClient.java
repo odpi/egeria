@@ -121,7 +121,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @return unique identifier of the new metadata element
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String createGovernanceDefinitionFromTemplate(TemplateOptions        templateOptions,
                                                          String                 templateGUID,
@@ -290,7 +290,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void addGovernanceDefinitionToElement(String               elementGUID,
                                                  String               definitionGUID,
@@ -316,7 +316,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void removeGovernanceDefinitionFromElement(String        elementGUID,
                                                       String        definitionGUID,
@@ -611,7 +611,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @return guid of license relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String licenseElement(String            elementGUID,
                                  String            licenseTypeGUID,
@@ -636,7 +636,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @param properties properties of the relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateLicense(String            licenseGUID,
                               UpdateOptions     updateOptions,
@@ -656,7 +656,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void unlicenseElement(String        licenseGUID,
                                  DeleteOptions deleteOptions) throws InvalidParameterException,
@@ -678,7 +678,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @return guid of certification relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String certifyElement(String                  elementGUID,
                                  String                  certificationTypeGUID,
@@ -704,7 +704,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateCertification(String                  certificationGUID,
                                     UpdateOptions           updateOptions,
@@ -724,7 +724,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void decertifyElement(String        certificationGUID,
                                  DeleteOptions deleteOptions) throws InvalidParameterException,
@@ -892,7 +892,7 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findGovernanceDefinitions(String        searchString,
                                                                    SearchOptions searchOptions) throws InvalidParameterException,

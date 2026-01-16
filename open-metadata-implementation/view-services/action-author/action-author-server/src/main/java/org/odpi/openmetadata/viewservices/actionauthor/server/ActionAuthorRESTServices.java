@@ -50,7 +50,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse linkTargetForGovernanceAction(String                     serverName,
                                                       String                     governanceActionGUID,
@@ -114,7 +114,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachTargetForGovernanceAction(String                        serverName,
                                                         String        governanceActionGUID,
@@ -160,7 +160,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse linkGovernanceActionExecutor(String                     serverName,
                                                      String                     governanceActionTypeGUID,
@@ -220,7 +220,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachGovernanceActionExecutor(String                        serverName,
                                                        String                        governanceActionTypeGUID,
@@ -274,7 +274,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse setupFirstActionProcessStep(String                     serverName,
                                                     String                     processGUID,
@@ -338,7 +338,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse removeFirstProcessStep(String                        serverName,
                                                String                        processGUID,
@@ -385,7 +385,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return unique identifier of the new link or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse setupNextActionProcessStep(String                     serverName,
                                                    String                     currentProcessStepGUID,
@@ -449,7 +449,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse updateNextActionProcessStep(String                        serverName,
@@ -512,7 +512,7 @@ public class ActionAuthorRESTServices extends TokenController
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid or
      *  UserNotAuthorizedException the user is not authorized to issue this request or
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse removeNextActionProcessStep(String                        serverName,

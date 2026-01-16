@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import java.io.Serial;
 
 /**
- * GovernanceServiceException indicates there is a problem with a request to a specific governance engine.  The
+ * GovernanceServiceException indicates a problem with a request to a specific governance engine.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
 public class GovernanceServiceException extends ConnectorCheckedException

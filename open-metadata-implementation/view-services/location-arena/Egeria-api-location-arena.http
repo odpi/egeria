@@ -96,7 +96,7 @@ Content-Type: application/json
 # Returns unique identifier of the new metadata element
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/from-template
 Authorization: Bearer {{token}}
@@ -418,7 +418,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/by-name
 Authorization: Bearer {{token}}
@@ -448,7 +448,7 @@ Content-Type: application/json
 # Returns list of matching metadata elements or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/by-search-string
 Authorization: Bearer {{token}}
@@ -482,7 +482,7 @@ Content-Type: application/json
 # Returns element or
 #  InvalidParameterException  one of the parameters is invalid
 #  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#  PropertyServerException    a problem reported in the open metadata server(s)
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/retrieve
 Authorization: Bearer {{token}}

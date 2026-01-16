@@ -55,7 +55,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException the full path or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -116,7 +116,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException the full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -156,7 +156,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
     /**
      * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
-     * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
+     * has that the data is complete, accurate and up to date.  The level of confidence is expressed by the
      * levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
@@ -165,7 +165,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException a full path or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -227,7 +227,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -274,7 +274,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -336,7 +336,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -393,7 +393,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -455,7 +455,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException a full path or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -505,7 +505,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -567,7 +567,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -614,7 +614,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -676,7 +676,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -737,7 +737,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -783,7 +783,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -844,7 +844,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -905,7 +905,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -951,7 +951,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody list of security labels and properties
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1012,7 +1012,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1058,7 +1058,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1119,7 +1119,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1165,7 +1165,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1226,7 +1226,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1273,7 +1273,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1334,7 +1334,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for classification request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1372,7 +1372,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
 
     /**
-     * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+     * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field, or asset).
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
      * @param serverName  name of the server instance to connect to
@@ -1382,7 +1382,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1461,7 +1461,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1509,7 +1509,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1588,7 +1588,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1636,7 +1636,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1714,7 +1714,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param actorGUID   identifier of the actor to detach
      * @param requestBody properties for relationship request
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1762,7 +1762,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1841,7 +1841,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1889,7 +1889,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -1968,7 +1968,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -2015,9 +2015,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param elementGUID  String - unique id for the element.
      * @param requestBody containing type of search keyword enum and the text of the search keyword.
      *
-     * @return elementGUID for new search keyword object or
+     * @return elementGUID for the new search keyword object or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
+     * PropertyServerException - a problem adding the element properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -2079,9 +2079,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody  containing type of search keyword enum and the text of the search keyword.
      *
      * @return void or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the element properties in the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid.
+     * PropertyServerException - a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public BooleanResponse updateSearchKeyword(String                   serverName,
                                                String                   urlMarker,
@@ -2141,7 +2141,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
+     * PropertyServerException - a problem updating the element properties in
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -2189,7 +2189,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException a full path or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -2254,7 +2254,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -2304,7 +2304,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -2383,7 +2383,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -2431,7 +2431,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *      InvalidParameterException full path or userId is null or
+     *      InvalidParameterException a full path or userId is null or
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
@@ -2496,7 +2496,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for the request
      *
      * @return void or
-     *       InvalidParameterException full path or userId is null or
+     *       InvalidParameterException a full path or userId is null or
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
@@ -2544,7 +2544,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
@@ -2623,7 +2623,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * @param requestBody properties for relationship request
      *
      * @return void or
-     * InvalidParameterException full path or userId is null or
+     * InvalidParameterException a full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */

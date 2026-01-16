@@ -116,7 +116,7 @@ public class PurgeRelationshipExecutor extends RepositoryExecutorBase
      * Return the result of the execution.  Hopefully this is a result - but may be an exception
      *
      * @throws InvalidParameterException one of the parameters is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.

@@ -55,7 +55,7 @@ public class MetadataExpertResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -79,7 +79,7 @@ public class MetadataExpertResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -105,7 +105,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -129,7 +129,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/publish")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -154,7 +154,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/withdraw")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -179,7 +179,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-effectivity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -204,7 +204,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -229,7 +229,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/archive")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -258,7 +258,7 @@ public class MetadataExpertResource
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -286,7 +286,7 @@ public class MetadataExpertResource
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -314,7 +314,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-effectivity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -341,7 +341,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -368,7 +368,7 @@ public class MetadataExpertResource
      *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -393,7 +393,7 @@ public class MetadataExpertResource
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-properties")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -419,7 +419,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-effectivity")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -444,7 +444,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -472,7 +472,7 @@ public class MetadataExpertResource
      * @return void or
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
-     *  PropertyServerException there is a problem with the metadata store
+     *  PropertyServerException a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{metadataElement1GUID}/{relationshipTypeName}/{metadataElement2GUID}/detach-all")
     @SecurityRequirement(name = "BearerAuthorization")

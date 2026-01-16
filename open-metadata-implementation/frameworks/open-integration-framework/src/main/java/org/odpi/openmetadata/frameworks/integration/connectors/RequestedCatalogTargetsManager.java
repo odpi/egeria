@@ -102,7 +102,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      *
      * @param integrationContext the integration context for the parent connector
      * @param catalogTargetFactory subclass of connector implementation that is able to create a catalog target processor
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     public List<RequestedCatalogTarget> retrieveKnownCatalogTargets(IntegrationContext   integrationContext,
                                                                     CatalogTargetFactory catalogTargetFactory) throws ConnectorCheckedException
@@ -181,7 +181,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      *
      * @param integrationContext the integration context for the parent connector
      * @param catalogTargetFactory subclass of connector implementation that is able to create a catalog target processor
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      * @throws UserNotAuthorizedException connector has been shut down
      */
     public void refreshCatalogTargets(IntegrationContext   integrationContext,

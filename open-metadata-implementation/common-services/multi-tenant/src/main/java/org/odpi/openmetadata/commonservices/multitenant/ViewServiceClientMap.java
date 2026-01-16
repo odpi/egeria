@@ -213,7 +213,7 @@ public class ViewServiceClientMap<B>
      * @param beanClassName class name of bean
      * @param error exception generated when the new bean is created
      * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is not a known class
      */
     protected void handleInvalidBeanClass(String    beanClassName,

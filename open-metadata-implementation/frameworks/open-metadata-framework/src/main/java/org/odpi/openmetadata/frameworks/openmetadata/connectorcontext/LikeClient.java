@@ -65,7 +65,7 @@ public class LikeClient extends ConnectorContextClientBase
      * @param properties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void addLikeToElement(String                            elementGUID,
@@ -90,7 +90,7 @@ public class LikeClient extends ConnectorContextClientBase
      * @param metadataSourceOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void removeLikeFromElement(String                elementGUID,
@@ -115,7 +115,7 @@ public class LikeClient extends ConnectorContextClientBase
      *
      * @return list of likes
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement>  getAttachedLikes(String       elementGUID,

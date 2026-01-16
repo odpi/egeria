@@ -47,7 +47,7 @@ public class AssetCatalogRESTServices extends TokenController
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getAssetGraph(String       serverName,
@@ -94,7 +94,7 @@ public class AssetCatalogRESTServices extends TokenController
      *
      * @return graph of elements or
      * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * PropertyServerException - a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElementResponse getAssetLineageGraph(String                       serverName,
@@ -154,7 +154,7 @@ public class AssetCatalogRESTServices extends TokenController
      *
      * @return list of results for assets that match the search string or
      * InvalidParameterException the searchString is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     public OpenMetadataRootElementsResponse findInAssetDomain(String                  serverName,
@@ -207,7 +207,7 @@ public class AssetCatalogRESTServices extends TokenController
      *
      * @return list of unique identifiers for Assets with the requested name or
      * InvalidParameterException the name is invalid or
-     * PropertyServerException there is a problem access in the property server or
+     * PropertyServerException a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     public OpenMetadataRootElementsResponse getAssetsByMetadataCollectionId(String             serverName,

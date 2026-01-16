@@ -147,7 +147,7 @@ public class ConfigResource
      * @param destinationPlatform  location of the platform where the config is to be deployed to
      * @return void response or
      * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration or
+     * OMAGConfigurationErrorException a problem using the supplied configuration or
      * InvalidParameterException invalid serverName or destinationPlatform parameter.
      */
     @PostMapping(path = "/configuration/deploy")

@@ -23,7 +23,7 @@ public class EgeriaOpenGovernanceClient extends OpenGovernanceClientBase
      * @param maxPageSize           pre-initialized parameter limit
      * @param auditLog logging destination
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public EgeriaOpenGovernanceClient(String   serverName,

@@ -140,7 +140,7 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      *
      * @return relationship details if the relationship is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -166,7 +166,7 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      *
      * @return a relationship structure.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the metadata collection does not have a relationship with
      *                                         the requested GUID stored.
@@ -209,7 +209,7 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      *
      * @return Relationship structure.
      * @throws InvalidParameterException the guid or date is null or the date is for a future time.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.

@@ -52,7 +52,7 @@ public class RatingHandler extends FeedbackHandler
      * @return unique identifier of the new rating
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
+     * @throws PropertyServerException a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addRatingToElement(String                            userId,
@@ -88,7 +88,7 @@ public class RatingHandler extends FeedbackHandler
      * @return unique identifier of the rating
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String removeRatingFromElement(String                userId,
@@ -130,7 +130,7 @@ public class RatingHandler extends FeedbackHandler
      * @param queryOptions multiple options to control the query
      * @return list of ratings
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the element properties in the property server.
+     * @throws PropertyServerException a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<OpenMetadataRootElement>  getAttachedRatings(String              userId,

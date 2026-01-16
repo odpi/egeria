@@ -180,7 +180,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
     /**
      * Maintains the list of catalog targets.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the catalog targets.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the catalog targets.
      */
     @Override
     public void refresh() throws ConnectorCheckedException

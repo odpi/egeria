@@ -35,7 +35,7 @@ public interface BasicFileStore
      * Return the name of the file to read.
      *
      * @return file name
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException - the file name is null, the file does not exist, or is a directory or
      *                             is not readable.
      */
@@ -46,7 +46,7 @@ public interface BasicFileStore
      * Return the creation date for the file.
      *
      * @return Date object
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException - the file name is null, the file does not exist, or is a directory or
      *                             is not readable.
      */
@@ -57,7 +57,7 @@ public interface BasicFileStore
      * Return the last update date for the file.
      *
      * @return Date object
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException - the file name is null, the file does not exist, or is a directory or
      *                             is not readable.
      */
@@ -68,7 +68,7 @@ public interface BasicFileStore
      * Return the last access date for the file.
      *
      * @return Date object
-     * @throws FileException there is a problem accessing the file
+     * @throws FileException a problem accessing the file
      * @throws FileReadException - the file name is null, the file does not exist, or is a directory or
      *                             is not readable.
      */

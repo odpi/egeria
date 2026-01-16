@@ -42,7 +42,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
      * @param relationship relationship linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewRelatedMetadataElementsBean(Class<B>                 beanClass,
@@ -91,7 +91,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
      * @param openMetadataRelationships list of openMetadataRelationships containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public List<B> getNewBeans(Class<B>                     beanClass,
                                OpenMetadataRelationshipList openMetadataRelationships,
@@ -114,7 +114,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
      * @param openMetadataRelationships list of openMetadataRelationships containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public List<B> getNewBeans(Class<B>                       beanClass,
                                List<OpenMetadataRelationship> openMetadataRelationships,

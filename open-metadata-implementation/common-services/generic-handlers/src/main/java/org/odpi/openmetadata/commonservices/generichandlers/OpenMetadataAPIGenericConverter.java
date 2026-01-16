@@ -80,7 +80,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param entity entity containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the entity supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewBean(Class<B>     beanClass,
@@ -104,7 +104,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param relationship relationship used to access the entity
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewBean(Class<B>     beanClass,
@@ -130,7 +130,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewComplexBean(Class<B>           beanClass,
@@ -157,7 +157,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param relatedEntities relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewComplexRelatedEntityBean(Class<B>            beanClass,
@@ -185,7 +185,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewComplexGraphBean(Class<B>           beanClass,
@@ -210,7 +210,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param relationship relationship linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewRelationshipBean(Class<B>     beanClass,
@@ -242,7 +242,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param schemaTypeOptions list of schema types that could be the type for this attribute
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewSchemaTypeBean(Class<B>             beanClass,
@@ -289,7 +289,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param queryTargets list of relationships to schema types that contain data values used to derive the schema type value(s)
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
     public B getNewSchemaTypeBean(Class<B>             beanClass,
@@ -336,7 +336,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param methodName calling method
      * @param <T> bean type used to create the schema type
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     public <T> B getNewSchemaAttributeBean(Class<B>           beanClass,
                                            EntityDetail       schemaAttributeEntity,
@@ -365,7 +365,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param missingMethodName method tha has not been implemented
      * @param converterClassName class that detected the missing method
      * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been called with a method that is unexpected for the specific type of
      * bean that this converter is implemented for.
      */
@@ -390,7 +390,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param beanClassName class name of bean
      * @param error exception generated when the new bean is created
      * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is not a known class
      */
     protected void handleInvalidBeanClass(String    beanClassName,
@@ -414,7 +414,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param beanClassName class name of bean
      * @param expectedBeanClass class name that the converter is able to process
      * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     protected void handleUnexpectedBeanClass(String    beanClassName,
@@ -438,7 +438,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param beanClassName class name of bean
      * @param typeDefCategory class name that the converter is able to process
      * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     protected void handleMissingMetadataInstance(String          beanClassName,
@@ -462,7 +462,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param beanClassName class name of bean
      * @param instanceAuditHeader header section of the instance
      * @param methodName calling method
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     void validateInstanceType(String              expectedTypeName,
@@ -492,7 +492,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param beanClassName class name of bean
      * @param actualTypeName type of instance
      * @param methodName calling method
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     protected void validateInstanceType(String expectedTypeName,
@@ -635,7 +635,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param entity entity containing the properties
      * @param methodName calling method
      * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     protected ElementHeader getMetadataElementHeader(Class<B>     beanClass,
@@ -866,7 +866,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param entityClassifications classification if this is an entity
      * @param methodName calling method
      * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     public ElementHeader getMetadataElementHeader(Class<B>             beanClass,
@@ -953,7 +953,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param entityProxy entityProxy from the relationship containing the properties
      * @param methodName calling method
      * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * @throws PropertyServerException a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     public ElementStub getElementStub(Class<B>    beanClass,

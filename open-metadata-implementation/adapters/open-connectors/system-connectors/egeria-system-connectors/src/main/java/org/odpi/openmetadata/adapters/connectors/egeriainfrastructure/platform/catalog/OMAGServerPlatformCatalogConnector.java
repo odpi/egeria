@@ -169,7 +169,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
      * catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
      * actually exist in the event broker.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
     public void refresh() throws ConnectorCheckedException

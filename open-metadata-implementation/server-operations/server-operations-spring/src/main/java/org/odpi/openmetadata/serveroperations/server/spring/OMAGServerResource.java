@@ -58,7 +58,7 @@ public class OMAGServerResource
      * @return configuration properties used to initialize the server or null if not running or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     @GetMapping(path = "/servers/{serverName}/instance/configuration")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -88,7 +88,7 @@ public class OMAGServerResource
      * @return status of the server or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the server name is invalid or not running or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     * OMAGConfigurationErrorException a problem using the supplied configuration.
      */
     @GetMapping(path = "/servers/{serverName}/instance/status")
     @SecurityRequirement(name = "BearerAuthorization")

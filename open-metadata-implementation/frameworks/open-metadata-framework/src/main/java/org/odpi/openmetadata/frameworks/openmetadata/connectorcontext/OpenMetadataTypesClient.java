@@ -59,7 +59,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return TypeDefGallery  List of different categories of type definitions.
      *
      * @throws InvalidParameterException  the userId is null
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public OpenMetadataTypeDefGallery getAllTypes() throws InvalidParameterException,
@@ -78,7 +78,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return TypeDefs list.
      *
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefList findTypeDefsByCategory(OpenMetadataTypeDefCategory category) throws InvalidParameterException,
@@ -97,7 +97,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return AttributeTypeDefs list.
      *
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<OpenMetadataAttributeTypeDef> findAttributeTypeDefsByCategory(OpenMetadataAttributeTypeDefCategory category) throws InvalidParameterException,
@@ -119,7 +119,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * describing the TypeDef's category and properties.
      *
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefList findTypesByExternalID(String standard,
@@ -143,7 +143,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * has no known subtypes
      *
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws PropertyServerException    a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefList getSubTypes(String typeName) throws InvalidParameterException,
@@ -161,7 +161,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the guid is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -181,7 +181,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the guid is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -201,7 +201,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the name is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -221,7 +221,7 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
      * @return TypeDef structure describing its category and properties.
      *
      * @throws InvalidParameterException  the name is null.
-     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     * @throws PropertyServerException    a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */

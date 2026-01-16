@@ -39,7 +39,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * @param secretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
      *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     PlatformServicesRESTClient(String   platformName,
@@ -60,7 +60,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * @param platformURLRoot URL root of the server manager where the OMAG Server is running.
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
     PlatformServicesRESTClient(String                             platformName,

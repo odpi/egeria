@@ -35,7 +35,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -395,7 +395,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
      * @return unique identifier of the folder
      * @throws InvalidParameterException one of the parameters passed to open metadata is invalid (probably a bug in this code)
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
-     * @throws PropertyServerException there is a problem with the metadata server(s)
+     * @throws PropertyServerException a problem with the metadata server(s)
      */
     private String getFolderGUID(String  fileGUID,
                                  String  relationshipName) throws InvalidParameterException,
@@ -455,7 +455,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
      * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
      * be sure to call super.disconnect() in your version.
      *
-     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the governance action service.
      */
     @Override
     public  void disconnect() throws ConnectorCheckedException

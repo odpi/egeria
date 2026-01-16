@@ -88,7 +88,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the parent set
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     private String getParentSet(String userId,
                                 String propertyName) throws InvalidParameterException,
@@ -144,7 +144,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the parent set
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     private String getValidValueGUID(String userId,
                                      String typeName,
@@ -190,7 +190,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      * @return unique identifier of the parent set
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     private ValidMetadataValueDetail getValidValue(String userId,
                                                    String typeName,
@@ -310,7 +310,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     private void setUpValidValue(String             userId,
                                  String             typeName,
@@ -407,7 +407,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setUpValidMetadataValue(String             userId,
                                         String             typeName,
@@ -445,7 +445,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setUpValidMetadataMapName(String             userId,
                                           String             typeName,
@@ -484,7 +484,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setUpValidMetadataMapValue(String             userId,
                                            String             typeName,
@@ -522,7 +522,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearValidMetadataValue(String        userId,
                                         String        typeName,
@@ -567,7 +567,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearValidMetadataMapName(String        userId,
                                           String        typeName,
@@ -613,7 +613,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void clearValidMetadataMapValue(String        userId,
                                            String        typeName,
@@ -662,7 +662,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public boolean validateMetadataValue(String userId,
                                          String typeName,
@@ -696,7 +696,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public boolean validateMetadataMapName(String userId,
                                            String typeName,
@@ -731,7 +731,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public boolean validateMetadataMapValue(String userId,
                                             String typeName,
@@ -768,7 +768,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueDetail getValidMetadataValue(String userId,
                                                           String typeName,
@@ -804,7 +804,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueDetail getValidMetadataMapName(String userId,
                                                             String typeName,
@@ -841,7 +841,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public ValidMetadataValueDetail getValidMetadataMapValue(String userId,
                                                              String typeName,
@@ -881,7 +881,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<ValidMetadataValueDetail> getValidMetadataValues(String userId,
                                                                  String typeName,
@@ -994,7 +994,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public List<ValidMetadataValueDetail> getConsistentMetadataValues(String userId,
                                                                       String typeName,
@@ -1060,7 +1060,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
-     * @throws PropertyServerException    there is a problem accessing the metadata store
+     * @throws PropertyServerException    a problem accessing the metadata store
      */
     public void setConsistentMetadataValues(String userId,
                                             String typeName1,

@@ -39,7 +39,7 @@ public class AdminServicesRESTClient
      * @param secretsStoreLocation secrets store location for bearer token
      * @param secretsStoreCollection secrets store collection for bearer token
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public AdminServicesRESTClient(String   serverName,
@@ -83,7 +83,7 @@ public class AdminServicesRESTClient
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public AdminServicesRESTClient(String                             serverName,

@@ -295,7 +295,7 @@ public class CollectionManagerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -772,7 +772,7 @@ public class CollectionManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/{collectionGUID}/is-editing-collection")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -803,7 +803,7 @@ public class CollectionManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/{collectionGUID}/is-editing-collection/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -835,7 +835,7 @@ public class CollectionManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/{collectionGUID}/is-scoping-collection")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -866,7 +866,7 @@ public class CollectionManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/{collectionGUID}/is-scoping-collection/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -898,7 +898,7 @@ public class CollectionManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/{collectionGUID}/is-staging-collection")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -929,7 +929,7 @@ public class CollectionManagerResource
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/collections/{collectionGUID}/is-staging-collection/delete")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -1056,7 +1056,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/members/{elementGUID}/attach")
@@ -1089,7 +1089,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/members/{elementGUID}/update")
@@ -1122,7 +1122,7 @@ public class CollectionManagerResource
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid.
-     *  PropertyServerException    there is a problem updating information in the property server(s).
+     *  PropertyServerException    a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/collections/{collectionGUID}/members/{elementGUID}/detach")

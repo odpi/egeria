@@ -72,7 +72,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @param typeDef TypeDef structure describing the TypeDef to test.
      * @return boolean true means the TypeDef matches the local definition; false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
@@ -116,7 +116,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
      * @return boolean where true means the TypeDef matches the local definition where false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.

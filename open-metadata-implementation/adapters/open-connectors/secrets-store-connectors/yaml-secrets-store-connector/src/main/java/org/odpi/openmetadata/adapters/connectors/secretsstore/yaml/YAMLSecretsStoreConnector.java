@@ -167,7 +167,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      *
      * @param listName name of a list
      * @return corresponding named list or null
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     @Override
     public NamedList getNamedList(String listName) throws ConnectorCheckedException
@@ -193,7 +193,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      * Return all of the known named lists in this collection
      *
      * @return map of named lists in this collection
-     * @throws ConnectorCheckedException there is a problem with the connector
+     * @throws ConnectorCheckedException a problem with the connector
      */
     @Override
     public Map<String, NamedList> getNamedLists() throws ConnectorCheckedException

@@ -65,7 +65,7 @@ public class OMAGServerConfigurationClient
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
     public OMAGServerConfigurationClient(String   serverName,
@@ -102,7 +102,7 @@ public class OMAGServerConfigurationClient
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
     public OMAGServerConfigurationClient(String                             serverPlatformRootURL,

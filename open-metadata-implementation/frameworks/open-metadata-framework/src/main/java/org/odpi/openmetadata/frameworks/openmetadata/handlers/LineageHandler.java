@@ -51,7 +51,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
      * @return guid of lineage relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public String linkLineage(String                        userId,
                               String                        elementOneGUID,
@@ -80,7 +80,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
      * @param properties properties of the relationship
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void updateLineage(String                        userId,
                               String                        lineageRelationshipGUID,
@@ -105,7 +105,7 @@ public class LineageHandler extends OpenMetadataHandlerBase
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public void detachLineage(String        userId,
                               String        lineageRelationshipGUID,

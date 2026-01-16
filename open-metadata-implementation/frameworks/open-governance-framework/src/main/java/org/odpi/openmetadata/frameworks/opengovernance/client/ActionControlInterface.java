@@ -45,7 +45,7 @@ public interface ActionControlInterface
      * @return unique identifier of the governance action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateEngineAction(String                userId,
                                 String                qualifiedName,
@@ -84,7 +84,7 @@ public interface ActionControlInterface
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null or unrecognized qualified name of the type
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateGovernanceActionType(String                userId,
                                         String                governanceActionTypeQualifiedName,
@@ -115,7 +115,7 @@ public interface ActionControlInterface
      * @return unique identifier of the first governance action of the process
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     String initiateGovernanceActionProcess(String                userId,
                                            String                processQualifiedName,

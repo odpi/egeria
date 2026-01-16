@@ -154,7 +154,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * identify the home repository of a metadata instance.
      *
      * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository.
      */
     public String getMetadataCollectionId() throws RepositoryErrorException
     {
@@ -175,7 +175,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *
      * @return TypeDefGallery List of different categories of type definitions.
      * @throws InvalidParameterException the userId is null
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefGallery getAllTypes() throws InvalidParameterException,
@@ -194,7 +194,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param name   name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefGallery list.
      * @throws InvalidParameterException  the name of the TypeDef is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefGallery findTypesByName(String name) throws InvalidParameterException,
@@ -211,7 +211,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param category enum value for the category of TypeDef to return.
      * @return TypeDefs list.
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<TypeDef> findTypeDefsByCategory(TypeDefCategory category) throws InvalidParameterException,
@@ -228,7 +228,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param category enum value for the category of an AttributeTypeDef to return.
      * @return TypeDefs list.
      * @throws InvalidParameterException  the TypeDefCategory is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<AttributeTypeDef> findAttributeTypeDefsByCategory(AttributeTypeDefCategory category) throws InvalidParameterException,
@@ -245,7 +245,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefs list.
      * @throws InvalidParameterException  the matchCriteria is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<TypeDef> findTypeDefsByProperty(TypeDefProperties matchCriteria) throws InvalidParameterException,
@@ -265,7 +265,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  all attributes of the external id are null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<TypeDef> findTypesByExternalID(String standard,
@@ -285,7 +285,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  the searchCriteria is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<TypeDef> searchForTypeDefs(String searchCriteria) throws InvalidParameterException,
@@ -302,7 +302,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid   String unique id of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -322,7 +322,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid   String unique id of the TypeDef
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -342,7 +342,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param name   String name of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the name is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   the requested TypeDef is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -362,7 +362,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param name   String name of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException  the name is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException   the requested TypeDef is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -387,7 +387,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid   String unique identifier for the entity
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -406,7 +406,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid   String unique identifier for the entity
      * @return EntitySummary structure
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException    the requested entity instance is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -426,7 +426,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid   String unique identifier for the entity.
      * @return EntityDetail structure.
      * @throws InvalidParameterException  the guid is null.
-     * @throws RepositoryErrorException   there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException   a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException    the requested entity instance is not known in the metadata collection.
      * @throws EntityProxyOnlyException   the requested entity instance is only a proxy in the metadata collection.
@@ -449,7 +449,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return EntityDetail structure.
      * @throws InvalidParameterException     the guid or date is null, or the asOfTime property is for a future time
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws EntityNotKnownException       the requested entity instance is not known in the metadata collection
      *                                       at the time requested.
@@ -483,7 +483,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
@@ -529,7 +529,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws InvalidParameterException     a parameter is invalid or null.
      * @throws TypeErrorException            the type guid passed on the request is not known by the
      *                                       metadata collection.
-     * @throws RepositoryErrorException      there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException      a problem communicating with the metadata repository where
      *                                       the metadata collection is stored.
      * @throws EntityNotKnownException       the requested entity instance is not known in the metadata collection.
      * @throws PropertyErrorException        the sequencing property is not valid for the attached classifications.
@@ -582,7 +582,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity.
@@ -637,7 +637,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity.
@@ -693,7 +693,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws ClassificationErrorException the classification request is not known to the metadata collection.
      * @throws PropertyErrorException the properties specified are not valid for the requested type of
@@ -751,7 +751,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity.
@@ -785,7 +785,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid String unique identifier for the relationship.
      * @return relationship details if the relationship is found in the metadata collection; otherwise return null.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -803,7 +803,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param guid String unique identifier for the relationship.
      * @return a relationship structure.
      * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the metadata collection does not have a relationship with
      *                                         the requested GUID stored.
@@ -825,7 +825,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return Relationship structure.
      * @throws InvalidParameterException the guid or date is null or the asOfTime property is for a future time.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
@@ -857,7 +857,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
      *                                       at the time requested.
@@ -905,7 +905,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.
@@ -959,7 +959,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.
@@ -1011,9 +1011,9 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
+     * @throws PropertyErrorException a problem with one of the other parameters.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1051,7 +1051,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param newActionTargets list of action target names to GUIDs for the resulting archive service
      * @param completionMessage message to describe completion results or reasons for failure
      *
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     public synchronized  void recordCompletionStatus(CompletionStatus      status,
                                                      List<String>          outputGuards,

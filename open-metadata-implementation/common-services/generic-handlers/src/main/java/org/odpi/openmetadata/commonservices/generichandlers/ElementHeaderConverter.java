@@ -41,7 +41,7 @@ public class ElementHeaderConverter<B> extends OMFConverter<B>
      * @param entity entity containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unchecked")
     @Override
@@ -87,7 +87,7 @@ public class ElementHeaderConverter<B> extends OMFConverter<B>
      * @param entity entity containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unchecked")
     public B getNewBean(Class<B>    beanClass,
@@ -132,7 +132,7 @@ public class ElementHeaderConverter<B> extends OMFConverter<B>
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unchecked")
     public B getNewBean(Class<B>     beanClass,
@@ -178,7 +178,7 @@ public class ElementHeaderConverter<B> extends OMFConverter<B>
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>     beanClass,

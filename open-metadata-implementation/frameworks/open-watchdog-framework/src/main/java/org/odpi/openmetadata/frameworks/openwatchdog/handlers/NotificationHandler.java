@@ -10,17 +10,21 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFAuditCode;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +35,7 @@ import java.util.Map;
 public class NotificationHandler extends GovernanceDefinitionHandler
 {
     private final OpenGovernanceClient openGovernanceClient;
+    private final AssetHandler         assetHandler;
 
     /**
      * Create a new handler.
@@ -49,6 +54,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
         super(localServerName, auditLog, serviceName, openMetadataClient, OpenMetadataType.NOTIFICATION_TYPE.typeName);
 
         this.openGovernanceClient = openGovernanceClient;
+        this.assetHandler         = new AssetHandler(localServerName, auditLog, serviceName, openMetadataClient);
     }
 
 
@@ -85,31 +91,32 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
 
     /**
-     * Create a notification/action for each of the subscribers.
+     * Create a notification/action for the subscribers.
      *
-     * @param userId caller's userId
-     * @param properties properties of the action
-     * @param notificationTypeGUID unique identifier of the cause for the action to be raised
-     * @param requestParameters properties to pass to the next governance service
-     * @param actionRequesterGUID unique identifier of the source of the action
-     * @param actionTargets the list of elements that should be acted upon
-     * @param newSubscriberStatus set the subscriber relationship to this value after a successful notification; null means leave it alone
-     *
-     * @throws InvalidParameterException the completion status is null
+     * @param userId                 caller's userId
+     * @param properties             properties of the action
+     * @param notificationTypeGUID   unique identifier of the cause for the action to be raised
+     * @param initialClassifications initial classifications to add to the action
+     * @param requestParameters      properties to pass to the next governance service
+     * @param actionRequesterGUID    unique identifier of the source of the action
+     * @param actionTargets          the list of elements that should be acted upon
+     * @param newSubscriberStatus    set the subscriber relationship to this value after a successful notification; null means leave it alone
+     * @throws InvalidParameterException  the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    public void notifySubscribers(String                 userId,
-                                  NotificationProperties properties,
-                                  String                 notificationTypeGUID,
-                                  Map<String, String>    requestParameters,
-                                  String                 actionRequesterGUID,
-                                  List<NewActionTarget>  actionTargets,
-                                  ActivityStatus         newSubscriberStatus) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void notifySubscribers(String                                userId,
+                                  Map<String, ClassificationProperties> initialClassifications,
+                                  NotificationProperties                properties,
+                                  String                                notificationTypeGUID,
+                                  Map<String, String>                   requestParameters,
+                                  String                                actionRequesterGUID,
+                                  List<NewActionTarget>                 actionTargets,
+                                  ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
-        final String methodName = "notifySubscribers";
+        final String methodName              = "notifySubscribers";
         final String propertiesParameterName = "properties";
 
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
@@ -129,6 +136,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                      * value.
                      */
                     ActivityStatus activityStatus = ActivityStatus.IN_PROGRESS;
+                    List<String>   zoneMembership = null;
 
                     if ((subscriber.getRelatedBy() != null) &&
                             (subscriber.getRelatedBy().getRelationshipProperties() instanceof NotificationSubscriberProperties notificationSubscriberProperties))
@@ -136,13 +144,33 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                         if (notificationSubscriberProperties.getActivityStatus() != null)
                         {
                             activityStatus = notificationSubscriberProperties.getActivityStatus();
+                            zoneMembership = notificationSubscriberProperties.getZoneMembership();
                         }
                     }
 
+                    Map<String, ClassificationProperties> combinedClassifications = initialClassifications;
+
+                    if (zoneMembership != null)
+                    {
+                        if (combinedClassifications == null)
+                        {
+                            combinedClassifications = new HashMap<>();
+                        }
+
+                        ZoneMembershipProperties zoneMembershipProperties = new ZoneMembershipProperties();
+                        zoneMembershipProperties.setZoneMembership(zoneMembership);
+
+                        combinedClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
+                    }
+
+                    /*
+                     * Only make the notification if the subscriber status is  IN_PROGRESS.
+                     */
                     if (activityStatus == ActivityStatus.IN_PROGRESS)
                     {
                         notifySubscriber(userId,
                                          subscriber.getElementHeader().getGUID(),
+                                         combinedClassifications,
                                          properties,
                                          notificationTypeGUID,
                                          requestParameters,
@@ -150,6 +178,9 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                          actionTargets);
                     }
 
+                    /*
+                     * If the caller requests that the subscriber status be updated, make the change.
+                     */
                     if (newSubscriberStatus != null)
                     {
                         UpdateOptions updateOptions = new UpdateOptions();
@@ -178,54 +209,57 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * the status of the NotificationSubscriber relationship.  The caller has either performed the status check,
      * or it is greeting/goodbye message to an individual subscriber.
      *
-     * @param userId caller's userId
-     * @param subscriberGUID  unique identifier of the subscriber
-     * @param properties properties of the action
+     * @param userId               caller's userId
+     * @param subscriberGUID       unique identifier of the subscriber
+     * @param properties           properties of the action
+     * @param initialClassifications initial classifications to add to the action
      * @param notificationTypeGUID unique identifier of the cause for the action to be raised
-     * @param requestParameters properties to pass to any governance action subscriber
-     * @param actionRequesterGUID unique identifier of the source of the action
-     * @param actionTargets the list of elements that should be acted upon
+     * @param requestParameters    properties to pass to any governance action subscriber
+     * @param actionRequesterGUID  unique identifier of the source of the action
+     * @param actionTargets        the list of elements that should be acted upon
      * @return unique identifier of the action
-     *
-     * @throws InvalidParameterException the completion status is null
+     * @throws InvalidParameterException  the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    public String notifySubscriber(String                 userId,
-                                   String                 subscriberGUID,
-                                   NotificationProperties properties,
-                                   String                 notificationTypeGUID,
-                                   Map<String, String>    requestParameters,
-                                   String                 actionRequesterGUID,
-                                   List<NewActionTarget>  actionTargets) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public String notifySubscriber(String                                userId,
+                                   String                                subscriberGUID,
+                                   Map<String, ClassificationProperties> initialClassifications,
+                                   NotificationProperties                properties,
+                                   String                                notificationTypeGUID,
+                                   Map<String, String>                   requestParameters,
+                                   String                                actionRequesterGUID,
+                                   List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName = "notifySubscriber";
 
-        OpenMetadataElement subscriber =  openMetadataClient.getMetadataElementByGUID(userId, subscriberGUID, new GetOptions());
+        OpenMetadataElement subscriber = openMetadataClient.getMetadataElementByGUID(userId, subscriberGUID, new GetOptions());
 
         List<String> actionCauseGUIDs = List.of(notificationTypeGUID);
 
         if (propertyHelper.isTypeOf(subscriber, OpenMetadataType.ACTOR.typeName))
         {
-            return openMetadataClient.createActorAction(userId,
-                                                        properties.getTypeName(),
-                                                        elementBuilder.getNewElementProperties(properties),
-                                                        actionRequesterGUID,
-                                                        actionCauseGUIDs,
-                                                        subscriber.getElementGUID(),
-                                                        actionTargets);
+            return assetHandler.createActorAction(userId,
+                                                  properties.getTypeName(),
+                                                  initialClassifications,
+                                                  properties,
+                                                  actionRequesterGUID,
+                                                  actionCauseGUIDs,
+                                                  subscriber.getElementGUID(),
+                                                  actionTargets);
         }
         else if (propertyHelper.isTypeOf(subscriber, OpenMetadataType.NOTE_LOG.typeName))
         {
-            return openMetadataClient.createNoteLogEntry(userId,
-                                                         properties.getTypeName(),
-                                                         elementBuilder.getNewElementProperties(properties),
-                                                         actionRequesterGUID,
-                                                         actionCauseGUIDs,
-                                                         subscriber.getElementGUID(),
-                                                         actionTargets);
+            return assetHandler.createNoteLogEntry(userId,
+                                                   properties.getTypeName(),
+                                                   initialClassifications,
+                                                   properties,
+                                                   actionRequesterGUID,
+                                                   actionCauseGUIDs,
+                                                   subscriber.getElementGUID(),
+                                                   actionTargets);
         }
         else if (propertyHelper.isTypeOf(subscriber, OpenMetadataType.GOVERNANCE_ACTION.typeName))
         {
@@ -286,8 +320,8 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getNotificationSubscribers(String        userId,
-                                                                    String notificationTypeGUID,
+    public List<OpenMetadataRootElement> getNotificationSubscribers(String       userId,
+                                                                    String       notificationTypeGUID,
                                                                     QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException

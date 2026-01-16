@@ -14,7 +14,7 @@ public class SequentialSurveyPipeline extends SurveyActionPipelineConnector
     /**
      * This implementation provides an inline sequential invocation of the supplied survey action services.
      *
-     * @throws ConnectorCheckedException there is a problem within the survey action service.
+     * @throws ConnectorCheckedException a problem within the survey action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override

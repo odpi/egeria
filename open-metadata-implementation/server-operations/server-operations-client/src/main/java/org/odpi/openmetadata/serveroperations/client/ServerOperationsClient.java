@@ -50,7 +50,7 @@ public class ServerOperationsClient
      * @param secretStoreCollection name of the collection of secrets to use to connect to the remote server
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ServerOperationsClient(String   platformName,
@@ -76,7 +76,7 @@ public class ServerOperationsClient
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * @throws InvalidParameterException a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ServerOperationsClient(String                             platformName,
@@ -106,7 +106,7 @@ public class ServerOperationsClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public ServerStatus getServerStatus(String serverName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -192,7 +192,7 @@ public class ServerOperationsClient
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<String> getActiveServices(String   serverName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,

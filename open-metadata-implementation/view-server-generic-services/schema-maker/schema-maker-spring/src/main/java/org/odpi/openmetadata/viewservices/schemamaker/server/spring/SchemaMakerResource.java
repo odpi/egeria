@@ -83,7 +83,7 @@ public class SchemaMakerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/from-template")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -179,7 +179,7 @@ public class SchemaMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/by-name")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -209,7 +209,7 @@ public class SchemaMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -240,7 +240,7 @@ public class SchemaMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/{schemaTypeGUID}/retrieve")
     @SecurityRequirement(name = "BearerAuthorization")
@@ -302,7 +302,7 @@ public class SchemaMakerResource
      * @return unique identifier of the new metadata element
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/schema-attributes/from-template"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -396,7 +396,7 @@ public class SchemaMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/schema-attributes/by-name"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -427,7 +427,7 @@ public class SchemaMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/schema-attributes/by-search-string"})
     @SecurityRequirement(name = "BearerAuthorization")
@@ -458,7 +458,7 @@ public class SchemaMakerResource
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/retrieve"})
     @SecurityRequirement(name = "BearerAuthorization")

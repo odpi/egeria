@@ -49,7 +49,7 @@ public class MyProfileResource
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping(path = "")
@@ -73,7 +73,7 @@ public class MyProfileResource
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actors")
@@ -98,7 +98,7 @@ public class MyProfileResource
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actors/user-identities")
@@ -123,7 +123,7 @@ public class MyProfileResource
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actors/assigned-roles")
@@ -148,7 +148,7 @@ public class MyProfileResource
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assigned-resources")
@@ -174,7 +174,7 @@ public class MyProfileResource
      *
      * @return profile response object or
      * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * PropertyServerException a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "")

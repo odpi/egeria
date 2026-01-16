@@ -7,13 +7,17 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -2025,9 +2029,9 @@ public class MermaidGraphBuilderBase
         {
             label = roledRelationshipProperties.getRole();
         }
-        else if (relatedMetadataElement.getRelationshipProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties)
         {
-            label = assignmentScopeProperties.getAssignmentType();
+            label = actionTargetProperties.getActionTargetName();
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof AgreementActorProperties agreementActorProperties)
         {
@@ -2037,9 +2041,25 @@ public class MermaidGraphBuilderBase
         {
             label = agreementItemProperties.getAgreementItemId();
         }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+        {
+            label = assignmentScopeProperties.getAssignmentType();
+        }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
+        {
+            label = catalogTargetProperties.getCatalogTargetName();
+        }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof CollectionMembershipProperties collectionMembershipProperties)
         {
             label = collectionMembershipProperties.getMembershipType();
+        }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof EmbeddedConnectionProperties embeddedConnectionProperties)
+        {
+            label = embeddedConnectionProperties.getDisplayName();
+        }
+        else if (relatedMetadataElement.getRelationshipProperties() instanceof RequestForActionTargetProperties requestForActionTargetProperties)
+        {
+            label = requestForActionTargetProperties.getActionTargetName();
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof PartOfRelationshipProperties partOfRelationshipProperties)
         {

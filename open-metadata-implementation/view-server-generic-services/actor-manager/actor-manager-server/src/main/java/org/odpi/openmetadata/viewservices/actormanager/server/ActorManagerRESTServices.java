@@ -109,7 +109,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createActorProfileFromTemplate(String              serverName,
                                                        String              urlMarker,
@@ -399,7 +399,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getActorProfilesByName(String            serverName,
                                                                    String            urlMarker,
@@ -451,7 +451,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getActorProfileByGUID(String         serverName,
                                                                  String         urlMarker,
@@ -496,7 +496,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findActorProfiles(String                  serverName,
                                                               String                  urlMarker,
@@ -553,7 +553,7 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createContributionRecord(String                   serverName,
@@ -686,7 +686,7 @@ public class ActorManagerRESTServices extends TokenController
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * PropertyServerException - a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteContributionRecord(String            serverName,
@@ -734,7 +734,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findContributionRecords(String                  serverName, 
                                                                     String                  urlMarker, 
@@ -788,7 +788,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getContributionRecordsByName(String            serverName, 
                                                                          String            urlMarker, 
@@ -842,7 +842,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     *  PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getContributionRecordByGUID(String         serverName, 
                                                                        String         urlMarker, 
@@ -953,7 +953,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createActorRoleFromTemplate(String              serverName,
                                                     String              urlMarker,
@@ -1479,7 +1479,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getActorRolesByName(String            serverName,
                                                                 String            urlMarker,
@@ -1531,7 +1531,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getActorRoleByGUID(String         serverName,
                                                               String         urlMarker,
@@ -1576,7 +1576,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findActorRoles(String                  serverName,
                                                            String                  urlMarker,
@@ -1694,7 +1694,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createUserIdentityFromTemplate(String              serverName,
                                                        String              urlMarker,
@@ -2140,7 +2140,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getUserIdentitiesByName(String            serverName,
                                                                     String            urlMarker,
@@ -2192,7 +2192,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getUserIdentityByGUID(String         serverName,
                                                                  String         urlMarker,
@@ -2237,7 +2237,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findUserIdentities(String                  serverName,
                                                                String                  urlMarker,
@@ -2488,7 +2488,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return unique identifier of the new metadata element
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public GUIDResponse createContactDetailsFromTemplate(String              serverName,
                                                          String              urlMarker,
@@ -2778,7 +2778,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getContactDetailsByName(String            serverName,
                                                                     String            urlMarker,
@@ -2830,7 +2830,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getContactDetailsByGUID(String         serverName,
                                                                    String         urlMarker,
@@ -2875,7 +2875,7 @@ public class ActorManagerRESTServices extends TokenController
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findContactDetails(String                  serverName,
                                                                String                  urlMarker,

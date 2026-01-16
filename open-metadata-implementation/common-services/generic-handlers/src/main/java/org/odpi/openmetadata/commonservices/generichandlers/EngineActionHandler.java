@@ -86,7 +86,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @return unique identifier of the first engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String initiateGovernanceActionType(String                userId,
                                                String                governanceActionTypeQualifiedName,
@@ -338,7 +338,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @return unique identifier of the prepared engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private String prepareEngineActionFromType(String                userId,
                                                EntityDetail          governanceActionTypeEntity,
@@ -565,7 +565,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String initiateGovernanceActionProcess(String                userId,
                                                   String                processQualifiedName,
@@ -869,7 +869,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @return unique identifier of the prepared governance action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private String prepareEngineActionFromProcessStep(String                userId,
                                                       String                anchorGUID,
@@ -1218,7 +1218,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void runEngineActionIfReady(String                userId,
                                         String                engineActionGUID,
@@ -1321,7 +1321,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void   approveEngineAction(String                userId,
                                       String                engineActionGUID,
@@ -1440,7 +1440,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     public String createEngineAction(String                userId,
                                      String                qualifiedName,
@@ -1653,7 +1653,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @return unique identifier of the governance action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private synchronized String getEngineActionForProcessStep(String                userId,
                                                               String                qualifiedName,
@@ -1792,7 +1792,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance  service is not authorized to create an engine action
-     * @throws PropertyServerException there is a problem with the metadata store
+     * @throws PropertyServerException a problem with the metadata store
      */
     private void addActionTargets(String                userId,
                                   String                engineActionGUID,
@@ -2528,7 +2528,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance service is not authorized to update the engine action status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     public void recordCompletionStatus(String                userId,
                                        String                engineActionGUID,
@@ -3307,7 +3307,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<B> findEngineActions(String       userId,
                                      String       searchString,
@@ -3382,7 +3382,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
      */
     public List<B> getEngineActionsByName(String       userId,
                                           String       name,
@@ -3464,7 +3464,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException the action target GUID is not recognized
      * @throws UserNotAuthorizedException the governance service is not authorized to update the action target properties
-     * @throws PropertyServerException there is a problem connecting to the metadata store
+     * @throws PropertyServerException a problem connecting to the metadata store
      */
     public void updateActionTargetStatus(String       userId,
                                          String       actionTargetGUID,

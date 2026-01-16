@@ -43,7 +43,7 @@ public class RelatedElementConverter<B> extends OpenMetadataStoreConverter<B>
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
+     * @throws PropertyServerException a problem instantiating the bean
      */
     @Override
     public B getNewBean(Class<B>     beanClass,
