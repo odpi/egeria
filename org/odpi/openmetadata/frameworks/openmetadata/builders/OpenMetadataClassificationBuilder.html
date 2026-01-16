@@ -78,7 +78,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataClassificationBuilder</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Builds element properties for classification property beans</div>
+<div class="block">Builds element properties for classification property beans.  The aim is to extract the properties from the
+ specialist classification beans.  It is only necessary to process beans that add new properties.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -156,7 +157,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getInitialClassifications(java.util.Map)">
 <h3>getInitialClassifications</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../search/NewElementProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementProperties</a>&gt;</span>&nbsp;<span class="element-name">getInitialClassifications</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;classificationPropertiesMap)</span></div>
-<div class="block">Convert the properties beans into Element properties beans.  This is a bit fiddly in order to ensure the
+<div class="block">Convert the properties beans into Element properties beans.  This is a bit fiddly to ensure the
  effectivity dates are properly included for each classification.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

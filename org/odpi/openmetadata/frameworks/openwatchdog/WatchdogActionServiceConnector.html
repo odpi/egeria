@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">WatchdogActionServiceConnector</span>
 <span class="extends-implements">extends <a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
 implements <a href="WatchdogActionService.html" title="interface in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogActionService</a>, <a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></span></div>
-<div class="block">WatchdogActionServiceConnector describes a specific type of connector that is responsible for monitoring for
+<div class="block">WatchdogActionServiceConnector describes a connector that monitors for
  a specific notification type.  Information about the notification type to support is passed in the watchdog context.</div>
 </section>
 <section class="summary">
@@ -173,7 +173,7 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorComponentDescription()" class="member-name-link">getConnectorComponentDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the component description that is used by this connector in the audit log.</div>
+<div class="block">Return the component description used by this connector in the audit log.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getJSONProperties(java.lang.Object)" class="member-name-link">getJSONProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;properties)</code></div>
@@ -316,7 +316,7 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <section class="detail" id="getConnectorComponentDescription()">
 <h3>getConnectorComponentDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></span>&nbsp;<span class="element-name">getConnectorComponentDescription</span>()</div>
-<div class="block">Return the component description that is used by this connector in the audit log.</div>
+<div class="block">Return the component description used by this connector in the audit log.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../auditlog/AuditLoggingComponent.html#getConnectorComponentDescription()">getConnectorComponentDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code></dd>
@@ -349,7 +349,7 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>watchdogContext</code> - information about the asset to analyze and the results of analysis of
-                      other watchdog action service request.  Partial results from other watchdog action
+                      another watchdog action service request.  Partial results from other watchdog action
                       services run as part of the same watchdog action service request may also be
                       stored in the newAnnotations list.</dd>
 </dl>
@@ -374,13 +374,13 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Indicates that the watchdog action service is completely configured and can begin processing.
  This is where the function of the watchdog action service is implemented.
- This is a standard method from the Open Connector Framework (OCF) so
+ This is a standard method from the Open Connector Framework (OCF), so
  be sure to call super.start() in your version.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the watchdog action service.</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem within the watchdog action service.</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service was disconnected before/during start</dd>
 </dl>
 </section>
@@ -407,14 +407,16 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span>
                            throws <span class="exceptions"><a href="../opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></span></div>
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.
- It is called for events received after this listener is registered until the watchdog governance
- service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED or it is stopped by an administrator shutting down
+ It is called for events received after this listener is registered.  It stops processing events when
+ the watchdog governance
+ service sets its status in the context as ACTIONED, INVALID, IGNORED, or FAILED,
+ or the connector is stopped by an administrator shutting down
  the hosting server or this service explicitly.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>event</code> - event containing details of a change to an open metadata element.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></code> - reports that the event can not be processed (this is logged but
+<dd><code><a href="../opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></code> - reports that the event cannot be processed (this is logged but
                                     no other action is taken).  The listener will continue to be
                                     called until the watchdog governance action service declares it is complete
                                     or administrator action shuts down the service.</dd>

@@ -639,7 +639,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dt>Returns:</dt>
 <dd>String metadata collection id
- or RepositoryErrorException if there is a problem communicating with the metadata repository.</dd>
+ or RepositoryErrorException if a problem communicating with the metadata repository.</dd>
 </dl>
 </section>
 </li>
@@ -662,7 +662,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>TypeDefGalleryResponse:
  List of different categories of type definitions or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -688,7 +688,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>TypeDefGalleryResponse:
  List of different categories of type definitions or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation or
  InvalidParameterException the name of the TypeDef is null.</dd>
 </dl>
@@ -714,7 +714,7 @@ loadScripts(document, 'script');</script>
 <dd>TypeDefListResponse:
  TypeDefs list or
  InvalidParameterException the TypeDefCategory is null or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -739,7 +739,7 @@ loadScripts(document, 'script');</script>
 <dd>AttributeTypeDefListResponse:
  AttributeTypeDefs list or
  InvalidParameterException the TypeDefCategory is null or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -764,7 +764,7 @@ loadScripts(document, 'script');</script>
 <dd>TypeDefListResponse:
  TypeDefs list or
  InvalidParameterException the matchCriteria is null or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -795,7 +795,7 @@ loadScripts(document, 'script');</script>
 <dd>TypeDefsGalleryResponse:
  A list of types or
  InvalidParameterException all attributes of the external id are null or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -820,7 +820,7 @@ loadScripts(document, 'script');</script>
 <dd>TypeDefListResponse:
  TypeDefs list or
  InvalidParameterException the searchCriteria is null or
- RepositoryErrorException there is a problem communicating with the metadata repository or
+ RepositoryErrorException a problem communicating with the metadata repository or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -845,7 +845,7 @@ loadScripts(document, 'script');</script>
 <dd>TypeDefResponse:
  TypeDef structure describing its category and properties or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -872,7 +872,7 @@ loadScripts(document, 'script');</script>
 <dd>AttributeTypeDefResponse:
  TypeDef structure describing its category and properties or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -899,7 +899,7 @@ loadScripts(document, 'script');</script>
 <dd>TypeDefResponse:
  TypeDef structure describing its category and properties or
  InvalidParameterException the name is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -926,7 +926,7 @@ loadScripts(document, 'script');</script>
 <dd>AttributeTypeDefResponse:
  AttributeTypeDef structure describing its category and properties or
  InvalidParameterException the name is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -953,7 +953,7 @@ loadScripts(document, 'script');</script>
 <dd>BooleanResponse:
  boolean true means the TypeDef matches the local definition false means the TypeDef is not known or
  InvalidParameterException the TypeDef is null.
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored.
  TypeDefNotSupportedException the repository is not able to support this TypeDef.
  TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
@@ -982,7 +982,7 @@ loadScripts(document, 'script');</script>
 <dd>BooleanResponse:
  boolean true means the TypeDef matches the local definition false means the TypeDef is not known or
  InvalidParameterException the TypeDef is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  TypeDefNotSupportedException the repository is not able to support this TypeDef or
  TypeDefConflictException the new TypeDef conflicts with an existing TypeDef or
@@ -1011,7 +1011,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>the entity details if the entity is found in the metadata collection; otherwise return null
  InvalidParameterException the guid is null.
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored.
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -1037,7 +1037,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>EntitySummary structure or
  InvalidParameterException the guid is null.
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored.
  EntityNotKnownException the requested entity instance is not known in the metadata collection.
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -1064,7 +1064,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail structure or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored or
  EntityNotKnownException the requested entity instance is not known in the metadata collection or
  EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
@@ -1095,7 +1095,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>EntityList structure or
  InvalidParameterException the guid or date is null or fromTime is after the toTime
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored.
  EntityNotKnownException the requested entity instance is not known in the metadata collection
                                    at the time requested.
@@ -1131,7 +1131,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>EntityList structure or
  InvalidParameterException the guid or date is null or fromTime is after the toTime
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored.
  EntityNotKnownException the requested entity instance is not known in the metadata collection
                                    at the time requested.
@@ -1164,7 +1164,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail structure or
  InvalidParameterException the guid or date is null or the asOfTime property is for a future time or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored or
  EntityNotKnownException the requested entity instance is not known in the metadata collection
                                    at the time requested or
@@ -1198,7 +1198,7 @@ loadScripts(document, 'script');</script>
  Relationships list.  Null means no relationships associated with the entity or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the requested entity instance is not known in the metadata collection or
  PropertyErrorException the sequencing property is not valid for the attached classifications or
@@ -1232,7 +1232,7 @@ loadScripts(document, 'script');</script>
  Relationships list.  Null means no relationships associated with the entity or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the requested entity instance is not known in the metadata collection or
  PropertyErrorException the sequencing property is not valid for the attached classifications or
@@ -1264,7 +1264,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   entity or
@@ -1296,7 +1296,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   entity or
@@ -1329,7 +1329,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   entity or
@@ -1362,7 +1362,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   entity or
@@ -1397,7 +1397,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  ClassificationErrorException the classification request is not known to the metadata collection.
  PropertyErrorException the properties specified are not valid for the requested type of
@@ -1433,7 +1433,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  ClassificationErrorException the classification request is not known to the metadata collection.
  PropertyErrorException the properties specified are not valid for the requested type of
@@ -1470,7 +1470,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the sequencing property specified is not valid for any of the requested types of
                                   entity or
@@ -1506,7 +1506,7 @@ loadScripts(document, 'script');</script>
  collection or
  InvalidParameterException a parameter is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the sequencing property specified is not valid for any of the requested types of
                                   entity or
@@ -1536,7 +1536,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  relationship details if the relationship is found in the metadata collection; otherwise return null or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -1562,7 +1562,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  a relationship structure or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  RelationshipNotKnownException the metadata collection does not have a relationship with
                                          the requested GUID stored or
@@ -1593,7 +1593,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  a relationship structure or
  InvalidParameterException the guid or date is null or the asOfTime property is for a future time or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored or
  RelationshipNotKnownException the requested entity instance is not known in the metadata collection
                                    at the time requested or
@@ -1625,7 +1625,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>RelationshipList structure or
  InvalidParameterException the guid or date is null or fromTime is after the toTime
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored.
  RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
                                    at the time requested.
@@ -1655,7 +1655,7 @@ loadScripts(document, 'script');</script>
  a list of relationships.  Null means no matching relationships or
  InvalidParameterException one of the parameters is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   relationships or
@@ -1686,7 +1686,7 @@ loadScripts(document, 'script');</script>
  a list of relationships.  Null means no matching relationships or
  InvalidParameterException one of the parameters is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   relationships or
@@ -1718,7 +1718,7 @@ loadScripts(document, 'script');</script>
  a list of relationships.  Null means no matching relationships or
  InvalidParameterException one of the parameters is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   relationships or
@@ -1750,7 +1750,7 @@ loadScripts(document, 'script');</script>
  a list of relationships.  Null means no matching relationships or
  InvalidParameterException one of the parameters is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  PropertyErrorException the properties specified are not valid for any of the requested types of
                                   relationships or
@@ -1784,9 +1784,9 @@ loadScripts(document, 'script');</script>
  a list of relationships.  Null means no matching relationships or
  InvalidParameterException one of the parameters is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
- PropertyErrorException there is a problem with one of the other parameters  or
+ PropertyErrorException a problem with one of the other parameters  or
  PagingErrorException the paging/sequencing parameters are set up incorrectly or
  FunctionNotSupportedException the repository does not support asOfTime parameter or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -1817,9 +1817,9 @@ loadScripts(document, 'script');</script>
  a list of relationships.  Null means no matching relationships or
  InvalidParameterException one of the parameters is invalid or null or
  TypeErrorException the type guid passed on the request is not known by the metadata collection or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
- PropertyErrorException there is a problem with one of the other parameters  or
+ PropertyErrorException a problem with one of the other parameters  or
  PagingErrorException the paging/sequencing parameters are set up incorrectly or
  FunctionNotSupportedException the repository does not support asOfTime parameter or
  UserNotAuthorizedException the userId is not permitted to perform this operation.</dd>
@@ -1847,7 +1847,7 @@ loadScripts(document, 'script');</script>
  EntityDetail showing the new header plus the requested properties and classifications.  The entity will
  not have any relationships at this stage or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  TypeErrorException the requested type is not known, or not supported in the metadata repository
                               hosting the metadata collection or
@@ -1886,7 +1886,7 @@ loadScripts(document, 'script');</script>
  EntityDetail showing the new header plus the requested properties and classifications.  The entity will
  not have any relationships at this stage or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  TypeErrorException the requested type is not known, or not supported in the metadata repository
                               hosting the metadata collection or
@@ -1921,7 +1921,7 @@ loadScripts(document, 'script');</script>
 <dd>VoidResponse:
  void or
  InvalidParameterException the entity proxy is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  TypeErrorException the requested type is not known, or not supported in the metadata repository
                             hosting the metadata collection or
@@ -1959,7 +1959,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection
  PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -1988,7 +1988,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  FunctionNotSupportedException the repository does not support undo or
@@ -2022,7 +2022,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse
  details of the deleted entity or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
@@ -2054,7 +2054,7 @@ loadScripts(document, 'script');</script>
 <dd>VoidResponse:
  void or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
@@ -2082,7 +2082,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the restored entity header, properties and classifications or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
  the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  EntityNotDeletedException the entity is currently not in DELETED status and so it can not be restored or
@@ -2117,7 +2117,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  ClassificationErrorException the requested classification is either not known or not valid
@@ -2151,7 +2151,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  ClassificationErrorException the requested classification is either not known or not valid
@@ -2188,7 +2188,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  ClassificationErrorException the requested classification is either not known or not valid
@@ -2223,7 +2223,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  ClassificationErrorException the requested classification is either not known or not valid
@@ -2261,7 +2261,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection
  ClassificationErrorException the requested classification is not set on the entity or
@@ -2292,7 +2292,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection
  ClassificationErrorException the requested classification is not set on the entity or
@@ -2326,7 +2326,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  ClassificationErrorException the requested classification is not attached to the classification or
@@ -2359,7 +2359,7 @@ loadScripts(document, 'script');</script>
 <dd>EntityDetailResponse:
  EntityDetail showing the resulting entity header, properties and classifications or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
  ClassificationErrorException the requested classification is not attached to the classification or
@@ -2389,7 +2389,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  Relationship structure with the new header, requested entities and properties or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored or
  TypeErrorException the requested type is not known, or not supported in the metadata repository
                             hosting the metadata collection or
@@ -2426,7 +2426,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  Relationship structure with the new header, requested entities and properties or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                  the metadata collection is stored or
  TypeErrorException the requested type is not known, or not supported in the metadata repository
                             hosting the metadata collection or
@@ -2462,7 +2462,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  Resulting relationship structure with the new properties set or
  InvalidParameterException one of the parameters is invalid or null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  RelationshipNotKnownException the requested relationship is not known in the metadata collection or
  PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -2491,7 +2491,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  Relationship structure with the new current header, requested entities and properties or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                   the metadata collection is stored or
  RelationshipNotKnownException the requested relationship is not known in the metadata collection or
  FunctionNotSupportedException the repository does not support undo or
@@ -2524,7 +2524,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  Updated relationship or
  InvalidParameterException one of the parameters is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
  the metadata collection is stored or
  RelationshipNotKnownException the requested relationship is not known in the metadata collection or
  FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
@@ -2556,7 +2556,7 @@ loadScripts(document, 'script');</script>
 <dd>VoidResponse:
  void or
  InvalidParameterException one of the parameters is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
                                     the metadata collection is stored or
  RelationshipNotKnownException the requested relationship is not known in the metadata collection or
  RelationshipNotDeletedException the requested relationship is not in DELETED status or
@@ -2585,7 +2585,7 @@ loadScripts(document, 'script');</script>
 <dd>RelationshipResponse:
  Relationship structure with the restored header, requested entities and properties or
  InvalidParameterException the guid is null or
- RepositoryErrorException there is a problem communicating with the metadata repository where
+ RepositoryErrorException a problem communicating with the metadata repository where
  the metadata collection is stored or
  RelationshipNotKnownException the requested relationship is not known in the metadata collection or
  RelationshipNotDeletedException the requested relationship is not in DELETED status or

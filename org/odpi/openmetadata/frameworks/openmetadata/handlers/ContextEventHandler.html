@@ -255,12 +255,26 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Connect two context events to show that one is related to the other.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateContextEvent(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)" class="member-name-link">updateContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerContextEvent(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map)" class="member-name-link">registerContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;parentContextEvents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;childContextEvents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/RelatedContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">RelatedContextEventProperties</a>&gt;&nbsp;relatedContextEvents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/ContextEventImpactProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventImpactProperties</a>&gt;&nbsp;impactedElements,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;effectedDataResourceGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new context event</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateContextEvent(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)" class="member-name-link">updateContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextEventGUID,
  <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
  <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;properties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of a context event.</div>
 </div>
 </div>
@@ -322,7 +336,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new context event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>userId</code> - calling user</dd>
 <dd><code>newElementOptions</code> - details of the element to create</dd>
 <dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dd><code>properties</code> - properties for the new element.</dd>
@@ -333,6 +347,44 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerContextEvent(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map)">
+<h3>registerContextEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">registerContextEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;parentContextEvents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;childContextEvents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/RelatedContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">RelatedContextEventProperties</a>&gt;&nbsp;relatedContextEvents,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/ContextEventImpactProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventImpactProperties</a>&gt;&nbsp;impactedElements,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;effectedDataResourceGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs)</span>
+                            throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create a new context event</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>anchorGUID</code> - unique identifier for the context event's anchor element</dd>
+<dd><code>parentContextEvents</code> - which context events should be linked as parents (guid->relationship properties)</dd>
+<dd><code>childContextEvents</code> - which context events should be linked as children (guid->relationship properties)</dd>
+<dd><code>relatedContextEvents</code> - which context events should be linked as related (guid->relationship properties)</dd>
+<dd><code>impactedElements</code> - which elements are impacted by this context event (guid->relationship properties)</dd>
+<dd><code>effectedDataResourceGUIDs</code> - which data resources are effected by this context event (asset guid->relationship properties)</dd>
+<dd><code>contextEventEvidenceGUIDs</code> - which elements provide evidence that the context event is happening (element GUIDs)</dd>
+<dd><code>contextEventProperties</code> - properties for the context event itself</dd>
+<dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
+<dt>Returns:</dt>
+<dd>guid of the new context event</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the properties are invalid</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to (or inside) the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -365,7 +417,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem reported in the open metadata server(s)</dd>
 </dl>
 </section>
 </li>
@@ -732,7 +784,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem reported in the open metadata server(s)</dd>
 </dl>
 </section>
 </li>

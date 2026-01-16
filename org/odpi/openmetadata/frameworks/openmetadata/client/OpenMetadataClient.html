@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/ExternalIdentifiersInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">ExternalIdentifiersInterface</a></code>, <code><a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></code>, <code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MultiLanguageInterface</a></code>, <code><a href="../api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code>, <code><a href="../api/StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">StewardshipRequestInterface</a></code></dd>
+<dd><code><a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></code>, <code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MultiLanguageInterface</a></code>, <code><a href="../api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a></code>, <code><a href="../api/SpecificationPropertiesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">SpecificationPropertiesInterface</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenMetadataClient</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a>, <a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a>, <a href="../api/StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">StewardshipRequestInterface</a>, <a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MultiLanguageInterface</a>, <a href="../api/ExternalIdentifiersInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">ExternalIdentifiersInterface</a></span></div>
+implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">OpenMetadataTypesInterface</a>, <a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a>, <a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MultiLanguageInterface</a>, <a href="../api/SpecificationPropertiesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">SpecificationPropertiesInterface</a></span></div>
 <div class="block">OpenMetadataClient provides access to metadata elements stored in the metadata repositories.  It is implemented by a
  metadata repository provider. In Egeria, this class is implemented in the GAF Metadata Management running in the
  Metadata Access Server OMAG Server.</div>
@@ -631,10 +631,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.api.MultiLanguageInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.api.<a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MultiLanguageInterface</a></h3>
-<code><a href="../api/MultiLanguageInterface.html#clearTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearTranslation</a>, <a href="../api/MultiLanguageInterface.html#getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTranslation</a>, <a href="../api/MultiLanguageInterface.html#getTranslations(java.lang.String,java.lang.String,int,int)">getTranslations</a>, <a href="../api/MultiLanguageInterface.html#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)">setTranslation</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.api.StewardshipRequestInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.api.<a href="../api/StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">StewardshipRequestInterface</a></h3>
-<code><a href="../api/StewardshipRequestInterface.html#createActorAction(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties,java.lang.String,java.util.List,java.lang.String,java.util.List)">createActorAction</a>, <a href="../api/StewardshipRequestInterface.html#createIncidentReport(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a>, <a href="../api/StewardshipRequestInterface.html#createNoteLogEntry(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties,java.lang.String,java.util.List,java.lang.String,java.util.List)">createNoteLogEntry</a>, <a href="../api/StewardshipRequestInterface.html#openToDo(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.lang.String,java.util.List)">openToDo</a>, <a href="../api/StewardshipRequestInterface.html#registerContextEvent(java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)">registerContextEvent</a></code></div>
+<code><a href="../api/MultiLanguageInterface.html#clearTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearTranslation</a>, <a href="../api/MultiLanguageInterface.html#getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTranslation</a>, <a href="../api/MultiLanguageInterface.html#getTranslations(java.lang.String,java.lang.String,int,int)">getTranslations</a>, <a href="../api/MultiLanguageInterface.html#setTranslation(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)">setTranslation</a></code></div>
 </section>
 </li>
 </ul>
@@ -746,7 +743,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>TypeDefGallery  List of different categories of type definitions.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the userId is null</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -770,7 +767,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>TypeDefs list.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the TypeDefCategory is null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -794,7 +791,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>AttributeTypeDefs list.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the TypeDefCategory is null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -823,7 +820,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
  describing the TypeDef's category and properties.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -850,7 +847,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
  has no known subtypes</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>
@@ -874,7 +871,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the guid is null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -899,7 +896,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the guid is null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -924,7 +921,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the name is null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -949,7 +946,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd>TypeDef structure describing its category and properties.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the name is null.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository where
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository where
                                     the metadata collection is stored.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -977,7 +974,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1005,7 +1002,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1033,7 +1030,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1061,7 +1058,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique name is null or not known.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1087,7 +1084,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1113,7 +1110,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1139,7 +1136,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1165,7 +1162,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1193,7 +1190,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1217,7 +1214,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1245,7 +1242,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1273,7 +1270,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1302,7 +1299,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1331,7 +1328,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1357,7 +1354,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1387,7 +1384,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1417,7 +1414,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1447,7 +1444,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1477,7 +1474,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known; the relationship type is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1503,7 +1500,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known; the relationship type is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1534,7 +1531,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known; the relationship type is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store or multiple relationships have been returned</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store or multiple relationships have been returned</dd>
 </dl>
 </section>
 </li>
@@ -1560,7 +1557,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1588,7 +1585,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1618,7 +1615,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known; the relationship type is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1646,7 +1643,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1675,7 +1672,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1701,7 +1698,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1727,7 +1724,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1756,7 +1753,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1789,7 +1786,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1824,7 +1821,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1864,7 +1861,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1894,7 +1891,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the properties are invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1918,7 +1915,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1942,7 +1939,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1970,7 +1967,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1994,7 +1991,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2018,7 +2015,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2049,7 +2046,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
                                    valid properties associated with the classification's type definition</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2078,7 +2075,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
                                    valid properties associated with the classification's type definition</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2109,7 +2106,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2135,7 +2132,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2170,7 +2167,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2197,7 +2194,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2228,7 +2225,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2257,7 +2254,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2281,7 +2278,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2310,7 +2307,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -2325,7 +2322,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
 <div class="block">Retrieve the reference data for this element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ExternalIdentifiersInterface.html#getSpecification(java.lang.String,java.lang.String)">getSpecification</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalIdentifiersInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">ExternalIdentifiersInterface</a></code></dd>
+<dd><code><a href="../api/SpecificationPropertiesInterface.html#getSpecification(java.lang.String,java.lang.String)">getSpecification</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SpecificationPropertiesInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">SpecificationPropertiesInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>elementGUID</code> - element to query</dd>

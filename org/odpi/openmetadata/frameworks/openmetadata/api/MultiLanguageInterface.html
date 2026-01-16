@@ -118,8 +118,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve all translations associated with a metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)" class="member-name-link">setTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setTranslation(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)" class="member-name-link">setTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
  <a href="../properties/translations/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.translations">TranslationDetailProperties</a>&nbsp;translationDetail)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create or update the translation for a particular language/locale for a metadata element.</div>
@@ -139,10 +140,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)">
+<section class="detail" id="setTranslation(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties)">
 <h3>setTranslation</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">setTranslation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
  <a href="../properties/translations/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.translations">TranslationDetailProperties</a>&nbsp;translationDetail)</span>
              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
@@ -152,11 +154,12 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>elementGUID</code> - unique identifier of the element that this translation is related to</dd>
+<dd><code>initialClassifications</code> - map of classifications to add to the new translation</dd>
 <dd><code>translationDetail</code> - properties of the translation</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -180,7 +183,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the language is null or not known or not unique (add locale)</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -206,7 +209,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -232,7 +235,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>

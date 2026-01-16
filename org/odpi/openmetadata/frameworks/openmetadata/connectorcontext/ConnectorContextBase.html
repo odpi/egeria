@@ -96,23 +96,29 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
-<div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
+<div class="col-second even-row-color"><code><a href="#assetHandler" class="member-name-link">assetHandler</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../reports/ConnectorActivityReportWriter.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.reports">ConnectorActivityReportWriter</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectorActivityReportWriter" class="member-name-link">connectorActivityReportWriter</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#connectorGUID" class="member-name-link">connectorGUID</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../reports/ConnectorActivityReportWriter.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.reports">ConnectorActivityReportWriter</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectorActivityReportWriter" class="member-name-link">connectorActivityReportWriter</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectorId" class="member-name-link">connectorId</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connectorGUID" class="member-name-link">connectorGUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectorId" class="member-name-link">connectorId</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectorUserId" class="member-name-link">connectorUserId</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectorUserId" class="member-name-link">connectorUserId</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="../handlers/ContextEventHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ContextEventHandler</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#contextEventHandler" class="member-name-link">contextEventHandler</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="../enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a></code></div>
 <div class="col-second even-row-color"><code><a href="#defaultDeleteMethod" class="member-name-link">defaultDeleteMethod</a></code></div>
@@ -207,378 +213,390 @@ loadScripts(document, 'script');</script>
 <div class="block">Create the governance action process asset.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIncidentReport(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map)" class="member-name-link">createIncidentReport</a><wbr>(<a href="../properties/assets/reports/IncidentReportProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">IncidentReportProperties</a>&nbsp;properties,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIncidentReport(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map,java.util.Map)" class="member-name-link">createIncidentReport</a><wbr>(<a href="../properties/assets/reports/IncidentReportProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">IncidentReportProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/assets/reports/ImpactedResourceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ImpactedResourceProperties</a>&gt;&nbsp;impactedResources,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/assets/reports/ReportDependencyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ReportDependencyProperties</a>&gt;&nbsp;previousIncidents)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProcessFromGovernanceActionType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">createProcessFromGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processQualifiedName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createNoteLogEntry(java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties,java.lang.String,java.util.List,java.lang.String,java.util.List)" class="member-name-link">createNoteLogEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/assets/processes/actions/ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ActionProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;actionCauseGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an entry in a note log.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProcessFromGovernanceActionType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">createProcessFromGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalRequestParameters,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorScopeGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a specific governance action process from a generic governance action type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Disconnect the file listener.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorProfileClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorProfileClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorProfileClient()" class="member-name-link">getActorProfileClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorProfileClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorProfileClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorProfileClient()" class="member-name-link">getActorProfileClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing actor profiles.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorProfileClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorProfileClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorProfileClient(java.lang.String)" class="member-name-link">getActorProfileClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorProfileClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorProfileClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorProfileClient(java.lang.String)" class="member-name-link">getActorProfileClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing profiles of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorRoleClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorRoleClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorRoleClient()" class="member-name-link">getActorRoleClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorRoleClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorRoleClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorRoleClient()" class="member-name-link">getActorRoleClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing actor roles.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorRoleClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorRoleClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorRoleClient(java.lang.String)" class="member-name-link">getActorRoleClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ActorRoleClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorRoleClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActorRoleClient(java.lang.String)" class="member-name-link">getActorRoleClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing roles of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&nbsp;openMetadataElement)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationClient()" class="member-name-link">getAnnotationClient</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataElement</a>&nbsp;openMetadataElement)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the client for managing annotations for survey reports.</div>
+<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationClient(java.lang.String)" class="member-name-link">getAnnotationClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationClient()" class="member-name-link">getAnnotationClient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the client for managing annotations for survey reports.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationClient(java.lang.String)" class="member-name-link">getAnnotationClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing annotations of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AssetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AssetClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetClient()" class="member-name-link">getAssetClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AssetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AssetClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetClient()" class="member-name-link">getAssetClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing assets.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AssetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AssetClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetClient(java.lang.String)" class="member-name-link">getAssetClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AssetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AssetClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetClient(java.lang.String)" class="member-name-link">getAssetClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing assets of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ClassificationManagerClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ClassificationManagerClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationManagerClient()" class="member-name-link">getClassificationManagerClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ClassificationManagerClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ClassificationManagerClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationManagerClient()" class="member-name-link">getClassificationManagerClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing classifications.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ClassificationManagerClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ClassificationManagerClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationManagerClient(java.lang.String)" class="member-name-link">getClassificationManagerClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ClassificationManagerClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ClassificationManagerClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationManagerClient(java.lang.String)" class="member-name-link">getClassificationManagerClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing classifications of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CollectionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CollectionClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionClient()" class="member-name-link">getCollectionClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CollectionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CollectionClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionClient()" class="member-name-link">getCollectionClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CollectionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CollectionClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionClient(java.lang.String)" class="member-name-link">getCollectionClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CollectionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CollectionClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionClient(java.lang.String)" class="member-name-link">getCollectionClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing collection of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CommentClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CommentClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommentClient()" class="member-name-link">getCommentClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CommentClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CommentClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommentClient()" class="member-name-link">getCommentClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing comments.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CommunityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CommunityClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommunityClient()" class="member-name-link">getCommunityClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CommunityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">CommunityClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommunityClient()" class="member-name-link">getCommunityClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing communities.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectionClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionClient()" class="member-name-link">getConnectionClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectionClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionClient()" class="member-name-link">getConnectionClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing connections.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorGUID()" class="member-name-link">getConnectorGUID</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorGUID()" class="member-name-link">getConnectorGUID</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of this connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorId()" class="member-name-link">getConnectorId</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorId()" class="member-name-link">getConnectorId</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the id of this connector instance</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorName()" class="member-name-link">getConnectorName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorName()" class="member-name-link">getConnectorName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of this connector</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectorTypeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorTypeClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorTypeClient()" class="member-name-link">getConnectorTypeClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectorTypeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorTypeClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorTypeClient()" class="member-name-link">getConnectorTypeClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing connector types.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContactDetailsClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContactDetailsClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContactDetailsClient()" class="member-name-link">getContactDetailsClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContactDetailsClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContactDetailsClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContactDetailsClient()" class="member-name-link">getContactDetailsClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing an actor's contact details.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContextEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContextEventClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContextEventClient()" class="member-name-link">getContextEventClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContextEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContextEventClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContextEventClient()" class="member-name-link">getContextEventClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing context events.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContributionRecordClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContributionRecordClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContributionRecordClient()" class="member-name-link">getContributionRecordClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContributionRecordClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ContributionRecordClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContributionRecordClient()" class="member-name-link">getContributionRecordClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing contribution record.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataClassClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataClassClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataClassClient()" class="member-name-link">getDataClassClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataClassClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataClassClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataClassClient()" class="member-name-link">getDataClassClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing data classes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataFieldClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataFieldClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFieldClient()" class="member-name-link">getDataFieldClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataFieldClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataFieldClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFieldClient()" class="member-name-link">getDataFieldClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing data fields.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataStructureClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataStructureClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataStructureClient()" class="member-name-link">getDataStructureClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataStructureClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">DataStructureClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataStructureClient()" class="member-name-link">getDataStructureClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing data structures.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEgeriaRelease()" class="member-name-link">getEgeriaRelease</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEgeriaRelease()" class="member-name-link">getEgeriaRelease</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the current release of egeria that is running.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EndpointClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">EndpointClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointClient()" class="member-name-link">getEndpointClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EndpointClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">EndpointClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointClient()" class="member-name-link">getEndpointClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing endpoints.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalIdClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ExternalIdClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdClient()" class="member-name-link">getExternalIdClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalIdClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ExternalIdClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdClient()" class="member-name-link">getExternalIdClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing external ids.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalReferenceClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ExternalReferenceClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceClient()" class="member-name-link">getExternalReferenceClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalReferenceClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ExternalReferenceClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceClient()" class="member-name-link">getExternalReferenceClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing external references.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.fileclassifier">FileClassifier</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileClassifier()" class="member-name-link">getFileClassifier</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.fileclassifier">FileClassifier</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileClassifier()" class="member-name-link">getFileClassifier</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the file classifier that uses reference data to describe a file.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GlossaryTermClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">GlossaryTermClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermClient()" class="member-name-link">getGlossaryTermClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GlossaryTermClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">GlossaryTermClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryTermClient()" class="member-name-link">getGlossaryTermClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing glossary terms.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">GovernanceDefinitionClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceDefinitionClient()" class="member-name-link">getGovernanceDefinitionClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">GovernanceDefinitionClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceDefinitionClient()" class="member-name-link">getGovernanceDefinitionClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing governance definitions.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">GovernanceDefinitionClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceDefinitionClient(java.lang.String)" class="member-name-link">getGovernanceDefinitionClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">GovernanceDefinitionClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceDefinitionClient(java.lang.String)" class="member-name-link">getGovernanceDefinitionClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing governance definitions of a specific subtype.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="InformalTagClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">InformalTagClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformalTagClient()" class="member-name-link">getInformalTagClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="InformalTagClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">InformalTagClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInformalTagClient()" class="member-name-link">getInformalTagClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing informal tags.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LikeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">LikeClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLikeClient()" class="member-name-link">getLikeClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LikeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">LikeClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLikeClient()" class="member-name-link">getLikeClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing likes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LineageClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">LineageClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageClient()" class="member-name-link">getLineageClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LineageClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">LineageClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageClient()" class="member-name-link">getLineageClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing lineage relationships.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerName()" class="member-name-link">getLocalServerName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServerName()" class="member-name-link">getLocalServerName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the server where this connector is running</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServiceName()" class="member-name-link">getLocalServiceName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalServiceName()" class="member-name-link">getLocalServiceName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the service supporting this connector</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LocationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">LocationClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocationClient()" class="member-name-link">getLocationClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LocationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">LocationClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocationClient()" class="member-name-link">getLocationClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing locations.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxPageSize()" class="member-name-link">getMaxPageSize</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxPageSize()" class="member-name-link">getMaxPageSize</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the server configuration for the maximum number of elements that can be returned on a request.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataAccessServer()" class="member-name-link">getMetadataAccessServer</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataAccessServer()" class="member-name-link">getMetadataAccessServer</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the server that this client is connected to.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataAccessServerPlatformURLRoot()" class="member-name-link">getMetadataAccessServerPlatformURLRoot</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataAccessServerPlatformURLRoot()" class="member-name-link">getMetadataAccessServerPlatformURLRoot</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the url root for the metadata access server's platform.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataRepositoryCohortClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">MetadataRepositoryCohortClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataRepositoryCohortClient()" class="member-name-link">getMetadataRepositoryCohortClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataRepositoryCohortClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">MetadataRepositoryCohortClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataRepositoryCohortClient()" class="member-name-link">getMetadataRepositoryCohortClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing properties about cohorts.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MultiLanguageClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">MultiLanguageClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMultiLanguageClient()" class="member-name-link">getMultiLanguageClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MultiLanguageClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">MultiLanguageClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMultiLanguageClient()" class="member-name-link">getMultiLanguageClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing translations for properties of open metadata elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyUserId()" class="member-name-link">getMyUserId</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyUserId()" class="member-name-link">getMyUserId</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the userId for this connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="NoteLogClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">NoteLogClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogClient()" class="member-name-link">getNoteLogClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="NoteLogClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">NoteLogClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogClient()" class="member-name-link">getNoteLogClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing note logs.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataStore</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataStore()" class="member-name-link">getOpenMetadataStore</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataStore</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataStore()" class="member-name-link">getOpenMetadataStore</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing all types of metadata.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataTypesClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataTypesClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataTypesClient()" class="member-name-link">getOpenMetadataTypesClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenMetadataTypesClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataTypesClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataTypesClient()" class="member-name-link">getOpenMetadataTypesClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for retrieving the open metadata types.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProjectClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ProjectClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectClient()" class="member-name-link">getProjectClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProjectClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ProjectClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectClient()" class="member-name-link">getProjectClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing projects.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PropertyFacetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">PropertyFacetClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropertyFacetClient()" class="member-name-link">getPropertyFacetClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PropertyFacetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">PropertyFacetClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropertyFacetClient()" class="member-name-link">getPropertyFacetClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing property facets.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RatingClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">RatingClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRatingClient()" class="member-name-link">getRatingClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="RatingClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">RatingClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRatingClient()" class="member-name-link">getRatingClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing ratings.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaAttributeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaAttributeClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaAttributeClient()" class="member-name-link">getSchemaAttributeClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaAttributeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaAttributeClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaAttributeClient()" class="member-name-link">getSchemaAttributeClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing schema attributes.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaAttributeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaAttributeClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaAttributeClient(java.lang.String)" class="member-name-link">getSchemaAttributeClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specialistTypeName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaAttributeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaAttributeClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaAttributeClient(java.lang.String)" class="member-name-link">getSchemaAttributeClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specialistTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing schema attributes of a specific subtype.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaTypeClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeClient()" class="member-name-link">getSchemaTypeClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaTypeClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeClient()" class="member-name-link">getSchemaTypeClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing schema types.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaTypeClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeClient(java.lang.String)" class="member-name-link">getSchemaTypeClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SchemaTypeClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeClient(java.lang.String)" class="member-name-link">getSchemaTypeClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing schema types of a specific subtype.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SearchKeywordClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SearchKeywordClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSearchKeywordClient()" class="member-name-link">getSearchKeywordClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SearchKeywordClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SearchKeywordClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSearchKeywordClient()" class="member-name-link">getSearchKeywordClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing search keywords.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SoftwareCapabilityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SoftwareCapabilityClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareCapabilityClient()" class="member-name-link">getSoftwareCapabilityClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SoftwareCapabilityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SoftwareCapabilityClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareCapabilityClient()" class="member-name-link">getSoftwareCapabilityClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing software capabilities.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SoftwareCapabilityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SoftwareCapabilityClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareCapabilityClient(java.lang.String)" class="member-name-link">getSoftwareCapabilityClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SoftwareCapabilityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SoftwareCapabilityClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareCapabilityClient(java.lang.String)" class="member-name-link">getSoftwareCapabilityClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing software capabilities of a specific subtype.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SolutionComponentClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SolutionComponentClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentClient()" class="member-name-link">getSolutionComponentClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SolutionComponentClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SolutionComponentClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentClient()" class="member-name-link">getSolutionComponentClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing solution components.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SpecificationPropertyClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SpecificationPropertyClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSpecificationPropertyClient()" class="member-name-link">getSpecificationPropertyClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SpecificationPropertyClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">SpecificationPropertyClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSpecificationPropertyClient()" class="member-name-link">getSpecificationPropertyClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing specification properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TemplateClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">TemplateClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateClient()" class="member-name-link">getTemplateClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TemplateClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">TemplateClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateClient()" class="member-name-link">getTemplateClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the template client for managing special classifications and relationships
  associated with building templates.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UserIdentityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">UserIdentityClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserIdentityClient()" class="member-name-link">getUserIdentityClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="UserIdentityClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">UserIdentityClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserIdentityClient()" class="member-name-link">getUserIdentityClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing user identities.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidMetadataValuesClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ValidMetadataValuesClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidMetadataValuesClient()" class="member-name-link">getValidMetadataValuesClient</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidMetadataValuesClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ValidMetadataValuesClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidMetadataValuesClient()" class="member-name-link">getValidMetadataValuesClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing valid values for open metadata properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValueDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ValidValueDefinitionClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValueDefinitionClient()" class="member-name-link">getValidValueDefinitionClient</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the client for managing valid value definitions.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValueDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ValidValueDefinitionClient</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValueDefinitionClient(java.lang.String)" class="member-name-link">getValidValueDefinitionClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specialistTypeName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValueDefinitionClient()" class="member-name-link">getValidValueDefinitionClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the client for managing valid value definitions.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)" class="member-name-link">isTypeOf</a><wbr>(<a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValueDefinitionClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ValidValueDefinitionClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValueDefinitionClient(java.lang.String)" class="member-name-link">getValidValueDefinitionClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specialistTypeName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Understand the type of element.</div>
+<div class="block">Return the client for managing valid value definitions.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType,java.lang.String)" class="member-name-link">isTypeOf</a><wbr>(<a href="../metadataelements/ElementType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementType</a>&nbsp;elementType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)" class="member-name-link">isTypeOf</a><wbr>(<a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Understand the type of element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">openToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoQualifiedName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType,java.lang.String)" class="member-name-link">isTypeOf</a><wbr>(<a href="../metadataelements/ElementType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementType</a>&nbsp;elementType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Understand the type of element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">openToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;instructions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toDoType,
@@ -587,89 +605,91 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a To-Do request for someone to work on.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openToDo(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">openToDo</a><wbr>(<a href="../properties/assets/processes/actions/ToDoProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ToDoProperties</a>&nbsp;properties,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openToDo(java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">openToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/assets/processes/actions/ToDoProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ToDoProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a "To Do" request for someone to work on.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishReport()" class="member-name-link">publishReport</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a "To-Do" request for someone to work on.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishReport()" class="member-name-link">publishReport</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Assemble the data collected and write out a report (if configured).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerContextEvent(java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)" class="member-name-link">registerContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerContextEvent(java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map)" class="member-name-link">registerContextEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;parentContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;childContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/RelatedContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">RelatedContextEventProperties</a>&gt;&nbsp;relatedContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/ContextEventImpactProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventImpactProperties</a>&gt;&nbsp;impactedElements,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;effectedDataResourceGUIDs,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs,
- <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new context event</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
  and any of its subdirectories.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementCreation(java.lang.String)" class="member-name-link">reportElementCreation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementCreation(java.lang.String)" class="member-name-link">reportElementCreation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Save information about a newly created element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementDelete(java.lang.String)" class="member-name-link">reportElementDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementDelete(java.lang.String)" class="member-name-link">reportElementDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Save information about a newly archived or deleted element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementUpdate(java.lang.String)" class="member-name-link">reportElementUpdate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reportElementUpdate(java.lang.String)" class="member-name-link">reportElementUpdate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Save information about a newly updated element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActiveReportPublishing(boolean)" class="member-name-link">setActiveReportPublishing</a><wbr>(boolean&nbsp;flag)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActiveReportPublishing(boolean)" class="member-name-link">setActiveReportPublishing</a><wbr>(boolean&nbsp;flag)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set whether an integration report should be assembled and published.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startRecording()" class="member-name-link">startRecording</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startRecording()" class="member-name-link">startRecording</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clear the report properties ready for a new report.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object for the directory.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Unregister a listener object for the directory.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateIsActive(java.lang.String)" class="member-name-link">validateIsActive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Unregister a listener object for the directory.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateIsActive(java.lang.String)" class="member-name-link">validateIsActive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Verify that the connector is still active.</div>
 </div>
 </div>
@@ -713,6 +733,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="openMetadataClient">
 <h3>openMetadataClient</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></span>&nbsp;<span class="element-name">openMetadataClient</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="assetHandler">
+<h3>assetHandler</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></span>&nbsp;<span class="element-name">assetHandler</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="contextEventHandler">
+<h3>contextEventHandler</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../handlers/ContextEventHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ContextEventHandler</a></span>&nbsp;<span class="element-name">contextEventHandler</span></div>
 </section>
 </li>
 <li>
@@ -1659,7 +1691,7 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - an invalid property has been passed</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized or the connector is not active</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata server (or it has a logic error).</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata server (or it has a logic error).</dd>
 </dl>
 </section>
 </li>
@@ -1817,9 +1849,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createIncidentReport(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map)">
+<section class="detail" id="createIncidentReport(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.IncidentReportProperties,java.util.Map,java.util.Map,java.util.Map)">
 <h3>createIncidentReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createIncidentReport</span><wbr><span class="parameters">(<a href="../properties/assets/reports/IncidentReportProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">IncidentReportProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/assets/reports/ImpactedResourceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ImpactedResourceProperties</a>&gt;&nbsp;impactedResources,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/assets/reports/ReportDependencyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports">ReportDependencyProperties</a>&gt;&nbsp;previousIncidents)</span>
                             throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
@@ -1830,14 +1863,15 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>properties</code> - unique identifier to give this new incident report and description of the situation</dd>
+<dd><code>initialClassifications</code> - classification to add to the action</dd>
 <dd><code>impactedResources</code> - details of the resources impacted by this situation</dd>
 <dd><code>previousIncidents</code> - links to previous incident reports covering this situation</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the resulting incident report</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - null or non-unique qualified name for the incident report</dd>
-<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create an incident report</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - this connector is not authorized to create an incident report</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
@@ -1872,47 +1906,82 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either todoQualifiedName or assignedTo are null or not recognized</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create a to-do</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem connecting to (or inside) the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to (or inside) the metadata store</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="openToDo(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="openToDo(java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties,java.lang.String,java.lang.String,java.util.List)">
 <h3>openToDo</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">openToDo</span><wbr><span class="parameters">(<a href="../properties/assets/processes/actions/ToDoProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ToDoProperties</a>&nbsp;properties,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">openToDo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/assets/processes/actions/ToDoProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ToDoProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sponsorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</span>
                 throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a "To Do" request for someone to work on.</div>
+<div class="block">Create a "To-Do" request for someone to work on.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>properties</code> - unique name for the to do plus other properties</dd>
+<dd><code>initialClassifications</code> - classification to add to the action</dd>
+<dd><code>properties</code> - unique name for the to-do plus other properties</dd>
 <dd><code>assignToGUID</code> - unique identifier of the Actor element for the recipient</dd>
 <dd><code>sponsorGUID</code> - unique identifier of the element that describes the rule, project that this is on behalf of</dd>
 <dd><code>actionTargets</code> - the list of elements that should be acted upon</dd>
 <dt>Returns:</dt>
-<dd>unique identifier of new to do element</dd>
+<dd>unique identifier of the new to-do element</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either todoQualifiedName or assignedTo are null or not recognized</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem connecting to (or inside) the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to (or inside) the metadata store</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="registerContextEvent(java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties)">
+<section class="detail" id="createNoteLogEntry(java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties,java.lang.String,java.util.List,java.lang.String,java.util.List)">
+<h3>createNoteLogEntry</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createNoteLogEntry</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/assets/processes/actions/ActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">ActionProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;actionCauseGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</span>
+                          throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create an entry in a note log.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataTypeName</code> - type of action to create</dd>
+<dd><code>initialClassifications</code> - classification to add to the action</dd>
+<dd><code>properties</code> - properties of the action</dd>
+<dd><code>actionSourceGUID</code> - unique identifier of the source of the action</dd>
+<dd><code>actionCauseGUIDs</code> - unique identifiers of the cause for the action to be raised</dd>
+<dd><code>noteLogGUID</code> - unique identifier of the note log</dd>
+<dd><code>actionTargets</code> - the list of elements that should be acted upon</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of new action element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - either todoQualifiedName or assignedTo are null or not recognized</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to (or inside) the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerContextEvent(java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map)">
 <h3>registerContextEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">registerContextEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
+ <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;parentContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/DependentContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">DependentContextEventProperties</a>&gt;&nbsp;childContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/RelatedContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">RelatedContextEventProperties</a>&gt;&nbsp;relatedContextEvents,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/contextevents/ContextEventImpactProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventImpactProperties</a>&gt;&nbsp;impactedElements,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;effectedDataResourceGUIDs,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs,
- <a href="../properties/contextevents/ContextEventProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents">ContextEventProperties</a>&nbsp;contextEventProperties)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&gt;&nbsp;contextEventEvidenceGUIDs)</span>
                             throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -1927,12 +1996,13 @@ loadScripts(document, 'script');</script>
 <dd><code>effectedDataResourceGUIDs</code> - which data resources are effected by this context event (asset guid->effectivity dates)</dd>
 <dd><code>contextEventEvidenceGUIDs</code> - which elements provide evidence that the context event is happening (element GUIDs-> effectivity dates)</dd>
 <dd><code>contextEventProperties</code> - properties for the context event itself</dd>
+<dd><code>initialClassifications</code> - map of classification names to classification properties to include in the entity creation request</dd>
 <dt>Returns:</dt>
 <dd>guid of the new context event</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the properties are invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation</dd>
-<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem connecting to (or inside) the metadata store</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to (or inside) the metadata store</dd>
 </dl>
 </section>
 </li>
